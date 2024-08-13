@@ -190,7 +190,7 @@ public class SonarLintTest {
       @NotNull
       @Override
       public Language language() {
-        return Language.forKey("go").orElse(Language.APEX);
+        return Language.forKey("go").get();
       }
     };
   }
