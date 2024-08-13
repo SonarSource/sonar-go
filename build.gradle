@@ -37,8 +37,8 @@ allprojects {
         sonarqubeVersion = '10.0.0.68432'
         orchestratorVersion = '3.42.0.312'
         sonarlintVersion = '9.0.0.74282'
-        sonarLinksCi = 'https://cirrus-ci.com/github/SonarSource/slang'
-        sonarLinksScm = 'https://github.com/SonarSource/slang'
+        sonarLinksCi = 'https://cirrus-ci.com/github/SonarSource/sonar-go'
+        sonarLinksScm = 'https://github.com/SonarSource/sonar-go'
 
         artifactsToPublish = ''
         artifactsToDownload = ''
@@ -125,7 +125,7 @@ subprojects {
         testCompile.extendsFrom compileOnly
     }
 
-    if (!project.path.startsWith(":its") && !project.path.startsWith(":private:its")) {
+    if (!project.path.startsWith(":its")) {
         test {
             useJUnitPlatform()
         }
@@ -134,14 +134,15 @@ subprojects {
     test {
         testLogging {
             exceptionFormat 'full' // log the full stack trace (default is the 1st line of the stack trace)
-            events "skipped", "failed" // verbose log for failed and skipped tests (by default the name of the tests are not logged)
+            events "skipped", "failed"
+            // verbose log for failed and skipped tests (by default the name of the tests are not logged)
         }
         def propKeys = System.properties.findAll {
-            it.key.startsWith("orchestrator") || it.key.startsWith("sonar") || it.key == "buildNumber" || it.key == "slangVersion"
+            it.key.startsWith("orchestrator") || it.key.startsWith("sonar") || it.key == "buildNumber" || it.key == "goVersion"
         }.collect { it.key }
         systemProperties = System.properties.subMap(propKeys)
-        if (propKeys.contains("buildNumber") && !propKeys.contains("slangVersion")) {
-            systemProperties["slangVersion"] = version
+        if (propKeys.contains("buildNumber") && !propKeys.contains("goVersion")) {
+            systemProperties["goVersion"] = version
         }
     }
 
@@ -160,11 +161,7 @@ subprojects {
         java {
             targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**", "private/its/sources/**", "private/its/plugin/projects/**"
 
-            if (getPath().startsWith(':private')) {
-                licenseHeaderFile(rootProject.file("private/LICENSE")).updateYearWithLatest(true)
-            } else {
-                licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
-            }
+            licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
         }
     }
 
@@ -187,7 +184,7 @@ subprojects {
                         }
                     }
                     scm {
-                        url = 'https://github.com/SonarSource/slang'
+                        url = 'https://github.com/SonarSource/sonar-go'
                     }
                     developers {
                         developer {
@@ -208,7 +205,7 @@ subprojects {
         required {
             def branch = System.getenv()["CIRRUS_BRANCH"]
             return (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
-                    gradle.taskGraph.hasTask(":artifactoryPublish")
+              gradle.taskGraph.hasTask(":artifactoryPublish")
         }
         sign publishing.publications
     }
@@ -217,8 +214,8 @@ subprojects {
         onlyIf {
             def branch = System.getenv()["CIRRUS_BRANCH"]
             return !artifactoryPublish.skip &&
-                    (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
-                    gradle.taskGraph.hasTask(":artifactoryPublish")
+              (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
+              gradle.taskGraph.hasTask(":artifactoryPublish")
         }
     }
 }
@@ -228,7 +225,7 @@ sonar {
         property 'sonar.projectName', projectTitle
         property 'sonar.links.ci', "${sonarLinksCi}"
         property 'sonar.links.scm', "${sonarLinksScm}"
-        property 'sonar.links.issue', 'https://jira.sonarsource.com/browse/SONARSLANG'
+        property 'sonar.links.issue', 'https://jira.sonarsource.com/browse/SONARGO'
         property 'sonar.exclusions', '**/build/**/*'
     }
 }
@@ -245,13 +242,13 @@ artifactory {
         }
         defaults {
             properties = [
-                'build.name': 'slang-enterprise',
-                'build.number': System.getenv('BUILD_NUMBER'),
-                'pr.branch.target': System.getenv('PULL_REQUEST_BRANCH_TARGET'),
-                'pr.number': System.getenv('PULL_REQUEST_NUMBER'),
-                'vcs.branch': System.getenv('GIT_BRANCH'),
-                'vcs.revision': System.getenv('GIT_COMMIT'),
-                'version': version
+              'build.name'      : 'sonar-go',
+              'build.number'    : System.getenv('BUILD_NUMBER'),
+              'pr.branch.target': System.getenv('PULL_REQUEST_BRANCH_TARGET'),
+              'pr.number'       : System.getenv('PULL_REQUEST_NUMBER'),
+              'vcs.branch'      : System.getenv('GIT_BRANCH'),
+              'vcs.revision'    : System.getenv('GIT_COMMIT'),
+              'version'         : version
             ]
             publications('mavenJava')
             publishPom = true
@@ -259,7 +256,7 @@ artifactory {
         }
     }
 
-    clientConfig.info.setBuildName('slang-enterprise')
+    clientConfig.info.setBuildName('sonar-go')
     clientConfig.info.setBuildNumber(System.getenv('BUILD_NUMBER'))
     // Define the artifacts to be deployed to https://binaries.sonarsource.com on releases
     clientConfig.info.addEnvironmentProperty('ARTIFACTS_TO_PUBLISH', artifactsToPublish)
@@ -270,7 +267,7 @@ artifactory {
 
 void enforceJarSizeAndCheckContent(File file, long minSize, long maxSize) {
     long size = file.length()
-    if (size < minSize)  {
+    if (size < minSize) {
         throw new GradleException("${file.path} size ($size) too small. Min is $minSize")
     } else if (size > maxSize) {
         throw new GradleException("${file.path} size ($size) too large. Max is $maxSize")

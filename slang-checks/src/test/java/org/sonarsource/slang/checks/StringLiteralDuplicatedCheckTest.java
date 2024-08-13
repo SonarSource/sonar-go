@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
