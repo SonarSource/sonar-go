@@ -1,8 +1,0 @@
-AST node class         | first…last tokens | line:col   
------------------------|-------------------|------------
-TopLevelTree {         | trigger … }       | 1:1 … 3:2  
-  ?TriggerDeclUnit? {  | trigger … }       | 1:1 … 3:2  
-    ApexIdentifierTree | trigger2          | 1:9 … 1:17 
-    ApexIdentifierTree | Object1__c        | 1:21 … 1:31
-  }                    |                   |            
-}                      |                   |            

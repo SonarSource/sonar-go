@@ -33,7 +33,7 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import javax.annotation.CheckForNull;
+
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.groups.Tuple;
 import org.jetbrains.annotations.NotNull;
@@ -67,7 +67,7 @@ public class SonarLintTest {
   public static void prepare() throws Exception {
     // Orchestrator is used only to retrieve plugin artifacts from filesystem or maven
     OrchestratorBuilder orchestratorBuilder = Orchestrator.builderEnv();
-    Tests.addLanguagePlugins(orchestratorBuilder);
+    Tests.addGoPlugin(orchestratorBuilder);
     Orchestrator orchestrator = orchestratorBuilder
       .useDefaultAdminCredentialsForBuilds(true)
       .setSonarVersion(System.getProperty(Tests.SQ_VERSION_PROPERTY, Tests.DEFAULT_SQ_VERSION))
@@ -86,8 +86,6 @@ public class SonarLintTest {
         /* Don't pollute logs */
       });
     StandaloneGlobalConfiguration configuration = sonarLintConfigBuilder
-      .addEnabledLanguage(Language.RUBY)
-      .addEnabledLanguage(Language.SCALA)
       .addEnabledLanguage(Language.GO)
       .build();
     sonarlintEngine = new StandaloneSonarLintEngineImpl(configuration);
@@ -100,87 +98,24 @@ public class SonarLintTest {
   }
 
   @Test
-  public void test_ruby() throws Exception {
-    ClientInputFile inputFile = prepareInputFile("foo.rb",
-      "def fooBar() \n"           // ruby:S100
-        + "  if true \n"                  // ruby:S1145
-        + "    password = 'blabla' \n"    // ruby:S1481
-        + "  end \n"
-        + "end \n",
-      false, "ruby");
-
-    assertIssues(analyzeWithSonarLint(inputFile),
-        tuple("ruby:S100", 1, inputFile.getPath(), IssueSeverity.MINOR),
-        tuple("ruby:S1145", 2, inputFile.getPath(), IssueSeverity.MAJOR),
-        tuple("ruby:S1481", 3, inputFile.getPath(), IssueSeverity.MINOR)
-      );
-  }
-
-  @Test
-  public void test_scala() throws Exception {
-    ClientInputFile inputFile = prepareInputFile("foo.scala",
-      "object Code {\n"
-        + "  def foo_bar() = {\n"                   // scala:S100 (Method name)
-        + "    if (true) { \n"                      // scala:S1145 (Useless if(true))
-        + "        val password = \"blabla\"\n"     // scala:S181 (Unused variable)
-        + "    } \n"
-        + "  }\n"
-        + "}",
-      false, "scala");
-    
-    assertIssues(analyzeWithSonarLint(inputFile),
-        tuple("scala:S100", 2, inputFile.getPath(), IssueSeverity.MINOR),
-        tuple("scala:S1145", 3, inputFile.getPath(), IssueSeverity.MAJOR),
-        tuple("scala:S1481", 4, inputFile.getPath(), IssueSeverity.MINOR)
-      );
-  }
-
-  @Test
   public void test_go() throws Exception {
-    ClientInputFile inputFile = prepareInputFile("foo.go",
+    ClientInputFile inputFile = prepareInputFile(
       "package main\n"
         + "func empty() {\n"        // go:S1186 (empty function)
-        + "}\n",
-      false, "go");
+        + "}\n"
+    );
 
     assertIssues(analyzeWithSonarLint(inputFile),
       tuple("go:S1186", 2, inputFile.getPath(), IssueSeverity.CRITICAL));
   }
 
   @Test
-  public void test_ruby_nosonar() throws Exception {
-    ClientInputFile rubyInputFile = prepareInputFile("foo.rb",
-      "def fooBar() # NOSONAR\n"            // skipped ruby:S100
-        + "  if true # NOSONAR\n"                  // skipped ruby:S1145
-        + "    password = 'blabla' # NOSONAR\n"    // skipped ruby:S1481
-        + "  end \n"
-        + "end \n",
-      false, "ruby");
-    assertThat(analyzeWithSonarLint(rubyInputFile)).isEmpty();
-  }
-
-  @Test
-  public void test_scala_nosonar() throws Exception {
-    ClientInputFile scalaInputFile = prepareInputFile("foo.scala",
-      "package main"
-        + "object Code {\n"
-        + "  def foo_bar() = { // NOSONAR\n"                  // skipped scala:S100 (Method name)
-        + "    if (true) { // NOSONAR\n"                      // skipped scala:S1145 (Useless if(true))
-        + "        val password = \"blabla\" // NOSONAR\n"    // skipped scala:S181 (Unused variable)
-        + "    } \n"
-        + "  }\n"
-        + "}",
-      false, "scala");
-    assertThat(analyzeWithSonarLint(scalaInputFile)).isEmpty();
-  }
-
-  @Test
   public void test_go_nosonar() throws Exception {
-    ClientInputFile goInputFile = prepareInputFile("foo.go",
+    ClientInputFile goInputFile = prepareInputFile(
       "package main\n"
         + "func empty() { // NOSONAR\n"        //  skipped go:S1186 (empty function)
-        + "}\n",
-      false, "go");
+        + "}\n"
+    );
     assertThat(analyzeWithSonarLint(goInputFile)).isEmpty();
   }
 
@@ -202,13 +137,13 @@ public class SonarLintTest {
       .containsExactlyInAnyOrder(expectedIssues);
   }
 
-  private ClientInputFile prepareInputFile(String relativePath, String content, final boolean isTest, String language) throws IOException {
-    File file = new File(baseDir, relativePath);
+  private ClientInputFile prepareInputFile(String content) throws IOException {
+    File file = new File(baseDir, "foo.go");
     FileUtils.write(file, content, StandardCharsets.UTF_8);
-    return createInputFile(file.toPath(), isTest, language);
+    return createInputFile(file.toPath());
   }
 
-  private ClientInputFile createInputFile(final Path path, final boolean isTest, String language) {
+  private ClientInputFile createInputFile(final Path path) {
     return new ClientInputFile() {
 
       @Override
@@ -223,7 +158,7 @@ public class SonarLintTest {
 
       @Override
       public boolean isTest() {
-        return isTest;
+        return false;
       }
 
       @Override
@@ -239,7 +174,7 @@ public class SonarLintTest {
 
       @Override
       public String contents() throws IOException {
-        return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
+        return Files.readString(path);
       }
 
       @Override
@@ -255,7 +190,7 @@ public class SonarLintTest {
       @NotNull
       @Override
       public Language language() {
-        return Language.forKey(language).orElse(Language.APEX);
+        return Language.forKey("go").orElse(Language.APEX);
       }
     };
   }
