@@ -59,7 +59,7 @@ build_task:
     ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
-    - source cirrus-env BUILD-PRIVATE
+    - source cirrus-env BUILD
     - ./gradlew build
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 

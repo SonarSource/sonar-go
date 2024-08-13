@@ -49,19 +49,9 @@ allprojects {
         version = version.replace('-SNAPSHOT', versionSuffix)
     }
 
-    File extraProperties = new File(rootDir, 'private/extraProperties.gradle')
-    if (extraProperties.exists()) {
-        apply from: extraProperties
-    }
 
     repositories {
         mavenLocal()
-        if (new File(rootDir, 'private/build.gradle').exists()) {
-            def repository = project.hasProperty('qa') ? 'sonarsource-qa' : 'sonarsource'
-            maven {
-                url "https://repox.jfrog.io/repox/${repository}"
-            }
-        }
         mavenCentral()
     }
 }
@@ -159,7 +149,7 @@ subprojects {
     // license updater
     spotless {
         java {
-            targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**", "private/its/sources/**", "private/its/plugin/projects/**"
+            targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**"
 
             licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
         }
