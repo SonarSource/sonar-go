@@ -2,23 +2,12 @@ pluginManagement {
     repositories {
         mavenCentral()
         gradlePluginPortal()
-        if (new File(rootDir, 'private/build.gradle').exists()) {
-            maven {
-                name = "artifactory"
-                url = uri("https://repox.jfrog.io/repox/sonarsource")
-            }
-        }
     }
 }
 
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
-        if (new File(rootDir, 'private/build.gradle').exists()) {
-            maven {
-                url = uri("https://repox.jfrog.io/repox/sonarsource")
-            }
-        }
     }
 }
 
@@ -34,9 +23,3 @@ include 'sonar-go-plugin'
 include 'checkstyle-import'
 include 'its:plugin'
 include 'its:ruling'
-
-// "extraSettings.gradle" should not be renamed "settings.gradle" to not create a wrong project rootDir
-File extraSettings = new File(rootDir, 'private/extraSettings.gradle')
-if (extraSettings.exists()) {
-    apply from: extraSettings
-}

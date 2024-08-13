@@ -74,15 +74,15 @@ public class SlangRulingTest {
 
   static void addGoPlugin(OrchestratorBuilder builder) {
     String plugin = "sonar-go-plugin";
-    String goVersion = System.getProperty("goVersion");
+    String slangVersion = System.getProperty("slangVersion");
 
     Location pluginLocation;
-    if (StringUtils.isEmpty(goVersion)) {
+    if (StringUtils.isEmpty(slangVersion)) {
       // use the plugin that was built on local machine
       pluginLocation = FileLocation.byWildcardMavenFilename(new File("../../" + plugin + "/build/libs"), plugin + "-*-all.jar");
     } else {
       // QA environment downloads the plugin built by the CI job
-      pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, goVersion);
+      pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, slangVersion);
     }
 
     builder.addPlugin(pluginLocation);
