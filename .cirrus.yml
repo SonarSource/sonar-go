@@ -3,7 +3,7 @@ env:
   CIRRUS_SHELL: bash
 
 eks_container: &CONTAINER_DEFINITION
-  image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:latest
+  image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
   cluster_name: ${CIRRUS_CLUSTER_NAME}
   region: eu-central-1
   namespace: default
@@ -14,18 +14,13 @@ build_task:
     cpu: 1
     memory: 1G
   env:
-    SONAR_TOKEN: VAULT[development/kv/data/next data.token]
-    SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
-    ORG_GRADLE_PROJECT_signingKey: VAULT[development/kv/data/sign data.key]
-    ORG_GRADLE_PROJECT_signingPassword: VAULT[development/kv/data/sign data.passphrase]
-    ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
     ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
     ARTIFACTORY_DEPLOY_USERNAME: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer username]
     ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
-    - regular_gradle_build_deploy
+    - ./gradlew build
 
 promote_task:
   depends_on:
