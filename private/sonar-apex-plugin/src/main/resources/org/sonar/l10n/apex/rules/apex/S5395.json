@@ -1,0 +1,21 @@
+{
+  "title": "Test methods should not be annotated with \"@isTest(SeeAllData\u003dtrue)\"",
+  "type": "CODE_SMELL",
+  "code": {
+    "impacts": {
+      "MAINTAINABILITY": "MEDIUM"
+    },
+    "attribute": "MODULAR"
+  },
+  "status": "ready",
+  "remediation": {
+    "func": "Constant\/Issue",
+    "constantCost": "10min"
+  },
+  "tags": [],
+  "defaultSeverity": "Major",
+  "ruleSpecification": "RSPEC-5395",
+  "sqKey": "S5395",
+  "scope": "Tests",
+  "quickfix": "unknown"
+}

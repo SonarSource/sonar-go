@@ -1,0 +1,50 @@
+AST node class                        | first…last tokens    | line:col   
+--------------------------------------|----------------------|------------
+TopLevelTree {                        | trigger … }          | 1:1 … 5:2  
+  ?TriggerDeclUnit? {                 | trigger … }          | 1:1 … 5:2  
+    ApexIdentifierTree                | trigger2             | 1:9 … 1:17 
+    ApexIdentifierTree                | Object1__c           | 1:21 … 1:31
+    ?StmntBlockMember? {              | Trigger … ;          | 2:5 … 2:20 
+      ?ExpressionStmnt? {             | Trigger … ;          | 2:5 … 2:20 
+        ?ArrayExpr? {                 | Trigger … 0          | 2:5 … 2:18 
+          ?TriggerVariableExpr? {     | Trigger … old        | 2:5 … 2:16 
+            ApexIdentifierTree        | old                  | 2:13 … 2:16
+          }                           |                      |            
+          LiteralTree                 | 0                    | 2:17 … 2:18
+        }                             |                      |            
+      }                               |                      |            
+    }                                 |                      |            
+    ?StmntBlockMember? {              | Trigger … ;          | 3:5 … 3:27 
+      ?ExpressionStmnt? {             | Trigger … ;          | 3:5 … 3:27 
+        FunctionInvocationTree {      | Trigger … 2          | 3:5 … 3:25 
+          MemberSelectTree {          | Trigger … get        | 3:5 … 3:23 
+            ?TriggerVariableExpr? {   | Trigger … oldmap     | 3:5 … 3:19 
+              ApexIdentifierTree      | oldmap               | 3:13 … 3:19
+            }                         |                      |            
+            ApexIdentifierTree        | get                  | 3:20 … 3:23
+          }                           |                      |            
+          LiteralTree                 | 2                    | 3:24 … 3:25
+        }                             |                      |            
+      }                               |                      |            
+    }                                 |                      |            
+    ?StmntBlockMember? {              | System … ;           | 4:5 … 4:61 
+      ?ExpressionStmnt? {             | System … ;           | 4:5 … 4:61 
+        FunctionInvocationTree {      | System … ountNumber  | 4:5 … 4:57 
+          MemberSelectTree {          | System … sertEquals  | 4:5 … 4:24 
+            ApexIdentifierTree        | System               | 4:5 … 4:11 
+            ApexIdentifierTree        | assertEquals         | 4:12 … 4:24
+          }                           |                      |            
+          StringLiteralTree           | 'xxx'                | 4:25 … 4:30
+          FunctionInvocationTree {    | Trigger … ountNumber | 4:32 … 4:57
+            MemberSelectTree {        | Trigger … ountNumber | 4:32 … 4:57
+              ?TriggerVariableExpr? { | Trigger … old        | 4:32 … 4:43
+                ApexIdentifierTree    | old                  | 4:40 … 4:43
+              }                       |                      |            
+              ApexIdentifierTree      | accountNumber        | 4:44 … 4:57
+            }                         |                      |            
+          }                           |                      |            
+        }                             |                      |            
+      }                               |                      |            
+    }                                 |                      |            
+  }                                   |                      |            
+}                                     |                      |            

@@ -1,0 +1,38 @@
+<h2>Why is this an issue?</h2>
+<p>Functions with a long parameter list are difficult to use, as maintainers must figure out the role of each parameter and keep track of their
+position.</p>
+<pre>
+void setCoordinates(Integer  x1, Integer  y1, Integer  z1, Integer  x2, Integer  y2, Integer  z2) { // Noncompliant
+    // ...
+}
+</pre>
+<p>The solution can be to:</p>
+<ul>
+  <li> Split the function into smaller ones </li>
+</ul>
+<pre>
+// Each function does a part of what the original setCoordinates function was doing, so confusion risks are lower
+void setOrigin(Integer  x, Integer  y, Integer  z) {
+   // ...
+}
+
+void setSize(Integer width, Integer height, Integer depth) {
+   // ...
+}
+</pre>
+<ul>
+  <li> Find a better data structure for the parameters that group data in a way that makes sense for the specific application domain </li>
+</ul>
+<pre>
+public class Point { // In geometry, Point is a logical structure to group data
+    Integer  x;
+    Integer  y;
+    Integer  z;
+}
+
+void setCoordinates(Point p1, Point p2) {
+    // ...
+}
+</pre>
+<p>This rule raises an issue when a function has more parameters than the provided threshold.</p>
+

@@ -1,0 +1,76 @@
+AST node class                                | first…last tokens | line:col   
+----------------------------------------------|-------------------|------------
+TopLevelTree {                                | class … }         | 1:1 … 11:2 
+  ?ClassDeclUnit? {                           | class … }         | 1:1 … 11:2 
+    ClassDeclarationTree {                    | class … }         | 1:1 … 11:2 
+      ?ClassDecl? {                           | class … }         | 1:1 … 11:2 
+        ApexIdentifierTree                    | Foo               | 1:7 … 1:10 
+        FunctionDeclarationTree {             | public … }        | 2:5 … 10:6 
+          ModifierTree                        | public            | 2:5 … 2:11 
+          ?ClassTypeRef? {                    | Integer           | 2:12 … 2:19
+            ApexIdentifierTree                | Integer           | 2:12 … 2:19
+          }                                   |                   |            
+          ApexIdentifierTree                  | foo               | 2:20 … 2:23
+          ParameterTree {                     | Integer … x       | 2:24 … 2:33
+            ApexIdentifierTree                | x                 | 2:32 … 2:33
+            ?ClassTypeRef? {                  | Integer           | 2:24 … 2:31
+              ApexIdentifierTree              | Integer           | 2:24 … 2:31
+            }                                 |                   |            
+          }                                   |                   |            
+          ParameterTree {                     | Integer … y       | 2:35 … 2:44
+            ApexIdentifierTree                | y                 | 2:43 … 2:44
+            ?ClassTypeRef? {                  | Integer           | 2:35 … 2:42
+              ApexIdentifierTree              | Integer           | 2:35 … 2:42
+            }                                 |                   |            
+          }                                   |                   |            
+          BlockTree {                         | { … }             | 2:46 … 10:6
+            IfTree {                          | if … }            | 3:7 … 5:8  
+              BinaryExpressionTree {          | ++ … ++           | 3:11 … 3:21
+                ?PrefixExpr? {                | ++ … x            | 3:11 … 3:14
+                  ApexIdentifierTree          | x                 | 3:13 … 3:14
+                }                             |                   |            
+                UnaryExpressionTree {         | x … ++            | 3:18 … 3:21
+                  ApexIdentifierTree          | x                 | 3:18 … 3:19
+                }                             |                   |            
+              }                               |                   |            
+              BlockTree {                     | { … }             | 3:23 … 5:8 
+                ReturnTree {                  | return … ;        | 4:9 … 4:19 
+                  UnaryExpressionTree {       | + … x             | 4:16 … 4:18
+                    ApexIdentifierTree        | x                 | 4:17 … 4:18
+                  }                           |                   |            
+                }                             |                   |            
+              }                               |                   |            
+            }                                 |                   |            
+            IfTree {                          | if … }            | 6:7 … 8:8  
+              BinaryExpressionTree {          | -- … --           | 6:11 … 6:21
+                ?PrefixExpr? {                | -- … x            | 6:11 … 6:14
+                  ApexIdentifierTree          | x                 | 6:13 … 6:14
+                }                             |                   |            
+                UnaryExpressionTree {         | x … --            | 6:18 … 6:21
+                  ApexIdentifierTree          | x                 | 6:18 … 6:19
+                }                             |                   |            
+              }                               |                   |            
+              BlockTree {                     | { … }             | 6:23 … 8:8 
+                ReturnTree {                  | return … ;        | 7:9 … 7:19 
+                  UnaryExpressionTree {       | - … x             | 7:16 … 7:18
+                    ApexIdentifierTree        | x                 | 7:17 … 7:18
+                  }                           |                   |            
+                }                             |                   |            
+              }                               |                   |            
+            }                                 |                   |            
+            ReturnTree {                      | return … ;        | 9:7 … 9:24 
+              UnaryExpressionTree {           | ! … )             | 9:14 … 9:23
+                ParenthesizedExpressionTree { | ( … )             | 9:15 … 9:23
+                  BinaryExpressionTree {      | x … y             | 9:16 … 9:22
+                    ApexIdentifierTree        | x                 | 9:16 … 9:17
+                    ApexIdentifierTree        | y                 | 9:21 … 9:22
+                  }                           |                   |            
+                }                             |                   |            
+              }                               |                   |            
+            }                                 |                   |            
+          }                                   |                   |            
+        }                                     |                   |            
+      }                                       |                   |            
+    }                                         |                   |            
+  }                                           |                   |            
+}                                             |                   |            

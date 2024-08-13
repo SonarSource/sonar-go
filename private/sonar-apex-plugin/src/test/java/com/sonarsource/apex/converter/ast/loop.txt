@@ -1,0 +1,154 @@
+AST node class                             | first…last tokens | line:col     
+-------------------------------------------|-------------------|--------------
+TopLevelTree {                             | global … }        | 1:1 … 25:2   
+  ?ClassDeclUnit? {                        | global … }        | 1:1 … 25:2   
+    ClassDeclarationTree {                 | global … }        | 1:1 … 25:2   
+      ?ClassDecl? {                        | global … }        | 1:1 … 25:2   
+        ?GlobalModifier?                   | global            | 1:1 … 1:7    
+        ApexIdentifierTree                 | HelloWorld        | 1:14 … 1:24  
+        FunctionDeclarationTree {          | public … }        | 2:5 … 24:6   
+          ModifierTree                     | public            | 2:5 … 2:11   
+          ?ClassTypeRef? {                 | void              | 2:12 … 2:16  
+            ApexIdentifierTree             | void              | 2:12 … 2:16  
+          }                                |                   |              
+          ApexIdentifierTree               | hello             | 2:17 … 2:22  
+          BlockTree {                      | { … }             | 2:25 … 24:6  
+            LoopTree {                     | for … }           | 3:9 … 5:10   
+              ?CStyleForControl? {         | Integer … ++      | 3:14 … 3:47  
+                ?ForInits? {               | Integer … 0       | 3:14 … 3:34  
+                  ?ClassTypeRef? {         | Integer           | 3:14 … 3:21  
+                    ApexIdentifierTree     | Integer           | 3:14 … 3:21  
+                  }                        |                   |              
+                  ?ForInit? {              | i … 0             | 3:22 … 3:27  
+                    ApexIdentifierTree     | i                 | 3:22 … 3:23  
+                    LiteralTree            | 0                 | 3:26 … 3:27  
+                  }                        |                   |              
+                  ?ForInit? {              | j … 0             | 3:29 … 3:34  
+                    ApexIdentifierTree     | j                 | 3:29 … 3:30  
+                    LiteralTree            | 0                 | 3:33 … 3:34  
+                  }                        |                   |              
+                }                          |                   |              
+                BinaryExpressionTree {     | i … 10            | 3:36 … 3:42  
+                  ApexIdentifierTree       | i                 | 3:36 … 3:37  
+                  LiteralTree              | 10                | 3:40 … 3:42  
+                }                          |                   |              
+                UnaryExpressionTree {      | i … ++            | 3:44 … 3:47  
+                  ApexIdentifierTree       | i                 | 3:44 … 3:45  
+                }                          |                   |              
+              }                            |                   |              
+              BlockTree {                  | { … }             | 3:49 … 5:10  
+                ?ExpressionStmnt? {        | System … ;        | 4:11 … 4:27  
+                  FunctionInvocationTree { | System … i        | 4:11 … 4:25  
+                    MemberSelectTree {     | System … debug    | 4:11 … 4:23  
+                      ApexIdentifierTree   | System            | 4:11 … 4:17  
+                      ApexIdentifierTree   | debug             | 4:18 … 4:23  
+                    }                      |                   |              
+                    ApexIdentifierTree     | i                 | 4:24 … 4:25  
+                  }                        |                   |              
+                }                          |                   |              
+              }                            |                   |              
+            }                              |                   |              
+            ?VariableDeclStmnt? {          | Integer … 0       | 7:9 … 7:22   
+              ?VariableDecls? {            | Integer … 0       | 7:9 … 7:22   
+                VariableDeclarationTree {  | Integer … 0       | 7:9 … 7:22   
+                  ApexIdentifierTree       | j                 | 7:17 … 7:18  
+                  ?ClassTypeRef? {         | Integer           | 7:9 … 7:16   
+                    ApexIdentifierTree     | Integer           | 7:9 … 7:16   
+                  }                        |                   |              
+                  LiteralTree              | 0                 | 7:21 … 7:22  
+                }                          |                   |              
+              }                            |                   |              
+            }                              |                   |              
+            LoopTree {                     | do … ;            | 8:9 … 12:25  
+              BinaryExpressionTree {       | j … 10            | 12:17 … 12:23
+                ApexIdentifierTree         | j                 | 12:17 … 12:18
+                LiteralTree                | 10                | 12:21 … 12:23
+              }                            |                   |              
+              BlockTree {                  | { … }             | 8:12 … 12:10 
+                ?ExpressionStmnt? {        | System … ;        | 9:13 … 9:29  
+                  FunctionInvocationTree { | System … j        | 9:13 … 9:27  
+                    MemberSelectTree {     | System … debug    | 9:13 … 9:25  
+                      ApexIdentifierTree   | System            | 9:13 … 9:19  
+                      ApexIdentifierTree   | debug             | 9:20 … 9:25  
+                    }                      |                   |              
+                    ApexIdentifierTree     | j                 | 9:26 … 9:27  
+                  }                        |                   |              
+                }                          |                   |              
+                ?ExpressionStmnt? {        | j … ;             | 10:13 … 10:17
+                  UnaryExpressionTree {    | j … ++            | 10:13 … 10:16
+                    ApexIdentifierTree     | j                 | 10:13 … 10:14
+                  }                        |                   |              
+                }                          |                   |              
+                JumpTree                   | break … ;         | 11:13 … 11:19
+              }                            |                   |              
+            }                              |                   |              
+            ?VariableDeclStmnt? {          | Integer … 0       | 14:9 … 14:22 
+              ?VariableDecls? {            | Integer … 0       | 14:9 … 14:22 
+                VariableDeclarationTree {  | Integer … 0       | 14:9 … 14:22 
+                  ApexIdentifierTree       | k                 | 14:17 … 14:18
+                  ?ClassTypeRef? {         | Integer           | 14:9 … 14:16 
+                    ApexIdentifierTree     | Integer           | 14:9 … 14:16 
+                  }                        |                   |              
+                  LiteralTree              | 0                 | 14:21 … 14:22
+                }                          |                   |              
+              }                            |                   |              
+            }                              |                   |              
+            LoopTree {                     | while … }         | 15:9 … 19:10 
+              BinaryExpressionTree {       | k … 10            | 15:15 … 15:21
+                ApexIdentifierTree         | k                 | 15:15 … 15:16
+                LiteralTree                | 10                | 15:19 … 15:21
+              }                            |                   |              
+              BlockTree {                  | { … }             | 15:23 … 19:10
+                ?ExpressionStmnt? {        | System … ;        | 16:13 … 16:29
+                  FunctionInvocationTree { | System … k        | 16:13 … 16:27
+                    MemberSelectTree {     | System … debug    | 16:13 … 16:25
+                      ApexIdentifierTree   | System            | 16:13 … 16:19
+                      ApexIdentifierTree   | debug             | 16:20 … 16:25
+                    }                      |                   |              
+                    ApexIdentifierTree     | k                 | 16:26 … 16:27
+                  }                        |                   |              
+                }                          |                   |              
+                ?ExpressionStmnt? {        | k … ;             | 17:13 … 17:18
+                  UnaryExpressionTree {    | k … ++            | 17:13 … 17:17
+                    ApexIdentifierTree     | k                 | 17:13 … 17:14
+                  }                        |                   |              
+                }                          |                   |              
+                JumpTree                   | continue … ;      | 18:13 … 18:22
+              }                            |                   |              
+            }                              |                   |              
+            ?WhileLoop? {                  | while … 10        | 21:9 … 21:21 
+              BinaryExpressionTree {       | k … 10            | 21:15 … 21:21
+                ApexIdentifierTree         | k                 | 21:15 … 21:16
+                LiteralTree                | 10                | 21:19 … 21:21
+              }                            |                   |              
+            }                              |                   |              
+            ?ForLoop? {                    | for … ++          | 23:9 … 23:47 
+              ?CStyleForControl? {         | Integer … ++      | 23:14 … 23:47
+                ?ForInits? {               | Integer … 0       | 23:14 … 23:34
+                  ?ClassTypeRef? {         | Integer           | 23:14 … 23:21
+                    ApexIdentifierTree     | Integer           | 23:14 … 23:21
+                  }                        |                   |              
+                  ?ForInit? {              | i … 0             | 23:22 … 23:27
+                    ApexIdentifierTree     | i                 | 23:22 … 23:23
+                    LiteralTree            | 0                 | 23:26 … 23:27
+                  }                        |                   |              
+                  ?ForInit? {              | j … 0             | 23:29 … 23:34
+                    ApexIdentifierTree     | j                 | 23:29 … 23:30
+                    LiteralTree            | 0                 | 23:33 … 23:34
+                  }                        |                   |              
+                }                          |                   |              
+                BinaryExpressionTree {     | i … 10            | 23:36 … 23:42
+                  ApexIdentifierTree       | i                 | 23:36 … 23:37
+                  LiteralTree              | 10                | 23:40 … 23:42
+                }                          |                   |              
+                UnaryExpressionTree {      | i … ++            | 23:44 … 23:47
+                  ApexIdentifierTree       | i                 | 23:44 … 23:45
+                }                          |                   |              
+              }                            |                   |              
+            }                              |                   |              
+          }                                |                   |              
+        }                                  |                   |              
+      }                                    |                   |              
+    }                                      |                   |              
+  }                                        |                   |              
+}                                          |                   |              

@@ -1,0 +1,38 @@
+[
+    {
+        "id": "01p3E000001QAacQAG",
+        "name": "file1",
+        "totalLines": 8,
+        "lines": {
+            "2": 1,
+            "3": 1,
+            "4": 1,
+            "5": 1,
+            "6": 1,
+            "7": 1,
+            "11": 1,
+            "12": 1
+        },
+        "totalCovered": 8,
+        "coveredPercent": 100
+    },
+    {
+        "id": "01p3E000001QAadQAG",
+        "name": "file2",
+        "totalLines": 10,
+        "lines": {
+            "5": 1,
+            "6": 3,
+            "7": 0,
+            "9": 1,
+            "10": 1,
+            "14": 5,
+            "15": 0,
+            "17": 1,
+            "20": 1,
+            "21": 1
+        },
+        "totalCovered": 8,
+        "coveredPercent": 80
+    }
+]

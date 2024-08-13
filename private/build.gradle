@@ -1,0 +1,20 @@
+subprojects {
+    group = 'com.sonarsource.slang'
+    dependencyManagement {
+        dependencies {
+            dependency 'com.salesforce:apex-jorje-lsp-minimized:58.14.2'
+            dependency 'com.sonarsource.license:license-api:3.4'
+            dependency 'com.yworks:yguard:2.7.1'
+        }
+    }
+}
+
+allprojects {
+
+    repositories {
+        def repository = project.hasProperty('qa') ? 'sonarsource-qa' : 'sonarsource'
+        maven {
+            url "https://repox.jfrog.io/repox/${repository}"
+        }
+    }
+}

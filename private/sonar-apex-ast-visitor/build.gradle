@@ -1,0 +1,14 @@
+sonarqube {
+    properties {
+        property 'sonar.exclusions', '**/GeneratedApexAstVisitor.java'
+    }
+}
+
+dependencies {
+    implementation 'com.salesforce:apex-jorje-lsp-minimized'
+    implementation 'org.sonarsource.analyzer-commons:sonar-analyzer-commons'
+    implementation 'javax.annotation:javax.annotation-api'
+    testImplementation "org.junit.jupiter:junit-jupiter-api"
+    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
+    testImplementation 'org.assertj:assertj-core'
+}

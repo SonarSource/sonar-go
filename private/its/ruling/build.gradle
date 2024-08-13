@@ -1,0 +1,21 @@
+dependencies {
+    testImplementation 'org.sonarsource.orchestrator:sonar-orchestrator'
+    testImplementation 'org.assertj:assertj-core'
+    testImplementation 'org.sonarsource.sonarqube:sonar-ws'
+    testImplementation 'org.sonarsource.analyzer-commons:sonar-analyzer-commons'
+}
+
+sonarqube.skipProject = true
+
+test {
+    onlyIf {
+        project.hasProperty("its") ||
+                project.hasProperty("ruling") ||
+                project.hasProperty("ruling-apex")
+    }
+    if (project.hasProperty("ruling-apex")) {
+        filter { includeTestsMatching 'com.sonarsource.apex.it.ApexRulingTest.test_apex' }
+    }
+    systemProperty 'java.awt.headless', 'true'
+    outputs.upToDateWhen {false}
+}

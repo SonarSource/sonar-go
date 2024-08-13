@@ -1,0 +1,137 @@
+AST node class                           | first…last tokens | line:col     
+-----------------------------------------|-------------------|--------------
+TopLevelTree {                           | class … }         | 1:1 … 24:2   
+  ?ClassDeclUnit? {                      | class … }         | 1:1 … 24:2   
+    ClassDeclarationTree {               | class … }         | 1:1 … 24:2   
+      ?ClassDecl? {                      | class … }         | 1:1 … 24:2   
+        ApexIdentifierTree               | Foo               | 1:7 … 1:10   
+        FunctionDeclarationTree {        | public … }        | 2:5 … 23:6   
+          ModifierTree                   | public            | 2:5 … 2:11   
+          ?ClassTypeRef? {               | Integer           | 2:12 … 2:19  
+            ApexIdentifierTree           | Integer           | 2:12 … 2:19  
+          }                              |                   |              
+          ApexIdentifierTree             | foo               | 2:20 … 2:23  
+          ParameterTree {                | Integer … x       | 2:24 … 2:33  
+            ApexIdentifierTree           | x                 | 2:32 … 2:33  
+            ?ClassTypeRef? {             | Integer           | 2:24 … 2:31  
+              ApexIdentifierTree         | Integer           | 2:24 … 2:31  
+            }                            |                   |              
+          }                              |                   |              
+          ParameterTree {                | Integer … y       | 2:35 … 2:44  
+            ApexIdentifierTree           | y                 | 2:43 … 2:44  
+            ?ClassTypeRef? {             | Integer           | 2:35 … 2:42  
+              ApexIdentifierTree         | Integer           | 2:35 … 2:42  
+            }                            |                   |              
+          }                              |                   |              
+          BlockTree {                    | { … }             | 2:46 … 23:6  
+            IfTree {                     | if … }            | 3:7 … 5:8    
+              BinaryExpressionTree {     | x … y             | 3:11 … 3:17  
+                ApexIdentifierTree       | x                 | 3:11 … 3:12  
+                ApexIdentifierTree       | y                 | 3:16 … 3:17  
+              }                          |                   |              
+              BlockTree {                | { … }             | 3:19 … 5:8   
+                ReturnTree {             | return … ;        | 4:9 … 4:22   
+                  BinaryExpressionTree { | x … y             | 4:16 … 4:21  
+                    ApexIdentifierTree   | x                 | 4:16 … 4:17  
+                    ApexIdentifierTree   | y                 | 4:20 … 4:21  
+                  }                      |                   |              
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            IfTree {                     | if … }            | 6:7 … 8:8    
+              BinaryExpressionTree {     | x … y             | 6:11 … 6:16  
+                ApexIdentifierTree       | x                 | 6:11 … 6:12  
+                ApexIdentifierTree       | y                 | 6:15 … 6:16  
+              }                          |                   |              
+              BlockTree {                | { … }             | 6:18 … 8:8   
+                ReturnTree {             | return … ;        | 7:9 … 7:22   
+                  BinaryExpressionTree { | x … y             | 7:16 … 7:21  
+                    ApexIdentifierTree   | x                 | 7:16 … 7:17  
+                    ApexIdentifierTree   | y                 | 7:20 … 7:21  
+                  }                      |                   |              
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            IfTree {                     | if … }            | 9:7 … 11:8   
+              BinaryExpressionTree {     | y … 0             | 9:11 … 9:27  
+                BinaryExpressionTree {   | y … 0             | 9:11 … 9:17  
+                  ApexIdentifierTree     | y                 | 9:11 … 9:12  
+                  LiteralTree            | 0                 | 9:16 … 9:17  
+                }                        |                   |              
+                BinaryExpressionTree {   | y … 0             | 9:21 … 9:27  
+                  ApexIdentifierTree     | y                 | 9:21 … 9:22  
+                  LiteralTree            | 0                 | 9:26 … 9:27  
+                }                        |                   |              
+              }                          |                   |              
+              BlockTree {                | { … }             | 9:29 … 11:8  
+                ReturnTree {             | return … ;        | 10:9 … 10:22 
+                  BinaryExpressionTree { | x … y             | 10:16 … 10:21
+                    ApexIdentifierTree   | x                 | 10:16 … 10:17
+                    ApexIdentifierTree   | y                 | 10:20 … 10:21
+                  }                      |                   |              
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            IfTree {                     | if … }            | 12:7 … 14:8  
+              BinaryExpressionTree {     | x … y             | 12:11 … 12:27
+                BinaryExpressionTree {   | x … y             | 12:11 … 12:16
+                  ApexIdentifierTree     | x                 | 12:11 … 12:12
+                  ApexIdentifierTree     | y                 | 12:15 … 12:16
+                }                        |                   |              
+                ?BooleanExpr? {          | x … y             | 12:20 … 12:27
+                  ApexIdentifierTree     | x                 | 12:20 … 12:21
+                  ApexIdentifierTree     | y                 | 12:26 … 12:27
+                }                        |                   |              
+              }                          |                   |              
+              BlockTree {                | { … }             | 12:29 … 14:8 
+                ReturnTree {             | return … ;        | 13:9 … 13:22 
+                  BinaryExpressionTree { | x … 1             | 13:16 … 13:21
+                    ApexIdentifierTree   | x                 | 13:16 … 13:17
+                    LiteralTree          | 1                 | 13:20 … 13:21
+                  }                      |                   |              
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            IfTree {                     | if … }            | 15:7 … 17:8  
+              ?BinaryExpr? {             | x … y             | 15:11 … 15:16
+                ApexIdentifierTree       | x                 | 15:11 … 15:12
+                ApexIdentifierTree       | y                 | 15:15 … 15:16
+              }                          |                   |              
+              BlockTree {                | { … }             | 15:18 … 17:8 
+                ReturnTree {             | return … ;        | 16:9 … 16:22 
+                  ?BinaryExpr? {         | x … y             | 16:16 … 16:21
+                    ApexIdentifierTree   | x                 | 16:16 … 16:17
+                    ApexIdentifierTree   | y                 | 16:20 … 16:21
+                  }                      |                   |              
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            IfTree {                     | if … }            | 18:7 … 21:8  
+              AssignmentExpressionTree { | x … y             | 18:11 … 18:16
+                ApexIdentifierTree       | x                 | 18:11 … 18:12
+                ApexIdentifierTree       | y                 | 18:15 … 18:16
+              }                          |                   |              
+              BlockTree {                | { … }             | 18:18 … 21:8 
+                ?ExpressionStmnt? {      | x … ;             | 19:9 … 19:16 
+                  ?AssignmentExpr? {     | x … y             | 19:9 … 19:15 
+                    ApexIdentifierTree   | x                 | 19:9 … 19:10 
+                    ApexIdentifierTree   | y                 | 19:14 … 19:15
+                  }                      |                   |              
+                }                        |                   |              
+                ReturnTree {             | return … ;        | 20:9 … 20:18 
+                  ApexIdentifierTree     | x                 | 20:16 … 20:17
+                }                        |                   |              
+              }                          |                   |              
+            }                            |                   |              
+            ReturnTree {                 | return … ;        | 22:7 … 22:21 
+              ?BinaryExpr? {             | x … y             | 22:14 … 22:20
+                ApexIdentifierTree       | x                 | 22:14 … 22:15
+                ApexIdentifierTree       | y                 | 22:19 … 22:20
+              }                          |                   |              
+            }                            |                   |              
+          }                              |                   |              
+        }                                |                   |              
+      }                                  |                   |              
+    }                                    |                   |              
+  }                                      |                   |              
+}                                        |                   |              

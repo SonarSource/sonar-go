@@ -1,0 +1,17 @@
+List of dependencies and licenses for analysis of Apex:
+
+* Salesforce Extensions for VS Code
+  Depends on the package "apex.jorje.*" and "apex.common.*"
+  Type: BSD 3-Clause "New" or "Revised" License
+  See the file LICENSE-salesforcedx-vscode-apex.txt
+  Origin https://github.com/forcedotcom/salesforcedx-vscode/blob/develop/LICENSE.txt
+
+* ANTLR v4
+  Type: BSD 3-clause license
+  See the file LICENSE-antlr4.txt
+  Origin https://github.com/antlr/antlr4/blob/master/LICENSE.txt
+
+* Guava: Google Core Libraries for Java
+  Type: Apache License 2.0
+  See the file LICENSE-guava.txt
+  Origin https://github.com/google/guava/blob/master/COPYING

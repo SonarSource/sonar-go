@@ -1,0 +1,14 @@
+{
+'apex-project:sources/projects/Milestones-PM/src/classes/Milestone1_Project_Trigger_Utility.cls':[
+173,
+],
+'apex-project:sources/projects/declarative-lookup-rollup-summaries/force-app/main/classes/RollupSummaries.cls':[
+213,
+],
+'apex-project:sources/projects/dreamhouse-sfdx/force-app/main/default/triggers/RejectDuplicatePropertyFavorite.trigger':[
+8,
+],
+'apex-project:sources/projects/sfdx-dreamhouse/force-app/main/default/triggers/RejectDuplicateFavorite.trigger':[
+8,
+],
+}

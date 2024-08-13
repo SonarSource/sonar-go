@@ -1,0 +1,356 @@
+[
+  {
+    "key": "ApexAssertionsShouldIncludeMessage",
+    "name": "Apex assertions should include message",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#apexassertionsshouldincludemessage"
+  },
+  {
+    "key": "ApexBadCrypto",
+    "name": "Apex bad crypto",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexbadcrypto"
+  },
+  {
+    "key": "ApexCRUDViolation",
+    "name": "Apex CRUDViolation",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexcrudviolation"
+  },
+  {
+    "key": "ApexCSRF",
+    "name": "Apex CSRF",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#apexcsrf"
+  },
+  {
+    "key": "ApexDangerousMethods",
+    "name": "Apex dangerous methods",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexdangerousmethods"
+  },
+  {
+    "key": "ApexDoc",
+    "name": "Apex doc",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_documentation.html#apexdoc"
+  },
+  {
+    "key": "ApexInsecureEndpoint",
+    "name": "Apex insecure endpoint",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexinsecureendpoint"
+  },
+  {
+    "key": "ApexOpenRedirect",
+    "name": "Apex open redirect",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexopenredirect"
+  },
+  {
+    "key": "ApexSOQLInjection",
+    "name": "Apex SOQLInjection",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexsoqlinjection"
+  },
+  {
+    "key": "ApexSharingViolations",
+    "name": "Apex sharing violations",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexsharingviolations"
+  },
+  {
+    "key": "ApexSuggestUsingNamedCred",
+    "name": "Apex suggest using named cred",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexsuggestusingnamedcred"
+  },
+  {
+    "key": "ApexUnitTestClassShouldHaveAsserts",
+    "name": "Apex unit test class should have asserts",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#apexunittestclassshouldhaveasserts"
+  },
+  {
+    "key": "ApexUnitTestClassShouldHaveRunAs",
+    "name": "Apex unit test class should have run as",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#apexunittestclassshouldhaverunas"
+  },
+  {
+    "key": "ApexUnitTestMethodShouldHaveIsTestAnnotation",
+    "name": "Apex unit test method should have is test annotation",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#apexunittestmethodshouldhaveistestannotation"
+  },
+  {
+    "key": "ApexUnitTestShouldNotUseSeeAllDataTrue",
+    "name": "Apex unit test should not use see all data true",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#apexunittestshouldnotuseseealldatatrue"
+  },
+  {
+    "key": "ApexXSSFromEscapeFalse",
+    "name": "Apex XSSFrom escape false",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexxssfromescapefalse"
+  },
+  {
+    "key": "ApexXSSFromURLParam",
+    "name": "Apex XSSFrom URLParam",
+    "type": "VULNERABILITY",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_security.html#apexxssfromurlparam"
+  },
+  {
+    "key": "AvoidDebugStatements",
+    "name": "Avoid debug statements",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_performance.html#avoiddebugstatements"
+  },
+  {
+    "key": "AvoidDeeplyNestedIfStmts",
+    "name": "Avoid deeply nested if stmts",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#avoiddeeplynestedifstmts"
+  },
+  {
+    "key": "AvoidDirectAccessTriggerMap",
+    "name": "Avoid direct access trigger map",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#avoiddirectaccesstriggermap"
+  },
+  {
+    "key": "AvoidGlobalModifier",
+    "name": "Avoid global modifier",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#avoidglobalmodifier"
+  },
+  {
+    "key": "AvoidHardcodingId",
+    "name": "Avoid hardcoding id",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#avoidhardcodingid"
+  },
+  {
+    "key": "AvoidLogicInTrigger",
+    "name": "Avoid logic in trigger",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#avoidlogicintrigger"
+  },
+  {
+    "key": "AvoidNonExistentAnnotations",
+    "name": "Avoid non existent annotations",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#avoidnonexistentannotations"
+  },
+  {
+    "key": "ClassNamingConventions",
+    "name": "Class naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#classnamingconventions"
+  },
+  {
+    "key": "CognitiveComplexity",
+    "name": "Cognitive complexity",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#cognitivecomplexity"
+  },
+  {
+    "key": "CyclomaticComplexity",
+    "name": "Cyclomatic complexity",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#cyclomaticcomplexity"
+  },
+  {
+    "key": "DebugsShouldUseLoggingLevel",
+    "name": "Debugs should use logging level",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#debugsshoulduselogginglevel"
+  },
+  {
+    "key": "EagerlyLoadedDescribeSObjectResult",
+    "name": "Eagerly loaded describe SObject result",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_performance.html#eagerlyloadeddescribesobjectresult"
+  },
+  {
+    "key": "EmptyCatchBlock",
+    "name": "Empty catch block",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#emptycatchblock"
+  },
+  {
+    "key": "EmptyIfStmt",
+    "name": "Empty if stmt",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#emptyifstmt"
+  },
+  {
+    "key": "EmptyStatementBlock",
+    "name": "Empty statement block",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#emptystatementblock"
+  },
+  {
+    "key": "EmptyTryOrFinallyBlock",
+    "name": "Empty try or finally block",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#emptytryorfinallyblock"
+  },
+  {
+    "key": "EmptyWhileStmt",
+    "name": "Empty while stmt",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#emptywhilestmt"
+  },
+  {
+    "key": "ExcessiveClassLength",
+    "name": "Excessive class length",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#excessiveclasslength"
+  },
+  {
+    "key": "ExcessiveParameterList",
+    "name": "Excessive parameter list",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#excessiveparameterlist"
+  },
+  {
+    "key": "ExcessivePublicCount",
+    "name": "Excessive public count",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#excessivepubliccount"
+  },
+  {
+    "key": "FieldDeclarationsShouldBeAtStart",
+    "name": "Field declarations should be at start",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#fielddeclarationsshouldbeatstart"
+  },
+  {
+    "key": "FieldNamingConventions",
+    "name": "Field naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#fieldnamingconventions"
+  },
+  {
+    "key": "ForLoopsMustUseBraces",
+    "name": "For loops must use braces",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#forloopsmustusebraces"
+  },
+  {
+    "key": "FormalParameterNamingConventions",
+    "name": "Formal parameter naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#formalparameternamingconventions"
+  },
+  {
+    "key": "IfElseStmtsMustUseBraces",
+    "name": "If else stmts must use braces",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#ifelsestmtsmustusebraces"
+  },
+  {
+    "key": "IfStmtsMustUseBraces",
+    "name": "If stmts must use braces",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#ifstmtsmustusebraces"
+  },
+  {
+    "key": "InaccessibleAuraEnabledGetter",
+    "name": "Inaccessible aura enabled getter",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#inaccessibleauraenabledgetter"
+  },
+  {
+    "key": "LocalVariableNamingConventions",
+    "name": "Local variable naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#localvariablenamingconventions"
+  },
+  {
+    "key": "MethodNamingConventions",
+    "name": "Method naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#methodnamingconventions"
+  },
+  {
+    "key": "MethodWithSameNameAsEnclosingClass",
+    "name": "Method with same name as enclosing class",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#methodwithsamenameasenclosingclass"
+  },
+  {
+    "key": "NcssConstructorCount",
+    "name": "Ncss constructor count",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#ncssconstructorcount"
+  },
+  {
+    "key": "NcssMethodCount",
+    "name": "Ncss method count",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#ncssmethodcount"
+  },
+  {
+    "key": "NcssTypeCount",
+    "name": "Ncss type count",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#ncsstypecount"
+  },
+  {
+    "key": "OneDeclarationPerLine",
+    "name": "One declaration per line",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#onedeclarationperline"
+  },
+  {
+    "key": "OperationWithLimitsInLoop",
+    "name": "Operation with limits in loop",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_performance.html#operationwithlimitsinloop"
+  },
+  {
+    "key": "OverrideBothEqualsAndHashcode",
+    "name": "Override both equals and hashcode",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#overridebothequalsandhashcode"
+  },
+  {
+    "key": "PropertyNamingConventions",
+    "name": "Property naming conventions",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#propertynamingconventions"
+  },
+  {
+    "key": "StdCyclomaticComplexity",
+    "name": "Std cyclomatic complexity",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#stdcyclomaticcomplexity"
+  },
+  {
+    "key": "TestMethodsMustBeInTestClasses",
+    "name": "Test methods must be in test classes",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_errorprone.html#testmethodsmustbeintestclasses"
+  },
+  {
+    "key": "TooManyFields",
+    "name": "Too many fields",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_design.html#toomanyfields"
+  },
+  {
+    "key": "UnusedLocalVariable",
+    "name": "Unused local variable",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_bestpractices.html#unusedlocalvariable"
+  },
+  {
+    "key": "WhileLoopsMustUseBraces",
+    "name": "While loops must use braces",
+    "type": "CODE_SMELL",
+    "url": "https://pmd.github.io/pmd-6.55.0/pmd_rules_apex_codestyle.html#whileloopsmustusebraces"
+  }
+]

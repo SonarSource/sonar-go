@@ -1,0 +1,273 @@
+AST node class                                   | first…last tokens     | line:col     
+-------------------------------------------------|-----------------------|--------------
+TopLevelTree {                                   | class … }             | 1:1 … 25:2   
+  ?ClassDeclUnit? {                              | class … }             | 1:1 … 25:2   
+    ClassDeclarationTree {                       | class … }             | 1:1 … 25:2   
+      ?ClassDecl? {                              | class … }             | 1:1 … 25:2   
+        ApexIdentifierTree                       | A                     | 1:7 … 1:8    
+        ?FieldMember? {                          | Integer … size        | 2:3 … 2:15   
+          ?VariableDecls? {                      | Integer … size        | 2:3 … 2:15   
+            VariableDeclarationTree {            | Integer … size        | 2:3 … 2:15   
+              ApexIdentifierTree                 | size                  | 2:11 … 2:15  
+              ?ClassTypeRef? {                   | Integer               | 2:3 … 2:10   
+                ApexIdentifierTree               | Integer               | 2:3 … 2:10   
+              }                                  |                       |              
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | Integer … 1           | 3:3 … 3:26   
+          ?VariableDecls? {                      | Integer … 1           | 3:3 … 3:26   
+            ?ClassTypeRef? {                     | Integer               | 3:3 … 3:10   
+              ApexIdentifierTree                 | Integer               | 3:3 … 3:10   
+            }                                    |                       |              
+            VariableDeclarationTree {            | i … 0                 | 3:11 … 3:16  
+              ApexIdentifierTree                 | i                     | 3:11 … 3:12  
+              LiteralTree                        | 0                     | 3:15 … 3:16  
+            }                                    |                       |              
+            VariableDeclarationTree {            | j                     | 3:18 … 3:19  
+              ApexIdentifierTree                 | j                     | 3:18 … 3:19  
+            }                                    |                       |              
+            VariableDeclarationTree {            | k … 1                 | 3:21 … 3:26  
+              ApexIdentifierTree                 | k                     | 3:21 … 3:22  
+              LiteralTree                        | 1                     | 3:25 … 3:26  
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | String … 'abc'        | 4:3 … 4:22   
+          ?VariableDecls? {                      | String … 'abc'        | 4:3 … 4:22   
+            VariableDeclarationTree {            | String … 'abc'        | 4:3 … 4:22   
+              ApexIdentifierTree                 | name                  | 4:10 … 4:14  
+              ?ClassTypeRef? {                   | String                | 4:3 … 4:9    
+                ApexIdentifierTree               | String                | 4:3 … 4:9    
+              }                                  |                       |              
+              StringLiteralTree                  | 'abc'                 | 4:17 … 4:22  
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | String … c            | 5:3 … 5:17   
+          ?VariableDecls? {                      | String … c            | 5:3 … 5:17   
+            ?ClassTypeRef? {                     | String                | 5:3 … 5:9    
+              ApexIdentifierTree                 | String                | 5:3 … 5:9    
+            }                                    |                       |              
+            VariableDeclarationTree {            | a                     | 5:10 … 5:11  
+              ApexIdentifierTree                 | a                     | 5:10 … 5:11  
+            }                                    |                       |              
+            VariableDeclarationTree {            | b                     | 5:13 … 5:14  
+              ApexIdentifierTree                 | b                     | 5:13 … 5:14  
+            }                                    |                       |              
+            VariableDeclarationTree {            | c                     | 5:16 … 5:17  
+              ApexIdentifierTree                 | c                     | 5:16 … 5:17  
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | Integer … 12          | 6:3 … 6:20   
+          ?VariableDecls? {                      | Integer … 12          | 6:3 … 6:20   
+            ?ClassTypeRef? {                     | Integer               | 6:3 … 6:10   
+              ApexIdentifierTree                 | Integer               | 6:3 … 6:10   
+            }                                    |                       |              
+            VariableDeclarationTree {            | y                     | 6:11 … 6:12  
+              ApexIdentifierTree                 | y                     | 6:11 … 6:12  
+            }                                    |                       |              
+            VariableDeclarationTree {            | z … 12                | 6:14 … 6:20  
+              ApexIdentifierTree                 | z                     | 6:14 … 6:15  
+              LiteralTree                        | 12                    | 6:18 … 6:20  
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | final … alVariable    | 7:3 … 7:29   
+          ?VariableDecls? {                      | final … alVariable    | 7:3 … 7:29   
+            ?FinalModifier?                      | final                 | 7:3 … 7:8    
+            VariableDeclarationTree {            | String … alVariable   | 7:9 … 7:29   
+              ApexIdentifierTree                 | finalVariable         | 7:16 … 7:29  
+              ?ClassTypeRef? {                   | String                | 7:9 … 7:15   
+                ApexIdentifierTree               | String                | 7:9 … 7:15   
+              }                                  |                       |              
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        ?FieldMember? {                          | static … Variables2   | 8:3 … 8:73   
+          ?VariableDecls? {                      | static … Variables2   | 8:3 … 8:73   
+            ?StaticModifier?                     | static                | 8:3 … 8:9    
+            ?FinalModifier?                      | final                 | 8:10 … 8:15  
+            ?ClassTypeRef? {                     | Double                | 8:16 … 8:22  
+              ApexIdentifierTree                 | Double                | 8:16 … 8:22  
+            }                                    |                       |              
+            VariableDeclarationTree {            | staticFina … 1.0      | 8:23 … 8:50  
+              ApexIdentifierTree                 | staticFinalVariables1 | 8:23 … 8:44  
+              LiteralTree                        | 1.0                   | 8:47 … 8:50  
+            }                                    |                       |              
+            VariableDeclarationTree {            | staticFinalVariables2 | 8:52 … 8:73  
+              ApexIdentifierTree                 | staticFinalVariables2 | 8:52 … 8:73  
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        FunctionDeclarationTree {                | void … }              | 10:3 … 18:4  
+          ?ClassTypeRef? {                       | void                  | 10:3 … 10:7  
+            ApexIdentifierTree                   | void                  | 10:3 … 10:7  
+          }                                      |                       |              
+          ApexIdentifierTree                     | doSomething           | 10:8 … 10:19 
+          ParameterTree {                        | String … param        | 10:20 … 10:32
+            ApexIdentifierTree                   | param                 | 10:27 … 10:32
+            ?ClassTypeRef? {                     | String                | 10:20 … 10:26
+              ApexIdentifierTree                 | String                | 10:20 … 10:26
+            }                                    |                       |              
+          }                                      |                       |              
+          BlockTree {                            | { … }                 | 10:34 … 18:4 
+            ?VariableDeclStmnt? {                | Integer … size        | 11:5 … 11:17 
+              ?VariableDecls? {                  | Integer … size        | 11:5 … 11:17 
+                VariableDeclarationTree {        | Integer … size        | 11:5 … 11:17 
+                  ApexIdentifierTree             | size                  | 11:13 … 11:17
+                  ?ClassTypeRef? {               | Integer               | 11:5 … 11:12 
+                    ApexIdentifierTree           | Integer               | 11:5 … 11:12 
+                  }                              |                       |              
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | Integer … 1           | 12:5 … 12:28 
+              ?VariableDecls? {                  | Integer … 1           | 12:5 … 12:28 
+                ?ClassTypeRef? {                 | Integer               | 12:5 … 12:12 
+                  ApexIdentifierTree             | Integer               | 12:5 … 12:12 
+                }                                |                       |              
+                VariableDeclarationTree {        | i … 0                 | 12:13 … 12:18
+                  ApexIdentifierTree             | i                     | 12:13 … 12:14
+                  LiteralTree                    | 0                     | 12:17 … 12:18
+                }                                |                       |              
+                VariableDeclarationTree {        | j                     | 12:20 … 12:21
+                  ApexIdentifierTree             | j                     | 12:20 … 12:21
+                }                                |                       |              
+                VariableDeclarationTree {        | k … 1                 | 12:23 … 12:28
+                  ApexIdentifierTree             | k                     | 12:23 … 12:24
+                  LiteralTree                    | 1                     | 12:27 … 12:28
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | String … 'abc'        | 13:5 … 13:24 
+              ?VariableDecls? {                  | String … 'abc'        | 13:5 … 13:24 
+                VariableDeclarationTree {        | String … 'abc'        | 13:5 … 13:24 
+                  ApexIdentifierTree             | name                  | 13:12 … 13:16
+                  ?ClassTypeRef? {               | String                | 13:5 … 13:11 
+                    ApexIdentifierTree           | String                | 13:5 … 13:11 
+                  }                              |                       |              
+                  StringLiteralTree              | 'abc'                 | 13:19 … 13:24
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | String … c            | 14:5 … 14:19 
+              ?VariableDecls? {                  | String … c            | 14:5 … 14:19 
+                ?ClassTypeRef? {                 | String                | 14:5 … 14:11 
+                  ApexIdentifierTree             | String                | 14:5 … 14:11 
+                }                                |                       |              
+                VariableDeclarationTree {        | a                     | 14:12 … 14:13
+                  ApexIdentifierTree             | a                     | 14:12 … 14:13
+                }                                |                       |              
+                VariableDeclarationTree {        | b                     | 14:15 … 14:16
+                  ApexIdentifierTree             | b                     | 14:15 … 14:16
+                }                                |                       |              
+                VariableDeclarationTree {        | c                     | 14:18 … 14:19
+                  ApexIdentifierTree             | c                     | 14:18 … 14:19
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | Integer … 12          | 15:5 … 15:22 
+              ?VariableDecls? {                  | Integer … 12          | 15:5 … 15:22 
+                ?ClassTypeRef? {                 | Integer               | 15:5 … 15:12 
+                  ApexIdentifierTree             | Integer               | 15:5 … 15:12 
+                }                                |                       |              
+                VariableDeclarationTree {        | y                     | 15:13 … 15:14
+                  ApexIdentifierTree             | y                     | 15:13 … 15:14
+                }                                |                       |              
+                VariableDeclarationTree {        | z … 12                | 15:16 … 15:22
+                  ApexIdentifierTree             | z                     | 15:16 … 15:17
+                  LiteralTree                    | 12                    | 15:20 … 15:22
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | final … alVariable    | 16:5 … 16:31 
+              ?VariableDecls? {                  | final … alVariable    | 16:5 … 16:31 
+                ?FinalModifier?                  | final                 | 16:5 … 16:10 
+                VariableDeclarationTree {        | String … alVariable   | 16:11 … 16:31
+                  ApexIdentifierTree             | finalVariable         | 16:18 … 16:31
+                  ?ClassTypeRef? {               | String                | 16:11 … 16:17
+                    ApexIdentifierTree           | String                | 16:11 … 16:17
+                  }                              |                       |              
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | static … Variables2   | 17:5 … 17:75 
+              ?VariableDecls? {                  | static … Variables2   | 17:5 … 17:75 
+                ?StaticModifier?                 | static                | 17:5 … 17:11 
+                ?FinalModifier?                  | final                 | 17:12 … 17:17
+                ?ClassTypeRef? {                 | Double                | 17:18 … 17:24
+                  ApexIdentifierTree             | Double                | 17:18 … 17:24
+                }                                |                       |              
+                VariableDeclarationTree {        | staticFina … 1.0      | 17:25 … 17:52
+                  ApexIdentifierTree             | staticFinalVariables1 | 17:25 … 17:46
+                  LiteralTree                    | 1.0                   | 17:49 … 17:52
+                }                                |                       |              
+                VariableDeclarationTree {        | staticFinalVariables2 | 17:54 … 17:75
+                  ApexIdentifierTree             | staticFinalVariables2 | 17:54 … 17:75
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+        FunctionDeclarationTree {                | void … }              | 20:3 … 23:4  
+          ?ClassTypeRef? {                       | void                  | 20:3 … 20:7  
+            ApexIdentifierTree                   | void                  | 20:3 … 20:7  
+          }                                      |                       |              
+          ApexIdentifierTree                     | doSomethingElse       | 20:8 … 20:23 
+          BlockTree {                            | { … }                 | 20:26 … 23:4 
+            ?VariableDeclStmnt? {                | Integer … 123         | 21:5 … 21:28 
+              ?VariableDecls? {                  | Integer … 123         | 21:5 … 21:28 
+                VariableDeclarationTree {        | Integer … 123         | 21:5 … 21:28 
+                  ApexIdentifierTree             | orgAcctId             | 21:13 … 21:22
+                  ?ClassTypeRef? {               | Integer               | 21:5 … 21:12 
+                    ApexIdentifierTree           | Integer               | 21:5 … 21:12 
+                  }                              |                       |              
+                  LiteralTree                    | 123                   | 21:25 … 21:28
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+            ?VariableDeclStmnt? {                | Integer … ]           | 22:5 … 22:78 
+              ?VariableDecls? {                  | Integer … ]           | 22:5 … 22:78 
+                VariableDeclarationTree {        | Integer … ]           | 22:5 … 22:78 
+                  ApexIdentifierTree             | countAccts            | 22:13 … 22:23
+                  ?ClassTypeRef? {               | Integer               | 22:5 … 22:12 
+                    ApexIdentifierTree           | Integer               | 22:5 … 22:12 
+                  }                              |                       |              
+                  ?SoqlExpr? {                   | [ … ]                 | 22:26 … 22:78
+                    ?Query? {                    | SELECT … orgAcctId    | 22:27 … 22:77
+                      ?SelectCountClause?        | SELECT … )            | 22:27 … 22:41
+                      ?FromClause? {             | FROM … Account        | 22:42 … 22:54
+                        ?FromExpr? {             | Account               | 22:47 … 22:54
+                          ?FieldIdentifier? {    | Account               | 22:47 … 22:54
+                            ApexIdentifierTree   | Account               | 22:47 … 22:54
+                          }                      |                       |              
+                        }                        |                       |              
+                      }                          |                       |              
+                      ?WhereClause? {            | WHERE … orgAcctId     | 22:55 … 22:77
+                        ?WhereOpExpr? {          | Id … orgAcctId        | 22:61 … 22:77
+                          ?Field? {              | Id                    | 22:61 … 22:63
+                            ?FieldIdentifier? {  | Id                    | 22:61 … 22:63
+                              ApexIdentifierTree | Id                    | 22:61 … 22:63
+                            }                    |                       |              
+                          }                      |                       |              
+                          ?QueryNotEqual?        | !=                    | 22:64 … 22:66
+                          ?ApexExpr? {           | : … orgAcctId         | 22:67 … 22:77
+                            ?ColonExpr? {        | : … orgAcctId         | 22:67 … 22:77
+                              ApexIdentifierTree | orgAcctId             | 22:68 … 22:77
+                            }                    |                       |              
+                          }                      |                       |              
+                        }                        |                       |              
+                      }                          |                       |              
+                    }                            |                       |              
+                  }                              |                       |              
+                }                                |                       |              
+              }                                  |                       |              
+            }                                    |                       |              
+          }                                      |                       |              
+        }                                        |                       |              
+      }                                          |                       |              
+    }                                            |                       |              
+  }                                              |                       |              
+}                                                |                       |              

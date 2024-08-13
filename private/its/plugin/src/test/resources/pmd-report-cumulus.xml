@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Generated using command: "pmd-bin-6.9.0/bin/run.sh pmd -d projects/Cumulus -R rulesets/apex/ruleset.xml -f xml > pmd-report-cumulus.xml"
+  Kept only the first issue. Note that the location of the file has been changed to use relative path instead of absolute
+-->
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+    version="6.9.0" timestamp="2018-11-15T14:52:36.109">
+
+<file name="scripts/CRLP_TEST_VALIDATE_ROLLUPS.cls">
+<violation beginline="24" endline="24" begincolumn="14" endcolumn="39" rule="ApexSharingViolations" ruleset="Security" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_security.html#apexsharingviolations" priority="3">
+Apex classes should declare a sharing model if DML or SOQL is used
+</violation>
+</file>
+
+</pmd>

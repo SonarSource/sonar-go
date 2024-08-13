@@ -1,0 +1,84 @@
+AST node class                       | first…last tokens | line:col     
+-------------------------------------|-------------------|--------------
+TopLevelTree {                       | if … }            | 1:1 … 21:2   
+  ?StmntBlockMember? {               | if … ;            | 1:1 … 1:16   
+    IfTree {                         | if … ;            | 1:1 … 1:16   
+      ApexIdentifierTree             | cond1             | 1:5 … 1:10   
+      ?ExpressionStmnt? {            | f … ;             | 1:12 … 1:16  
+        FunctionInvocationTree {     | f                 | 1:12 … 1:13  
+          ApexIdentifierTree         | f                 | 1:12 … 1:13  
+        }                            |                   |              
+      }                              |                   |              
+    }                                |                   |              
+  }                                  |                   |              
+  ?StmntBlockMember? {               | if … }            | 3:1 … 7:2    
+    IfTree {                         | if … }            | 3:1 … 7:2    
+      ApexIdentifierTree             | cond2             | 3:5 … 3:10   
+      BlockTree {                    | { … }             | 3:12 … 5:2   
+        ?ExpressionStmnt? {          | f … ;             | 4:5 … 4:9    
+          FunctionInvocationTree {   | f                 | 4:5 … 4:6    
+            ApexIdentifierTree       | f                 | 4:5 … 4:6    
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+      BlockTree {                    | { … }             | 5:8 … 7:2    
+        ?ExpressionStmnt? {          | g … ;             | 6:5 … 6:9    
+          FunctionInvocationTree {   | g                 | 6:5 … 6:6    
+            ApexIdentifierTree       | g                 | 6:5 … 6:6    
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+    }                                |                   |              
+  }                                  |                   |              
+  ?StmntBlockMember? {               | if … }            | 9:1 … 13:2   
+    IfTree {                         | if … }            | 9:1 … 13:2   
+      ApexIdentifierTree             | cond3A            | 9:5 … 9:11   
+      BlockTree {                    | { … }             | 9:13 … 11:2  
+        ?ExpressionStmnt? {          | f … ;             | 10:5 … 10:9  
+          FunctionInvocationTree {   | f                 | 10:5 … 10:6  
+            ApexIdentifierTree       | f                 | 10:5 … 10:6  
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+      IfTree {                       | else … }          | 11:3 … 13:2  
+        ApexIdentifierTree           | cond3B            | 11:12 … 11:18
+        BlockTree {                  | { … }             | 11:20 … 13:2 
+          ?ExpressionStmnt? {        | g … ;             | 12:5 … 12:9  
+            FunctionInvocationTree { | g                 | 12:5 … 12:6  
+              ApexIdentifierTree     | g                 | 12:5 … 12:6  
+            }                        |                   |              
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+    }                                |                   |              
+  }                                  |                   |              
+  ?StmntBlockMember? {               | if … }            | 15:1 … 21:2  
+    IfTree {                         | if … }            | 15:1 … 21:2  
+      ApexIdentifierTree             | cond4A            | 15:5 … 15:11 
+      BlockTree {                    | { … }             | 15:13 … 17:2 
+        ?ExpressionStmnt? {          | f … ;             | 16:5 … 16:9  
+          FunctionInvocationTree {   | f                 | 16:5 … 16:6  
+            ApexIdentifierTree       | f                 | 16:5 … 16:6  
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+      IfTree {                       | else … }          | 17:3 … 21:2  
+        ApexIdentifierTree           | cond4B            | 17:12 … 17:18
+        BlockTree {                  | { … }             | 17:20 … 19:2 
+          ?ExpressionStmnt? {        | g … ;             | 18:5 … 18:9  
+            FunctionInvocationTree { | g                 | 18:5 … 18:6  
+              ApexIdentifierTree     | g                 | 18:5 … 18:6  
+            }                        |                   |              
+          }                          |                   |              
+        }                            |                   |              
+        BlockTree {                  | { … }             | 19:8 … 21:2  
+          ?ExpressionStmnt? {        | h … ;             | 20:5 … 20:9  
+            FunctionInvocationTree { | h                 | 20:5 … 20:6  
+              ApexIdentifierTree     | h                 | 20:5 … 20:6  
+            }                        |                   |              
+          }                          |                   |              
+        }                            |                   |              
+      }                              |                   |              
+    }                                |                   |              
+  }                                  |                   |              
+}                                    |                   |              

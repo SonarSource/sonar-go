@@ -1,0 +1,15 @@
+<h2>Why is this an issue?</h2>
+<p>Redundant Boolean literals should be removed from expressions to improve readability.</p>
+<h3>Noncompliant code example</h3>
+<pre>
+if (booleanMethod() || false) { /* ... */ }
+doSomething(!false);
+doSomething(booleanMethod() &amp;&amp; true);
+</pre>
+<h3>Compliant solution</h3>
+<pre>
+if (booleanMethod()) { /* ... */ }
+doSomething(true);
+doSomething(booleanMethod());
+</pre>
+

@@ -1,0 +1,20 @@
+<h2>Why is this an issue?</h2>
+<p>Merging collapsible <code>if</code> statements increases the code’s readability.</p>
+<h3>Noncompliant code example</h3>
+<pre>
+if (condition1)
+{
+  if (condition2)
+  {
+    ...
+  }
+}
+</pre>
+<h3>Compliant solution</h3>
+<pre>
+if (condition1 &amp;&amp; condition2)
+{
+  ...
+}
+</pre>
+

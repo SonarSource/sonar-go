@@ -1,0 +1,4 @@
+include 'private:sonar-apex-ast-visitor'
+include 'private:sonar-apex-plugin'
+include 'private:its:plugin'
+include 'private:its:ruling'

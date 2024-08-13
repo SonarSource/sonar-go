@@ -1,0 +1,11 @@
+AST node class             | first…last tokens | line:col  
+---------------------------|-------------------|-----------
+TopLevelTree {             | class … }         | 1:1 … 1:11
+  ?ClassDeclUnit? {        | class … }         | 1:1 … 1:11
+    ClassDeclarationTree { | class … }         | 1:1 … 1:11
+      ?ClassDecl? {        | class … }         | 1:1 … 1:11
+        ApexIdentifierTree | A                 | 1:7 … 1:8 
+      }                    |                   |           
+    }                      |                   |           
+  }                        |                   |           
+}                          |                   |           

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pmd xmlns="http://pmd.sourceforge.net/report/2.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://pmd.sourceforge.net/report/2.0.0 http://pmd.sourceforge.net/report_2_0_0.xsd"
+  version="6.9.0" timestamp="2018-11-15T10:19:22.055">
+  <file name="file1.cls">
+    <violation beginline="1" endline="4" begincolumn="14" endcolumn="2" rule="AvoidGlobalModifier" ruleset="Best Practices" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_bestpractices.html#avoidglobalmodifier" priority="3">Avoid using global modifier</violation>
+    <violation beginline="1" endline="4" begincolumn="14" endcolumn="2" rule="ApexDoc" ruleset="Documentation" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_documentation.html#apexdoc" priority="3">Missing ApexDoc comment</violation>
+    <violation beginline="2" endline="2" begincolumn="20" endcolumn="22" rule="EmptyStatementBlock" ruleset="Error Prone" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_errorprone.html#emptystatementblock" priority="3">Avoid empty block statements.</violation>
+  </file>
+  <file name="file2.cls">
+    <violation beginline="1" endline="9" begincolumn="14" endcolumn="2" rule="AvoidGlobalModifier" ruleset="Best Practices" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_bestpractices.html#avoidglobalmodifier" priority="3">Avoid using global modifier</violation>
+    <violation beginline="1" endline="9" begincolumn="14" endcolumn="2" rule="ApexDoc" ruleset="Documentation" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_documentation.html#apexdoc" priority="3">Missing ApexDoc comment</violation>
+    <violation beginline="2" endline="8" begincolumn="19" endcolumn="5" rule="ApexDoc" ruleset="Documentation" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_documentation.html#apexdoc" priority="3">Missing ApexDoc comment</violation>
+    <violation beginline="4" endline="4" begincolumn="14" endcolumn="29" rule="OneDeclarationPerLine" ruleset="Code Style" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_codestyle.html#onedeclarationperline" priority="3">Use one statement for each line, it enhances code readability.</violation>
+  </file>
+  <file name="unknown-file.cls">
+    <violation beginline="1" endline="9" begincolumn="14" endcolumn="2" rule="AvoidGlobalModifier" ruleset="Best Practices" externalInfoUrl="https://pmd.github.io/pmd/pmd_rules_apex_bestpractices.html#avoidglobalmodifier" priority="3">Avoid using global modifier</violation>
+  </file>
+</pmd>

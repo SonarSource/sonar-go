@@ -1,0 +1,8 @@
+{
+'apex-project:sources/projects/dreamhouse-sfdx/force-app/main/default/triggers/RejectDuplicatePropertyFavorite.trigger':[
+5,
+],
+'apex-project:sources/projects/sfdx-dreamhouse/force-app/main/default/triggers/RejectDuplicateFavorite.trigger':[
+5,
+],
+}

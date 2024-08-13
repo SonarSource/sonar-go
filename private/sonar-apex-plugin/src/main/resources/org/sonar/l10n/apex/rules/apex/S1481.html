@@ -1,0 +1,17 @@
+<h2>Why is this an issue?</h2>
+<p>If a local variable is declared but not used, it is dead code and should be removed. Doing so will improve maintainability because developers will
+not wonder what the variable is used for.</p>
+<h3>Noncompliant code example</h3>
+<pre>
+public Integer numberOfMinutes(Integer hours) {
+  Integer seconds = 0;   // seconds is never used
+  return hours * 60;
+}
+</pre>
+<h3>Compliant solution</h3>
+<pre>
+public Integer numberOfMinutes(Integer hours) {
+  return hours * 60;
+}
+</pre>
+

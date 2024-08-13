@@ -1,0 +1,10 @@
+{
+  "id": "01p3E000001QAacQAG",
+  "name": "AccountDeletion",
+  "totalLines": 8,
+  "lines": {
+    "25": 1
+  },
+  "totalCovered": 8,
+  "coveredPercent": 100
+}

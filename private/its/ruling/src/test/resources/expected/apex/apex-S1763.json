@@ -1,0 +1,17 @@
+{
+'apex-project:ruling/src/test/resources/sources/S1763.cls':[
+7,
+14,
+18,
+22,
+],
+'apex-project:sources/projects/CustomMetadataLoader/custom_md_loader/classes/MetadataWrapperApiLoader.cls':[
+26,
+],
+'apex-project:sources/projects/fflib-apex-mocks/src/classes/fflib_AnswerTest.cls':[
+328,
+],
+'apex-project:sources/projects/twilio-salesforce/src/classes/TwilioQueue.cls':[
+24,
+],
+}

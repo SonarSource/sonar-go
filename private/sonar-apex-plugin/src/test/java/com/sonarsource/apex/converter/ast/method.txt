@@ -1,0 +1,57 @@
+AST node class                    | first…last tokens     | line:col     
+----------------------------------|-----------------------|--------------
+TopLevelTree {                    | class … }             | 1:1 … 11:2   
+  ?ClassDeclUnit? {               | class … }             | 1:1 … 11:2   
+    ClassDeclarationTree {        | class … }             | 1:1 … 11:2   
+      ?ClassDecl? {               | class … }             | 1:1 … 11:2   
+        ApexIdentifierTree        | A                     | 1:7 … 1:8    
+        FunctionDeclarationTree { | public … }            | 2:3 … 4:4    
+          ModifierTree            | public                | 2:3 … 2:9    
+          ?ClassTypeRef? {        | String                | 2:10 … 2:16  
+            ApexIdentifierTree    | String                | 2:10 … 2:16  
+          }                       |                       |              
+          ApexIdentifierTree      | hello                 | 2:17 … 2:22  
+          ParameterTree {         | Integer … x           | 2:23 … 2:32  
+            ApexIdentifierTree    | x                     | 2:31 … 2:32  
+            ?ClassTypeRef? {      | Integer               | 2:23 … 2:30  
+              ApexIdentifierTree  | Integer               | 2:23 … 2:30  
+            }                     |                       |              
+          }                       |                       |              
+          ParameterTree {         | String … y            | 2:34 … 2:42  
+            ApexIdentifierTree    | y                     | 2:41 … 2:42  
+            ?ClassTypeRef? {      | String                | 2:34 … 2:40  
+              ApexIdentifierTree  | String                | 2:34 … 2:40  
+            }                     |                       |              
+          }                       |                       |              
+          BlockTree {             | { … }                 | 2:44 … 4:4   
+            ReturnTree {          | return … ;            | 3:5 … 3:14   
+              ApexIdentifierTree  | y                     | 3:12 … 3:13  
+            }                     |                       |              
+          }                       |                       |              
+        }                         |                       |              
+        FunctionDeclarationTree { | virtual … }           | 6:3 … 6:35   
+          ?VirtualModifier?       | virtual               | 6:3 … 6:10   
+          ?ClassTypeRef? {        | void                  | 6:11 … 6:15  
+            ApexIdentifierTree    | void                  | 6:11 … 6:15  
+          }                       |                       |              
+          ApexIdentifierTree      | virtualMethod         | 6:16 … 6:29  
+        }                         |                       |              
+        FunctionDeclarationTree { | abstract … ractMethod | 8:3 … 8:31   
+          ?AbstractModifier?      | abstract              | 8:3 … 8:11   
+          ?ClassTypeRef? {        | void                  | 8:12 … 8:16  
+            ApexIdentifierTree    | void                  | 8:12 … 8:16  
+          }                       |                       |              
+          ApexIdentifierTree      | abstractMethod        | 8:17 … 8:31  
+        }                         |                       |              
+        FunctionDeclarationTree { | static … }            | 10:3 … 10:33 
+          ?StaticModifier?        | static                | 10:3 … 10:9  
+          ?ClassTypeRef? {        | void                  | 10:10 … 10:14
+            ApexIdentifierTree    | void                  | 10:10 … 10:14
+          }                       |                       |              
+          ApexIdentifierTree      | staticMethod          | 10:15 … 10:27
+          BlockTree               | { … }                 | 10:30 … 10:33
+        }                         |                       |              
+      }                           |                       |              
+    }                             |                       |              
+  }                               |                       |              
+}                                 |                       |              
