@@ -84,7 +84,6 @@ gradle_its_template: &GRADLE_ITS_TEMPLATE
     - ./gradlew build -x test
     - ./gradlew "${GRADLE_TASK}" "-P${ITS_PROJECT}"
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
-      "-Dorchestrator.configUrl=file:///$CIRRUS_WORKING_DIR/orchestrator.properties"
       "-Dorchestrator.artifactory.accessToken=${ARTIFACTORY_ACCESS_TOKEN}"
       -I "${GRADLE_HOME}/init.d/repoxAuth.init.gradle.kts"
       -Pqa --info --stacktrace --console plain --no-daemon --build-cache
