@@ -70,7 +70,8 @@ build_task:
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
-    - source .cirrus/use-gradle-wrapper.sh
+    - alias gradle="./gradlew"
+    - gradle --version
     - source set_gradle_build_version
     - regular_gradle_build_deploy_analyze
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
