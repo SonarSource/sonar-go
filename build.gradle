@@ -212,6 +212,7 @@ subprojects {
 sonar {
     properties {
         property 'sonar.organization', 'sonarsource'
+        property 'sonar.projectKey', 'SonarSource_sonar-go'
         property 'sonar.projectName', projectTitle
         property 'sonar.links.ci', "${sonarLinksCi}"
         property 'sonar.links.scm', "${sonarLinksScm}"

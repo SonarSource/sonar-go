@@ -73,8 +73,7 @@ build_task:
     - alias gradle="./gradlew"
     - gradle --version
     - source set_gradle_build_version
-    - regular_gradle_build_deploy_analyze -x sonar
-   # TODO remove -x sonar once we add the project on sonarcloud or we add the token on next
+    - regular_gradle_build_deploy_analyze
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 
 ### QA tasks
