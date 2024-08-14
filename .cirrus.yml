@@ -68,7 +68,7 @@ build_task:
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
-    - alias gradle="./gradlew"
+    - function gradle(){ ./gradlew "$@"; }; export -f gradle
     - gradle --version
     - source set_gradle_build_version
     - regular_gradle_build_deploy_analyze
@@ -126,13 +126,16 @@ qa_ruling_task:
 promote_task:
   depends_on:
     - build
+    - qa_plugin_task
+    - qa_ruling_task
+  <<: *ONLY_IF_SONARSOURCE_QA
   eks_container:
     <<: *CONTAINER_DEFINITION
     cpu: 1
     memory: 1G
-  #env:
-    #ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
-    #GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
-    #ARTIFACTS: FIXME # This was for Burgr links, is it still required?
+  env:
+    ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
+    GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
   script:
-    - echo "Promoting artifacts"
+    - function gradle(){ ./gradlew "$@"; }; export -f gradle
+    - cirrus_promote_gradle multi
