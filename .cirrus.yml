@@ -65,9 +65,6 @@ build_task:
   env:
     SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
     SONAR_HOST_URL: VAULT[development/kv/data/sonarcloud data.url]
-    ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
-    ARTIFACTORY_DEPLOY_USERNAME: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer username]
-    ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
@@ -95,10 +92,10 @@ gradle_its_template: &GRADLE_ITS_TEMPLATE
         git submodule update --init --depth 1 "${GIT_SUB_MODULE}"
       fi
     - source cirrus-env QA
-    - ./gradlew build -x test
     - ./gradlew "${GRADLE_TASK}" "-P${ITS_PROJECT}"
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
       "-Dorchestrator.artifactory.accessToken=${ARTIFACTORY_ACCESS_TOKEN}"
+      "-DbuildNumber=$BUILD_NUMBER"
       -I "${GRADLE_HOME}/init.d/repoxAuth.init.gradle.kts"
       -Pqa --info --stacktrace --console plain --no-daemon --build-cache
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
