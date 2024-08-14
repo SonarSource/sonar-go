@@ -126,8 +126,8 @@ qa_ruling_task:
 promote_task:
   depends_on:
     - build
-    - qa_plugin_task
-    - qa_ruling_task
+    - qa_plugin
+    - qa_ruling
   <<: *ONLY_IF_SONARSOURCE_QA
   eks_container:
     <<: *CONTAINER_DEFINITION
@@ -136,6 +136,6 @@ promote_task:
   env:
     ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
     GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
-  script:
+  promote_script:
     - function gradle(){ ./gradlew "$@"; }; export -f gradle
     - cirrus_promote_gradle multi
