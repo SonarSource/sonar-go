@@ -63,8 +63,8 @@ build_task:
   <<: *LINUX_2_CPU_4G
   <<: *SETUP_GRADLE_CACHE
   env:
-    SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
-    SONAR_HOST_URL: VAULT[development/kv/data/sonarcloud data.url]
+    SONAR_TOKEN: VAULT[development/kv/data/next data.token]
+    SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
