@@ -72,6 +72,11 @@ build_task:
     - gradle --version
     - source set_gradle_build_version
     - regular_gradle_build_deploy_analyze
+  on_failure:
+    error_log_artifacts:
+      path: "hs_err_pid*.log"
+    heap_dump_artifacts:
+      path: "*.hprof"
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 
 ### QA tasks
@@ -120,6 +125,33 @@ qa_ruling_task:
     GIT_SUB_MODULE: "its/sources"
   <<: *LINUX_3_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
+
+### Mend tasks
+
+ws_scan_task:
+  <<: *LINUX_2_CPU_4G
+  <<: *SETUP_GRADLE_CACHE
+  depends_on:
+    - build
+  # run only on master, long-term branches and mend-related branches
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "mend-.*")
+  env:
+    WS_APIKEY: VAULT[development/kv/data/mend data.apikey]
+    GOPATH: ${HOME}/go
+  go_cache:
+    folder: ${HOME}/go
+  maven_cache:
+    folder: ${CIRRUS_WORKING_DIR}/.m2/repository
+  whitesource_script:
+    - source cirrus-env QA
+    - ./gradlew --no-daemon --console plain clean
+    - ./gradlew --no-daemon --info --stacktrace --console plain --no-daemon build -x test
+    - source ./export_ws_variables_from_gradle
+    - source ws_scan.sh
+  allow_failures: "true"
+  always:
+    ws_artifacts:
+      path: "whitesource/**/*"
 
 ### Promote tasks
 
