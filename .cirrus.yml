@@ -25,18 +25,18 @@ linux_image_template: &LINUX_IMAGE
   namespace: default
   use_in_memory_disk: true
 
-linux_3_5_cpu_7G_template: &LINUX_3_5_CPU_7G
+linux_2_cpu_4G_template: &LINUX_2_CPU_4G
   eks_container:
     <<: *LINUX_IMAGE
-    cpu: 3.5
-    memory: 7G
+    cpu: 2
+    memory: 4G
 
-linux_6_cpu_12G_java_17_template: &LINUX_6_CPU_12G_JAVA_17
+linux_3_cpu_6G_java_17_template: &LINUX_3_CPU_6G_JAVA_17
   eks_container:
     <<: *LINUX_IMAGE
     image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
-    cpu: 6
-    memory: 12G
+    cpu: 3
+    memory: 6G
 
 eks_container: &CONTAINER_DEFINITION
   image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
@@ -60,7 +60,7 @@ cleanup_gradle_cache_script_template: &CLEANUP_GRADLE_CACHE_SCRIPT
     - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/build-cache-1/"
 
 build_task:
-  <<: *LINUX_3_5_CPU_7G
+  <<: *LINUX_2_CPU_4G
   <<: *SETUP_GRADLE_CACHE
   env:
     SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
@@ -108,7 +108,7 @@ qa_plugin_task:
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
-  <<: *LINUX_6_CPU_12G_JAVA_17
+  <<: *LINUX_3_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 
 qa_ruling_task:
@@ -118,7 +118,7 @@ qa_ruling_task:
     GRADLE_TASK: ":its:ruling:test"
     ITS_PROJECT: "ruling"
     GIT_SUB_MODULE: "its/sources"
-  <<: *LINUX_6_CPU_12G_JAVA_17
+  <<: *LINUX_3_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 
 ### Promote tasks
