@@ -31,11 +31,11 @@ linux_2_cpu_4G_template: &LINUX_2_CPU_4G
     cpu: 2
     memory: 4G
 
-linux_3_cpu_6G_java_17_template: &LINUX_3_CPU_6G_JAVA_17
+linux_4_cpu_6G_java_17_template: &LINUX_4_CPU_6G_JAVA_17
   eks_container:
     <<: *LINUX_IMAGE
     image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
-    cpu: 3
+    cpu: 4
     memory: 6G
 
 eks_container: &CONTAINER_DEFINITION
@@ -113,7 +113,7 @@ qa_plugin_task:
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
-  <<: *LINUX_3_CPU_6G_JAVA_17
+  <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 
 qa_ruling_task:
@@ -123,7 +123,7 @@ qa_ruling_task:
     GRADLE_TASK: ":its:ruling:test"
     ITS_PROJECT: "ruling"
     GIT_SUB_MODULE: "its/sources"
-  <<: *LINUX_3_CPU_6G_JAVA_17
+  <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 
 ### Mend tasks
