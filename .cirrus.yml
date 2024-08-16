@@ -2,9 +2,18 @@ env:
   CIRRUS_CLONE_DEPTH: "20"
   CIRRUS_SHELL: bash
 
+  ARTIFACTORY_URL: VAULT[development/kv/data/repox data.url]
   ARTIFACTORY_PRIVATE_USERNAME: vault-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader
   ARTIFACTORY_PRIVATE_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
   ARTIFACTORY_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-private-reader access_token]
+  # Deploy public artifact to artifactory
+  ARTIFACTORY_DEPLOY_USERNAME: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer username]
+  ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
+  ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
+
+  ORG_GRADLE_PROJECT_signingKey: VAULT[development/kv/data/sign data.key]
+  ORG_GRADLE_PROJECT_signingPassword: VAULT[development/kv/data/sign data.passphrase]
+  ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
 
   GIT_SUB_MODULE: ""
   GRADLE_USER_HOME: ${CIRRUS_WORKING_DIR}/.gradle
@@ -16,18 +25,18 @@ linux_image_template: &LINUX_IMAGE
   namespace: default
   use_in_memory_disk: true
 
-linux_3_5_cpu_7G_template: &LINUX_3_5_CPU_7G
+linux_2_cpu_4G_template: &LINUX_2_CPU_4G
   eks_container:
     <<: *LINUX_IMAGE
-    cpu: 3.5
-    memory: 7G
+    cpu: 2
+    memory: 4G
 
-linux_6_cpu_12G_java_17_template: &LINUX_6_CPU_12G_JAVA_17
+linux_4_cpu_6G_java_17_template: &LINUX_4_CPU_6G_JAVA_17
   eks_container:
     <<: *LINUX_IMAGE
     image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
-    cpu: 6
-    memory: 12G
+    cpu: 4
+    memory: 6G
 
 eks_container: &CONTAINER_DEFINITION
   image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
@@ -51,16 +60,23 @@ cleanup_gradle_cache_script_template: &CLEANUP_GRADLE_CACHE_SCRIPT
     - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/build-cache-1/"
 
 build_task:
-  <<: *LINUX_3_5_CPU_7G
+  <<: *LINUX_2_CPU_4G
   <<: *SETUP_GRADLE_CACHE
   env:
-    ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
-    ARTIFACTORY_DEPLOY_USERNAME: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer username]
-    ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
+    SONAR_TOKEN: VAULT[development/kv/data/next data.token]
+    SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
     - source cirrus-env BUILD
-    - ./gradlew build
+    - function gradle(){ ./gradlew "$@"; }; export -f gradle
+    - gradle --version
+    - source set_gradle_build_version
+    - regular_gradle_build_deploy_analyze
+  on_failure:
+    error_log_artifacts:
+      path: "hs_err_pid*.log"
+    heap_dump_artifacts:
+      path: "*.hprof"
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 
 ### QA tasks
@@ -81,10 +97,10 @@ gradle_its_template: &GRADLE_ITS_TEMPLATE
         git submodule update --init --depth 1 "${GIT_SUB_MODULE}"
       fi
     - source cirrus-env QA
-    - ./gradlew build -x test
     - ./gradlew "${GRADLE_TASK}" "-P${ITS_PROJECT}"
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
       "-Dorchestrator.artifactory.accessToken=${ARTIFACTORY_ACCESS_TOKEN}"
+      "-DbuildNumber=$BUILD_NUMBER"
       -I "${GRADLE_HOME}/init.d/repoxAuth.init.gradle.kts"
       -Pqa --info --stacktrace --console plain --no-daemon --build-cache
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
@@ -97,7 +113,7 @@ qa_plugin_task:
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
-  <<: *LINUX_6_CPU_12G_JAVA_17
+  <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 
 qa_ruling_task:
@@ -107,21 +123,51 @@ qa_ruling_task:
     GRADLE_TASK: ":its:ruling:test"
     ITS_PROJECT: "ruling"
     GIT_SUB_MODULE: "its/sources"
-  <<: *LINUX_6_CPU_12G_JAVA_17
+  <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
+
+### Mend tasks
+
+ws_scan_task:
+  <<: *LINUX_2_CPU_4G
+  <<: *SETUP_GRADLE_CACHE
+  depends_on:
+    - build
+  # run only on master, long-term branches and mend-related branches
+  only_if: $CIRRUS_USER_COLLABORATOR == 'true' && ($CIRRUS_BRANCH == "master" || $CIRRUS_BRANCH =~ "branch-.*" || $CIRRUS_BRANCH =~ "mend-.*")
+  env:
+    WS_APIKEY: VAULT[development/kv/data/mend data.apikey]
+    GOPATH: ${HOME}/go
+  go_cache:
+    folder: ${HOME}/go
+  maven_cache:
+    folder: ${CIRRUS_WORKING_DIR}/.m2/repository
+  whitesource_script:
+    - source cirrus-env QA
+    - ./gradlew --no-daemon --console plain clean
+    - ./gradlew --no-daemon --info --stacktrace --console plain --no-daemon build -x test
+    - source export_ws_variables_from_gradle
+    - source ws_scan.sh
+  allow_failures: "true"
+  always:
+    ws_artifacts:
+      path: "whitesource/**/*"
 
 ### Promote tasks
 
 promote_task:
   depends_on:
     - build
+    - qa_plugin
+    - qa_ruling
+  <<: *ONLY_IF_SONARSOURCE_QA
   eks_container:
     <<: *CONTAINER_DEFINITION
     cpu: 1
     memory: 1G
-  #env:
-    #ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
-    #GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
-    #ARTIFACTS: FIXME # This was for Burgr links, is it still required?
-  script:
-    - echo "Promoting artifacts"
+  env:
+    ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
+    GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
+  promote_script:
+    - function gradle(){ ./gradlew "$@"; }; export -f gradle
+    - cirrus_promote_gradle multi
