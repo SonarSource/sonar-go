@@ -146,7 +146,7 @@ ws_scan_task:
     - source cirrus-env QA
     - ./gradlew --no-daemon --console plain clean
     - ./gradlew --no-daemon --info --stacktrace --console plain --no-daemon build -x test
-    - source ./export_ws_variables_from_gradle
+    - source export_ws_variables_from_gradle
     - source ws_scan.sh
   allow_failures: "true"
   always:
