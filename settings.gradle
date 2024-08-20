@@ -7,19 +7,28 @@ pluginManagement {
 
 dependencyResolutionManagement {
     repositories {
+        mavenLocal()
+        def artifactoryBearerToken = System.getenv("ARTIFACTORY_PRIVATE_PASSWORD") ?: rootProject.findProperty("artifactoryPassword") ?: ""
+        if (artifactoryBearerToken) {
+            maven {
+                url "https://repox.jfrog.io/repox/sonarsource"
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+                credentials(HttpHeaderCredentials) {
+                    name = "Authorization"
+                    value = "Bearer $artifactoryBearerToken"
+                }
+            }
+        }
         mavenCentral()
     }
 }
 
 rootProject.name = 'sonar-go'
 
-include 'slang-api'
-include 'slang-testing'
-include 'slang-antlr'
-include 'slang-checks'
-include 'slang-plugin'
 include 'sonar-go-to-slang'
 include 'sonar-go-plugin'
-include 'checkstyle-import'
 include 'its:plugin'
 include 'its:ruling'
+
