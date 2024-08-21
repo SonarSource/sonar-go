@@ -30,7 +30,7 @@ allprojects {
 
     ext {
         buildNumber = System.getProperty("buildNumber")
-        slangDependenciesVersion = '1.15.1.6141'
+        slangDependenciesVersion = '1.15.2.6150'
         analyzerCommonsVersion = '2.7.0.1482'
         pluginApiVersion = '10.1.0.809'
         // slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api
