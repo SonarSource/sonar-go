@@ -5,21 +5,9 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 rootProject.name = 'sonar-go'
 
-include 'slang-api'
-include 'slang-testing'
-include 'slang-antlr'
-include 'slang-checks'
-include 'slang-plugin'
 include 'sonar-go-to-slang'
 include 'sonar-go-plugin'
-include 'checkstyle-import'
 include 'its:plugin'
 include 'its:ruling'
