@@ -52,7 +52,7 @@ allprojects {
 
     repositories {
         mavenLocal()
-        def artifactoryBearerToken = System.getenv("ARTIFACTORY_PRIVATE_PASSWORD") ?: rootProject.findProperty("artifactoryPassword") ?: ""
+        def artifactoryBearerToken = System.getenv("ARTIFACTORY_PRIVATE_PASSWORD") ?: project.findProperty("artifactoryPassword")
         if (artifactoryBearerToken) {
             maven {
                 url "https://repox.jfrog.io/repox/sonarsource"
