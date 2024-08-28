@@ -1,8 +1,8 @@
 # Sonar-Go
 
-[![Build Status](https://api.cirrus-ci.com/github/SonarSource/slang.svg?branch=master)](https://cirrus-ci.com/github/SonarSource/slang)
-[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=org.sonarsource.slang%3Aslang&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.sonarsource.slang%3Aslang)
-[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=org.sonarsource.slang%3Aslang&metric=coverage)](https://sonarcloud.io/component_measures/domain/Coverage?id=org.sonarsource.slang%3Aslang)
+[![Build Status](https://api.cirrus-ci.com/github/SonarSource/sonar-go.svg?branch=master)](https://cirrus-ci.com/github/SonarSource/sonar-go)
+[![Quality Gate Status](https://next.sonarqube.com/sonarqube/api/project_badges/measure?project=SonarSource_sonar-go&metric=alert_status&token=sqb_f88f3f95eb835f3a47eaa59f8575229fc6ddbcc5)](https://next.sonarqube.com/sonarqube/dashboard?id=SonarSource_sonar-go)
+[![Coverage](https://next.sonarqube.com/sonarqube/api/project_badges/measure?project=SonarSource_sonar-go&metric=coverage&token=sqb_f88f3f95eb835f3a47eaa59f8575229fc6ddbcc5)](https://next.sonarqube.com/sonarqube/dashboard?id=SonarSource_sonar-go)
 
 This is a developer documentation. If you want to analyze source code in SonarQube read the [analysis of Go documentation](https://docs.sonarqube.org/latest/analysis/languages/go/).
 
