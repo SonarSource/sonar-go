@@ -5,6 +5,49 @@ pluginManagement {
     }
 }
 
+dependencyResolutionManagement {
+    def slangDependenciesVersion = '1.16.0.6202'
+    def analyzerCommonsVersion = '2.13.0.3004'
+    def pluginApiVersion = '10.10.0.2391'
+    def sonarqubeVersion = '10.0.0.68432'
+    def orchestratorVersion = '3.42.0.312'
+    def sonarlintVersion = '9.0.0.74282'
+    // slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api
+    def slf4jApiVersion = '1.7.30'
+
+    versionCatalogs {
+        libs {
+            library("sonar-plugin-api", "org.sonarsource.api.plugin", "sonar-plugin-api").version(pluginApiVersion)
+            library("sonar-xml-parsing", "org.sonarsource.analyzer-commons", "sonar-xml-parsing").version(analyzerCommonsVersion)
+            library("sonar-analyzer-commons", "org.sonarsource.analyzer-commons", "sonar-analyzer-commons").version(analyzerCommonsVersion)
+            library("slang-api", "org.sonarsource.slang", "slang-api").version(slangDependenciesVersion)
+            library("slang-checks", "org.sonarsource.slang", "slang-checks").version(slangDependenciesVersion)
+            library("slang-plugin", "org.sonarsource.slang", "slang-plugin").version(slangDependenciesVersion)
+            library("checkstyle-import", "org.sonarsource.slang", "checkstyle-import").version(slangDependenciesVersion)
+            library("slf4j-api", "org.slf4j", "slf4j-api").version(slf4jApiVersion)
+
+            library("minimal-json", "com.eclipsesource.minimal-json", "minimal-json").version("0.9.5")
+        }
+
+        testLibs {
+            library("sonar-plugin-api-test-fixtures", "org.sonarsource.api.plugin", "sonar-plugin-api-test-fixtures").version(pluginApiVersion)
+            library("sonar-plugin-api-impl", "org.sonarsource.sonarqube", "sonar-plugin-api-impl").version(sonarqubeVersion)
+            library("sonar-orchestrator", "org.sonarsource.orchestrator", "sonar-orchestrator").version(orchestratorVersion)
+            library("sonarlint-core", "org.sonarsource.sonarlint.core", "sonarlint-core").version(sonarlintVersion)
+            library("sonar-ws", "org.sonarsource.sonarqube", "sonar-ws").version(sonarqubeVersion)
+            library("slang-antlr", "org.sonarsource.slang", "slang-antlr").version(slangDependenciesVersion)
+            library("slang-testing", "org.sonarsource.slang", "slang-testing").version(slangDependenciesVersion)
+            library("junit", "junit", "junit").version("4.13.2")
+            library("awaitility", "org.awaitility", "awaitility").version("4.2.1")
+            library("mockito-core", "org.mockito", "mockito-core").version("5.13.0")
+            library("assertj-core", "org.assertj", "assertj-core").version("3.26.3")
+            library("classgraph", "io.github.classgraph", "classgraph").version("0.9.5")
+            library("junit-jupiter-api", "org.junit.jupiter", "junit-jupiter-api").version("5.11.0")
+            library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").version("5.11.0")
+        }
+    }
+}
+
 rootProject.name = 'sonar-go'
 
 include 'sonar-go-to-slang'

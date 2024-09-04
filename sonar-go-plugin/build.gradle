@@ -7,25 +7,28 @@ shadowJar.dependsOn ':sonar-go-to-slang:build'
 test.dependsOn ':sonar-go-to-slang:build'
 
 dependencies {
-    implementation 'org.sonarsource.slang:slang-api'
-    implementation 'org.sonarsource.slang:slang-checks'
-    implementation 'org.sonarsource.slang:slang-plugin'
-    implementation 'org.sonarsource.slang:checkstyle-import'
+    compileOnly libs.sonar.plugin.api
+
+    implementation libs.sonar.analyzer.commons
+    implementation libs.slang.plugin
+    implementation libs.slang.checks
+    implementation libs.slang.api
+    implementation libs.checkstyle.import
     // dependency on sonar-go-to-slang binaries
+    implementation libs.minimal.json
+
     runtimeOnly files(project(':sonar-go-to-slang').buildDir)
-    compileOnly 'org.sonarsource.api.plugin:sonar-plugin-api'
-    testImplementation 'org.sonarsource.sonarqube:sonar-plugin-api-impl'
-    testImplementation 'org.sonarsource.api.plugin:sonar-plugin-api-test-fixtures'
-    implementation 'org.sonarsource.analyzer-commons:sonar-analyzer-commons'
-    implementation 'com.eclipsesource.minimal-json:minimal-json'
-    testImplementation "org.junit.jupiter:junit-jupiter-api"
-    testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine"
-    testImplementation 'org.assertj:assertj-core'
-    testImplementation 'org.mockito:mockito-core'
-    testImplementation 'io.github.classgraph:classgraph'
-    testImplementation 'org.sonarsource.slang:slang-antlr'
-    testImplementation 'org.sonarsource.slang:slang-testing'
-    testImplementation 'org.awaitility:awaitility:3.1.0'
+
+    testImplementation testLibs.slang.antlr
+    testImplementation testLibs.assertj.core
+    testImplementation testLibs.mockito.core
+    testImplementation testLibs.classgraph
+    testImplementation testLibs.slang.testing
+    testImplementation testLibs.junit.jupiter.api
+    testImplementation testLibs.sonar.plugin.api.impl
+    testImplementation testLibs.sonar.plugin.api.test.fixtures
+
+    testRuntimeOnly testLibs.junit.jupiter.engine
 }
 
 tasks.withType(JavaCompile) {

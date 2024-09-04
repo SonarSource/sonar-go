@@ -4,7 +4,6 @@ plugins {
     id 'java'
     id 'jacoco'
     id 'com.jfrog.artifactory' version '4.28.2'
-    id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
     id 'org.sonarqube' version '3.5.0.2730'
     id 'de.thetaphi.forbiddenapis' version '3.0' apply false
     id 'com.diffplug.spotless' version '6.15.0'
@@ -13,7 +12,6 @@ plugins {
 allprojects {
     apply plugin: 'java'
     apply plugin: 'jacoco'
-    apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.jfrog.artifactory'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
@@ -30,15 +28,6 @@ allprojects {
 
     ext {
         buildNumber = System.getProperty("buildNumber")
-
-         slangDependenciesVersion = '1.16.0.6202'
-         analyzerCommonsVersion = '2.13.0.3004'
-         pluginApiVersion = '10.10.0.2391'
-         sonarqubeVersion = '10.0.0.68432'
-         orchestratorVersion = '3.42.0.312'
-         sonarlintVersion = '9.0.0.74282'
-        // slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api
-         slf4jApiVersion = '1.7.30'
 
         sonarLinksCi = 'https://cirrus-ci.com/github/SonarSource/sonar-go'
         sonarLinksScm = 'https://github.com/SonarSource/sonar-go'
@@ -75,40 +64,7 @@ subprojects {
     // do not publish to Artifactory by default
     artifactoryPublish.skip = true
 
-    apply plugin: 'io.spring.dependency-management'
     apply plugin: 'com.diffplug.spotless'
-    dependencyManagement {
-        dependencies {
-            dependency "org.sonarsource.api.plugin:sonar-plugin-api:${pluginApiVersion}"
-            dependency "org.sonarsource.api.plugin:sonar-plugin-api-test-fixtures:${pluginApiVersion}"
-            dependency "org.sonarsource.sonarqube:sonar-plugin-api-impl:${sonarqubeVersion}"
-            dependency "org.slf4j:slf4j-api:${slf4jApiVersion}"
-            dependency "org.sonarsource.sonarqube:sonar-ws:${sonarqubeVersion}"
-            dependency "org.sonarsource.analyzer-commons:sonar-analyzer-test-commons:${analyzerCommonsVersion}"
-            dependency "org.sonarsource.analyzer-commons:sonar-analyzer-commons:${analyzerCommonsVersion}"
-            dependency "org.sonarsource.analyzer-commons:sonar-xml-parsing:${analyzerCommonsVersion}"
-            dependency "org.sonarsource.orchestrator:sonar-orchestrator:${orchestratorVersion}"
-            dependency "org.sonarsource.sonarlint.core:sonarlint-core:${sonarlintVersion}"
-            dependency "org.sonarsource.slang:slang-api:${slangDependenciesVersion}"
-            dependency "org.sonarsource.slang:slang-testing:${slangDependenciesVersion}"
-            dependency "org.sonarsource.slang:slang-antlr:${slangDependenciesVersion}"
-            dependency "org.sonarsource.slang:slang-checks:${slangDependenciesVersion}"
-            dependency "org.sonarsource.slang:slang-plugin:${slangDependenciesVersion}"
-            dependency "org.sonarsource.slang:checkstyle-import:${slangDependenciesVersion}"
-
-            dependency 'junit:junit:4.13.2'
-            dependency 'org.mockito:mockito-core:5.13.0'
-            dependency 'org.assertj:assertj-core:3.26.3'
-            dependency "ch.qos.logback:logback-classic:1.2.13"
-            dependency "org.junit.jupiter:junit-jupiter-api:5.11.0"
-            dependency "org.junit.jupiter:junit-jupiter-engine:5.11.0"
-
-            dependency 'com.google.code.findbugs:jsr305:3.0.2'
-            dependency 'io.github.classgraph:classgraph:4.8.162'
-            dependency "javax.annotation:javax.annotation-api:1.3.2"
-            dependency 'com.eclipsesource.minimal-json:minimal-json:0.9.5'
-        }
-    }
 
     java.sourceCompatibility = JavaVersion.VERSION_17
     tasks.withType(JavaCompile) {
