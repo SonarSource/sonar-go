@@ -25,7 +25,6 @@ dependencyResolutionManagement {
             library("slang-plugin", "org.sonarsource.slang", "slang-plugin").version(slangDependenciesVersion)
             library("checkstyle-import", "org.sonarsource.slang", "checkstyle-import").version(slangDependenciesVersion)
             library("slf4j-api", "org.slf4j", "slf4j-api").version(slf4jApiVersion)
-
             library("minimal-json", "com.eclipsesource.minimal-json", "minimal-json").version("0.9.5")
         }
 
