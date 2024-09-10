@@ -1,7 +1,7 @@
 dependencies {
-    testImplementation 'org.sonarsource.orchestrator:sonar-orchestrator'
-    testImplementation 'org.assertj:assertj-core'
-    testImplementation 'org.sonarsource.analyzer-commons:sonar-analyzer-commons'
+    testImplementation libs.sonar.analyzer.commons
+    testImplementation testLibs.assertj.core
+    testImplementation testLibs.sonar.orchestrator
 }
 
 sonarqube.skipProject = true
