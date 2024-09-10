@@ -53,7 +53,6 @@ public class GoSensor extends SlangSensor {
   public void describe(SensorDescriptor descriptor) {
     descriptor.onlyOnLanguage(GoLanguage.KEY)
       .name("Code Quality and Security for Go");
-    processesFilesIndependently(descriptor);
   }
 
   @Override
