@@ -22,7 +22,6 @@ dependencies {
     testImplementation testLibs.slang.antlr
     testImplementation testLibs.assertj.core
     testImplementation testLibs.mockito.core
-    testImplementation testLibs.classgraph
     testImplementation testLibs.slang.testing
     testImplementation testLibs.junit.jupiter.api
     testImplementation testLibs.sonar.plugin.api.impl
