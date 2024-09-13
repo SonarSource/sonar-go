@@ -38,7 +38,6 @@ dependencyResolutionManagement {
             library("slang-testing", "org.sonarsource.slang", "slang-testing").version(slangDependenciesVersion)
             library("mockito-core", "org.mockito", "mockito-core").version("5.13.0")
             library("assertj-core", "org.assertj", "assertj-core").version("3.26.3")
-            library("classgraph", "io.github.classgraph", "classgraph").version("0.9.5")
             library("junit-jupiter-api", "org.junit.jupiter", "junit-jupiter-api").version("5.11.0")
             library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").version("5.11.0")
         }
