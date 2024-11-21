@@ -58,7 +58,7 @@ jar {
                 'Plugin-Homepage': 'http://redirect.sonarsource.com/plugins/go.html',
                 'Plugin-IssueTrackerUrl': 'https://jira.sonarsource.com/browse/SONARGO',
                 'Plugin-Key': 'go',
-                'Plugin-License': 'GNU LGPL 3',
+                'Plugin-License': 'SONAR Source-Available License v1.0',
                 'Plugin-Name': 'Go Code Quality and Security',
                 'Plugin-Organization': 'SonarSource',
                 'Plugin-OrganizationUrl': 'http://www.sonarsource.com',

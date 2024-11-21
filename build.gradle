@@ -146,8 +146,8 @@ subprojects {
                     }
                     licenses {
                         license {
-                            name = 'GNU LGPL 3'
-                            url = 'http://www.gnu.org/licenses/lgpl.txt'
+                            name = 'SONAR Source-Available License v1.0'
+                            url = 'https://www.sonarsource.com/license/ssal/'
                             distribution = 'repo'
                         }
                     }
