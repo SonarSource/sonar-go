@@ -131,6 +131,10 @@ subprojects {
             targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**"
             licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
         }
+        format("javaMisc") {
+            target("src/**/package-info.java")
+            licenseHeaderFile(rootProject.file("LICENSE_HEADER"), "(@javax.annotation|@ParametersAreNonnullByDefault)").updateYearWithLatest(true)
+        }
     }
 
     publishing {
@@ -146,8 +150,8 @@ subprojects {
                     }
                     licenses {
                         license {
-                            name = 'GNU LGPL 3'
-                            url = 'http://www.gnu.org/licenses/lgpl.txt'
+                            name = 'SSALv1'
+                            url = 'https://sonarsource.com/license/ssal/'
                             distribution = 'repo'
                         }
                     }
