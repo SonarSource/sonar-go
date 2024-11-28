@@ -6,7 +6,7 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    def slangDependenciesVersion = '1.16.1.6262'
+    def slangDependenciesVersion = '1.17.0.6351'
     def analyzerCommonsVersion = '2.16.0.3141'
     def pluginApiVersion = '10.10.0.2391'
     def sonarqubeVersion = '10.0.0.68432'
