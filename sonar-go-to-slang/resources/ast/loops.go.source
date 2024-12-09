@@ -1,5 +1,10 @@
 package ast
 
+import (
+    "fmt"
+	"slices"
+)
+
 func foo() {
 	for i := 0; i < 10; i++ {
 	}
@@ -43,4 +48,15 @@ OUTER:
 	for i, j, s := 0, 5, "a"; i < 3 && j < 100 && s != "aaaaa"; i, j, s = i+1, j+1, s+"a" {
 		fmt.Println("Value of i, j, s:", i, j, s)
 	}
+
+	// range over integer; requires Go 1.22+
+	for i := range 10 {
+        fmt.Println(10 - i)
+    }
+
+    // range over an iterator, requires Go 1.23+
+    l := []int{1, 2, 3}
+    for v := range slices.Values(l) {
+        fmt.Println(v)
+    }
 }

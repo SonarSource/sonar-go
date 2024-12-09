@@ -52,4 +52,4 @@ To perform the tests, run:
 
     go test
     
-To update test results, use the method `fix_all_go_files_test_automatically` in `goparser_test.go`
+To update expected test data, use the method `fix_all_go_files_test_automatically` in `goparser_test.go`
