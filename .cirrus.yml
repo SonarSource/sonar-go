@@ -15,7 +15,6 @@ env:
   ORG_GRADLE_PROJECT_signingPassword: VAULT[development/kv/data/sign data.passphrase]
   ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
 
-  GIT_SUB_MODULE: ""
   GRADLE_USER_HOME: ${CIRRUS_WORKING_DIR}/.gradle
 
 linux_image_template: &LINUX_IMAGE
@@ -92,10 +91,7 @@ qa_task_filter_template: &QA_TASK_FILTER
 gradle_its_template: &GRADLE_ITS_TEMPLATE
   <<: *SETUP_GRADLE_CACHE
   run_its_script:
-    - |
-      if [ -n "${GIT_SUB_MODULE}" ]; then        
-        git submodule update --init --depth 1 "${GIT_SUB_MODULE}"
-      fi
+    - git submodule update --init --depth 1
     - source cirrus-env QA
     - ./gradlew "${GRADLE_TASK}" "-P${ITS_PROJECT}"
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
@@ -122,7 +118,6 @@ qa_ruling_task:
     SQ_VERSION: "LATEST_RELEASE"
     GRADLE_TASK: ":its:ruling:test"
     ITS_PROJECT: "ruling"
-    GIT_SUB_MODULE: "its/sources"
   <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
 

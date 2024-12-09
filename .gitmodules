@@ -1,3 +1,12 @@
-[submodule "its/sources"]
-	path = its/sources
-	url = https://github.com/SonarSource/slang-test-sources.git
+[submodule "its/sources/traefik"]
+	path = its/sources/traefik
+	url = https://github.com/traefik/traefik
+[submodule "its/sources/minio"]
+	path = its/sources/minio
+	url = https://github.com/minio/minio
+[submodule "its/sources/prometheus"]
+	path = its/sources/prometheus
+	url = https://github.com/prometheus/prometheus
+[submodule "its/sources/kubernetes-client-go"]
+	path = its/sources/kubernetes-client-go
+	url = https://github.com/kubernetes/client-go
