@@ -21,13 +21,12 @@ package main
 
 import (
 	"encoding/json"
-	"fmt"
+	"github.com/stretchr/testify/assert"
 	"go/ast"
 	"go/token"
 	"io/ioutil"
 	"os"
 	"path/filepath"
-	"reflect"
 	"strings"
 	"testing"
 )
@@ -88,10 +87,7 @@ func Test_all_go_files(t *testing.T) {
 			panic(err2)
 		}
 
-		if !reflect.DeepEqual(jsonExpected, jsonActual) {
-			fmt.Printf("Failed to match expected results for file: %#v\n", file)
-			t.Fatalf("got: %#v\nexpected: %#v", jsonActual, jsonExpected)
-		}
+		assert.Equal(t, string(expectedData), actual, "Failed to match expected results for file: %#v\n", file)
 	}
 }
 
