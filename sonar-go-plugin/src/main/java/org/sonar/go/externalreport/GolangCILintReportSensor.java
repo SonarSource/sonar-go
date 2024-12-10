@@ -49,6 +49,8 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
   private static class GolangCILintCheckstyleFormatImporter extends CheckstyleFormatImporter {
 
+    private static final String GOSEC = "gosec";
+
     public GolangCILintCheckstyleFormatImporter(SensorContext context, String linterKey) {
       super(context, linterKey);
     }
@@ -65,7 +67,7 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
      */
     @Override
     protected RuleType ruleType(@Nullable String severity, String source) {
-      if ("gosec".equals(source)) {
+      if (GOSEC.equals(source)) {
         return RuleType.VULNERABILITY;
       }
       return super.ruleType(severity, source);
@@ -73,7 +75,7 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
     @Override
     protected RuleKey createRuleKey(String source, RuleType ruleType, Severity ruleSeverity) {
-      if ("gosec".equals(source)) {
+      if (GOSEC.equals(source)) {
         // gosec issues are exclusively "major vulnerability", keeping "gosec" as rule key.
         return RuleKey.of(linterKey, source);
       }
@@ -84,7 +86,7 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
     @Override
     protected List<Impact> impacts(String severity, String source) {
-      if ("gosec".equals(source)) {
+      if (GOSEC.equals(source)) {
         return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
       }
       return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
