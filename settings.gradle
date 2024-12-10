@@ -5,12 +5,6 @@ pluginManagement {
     }
 }
 
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 rootProject.name = 'sonar-go'
 
 include 'sonar-go-to-slang'
