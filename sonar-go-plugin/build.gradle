@@ -86,7 +86,7 @@ shadowJar {
         exclude 'tmp/**'
     }
     doLast {
-        enforceJarSizeAndCheckContent(shadowJar.archiveFile.get().asFile, 8_000_000L, 8_500_000L)
+        enforceJarSizeAndCheckContent(shadowJar.archiveFile.get().asFile, 9_000_000L, 9_500_000L)
     }
 }
 
