@@ -17,11 +17,13 @@
 package org.sonar.go.externalreport;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.SensorContext;
+import org.sonar.api.issue.impact.SoftwareQuality;
 import org.sonar.api.notifications.AnalysisWarnings;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rules.RuleType;
@@ -78,6 +80,14 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
       String ruleKey = String.format("%s.%s.%s", source, ruleType.toString().toLowerCase(Locale.ROOT),
         ruleSeverity.toString().toLowerCase(Locale.ROOT));
       return RuleKey.of(linterKey, ruleKey);
+    }
+
+    @Override
+    protected List<Impact> impacts(String severity, String source) {
+      if ("gosec".equals(source)) {
+        return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+      }
+      return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     }
   }
 }

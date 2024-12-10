@@ -6,7 +6,8 @@ pluginManagement {
 }
 
 dependencyResolutionManagement {
-    def slangDependenciesVersion = '1.17.0.6351'
+    //TODO change to released version before merge
+    def slangDependenciesVersion = '1.18.0.6372'
     def analyzerCommonsVersion = '2.16.0.3141'
     def pluginApiVersion = '10.10.0.2391'
     def sonarqubeVersion = '10.0.0.68432'

@@ -27,10 +27,12 @@ import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.ExternalIssue;
+import org.sonar.api.issue.impact.SoftwareQuality;
 import org.sonar.api.rules.RuleType;
 import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 import static org.sonar.go.externalreport.ExternalLinterSensorHelper.REPORT_BASE_PATH;
 
 class GolangCILintReportSensorTest {
@@ -69,6 +71,7 @@ class GolangCILintReportSensorTest {
     assertThat(first.severity()).isEqualTo(Severity.MAJOR);
     assertThat(first.ruleKey().repository()).isEqualTo("external_golangci-lint");
     assertThat(first.ruleKey().rule()).isEqualTo("deadcode.bug.major");
+    assertThat(first.impacts()).contains(entry(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     assertThat(first.primaryLocation().message()).isEqualTo("`three` is unused");
     assertThat(first.primaryLocation().textRange().start().line()).isEqualTo(3);
 
@@ -77,6 +80,7 @@ class GolangCILintReportSensorTest {
     assertThat(second.severity()).isEqualTo(Severity.MAJOR);
     assertThat(second.ruleKey().repository()).isEqualTo("external_golangci-lint");
     assertThat(second.ruleKey().rule()).isEqualTo("gosec");
+    assertThat(second.impacts()).contains(entry(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     assertThat(second.primaryLocation().message()).isEqualTo("G402: TLS InsecureSkipVerify set true.");
     assertThat(second.primaryLocation().inputComponent().key()).isEqualTo("module:main.go");
     assertThat(second.primaryLocation().textRange().start().line()).isEqualTo(4);
