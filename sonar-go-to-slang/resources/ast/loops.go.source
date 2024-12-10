@@ -59,4 +59,9 @@ OUTER:
     for v := range slices.Values(l) {
         fmt.Println(v)
     }
+
+    m := map[int]string{}
+    for k, v := range maps.All(m) {
+    	fmt.Println("Key:", k, "Value:", v)
+    }
 }
