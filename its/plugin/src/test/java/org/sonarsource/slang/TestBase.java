@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -79,15 +79,6 @@ public abstract class TestBase {
       .setMetricKeys(singletonList(metricKey)));
     List<Measure> measures = response.getComponent().getMeasuresList();
     return measures.size() == 1 ? measures.get(0) : null;
-  }  
-  
-  protected Map<String, Measure> getMeasures(String projectKey, String... metricKeys) {
-    return newWsClient().measures().component(new ComponentRequest()
-      .setComponent(projectKey)
-      .setMetricKeys(Arrays.asList(metricKeys)))
-      .getComponent().getMeasuresList()
-      .stream()
-      .collect(Collectors.toMap(Measure::getMetric, Function.identity()));
   }
 
   protected List<Issues.Issue> getIssuesForRule(String componentKey, String rule) {

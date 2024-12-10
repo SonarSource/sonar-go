@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -42,86 +42,6 @@ public class ExternalReportTest extends TestBase {
 
   @Rule
   public TemporaryFolder tmpDir = new TemporaryFolder();
-
-  @Test
-  public void rubocop() {
-    final String projectKey = "rubocop";
-    SonarScanner sonarScanner = getSonarScanner(projectKey, BASE_DIRECTORY, "rubocop");
-    sonarScanner.setProperty("sonar.ruby.rubocop.reportPaths", "rubocop-report.json");
-    ORCHESTRATOR.executeBuild(sonarScanner);
-    List<Issue> issues = getExternalIssues(projectKey);
-    issues.sort(Comparator.comparing(Issue::getLine).thenComparing(Issue::getRule));
-
-    assertThat(issues).hasSize(3);
-
-    assertThat(issues.get(0).getRule()).isEqualTo("external_rubocop:Naming/FileName");
-    assertThat(issues.get(0).getLine()).isEqualTo(1);
-    assertThat(issues.get(0).getMessage()).isEqualTo("The name of this source file (`yaml-issue.rb`) should use snake_case.");
-    assertThat(issues.get(0).getSeverity().name()).isEqualTo("INFO");
-    assertThat(issues.get(0).getDebt()).isEqualTo("5min");
-
-    assertThat(issues.get(1).getRule()).isEqualTo("external_rubocop:Style/FrozenStringLiteralComment");
-    assertThat(issues.get(1).getLine()).isEqualTo(1);
-    assertThat(issues.get(1).getMessage()).isEqualTo("Missing frozen string literal comment.");
-    assertThat(issues.get(1).getSeverity().name()).isEqualTo("MINOR");
-    assertThat(issues.get(1).getDebt()).isEqualTo("5min");
-
-    assertThat(issues.get(2).getRule()).isEqualTo("external_rubocop:Security/YAMLLoad");
-    assertThat(issues.get(2).getLine()).isEqualTo(2);
-    assertThat(issues.get(2).getMessage()).isEqualTo("Prefer using `YAML.safe_load` over `YAML.load`.");
-    assertThat(issues.get(2).getSeverity().name()).isEqualTo("MAJOR");
-    assertThat(issues.get(2).getDebt()).isEqualTo("5min");
-  }
-
-  @Test
-  public void scalastyle() throws IOException {
-    final String projectKey = "scalastyle";
-
-    SonarScanner sonarScanner = getSonarScanner(projectKey, BASE_DIRECTORY, "scalastyle");
-    Path projectDir = new File(BASE_DIRECTORY, "scalastyle").toPath();
-    Path scalastyleReportPath = createTemporaryReportFromTemplate(projectDir.resolve("scalastyle-output.xml"),
-      "{ABSOLUTE_HELLO_WORLD_PATH}", projectDir.resolve("HelloWorld.scala").toRealPath().toString());
-    sonarScanner.setProperty("sonar.scala.scalastyle.reportPaths", scalastyleReportPath.toString());
-    ORCHESTRATOR.executeBuild(sonarScanner);
-    List<Issue> issues = getExternalIssues(projectKey);
-    assertThat(issues).hasSize(2);
-    assertThat(issues.stream().map(Issue::getRule).sorted().collect(Collectors.toList())).containsExactly(
-      "external_scalastyle:org.scalastyle.file.HeaderMatchesChecker",
-      "external_scalastyle:org.scalastyle.file.RegexChecker"
-    );
-    assertThat(issues.stream().map(Issue::getLine).sorted().collect(Collectors.toList())).containsExactly(
-      1,
-      6
-    );
-    Issue first = issues.get(0);
-    assertThat(first.getDebt()).isEqualTo("5min");
-  }
-
-  @Test
-  public void scapegoat() throws IOException {
-    final String projectKey = "scapegoat";
-
-    SonarScanner sonarScanner = getSonarScanner(projectKey, BASE_DIRECTORY, "scapegoat");
-    Path projectDir = new File(BASE_DIRECTORY, "scapegoat").toPath();
-    Path scapegoatReportPath = createTemporaryReportFromTemplate(projectDir.resolve("scapegoat-scalastyle.xml"),
-      "{ABSOLUTE_HELLO_WORLD_PATH}", projectDir.resolve("HelloWorld.scala").toRealPath().toString());
-    sonarScanner.setProperty("sonar.scala.scapegoat.reportPaths", scapegoatReportPath.toString());
-    ORCHESTRATOR.executeBuild(sonarScanner);
-    List<Issue> issues = getExternalIssues(projectKey);
-    assertThat(issues).hasSize(3);
-    assertThat(issues.stream().map(Issue::getRule).sorted().collect(Collectors.toList())).containsExactly(
-      "external_scapegoat:com.sksamuel.scapegoat.inspections.EmptyCaseClass",
-      "external_scapegoat:com.sksamuel.scapegoat.inspections.FinalModifierOnCaseClass",
-      "external_scapegoat:com.sksamuel.scapegoat.inspections.unsafe.IsInstanceOf"
-    );
-    assertThat(issues.stream().map(Issue::getLine).sorted().collect(Collectors.toList())).containsExactly(
-      5,
-      9,
-      9
-    );
-    Issue first = issues.get(0);
-    assertThat(first.getDebt()).isEqualTo("5min");
-  }
 
   @Test
   public void govet() {

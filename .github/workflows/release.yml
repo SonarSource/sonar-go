@@ -1,10 +1,12 @@
-name: release
-# This workflow is triggered when publishing a new github release
-# yamllint disable-line rule:truthy
+---
+name: Release
 on:
   release:
     types:
       - published
+
+env:
+  PYTHONUNBUFFERED: 1
 
 jobs:
   release:

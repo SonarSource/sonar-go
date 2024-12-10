@@ -30,6 +30,7 @@ allprojects {
 
     ext {
         buildNumber = System.getProperty("buildNumber")
+        slangDependenciesVersion = '1.15.2.6150'
         analyzerCommonsVersion = '2.7.0.1482'
         pluginApiVersion = '10.1.0.809'
         // slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api
@@ -37,8 +38,8 @@ allprojects {
         sonarqubeVersion = '10.0.0.68432'
         orchestratorVersion = '3.42.0.312'
         sonarlintVersion = '9.0.0.74282'
-        sonarLinksCi = 'https://cirrus-ci.com/github/SonarSource/slang'
-        sonarLinksScm = 'https://github.com/SonarSource/slang'
+        sonarLinksCi = 'https://cirrus-ci.com/github/SonarSource/sonar-go'
+        sonarLinksScm = 'https://github.com/SonarSource/sonar-go'
 
         artifactsToPublish = ''
         artifactsToDownload = ''
@@ -49,13 +50,21 @@ allprojects {
         version = version.replace('-SNAPSHOT', versionSuffix)
     }
 
-    File extraProperties = new File(rootDir, 'private/extraProperties.gradle')
-    if (extraProperties.exists()) {
-        apply from: extraProperties
-    }
-
     repositories {
         mavenLocal()
+        def artifactoryBearerToken = System.getenv("ARTIFACTORY_PRIVATE_PASSWORD") ?: project.findProperty("artifactoryPassword")
+        if (artifactoryBearerToken) {
+            maven {
+                url "https://repox.jfrog.io/repox/sonarsource"
+                authentication {
+                    header(HttpHeaderAuthentication)
+                }
+                credentials(HttpHeaderCredentials) {
+                    name = "Authorization"
+                    value = "Bearer $artifactoryBearerToken"
+                }
+            }
+        }
         mavenCentral()
     }
 }
@@ -88,18 +97,16 @@ subprojects {
             dependency "org.sonarsource.orchestrator:sonar-orchestrator:${orchestratorVersion}"
             dependency "org.sonarsource.sonarlint.core:sonarlint-core:${sonarlintVersion}"
             dependency "javax.annotation:javax.annotation-api:1.3.2"
+            dependency "org.sonarsource.slang:slang-api:${slangDependenciesVersion}"
+            dependency "org.sonarsource.slang:slang-testing:${slangDependenciesVersion}"
+            dependency "org.sonarsource.slang:slang-antlr:${slangDependenciesVersion}"
+            dependency "org.sonarsource.slang:slang-checks:${slangDependenciesVersion}"
+            dependency "org.sonarsource.slang:slang-plugin:${slangDependenciesVersion}"
+            dependency "org.sonarsource.slang:checkstyle-import:${slangDependenciesVersion}"
         }
     }
 
-    java {
-        sourceCompatibility = JavaVersion.VERSION_11
-        withSourcesJar()
-        withJavadocJar()
-    }
-    jar {
-        enabled=true
-    }
-
+    java.sourceCompatibility = JavaVersion.VERSION_11
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
         options.release = java.sourceCompatibility.majorVersion as int
@@ -127,7 +134,7 @@ subprojects {
         testCompile.extendsFrom compileOnly
     }
 
-    if (!project.path.startsWith(":its") && !project.path.startsWith(":private:its")) {
+    if (!project.path.startsWith(":its")) {
         test {
             useJUnitPlatform()
         }
@@ -136,7 +143,8 @@ subprojects {
     test {
         testLogging {
             exceptionFormat 'full' // log the full stack trace (default is the 1st line of the stack trace)
-            events "skipped", "failed" // verbose log for failed and skipped tests (by default the name of the tests are not logged)
+            events "skipped", "failed"
+            // verbose log for failed and skipped tests (by default the name of the tests are not logged)
         }
         def propKeys = System.properties.findAll {
             it.key.startsWith("orchestrator") || it.key.startsWith("sonar") || it.key == "buildNumber" || it.key == "slangVersion"
@@ -147,16 +155,21 @@ subprojects {
         }
     }
 
+    task sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
     // license updater
     spotless {
         java {
-            targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**", "private/its/sources/**", "private/its/plugin/projects/**"
-
-            if (getPath().startsWith(':private')) {
-                licenseHeaderFile(rootProject.file("private/LICENSE")).updateYearWithLatest(true)
-            } else {
-                licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
-            }
+            targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**"
+            licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
         }
     }
 
@@ -179,33 +192,12 @@ subprojects {
                         }
                     }
                     scm {
-                        url = 'https://github.com/SonarSource/slang'
+                        url = 'https://github.com/SonarSource/sonar-go'
                     }
                     developers {
                         developer {
                             id = 'sonarsource-team'
                             name = 'SonarSource Team'
-                        }
-                    }
-                    // adding dependencies section for modules not using shadowJar (we didn't find a way to test if shadowJar is present)
-                    if (["checkstyle-import",
-                         "slang-antlr",
-                         "slang-api",
-                         "slang-checks",
-                         "slang-plugin",
-                         "slang-testing"]
-                      .contains(project.name)) {
-                        withXml {
-                            def dependenciesNode = asNode().appendNode('dependencies')
-                            // using runtimeClasspath and not compileClasspath because we don't want compileOnly dependencies (provided)
-                            configurations.runtimeClasspath.allDependencies.each { dep ->
-                                def dependencyNode = dependenciesNode.appendNode('dependency')
-                                dependencyNode.appendNode('groupId', dep.group)
-                                dependencyNode.appendNode('artifactId', dep.name)
-                                if (dep.version) {
-                                    dependencyNode.appendNode('version', dep.version)
-                                }
-                            }
                         }
                     }
                 }
@@ -221,7 +213,7 @@ subprojects {
         required {
             def branch = System.getenv()["CIRRUS_BRANCH"]
             return (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
-                    gradle.taskGraph.hasTask(":artifactoryPublish")
+              gradle.taskGraph.hasTask(":artifactoryPublish")
         }
         sign publishing.publications
     }
@@ -230,18 +222,20 @@ subprojects {
         onlyIf {
             def branch = System.getenv()["CIRRUS_BRANCH"]
             return !artifactoryPublish.skip &&
-                    (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
-                    gradle.taskGraph.hasTask(":artifactoryPublish")
+              (branch == 'master' || branch ==~ 'branch-[\\d.]+') &&
+              gradle.taskGraph.hasTask(":artifactoryPublish")
         }
     }
 }
 
 sonar {
     properties {
+        property 'sonar.organization', 'sonarsource'
+        property 'sonar.projectKey', 'SonarSource_sonar-go'
         property 'sonar.projectName', projectTitle
         property 'sonar.links.ci', "${sonarLinksCi}"
         property 'sonar.links.scm', "${sonarLinksScm}"
-        property 'sonar.links.issue', 'https://jira.sonarsource.com/browse/SONARSLANG'
+        property 'sonar.links.issue', 'https://jira.sonarsource.com/browse/SONARGO'
         property 'sonar.exclusions', '**/build/**/*'
     }
 }
@@ -258,13 +252,13 @@ artifactory {
         }
         defaults {
             properties = [
-                'build.name': 'slang-enterprise',
-                'build.number': System.getenv('BUILD_NUMBER'),
-                'pr.branch.target': System.getenv('PULL_REQUEST_BRANCH_TARGET'),
-                'pr.number': System.getenv('PULL_REQUEST_NUMBER'),
-                'vcs.branch': System.getenv('GIT_BRANCH'),
-                'vcs.revision': System.getenv('GIT_COMMIT'),
-                'version': version
+              'build.name'      : 'sonar-go',
+              'build.number'    : System.getenv('BUILD_NUMBER'),
+              'pr.branch.target': System.getenv('PULL_REQUEST_BRANCH_TARGET'),
+              'pr.number'       : System.getenv('PULL_REQUEST_NUMBER'),
+              'vcs.branch'      : System.getenv('GIT_BRANCH'),
+              'vcs.revision'    : System.getenv('GIT_COMMIT'),
+              'version'         : version
             ]
             publications('mavenJava')
             publishPom = true
@@ -272,7 +266,7 @@ artifactory {
         }
     }
 
-    clientConfig.info.setBuildName('slang-enterprise')
+    clientConfig.info.setBuildName('sonar-go')
     clientConfig.info.setBuildNumber(System.getenv('BUILD_NUMBER'))
     // Define the artifacts to be deployed to https://binaries.sonarsource.com on releases
     clientConfig.info.addEnvironmentProperty('ARTIFACTS_TO_PUBLISH', artifactsToPublish)
@@ -283,7 +277,7 @@ artifactory {
 
 void enforceJarSizeAndCheckContent(File file, long minSize, long maxSize) {
     long size = file.length()
-    if (size < minSize)  {
+    if (size < minSize) {
         throw new GradleException("${file.path} size ($size) too small. Min is $minSize")
     } else if (size > maxSize) {
         throw new GradleException("${file.path} size ($size) too large. Max is $maxSize")

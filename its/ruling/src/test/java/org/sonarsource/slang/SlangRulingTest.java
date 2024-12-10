@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -28,13 +28,11 @@ import com.sonar.orchestrator.locator.MavenLocation;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -52,7 +50,6 @@ public class SlangRulingTest {
   private static Orchestrator orchestrator;
   private static boolean keepSonarqubeRunning = "true".equals(System.getProperty("keepSonarqubeRunning"));
 
-  private static final Set<String> LANGUAGES = new HashSet<>(Arrays.asList("ruby", "scala", "go"));
 
   @BeforeClass
   public static void setUp() {
@@ -61,65 +58,34 @@ public class SlangRulingTest {
       .setSonarVersion(System.getProperty(SQ_VERSION_PROPERTY, DEFAULT_SQ_VERSION))
       .addPlugin(MavenLocation.of("org.sonarsource.sonar-lits-plugin", "sonar-lits-plugin", "0.10.0.2181"));
 
-    addLanguagePlugins(builder);
+    addGoPlugin(builder);
 
     orchestrator = builder.build();
     orchestrator.start();
-
-    ProfileGenerator.RulesConfiguration rubyRulesConfiguration = new ProfileGenerator.RulesConfiguration();
-    rubyRulesConfiguration.add("S1451", "headerFormat", "# Copyright 201\\d Twitch Interactive, Inc.  All Rights Reserved.");
-    rubyRulesConfiguration.add("S1451", "isRegularExpression", "true");
-    rubyRulesConfiguration.add("S1479", "maximum", "10");
-
-    ProfileGenerator.RulesConfiguration scalaRulesConfiguration = new ProfileGenerator.RulesConfiguration();
-    scalaRulesConfiguration.add("S1451", "headerFormat", "^(?i).*copyright");
-    scalaRulesConfiguration.add("S1451", "isRegularExpression", "true");
 
     ProfileGenerator.RulesConfiguration goRulesConfiguration = new ProfileGenerator.RulesConfiguration();
     goRulesConfiguration.add("S1451", "headerFormat", "^(?i).*copyright");
     goRulesConfiguration.add("S1451", "isRegularExpression", "true");
 
-    File rubyProfile = ProfileGenerator.generateProfile(SlangRulingTest.orchestrator.getServer().getUrl(), "ruby", "ruby", rubyRulesConfiguration, Collections.emptySet());
-    File scalaProfile = ProfileGenerator.generateProfile(SlangRulingTest.orchestrator.getServer().getUrl(), "scala", "scala", scalaRulesConfiguration, Collections.emptySet());
     File goProfile = ProfileGenerator.generateProfile(SlangRulingTest.orchestrator.getServer().getUrl(), "go", "go", goRulesConfiguration, Collections.emptySet());
 
-    orchestrator.getServer().restoreProfile(FileLocation.of(rubyProfile));
-    orchestrator.getServer().restoreProfile(FileLocation.of(scalaProfile));
     orchestrator.getServer().restoreProfile(FileLocation.of(goProfile));
   }
 
-  private static void addLanguagePlugins(OrchestratorBuilder builder) {
+  static void addGoPlugin(OrchestratorBuilder builder) {
+    String plugin = "sonar-go-plugin";
     String slangVersion = System.getProperty("slangVersion");
 
-    LANGUAGES.forEach(language -> {
-      Location pluginLocation;
-      String plugin = "sonar-" + language +"-plugin";
-      if (StringUtils.isEmpty(slangVersion)) {
-        // use the plugin that was built on local machine
-        pluginLocation = FileLocation.byWildcardMavenFilename(new File("../../" + plugin + "/build/libs"), plugin + "-*-all.jar");
-      } else {
-        // QA environment downloads the plugin built by the CI job
-        pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, slangVersion);
-      }
+    Location pluginLocation;
+    if (StringUtils.isEmpty(slangVersion)) {
+      // use the plugin that was built on local machine
+      pluginLocation = FileLocation.byWildcardMavenFilename(new File("../../" + plugin + "/build/libs"), plugin + "-*-all.jar");
+    } else {
+      // QA environment downloads the plugin built by the CI job
+      pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, slangVersion);
+    }
 
-      builder.addPlugin(pluginLocation);
-    });
-  }
-
-  @Test
-  // @Ignore because it should only be run manually
-  @Ignore
-  public void ruby_manual_keep_sonarqube_server_up() throws IOException {
-    keepSonarqubeRunning = true;
-    test_ruby();
-  }
-
-  @Test
-  // @Ignore because it should only be run manually
-  @Ignore
-  public void scala_manual_keep_sonarqube_server_up() throws IOException {
-    keepSonarqubeRunning = true;
-    test_scala();
+    builder.addPlugin(pluginLocation);
   }
 
   @Test
@@ -130,19 +96,6 @@ public class SlangRulingTest {
     test_go();
   }
 
-  @Test
-  public void test_ruby() throws IOException {
-    Map<String, String> properties = new HashMap<>();
-    properties.put("sonar.inclusions", "sources/ruby/**/*.rb, ruling/src/test/resources/sources/ruby/**/*.rb");
-    run_ruling_test("ruby", properties);
-  }
-
-  @Test
-  public void test_scala() throws IOException {
-    Map<String, String> properties = new HashMap<>();
-    properties.put("sonar.inclusions", "sources/scala/**/*.scala, ruling/src/test/resources/sources/scala/**/*.scala");
-    run_ruling_test("scala", properties);
-  }
 
   @Test
   public void test_go() throws IOException {
@@ -151,19 +104,19 @@ public class SlangRulingTest {
     properties.put("sonar.exclusions", "**/*generated*.go, **/*.pb.go");
     properties.put("sonar.tests", ".");
     properties.put("sonar.test.inclusions", "**/*_test.go");
-    run_ruling_test("go", properties);
+    run_ruling_test(properties);
   }
 
-  private void run_ruling_test(String project, Map<String, String> projectProperties) throws IOException {
+  private void run_ruling_test(Map<String, String> projectProperties) throws IOException {
     Map<String, String> properties = new HashMap<>(projectProperties);
     properties.put("sonar.slang.converter.validation", "log");
     properties.put("sonar.slang.duration.statistics", "true");
 
-    String projectKey = project.replace("/", "-") + "-project";
+    String projectKey = "go".replace("/", "-") + "-project";
     orchestrator.getServer().provisionProject(projectKey, projectKey);
-    LANGUAGES.forEach(lang -> orchestrator.getServer().associateProjectToQualityProfile(projectKey, lang, "rules"));
+    orchestrator.getServer().associateProjectToQualityProfile(projectKey, "go", "rules");
 
-    File actualDirectory = FileLocation.of("build/tmp/actual/" + project).getFile();
+    File actualDirectory = FileLocation.of("build/tmp/actual/" + "go").getFile();
     actualDirectory.mkdirs();
 
     File litsDifferencesFile = FileLocation.of("build/" + projectKey + "-differences").getFile();
@@ -174,12 +127,12 @@ public class SlangRulingTest {
       .setSourceDirs("./")
       .setSourceEncoding("utf-8")
       .setProperties(properties)
-      .setProperty("sonar.lits.dump.old", FileLocation.of("src/test/resources/expected/" + project).getFile().getAbsolutePath())
+      .setProperty("sonar.lits.dump.old", FileLocation.of("src/test/resources/expected/" + "go").getFile().getAbsolutePath())
       .setProperty("sonar.lits.dump.new", actualDirectory.getAbsolutePath())
       .setProperty("sonar.lits.differences", litsDifferencesFile.getAbsolutePath())
       .setProperty("sonar.cpd.exclusions", "**/*")
       .setProperty("sonar.scm.disabled", "true")
-      .setProperty("sonar.project", project)
+      .setProperty("sonar.project", "go")
       .setEnvironmentVariable("SONAR_RUNNER_OPTS", "-Xmx1024m");
 
     orchestrator.executeBuild(build);

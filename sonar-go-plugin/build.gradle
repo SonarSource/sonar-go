@@ -7,10 +7,10 @@ shadowJar.dependsOn ':sonar-go-to-slang:build'
 test.dependsOn ':sonar-go-to-slang:build'
 
 dependencies {
-    implementation project(':slang-api')
-    implementation project(':slang-checks')
-    implementation project(':slang-plugin')
-    implementation project(':checkstyle-import')
+    implementation 'org.sonarsource.slang:slang-api'
+    implementation 'org.sonarsource.slang:slang-checks'
+    implementation 'org.sonarsource.slang:slang-plugin'
+    implementation 'org.sonarsource.slang:checkstyle-import'
     // dependency on sonar-go-to-slang binaries
     runtimeOnly files(project(':sonar-go-to-slang').buildDir)
     compileOnly 'org.sonarsource.api.plugin:sonar-plugin-api'
@@ -23,8 +23,8 @@ dependencies {
     testImplementation 'org.assertj:assertj-core'
     testImplementation 'org.mockito:mockito-core'
     testImplementation 'io.github.classgraph:classgraph'
-    testImplementation project(':slang-antlr')
-    testImplementation project(':slang-testing')
+    testImplementation 'org.sonarsource.slang:slang-antlr'
+    testImplementation 'org.sonarsource.slang:slang-testing'
     testImplementation 'org.awaitility:awaitility:3.1.0'
 }
 
@@ -93,6 +93,7 @@ artifacts {
 }
 
 artifactoryPublish.skip = false
+
 publishing {
     publications {
         mavenJava(MavenPublication) {

@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -25,9 +25,7 @@ import com.sonar.orchestrator.locator.FileLocation;
 import com.sonar.orchestrator.locator.Location;
 import com.sonar.orchestrator.locator.MavenLocation;
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
+
 import org.apache.commons.lang.StringUtils;
 import org.junit.ClassRule;
 import org.junit.runner.RunWith;
@@ -47,40 +45,33 @@ public class Tests {
   static final String SQ_VERSION_PROPERTY = "sonar.runtimeVersion";
   static final String DEFAULT_SQ_VERSION = "LATEST_RELEASE";
 
-  private static final Set<String> LANGUAGES = new HashSet<>(Arrays.asList("ruby", "scala", "go"));
-
   @ClassRule
   public static final Orchestrator ORCHESTRATOR;
 
   static {
     OrchestratorBuilder orchestratorBuilder = Orchestrator.builderEnv();
-    addLanguagePlugins(orchestratorBuilder);
+    addGoPlugin(orchestratorBuilder);
     ORCHESTRATOR = orchestratorBuilder
       .useDefaultAdminCredentialsForBuilds(true)
       .setSonarVersion(System.getProperty(SQ_VERSION_PROPERTY, DEFAULT_SQ_VERSION))
-      .restoreProfileAtStartup(FileLocation.of("src/test/resources/nosonar-ruby.xml"))
-      .restoreProfileAtStartup(FileLocation.of("src/test/resources/nosonar-scala.xml"))
       .restoreProfileAtStartup(FileLocation.of("src/test/resources/nosonar-go.xml"))
-      .restoreProfileAtStartup(FileLocation.of("src/test/resources/norule.xml"))
       .build();
   }
 
-  static void addLanguagePlugins(OrchestratorBuilder builder) {
+  static void addGoPlugin(OrchestratorBuilder builder) {
+    String plugin = "sonar-go-plugin";
     String slangVersion = System.getProperty("slangVersion");
 
-    LANGUAGES.forEach(language -> {
-      Location pluginLocation;
-      String plugin = "sonar-" + language +"-plugin";
-      if (StringUtils.isEmpty(slangVersion)) {
-        // use the plugin that was built on local machine
-        pluginLocation = FileLocation.byWildcardMavenFilename(new File("../../" + plugin + "/build/libs"), plugin + "-*-all.jar");
-      } else {
-        // QA environment downloads the plugin built by the CI job
-        pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, slangVersion);
-      }
+    Location pluginLocation;
+    if (StringUtils.isEmpty(slangVersion)) {
+      // use the plugin that was built on local machine
+      pluginLocation = FileLocation.byWildcardMavenFilename(new File("../../" + plugin + "/build/libs"), plugin + "-*-all.jar");
+    } else {
+      // QA environment downloads the plugin built by the CI job
+      pluginLocation = MavenLocation.of("org.sonarsource.slang", plugin, slangVersion);
+    }
 
-      builder.addPlugin(pluginLocation);
-    });
+    builder.addPlugin(pluginLocation);
   }
 
 }

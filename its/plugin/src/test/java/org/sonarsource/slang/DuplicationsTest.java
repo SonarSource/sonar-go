@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -25,28 +25,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class DuplicationsTest extends TestBase {
   private static final String BASE_DIRECTORY = "projects/duplications/";
-
-  @Test
-  public void ruby_duplications() {
-    final String projectKey = "rubyDuplications";
-    ORCHESTRATOR.executeBuild(getSonarScanner(projectKey, BASE_DIRECTORY, "ruby"));
-
-    assertThat(getMeasureAsInt(projectKey, "duplicated_lines")).isEqualTo(95);
-    assertThat(getMeasureAsInt(projectKey, "duplicated_blocks")).isEqualTo(5);
-    assertThat(getMeasureAsInt(projectKey, "duplicated_files")).isEqualTo(2);
-    assertThat(getMeasure(projectKey, "duplicated_lines_density").getValue()).isEqualTo("57.9");
-  }
-
-  @Test
-  public void scala_duplications() {
-    final String projectKey = "scalaDuplications";
-    ORCHESTRATOR.executeBuild(getSonarScanner(projectKey, BASE_DIRECTORY, "scala"));
-
-    assertThat(getMeasureAsInt(projectKey, "duplicated_lines")).isEqualTo(79);
-    assertThat(getMeasureAsInt(projectKey, "duplicated_blocks")).isEqualTo(5);
-    assertThat(getMeasureAsInt(projectKey, "duplicated_files")).isEqualTo(2);
-    assertThat(getMeasure(projectKey, "duplicated_lines_density").getValue()).isEqualTo("64.2");
-  }
 
   @Test
   public void go_duplications() {
