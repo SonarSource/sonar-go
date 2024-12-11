@@ -66,6 +66,7 @@ build_task:
     SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
     DEPLOY_PULL_REQUEST: "true"
   build_script:
+    - git submodule update --init --depth 1 -- build-logic
     - source cirrus-env BUILD
     - function gradle(){ ./gradlew "$@"; }; export -f gradle
     - gradle --version
@@ -138,6 +139,7 @@ ws_scan_task:
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   whitesource_script:
+    - git submodule update --init --depth 1 -- build-logic
     - source cirrus-env QA
     - ./gradlew --no-daemon --console plain clean
     - ./gradlew --no-daemon --info --stacktrace --console plain --no-daemon build -x test
@@ -158,11 +160,12 @@ promote_task:
   <<: *ONLY_IF_SONARSOURCE_QA
   eks_container:
     <<: *CONTAINER_DEFINITION
-    cpu: 1
-    memory: 1G
+    cpu: 2
+    memory: 2G
   env:
     ARTIFACTORY_PROMOTE_ACCESS_TOKEN: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promoter access_token]
     GITHUB_TOKEN: VAULT[development/github/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-promotion token]
   promote_script:
+    - git submodule update --init --depth 1 -- build-logic
     - function gradle(){ ./gradlew "$@"; }; export -f gradle
     - cirrus_promote_gradle multi

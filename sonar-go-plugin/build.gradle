@@ -1,4 +1,5 @@
 plugins {
+    id("org.sonarsource.cloud-native.java-conventions")
     id 'com.github.johnrengelman.shadow' version '7.1.0'
 }
 
@@ -28,11 +29,6 @@ dependencies {
     testImplementation testLibs.sonar.plugin.api.test.fixtures
 
     testRuntimeOnly testLibs.junit.jupiter.engine
-}
-
-tasks.withType(JavaCompile) {
-    // Prevent warning: Gradle 5.0 will ignore annotation processors
-    options.compilerArgs += [ "-proc:none" ]
 }
 
 test {
