@@ -17,11 +17,15 @@
 package org.sonar.go.externalreport;
 
 import java.io.File;
+import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import org.sonar.api.SonarEdition;
+import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.SensorContext;
+import org.sonar.api.issue.impact.SoftwareQuality;
 import org.sonar.api.notifications.AnalysisWarnings;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rules.RuleType;
@@ -47,8 +51,12 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
   private static class GolangCILintCheckstyleFormatImporter extends CheckstyleFormatImporter {
 
+    private static final String GOSEC = "gosec";
+    private final SensorContext context;
+
     public GolangCILintCheckstyleFormatImporter(SensorContext context, String linterKey) {
       super(context, linterKey);
+      this.context = context;
     }
 
     /**
@@ -63,7 +71,7 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
      */
     @Override
     protected RuleType ruleType(@Nullable String severity, String source) {
-      if ("gosec".equals(source)) {
+      if (GOSEC.equals(source)) {
         return RuleType.VULNERABILITY;
       }
       return super.ruleType(severity, source);
@@ -71,13 +79,26 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
     @Override
     protected RuleKey createRuleKey(String source, RuleType ruleType, Severity ruleSeverity) {
-      if ("gosec".equals(source)) {
+      if (GOSEC.equals(source)) {
         // gosec issues are exclusively "major vulnerability", keeping "gosec" as rule key.
         return RuleKey.of(linterKey, source);
       }
       String ruleKey = String.format("%s.%s.%s", source, ruleType.toString().toLowerCase(Locale.ROOT),
         ruleSeverity.toString().toLowerCase(Locale.ROOT));
       return RuleKey.of(linterKey, ruleKey);
+    }
+
+    @Override
+    protected List<Impact> impacts(String severity, String source) {
+      var isSonarCloud = context.runtime().getProduct() == SonarProduct.SONARQUBE && context.runtime().getEdition() == SonarEdition.SONARCLOUD;
+      if (isSonarCloud) {
+        // SonarQube Cloud does not yet support the `impact` field for external issues
+        return List.of();
+      }
+      if (GOSEC.equals(source)) {
+        return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+      }
+      return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     }
   }
 }
