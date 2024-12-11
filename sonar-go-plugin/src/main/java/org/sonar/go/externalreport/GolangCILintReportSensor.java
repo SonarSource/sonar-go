@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import org.sonar.api.SonarEdition;
+import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.issue.impact.SoftwareQuality;
@@ -50,9 +52,11 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
   private static class GolangCILintCheckstyleFormatImporter extends CheckstyleFormatImporter {
 
     private static final String GOSEC = "gosec";
+    private final SensorContext context;
 
     public GolangCILintCheckstyleFormatImporter(SensorContext context, String linterKey) {
       super(context, linterKey);
+      this.context = context;
     }
 
     /**
@@ -86,10 +90,15 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
     @Override
     protected List<Impact> impacts(String severity, String source) {
-      if (GOSEC.equals(source)) {
-        return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+      var isSonarCloud = context.runtime().getProduct() == SonarProduct.SONARQUBE && context.runtime().getEdition() == SonarEdition.SONARCLOUD;
+      if (!isSonarCloud) {
+        // SonarQube Cloud does not yet support the `impact` field for external issues
+        if (GOSEC.equals(source)) {
+          return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+        }
+        return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
       }
-      return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+      return List.of();
     }
   }
 }
