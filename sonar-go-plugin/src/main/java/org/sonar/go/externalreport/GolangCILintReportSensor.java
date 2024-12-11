@@ -91,14 +91,14 @@ public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
     @Override
     protected List<Impact> impacts(String severity, String source) {
       var isSonarCloud = context.runtime().getProduct() == SonarProduct.SONARQUBE && context.runtime().getEdition() == SonarEdition.SONARCLOUD;
-      if (!isSonarCloud) {
+      if (isSonarCloud) {
         // SonarQube Cloud does not yet support the `impact` field for external issues
-        if (GOSEC.equals(source)) {
-          return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
-        }
-        return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+        return List.of();
       }
-      return List.of();
+      if (GOSEC.equals(source)) {
+        return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
+      }
+      return List.of(new Impact(SoftwareQuality.MAINTAINABILITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     }
   }
 }
