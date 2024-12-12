@@ -41,6 +41,7 @@ dependencyResolutionManagement {
             library("assertj-core", "org.assertj", "assertj-core").version("3.26.3")
             library("junit-jupiter-api", "org.junit.jupiter", "junit-jupiter-api").version("5.11.0")
             library("junit-jupiter-engine", "org.junit.jupiter", "junit-jupiter-engine").version("5.11.0")
+            library("junit-vintage-engine", "org.junit.vintage", "junit-vintage-engine").version("5.11.0")
         }
     }
 }

@@ -6,6 +6,7 @@ dependencies {
     testImplementation libs.sonar.analyzer.commons
     testImplementation testLibs.assertj.core
     testImplementation testLibs.sonar.orchestrator
+    testRuntimeOnly testLibs.junit.vintage.engine
 }
 
 sonarqube.skipProject = true
