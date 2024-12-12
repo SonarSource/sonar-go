@@ -6,6 +6,27 @@ pluginManagement {
     }
 }
 
+plugins {
+    id 'com.gradle.develocity' version '3.18.2'
+}
+
+develocity {
+    server = 'https://develocity.sonar.build'
+}
+
+def isCI = System.getenv('CI') != null
+buildCache {
+    local {
+        enabled = !isCI
+    }
+    remote(develocity.buildCache) {
+        enabled = true
+        push = isCI
+    }
+}
+
+
+
 dependencyResolutionManagement {
     def slangDependenciesVersion = '1.17.0.6351'
     def analyzerCommonsVersion = '2.16.0.3141'
