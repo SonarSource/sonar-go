@@ -1,8 +1,6 @@
 import java.util.jar.JarInputStream
 
 plugins {
-    id 'java'
-    id 'jacoco'
     id 'com.jfrog.artifactory' version '4.28.2'
     id 'org.sonarqube' version '3.5.0.2730'
     id 'de.thetaphi.forbiddenapis' version '3.0' apply false
@@ -11,20 +9,9 @@ plugins {
 
 allprojects {
     apply plugin: 'java'
-    apply plugin: 'jacoco'
     apply plugin: 'com.jfrog.artifactory'
     apply plugin: 'maven-publish'
     apply plugin: 'signing'
-
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile).configureEach {
-            if (project.hasProperty('warn')) {
-                options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
-            } else {
-                options.compilerArgs << "-Xlint:-unchecked" << "-Xlint:-deprecation"
-            }
-        }
-    }
 
     ext {
         buildNumber = System.getProperty("buildNumber")
@@ -66,46 +53,12 @@ subprojects {
 
     apply plugin: 'com.diffplug.spotless'
 
-    java.sourceCompatibility = JavaVersion.VERSION_17
-    tasks.withType(JavaCompile) {
-        options.encoding = "UTF-8"
-        options.release = java.sourceCompatibility.majorVersion as int
-    }
-
-    jacoco {
-        toolVersion = "0.8.7"
-    }
-
-    jacocoTestReport {
-        reports {
-            xml.required = true
-            csv.required = false
-            html.required = false
-        }
-    }
-
-    // when subproject has Jacoco pLugin applied we want to generate XML report for coverage
-    plugins.withType(JacocoPlugin) {
-        tasks["test"].finalizedBy 'jacocoTestReport'
-    }
-
     configurations {
         // include compileOnly dependencies during test
         testCompile.extendsFrom compileOnly
     }
 
-    if (!project.path.startsWith(":its")) {
-        test {
-            useJUnitPlatform()
-        }
-    }
-
-    test {
-        testLogging {
-            exceptionFormat 'full' // log the full stack trace (default is the 1st line of the stack trace)
-            events "skipped", "failed"
-            // verbose log for failed and skipped tests (by default the name of the tests are not logged)
-        }
+    tasks.withType(Test).configureEach {
         def propKeys = System.properties.findAll {
             it.key.startsWith("orchestrator") || it.key.startsWith("sonar") || it.key == "buildNumber" || it.key == "slangVersion"
         }.collect { it.key }
@@ -113,16 +66,6 @@ subprojects {
         if (propKeys.contains("buildNumber") && !propKeys.contains("slangVersion")) {
             systemProperties["slangVersion"] = version
         }
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-        archiveClassifier = 'sources'
-        from sourceSets.main.allSource
-    }
-
-    task javadocJar(type: Jar, dependsOn: javadoc) {
-        archiveClassifier = 'javadoc'
-        from javadoc.destinationDir
     }
 
     // license updater
