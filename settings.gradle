@@ -48,7 +48,7 @@ dependencyResolutionManagement {
 
 rootProject.name = 'sonar-go'
 
-include 'sonar-go-to-slang'
-include 'sonar-go-plugin'
-include 'its:plugin'
-include 'its:ruling'
+include ':sonar-go-to-slang'
+include ':sonar-go-plugin'
+include ':its:plugin'
+include ':its:ruling'
