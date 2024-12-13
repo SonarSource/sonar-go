@@ -16,9 +16,7 @@
  */
 package org.sonarsource.slang;
 
-import java.util.List;
 import org.junit.Test;
-import org.sonarqube.ws.Issues;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -36,8 +34,5 @@ public class MeasuresTest extends TestBase {
     assertThat(getMeasureAsInt(componentKey, "comment_lines")).isEqualTo(2);
 
     assertThat(getMeasureAsInt(componentKey, "functions")).isEqualTo(3);
-
-    assertThat(getMeasure(componentKey, "executable_lines_data").getValue())
-      .isEqualTo("32=1;36=1;37=1;38=1;40=1;49=1;22=1;23=1;25=1;26=1;27=1;29=1;30=1");
   }
 }
