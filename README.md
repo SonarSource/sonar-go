@@ -47,6 +47,7 @@ Also the Go source files are not handled. For those files use a manual script li
     `find . -type f -name "*.go" -exec sed -i '' 's/2018-2023/2018-2024/' "{}" \;`
 
 
+
 ## License
 
 Copyright 2012-2024 SonarSource.
