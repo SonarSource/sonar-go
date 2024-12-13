@@ -87,6 +87,7 @@ build_task:
     SONAR_TOKEN: VAULT[development/kv/data/next data.token]
     SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
     DEPLOY_PULL_REQUEST: "true"
+    FORCE_SIGNING: "true"
   build_script:
     - git submodule update --init --depth 1 -- build-logic
     - source cirrus-env BUILD
