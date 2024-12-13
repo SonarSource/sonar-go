@@ -16,6 +16,8 @@ env:
   ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
 
   GRADLE_USER_HOME: ${CIRRUS_WORKING_DIR}/.gradle
+  DEVELOCITY_TOKEN: VAULT[development/kv/data/develocity data.token]
+  DEVELOCITY_ACCESS_KEY: develocity.sonar.build=${DEVELOCITY_TOKEN}
 
 linux_image_template: &LINUX_IMAGE
   image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
@@ -45,6 +47,18 @@ eks_container: &CONTAINER_DEFINITION
 
 ## Build tasks
 
+on_failure_template: &ON_FAILURE
+  on_failure:
+    junit_artifacts:
+      path: '**/test-results/**/*.xml'
+      format: junit
+    reports_artifacts:
+      path: '**/build/reports/**/*'
+    error_log_artifacts:
+      path: "hs_err_pid*.log"
+    heap_dump_artifacts:
+      path: "*.hprof"
+
 setup_gradle_cache_template: &SETUP_GRADLE_CACHE
   gradle_cache:
     folder: .gradle/caches
@@ -72,11 +86,7 @@ build_task:
     - gradle --version
     - source set_gradle_build_version
     - regular_gradle_build_deploy_analyze
-  on_failure:
-    error_log_artifacts:
-      path: "hs_err_pid*.log"
-    heap_dump_artifacts:
-      path: "*.hprof"
+  <<: *ON_FAILURE
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 
 ### QA tasks
@@ -112,6 +122,8 @@ qa_plugin_task:
       - SQ_VERSION: "LATEST_RELEASE"
   <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
+  <<: *ON_FAILURE
+
 
 qa_ruling_task:
   <<: *QA_TASK_FILTER
@@ -121,6 +133,7 @@ qa_ruling_task:
     ITS_PROJECT: "ruling"
   <<: *LINUX_4_CPU_6G_JAVA_17
   <<: *GRADLE_ITS_TEMPLATE
+  <<: *ON_FAILURE
 
 ### Mend tasks
 
