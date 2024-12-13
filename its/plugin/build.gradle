@@ -11,7 +11,7 @@ dependencies {
     testRuntimeOnly testLibs.junit.vintage.engine
 }
 
-sonarqube.skipProject = true
+sonar.skipProject = true
 
 test {
     onlyIf {
