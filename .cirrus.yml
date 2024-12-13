@@ -32,19 +32,19 @@ linux_2_cpu_4G_template: &LINUX_2_CPU_4G
     cpu: 2
     memory: 4G
 
-linux_4_cpu_java_17_container_template: &LINUX_4_CPU_JAVA_17
+linux_4_cpu_container_template: &LINUX_4_CPU
   <<: *LINUX_IMAGE
   image: ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-g7-latest
   cpu: 4
 
-linux_4_cpu_6G_java_17_template: &LINUX_4_CPU_6G_JAVA_17
+linux_4_cpu_6G__template: &LINUX_4_CPU_6G
   eks_container:
-    <<: *LINUX_4_CPU_JAVA_17
+    <<: *LINUX_4_CPU
     memory: 6G
 
-linux_4_cpu_8G_java_17_template: &LINUX_4_CPU_8G_JAVA_17
+linux_4_cpu_8G_template: &LINUX_4_CPU_8G
   eks_container:
-    <<: *LINUX_4_CPU_JAVA_17
+    <<: *LINUX_4_CPU
     memory: 8G
 
 eks_container: &CONTAINER_DEFINITION
@@ -81,7 +81,7 @@ cleanup_gradle_cache_script_template: &CLEANUP_GRADLE_CACHE_SCRIPT
     - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/build-cache-1/"
 
 build_task:
-  <<: *LINUX_4_CPU_6G_JAVA_17
+  <<: *LINUX_4_CPU_6G
   <<: *SETUP_GRADLE_CACHE
   env:
     SONAR_TOKEN: VAULT[development/kv/data/next data.token]
@@ -128,7 +128,7 @@ qa_plugin_task:
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
-  <<: *LINUX_4_CPU_8G_JAVA_17
+  <<: *LINUX_4_CPU_8G
   <<: *GRADLE_ITS_TEMPLATE
   <<: *ON_FAILURE
 
@@ -139,7 +139,7 @@ qa_ruling_task:
     SQ_VERSION: "LATEST_RELEASE"
     GRADLE_TASK: ":its:ruling:test"
     ITS_PROJECT: "ruling"
-  <<: *LINUX_4_CPU_8G_JAVA_17
+  <<: *LINUX_4_CPU_8G
   <<: *GRADLE_ITS_TEMPLATE
   <<: *ON_FAILURE
 
