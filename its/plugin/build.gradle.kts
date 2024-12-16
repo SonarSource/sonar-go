@@ -1,26 +1,26 @@
 plugins {
     id("org.sonarsource.cloud-native.java-conventions")
+    id("org.sonarsource.cloud-native.integration-test")
 }
 
 dependencies {
-    testImplementation(libs.sonar.analyzer.commons)
-    testImplementation(libs.sonar.ws)
-    testImplementation(libs.assertj.core)
-    testImplementation(libs.sonarlint.core)
-    testImplementation(libs.sonar.orchestrator)
-    testRuntimeOnly(libs.junit.vintage.engine)
+    "integrationTestImplementation"(libs.sonar.analyzer.commons)
+    "integrationTestImplementation"(libs.sonar.ws)
+    "integrationTestImplementation"(libs.assertj.core)
+    "integrationTestImplementation"(libs.sonarlint.core)
+    "integrationTestImplementation"(libs.sonar.orchestrator)
+    "integrationTestRuntimeOnly"(libs.junit.vintage.engine)
 }
 
 sonarqube.isSkipProject = true
 
-tasks.test {
-    onlyIf {
-        project.hasProperty("plugin") || project.hasProperty("its")
-    }
+integrationTest {
+    testSources.set(file("projects"))
+}
+tasks.named<Test>("integrationTest") {
     filter {
         includeTestsMatching("org.sonarsource.slang.Tests")
         includeTestsMatching("org.sonarsource.slang.SonarLintTest")
     }
     systemProperty("java.awt.headless", "true")
-    outputs.upToDateWhen { false }
 }

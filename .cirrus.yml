@@ -112,19 +112,19 @@ gradle_its_template: &GRADLE_ITS_TEMPLATE
   run_its_script:
     - git submodule update --init --depth 1
     - source cirrus-env QA
-    - ./gradlew "${GRADLE_TASK}" "-P${ITS_PROJECT}"
+    - ./gradlew "${GRADLE_TASK}"
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
       "-Dorchestrator.artifactory.accessToken=${ARTIFACTORY_ACCESS_TOKEN}"
       "-DbuildNumber=$BUILD_NUMBER"
       -I "${GRADLE_HOME}/init.d/repoxAuth.init.gradle.kts"
-      -Pqa --info --stacktrace --console plain --no-daemon --build-cache
+      --info --stacktrace --console plain --no-daemon --build-cache
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 
 qa_plugin_task:
   <<: *QA_TASK_FILTER
   env:
     ITS_PROJECT: "plugin"
-    GRADLE_TASK: ":its:plugin:test"
+    GRADLE_TASK: ":its:plugin:integrationTest"
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
@@ -137,7 +137,7 @@ qa_ruling_task:
   <<: *QA_TASK_FILTER
   env:
     SQ_VERSION: "LATEST_RELEASE"
-    GRADLE_TASK: ":its:ruling:test"
+    GRADLE_TASK: ":its:ruling:integrationTest"
     ITS_PROJECT: "ruling"
   <<: *LINUX_4_CPU_8G
   <<: *GRADLE_ITS_TEMPLATE

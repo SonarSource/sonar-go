@@ -38,13 +38,13 @@ git submodule update --init
 Then build and run the Integration Tests using the `its` property:
 
 ```shell
-    ./gradlew build -Pits --info --no-daemon
+    ./gradlew integrationTest --info --no-daemon
 ```
 
-You can also build and run only Ruling Tests using the `ruling` property:
+You can also build and run only Ruling Tests:
 
 ```shell
-./gradlew build -Pruling --info --no-daemon
+./gradlew :its:ruling:integrationTest --info --no-daemon
 ```
 
 ## License headers
