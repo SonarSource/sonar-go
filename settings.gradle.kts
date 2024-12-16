@@ -21,6 +21,9 @@ develocity {
         if (System.getenv("CIRRUS_PR")?.isBlank() == false) {
             tag("PR")
         }
+        value("Build Number", System.getenv("BUILD_NUMBER"))
+        value("Branch", System.getenv("CIRRUS_BRANCH"))
+        value("PR", System.getenv("CIRRUS_PR"))
     }
 }
 
