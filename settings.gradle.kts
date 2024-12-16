@@ -12,6 +12,16 @@ plugins {
 
 develocity {
     server = "https://develocity.sonar.build"
+    buildScan {
+        tag(if (System.getenv("CI").isNullOrEmpty()) "local" else "CI")
+        tag(System.getProperty("os.name"))
+        if (System.getenv("CIRRUS_BRANCH") == "master") {
+            tag("master")
+        }
+        if (System.getenv("CIRRUS_PR")?.isBlank() == false) {
+            tag("PR")
+        }
+    }
 }
 
 val isCI = System.getenv("CI") != null
