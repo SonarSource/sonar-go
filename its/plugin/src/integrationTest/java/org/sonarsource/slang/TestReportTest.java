@@ -16,21 +16,16 @@
  */
 package org.sonarsource.slang;
 
-import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarScanner;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestReportTest extends TestBase {
 
   private static final Path BASE_DIRECTORY = Paths.get("projects", "measures");
-
-  @ClassRule
-  public static Orchestrator orchestrator = Tests.ORCHESTRATOR;
 
   @Test
   public void go_test_report() {
