@@ -135,7 +135,7 @@ public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor
 
     try (InputStreamReader inputStreamReader = new InputStreamReader(AbstractReportSensor.class.getClassLoader().getResourceAsStream(pathToRulesMeta), StandardCharsets.UTF_8)) {
       JsonArray jsonArray = Json.parse(inputStreamReader).asArray();
-      for(JsonValue jsonValue : jsonArray) {
+      for (JsonValue jsonValue : jsonArray) {
         JsonObject rule = jsonValue.asObject();
         NewRule newRule = externalRepo.createRule(rule.getString("key", null))
           .setName(rule.getString("name", null))

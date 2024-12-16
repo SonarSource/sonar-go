@@ -17,12 +17,10 @@
 package org.sonarsource.slang;
 
 import com.sonar.orchestrator.build.SonarScanner;
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.Rule;
@@ -33,6 +31,7 @@ import org.sonarqube.ws.client.issues.SearchRequest;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+
 public class ExternalReportTest extends TestBase {
 
   private static final String BASE_DIRECTORY = "projects/externalreport/";
@@ -74,8 +73,7 @@ public class ExternalReportTest extends TestBase {
         "pivot.go|external_golint:Names|MAJOR|5min|line:11|don't use underscores in Go names; var ascii_lowercase should be asciiLowercase\n" +
         "pivot.go|external_golint:Names|MAJOR|5min|line:12|don't use underscores in Go names; var ascii_uppercase_len should be asciiUppercaseLen\n" +
         "pivot.go|external_golint:Names|MAJOR|5min|line:13|don't use underscores in Go names; var ascii_lowercase_len should be asciiLowercaseLen\n" +
-        "pivot.go|external_golint:Names|MAJOR|5min|line:14|don't use underscores in Go names; var ascii_allowed should be asciiAllowed"
-    );
+        "pivot.go|external_golint:Names|MAJOR|5min|line:14|don't use underscores in Go names; var ascii_allowed should be asciiAllowed");
   }
 
   @Test

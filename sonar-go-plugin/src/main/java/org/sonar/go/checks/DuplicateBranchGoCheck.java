@@ -30,8 +30,8 @@ public class DuplicateBranchGoCheck extends DuplicateBranchCheck {
   @Override
   protected void checkConditionalStructure(CheckContext ctx, Tree tree, ConditionalStructure conditional) {
     /*
-      If we enter a type switch, we may find branches with similar ASTs but different semantics.
-      In this case, we stop exploring the conditional structure to avoid raising FPs.
+     * If we enter a type switch, we may find branches with similar ASTs but different semantics.
+     * In this case, we stop exploring the conditional structure to avoid raising FPs.
      */
     if (tree instanceof MatchTree && isTypeSwitch((MatchTree) tree)) {
       return;

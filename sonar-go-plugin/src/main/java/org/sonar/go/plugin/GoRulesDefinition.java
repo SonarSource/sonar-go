@@ -17,7 +17,6 @@
 package org.sonar.go.plugin;
 
 import java.util.List;
-
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.go.externalreport.AbstractReportSensor;

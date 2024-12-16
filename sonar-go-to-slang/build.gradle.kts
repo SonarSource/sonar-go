@@ -11,7 +11,10 @@ sonarqube {
         property("sonar.test.inclusions", "**/*_test.go")
         property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
         property("sonar.go.tests.reportPaths", "${project.projectDir}/.gogradle/reports/test-report.out")
-        property("sonar.go.coverage.reportPaths", "${project.projectDir}/.gogradle/reports/coverage/profiles/github.com%2FSonarSource%2Fslang%2Fsonar-go-to-slang.out")
+        property(
+            "sonar.go.coverage.reportPaths",
+            "${project.projectDir}/.gogradle/reports/coverage/profiles/github.com%2FSonarSource%2Fslang%2Fsonar-go-to-slang.out"
+        )
     }
 }
 

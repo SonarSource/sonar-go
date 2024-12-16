@@ -35,6 +35,6 @@ class GoLanguageTest {
     MapSettings mapSettings = new MapSettings();
     mapSettings.setProperty("sonar.go.file.suffixes", ".go1,.go2");
     GoLanguage typeScriptLanguage = new GoLanguage(mapSettings.asConfig());
-    assertThat(typeScriptLanguage.getFileSuffixes()).containsExactly(".go1",".go2");
+    assertThat(typeScriptLanguage.getFileSuffixes()).containsExactly(".go1", ".go2");
   }
 }

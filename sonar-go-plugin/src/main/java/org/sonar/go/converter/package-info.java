@@ -14,7 +14,5 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-@ParametersAreNonnullByDefault
+@javax.annotation.ParametersAreNonnullByDefault
 package org.sonar.go.converter;
-
-import javax.annotation.ParametersAreNonnullByDefault;

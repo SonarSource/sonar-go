@@ -132,10 +132,9 @@ public class GoCoverSensor implements Sensor {
     Configuration config = sensorContext.config();
     Path baseDir = sensorContext.fileSystem().baseDir().toPath();
     String[] reportPaths = config.getStringArray(REPORT_PATH_KEY);
-    return Arrays.stream(reportPaths).flatMap(reportPath ->
-      isWildcard(reportPath)
-        ? getPatternPaths(baseDir, reportPath)
-        : getRegularPath(baseDir, reportPath));
+    return Arrays.stream(reportPaths).flatMap(reportPath -> isWildcard(reportPath)
+      ? getPatternPaths(baseDir, reportPath)
+      : getRegularPath(baseDir, reportPath));
   }
 
   private static Stream<Path> getRegularPath(Path baseDir, String reportPath) {
@@ -245,14 +244,14 @@ public class GoCoverSensor implements Sensor {
       for (int line = startLine; line <= endLine; line++) {
         if (!isEmpty(line - 1)) {
           lineMap.computeIfAbsent(line, key -> new LineCoverage())
-                 .add(coverage);
+            .add(coverage);
         }
       }
     }
 
     private boolean isEmpty(int line) {
       return lines != null &&
-             lines.get(line).trim().isEmpty();
+        lines.get(line).trim().isEmpty();
     }
 
     int findStartIgnoringBrace(CoverageStat coverage) {
@@ -307,7 +306,7 @@ public class GoCoverSensor implements Sensor {
       if (sum > Integer.MAX_VALUE) {
         hits = Integer.MAX_VALUE;
       } else {
-        hits  = (int) sum;
+        hits = (int) sum;
       }
     }
   }

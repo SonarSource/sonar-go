@@ -33,9 +33,9 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.measures.CoreMetrics;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 import org.sonar.go.coverage.GoPathContext;
 import org.sonar.go.testreport.GoTestSensor.TestInfo;
+import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -167,7 +167,6 @@ class GoTestSensorTest {
     fs.add(nestedTestFile);
     return nestedTestFile;
   }
-
 
   @Test
   void subtests() throws Exception {

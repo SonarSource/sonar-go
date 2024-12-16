@@ -70,8 +70,7 @@ public class GoPlugin implements Plugin {
         .subCategory(GENERAL_SUBCATEGORY)
         .onQualifiers(Qualifiers.PROJECT)
         .multiValues(true)
-        .build()
-     );
+        .build());
 
     if (context.getRuntime().getProduct() != SonarProduct.SONARLINT) {
       addReportExtensions(context);
@@ -148,7 +147,6 @@ public class GoPlugin implements Plugin {
         .onQualifiers(Qualifiers.PROJECT)
         .defaultValue("")
         .multiValues(true)
-        .build()
-    );
+        .build());
   }
 }

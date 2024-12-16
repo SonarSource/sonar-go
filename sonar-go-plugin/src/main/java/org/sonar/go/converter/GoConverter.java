@@ -146,7 +146,7 @@ public class GoConverter implements ASTConverter {
 
     static byte[] getBytesFromResource(String executable) throws IOException {
       ByteArrayOutputStream out = new ByteArrayOutputStream();
-      try(InputStream in = GoConverter.class.getClassLoader().getResourceAsStream(executable)) {
+      try (InputStream in = GoConverter.class.getClassLoader().getResourceAsStream(executable)) {
         if (in == null) {
           throw new IllegalStateException(executable + " binary not found on class path");
         }

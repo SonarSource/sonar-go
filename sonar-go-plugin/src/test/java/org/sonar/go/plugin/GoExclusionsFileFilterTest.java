@@ -83,7 +83,7 @@ class GoExclusionsFileFilterTest {
   }
 
   private DefaultInputFile inputFile(String file) {
-    return new TestInputFileBuilder("test","test_vendor/" + file).setLanguage(file.split("\\.")[1]).build();
+    return new TestInputFileBuilder("test", "test_vendor/" + file).setLanguage(file.split("\\.")[1]).build();
   }
 
 }

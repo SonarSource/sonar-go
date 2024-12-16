@@ -1,6 +1,6 @@
 import java.text.SimpleDateFormat
-import java.util.HashSet
 import java.util.Date
+import java.util.HashSet
 import java.util.jar.JarInputStream
 
 plugins {
@@ -40,8 +40,12 @@ dependencies {
 tasks.jar {
     manifest {
         val displayVersion =
-            if (!project.hasProperty("buildNumber")) project.version else project.version.toString()
-                .substring(0, project.version.toString().lastIndexOf(".")) + " (build ${project.property("buildNumber")})"
+            if (!project.hasProperty("buildNumber")) {
+                project.version
+            } else {
+                project.version.toString()
+                    .substring(0, project.version.toString().lastIndexOf(".")) + " (build ${project.property("buildNumber")})"
+            }
         val buildDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())
         val commitHash = providers.exec {
             commandLine("git", "rev-parse", "HEAD")
@@ -69,7 +73,7 @@ tasks.jar {
                 "Sonar-Version" to "6.7",
                 "SonarLint-Supported" to "true",
                 "Version" to "${project.version}",
-                "Jre-Min-Version" to "11",
+                "Jre-Min-Version" to "11"
             )
         )
     }
@@ -110,7 +114,11 @@ publishing {
     }
 }
 
-fun enforceJarSizeAndCheckContent(file: File, minSize: Long, maxSize: Long) {
+fun enforceJarSizeAndCheckContent(
+    file: File,
+    minSize: Long,
+    maxSize: Long,
+) {
     val size = file.length()
     if (size < minSize) {
         throw GradleException("${file.path} size ($size) too small. Min is $minSize")

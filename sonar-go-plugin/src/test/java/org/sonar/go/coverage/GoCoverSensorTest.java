@@ -34,11 +34,11 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 import org.sonar.go.coverage.GoCoverSensor.Coverage;
 import org.sonar.go.coverage.GoCoverSensor.CoverageStat;
 import org.sonar.go.coverage.GoCoverSensor.FileCoverage;
 import org.sonar.go.coverage.GoCoverSensor.LineCoverage;
+import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -50,7 +50,6 @@ class GoCoverSensorTest {
 
   @RegisterExtension
   public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
-
 
   @Test
   void test_descriptor() {
@@ -100,7 +99,7 @@ class GoCoverSensorTest {
     // numStmt is not parsed because not required.
     assertThat(coverage.count).isEqualTo(234);
 
-    assertThatThrownBy(() -> new CoverageStat(42, "invalid") )
+    assertThatThrownBy(() -> new CoverageStat(42, "invalid"))
       .isInstanceOf(IllegalArgumentException.class)
       .hasMessageContaining("Invalid go coverage at line 42");
   }
@@ -127,7 +126,7 @@ class GoCoverSensorTest {
   void line_coverage_over_flow() {
     LineCoverage line = new LineCoverage();
     // hits is greater than Integer.MAX_VALUE
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 " + + (((long)Integer.MAX_VALUE) + 1)));
+    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 " + +(((long) Integer.MAX_VALUE) + 1)));
     assertThat(line.hits).isEqualTo(Integer.MAX_VALUE);
 
     LineCoverage lineWithTwoStats = new LineCoverage();
@@ -243,7 +242,7 @@ class GoCoverSensorTest {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     context.setSettings(new MapSettings());
     context.settings().setProperty("sonar.go.coverage.reportPaths",
-      "*.absolute.out,glob" + File.separator +"*.out, test*" + File.separator +"*.out, coverage?.out");
+      "*.absolute.out,glob" + File.separator + "*.out, test*" + File.separator + "*.out, coverage?.out");
     Stream<Path> reportPaths = GoCoverSensor.getReportPaths(context);
     assertThat(reportPaths).containsExactlyInAnyOrder(
       Paths.get("src", "test", "resources", "coverage", "coverage.linux.absolute.out"),
@@ -253,7 +252,7 @@ class GoCoverSensorTest {
       Paths.get("src", "test", "resources", "coverage", "coverage1.out"));
 
     context.settings().setProperty("sonar.go.coverage.reportPaths",
-      "**" + File.separator +"coverage.glob.out");
+      "**" + File.separator + "coverage.glob.out");
     Stream<Path> reportPaths2 = GoCoverSensor.getReportPaths(context);
     assertThat(reportPaths2).containsExactlyInAnyOrder(
       Paths.get("src", "test", "resources", "coverage", "glob", "coverage.glob.out"));

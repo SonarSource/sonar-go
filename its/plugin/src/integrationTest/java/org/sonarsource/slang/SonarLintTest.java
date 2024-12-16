@@ -30,7 +30,6 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.groups.Tuple;
 import org.jetbrains.annotations.NotNull;
@@ -98,9 +97,8 @@ public class SonarLintTest {
   public void test_go() throws Exception {
     ClientInputFile inputFile = prepareInputFile(
       "package main\n"
-        + "func empty() {\n"        // go:S1186 (empty function)
-        + "}\n"
-    );
+        + "func empty() {\n" // go:S1186 (empty function)
+        + "}\n");
 
     assertIssues(analyzeWithSonarLint(inputFile),
       tuple("go:S1186", 2, inputFile.getPath(), IssueSeverity.CRITICAL));
@@ -110,9 +108,8 @@ public class SonarLintTest {
   public void test_go_nosonar() throws Exception {
     ClientInputFile goInputFile = prepareInputFile(
       "package main\n"
-        + "func empty() { // NOSONAR\n"        //  skipped go:S1186 (empty function)
-        + "}\n"
-    );
+        + "func empty() { // NOSONAR\n" // skipped go:S1186 (empty function)
+        + "}\n");
     assertThat(analyzeWithSonarLint(goInputFile)).isEmpty();
   }
 
@@ -162,7 +159,6 @@ public class SonarLintTest {
       public Charset getCharset() {
         return StandardCharsets.UTF_8;
       }
-
 
       @Override
       public <G> G getClientObject() {
