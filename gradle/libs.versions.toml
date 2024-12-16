@@ -1,0 +1,32 @@
+[versions]
+slang-dependencies = "1.17.0.6351"
+analyzer-commons = "2.16.0.3141"
+plugin-api = "10.10.0.2391"
+sonarqube = "10.0.0.68432"
+orchestrator = "3.42.0.312"
+sonarlint = "9.0.0.74282"
+minimal-json = "0.9.5"
+mockito-core = "5.13.0"
+assertj-core = "3.26.3"
+junit-jupiter = "5.11.0"
+
+[libraries]
+sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
+sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-commons", version.ref = "analyzer-commons" }
+slang-api = { group = "org.sonarsource.slang", name = "slang-api", version.ref = "slang-dependencies" }
+slang-checks = { group = "org.sonarsource.slang", name = "slang-checks", version.ref = "slang-dependencies" }
+slang-plugin = { group = "org.sonarsource.slang", name = "slang-plugin", version.ref = "slang-dependencies" }
+checkstyle-import = { group = "org.sonarsource.slang", name = "checkstyle-import", version.ref = "slang-dependencies" }
+minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
+sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
+sonar-plugin-api-impl = { group = "org.sonarsource.sonarqube", name = "sonar-plugin-api-impl", version.ref = "sonarqube" }
+sonar-orchestrator = { group = "org.sonarsource.orchestrator", name = "sonar-orchestrator", version.ref = "orchestrator" }
+sonarlint-core = { group = "org.sonarsource.sonarlint.core", name = "sonarlint-core", version.ref = "sonarlint" }
+sonar-ws = { group = "org.sonarsource.sonarqube", name = "sonar-ws", version.ref = "sonarqube" }
+slang-antlr = { group = "org.sonarsource.slang", name = "slang-antlr", version.ref = "slang-dependencies" }
+slang-testing = { group = "org.sonarsource.slang", name = "slang-testing", version.ref = "slang-dependencies" }
+mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-core" }
+assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj-core" }
+junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
+junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-jupiter" }
