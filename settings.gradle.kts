@@ -8,6 +8,7 @@ pluginManagement {
 
 plugins {
     id("com.gradle.develocity") version "3.18.2"
+    id("com.diffplug.blowdryerSetup") version "1.7.1"
 }
 
 develocity {

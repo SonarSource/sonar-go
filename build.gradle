@@ -4,7 +4,6 @@ plugins {
     id 'com.jfrog.artifactory' version '4.28.2'
     id 'org.sonarqube' version '6.0.1.5171'
     id 'de.thetaphi.forbiddenapis' version '3.0' apply false
-    id 'com.diffplug.spotless' version '6.15.0'
 }
 
 allprojects {
@@ -51,8 +50,6 @@ subprojects {
     // do not publish to Artifactory by default
     artifactoryPublish.skip = true
 
-    apply plugin: 'com.diffplug.spotless'
-
     configurations {
         // include compileOnly dependencies during test
         testCompile.extendsFrom compileOnly
@@ -65,18 +62,6 @@ subprojects {
         systemProperties = System.properties.subMap(propKeys)
         if (propKeys.contains("buildNumber") && !propKeys.contains("slangVersion")) {
             systemProperties["slangVersion"] = version
-        }
-    }
-
-    // license updater
-    spotless {
-        java {
-            targetExclude "**/src/test/resources/**", "**/build/**", "its/sources/**", "its/plugin/projects/**"
-            licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
-        }
-        format("javaMisc") {
-            target("src/**/package-info.java")
-            licenseHeaderFile(rootProject.file("LICENSE_HEADER"), "(@javax.annotation|@ParametersAreNonnullByDefault)").updateYearWithLatest(true)
         }
     }
 
