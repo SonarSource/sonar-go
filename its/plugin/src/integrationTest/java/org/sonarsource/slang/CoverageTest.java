@@ -17,14 +17,12 @@
 package org.sonarsource.slang;
 
 import com.sonar.orchestrator.build.SonarScanner;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoverageTest extends TestBase {

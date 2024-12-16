@@ -20,8 +20,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-
+import org.sonar.go.checks.CodeAfterJumpGoCheck;
 import org.sonar.go.checks.DuplicateBranchGoCheck;
+import org.sonar.go.checks.OneStatementPerLineGoCheck;
 import org.sonarsource.slang.checks.BadClassNameCheck;
 import org.sonarsource.slang.checks.CheckList;
 import org.sonarsource.slang.checks.CodeAfterJumpCheck;
@@ -32,9 +33,6 @@ import org.sonarsource.slang.checks.TabsCheck;
 import org.sonarsource.slang.checks.UnusedFunctionParameterCheck;
 import org.sonarsource.slang.checks.UnusedLocalVariableCheck;
 import org.sonarsource.slang.checks.UnusedPrivateMethodCheck;
-
-import org.sonar.go.checks.CodeAfterJumpGoCheck;
-import org.sonar.go.checks.OneStatementPerLineGoCheck;
 
 public class GoCheckList {
 
@@ -60,8 +58,7 @@ public class GoCheckList {
   private static final Collection<Class<?>> GO_LANGUAGE_SPECIFIC_CHECKS = Arrays.asList(
     CodeAfterJumpGoCheck.class,
     DuplicateBranchGoCheck.class,
-    OneStatementPerLineGoCheck.class
-  );
+    OneStatementPerLineGoCheck.class);
 
   public static List<Class<?>> checks() {
     List<Class<?>> list = new ArrayList<>(CheckList.excludeChecks(GO_CHECK_BLACK_LIST));

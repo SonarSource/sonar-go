@@ -69,10 +69,8 @@ public class GoSensor extends SlangSensor {
 
   @Override
   protected Predicate<Tree> executableLineOfCodePredicate() {
-    return super.executableLineOfCodePredicate().and(t ->
-      !(t instanceof VariableDeclarationTree)
-        && !isGenericDeclaration(t)
-    );
+    return super.executableLineOfCodePredicate().and(t -> !(t instanceof VariableDeclarationTree)
+      && !isGenericDeclaration(t));
   }
 
   private static boolean isGenericDeclaration(Tree tree) {

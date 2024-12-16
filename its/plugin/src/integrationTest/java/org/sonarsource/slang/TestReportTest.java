@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 public class TestReportTest extends TestBase {
 
-  private static final Path BASE_DIRECTORY = Paths.get("projects","measures");
+  private static final Path BASE_DIRECTORY = Paths.get("projects", "measures");
 
   @ClassRule
   public static Orchestrator orchestrator = Tests.ORCHESTRATOR;

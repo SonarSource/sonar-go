@@ -29,12 +29,12 @@ public class CodeAfterJumpGoCheck extends CodeAfterJumpCheck {
   @Override
   protected boolean isValidAfterJump(Tree tree) {
     return tree instanceof NativeTree &&
-           ((NativeTree) tree).nativeKind().toString().contains(LABEL);
+      ((NativeTree) tree).nativeKind().toString().contains(LABEL);
   }
 
   @Override
   protected boolean shouldIgnore(Tree tree) {
     return tree instanceof NativeTree &&
-           ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
+      ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
   }
 }

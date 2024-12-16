@@ -19,8 +19,8 @@ package org.sonar.go.checks;
 import org.junit.jupiter.api.Test;
 
 class CodeAfterJumpGoCheckTest {
-    @Test
-    void test() {
-        GoVerifier.verify("CodeAfterJumpGoCheck.go", new CodeAfterJumpGoCheck());
-    }
+  @Test
+  void test() {
+    GoVerifier.verify("CodeAfterJumpGoCheck.go", new CodeAfterJumpGoCheck());
+  }
 }

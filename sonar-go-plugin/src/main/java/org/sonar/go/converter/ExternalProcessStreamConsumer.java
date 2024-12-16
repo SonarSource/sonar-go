@@ -26,7 +26,6 @@ import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 class ExternalProcessStreamConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(ExternalProcessStreamConsumer.class);

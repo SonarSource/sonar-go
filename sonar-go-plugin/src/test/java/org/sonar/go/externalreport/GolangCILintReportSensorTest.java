@@ -84,7 +84,6 @@ class GolangCILintReportSensorTest {
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
   }
 
-
   @Test
   void import_check_style_report_same_source_different_key() throws IOException {
     // Check that rules have different key based on the severity

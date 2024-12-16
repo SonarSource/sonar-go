@@ -196,7 +196,6 @@ public class GoTestSensor implements Sensor {
     }
   }
 
-
   private static void saveTestMetrics(SensorContext context, InputFile testFile, List<TestInfo> tests) {
     int skip = 0;
     long timeMs = 0;

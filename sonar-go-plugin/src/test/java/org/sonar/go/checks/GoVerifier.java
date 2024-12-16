@@ -16,18 +16,17 @@
  */
 package org.sonar.go.checks;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import org.sonar.go.converter.GoConverter;
 import org.sonarsource.slang.api.ASTConverter;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
 public class GoVerifier {
-    private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");
-    private static final ASTConverter CONVERTER = new GoConverter(Paths.get("build", "tmp").toFile());
+  private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");
+  private static final ASTConverter CONVERTER = new GoConverter(Paths.get("build", "tmp").toFile());
 
-    public static void verify(String fileName, SlangCheck check) {
-        org.sonarsource.slang.testing.Verifier.verify(CONVERTER, BASE_DIR.resolve(fileName), check);
-    }
+  public static void verify(String fileName, SlangCheck check) {
+    org.sonarsource.slang.testing.Verifier.verify(CONVERTER, BASE_DIR.resolve(fileName), check);
+  }
 }

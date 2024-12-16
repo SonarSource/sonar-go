@@ -51,7 +51,7 @@ class GoConverterTest {
 
     checkIntegerValue(returnList.get(0), "42");
   }
-  
+
   @Test
   void test_parse_binary_notation() {
     GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
@@ -79,7 +79,7 @@ class GoConverterTest {
       .collect(Collectors.toList());
     assertThat(classList).hasSize(3);
   }
-  
+
   @Test
   void test_parse_infinite_for() {
     GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());

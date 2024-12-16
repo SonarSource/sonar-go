@@ -74,11 +74,10 @@ public class GoPathContext {
    * See {@link GoCoverSensor#findInputFile(String, FileSystem)}
    */
   public String resolve(String filePath) {
-    return resolvedPaths.computeIfAbsent(filePath, path ->
-      getAbsolutePathForOldGoVersions(path)
-        .orElseGet(() -> getAbsolutePath(path)
+    return resolvedPaths.computeIfAbsent(filePath, path -> getAbsolutePathForOldGoVersions(path)
+      .orElseGet(() -> getAbsolutePath(path)
         .orElseGet(() -> prefixByFirstValidGoPath(path)
-        .orElseGet(() -> prefixByFirstGoPath(path)))));
+          .orElseGet(() -> prefixByFirstGoPath(path)))));
   }
 
   /**
@@ -88,7 +87,7 @@ public class GoPathContext {
    * unix: "_/mnt/c/src..." vs "/mnt/c/src..."
    * windows: "_\c_\src..." vs "c:\src..."
    */
-  private static Optional<String> getAbsolutePathForOldGoVersions(String path){
+  private static Optional<String> getAbsolutePathForOldGoVersions(String path) {
     if (path.startsWith(LINUX_ABSOLUTE_OLD_PREFIX)) {
       return Optional.of(path.substring(1));
     } else if (path.startsWith(WINDOWS_ABSOLUTE_OLD_PREFIX)) {

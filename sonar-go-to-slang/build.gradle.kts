@@ -1,3 +1,7 @@
+plugins {
+    id("org.sonarsource.cloud-native.code-style-conventions")
+}
+
 sonarqube {
     properties {
         property("sonar.sources", ".")
@@ -7,7 +11,10 @@ sonarqube {
         property("sonar.test.inclusions", "**/*_test.go")
         property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
         property("sonar.go.tests.reportPaths", "${project.projectDir}/.gogradle/reports/test-report.out")
-        property("sonar.go.coverage.reportPaths", "${project.projectDir}/.gogradle/reports/coverage/profiles/github.com%2FSonarSource%2Fslang%2Fsonar-go-to-slang.out")
+        property(
+            "sonar.go.coverage.reportPaths",
+            "${project.projectDir}/.gogradle/reports/coverage/profiles/github.com%2FSonarSource%2Fslang%2Fsonar-go-to-slang.out"
+        )
     }
 }
 
@@ -43,4 +50,23 @@ generateTestReport {
 }
 tasks.build {
     dependsOn(generateTestReport)
+}
+
+if (System.getenv("CI") == "true") {
+    // spotless is enabled only for CI, because spotless relies on Go installation being available on the machine
+    spotless {
+        go {
+            val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
+            gofmt("go$goVersion").withGoExecutable(System.getenv("HOME") + "/go/bin/go")
+            target("*.go", "**/*.go")
+            targetExclude("*_generated.go")
+        }
+    }
+    // For now, these tasks rely on installation of Go performed by the call to make.sh
+    tasks.spotlessCheck {
+        dependsOn(generateParserAndBuild)
+    }
+    tasks.spotlessApply {
+        dependsOn(generateParserAndBuild)
+    }
 }

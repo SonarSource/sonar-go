@@ -16,9 +16,7 @@
  */
 package org.sonarsource.slang;
 
-import java.util.List;
 import org.junit.Test;
-import org.sonarqube.ws.Issues;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

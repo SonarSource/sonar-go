@@ -30,7 +30,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
-
 import org.apache.commons.lang.StringUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -47,7 +46,6 @@ public class GoRulingTest {
 
   private static Orchestrator orchestrator;
   private static boolean keepSonarqubeRunning = "true".equals(System.getProperty("keepSonarqubeRunning"));
-
 
   @BeforeClass
   public static void setUp() {

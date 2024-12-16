@@ -28,6 +28,6 @@ public class OneStatementPerLineGoCheck extends OneStatementPerLineCheck {
   @Override
   protected boolean shouldIgnore(Tree tree) {
     return tree instanceof NativeTree &&
-           ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
+      ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
   }
 }

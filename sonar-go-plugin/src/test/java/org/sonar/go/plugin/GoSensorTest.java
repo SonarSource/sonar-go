@@ -47,10 +47,10 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 import org.sonar.go.converter.GoConverter;
 import org.sonarsource.slang.checks.api.SlangCheck;
 import org.sonarsource.slang.testing.AbstractSensorTest;
+import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -194,7 +194,6 @@ class GoSensorTest {
     assertThat(fileLinesContext.metrics.keySet()).containsExactlyInAnyOrder(CoreMetrics.NCLOC_DATA_KEY,
       CoreMetrics.EXECUTABLE_LINES_DATA_KEY);
 
-
     assertThat(fileLinesContext.metrics.get(CoreMetrics.NCLOC_DATA_KEY)).containsExactlyInAnyOrder(
       "2:1", "3:1", "4:1", "5:1", "6:1", "7:1", "8:1", "9:1", "10:1", "11:1",
       "12:1", "13:1", "14:1", "15:1", "16:1", "17:1", "18:1", "19:1", "20:1");
@@ -219,8 +218,7 @@ class GoSensorTest {
         "}\n" +
         "type (\n" +
         "\tRrsType string\n" +
-        ")\n"
-    );
+        ")\n");
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -256,7 +254,7 @@ class GoSensorTest {
   @Test
   void cognitive_complexity_metric() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-        "package main\n" +
+      "package main\n" +
         "import \"fmt\"\n" +
         "func fun1(i int) int {\n" +
         "  if i < 0 { // +1\n" +
