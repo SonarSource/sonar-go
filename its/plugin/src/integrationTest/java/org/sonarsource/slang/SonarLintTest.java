@@ -101,12 +101,13 @@ public class SonarLintTest {
       DISABLE_TELEMETRY,
       CAN_NOT_OPEN_FIX_SUGGESTION);
     backend.initialize(
-        new InitializeParams(IT_CLIENT_INFO, IT_TELEMETRY_ATTRIBUTES, HttpConfigurationDto.defaultConfig(), null, featureFlags,
-          sonarUserHome.resolve("storage"),
-          sonarUserHome.resolve("work"),
-          Set.of(GO_PLUGIN_LOCATION.getFile().toPath()), Collections.emptyMap(),
-          Set.of(org.sonarsource.sonarlint.core.rpc.protocol.common.Language.GO), Collections.emptySet(), Collections.emptySet(), Collections.emptyList(), Collections.emptyList(), sonarUserHome.toString(), Map.of(),
-          false, null, false, null))
+      new InitializeParams(IT_CLIENT_INFO, IT_TELEMETRY_ATTRIBUTES, HttpConfigurationDto.defaultConfig(), null, featureFlags,
+        sonarUserHome.resolve("storage"),
+        sonarUserHome.resolve("work"),
+        Set.of(GO_PLUGIN_LOCATION.getFile().toPath()), Collections.emptyMap(),
+        Set.of(org.sonarsource.sonarlint.core.rpc.protocol.common.Language.GO), Collections.emptySet(), Collections.emptySet(), Collections.emptyList(), Collections.emptyList(),
+        sonarUserHome.toString(), Map.of(),
+        false, null, false, null))
       .get();
   }
 
