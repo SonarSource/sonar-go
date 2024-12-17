@@ -17,7 +17,6 @@
 package org.sonarsource.slang;
 
 import com.sonar.orchestrator.Orchestrator;
-import com.sonar.orchestrator.OrchestratorBuilder;
 import com.sonar.orchestrator.locator.Locators;
 import java.io.File;
 import java.io.IOException;
@@ -33,11 +32,10 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.assertj.core.groups.Tuple;
 import org.jetbrains.annotations.NotNull;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.sonarsource.sonarlint.core.StandaloneSonarLintEngineImpl;
 import org.sonarsource.sonarlint.core.analysis.api.ClientInputFile;
 import org.sonarsource.sonarlint.core.client.api.common.analysis.Issue;
@@ -52,22 +50,14 @@ import static org.assertj.core.api.Assertions.tuple;
 
 public class SonarLintTest {
 
-  @ClassRule
-  public static TemporaryFolder temp = new TemporaryFolder();
+  @TempDir
+  static Path baseDir;
 
   private static StandaloneSonarLintEngine sonarlintEngine;
 
-  private static File baseDir;
-
-  @BeforeClass
-  public static void prepare() throws Exception {
-    // Orchestrator is used only to retrieve plugin artifacts from filesystem or maven
-    OrchestratorBuilder orchestratorBuilder = Orchestrator.builderEnv();
-    Tests.addGoPlugin(orchestratorBuilder);
-    Orchestrator orchestrator = orchestratorBuilder
-      .useDefaultAdminCredentialsForBuilds(true)
-      .setSonarVersion(System.getProperty(Tests.SQ_VERSION_PROPERTY, Tests.DEFAULT_SQ_VERSION))
-      .build();
+  @BeforeAll
+  public static void prepare() {
+    Orchestrator orchestrator = TestBase.ORCHESTRATOR;
 
     Locators locators = orchestrator.getConfiguration().locators();
     StandaloneGlobalConfiguration.Builder sonarLintConfigBuilder = StandaloneGlobalConfiguration.builder();
@@ -77,7 +67,7 @@ public class SonarLintTest {
       .forEach(sonarLintConfigBuilder::addPlugin);
 
     sonarLintConfigBuilder
-      .setSonarLintUserHome(temp.newFolder().toPath())
+      .setSonarLintUserHome(baseDir)
       .setLogOutput((formattedMessage, level) -> {
         /* Don't pollute logs */
       });
@@ -85,10 +75,9 @@ public class SonarLintTest {
       .addEnabledLanguage(Language.GO)
       .build();
     sonarlintEngine = new StandaloneSonarLintEngineImpl(configuration);
-    baseDir = temp.newFolder();
   }
 
-  @AfterClass
+  @AfterAll
   public static void stop() {
     sonarlintEngine.stop();
   }
@@ -116,7 +105,7 @@ public class SonarLintTest {
   private List<Issue> analyzeWithSonarLint(ClientInputFile inputFile) {
     List<Issue> issues = new ArrayList<>();
     StandaloneAnalysisConfiguration analysisConfiguration = StandaloneAnalysisConfiguration.builder()
-      .setBaseDir(baseDir.toPath())
+      .setBaseDir(baseDir)
       .addInputFiles(Collections.singletonList(inputFile))
       .build();
 
@@ -132,7 +121,7 @@ public class SonarLintTest {
   }
 
   private ClientInputFile prepareInputFile(String content) throws IOException {
-    File file = new File(baseDir, "foo.go");
+    File file = new File(baseDir.toFile(), "foo.go");
     FileUtils.write(file, content, StandardCharsets.UTF_8);
     return createInputFile(file.toPath());
   }

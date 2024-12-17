@@ -3,12 +3,14 @@ slang-dependencies = "1.17.0.6351"
 analyzer-commons = "2.16.0.3141"
 plugin-api = "10.10.0.2391"
 sonarqube = "10.0.0.68432"
-orchestrator = "3.42.0.312"
+orchestrator = "5.1.0.2254"
 sonarlint = "9.0.0.74282"
 minimal-json = "0.9.5"
 mockito-core = "5.13.0"
 assertj-core = "3.26.3"
 junit-jupiter = "5.11.0"
+# slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api in integration tests
+slf4j-api = "1.7.30"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -20,7 +22,7 @@ checkstyle-import = { group = "org.sonarsource.slang", name = "checkstyle-import
 minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
 sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
 sonar-plugin-api-impl = { group = "org.sonarsource.sonarqube", name = "sonar-plugin-api-impl", version.ref = "sonarqube" }
-sonar-orchestrator = { group = "org.sonarsource.orchestrator", name = "sonar-orchestrator", version.ref = "orchestrator" }
+sonar-orchestrator-junit5 = { group = "org.sonarsource.orchestrator", name = "sonar-orchestrator-junit5", version.ref = "orchestrator" }
 sonarlint-core = { group = "org.sonarsource.sonarlint.core", name = "sonarlint-core", version.ref = "sonarlint" }
 sonar-ws = { group = "org.sonarsource.sonarqube", name = "sonar-ws", version.ref = "sonarqube" }
 slang-antlr = { group = "org.sonarsource.slang", name = "slang-antlr", version.ref = "slang-dependencies" }
@@ -29,4 +31,4 @@ mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mo
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj-core" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
-junit-vintage-engine = { group = "org.junit.vintage", name = "junit-vintage-engine", version.ref = "junit-jupiter" }
+slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-api" }

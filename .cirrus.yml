@@ -125,6 +125,7 @@ qa_plugin_task:
   env:
     ITS_PROJECT: "plugin"
     GRADLE_TASK: ":its:plugin:integrationTest"
+    KEEP_ORCHESTRATOR_RUNNING: "true"
     matrix:
       - SQ_VERSION: "DEV"
       - SQ_VERSION: "LATEST_RELEASE"
@@ -139,6 +140,7 @@ qa_ruling_task:
     SQ_VERSION: "LATEST_RELEASE"
     GRADLE_TASK: ":its:ruling:integrationTest"
     ITS_PROJECT: "ruling"
+    KEEP_ORCHESTRATOR_RUNNING: "true"
   <<: *LINUX_4_CPU_8G
   <<: *GRADLE_ITS_TEMPLATE
   <<: *ON_FAILURE

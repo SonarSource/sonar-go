@@ -17,27 +17,18 @@
 package org.sonarsource.slang;
 
 import com.sonar.orchestrator.build.SonarScanner;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 import org.sonarqube.ws.Issues.Issue;
 import org.sonarqube.ws.client.issues.SearchRequest;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ExternalReportTest extends TestBase {
 
   private static final String BASE_DIRECTORY = "projects/externalreport/";
-
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
 
   @Test
   public void govet() {
@@ -117,14 +108,6 @@ public class ExternalReportTest extends TestBase {
       .getIssuesList().stream()
       .filter(issue -> issue.getRule().startsWith("external_"))
       .collect(Collectors.toList());
-  }
-
-  private Path createTemporaryReportFromTemplate(Path sourceReportPath, String placeHolder, String newValue) throws IOException {
-    String reportContent = new String(Files.readAllBytes(sourceReportPath), UTF_8);
-    reportContent = reportContent.replace(placeHolder, newValue);
-    Path destReportPath = tmpDir.newFile(sourceReportPath.getFileName().toString()).toPath().toRealPath();
-    Files.write(destReportPath, reportContent.getBytes(UTF_8));
-    return destReportPath;
   }
 
   private static String formatIssues(List<Issue> issues) {

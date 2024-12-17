@@ -19,18 +19,13 @@ package org.sonarsource.slang;
 import com.sonar.orchestrator.build.SonarScanner;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class CoverageTest extends TestBase {
 
   private static final Path BASE_DIRECTORY = Paths.get("projects", "measures");
-
-  @Rule
-  public TemporaryFolder tmpDir = new TemporaryFolder();
 
   @Test
   public void go_coverage() {

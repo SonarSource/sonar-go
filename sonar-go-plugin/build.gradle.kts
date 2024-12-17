@@ -90,6 +90,7 @@ tasks.shadowJar {
         exclude("libs/**")
         exclude("META-INF/maven/**")
         exclude("tmp/**")
+        exclude("spotless/**")
     }
     doLast {
         enforceJarSizeAndCheckContent(tasks.shadowJar.get().archiveFile.get().asFile, 9_000_000L, 9_500_000L)

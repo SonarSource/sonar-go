@@ -18,11 +18,20 @@ package org.sonarsource.slang;
 
 import com.sonar.orchestrator.Orchestrator;
 import com.sonar.orchestrator.build.SonarScanner;
+import com.sonar.orchestrator.build.SonarScannerInstaller;
+import com.sonar.orchestrator.config.Configuration;
+import com.sonar.orchestrator.junit5.OrchestratorExtension;
+import com.sonar.orchestrator.junit5.OrchestratorExtensionBuilder;
+import com.sonar.orchestrator.locator.FileLocation;
+import com.sonar.orchestrator.version.Version;
 import java.io.File;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicInteger;
 import javax.annotation.Nullable;
-import org.junit.ClassRule;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.sonarqube.ws.Issues;
 import org.sonarqube.ws.Measures.ComponentWsResponse;
 import org.sonarqube.ws.Measures.Measure;
@@ -36,8 +45,49 @@ import static java.util.Collections.singletonList;
 
 public abstract class TestBase {
 
-  @ClassRule
-  public static final Orchestrator ORCHESTRATOR = Tests.ORCHESTRATOR;
+  public static final String KEEP_ORCHESTRATOR_RUNNING_ENV = "KEEP_ORCHESTRATOR_RUNNING";
+  public static final boolean KEEP_ORCHESTRATOR_RUNNING = "true".equals(System.getenv(KEEP_ORCHESTRATOR_RUNNING_ENV));
+  public static final String SQ_VERSION_PROPERTY = "sonar.runtimeVersion";
+  public static final String DEFAULT_SQ_VERSION = "LATEST_RELEASE";
+  public static final FileLocation GO_PLUGIN_LOCATION = FileLocation.byWildcardFilename(new File("../../sonar-go-plugin/build/libs"), "sonar-go-plugin-*-all.jar");
+  public static final Configuration CONFIGURATION = Configuration.createEnv();
+
+  private static final AtomicInteger REQUESTED_ORCHESTRATORS_KEY = new AtomicInteger();
+  private static final CountDownLatch IS_ORCHESTRATOR_READY = new CountDownLatch(1);
+  private static final String SCANNER_VERSION = "6.2.1.4610";
+
+  private static final OrchestratorExtensionBuilder orchestratorBuilder = OrchestratorExtension.builder(CONFIGURATION);
+  public static final Orchestrator ORCHESTRATOR = orchestratorBuilder
+    .addPlugin(GO_PLUGIN_LOCATION)
+    .useDefaultAdminCredentialsForBuilds(true)
+    .setSonarVersion(System.getProperty(SQ_VERSION_PROPERTY, DEFAULT_SQ_VERSION))
+    .restoreProfileAtStartup(FileLocation.of("src/integrationTest/resources/nosonar-go.xml"))
+    .build();
+
+  @BeforeAll
+  public static void startOrchestrator() {
+    // This is to avoid multiple starts when using nested tests
+    // See https://github.com/junit-team/junit5/issues/2421
+    if (REQUESTED_ORCHESTRATORS_KEY.getAndIncrement() == 0) {
+      ORCHESTRATOR.start();
+      // installed scanner will be shared by all tests
+      new SonarScannerInstaller(CONFIGURATION.locators()).install(Version.create(SCANNER_VERSION), CONFIGURATION.fileSystem().workspace());
+      IS_ORCHESTRATOR_READY.countDown();
+    } else {
+      try {
+        IS_ORCHESTRATOR_READY.await();
+      } catch (InterruptedException e) {
+        throw new IllegalStateException(e);
+      }
+    }
+  }
+
+  @AfterAll
+  public static void stopOrchestrator() {
+    if (!KEEP_ORCHESTRATOR_RUNNING && REQUESTED_ORCHESTRATORS_KEY.decrementAndGet() == 0) {
+      ORCHESTRATOR.stop();
+    }
+  }
 
   protected SonarScanner getSonarScanner(String projectKey, String directoryToScan, String languageKey) {
     return getSonarScanner(projectKey, directoryToScan, languageKey, null);
