@@ -54,7 +54,7 @@ public abstract class TestBase {
 
   private static final AtomicInteger REQUESTED_ORCHESTRATORS_KEY = new AtomicInteger();
   private static final CountDownLatch IS_ORCHESTRATOR_READY = new CountDownLatch(1);
-  private static final String SCANNER_VERSION = "5.0.1.3006";
+  private static final String SCANNER_VERSION = "6.2.1.4610";
 
   private static final OrchestratorExtensionBuilder orchestratorBuilder = OrchestratorExtension.builder(CONFIGURATION);
   public static final Orchestrator ORCHESTRATOR = orchestratorBuilder
