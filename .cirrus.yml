@@ -75,10 +75,8 @@ setup_gradle_cache_template: &SETUP_GRADLE_CACHE
 
 cleanup_gradle_cache_script_template: &CLEANUP_GRADLE_CACHE_SCRIPT
   cleanup_gradle_script:
-    - /usr/bin/find "${CIRRUS_WORKING_DIR}/.gradle/caches/" -name "*.lock" -type f -delete
-    - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/4.10.2/"
-    - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/journal-1/"
-    - rm -rf "${CIRRUS_WORKING_DIR}/.gradle/caches/build-cache-1/"
+    - rm -rf "${GRADLE_USER_HOME}/caches/journal-1/"
+    - find ${GRADLE_USER_HOME}/caches/ -name "*.lock" -type f -delete || true
 
 build_task:
   <<: *LINUX_4_CPU_6G
@@ -90,9 +88,7 @@ build_task:
   build_script:
     - git submodule update --init --depth 1 -- build-logic
     - source cirrus-env BUILD
-    - function gradle(){ ./gradlew "$@"; }; export -f gradle
-    - gradle --version
-    - source set_gradle_build_version
+    - source .cirrus/use-gradle-wrapper.sh
     - regular_gradle_build_deploy_analyze
   <<: *ON_FAILURE
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
@@ -116,7 +112,6 @@ gradle_its_template: &GRADLE_ITS_TEMPLATE
       "-Dsonar.runtimeVersion=${SQ_VERSION}"
       "-Dorchestrator.artifactory.accessToken=${ARTIFACTORY_ACCESS_TOKEN}"
       "-DbuildNumber=$BUILD_NUMBER"
-      -I "${GRADLE_HOME}/init.d/repoxAuth.init.gradle.kts"
       --info --stacktrace --console plain --no-daemon --build-cache
   <<: *CLEANUP_GRADLE_CACHE_SCRIPT
 

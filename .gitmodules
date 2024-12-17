@@ -13,4 +13,4 @@
 [submodule "build-logic"]
 	path = build-logic
 	url = https://github.com/SonarSource/cloud-native-gradle-modules
-	branch = SONARGO-82
+	branch = SONARGO-82-2

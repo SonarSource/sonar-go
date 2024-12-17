@@ -22,7 +22,7 @@ import java.util.jar.JarInputStream
 plugins {
     id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.code-style-conventions")
-    id("org.sonarsource.cloud-native.artifactory-configuration")
+    id("org.sonarsource.cloud-native.publishing-configuration")
     id("com.github.johnrengelman.shadow") version "7.1.0"
 }
 
@@ -118,7 +118,7 @@ artifacts {
     archives(tasks.shadowJar)
 }
 
-artifactoryConfiguration {
+publishingConfiguration {
     pomName = properties["projectTitle"] as String
     scmUrl = "https://github.com/SonarSource/sonar-go"
 
@@ -127,11 +127,6 @@ artifactoryConfiguration {
         url = "https://sonarsource.com/license/ssal/"
         distribution = "repo"
     }
-
-    buildName = "sonar-go"
-    repoKeyEnv = "ARTIFACTORY_DEPLOY_REPO"
-    usernameEnv = "ARTIFACTORY_DEPLOY_USERNAME"
-    passwordEnv = "ARTIFACTORY_DEPLOY_PASSWORD"
 }
 
 publishing {
