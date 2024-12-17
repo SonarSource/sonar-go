@@ -1,0 +1,80 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "github>SonarSource/renovate-config:languages-team"
+  ],
+  "schedule": [
+    "before 4am on Monday"
+  ],
+  "enabledManagers": [
+    "gradle",
+    "gradle-wrapper",
+    "github-actions",
+    "gomod",
+    "git-submodules"
+  ],
+  "git-submodules": {
+    "enabled": true
+  },
+  "packageRules": [
+    {
+      "managers": [
+        "github-actions"
+      ],
+      "pinDigests": false,
+      "groupName": "all github actions",
+      "groupSlug": "all-github-actions"
+    },
+    {
+      "managers": [
+        "github-actions"
+      ],
+      "matchUpdateTypes": ["pin", "rollback"],
+      "enabled": false
+    },
+    {
+      "managers": [
+        "gradle"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "managers": [
+        "gomod"
+      ],
+      "matchPackagePatterns": [
+        "*"
+      ],
+      "excludePackageNames": [
+        "go"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "all non-major Go dependencies",
+      "groupSlug": "all-go-minor-patch"
+    },
+    {
+      "managers": [
+        "git-submodules"
+      ],
+      "matchDepNames": [
+        "its/sources/traefik",
+        "its/sources/minio",
+        "its/sources/prometheus",
+        "its/sources/kubernetes-client-go"
+      ],
+      "enabled": false
+    }
+  ],
+  "reviewers": ["team:analysis-cloud-squad"]
+}
