@@ -68,6 +68,13 @@ tasks.build {
     dependsOn(generateTestReport)
 }
 
+spotless {
+    java {
+        // No Java sources in this project
+        target("")
+    }
+}
+
 if (System.getenv("CI") == "true") {
     // spotless is enabled only for CI, because spotless relies on Go installation being available on the machine
     spotless {
