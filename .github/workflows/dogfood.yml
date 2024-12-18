@@ -47,4 +47,4 @@ jobs:
         env:
           SLACK_WEBHOOK: ${{ fromJSON(steps.secrets.outputs.vault).SLACK_WEBHOOK }}
         with:
-          args: 'Dogfood build for `${{ steps.dogfood.outputs.sha1 }}`: *failed*, see the logs at https://github.com/SonarSource/sonar-iac/actions'
+          args: 'Dogfood build for `${{ steps.dogfood.outputs.sha1 }}`: *failed*, see the logs at https://github.com/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID'
