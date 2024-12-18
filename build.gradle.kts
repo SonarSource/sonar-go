@@ -17,6 +17,7 @@
 plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
     id("org.sonarsource.cloud-native.artifactory-configuration")
+    id("org.sonarsource.cloud-native.rule-api")
     id("org.sonarqube") version "6.0.1.5171"
 }
 
@@ -27,6 +28,12 @@ artifactoryConfiguration {
     repoKeyEnv = "ARTIFACTORY_DEPLOY_REPO"
     usernameEnv = "ARTIFACTORY_DEPLOY_USERNAME"
     passwordEnv = "ARTIFACTORY_DEPLOY_PASSWORD"
+}
+
+ruleApi {
+    languageToSonarpediaDirectory = mapOf(
+        "Go" to "sonar-go-plugin"
+    )
 }
 
 spotless {
