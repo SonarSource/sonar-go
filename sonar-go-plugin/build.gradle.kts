@@ -23,7 +23,7 @@ plugins {
     id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.code-style-conventions")
     id("org.sonarsource.cloud-native.publishing-configuration")
-    id("com.github.johnrengelman.shadow") version "8.1.1"
+    alias(libs.plugins.shadow)
 }
 
 // require sonar-go-to-slang binaries to be build
