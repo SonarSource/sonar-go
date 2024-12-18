@@ -31,7 +31,7 @@ artifactoryConfiguration {
 }
 
 ruleApi {
-    inputs = mapOf(
+    languageToSonarpediaDirectory = mapOf(
         "Go" to "sonar-go-plugin"
     )
 }
