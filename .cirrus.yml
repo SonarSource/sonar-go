@@ -11,10 +11,6 @@ env:
   ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}-qa-deployer access_token]
   ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
 
-  ORG_GRADLE_PROJECT_signingKey: VAULT[development/kv/data/sign data.key]
-  ORG_GRADLE_PROJECT_signingPassword: VAULT[development/kv/data/sign data.passphrase]
-  ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
-
   GRADLE_USER_HOME: ${CIRRUS_WORKING_DIR}/.gradle
   DEVELOCITY_TOKEN: VAULT[development/kv/data/develocity data.token]
   DEVELOCITY_ACCESS_KEY: develocity.sonar.build=${DEVELOCITY_TOKEN}
@@ -85,6 +81,9 @@ build_task:
     SONAR_TOKEN: VAULT[development/kv/data/next data.token]
     SONAR_HOST_URL: VAULT[development/kv/data/next data.url]
     DEPLOY_PULL_REQUEST: "true"
+    ORG_GRADLE_PROJECT_signingKey: VAULT[development/kv/data/sign data.key]
+    ORG_GRADLE_PROJECT_signingPassword: VAULT[development/kv/data/sign data.passphrase]
+    ORG_GRADLE_PROJECT_signingKeyId: VAULT[development/kv/data/sign data.key_id]
   build_script:
     - git submodule update --init --depth 1 -- build-logic
     - source cirrus-env BUILD
