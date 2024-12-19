@@ -20,6 +20,7 @@ jobs:
             development/artifactory/token/{REPO_OWNER_NAME_DASH}-private-reader role | ARTIFACTORY_ROLE;
       - uses: gradle/actions/setup-gradle@v4
       - run: |
+          git submodule update --init build-logic
           ./gradlew :ruleApiUpdate -PartifactoryUsername=${ARTIFACTORY_ROLE} -PartifactoryPassword=${ARTIFACTORY_ACCESS_TOKEN}
         env:
           ARTIFACTORY_ROLE: vault-${{ fromJSON(steps.secrets.outputs.vault).ARTIFACTORY_ROLE }}
