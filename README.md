@@ -16,7 +16,13 @@ To provide feedback (request a feature, report a bug, etc.) use the [SonarQube C
 
 ### Setup
 
-If you are on Windows, read the [sonar-go-to-slang/README.md](sonar-go-to-slang/README.md) instructions.
+To configure build dependencies, run the following command:
+
+```shell
+git submodule update --init -- build-logic
+```
+
+Additionally, if you are on Windows, read the [sonar-go-to-slang/README.md](sonar-go-to-slang/README.md) instructions.
 
 
 ### Build
@@ -35,7 +41,7 @@ If you want to run them, you need first to retrieve the related projects which a
 git submodule update --init
 ```
 
-Then build and run the Integration Tests using the `its` property:
+Then build and run the Integration Tests using the `integrationTest` task:
 
 ```shell
     ./gradlew integrationTest --info --no-daemon
