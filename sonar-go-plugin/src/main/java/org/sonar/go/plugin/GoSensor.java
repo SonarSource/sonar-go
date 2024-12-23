@@ -30,7 +30,6 @@ import org.sonarsource.slang.api.NativeTree;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.api.VariableDeclarationTree;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.plugin.SlangSensor;
 
 public class GoSensor extends SlangSensor {
 
@@ -42,7 +41,7 @@ public class GoSensor extends SlangSensor {
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
     super(sonarRuntime, noSonarFilter, fileLinesContextFactory, language);
     checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
-    checks.addAnnotatedChecks((Iterable<?>) GoCheckList.checks());
+    checks.addAnnotatedChecks(GoCheckList.checks());
     this.goConverter = goConverter;
   }
 

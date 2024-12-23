@@ -16,15 +16,20 @@
  */
 package org.sonar.go.plugin;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.utils.AnnotationUtils;
+import org.sonar.check.RuleProperty;
 import org.sonar.go.externalreport.AbstractReportSensor;
 import org.sonar.go.externalreport.GoLintReportSensor;
 import org.sonar.go.externalreport.GoVetReportSensor;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 import org.sonarsource.slang.checks.utils.Language;
-import org.sonarsource.slang.plugin.RulesDefinitionUtils;
+import org.sonarsource.slang.checks.utils.PropertyDefaultValue;
+import org.sonarsource.slang.checks.utils.PropertyDefaultValues;
 
 public class GoRulesDefinition implements RulesDefinition {
 
@@ -45,11 +50,36 @@ public class GoRulesDefinition implements RulesDefinition {
     List<Class<?>> checks = GoCheckList.checks();
     metadataLoader.addRulesByAnnotatedClass(repository, checks);
 
-    RulesDefinitionUtils.setDefaultValuesForParameters(repository, checks, Language.GO);
+    setDefaultValuesForParameters(repository, checks, Language.GO);
 
     repository.done();
 
     AbstractReportSensor.createExternalRuleRepository(context, GoVetReportSensor.LINTER_ID, GoVetReportSensor.LINTER_NAME);
     AbstractReportSensor.createExternalRuleRepository(context, GoLintReportSensor.LINTER_ID, GoLintReportSensor.LINTER_NAME);
+  }
+
+  private static void setDefaultValuesForParameters(RulesDefinition.NewRepository repository, List<Class<?>> checks, Language language) {
+    for (Class<?> check : checks) {
+      org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(check, org.sonar.check.Rule.class);
+      String ruleKey = ruleAnnotation.key();
+      for (Field field : check.getDeclaredFields()) {
+        RuleProperty ruleProperty = field.getAnnotation(RuleProperty.class);
+        PropertyDefaultValues defaultValues = field.getAnnotation(PropertyDefaultValues.class);
+        if (ruleProperty == null || defaultValues == null) {
+          continue;
+        }
+        String paramKey = ruleProperty.key();
+
+        List<PropertyDefaultValue> valueForLanguage = Arrays.stream(defaultValues.value())
+          .filter(defaultValue -> defaultValue.language() == language)
+          .toList();
+        if (valueForLanguage.size() != 1) {
+          throw new IllegalStateException("Invalid @PropertyDefaultValue on " + check.getSimpleName() +
+            " for language " + language);
+        }
+        valueForLanguage
+          .forEach(defaultValue -> repository.rule(ruleKey).param(paramKey).setDefaultValue(defaultValue.defaultValue()));
+      }
+    }
   }
 }
