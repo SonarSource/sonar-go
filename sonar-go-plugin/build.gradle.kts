@@ -43,10 +43,10 @@ dependencies {
 
     runtimeOnly(files(project.project(":sonar-go-to-slang").buildDir))
 
-    testImplementation(libs.slang.antlr)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.slang.testing)
+    testImplementation(libs.sonar.analyzer.test.commons)
+    testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.sonar.plugin.api.impl)
     testImplementation(libs.sonar.plugin.api.test.fixtures)

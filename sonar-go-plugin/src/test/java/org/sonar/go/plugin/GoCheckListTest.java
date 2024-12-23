@@ -16,13 +16,17 @@
  */
 package org.sonar.go.plugin;
 
+import io.github.classgraph.ClassGraph;
+import io.github.classgraph.ClassInfo;
+import io.github.classgraph.ScanResult;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.sonarsource.slang.testing.PackageScanner;
 
-import static org.assertj.core.api.Java6Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 class GoCheckListTest {
 
@@ -36,7 +40,7 @@ class GoCheckListTest {
   @Test
   void go_specific_checks_are_added_to_check_list() {
     List<String> checkListNames = GoCheckList.checks().stream().map(Class::getName).collect(Collectors.toList());
-    List<String> languageImplementation = PackageScanner.findSlangChecksInPackage(GO_CHECKS_PACKAGE);
+    List<String> languageImplementation = findSlangChecksInPackage(GO_CHECKS_PACKAGE);
     for (String languageCheck : languageImplementation) {
       assertThat(checkListNames).contains(languageCheck);
       assertThat(languageCheck).endsWith("GoCheck");
@@ -48,6 +52,26 @@ class GoCheckListTest {
     List<Class<?>> checks = GoCheckList.checks();
     for (Class excluded : GoCheckList.GO_CHECK_BLACK_LIST) {
       assertThat(checks).doesNotContain(excluded);
+    }
+  }
+
+  /**
+   * Returns the fully qualified names (FQNs) of the classes inside @packageName implementing SlangCheck.
+   * @param packageName Used to filter classes - the FQN of a class contains the package name.
+   * @return A list of slang checks (FQNs).
+   */
+  private static List<String> findSlangChecksInPackage(String packageName) {
+    try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages(packageName).scan()) {
+      Map<String, ClassInfo> allClasses = scanResult.getAllClassesAsMap();
+      List<String> testClassesInPackage = new ArrayList<>();
+      for (Map.Entry<String, ClassInfo> classInfoEntry : allClasses.entrySet()) {
+        String name = classInfoEntry.getKey();
+        ClassInfo classInfo = classInfoEntry.getValue();
+        if (name.startsWith(packageName) && classInfo.getInterfaces().stream().anyMatch(i -> i.getSimpleName().equals("SlangCheck"))) {
+          testClassesInPackage.add(classInfo.getName());
+        }
+      }
+      return testClassesInPackage;
     }
   }
 }

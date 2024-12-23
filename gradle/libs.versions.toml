@@ -13,10 +13,12 @@ junit-jupiter = "5.11.4"
 slf4j-api = "1.7.36"
 xerces = "2.12.2"
 awaitility = "4.2.2"
+classgraph = "4.8.162"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
 sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-commons", version.ref = "analyzer-commons" }
+sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-test-commons", version.ref = "analyzer-commons" }
 slang-api = { group = "org.sonarsource.slang", name = "slang-api", version.ref = "slang-dependencies" }
 slang-checks = { group = "org.sonarsource.slang", name = "slang-checks", version.ref = "slang-dependencies" }
 slang-plugin = { group = "org.sonarsource.slang", name = "slang-plugin", version.ref = "slang-dependencies" }
@@ -29,15 +31,14 @@ sonarlint-core = { group = "org.sonarsource.sonarlint.core", name = "sonarlint-c
 sonar-lint-rpc-java-client = { module = "org.sonarsource.sonarlint.core:sonarlint-rpc-java-client", version.ref = "sonarlint" }
 sonar-lint-rpc-impl = { module = "org.sonarsource.sonarlint.core:sonarlint-rpc-impl", version.ref = "sonarlint" }
 sonar-ws = { group = "org.sonarsource.sonarqube", name = "sonar-ws", version.ref = "sonarqube" }
-slang-antlr = { group = "org.sonarsource.slang", name = "slang-antlr", version.ref = "slang-dependencies" }
-slang-testing = { group = "org.sonarsource.slang", name = "slang-testing", version.ref = "slang-dependencies" }
 mockito-core = { group = "org.mockito", name = "mockito-core", version.ref = "mockito-core" }
 assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "assertj-core" }
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-api" }
 xerces = { group = "xerces", name = "xercesImpl", version.ref = "xerces" }
-awaitility = { module = "org.awaitility:awaitility", version.ref = "awaitility"}
+awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility"}
+classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classgraph"}
 
 [plugins]
 shadow = { id = "com.gradleup.shadow", version = "8.3.5" }
