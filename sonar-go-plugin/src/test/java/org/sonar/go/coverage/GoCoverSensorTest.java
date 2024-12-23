@@ -34,11 +34,11 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.coverage.GoCoverSensor.Coverage;
 import org.sonar.go.coverage.GoCoverSensor.CoverageStat;
 import org.sonar.go.coverage.GoCoverSensor.FileCoverage;
 import org.sonar.go.coverage.GoCoverSensor.LineCoverage;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -49,7 +49,7 @@ class GoCoverSensorTest {
   static final Path COVERAGE_DIR = Paths.get("src", "test", "resources", "coverage");
 
   @RegisterExtension
-  public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @Test
   void test_descriptor() {

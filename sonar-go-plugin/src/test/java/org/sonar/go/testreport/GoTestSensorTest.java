@@ -33,16 +33,16 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.measures.CoreMetrics;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.coverage.GoPathContext;
 import org.sonar.go.testreport.GoTestSensor.TestInfo;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GoTestSensorTest {
 
   @RegisterExtension
-  public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   private final Path goPath = Paths.get("src", "test", "resources", "testReportGoPath").toAbsolutePath();
   private final Path packagePath = Paths.get("github.com", "myOrg", "myProject");

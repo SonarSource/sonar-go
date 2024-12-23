@@ -29,7 +29,7 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.ExternalIssue;
 import org.sonar.api.rules.RuleType;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.externalreport.AbstractReportSensor.GENERIC_ISSUE_KEY;
@@ -39,13 +39,13 @@ class GoVetReportSensorTest {
 
   private final List<String> analysisWarnings = new ArrayList<>();
 
+  @RegisterExtension
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
+
   @BeforeEach
   void setup() {
     analysisWarnings.clear();
   }
-
-  @RegisterExtension
-  public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
 
   @Test
   void test_descriptor() {

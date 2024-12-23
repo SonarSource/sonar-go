@@ -31,6 +31,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
+import org.sonar.api.SonarEdition;
+import org.sonar.api.SonarQubeSide;
+import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
@@ -43,14 +46,15 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.internal.DefaultNoSonarFilter;
 import org.sonar.api.config.internal.MapSettings;
+import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.api.utils.Version;
 import org.sonar.go.converter.GoConverter;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.testing.AbstractSensorTest;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -62,6 +66,7 @@ import static org.mockito.Mockito.when;
 
 class GoSensorTest {
 
+  private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
   private Path workDir;
   private GoConverter singleInstanceGoConverter;
   private Path projectDir;
@@ -70,7 +75,7 @@ class GoSensorTest {
   private FileLinesContextTester fileLinesContext;
 
   @RegisterExtension
-  public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @BeforeEach
   void setUp() throws IOException {
@@ -365,8 +370,8 @@ class GoSensorTest {
     ActiveRules activeRules = rulesBuilder.build();
     CheckFactory checkFactory = new CheckFactory(activeRules);
     Checks<SlangCheck> checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
-    checks.addAnnotatedChecks((Iterable) ruleClasses);
-    return new GoSensor(AbstractSensorTest.SQ_LTS_RUNTIME, checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
+    checks.addAnnotatedChecks(ruleClasses);
+    return new GoSensor(SQ_LTS_RUNTIME, checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
       new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
   }
 

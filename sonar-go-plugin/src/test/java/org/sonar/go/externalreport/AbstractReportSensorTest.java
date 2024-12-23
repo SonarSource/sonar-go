@@ -23,7 +23,7 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.notifications.AnalysisWarnings;
-import org.sonarsource.slang.testing.ThreadLocalLogTester;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -31,7 +31,7 @@ import static org.mockito.Mockito.mock;
 class AbstractReportSensorTest {
 
   @RegisterExtension
-  public ThreadLocalLogTester logTester = new ThreadLocalLogTester();
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @Test
   void report_consumer_logs_io_exception() {
