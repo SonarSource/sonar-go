@@ -57,7 +57,6 @@ import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.slang.api.ASTConverter;
 import org.sonarsource.slang.api.TopLevelTree;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.CommentedCodeCheck;
 import org.sonarsource.slang.checks.IdenticalBinaryOperandCheck;
 import org.sonarsource.slang.checks.StringLiteralDuplicatedCheck;
 import org.sonarsource.slang.checks.api.SlangCheck;
@@ -79,10 +78,10 @@ class SlangSensorTest extends AbstractSensorTest {
   @Test
   void test_one_rule() {
     InputFile inputFile = createInputFile("file1.slang", """
-    package main
-    func main() {
-      print (1 == 1)
-    }""");
+      package main
+      func main() {
+        print (1 == 1)
+      }""");
     context.fileSystem().add(inputFile);
     CheckFactory checkFactory = checkFactory("S1764");
     sensor(checkFactory).execute(context);
@@ -99,12 +98,12 @@ class SlangSensorTest extends AbstractSensorTest {
   @Test
   void test_rule_with_gap() {
     InputFile inputFile = createInputFile("file1.slang", """
-    package main
-    func f() {
-      print("string literal")
-      print("string literal")
-      print("string literal")
-    }""");
+      package main
+      func f() {
+        print("string literal")
+        print("string literal")
+        print("string literal")
+      }""");
     context.fileSystem().add(inputFile);
     CheckFactory checkFactory = checkFactory("S1192");
     sensor(checkFactory).execute(context);
@@ -303,8 +302,8 @@ class SlangSensorTest extends AbstractSensorTest {
   @Test
   void test_failure_in_check() {
     InputFile inputFile = createInputFile("file1.slang", """
-    package main
-    func f() {}""");
+      package main
+      func f() {}""");
     context.fileSystem().add(inputFile);
     CheckFactory checkFactory = mock(CheckFactory.class);
     var checks = mock(Checks.class);
@@ -712,7 +711,7 @@ class SlangSensorTest extends AbstractSensorTest {
 
     @Override
     public String[] getFileSuffixes() {
-      return new String[]{".slang"};
+      return new String[] {".slang"};
     }
   }
 
