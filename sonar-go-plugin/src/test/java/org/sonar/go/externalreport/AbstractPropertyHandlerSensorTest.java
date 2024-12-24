@@ -52,7 +52,7 @@ class AbstractPropertyHandlerSensorTest {
   }
 
   @Test
-  void test_descriptor() throws Exception {
+  void test_descriptor() {
     DefaultSensorDescriptor sensorDescriptor = new DefaultSensorDescriptor();
     PropertyHandlerSensorTester sensor = new PropertyHandlerSensorTester();
     sensor.describe(sensorDescriptor);
@@ -62,7 +62,7 @@ class AbstractPropertyHandlerSensorTest {
   }
 
   @Test
-  void test_configuration() throws Exception {
+  void test_configuration() {
     PropertyHandlerSensorTester sensor = new PropertyHandlerSensorTester();
     assertThat(sensor.propertyKey()).isEqualTo("propertyKey");
     assertThat(sensor.propertyName()).isEqualTo("propertyName");

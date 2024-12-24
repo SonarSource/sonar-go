@@ -54,8 +54,8 @@ class DurationStatisticsTest {
   void statistics_format() {
     sensorContext.settings().setProperty("sonar.slang.duration.statistics", "true");
     DurationStatistics statistics = new DurationStatistics(sensorContext.config());
-    statistics.record("A", 12_000_000L);
-    statistics.record("B", 15_000_000_000L);
+    statistics.store("A", 12_000_000L);
+    statistics.store("B", 15_000_000_000L);
     statistics.log();
     assertThat(logTester.logs(Level.INFO)).hasSize(1);
     assertThat(logTester.logs(Level.INFO).get(0)).isEqualTo("Duration Statistics, B 15'000 ms, A 12 ms");

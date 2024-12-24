@@ -57,7 +57,7 @@ class CyclomaticComplexityVisitorTest {
       .hasSize(4);
     trees.remove(0);
     assertThat(trees)
-      .allMatch(tree -> tree instanceof MatchCaseTree);
+      .allMatch(MatchCaseTree.class::isInstance);
   }
 
   @Test
@@ -93,6 +93,6 @@ class CyclomaticComplexityVisitorTest {
     trees.remove(0);
     assertThat(trees)
       .hasSize(2)
-      .allMatch(tree -> tree instanceof LoopTree);
+      .allMatch(LoopTree.class::isInstance);
   }
 }

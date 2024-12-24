@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class CommentAnalysisUtilsTest {
 
-  private final static String CODE = """
+  private static final String CODE = """
     // NOSONAR
     def fun() {
     /* todo */
