@@ -1,5 +1,5 @@
 /*
- * SonarSource SLang
+ * SonarSource Go
  * Copyright (C) 2018-2024 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -19,7 +19,6 @@ package org.sonar.go.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -30,7 +29,7 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.go.converter.GoConverter;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.slang.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -39,10 +38,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class MetricVisitorTest {
-  private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
 
   private File tempFolder;
-  //  private SLangConverter parser = new SLangConverter();
   private org.sonar.go.plugin.MetricVisitor visitor;
   private SensorContextTester sensorContext;
   private DefaultInputFile inputFile;
@@ -104,7 +101,7 @@ class MetricVisitorTest {
       */
       package abc; // comment 1
       import "x";
-      
+
       func function1() { // comment 2
         //
         /**/
@@ -140,13 +137,13 @@ class MetricVisitorTest {
     scan("""
       package abc // comment 1
       /*
-      
+
         comment 2
-      
+
         comment 3
-      
+
       */
-      
+
       func function1() { // comment 4
         /**
          *
@@ -255,12 +252,12 @@ class MetricVisitorTest {
     scan("""
       package abc
       import "x"
-      
+
       func foo() {
         statementOnSeveralLines(a,
           b)
       }
-      
+
       func bar() {
         x = 42
       }""");
@@ -273,7 +270,7 @@ class MetricVisitorTest {
       .setCharset(StandardCharsets.UTF_8)
       .initMetadata(code).build();
     InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
-    Tree root = new GoConverter(CONVERTER_DIR).parse(code);
+    Tree root = TestGoConverter.parse(code);
     visitor.scan(ctx, root);
   }
 }

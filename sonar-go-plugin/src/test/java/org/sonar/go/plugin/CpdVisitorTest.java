@@ -21,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,9 +37,9 @@ import org.sonar.api.batch.sensor.cache.WriteCache;
 import org.sonar.api.batch.sensor.cpd.internal.TokensLine;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
-import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.impl.TextRangeImpl;
@@ -61,8 +60,6 @@ import static org.sonar.go.plugin.CpdVisitor.computeCacheKey;
 
 class CpdVisitorTest {
 
-  private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
-
   @RegisterExtension
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
@@ -80,7 +77,7 @@ class CpdVisitorTest {
     DefaultInputFile inputFile = new TestInputFileBuilder("moduleKey", file.getName())
       .setContents(content)
       .build();
-    Tree root = new GoConverter(CONVERTER_DIR).parse(content);
+    Tree root = TestGoConverter.parse(content);
     InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
     new CpdVisitor().scan(ctx, root);
 
@@ -139,7 +136,7 @@ class CpdVisitorTest {
       inputFile = new TestInputFileBuilder("moduleKey", file.getName())
         .setContents(content)
         .build();
-      root = new GoConverter(CONVERTER_DIR).parse(content);
+      root = TestGoConverter.parse(content);
       inputFileContext = new InputFileContext(sensorContext, inputFile);
       // Set up the writing cache
       nextCache = new DummyWriteCache();
