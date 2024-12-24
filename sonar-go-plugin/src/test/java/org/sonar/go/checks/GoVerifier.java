@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
-import org.sonar.go.converter.GoConverter;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
 import org.sonarsource.slang.api.ASTConverter;
 import org.sonarsource.slang.api.HasTextRange;
@@ -43,10 +43,9 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class GoVerifier {
   private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");
-  private static final ASTConverter CONVERTER = new GoConverter(Paths.get("build", "tmp").toFile());
 
   public static void verify(String fileName, SlangCheck check) {
-    verify(CONVERTER, BASE_DIR.resolve(fileName), check);
+    verify(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
   }
 
   public static void verify(ASTConverter converter, Path path, SlangCheck check) {

@@ -17,11 +17,11 @@
 package org.sonar.go.converter;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.ClassDeclarationTree;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
@@ -44,8 +44,7 @@ class GoConverterTest {
 
   @Test
   void test_parse_return() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\nfunc foo() {return 42}");
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 42}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
 
@@ -54,8 +53,7 @@ class GoConverterTest {
 
   @Test
   void test_parse_binary_notation() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\nfunc foo() {return 0b_0010_1010}");
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 0b_0010_1010}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
 
@@ -64,16 +62,14 @@ class GoConverterTest {
 
   @Test
   void test_parse_imaginary_literals() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\nfunc foo() {return 6.67428e-11i}");
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 6.67428e-11i}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
   }
 
   @Test
   void test_parse_embed_overlapping_interfaces() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\ntype A interface{\n     DoX() string\n}\ntype B interface{\n     DoX() \n}\ntype AB interface{\n    A\n    B\n}");
+    Tree tree = TestGoConverter.parse("package main\ntype A interface{\n     DoX() string\n}\ntype B interface{\n     DoX() \n}\ntype AB interface{\n    A\n    B\n}");
     List<Tree> classList = tree.descendants()
       .filter(t -> t instanceof ClassDeclarationTree)
       .collect(Collectors.toList());
@@ -82,16 +78,14 @@ class GoConverterTest {
 
   @Test
   void test_parse_infinite_for() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\nfunc foo() {for {}}");
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {for {}}");
     List<Tree> returnList = tree.descendants().filter(t -> t instanceof LoopTree).collect(Collectors.toList());
     assertThat(returnList).hasSize(1);
   }
 
   @Test
   void test_parse_generics() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
-    Tree tree = converter.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
+    Tree tree = TestGoConverter.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
     List<Tree> functions = tree.descendants().filter(t -> t instanceof FunctionDeclarationTree).collect(Collectors.toList());
     assertThat(functions).hasSize(2);
 
@@ -108,9 +102,8 @@ class GoConverterTest {
 
   @Test
   void parse_error() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
     ParseException e = assertThrows(ParseException.class,
-      () -> converter.parse("$!#@"));
+      () -> TestGoConverter.parse("$!#@"));
     assertThat(e).hasMessage("Go parser external process returned non-zero exit value: 2");
   }
 
@@ -126,24 +119,22 @@ class GoConverterTest {
 
   @Test
   void parse_accepted_big_file() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
     String code = "package main\n" +
       "func foo() {\n" +
       "}\n";
     String bigCode = code + new String(new char[700_000 - code.length()]).replace("\0", "\n");
-    Tree tree = converter.parse(bigCode);
+    Tree tree = TestGoConverter.parse(bigCode);
     assertThat(tree).isInstanceOf(TopLevelTree.class);
   }
 
   @Test
   void parse_rejected_big_file() {
-    GoConverter converter = new GoConverter(Paths.get("build", "tmp").toFile());
     String code = "package main\n" +
       "func foo() {\n" +
       "}\n";
     String bigCode = code + new String(new char[1_500_000]).replace("\0", "\n");
     ParseException e = assertThrows(ParseException.class,
-      () -> converter.parse(bigCode));
+      () -> TestGoConverter.parse(bigCode));
     assertThat(e).hasMessage("The file size is too big and should be excluded, its size is 1500028 (maximum allowed is 1500000 bytes)");
   }
 

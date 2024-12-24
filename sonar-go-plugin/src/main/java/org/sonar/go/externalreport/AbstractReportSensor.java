@@ -42,7 +42,6 @@ import org.sonar.api.server.rule.RulesDefinition.Context;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.go.plugin.GoLanguage;
-import org.sonarsource.slang.plugin.AbstractPropertyHandlerSensor;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.sonarsource.slang.utils.LogArg.lazyArg;

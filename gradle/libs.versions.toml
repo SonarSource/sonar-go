@@ -21,7 +21,6 @@ sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "s
 sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-test-commons", version.ref = "analyzer-commons" }
 slang-api = { group = "org.sonarsource.slang", name = "slang-api", version.ref = "slang-dependencies" }
 slang-checks = { group = "org.sonarsource.slang", name = "slang-checks", version.ref = "slang-dependencies" }
-slang-plugin = { group = "org.sonarsource.slang", name = "slang-plugin", version.ref = "slang-dependencies" }
 checkstyle-import = { group = "org.sonarsource.slang", name = "checkstyle-import", version.ref = "slang-dependencies" }
 minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
 sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
