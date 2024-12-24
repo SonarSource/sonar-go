@@ -50,9 +50,9 @@ class GoCheckListTest {
   @Test
   void go_excluded_not_present() {
     List<Class<?>> checks = GoCheckList.checks();
-    for (Class excluded : GoCheckList.GO_CHECK_BLACK_LIST) {
-      assertThat(checks).doesNotContain(excluded);
-    }
+    assertThat(checks)
+      .doesNotContain(GoCheckList.GO_CHECK_BLACK_LIST)
+      .isNotEmpty();
   }
 
   /**
