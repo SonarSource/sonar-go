@@ -15,7 +15,7 @@ load(
     "base_image_container_builder"
 )
 load(
-    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/master",
+    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/petertrr/support-develocity-config",
     "gradle_cache",
     "cleanup_gradle_script",
     "gradle_wrapper_cache",
@@ -64,10 +64,7 @@ def build_task():
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
             "build_script": build_script(),
-            "cleanup_gradle_script": [
-                'rm -rf "${GRADLE_USER_HOME}/caches/journal-1/"',
-                'find ${GRADLE_USER_HOME}/caches/ -name "*.lock" -type f -delete || true',
-            ],
+            "cleanup_gradle_script": cleanup_gradle_script(),
             "store_project_version_script": store_project_version_script(),
             "on_failure": default_gradle_on_failure()
         }
@@ -100,10 +97,7 @@ def sca_scan_task():
             "gradle_wrapper_cache": gradle_wrapper_cache(),
             "project_version_cache": project_version_cache(),
             "whitesource_script": whitesource_script(),
-            "cleanup_gradle_script": [
-                'rm -rf "${GRADLE_USER_HOME}/caches/journal-1/"',
-                'find ${GRADLE_USER_HOME}/caches/ -name "*.lock" -type f -delete || true',
-            ],
+            "cleanup_gradle_script": cleanup_gradle_script(),
             "allow_failures": "true",
             "always": {
                 "ws_artifacts": {

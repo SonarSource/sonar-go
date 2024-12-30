@@ -1,7 +1,7 @@
 load("github.com/SonarSource/cirrus-modules/cloud-native/conditions.star@analysis/master", "is_branch_qa_eligible")
 load("github.com/SonarSource/cirrus-modules/cloud-native/platform.star@analysis/master", "base_image_container_builder")
 load(
-    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/master",
+    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/petertrr/support-develocity-config",
     "gradle_cache",
     "cleanup_gradle_script",
     "gradle_wrapper_cache",
@@ -30,10 +30,7 @@ def qa_task(env, run_its_script):
         "orchestrator_cache": orchestrator_cache(),
         "run_its_script": run_its_script,
         "on_failure": default_gradle_on_failure(),
-        "cleanup_gradle_script": [
-            'rm -rf "${GRADLE_USER_HOME}/caches/journal-1/"',
-            'find ${GRADLE_USER_HOME}/caches/ -name "*.lock" -type f -delete || true',
-        ],
+        "cleanup_gradle_script": cleanup_gradle_script()
     }
 
 
