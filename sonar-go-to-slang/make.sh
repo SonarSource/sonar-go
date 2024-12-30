@@ -84,11 +84,19 @@ compile_binaries() {
   path_to_binary=$(install_go "${GO_VERSION}")
   # Build
   bash -c "${path_to_binary} run generate_source.go"
+
   mkdir -p build/executable
-  bash -c "GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64"
-  bash -c "GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64"
-  bash -c "GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64"
-  bash -c "GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe"
+  # Note: -ldflags="-s -w" is used to strip debug information from the binary and reduce its size.
+  GO_FLAGS=(-ldflags='-s -w' -buildmode=exe)
+  GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64 "${GO_FLAGS[@]}"
+  GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64 "${GO_FLAGS[@]}"
+  if command -v musl-gcc &> /dev/null; then
+    # This should be run on CI; for a dev environment, this is not essential
+    GOOS=linux GOARCH=amd64 CC=musl-gcc ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}" -ldflags  '-linkmode external -extldflags "-s -w -static"'
+  else
+    GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}"
+  fi
+  GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe "${GO_FLAGS[@]}"
 }
 
 generate_test_report() {
