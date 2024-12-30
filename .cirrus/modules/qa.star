@@ -23,14 +23,14 @@ def qa_task(env, run_its_script):
         "depends_on": "build",
         "eks_container": base_image_container_builder(cpu=4, memory="8G"),
         "env": env,
-        # "gradle_cache": gradle_cache(),
+        "gradle_cache": gradle_cache(),
         "gradle_wrapper_cache": gradle_wrapper_cache(),
         "set_orchestrator_home_script": set_orchestrator_home_script(),
         "mkdir_orchestrator_home_script": mkdir_orchestrator_home_script(),
         "orchestrator_cache": orchestrator_cache(),
         "run_its_script": run_its_script,
         "on_failure": default_gradle_on_failure(),
-        # "cleanup_gradle_script": cleanup_gradle_script()
+        "cleanup_gradle_script": cleanup_gradle_script()
     }
 
 

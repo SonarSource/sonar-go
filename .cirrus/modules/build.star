@@ -61,10 +61,10 @@ def build_task():
             "env": build_env(),
             "eks_container": base_image_container_builder(cpu=4, memory="6G"),
             "project_version_cache": project_version_cache(),
-            # "gradle_cache": gradle_cache(),
+            "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
             "build_script": build_script(),
-            # "cleanup_gradle_script": cleanup_gradle_script(),
+            "cleanup_gradle_script": cleanup_gradle_script(),
             "store_project_version_script": store_project_version_script(),
             "on_failure": default_gradle_on_failure()
         }
