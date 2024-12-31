@@ -12,7 +12,8 @@ load(
 )
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/platform.star@analysis/master",
-    "base_image_container_builder"
+    "base_image_container_builder",
+    "custom_image_container_builder"
 )
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/petertrr/support-develocity-config",
@@ -59,7 +60,7 @@ def build_task():
     return {
         "build_task": {
             "env": build_env(),
-            "eks_container": base_image_container_builder(cpu=4, memory="6G"),
+            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="6G"),
             "project_version_cache": project_version_cache(),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),

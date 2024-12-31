@@ -17,10 +17,16 @@ def project_version_env():
     }
 
 
+def go_env():
+    return {
+        "GO_VERSION": "1.23.4",
+    }
+
 def env():
     vars = artifactory_env()
     vars |= cirrus_env(depth=20)
     vars |= gradle_base_env()
     vars |= gradle_develocity_env()
     vars |= project_version_env()
+    vars |= go_env()
     return {"env": vars}

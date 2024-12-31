@@ -84,10 +84,11 @@ compile_binaries() {
   path_to_binary=$(install_go "${GO_VERSION}")
   # Build
   bash -c "${path_to_binary} run generate_source.go"
-  bash -c "GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/sonar-go-to-slang-darwin-amd64"
-  bash -c "GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/sonar-go-to-slang-darwin-arm64"
-  bash -c "GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/sonar-go-to-slang-linux-amd64"
-  bash -c "GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/sonar-go-to-slang-windows-amd64.exe"
+  mkdir -p build/executable
+  bash -c "GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64"
+  bash -c "GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64"
+  bash -c "GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64"
+  bash -c "GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe"
 }
 
 generate_test_report() {
