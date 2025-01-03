@@ -27,7 +27,6 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.rules.RuleType;
 import org.sonar.go.plugin.GoLanguage;
 import org.sonarsource.slang.externalreport.CheckstyleFormatImporter;
-import org.sonarsource.slang.plugin.AbstractPropertyHandlerSensor;
 
 public class GolangCILintReportSensor extends AbstractPropertyHandlerSensor {
 
