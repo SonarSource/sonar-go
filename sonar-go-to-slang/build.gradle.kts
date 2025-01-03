@@ -43,7 +43,6 @@ val compileGo by tasks.registering(Exec::class) {
     inputs.files(
         fileTree(projectDir).matching {
             include(
-                "*.go",
                 "**/*.go",
                 "**/go.mod",
                 "**/go.sum",
@@ -61,6 +60,7 @@ val compileGo by tasks.registering(Exec::class) {
 val testGo by tasks.registering(Exec::class) {
     group = "verification"
     description = "Generate Go test report"
+    inputs.dir("build/executable")
 
     callMake("generate-test-report")
 }
