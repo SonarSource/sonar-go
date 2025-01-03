@@ -109,7 +109,7 @@ tasks.shadowJar {
         exclude("spotless/**")
     }
     doLast {
-        enforceJarSizeAndCheckContent(tasks.shadowJar.get().archiveFile.get().asFile, 9_000_000L, 9_500_000L)
+        enforceJarSizeAndCheckContent(tasks.shadowJar.get().archiveFile.get().asFile, 5_000_000L, 5_500_000L)
     }
 }
 
