@@ -14,8 +14,11 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+import org.sonarsource.cloudnative.gradle.callMake
+
 plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
+    id("org.sonarsource.cloud-native.go-binary-builder")
 }
 
 sonarqube {
@@ -34,38 +37,49 @@ sonarqube {
     }
 }
 
-val generateParserAndBuild = tasks.register<Exec>("generateParserAndBuild") {
+val compileGo by tasks.registering(Exec::class) {
     group = "build"
     description = "Generate Go parser and build the Go executable"
+    inputs.files(
+        fileTree(projectDir).matching {
+            include(
+                "**/*.go",
+                "**/go.mod",
+                "**/go.sum",
+                "make.bat",
+                "make.sh"
+            )
+            exclude("build/**", "*_generated.go")
+        }
+    )
+    outputs.dir("build/executable")
 
-    commandLine("./make.sh")
-    args("build")
+    callMake("build")
 }
 
-val generateTestReport = tasks.register<Exec>("generateTestReport") {
+val testGo by tasks.registering(Exec::class) {
     group = "verification"
     description = "Generate Go test report"
+    inputs.dir("build/executable")
 
-    commandLine("./make.sh")
-    args("generate-test-report")
+    callMake("generate-test-report")
 }
 
-val cleanTask = tasks.register<Exec>("cleanTask") {
+val cleanGo by tasks.registering(Exec::class) {
     group = "build"
     description = "Clean the Go build"
 
-    commandLine("./make.sh")
-    args("clean")
+    callMake("clean")
 }
 
 tasks.clean {
-    dependsOn(cleanTask)
+    dependsOn(cleanGo)
 }
-generateTestReport {
-    dependsOn(generateParserAndBuild)
+testGo {
+    dependsOn(compileGo)
 }
 tasks.build {
-    dependsOn(generateTestReport)
+    dependsOn(testGo)
 }
 
 spotless {
@@ -80,16 +94,16 @@ if (System.getenv("CI") == "true") {
     spotless {
         go {
             val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
-            gofmt("go$goVersion").withGoExecutable(System.getenv("HOME") + "/go/bin/go")
+            gofmt("go$goVersion")
             target("*.go", "**/*.go")
             targetExclude("*_generated.go")
         }
     }
     // For now, these tasks rely on installation of Go performed by the call to make.sh
     tasks.spotlessCheck {
-        dependsOn(generateParserAndBuild)
+        dependsOn(compileGo)
     }
     tasks.spotlessApply {
-        dependsOn(generateParserAndBuild)
+        dependsOn(compileGo)
     }
 }
