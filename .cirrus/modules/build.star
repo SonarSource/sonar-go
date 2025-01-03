@@ -82,7 +82,7 @@ def whitesource_script():
         "source .cirrus/use-gradle-wrapper.sh",
         "source ${PROJECT_VERSION_CACHE_DIR}/evaluated_project_version.txt",
         "GRADLE_OPTS=\"-Xmx64m -Dorg.gradle.jvmargs='-Xmx3G' -Dorg.gradle.daemon=false\" ./gradlew ${GRADLE_COMMON_FLAGS} :sonar-go-plugin:processResources -Pkotlin.compiler.execution.strategy=in-process",
-        "source ws_scan.sh"
+        "source ws_scan.sh -d \"${PWD},${PWD}/sonar-go-to-slang\""
     ]
 
 
