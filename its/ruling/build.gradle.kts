@@ -39,7 +39,7 @@ dependencies {
 sonar.isSkipProject = true
 
 integrationTest {
-    testSources.set(rootProject.file("its/sources"))
+    testSources = rootProject.file("its/sources")
 }
 tasks.named<Test>("integrationTest") {
     systemProperty("java.awt.headless", "true")
