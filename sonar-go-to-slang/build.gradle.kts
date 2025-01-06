@@ -52,7 +52,9 @@ val compileGo by tasks.registering(Exec::class) {
             exclude("build/**", "*_generated.go")
         }
     )
+    outputs.file("goparser_generated.go")
     outputs.dir("build/executable")
+    outputs.cacheIf { true }
 
     callMake("build")
 }
