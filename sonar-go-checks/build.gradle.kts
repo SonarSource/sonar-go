@@ -28,7 +28,6 @@ dependencies {
     compileOnly(libs.sonar.plugin.api)
 
     implementation(libs.sonar.analyzer.commons)
-    implementation(libs.slang.checks)
     implementation(libs.slang.api)
     implementation(libs.checkstyle.import)
     // dependency on sonar-go-to-slang binaries
@@ -38,6 +37,8 @@ dependencies {
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
+    testImplementation(libs.slang.antlr)
+    testImplementation(libs.slang.testing)
     testImplementation(libs.sonar.analyzer.test.commons)
     testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)

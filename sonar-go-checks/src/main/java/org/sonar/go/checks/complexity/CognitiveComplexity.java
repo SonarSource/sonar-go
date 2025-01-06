@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
+import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.BinaryExpressionTree;
 import org.sonarsource.slang.api.CatchTree;
 import org.sonarsource.slang.api.ClassDeclarationTree;
@@ -31,12 +32,11 @@ import org.sonarsource.slang.api.LoopTree;
 import org.sonarsource.slang.api.MatchTree;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.impl.JumpTreeImpl;
 import org.sonarsource.slang.visitors.TreeContext;
 import org.sonarsource.slang.visitors.TreeVisitor;
 
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
+import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
 
 public class CognitiveComplexity {
 

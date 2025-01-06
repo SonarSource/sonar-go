@@ -26,7 +26,6 @@ dependencies {
     compileOnly(libs.sonar.plugin.api)
 
     implementation(libs.sonar.analyzer.commons)
-    implementation(libs.slang.checks)
     implementation(libs.slang.api)
     implementation(libs.checkstyle.import)
     implementation(libs.minimal.json)

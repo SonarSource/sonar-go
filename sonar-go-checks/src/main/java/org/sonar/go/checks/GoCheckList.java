@@ -17,6 +17,7 @@
 package org.sonar.go.checks;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class GoCheckList {
@@ -26,6 +27,44 @@ public class GoCheckList {
   }
 
   public static List<Class<?>> checks() {
-    return new ArrayList<>(CheckList.allChecks());
+    return new ArrayList<>(Arrays.<Class<?>>asList(
+      AllBranchesIdenticalCheck.class,
+      BadFunctionNameCheck.class,
+      BooleanInversionCheck.class,
+      BooleanLiteralCheck.class,
+      CodeAfterJumpGoCheck.class,
+      DuplicateBranchGoCheck.class,
+      DuplicatedFunctionImplementationCheck.class,
+      ElseIfWithoutElseCheck.class,
+      EmptyBlockCheck.class,
+      EmptyCommentCheck.class,
+      EmptyFunctionCheck.class,
+      FileHeaderCheck.class,
+      FixMeCommentCheck.class,
+      FunctionCognitiveComplexityCheck.class,
+      HardcodedCredentialsCheck.class,
+      HardcodedIpCheck.class,
+      IdenticalBinaryOperandCheck.class,
+      IdenticalConditionsCheck.class,
+      IfConditionalAlwaysTrueOrFalseCheck.class,
+      MatchCaseTooBigCheck.class,
+      MatchWithoutElseCheck.class,
+      NestedMatchCheck.class,
+      OctalValuesCheck.class,
+      OneStatementPerLineGoCheck.class,
+      ParsingErrorCheck.class,
+      RedundantParenthesesCheck.class,
+      SelfAssignmentCheck.class,
+      StringLiteralDuplicatedCheck.class,
+      TodoCommentCheck.class,
+      TooComplexExpressionCheck.class,
+      TooDeeplyNestedStatementsCheck.class,
+      TooLongFunctionCheck.class,
+      TooLongLineCheck.class,
+      TooManyCasesCheck.class,
+      TooManyLinesOfCodeFileCheck.class,
+      TooManyParametersCheck.class,
+      VariableAndParameterNameCheck.class,
+      WrongAssignmentOperatorCheck.class));
   }
 }

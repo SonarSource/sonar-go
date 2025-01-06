@@ -19,11 +19,11 @@ package org.sonar.go.checks;
 import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
+import org.sonar.go.checks.complexity.CognitiveComplexity;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SecondaryLocation;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.complexity.CognitiveComplexity;
 
 @Rule(key = "S3776")
 public class FunctionCognitiveComplexityCheck implements SlangCheck {

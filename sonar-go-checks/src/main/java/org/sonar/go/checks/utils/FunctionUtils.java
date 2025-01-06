@@ -29,9 +29,9 @@ import org.sonarsource.slang.api.ModifierTree;
 import org.sonarsource.slang.api.StringLiteralTree;
 import org.sonarsource.slang.api.Tree;
 
+import static org.sonar.go.checks.utils.ExpressionUtils.getMemberSelectOrIdentifierName;
 import static org.sonarsource.slang.api.ModifierTree.Kind.OVERRIDE;
 import static org.sonarsource.slang.api.ModifierTree.Kind.PRIVATE;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.getMemberSelectOrIdentifierName;
 
 public class FunctionUtils {
 

@@ -25,7 +25,6 @@ import org.sonarsource.slang.api.MatchTree;
 import org.sonarsource.slang.api.TextRange;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.AbstractBranchDuplicationCheck;
 import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.SecondaryLocation;
 import org.sonarsource.slang.utils.SyntacticEquivalence;

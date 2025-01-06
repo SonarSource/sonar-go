@@ -24,6 +24,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
+import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.ExceptionHandlingTree;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.LoopTree;
@@ -34,7 +35,6 @@ import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SecondaryLocation;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.ExpressionUtils;
 
 @Rule(key = "S134")
 public class TooDeeplyNestedStatementsCheck implements SlangCheck {

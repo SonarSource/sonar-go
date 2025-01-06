@@ -25,6 +25,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
+import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.AssignmentExpressionTree;
 import org.sonarsource.slang.api.StringLiteralTree;
 import org.sonarsource.slang.api.Tree;
@@ -32,7 +33,6 @@ import org.sonarsource.slang.api.VariableDeclarationTree;
 import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.ExpressionUtils;
 
 @Rule(key = "S2068")
 public class HardcodedCredentialsCheck implements SlangCheck {

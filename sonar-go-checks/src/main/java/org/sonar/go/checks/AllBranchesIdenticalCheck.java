@@ -19,7 +19,6 @@ package org.sonar.go.checks;
 import java.util.List;
 import org.sonar.check.Rule;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.AbstractBranchDuplicationCheck;
 import org.sonarsource.slang.checks.api.CheckContext;
 
 @Rule(key = "S3923")

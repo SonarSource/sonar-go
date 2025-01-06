@@ -26,7 +26,7 @@ import org.sonarsource.slang.api.UnaryExpressionTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1940")
 public class BooleanInversionCheck implements SlangCheck {

@@ -52,6 +52,10 @@ public class GoVerifier {
     createVerifier(converter, path, check).assertOneOrMoreIssues();
   }
 
+  public static void verifyNoIssue(String fileName, SlangCheck check) {
+    verifyNoIssue(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
+  }
+
   public static void verifyNoIssue(ASTConverter converter, Path path, SlangCheck check) {
     createVerifier(converter, path, check).assertNoIssues();
   }

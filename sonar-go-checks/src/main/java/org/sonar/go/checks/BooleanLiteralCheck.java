@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
+import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.BinaryExpressionTree;
 import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.IfTree;
@@ -28,7 +29,6 @@ import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.api.UnaryExpressionTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.ExpressionUtils;
 
 @Rule(key = "S1125")
 public class BooleanLiteralCheck implements SlangCheck {

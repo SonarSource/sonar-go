@@ -18,6 +18,7 @@ package org.sonar.go.checks;
 
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
+import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.BinaryExpressionTree.Operator;
 import org.sonarsource.slang.api.IdentifierTree;
 import org.sonarsource.slang.api.IfTree;
@@ -25,16 +26,15 @@ import org.sonarsource.slang.api.LiteralTree;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.ExpressionUtils;
 
+import static org.sonar.go.checks.utils.ExpressionUtils.isBinaryOperation;
+import static org.sonar.go.checks.utils.ExpressionUtils.isBooleanLiteral;
+import static org.sonar.go.checks.utils.ExpressionUtils.isFalseValueLiteral;
+import static org.sonar.go.checks.utils.ExpressionUtils.isNegation;
+import static org.sonar.go.checks.utils.ExpressionUtils.isTrueValueLiteral;
+import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isBinaryOperation;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isBooleanLiteral;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isFalseValueLiteral;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isNegation;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.isTrueValueLiteral;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1145")
 public class IfConditionalAlwaysTrueOrFalseCheck implements SlangCheck {

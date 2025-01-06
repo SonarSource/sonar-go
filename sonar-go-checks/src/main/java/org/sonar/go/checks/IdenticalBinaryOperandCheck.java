@@ -22,8 +22,8 @@ import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SecondaryLocation;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.containsPlaceHolder;
-import static org.sonarsource.slang.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.checks.utils.ExpressionUtils.containsPlaceHolder;
+import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S1764")
