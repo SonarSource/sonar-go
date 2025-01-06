@@ -29,8 +29,10 @@ plugins {
 dependencies {
     compileOnly(libs.sonar.plugin.api)
 
+    implementation(project(":sonar-go-checks"))
+    implementation(project(":sonar-go-commons"))
     implementation(libs.sonar.analyzer.commons)
-    implementation(libs.slang.checks)
+//    implementation(libs.slang.checks)
     implementation(libs.slang.api)
     implementation(libs.checkstyle.import)
     implementation(libs.minimal.json)
@@ -43,6 +45,7 @@ dependencies {
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.sonar.plugin.api.impl)
     testImplementation(libs.sonar.plugin.api.test.fixtures)
+    testImplementation(testFixtures(project(":sonar-go-commons")))
 
     testRuntimeOnly(libs.junit.jupiter.engine)
 }

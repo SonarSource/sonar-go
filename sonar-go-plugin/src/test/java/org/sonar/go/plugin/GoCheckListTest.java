@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.checks.GoCheckList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

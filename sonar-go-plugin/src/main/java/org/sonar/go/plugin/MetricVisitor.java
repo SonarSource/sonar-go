@@ -24,13 +24,13 @@ import org.sonar.api.batch.measure.Metric;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
+import org.sonar.go.checks.complexity.CognitiveComplexity;
 import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.ClassDeclarationTree;
 import org.sonarsource.slang.api.Comment;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
 import org.sonarsource.slang.api.TopLevelTree;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.complexity.CognitiveComplexity;
 import org.sonarsource.slang.visitors.TreeVisitor;
 
 public class MetricVisitor extends TreeVisitor<InputFileContext> {

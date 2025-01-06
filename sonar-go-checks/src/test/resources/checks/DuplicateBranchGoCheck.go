@@ -1,4 +1,4 @@
-package band
+package samples
 
 type Header interface {
 	Print() string

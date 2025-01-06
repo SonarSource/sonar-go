@@ -14,19 +14,25 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-pluginManagement {
-    includeBuild("build-logic")
+package org.sonar.go.checks;
+
+import java.util.List;
+import org.sonar.check.Rule;
+import org.sonarsource.slang.api.Tree;
+import org.sonarsource.slang.checks.AbstractBranchDuplicationCheck;
+import org.sonarsource.slang.checks.api.CheckContext;
+
+@Rule(key = "S3923")
+public class AllBranchesIdenticalCheck extends AbstractBranchDuplicationCheck {
+
+  @Override
+  protected void checkDuplicatedBranches(CheckContext ctx, Tree tree, List<Tree> branches) {
+    // handled by S1871
+  }
+
+  @Override
+  protected void onAllIdenticalBranches(CheckContext ctx, Tree tree) {
+    ctx.reportIssue(tree, "Remove this conditional structure or edit its code blocks so that they're not all the same.");
+  }
+
 }
-
-plugins {
-    id("org.sonarsource.cloud-native.common-settings")
-}
-
-rootProject.name = "sonar-go"
-
-include(":sonar-go-to-slang")
-include(":sonar-go-plugin")
-include(":sonar-go-checks")
-include(":sonar-go-commons")
-include(":its:plugin")
-include(":its:ruling")

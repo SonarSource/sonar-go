@@ -14,19 +14,5 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-pluginManagement {
-    includeBuild("build-logic")
-}
-
-plugins {
-    id("org.sonarsource.cloud-native.common-settings")
-}
-
-rootProject.name = "sonar-go"
-
-include(":sonar-go-to-slang")
-include(":sonar-go-plugin")
-include(":sonar-go-checks")
-include(":sonar-go-commons")
-include(":its:plugin")
-include(":its:ruling")
+@javax.annotation.ParametersAreNonnullByDefault
+package org.sonar.go.checks.utils;

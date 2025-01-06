@@ -14,19 +14,25 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-pluginManagement {
-    includeBuild("build-logic")
+package org.sonar.go.checks;
+
+import org.sonar.check.Rule;
+import org.sonarsource.slang.api.TopLevelTree;
+import org.sonarsource.slang.checks.api.InitContext;
+import org.sonarsource.slang.checks.api.SlangCheck;
+
+@Rule(key = "S105")
+public class TabsCheck implements SlangCheck {
+
+  @Override
+  public void initialize(InitContext init) {
+    init.register(TopLevelTree.class, (ctx, tree) -> {
+      String fileContent = ctx.fileContent();
+      if (fileContent.contains("\t")) {
+        String message = String.format("Replace all tab characters in this file \"%s\" by sequences of white-spaces.", ctx.filename());
+        ctx.reportFileIssue(message);
+      }
+    });
+  }
+
 }
-
-plugins {
-    id("org.sonarsource.cloud-native.common-settings")
-}
-
-rootProject.name = "sonar-go"
-
-include(":sonar-go-to-slang")
-include(":sonar-go-plugin")
-include(":sonar-go-checks")
-include(":sonar-go-commons")
-include(":its:plugin")
-include(":its:ruling")

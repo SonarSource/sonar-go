@@ -14,25 +14,12 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.plugin;
+package org.sonar.go.checks;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import org.sonar.go.checks.CodeAfterJumpGoCheck;
-import org.sonar.go.checks.DuplicateBranchGoCheck;
-import org.sonar.go.checks.OneStatementPerLineGoCheck;
-import org.sonarsource.slang.checks.BadClassNameCheck;
-import org.sonarsource.slang.checks.CheckList;
-import org.sonarsource.slang.checks.CodeAfterJumpCheck;
-import org.sonarsource.slang.checks.CollapsibleIfStatementsCheck;
-import org.sonarsource.slang.checks.DuplicateBranchCheck;
-import org.sonarsource.slang.checks.OneStatementPerLineCheck;
-import org.sonarsource.slang.checks.TabsCheck;
-import org.sonarsource.slang.checks.UnusedFunctionParameterCheck;
-import org.sonarsource.slang.checks.UnusedLocalVariableCheck;
-import org.sonarsource.slang.checks.UnusedPrivateMethodCheck;
 
 public class GoCheckList {
 

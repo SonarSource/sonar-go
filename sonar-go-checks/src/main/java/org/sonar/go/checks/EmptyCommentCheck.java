@@ -14,19 +14,21 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-pluginManagement {
-    includeBuild("build-logic")
+package org.sonar.go.checks;
+
+import org.sonar.check.Rule;
+import org.sonarsource.slang.api.TopLevelTree;
+import org.sonarsource.slang.checks.api.InitContext;
+import org.sonarsource.slang.checks.api.SlangCheck;
+
+@Rule(key = "S4663")
+public class EmptyCommentCheck implements SlangCheck {
+
+  @Override
+  public void initialize(InitContext init) {
+    init.register(TopLevelTree.class, (ctx, tree) -> tree.allComments().stream()
+      .filter(comment -> comment.contentText().trim().isEmpty() && !comment.contentRange().end().equals(comment.textRange().end()))
+      .forEach(comment -> ctx.reportIssue(comment, "Remove this comment, it is empty.")));
+  }
+
 }
-
-plugins {
-    id("org.sonarsource.cloud-native.common-settings")
-}
-
-rootProject.name = "sonar-go"
-
-include(":sonar-go-to-slang")
-include(":sonar-go-plugin")
-include(":sonar-go-checks")
-include(":sonar-go-commons")
-include(":its:plugin")
-include(":its:ruling")

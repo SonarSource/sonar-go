@@ -24,6 +24,7 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
+import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
 import org.sonarsource.slang.api.ASTConverter;
 import org.sonarsource.slang.api.NativeTree;
