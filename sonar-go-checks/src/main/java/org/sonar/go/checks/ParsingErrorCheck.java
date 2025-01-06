@@ -20,7 +20,7 @@ import org.sonar.check.Rule;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
-@Rule(key = "ParsingError")
+@Rule(key = "S2260")
 public class ParsingErrorCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {

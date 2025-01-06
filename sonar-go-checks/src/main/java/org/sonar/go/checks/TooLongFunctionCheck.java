@@ -22,21 +22,17 @@ import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.Language;
-import org.sonarsource.slang.checks.utils.PropertyDefaultValue;
 
 @Rule(key = "S138")
 public class TooLongFunctionCheck implements SlangCheck {
 
-  private static final int DEFAULT_MAX = 100;
+  private static final int DEFAULT_MAX = 120;
   private static final String DEFAULT_MAX_VALUE = "" + DEFAULT_MAX;
 
   @RuleProperty(
     key = "max",
-    description = "Maximum authorized lines of code in a function")
-  @PropertyDefaultValue(language = Language.RUBY, defaultValue = DEFAULT_MAX_VALUE)
-  @PropertyDefaultValue(language = Language.SCALA, defaultValue = DEFAULT_MAX_VALUE)
-  @PropertyDefaultValue(language = Language.GO, defaultValue = "" + Language.GO_DEFAULT_MAXIMUM_FUNCTION_LENGTH)
+    description = "Maximum authorized lines of code in a function",
+    defaultValue = DEFAULT_MAX_VALUE)
   public int max = DEFAULT_MAX;
 
   @Override

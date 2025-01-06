@@ -17,8 +17,6 @@
 package org.sonar.go.checks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 
 public class GoCheckList {
@@ -27,29 +25,7 @@ public class GoCheckList {
     // utility class
   }
 
-  static final Class[] GO_CHECK_BLACK_LIST = {
-    BadClassNameCheck.class,
-    // Can not enable rule S1066, as Go if-trees are containing an initializer, not well handled by SLang
-    CollapsibleIfStatementsCheck.class,
-    TabsCheck.class,
-    // Can not enable rule S1172 since it it not possible to identify overridden function with modifier (to avoid FP)
-    UnusedFunctionParameterCheck.class,
-    UnusedLocalVariableCheck.class,
-    UnusedPrivateMethodCheck.class,
-    // Replaced by language specific test
-    CodeAfterJumpCheck.class,
-    DuplicateBranchCheck.class,
-    OneStatementPerLineCheck.class
-  };
-
-  private static final Collection<Class<?>> GO_LANGUAGE_SPECIFIC_CHECKS = Arrays.asList(
-    CodeAfterJumpGoCheck.class,
-    DuplicateBranchGoCheck.class,
-    OneStatementPerLineGoCheck.class);
-
   public static List<Class<?>> checks() {
-    List<Class<?>> list = new ArrayList<>(CheckList.excludeChecks(GO_CHECK_BLACK_LIST));
-    list.addAll(GO_LANGUAGE_SPECIFIC_CHECKS);
-    return list;
+    return new ArrayList<>(CheckList.allChecks());
   }
 }

@@ -50,6 +50,8 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Language;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.Version;
+import org.sonar.go.checks.IdenticalBinaryOperandCheck;
+import org.sonar.go.checks.StringLiteralDuplicatedCheck;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
@@ -57,8 +59,6 @@ import org.sonar.go.testing.TestGoConverter;
 import org.sonarsource.slang.api.ASTConverter;
 import org.sonarsource.slang.api.TopLevelTree;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.IdenticalBinaryOperandCheck;
-import org.sonarsource.slang.checks.StringLiteralDuplicatedCheck;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -254,13 +254,13 @@ class SlangSensorTest extends AbstractSensorTest {
          fun y() {}\
         """);
     context.fileSystem().add(inputFile);
-    CheckFactory checkFactory = checkFactory("ParsingError");
+    CheckFactory checkFactory = checkFactory("S2260");
     sensor(checkFactory).execute(context);
 
     Collection<Issue> issues = context.allIssues();
     assertThat(issues).hasSize(1);
     Issue issue = issues.iterator().next();
-    assertThat(issue.ruleKey().rule()).isEqualTo("ParsingError");
+    assertThat(issue.ruleKey().rule()).isEqualTo("S2260");
     IssueLocation location = issue.primaryLocation();
     assertThat(location.inputComponent()).isEqualTo(inputFile);
     assertThat(location.message()).isEqualTo("A parsing error occurred in this file.");

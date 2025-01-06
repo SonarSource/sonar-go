@@ -16,23 +16,6 @@
  */
 package org.sonar.go.checks;
 
-import org.sonar.check.Rule;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-
-@Rule(key = "S105")
-public class TabsCheck implements SlangCheck {
-
-  @Override
-  public void initialize(InitContext init) {
-    init.register(TopLevelTree.class, (ctx, tree) -> {
-      String fileContent = ctx.fileContent();
-      if (fileContent.contains("\t")) {
-        String message = String.format("Replace all tab characters in this file \"%s\" by sequences of white-spaces.", ctx.filename());
-        ctx.reportFileIssue(message);
-      }
-    });
-  }
-
+public interface GoChecksConstants {
+  String GO_NAMING_DEFAULT = "^(_|[a-zA-Z0-9]+)$";
 }

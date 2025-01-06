@@ -27,14 +27,11 @@ import org.sonarsource.slang.checks.api.SlangCheck;
 @Rule(key = "S100")
 public class BadFunctionNameCheck implements SlangCheck {
 
-  public static final String DEFAULT_FORMAT = "^[a-z][a-zA-Z0-9]*$";
-
   @RuleProperty(
     key = "format",
     description = "Regular expression used to check the function names against.",
-    defaultValue = "^(_|[a-zA-Z0-9]+)$"
-  )
-  public String format = DEFAULT_FORMAT;
+    defaultValue = GoChecksConstants.GO_NAMING_DEFAULT)
+  public String format = GoChecksConstants.GO_NAMING_DEFAULT;
 
   private String message(String name) {
     return "Rename function \"" + name + "\" to match the regular expression " + format;

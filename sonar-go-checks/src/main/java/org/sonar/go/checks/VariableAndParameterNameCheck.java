@@ -27,21 +27,15 @@ import org.sonarsource.slang.api.VariableDeclarationTree;
 import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.checks.utils.Language;
-import org.sonarsource.slang.checks.utils.PropertyDefaultValue;
 
 @Rule(key = "S117")
 public class VariableAndParameterNameCheck implements SlangCheck {
 
-  private static final String DEFAULT_FORMAT = "^[_a-z][a-zA-Z0-9]*$";
-
   @RuleProperty(
     key = "format",
-    description = "Regular expression used to check the names against.")
-  @PropertyDefaultValue(language = Language.RUBY, defaultValue = Language.RUBY_NAMING_DEFAULT)
-  @PropertyDefaultValue(language = Language.SCALA, defaultValue = Language.SCALA_NAMING_DEFAULT)
-  @PropertyDefaultValue(language = Language.GO, defaultValue = Language.GO_NAMING_DEFAULT)
-  public String format = DEFAULT_FORMAT;
+    description = "Regular expression used to check the names against.",
+    defaultValue = GoChecksConstants.GO_NAMING_DEFAULT)
+  public String format = GoChecksConstants.GO_NAMING_DEFAULT;
 
   @Override
   public void initialize(InitContext init) {

@@ -16,17 +16,57 @@
  */
 package org.sonar.go.checks;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import org.sonar.check.Rule;
+import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.NativeTree;
+import org.sonarsource.slang.api.TopLevelTree;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.OneStatementPerLineCheck;
+import org.sonarsource.slang.checks.api.CheckContext;
+import org.sonarsource.slang.checks.api.InitContext;
+import org.sonarsource.slang.checks.api.SecondaryLocation;
+import org.sonarsource.slang.checks.api.SlangCheck;
 
 import static org.sonar.go.checks.NativeKinds.SEMICOLON;
 
 @Rule(key = "S122")
-public class OneStatementPerLineGoCheck extends OneStatementPerLineCheck {
+public class OneStatementPerLineGoCheck implements SlangCheck {
+  private static final String MESSAGE = "Reformat the code to have only one statement per line.";
+
   @Override
-  protected boolean shouldIgnore(Tree tree) {
+  public void initialize(InitContext init) {
+    init.register(TopLevelTree.class, (ctx, topLevelTree) -> checkStatements(ctx, topLevelTree.children()));
+    init.register(BlockTree.class, (ctx, blockTree) -> checkStatements(ctx, blockTree.statementOrExpressions()));
+  }
+
+  private void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
+    statementsOrExpressions.stream()
+      .filter(tree -> !shouldIgnore(tree))
+      .collect(Collectors.groupingBy(OneStatementPerLineGoCheck::getLine))
+      .forEach((line, statements) -> {
+        if (statements.size() > 1) {
+          reportIssue(ctx, statements);
+        }
+      });
+  }
+
+  private static void reportIssue(CheckContext ctx, List<Tree> statements) {
+    List<SecondaryLocation> secondaryLocations = statements.stream()
+      .skip(2)
+      .map(statement -> new SecondaryLocation(statement, null))
+      .toList();
+    ctx.reportIssue(
+      statements.get(1),
+      MESSAGE,
+      secondaryLocations);
+  }
+
+  private static int getLine(Tree statementOrExpression) {
+    return statementOrExpression.metaData().textRange().start().line();
+  }
+
+  private boolean shouldIgnore(Tree tree) {
     return tree instanceof NativeTree &&
       ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
   }

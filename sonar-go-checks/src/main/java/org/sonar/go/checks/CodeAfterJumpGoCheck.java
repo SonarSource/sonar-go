@@ -16,24 +16,65 @@
  */
 package org.sonar.go.checks;
 
+import java.util.List;
 import org.sonar.check.Rule;
+import org.sonarsource.slang.api.BlockTree;
+import org.sonarsource.slang.api.HasKeyword;
+import org.sonarsource.slang.api.JumpTree;
 import org.sonarsource.slang.api.NativeTree;
+import org.sonarsource.slang.api.ReturnTree;
+import org.sonarsource.slang.api.ThrowTree;
 import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.CodeAfterJumpCheck;
+import org.sonarsource.slang.checks.api.CheckContext;
+import org.sonarsource.slang.checks.api.InitContext;
+import org.sonarsource.slang.checks.api.SlangCheck;
 
 import static org.sonar.go.checks.NativeKinds.LABEL;
 import static org.sonar.go.checks.NativeKinds.SEMICOLON;
 
 @Rule(key = "S1763")
-public class CodeAfterJumpGoCheck extends CodeAfterJumpCheck {
+public class CodeAfterJumpGoCheck implements SlangCheck {
+  private static final String MESSAGE = "Refactor this piece of code to not have any dead code after this \"%s\".";
+
   @Override
-  protected boolean isValidAfterJump(Tree tree) {
+  public void initialize(InitContext init) {
+    init.register(BlockTree.class, (ctx, blockTree) -> checkStatements(ctx, blockTree.statementOrExpressions()));
+  }
+
+  private void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
+    if (statementsOrExpressions.size() < 2) {
+      return;
+    }
+
+    int index = 0;
+    while (index < statementsOrExpressions.size() - 1) {
+      Tree current = statementsOrExpressions.get(index);
+      index++;
+
+      Tree next = statementsOrExpressions.get(index);
+      while (index < statementsOrExpressions.size() && shouldIgnore(next)) {
+        next = statementsOrExpressions.get(index);
+        index++;
+      }
+
+      if (isJump(current) &&
+        !shouldIgnore(next) &&
+        !isValidAfterJump(next)) {
+        ctx.reportIssue(current, String.format(MESSAGE, ((HasKeyword) current).keyword().text()));
+      }
+    }
+  }
+
+  private static boolean isJump(Tree tree) {
+    return tree instanceof JumpTree || tree instanceof ReturnTree || tree instanceof ThrowTree;
+  }
+
+  private boolean isValidAfterJump(Tree tree) {
     return tree instanceof NativeTree &&
       ((NativeTree) tree).nativeKind().toString().contains(LABEL);
   }
 
-  @Override
-  protected boolean shouldIgnore(Tree tree) {
+  private boolean shouldIgnore(Tree tree) {
     return tree instanceof NativeTree &&
       ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
   }
