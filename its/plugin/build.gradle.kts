@@ -21,7 +21,6 @@ plugins {
 }
 
 dependencies {
-    "integrationTestImplementation"(libs.slf4j.api)
     "integrationTestImplementation"(libs.xerces)
     "integrationTestImplementation"(project(":sonar-go-plugin", configuration = "shadow"))
     "integrationTestImplementation"(libs.sonar.analyzer.commons)

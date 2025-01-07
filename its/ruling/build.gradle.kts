@@ -21,7 +21,6 @@ plugins {
 }
 
 dependencies {
-    "integrationTestImplementation"(libs.slf4j.api)
     "integrationTestImplementation"(libs.sonar.analyzer.commons)
     "integrationTestImplementation"(libs.assertj.core)
     "integrationTestImplementation"(libs.sonar.orchestrator.junit5) {
