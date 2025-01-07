@@ -53,6 +53,7 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
+import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
 import org.sonarsource.slang.checks.api.SlangCheck;
 

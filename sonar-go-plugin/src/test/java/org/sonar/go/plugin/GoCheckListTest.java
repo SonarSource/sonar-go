@@ -16,62 +16,102 @@
  */
 package org.sonar.go.plugin;
 
-import io.github.classgraph.ClassGraph;
-import io.github.classgraph.ClassInfo;
-import io.github.classgraph.ScanResult;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.checks.AllBranchesIdenticalCheck;
+import org.sonar.go.checks.BadFunctionNameCheck;
+import org.sonar.go.checks.BooleanInversionCheck;
+import org.sonar.go.checks.BooleanLiteralCheck;
+import org.sonar.go.checks.CodeAfterJumpGoCheck;
+import org.sonar.go.checks.DuplicateBranchGoCheck;
+import org.sonar.go.checks.DuplicatedFunctionImplementationCheck;
+import org.sonar.go.checks.ElseIfWithoutElseCheck;
+import org.sonar.go.checks.EmptyBlockCheck;
+import org.sonar.go.checks.EmptyCommentCheck;
+import org.sonar.go.checks.EmptyFunctionCheck;
+import org.sonar.go.checks.FileHeaderCheck;
+import org.sonar.go.checks.FixMeCommentCheck;
+import org.sonar.go.checks.FunctionCognitiveComplexityCheck;
+import org.sonar.go.checks.GoCheckList;
+import org.sonar.go.checks.HardcodedCredentialsCheck;
+import org.sonar.go.checks.HardcodedIpCheck;
+import org.sonar.go.checks.IdenticalBinaryOperandCheck;
+import org.sonar.go.checks.IdenticalConditionsCheck;
+import org.sonar.go.checks.IfConditionalAlwaysTrueOrFalseCheck;
+import org.sonar.go.checks.MatchCaseTooBigCheck;
+import org.sonar.go.checks.MatchWithoutElseCheck;
+import org.sonar.go.checks.NestedMatchCheck;
+import org.sonar.go.checks.OctalValuesCheck;
+import org.sonar.go.checks.OneStatementPerLineGoCheck;
+import org.sonar.go.checks.ParsingErrorCheck;
+import org.sonar.go.checks.RedundantParenthesesCheck;
+import org.sonar.go.checks.SelfAssignmentCheck;
+import org.sonar.go.checks.StringLiteralDuplicatedCheck;
+import org.sonar.go.checks.TodoCommentCheck;
+import org.sonar.go.checks.TooComplexExpressionCheck;
+import org.sonar.go.checks.TooDeeplyNestedStatementsCheck;
+import org.sonar.go.checks.TooLongFunctionCheck;
+import org.sonar.go.checks.TooLongLineCheck;
+import org.sonar.go.checks.TooManyCasesCheck;
+import org.sonar.go.checks.TooManyLinesOfCodeFileCheck;
+import org.sonar.go.checks.TooManyParametersCheck;
+import org.sonar.go.checks.VariableAndParameterNameCheck;
+import org.sonar.go.checks.WrongAssignmentOperatorCheck;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class GoCheckListTest {
 
-  private static final String GO_CHECKS_PACKAGE = "org.sonar.go.checks";
-
   @Test
-  void go_checks_size() {
-    Assertions.assertThat(GoCheckList.checks()).hasSize(38);
+  void shouldVerifyChecksSize() {
+    assertThat(GoCheckList.checks()).hasSize(38);
   }
 
   @Test
-  void go_specific_checks_are_added_to_check_list() {
-    List<String> checkListNames = GoCheckList.checks().stream().map(Class::getName).collect(Collectors.toList());
-    List<String> languageImplementation = findSlangChecksInPackage(GO_CHECKS_PACKAGE);
-    for (String languageCheck : languageImplementation) {
-      assertThat(checkListNames).contains(languageCheck);
-      assertThat(languageCheck).endsWith("GoCheck");
-    }
+  void shouldContainParsingErrorCheck() {
+    assertThat(GoCheckList.checks()).contains(ParsingErrorCheck.class);
   }
 
   @Test
-  void go_excluded_not_present() {
-    List<Class<?>> checks = GoCheckList.checks();
-    assertThat(checks)
-      .doesNotContain(GoCheckList.GO_CHECK_BLACK_LIST)
-      .isNotEmpty();
-  }
+  void shouldContainsClasses() {
+    assertThat(GoCheckList.checks()).containsOnly(
 
-  /**
-   * Returns the fully qualified names (FQNs) of the classes inside @packageName implementing SlangCheck.
-   * @param packageName Used to filter classes - the FQN of a class contains the package name.
-   * @return A list of slang checks (FQNs).
-   */
-  private static List<String> findSlangChecksInPackage(String packageName) {
-    try (ScanResult scanResult = new ClassGraph().enableAllInfo().acceptPackages(packageName).scan()) {
-      Map<String, ClassInfo> allClasses = scanResult.getAllClassesAsMap();
-      List<String> testClassesInPackage = new ArrayList<>();
-      for (Map.Entry<String, ClassInfo> classInfoEntry : allClasses.entrySet()) {
-        String name = classInfoEntry.getKey();
-        ClassInfo classInfo = classInfoEntry.getValue();
-        if (name.startsWith(packageName) && classInfo.getInterfaces().stream().anyMatch(i -> i.getSimpleName().equals("SlangCheck"))) {
-          testClassesInPackage.add(classInfo.getName());
-        }
-      }
-      return testClassesInPackage;
-    }
+      AllBranchesIdenticalCheck.class,
+      BadFunctionNameCheck.class,
+      BooleanInversionCheck.class,
+      BooleanLiteralCheck.class,
+      CodeAfterJumpGoCheck.class,
+      DuplicateBranchGoCheck.class,
+      DuplicatedFunctionImplementationCheck.class,
+      ElseIfWithoutElseCheck.class,
+      EmptyBlockCheck.class,
+      EmptyCommentCheck.class,
+      EmptyFunctionCheck.class,
+      FileHeaderCheck.class,
+      FixMeCommentCheck.class,
+      FunctionCognitiveComplexityCheck.class,
+      HardcodedCredentialsCheck.class,
+      HardcodedIpCheck.class,
+      IdenticalBinaryOperandCheck.class,
+      IdenticalConditionsCheck.class,
+      IfConditionalAlwaysTrueOrFalseCheck.class,
+      MatchCaseTooBigCheck.class,
+      MatchWithoutElseCheck.class,
+      NestedMatchCheck.class,
+      OctalValuesCheck.class,
+      OneStatementPerLineGoCheck.class,
+      ParsingErrorCheck.class,
+      RedundantParenthesesCheck.class,
+      SelfAssignmentCheck.class,
+      StringLiteralDuplicatedCheck.class,
+      TodoCommentCheck.class,
+      TooComplexExpressionCheck.class,
+      TooDeeplyNestedStatementsCheck.class,
+      TooLongFunctionCheck.class,
+      TooLongLineCheck.class,
+      TooManyLinesOfCodeFileCheck.class,
+      TooManyCasesCheck.class,
+      TooManyParametersCheck.class,
+      VariableAndParameterNameCheck.class,
+      WrongAssignmentOperatorCheck.class);
   }
 }

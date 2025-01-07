@@ -26,5 +26,7 @@ rootProject.name = "sonar-go"
 
 include(":sonar-go-to-slang")
 include(":sonar-go-plugin")
+include(":sonar-go-checks")
+include(":sonar-go-commons")
 include(":its:plugin")
 include(":its:ruling")

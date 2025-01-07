@@ -27,6 +27,7 @@ import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.utils.Version;
+import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.externalreport.ExternalKeyUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
