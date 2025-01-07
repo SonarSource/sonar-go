@@ -10,7 +10,7 @@ mockito-core = "5.15.2"
 assertj-core = "3.27.2"
 junit-jupiter = "5.11.4"
 # slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api in integration tests
-slf4j-api = "1.7.36"
+slf4j-api = "2.0.16"
 xerces = "2.12.2"
 awaitility = "4.2.2"
 classgraph = "4.8.179"
