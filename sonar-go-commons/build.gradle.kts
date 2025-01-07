@@ -20,15 +20,10 @@ plugins {
     id("java-test-fixtures")
 }
 
-// require sonar-go-to-slang binaries to be build
-
 dependencies {
-    compileOnly(libs.sonar.plugin.api)
+    compileOnly(libs.slf4j.api)
 
-    implementation(libs.sonar.analyzer.commons)
     implementation(libs.slang.api)
-    implementation(libs.checkstyle.import)
-    implementation(libs.minimal.json)
 
     testFixturesImplementation(libs.slang.api)
     testFixturesImplementation(libs.assertj.core)

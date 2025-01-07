@@ -17,7 +17,6 @@
 plugins {
     id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.code-style-conventions")
-    alias(libs.plugins.shadow)
 }
 
 dependencies {
@@ -26,9 +25,6 @@ dependencies {
     implementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
     implementation(libs.sonar.analyzer.commons)
     implementation(libs.slang.api)
-    implementation(libs.checkstyle.import)
-    // dependency on sonar-go-to-slang binaries
-    implementation(libs.minimal.json)
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
