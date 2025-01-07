@@ -41,7 +41,7 @@ public class CodeAfterJumpGoCheck implements SlangCheck {
     init.register(BlockTree.class, (ctx, blockTree) -> checkStatements(ctx, blockTree.statementOrExpressions()));
   }
 
-  private void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
+  private static void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
     if (statementsOrExpressions.size() < 2) {
       return;
     }

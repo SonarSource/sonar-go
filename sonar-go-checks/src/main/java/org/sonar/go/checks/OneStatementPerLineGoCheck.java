@@ -40,7 +40,7 @@ public class OneStatementPerLineGoCheck implements SlangCheck {
     init.register(BlockTree.class, (ctx, blockTree) -> checkStatements(ctx, blockTree.statementOrExpressions()));
   }
 
-  private void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
+  private static void checkStatements(CheckContext ctx, List<Tree> statementsOrExpressions) {
     statementsOrExpressions.stream()
       .filter(tree -> !shouldIgnore(tree))
       .collect(Collectors.groupingBy(OneStatementPerLineGoCheck::getLine))

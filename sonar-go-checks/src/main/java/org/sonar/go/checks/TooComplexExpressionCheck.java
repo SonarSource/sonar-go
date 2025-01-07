@@ -64,10 +64,9 @@ public class TooComplexExpressionCheck implements SlangCheck {
       Tree parentExpression = iterator.next();
       if (parentExpression instanceof BinaryExpressionTree) {
         return false;
-      } else if (!(parentExpression instanceof UnaryExpressionTree)
-        || !(parentExpression instanceof ParenthesizedExpressionTree)) {
-          return true;
-        }
+      } else if (!(parentExpression instanceof UnaryExpressionTree) || !(parentExpression instanceof ParenthesizedExpressionTree)) {
+        return true;
+      }
     }
     return true;
   }
