@@ -69,13 +69,13 @@ public class CodeAfterJumpGoCheck implements SlangCheck {
     return tree instanceof JumpTree || tree instanceof ReturnTree || tree instanceof ThrowTree;
   }
 
-  private boolean isValidAfterJump(Tree tree) {
-    return tree instanceof NativeTree &&
-      ((NativeTree) tree).nativeKind().toString().contains(LABEL);
+  private static boolean isValidAfterJump(Tree tree) {
+    return tree instanceof NativeTree nativeTree &&
+      nativeTree.nativeKind().toString().contains(LABEL);
   }
 
-  private boolean shouldIgnore(Tree tree) {
-    return tree instanceof NativeTree &&
-      ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
+  private static boolean shouldIgnore(Tree tree) {
+    return tree instanceof NativeTree nativeTree &&
+      nativeTree.nativeKind().toString().equals(SEMICOLON);
   }
 }

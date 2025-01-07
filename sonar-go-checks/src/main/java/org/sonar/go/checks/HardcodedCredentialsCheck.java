@@ -90,8 +90,8 @@ public class HardcodedCredentialsCheck implements SlangCheck {
   }
 
   private static boolean isNotEmptyString(@Nullable Tree tree) {
-    return tree instanceof StringLiteralTree
-      && !((StringLiteralTree) tree).content().isEmpty();
+    return tree instanceof StringLiteralTree stringLiteralTree
+      && !stringLiteralTree.content().isEmpty();
   }
 
   private static boolean isQuery(String value, String match) {
@@ -99,7 +99,8 @@ public class HardcodedCredentialsCheck implements SlangCheck {
     return followingString.startsWith("=?")
       || followingString.startsWith("=%")
       || followingString.startsWith("=:")
-      || followingString.startsWith("={") // string format
+      // string format
+      || followingString.startsWith("={")
       || followingString.equals("='");
   }
 

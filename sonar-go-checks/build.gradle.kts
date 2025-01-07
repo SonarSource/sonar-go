@@ -20,20 +20,15 @@ plugins {
     alias(libs.plugins.shadow)
 }
 
-// require sonar-go-to-slang binaries to be build
-tasks.shadowJar { dependsOn(":sonar-go-to-slang:build") }
-tasks.test { dependsOn(":sonar-go-to-slang:build") }
-
 dependencies {
     compileOnly(libs.sonar.plugin.api)
 
+    implementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
     implementation(libs.sonar.analyzer.commons)
     implementation(libs.slang.api)
     implementation(libs.checkstyle.import)
     // dependency on sonar-go-to-slang binaries
     implementation(libs.minimal.json)
-
-    runtimeOnly(files(project.project(":sonar-go-to-slang").buildDir))
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)

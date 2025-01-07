@@ -66,8 +66,8 @@ public class OneStatementPerLineGoCheck implements SlangCheck {
     return statementOrExpression.metaData().textRange().start().line();
   }
 
-  private boolean shouldIgnore(Tree tree) {
-    return tree instanceof NativeTree &&
-      ((NativeTree) tree).nativeKind().toString().equals(SEMICOLON);
+  private static boolean shouldIgnore(Tree tree) {
+    return tree instanceof NativeTree nativeTree &&
+      nativeTree.nativeKind().toString().equals(SEMICOLON);
   }
 }

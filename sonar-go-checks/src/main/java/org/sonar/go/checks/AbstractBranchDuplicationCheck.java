@@ -38,7 +38,7 @@ public abstract class AbstractBranchDuplicationCheck implements SlangCheck {
   public void initialize(InitContext init) {
     init.register(IfTree.class, (ctx, tree) -> {
       Tree parent = ctx.parent();
-      if (!(parent instanceof IfTree) || tree == ((IfTree) parent).thenBranch()) {
+      if (!(parent instanceof IfTree ifTree) || tree == ifTree.thenBranch()) {
         checkConditionalStructure(ctx, tree, new ConditionalStructure(tree));
       }
     });
@@ -63,8 +63,7 @@ public abstract class AbstractBranchDuplicationCheck implements SlangCheck {
       branches.add(ifTree.thenBranch());
       Tree elseBranch = ifTree.elseBranch();
       while (elseBranch != null) {
-        if (elseBranch instanceof IfTree) {
-          IfTree elseIf = (IfTree) elseBranch;
+        if (elseBranch instanceof IfTree elseIf) {
           branches.add(elseIf.thenBranch());
           elseBranch = elseIf.elseBranch();
         } else {

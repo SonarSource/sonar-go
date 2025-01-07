@@ -48,8 +48,7 @@ public class BooleanInversionCheck implements SlangCheck {
   public void initialize(InitContext init) {
     init.register(UnaryExpressionTree.class, (ctx, tree) -> {
       Tree innerExpression = skipParentheses(tree.operand());
-      if (tree.operator() == UnaryExpressionTree.Operator.NEGATE && innerExpression instanceof BinaryExpressionTree) {
-        BinaryExpressionTree binaryExpression = (BinaryExpressionTree) innerExpression;
+      if (tree.operator() == UnaryExpressionTree.Operator.NEGATE && innerExpression instanceof BinaryExpressionTree binaryExpression) {
         String oppositeOperator = OPERATORS.get(binaryExpression.operator());
         if (oppositeOperator != null) {
           String message = String.format("Use the opposite operator (\"%s\") instead.", oppositeOperator);

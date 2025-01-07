@@ -56,7 +56,7 @@ public class EmptyBlockCheck implements SlangCheck {
   }
 
   private static boolean isWhileLoop(@Nullable Tree parent) {
-    return parent instanceof LoopTree && ((LoopTree) parent).kind() == LoopTree.LoopKind.WHILE;
+    return parent instanceof LoopTree loopTree && loopTree.kind() == LoopTree.LoopKind.WHILE;
   }
 
   private static void checkComments(CheckContext ctx, Tree tree) {

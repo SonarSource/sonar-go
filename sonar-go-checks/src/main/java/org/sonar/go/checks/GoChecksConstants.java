@@ -16,6 +16,11 @@
  */
 package org.sonar.go.checks;
 
-public interface GoChecksConstants {
-  String GO_NAMING_DEFAULT = "^(_|[a-zA-Z0-9]+)$";
+public final class GoChecksConstants {
+
+  public static final String GO_NAMING_DEFAULT = "^(_|[a-zA-Z0-9]+)$";
+
+  private GoChecksConstants() {
+    // empty
+  }
 }

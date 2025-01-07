@@ -63,7 +63,7 @@ public class BooleanLiteralCheck implements SlangCheck {
   }
 
   private static boolean isIfWithMaxTwoBranches(@Nullable Tree parent, IfTree ifTree) {
-    boolean isElseIf = parent instanceof IfTree && ((IfTree) parent).elseBranch() == ifTree;
+    boolean isElseIf = parent instanceof IfTree parentIfTree && parentIfTree.elseBranch() == ifTree;
     boolean isIfElseIf = ifTree.elseBranch() instanceof IfTree;
     return !isElseIf && !isIfElseIf;
   }

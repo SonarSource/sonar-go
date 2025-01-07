@@ -47,27 +47,27 @@ public class ExpressionUtils {
   }
 
   public static boolean isBooleanLiteral(Tree tree) {
-    return tree instanceof LiteralTree && BOOLEAN_LITERALS.contains(((LiteralTree) tree).value());
+    return tree instanceof LiteralTree literalTree && BOOLEAN_LITERALS.contains(literalTree.value());
   }
 
   public static boolean isFalseValueLiteral(Tree originalTree) {
     Tree tree = skipParentheses(originalTree);
-    return (tree instanceof LiteralTree && FALSE_LITERAL.equals(((LiteralTree) tree).value()))
+    return (tree instanceof LiteralTree literalTree && FALSE_LITERAL.equals(literalTree.value()))
       || (isNegation(tree) && isTrueValueLiteral(((UnaryExpressionTree) tree).operand()));
   }
 
   public static boolean isTrueValueLiteral(Tree originalTree) {
     Tree tree = skipParentheses(originalTree);
-    return (tree instanceof LiteralTree && TRUE_LITERAL.equals(((LiteralTree) tree).value()))
+    return (tree instanceof LiteralTree literalTree && TRUE_LITERAL.equals(literalTree.value()))
       || (isNegation(tree) && isFalseValueLiteral(((UnaryExpressionTree) tree).operand()));
   }
 
   public static boolean isNegation(Tree tree) {
-    return tree instanceof UnaryExpressionTree && ((UnaryExpressionTree) tree).operator() == UnaryExpressionTree.Operator.NEGATE;
+    return tree instanceof UnaryExpressionTree unary && unary.operator() == UnaryExpressionTree.Operator.NEGATE;
   }
 
   public static boolean isBinaryOperation(Tree tree, BinaryExpressionTree.Operator operator) {
-    return tree instanceof BinaryExpressionTree && ((BinaryExpressionTree) tree).operator() == operator;
+    return tree instanceof BinaryExpressionTree binaryExpressionTree && binaryExpressionTree.operator() == operator;
   }
 
   public static boolean isLogicalBinaryExpression(Tree tree) {
@@ -76,8 +76,8 @@ public class ExpressionUtils {
 
   public static Tree skipParentheses(Tree tree) {
     Tree result = tree;
-    while (result instanceof ParenthesizedExpressionTree) {
-      result = ((ParenthesizedExpressionTree) result).expression();
+    while (result instanceof ParenthesizedExpressionTree parenthesizedExpressionTree) {
+      result = parenthesizedExpressionTree.expression();
     }
     return result;
   }
@@ -105,28 +105,27 @@ public class ExpressionUtils {
   }
 
   private static boolean isIfWithElse(Tree tree) {
-    return tree instanceof IfTree && ((IfTree) tree).elseBranch() != null;
+    return tree instanceof IfTree ifTree && ifTree.elseBranch() != null;
   }
 
   private static boolean isBranchOfLoopOrCaseOrIfWithoutElse(Tree parent, Tree child) {
-    return (parent instanceof LoopTree && child == ((LoopTree) parent).body()) ||
-      (parent instanceof MatchCaseTree && child == ((MatchCaseTree) parent).body()) ||
+    return (parent instanceof LoopTree loopTree && child == loopTree.body()) ||
+      (parent instanceof MatchCaseTree matchCaseTree && child == matchCaseTree.body()) ||
       (isBranchOfIf(parent, child) && ((IfTree) parent).elseBranch() == null);
   }
 
   private static boolean isBranchOfIf(Tree parent, Tree child) {
-    if (parent instanceof IfTree) {
-      IfTree ifTree = (IfTree) parent;
+    if (parent instanceof IfTree ifTree) {
       return child == ifTree.thenBranch() || child == ifTree.elseBranch();
     }
     return false;
   }
 
   public static Optional<String> getMemberSelectOrIdentifierName(Tree tree) {
-    if (tree instanceof IdentifierTree) {
-      return Optional.of(((IdentifierTree) tree).name());
-    } else if (tree instanceof MemberSelectTree) {
-      return Optional.of(((MemberSelectTree) tree).identifier().name());
+    if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.of(identifierTree.name());
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return Optional.of(memberSelectTree.identifier().name());
     } else {
       return Optional.empty();
     }

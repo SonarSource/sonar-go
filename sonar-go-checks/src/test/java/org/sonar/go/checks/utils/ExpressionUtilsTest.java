@@ -37,11 +37,11 @@ import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONA
 import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.EQUAL_TO;
 
 class ExpressionUtilsTest {
-  private static Tree TRUE_LITERAL = new LiteralTreeImpl(null, "true");
-  private static Tree FALSE_LITERAL = new LiteralTreeImpl(null, "false");
-  private static Tree NUMBER_LITERAL = new LiteralTreeImpl(null, "34");
-  private static Tree TRUE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, TRUE_LITERAL);
-  private static Tree FALSE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, FALSE_LITERAL);
+  private static final Tree TRUE_LITERAL = new LiteralTreeImpl(null, "true");
+  private static final Tree FALSE_LITERAL = new LiteralTreeImpl(null, "false");
+  private static final Tree NUMBER_LITERAL = new LiteralTreeImpl(null, "34");
+  private static final Tree TRUE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, TRUE_LITERAL);
+  private static final Tree FALSE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, FALSE_LITERAL);
 
   @Test
   void test_boolean_literal() {

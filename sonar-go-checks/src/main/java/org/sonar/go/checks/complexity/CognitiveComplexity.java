@@ -84,7 +84,6 @@ public class CognitiveComplexity {
 
     private CognitiveComplexityVisitor() {
 
-      // TODO ternary operator
       // TODO "break" or "continue" with label
 
       register(LoopTree.class, (ctx, tree) -> incrementWithNesting(tree.keyword(), ctx));
@@ -98,7 +97,7 @@ public class CognitiveComplexity {
 
       register(IfTree.class, (ctx, tree) -> {
         Tree parent = ctx.ancestors().peek();
-        boolean isElseIf = parent instanceof IfTree && tree == ((IfTree) parent).elseBranch();
+        boolean isElseIf = parent instanceof IfTree ifTree && tree == ifTree.elseBranch();
         boolean isTernary = ExpressionUtils.isTernaryOperator(ctx.ancestors(), tree);
         if (!isElseIf || isTernary) {
           incrementWithNesting(tree.ifKeyword(), ctx);
@@ -130,7 +129,6 @@ public class CognitiveComplexity {
       }
     }
 
-    // TODO parentheses should probably be skipped
     private void flattenOperators(BinaryExpressionTree tree, List<Token> operators) {
       if (isLogicalBinaryExpression(tree.leftOperand())) {
         flattenOperators((BinaryExpressionTree) tree.leftOperand(), operators);
@@ -178,8 +176,8 @@ public class CognitiveComplexity {
       return nestingLevel;
     }
 
-    private boolean isElseIfBranch(@Nullable Tree parent, Tree t) {
-      return parent instanceof IfTree && ((IfTree) parent).elseBranch() == t;
+    private boolean isElseIfBranch(@Nullable Tree parent, Tree tree) {
+      return parent instanceof IfTree ifTree && ifTree.elseBranch() == tree;
     }
 
   }

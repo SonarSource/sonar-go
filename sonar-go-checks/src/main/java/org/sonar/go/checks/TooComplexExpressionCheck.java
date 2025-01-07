@@ -65,7 +65,6 @@ public class TooComplexExpressionCheck implements SlangCheck {
       if (parentExpression instanceof BinaryExpressionTree) {
         return false;
       } else if (!(parentExpression instanceof UnaryExpressionTree)
-        // TODO(Godin): seems that instead of logical-or should be logical-and
         || !(parentExpression instanceof ParenthesizedExpressionTree)) {
           return true;
         }
@@ -75,14 +74,13 @@ public class TooComplexExpressionCheck implements SlangCheck {
 
   private static int computeExpressionComplexity(Tree originalTree) {
     Tree tree = skipParentheses(originalTree);
-    if (tree instanceof BinaryExpressionTree) {
+    if (tree instanceof BinaryExpressionTree binary) {
       int complexity = isLogicalBinaryExpression(tree) ? 1 : 0;
-      BinaryExpressionTree binary = (BinaryExpressionTree) tree;
       return complexity
         + computeExpressionComplexity(binary.leftOperand())
         + computeExpressionComplexity(binary.rightOperand());
-    } else if (tree instanceof UnaryExpressionTree) {
-      return computeExpressionComplexity(((UnaryExpressionTree) tree).operand());
+    } else if (tree instanceof UnaryExpressionTree unaryExpressionTree) {
+      return computeExpressionComplexity(unaryExpressionTree.operand());
     } else {
       return 0;
     }

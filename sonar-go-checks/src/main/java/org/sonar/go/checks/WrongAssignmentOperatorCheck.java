@@ -78,7 +78,7 @@ public class WrongAssignmentOperatorCheck implements SlangCheck {
   }
 
   private static boolean isSuspiciousUnaryExpression(Tree tree) {
-    return tree instanceof UnaryExpressionTree && SUSPICIOUS_UNARY_OPERATORS.contains(((UnaryExpressionTree) tree).operator());
+    return tree instanceof UnaryExpressionTree unary && SUSPICIOUS_UNARY_OPERATORS.contains(unary.operator());
   }
 
 }

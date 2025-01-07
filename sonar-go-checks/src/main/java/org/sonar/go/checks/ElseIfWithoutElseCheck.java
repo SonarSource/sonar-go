@@ -68,18 +68,18 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
 
   private static boolean isTopLevelIf(CheckContext ctx, IfTree ifTree) {
     Tree firstAncestor = ctx.ancestors().getFirst();
-    if (firstAncestor instanceof IfTree) {
+    if (firstAncestor instanceof IfTree ifTreeAncestor) {
       // if ifTree is different from the else branch of firstAncestor, it means that ifTree is a statement inside
       // firstAncestor and so ifTree is the top level "if"
-      return ((IfTree) firstAncestor).elseBranch() != ifTree;
+      return ifTreeAncestor.elseBranch() != ifTree;
     }
     return true;
   }
 
   private static boolean endsWithReturnBreakOrThrow(IfTree ifTree) {
     Tree thenBranch = ifTree.thenBranch();
-    if (thenBranch instanceof BlockTree) {
-      List<Tree> statements = ((BlockTree) thenBranch).statementOrExpressions();
+    if (thenBranch instanceof BlockTree blockTree) {
+      List<Tree> statements = blockTree.statementOrExpressions();
       if (!statements.isEmpty()) {
         Tree lastStmt = statements.get(statements.size() - 1);
         return isReturnBreakOrThrow(lastStmt);

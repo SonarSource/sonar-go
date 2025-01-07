@@ -58,8 +58,8 @@ public class IdenticalConditionsCheck implements SlangCheck {
   private static List<Tree> collectConditions(IfTree ifTree, List<Tree> list) {
     list.add(skipParentheses(ifTree.condition()));
     Tree elseBranch = ifTree.elseBranch();
-    if (elseBranch instanceof IfTree) {
-      return collectConditions((IfTree) elseBranch, list);
+    if (elseBranch instanceof IfTree elseIfBranch) {
+      return collectConditions(elseIfBranch, list);
     }
     return list;
   }

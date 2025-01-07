@@ -77,10 +77,9 @@ public class FunctionUtils {
   }
 
   private static boolean hasFunctionCallFullNameIgnoreCaseHelper(Tree tree, List<String> names) {
-    if (tree instanceof IdentifierTree) {
-      return names.size() == 1 && ((IdentifierTree) tree).name().equalsIgnoreCase(names.get(0));
-    } else if (tree instanceof MemberSelectTree) {
-      MemberSelectTree memberSelectTree = (MemberSelectTree) tree;
+    if (tree instanceof IdentifierTree identifierTree) {
+      return names.size() == 1 && identifierTree.name().equalsIgnoreCase(names.get(0));
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
       return names.size() > 1
         && memberSelectTree.identifier().name().equalsIgnoreCase(names.get(names.size() - 1))
         && hasFunctionCallFullNameIgnoreCaseHelper(memberSelectTree.expression(), dropLastElement(names));

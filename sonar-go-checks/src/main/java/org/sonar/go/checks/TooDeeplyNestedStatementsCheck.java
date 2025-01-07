@@ -108,12 +108,12 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
   }
 
   private static Token getNodeToHighlight(Tree tree) {
-    if (tree instanceof IfTree) {
-      return ((IfTree) tree).ifKeyword();
-    } else if (tree instanceof MatchTree) {
-      return ((MatchTree) tree).keyword();
-    } else if (tree instanceof ExceptionHandlingTree) {
-      return ((ExceptionHandlingTree) tree).tryKeyword();
+    if (tree instanceof IfTree ifTree) {
+      return ifTree.ifKeyword();
+    } else if (tree instanceof MatchTree matchTree) {
+      return matchTree.keyword();
+    } else if (tree instanceof ExceptionHandlingTree exceptionHandlingTree) {
+      return exceptionHandlingTree.tryKeyword();
     } else {
       return ((LoopTree) tree).keyword();
     }
