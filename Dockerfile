@@ -1,4 +1,4 @@
-ARG GO_VERSION
+ARG GO_VERSION=1.23.4
 # Possible values: ci, dev_custom_cert, dev
 ARG BUILD_ENV=ci
 # Placeholder; actual value is present on CI
@@ -12,7 +12,7 @@ ARG UID=1000
 
 RUN groupadd --system --gid ${UID} sonarsource \
       && useradd --system --gid sonarsource --uid ${UID} --shell /bin/bash --create-home sonarsource \
-      && mkdir -p /home/sonarsource/sonar-helm-for-iac
+      && mkdir -p /home/sonarsource/sonar-go-to-slang
 
 # If the custom certificate is not provided, use the base image.
 # This mode can be activated by providing build argument `BUILD_ENV=dev`.

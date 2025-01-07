@@ -14,85 +14,97 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.sonarsource.cloudnative.gradle.callMake
 
 plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
+    id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.go-binary-builder")
 }
 
-sonarqube {
-    properties {
-        property("sonar.sources", ".")
-        property("sonar.inclusions", "**/*.go")
-        property("sonar.exclusions", "**/render.go,**/generate_source.go,**/*_generated.go,**/build/**,**/vendor/**,**/.gogradle/**")
-        property("sonar.tests", ".")
-        property("sonar.test.inclusions", "**/*_test.go")
-        property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
-        property("sonar.go.tests.reportPaths", "${project.projectDir}/.gogradle/reports/test-report.out")
-        property(
-            "sonar.go.coverage.reportPaths",
-            "${project.projectDir}/.gogradle/reports/coverage/profiles/github.com%2FSonarSource%2Fslang%2Fsonar-go-to-slang.out"
+val isCi: Boolean = System.getenv("CI")?.equals("true") ?: false
+
+// CI - run the build of go code and protobuf with protoc and local make.sh/make.bat script
+if (isCi) {
+    // Define and trigger tasks in this order: clean, compile and test go code
+    tasks.register<Exec>("cleanGoCode") {
+        description = "Clean all compiled version of the go code."
+        group = "build"
+
+        callMake("clean")
+    }
+
+    tasks.register<Exec>("compileGo") {
+        // description = "Compile the go code for the local system."
+        description = "Generate Go parser and build the Go executable for CI"
+        group = "build"
+
+        inputs.property("GO_CROSS_COMPILE", System.getenv("GO_CROSS_COMPILE") ?: "0")
+        inputs.files(
+            fileTree(projectDir).matching {
+                include(
+                    "**/*.go",
+                    "**/go.mod",
+                    "**/go.sum",
+                    "make.bat",
+                    "make.sh"
+                )
+                exclude("build/**", "*_generated.go")
+            }
         )
+
+        outputs.file("goparser_generated.go")
+        outputs.dir("build/executable")
+        outputs.cacheIf { true }
+
+        callMake("build")
     }
-}
 
-val compileGo by tasks.registering(Exec::class) {
-    group = "build"
-    description = "Generate Go parser and build the Go executable"
-    inputs.files(
-        fileTree(projectDir).matching {
-            include(
-                "**/*.go",
-                "**/go.mod",
-                "**/go.sum",
-                "make.bat",
-                "make.sh"
-            )
-            exclude("build/**", "*_generated.go")
-        }
-    )
-    outputs.file("goparser_generated.go")
-    outputs.dir("build/executable")
-    outputs.cacheIf { true }
+    tasks.register<Exec>("lintGoCode") {
+        description = "Run an external Go linter."
+        group = "verification"
 
-    callMake("build")
-}
+        val reportPath = layout.buildDirectory.file("reports/golangci-lint-report.xml")
+        inputs.files(
+            fileTree(projectDir).matching {
+                include("src/**/*.go")
+            }
+        )
+        outputs.files(reportPath)
+        outputs.cacheIf { true }
 
-val testGo by tasks.registering(Exec::class) {
-    group = "verification"
-    description = "Generate Go test report"
-    inputs.dir("build/executable")
-
-    callMake("generate-test-report")
-}
-
-val cleanGo by tasks.registering(Exec::class) {
-    group = "build"
-    description = "Clean the Go build"
-
-    callMake("clean")
-}
-
-tasks.clean {
-    dependsOn(cleanGo)
-}
-testGo {
-    dependsOn(compileGo)
-}
-tasks.build {
-    dependsOn(testGo)
-}
-
-spotless {
-    java {
-        // No Java sources in this project
-        target("")
+        commandLine(
+            "golangci-lint",
+            "run",
+            "--go=${requireNotNull(System.getenv("GO_VERSION")) { "Go version is unset in the environment" }}",
+            "--out-format=checkstyle:${reportPath.get().asFile}"
+        )
+        // golangci-lint returns non-zero exit code if there are issues, we don't want to fail the build in this case.
+        // A report with issues will be later ingested by SonarQube.
+        isIgnoreExitValue = true
     }
-}
 
-if (System.getenv("CI") == "true") {
-    // spotless is enabled only for CI, because spotless relies on Go installation being available on the machine
+    tasks.register<Exec>("testGoCode") {
+        description = "Test the executable produced by the compile go code step."
+        group = "verification"
+
+        dependsOn("compileGo")
+        callMake("test")
+    }
+
+    tasks.named("clean") {
+        dependsOn("cleanGoCode")
+    }
+
+    tasks.named("assemble") {
+        dependsOn("compileGo")
+    }
+
+    tasks.named("test") {
+        dependsOn("testGoCode")
+    }
+
     spotless {
         go {
             val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
@@ -101,11 +113,111 @@ if (System.getenv("CI") == "true") {
             targetExclude("*_generated.go")
         }
     }
-    // For now, these tasks rely on installation of Go performed by the call to make.sh
-    tasks.spotlessCheck {
-        dependsOn(compileGo)
+    tasks.named("check") {
+        dependsOn("spotlessCheck")
     }
-    tasks.spotlessApply {
-        dependsOn(compileGo)
+}
+
+// Local - run the build of go code with docker images
+if (!isCi) {
+    tasks.register<Exec>("buildDockerImage") {
+        description = "Build the docker image to build the go code."
+        group = "build"
+
+        inputs.file("$rootDir/Dockerfile")
+        // Task outputs are not set, because it is too difficult to check if image is built;
+        // We can ignore Gradle caches here, because Docker takes care of its own caches anyway.
+        errorOutput = System.out
+
+        val uidProvider = objects.property<Long>()
+        val os = DefaultNativePlatform.getCurrentOperatingSystem()
+        if (os.isLinux || os.isMacOsX) {
+            // UID of the user inside the container should match this of the host user, otherwise files from the host will be not accessible by the container.
+            val uid = com.sun.security.auth.module.UnixSystem().uid
+            uidProvider.set(uid)
+        }
+
+        val noTrafficInspection = "false" == System.getProperty("trafficInspection")
+
+        val arguments = buildList {
+            add("docker")
+            add("buildx")
+            add("build")
+            add("--file")
+            add(rootProject.file("Dockerfile").absolutePath)
+            if (noTrafficInspection) {
+                add("--build-arg")
+                add("BUILD_ENV=dev")
+            } else {
+                add("--network=host")
+                add("--build-arg")
+                add("BUILD_ENV=dev_custom_cert")
+            }
+            if (uidProvider.isPresent) {
+                add("--build-arg")
+                add("UID=${uidProvider.get()}")
+            }
+            add("--platform")
+            add("linux/amd64")
+            add("-t")
+            add("sonar-go-go-builder")
+            add("--progress")
+            add("plain")
+            add("${project.projectDir}")
+        }
+
+        commandLine(arguments)
+    }
+
+    tasks.register<Exec>("compileGo") {
+        description = "Generate Go parser and build the Go executable from the docker image."
+        group = "build"
+        dependsOn("buildDockerImage")
+        errorOutput = System.out
+
+        inputs.files(
+            fileTree(projectDir).matching {
+                include(
+                    "*.go",
+                    "**/*.go",
+                    "**/go.mod",
+                    "**/go.sum",
+                    "make.sh",
+                    "make.bat"
+                )
+                exclude("build/**", "*_generated.go")
+            }
+        )
+        outputs.file("goparser_generated.go")
+        outputs.dir("build/executable")
+        outputs.cacheIf { true }
+
+        commandLine(
+            "docker",
+            "run",
+            "--rm",
+            "--network=host",
+            "--platform",
+            "linux/amd64",
+            "--mount",
+            "type=bind,source=${project.projectDir},target=/home/sonarsource/sonar-go-to-slang",
+            "--env",
+            "GO_CROSS_COMPILE=${System.getenv("GO_CROSS_COMPILE") ?: "1"}",
+            "sonar-go-go-builder",
+            "bash",
+            "-c",
+            "cd /home/sonarsource/sonar-go-to-slang && ./make.sh clean && ./make.sh build && ./make.sh test"
+        )
+    }
+
+    tasks.named("assemble") {
+        dependsOn("compileGo")
+    }
+
+    spotless {
+        java {
+            // No Java sources in this project
+            target("")
+        }
     }
 }
