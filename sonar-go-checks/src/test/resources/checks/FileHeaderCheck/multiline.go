@@ -5,9 +5,7 @@
  */
 // comment
 
-if (cond) {
- a = b + 1
-};
+package samples
 
-x = 4;
-x;
+func foo() {
+}

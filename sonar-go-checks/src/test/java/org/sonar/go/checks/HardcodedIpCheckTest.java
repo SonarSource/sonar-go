@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 class HardcodedIpCheckTest {
   @Test
   void test() {
-    SlangVerifier.verify("HardcodedIp.slang", new HardcodedIpCheck());
+    GoVerifier.verify("HardcodedIpCheck/hardcoded_ip.go", new HardcodedIpCheck());
   }
 
 }

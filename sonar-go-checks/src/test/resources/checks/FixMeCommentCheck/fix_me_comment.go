@@ -1,3 +1,4 @@
+package FixMeCommentCheck
 // comment 1
 
 // Noncompliant@+1

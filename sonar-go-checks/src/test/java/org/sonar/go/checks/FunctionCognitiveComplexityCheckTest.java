@@ -24,7 +24,7 @@ class FunctionCognitiveComplexityCheckTest {
   void test() {
     FunctionCognitiveComplexityCheck check = new FunctionCognitiveComplexityCheck();
     check.threshold = 4;
-    SlangVerifier.verify("FunctionCognitiveComplexity.slang", check);
+    GoVerifier.verify("FunctionCognitiveComplexityCheck/function_cognitive_complexity.go", check);
   }
 
 }

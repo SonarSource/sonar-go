@@ -1,3 +1,5 @@
+package EmptyCommentCheck
+
 /* Some comment */
 
 /**/ // Noncompliant
@@ -8,7 +10,7 @@
 // Noncompliant@+1
 /*
 
-*/
+ */
 
 // The next line should be compliant
 //

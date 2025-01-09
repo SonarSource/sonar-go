@@ -22,7 +22,7 @@ class EmptyCommentCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("EmptyComment.slang", new EmptyCommentCheck());
+    GoVerifier.verify("EmptyCommentCheck/empty_comment.go", new EmptyCommentCheck());
   }
 
 }
