@@ -22,7 +22,7 @@ class SelfAssignmentCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("SelfAssignment.slang", new SelfAssignmentCheck());
+    GoVerifier.verify("SelfAssignmentCheck/self_assignment.go", new SelfAssignmentCheck());
   }
 
 }
