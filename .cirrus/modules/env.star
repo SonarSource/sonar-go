@@ -1,5 +1,5 @@
 load(
-    "github.com/SonarSource/cirrus-modules/cloud-native/env.star@analysis/petertrr/support-develocity-config",
+    "github.com/SonarSource/cirrus-modules/cloud-native/env.star@analysis/master",
     "artifactory_env",
     "cirrus_env",
     "gradle_base_env",
