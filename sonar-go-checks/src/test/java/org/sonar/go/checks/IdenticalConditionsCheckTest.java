@@ -22,7 +22,7 @@ class IdenticalConditionsCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("IdenticalConditions.slang", new IdenticalConditionsCheck());
+    GoVerifier.verify("IdenticalConditionsCheck/IdenticalConditionsCheck.go", new IdenticalConditionsCheck());
   }
 
 }
