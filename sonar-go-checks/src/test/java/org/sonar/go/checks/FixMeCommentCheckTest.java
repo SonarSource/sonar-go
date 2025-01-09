@@ -22,7 +22,7 @@ class FixMeCommentCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("FixMeComment.slang", new FixMeCommentCheck());
+    GoVerifier.verify("FixMeCommentCheck/fix_me_comment.go", new FixMeCommentCheck());
   }
 
 }

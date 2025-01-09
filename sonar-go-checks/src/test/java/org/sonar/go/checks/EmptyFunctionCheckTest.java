@@ -22,7 +22,7 @@ class EmptyFunctionCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("EmptyFunction.slang", new EmptyFunctionCheck());
+    GoVerifier.verify("EmptyFunctionCheck/empty_function.go", new EmptyFunctionCheck());
   }
 
 }

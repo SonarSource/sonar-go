@@ -19,38 +19,38 @@ package org.sonar.go.checks;
 import org.junit.jupiter.api.Test;
 
 class FileHeaderCheckTest {
-  private FileHeaderCheck check = new FileHeaderCheck();
+  private final FileHeaderCheck check = new FileHeaderCheck();
 
   @Test
-  void test() {
+  void shouldCheckSingleLineHeader() {
     check.headerFormat = "// copyright 2018";
-    SlangVerifier.verify("fileheader/Noncompliant.slang", check);
-    SlangVerifier.verifyNoIssue("fileheader/Compliant.slang", check);
+    GoVerifier.verify("FileHeaderCheck/noncompliant.go", check);
+    GoVerifier.verifyNoIssue("FileHeaderCheck/compliant.go", check);
   }
 
   @Test
-  void test_regex() {
+  void shouldCheckRegexSingleLineHeader() {
     check.headerFormat = "// copyright 20\\d\\d";
     check.isRegularExpression = true;
-    SlangVerifier.verify("fileheader/Noncompliant.slang", check);
-    SlangVerifier.verifyNoIssue("fileheader/Compliant.slang", check);
+    GoVerifier.verify("FileHeaderCheck/noncompliant.go", check);
+    GoVerifier.verifyNoIssue("FileHeaderCheck/compliant.go", check);
   }
 
   @Test
-  void test_multiline() {
+  void shouldCheckMultilineHeader() {
     check.headerFormat = """
       /*
        * SonarSource SLang
        * Copyright (C) 1999-2001 SonarSource SA
        * mailto:info AT sonarsource DOT com
        */""";
-    SlangVerifier.verifyNoIssue("fileheader/Multiline.slang", check);
+    GoVerifier.verifyNoIssue("FileHeaderCheck/multiline.go", check);
   }
 
   @Test
-  void test_no_first_line() {
+  void shouldNotAllowHeaderNotOnFirstLine() {
     check.headerFormat = "// copyright 20\\d\\d";
     check.isRegularExpression = true;
-    SlangVerifier.verify("fileheader/NoFirstLine.slang", check);
+    GoVerifier.verify("FileHeaderCheck/no_first_line.go", check);
   }
 }

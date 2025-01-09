@@ -22,7 +22,7 @@ class HardcodedCredentialsCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("HardcodedCredentials.slang", new HardcodedCredentialsCheck());
+    GoVerifier.verify("HardcodedCredentialsCheck/hardcoded_credentials.go", new HardcodedCredentialsCheck());
   }
 
 }
