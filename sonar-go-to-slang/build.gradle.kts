@@ -23,9 +23,10 @@ plugins {
     id("org.sonarsource.cloud-native.go-binary-builder")
 }
 
+val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
 val isCi: Boolean = System.getenv("CI")?.equals("true") ?: false
 
-// CI - run the build of go code and protobuf with protoc and local make.sh/make.bat script
+// CI - run the build of go code with local make.sh/make.bat script
 if (isCi) {
     // Define and trigger tasks in this order: clean, compile and test go code
     tasks.register<Exec>("cleanGoCode") {
@@ -68,7 +69,7 @@ if (isCi) {
         val reportPath = layout.buildDirectory.file("reports/golangci-lint-report.xml")
         inputs.files(
             fileTree(projectDir).matching {
-                include("src/**/*.go")
+                include("resources/**/*.go")
             }
         )
         outputs.files(reportPath)
@@ -107,7 +108,6 @@ if (isCi) {
 
     spotless {
         go {
-            val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
             gofmt("go$goVersion")
             target("*.go", "**/*.go")
             targetExclude("*_generated.go")
@@ -157,6 +157,8 @@ if (!isCi) {
                 add("--build-arg")
                 add("UID=${uidProvider.get()}")
             }
+            add("--build-arg")
+            add("GO_VERSION=$goVersion")
             add("--platform")
             add("linux/amd64")
             add("-t")
