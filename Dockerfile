@@ -12,7 +12,7 @@ ARG UID=1000
 
 RUN groupadd --system --gid ${UID} sonarsource \
       && useradd --system --gid sonarsource --uid ${UID} --shell /bin/bash --create-home sonarsource \
-      && mkdir -p /home/sonarsource/sonar-helm-for-iac
+      && mkdir -p /home/sonarsource/sonar-go-to-slang
 
 # If the custom certificate is not provided, use the base image.
 # This mode can be activated by providing build argument `BUILD_ENV=dev`.

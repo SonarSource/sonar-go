@@ -1,7 +1,7 @@
 #! /usr/bin/env bash
 set -euox pipefail
 
-readonly GO_VERSION="1.23.4"
+readonly GO_VERSION="${GO_VERSION:-1.23.4}"
 readonly DEFAULT_GO_BINARY_DIRECTORY="${GOPATH:=${HOME}/go}/bin"
 readonly DEFAULT_GO_BINARY="${DEFAULT_GO_BINARY_DIRECTORY}/go"
 
@@ -99,13 +99,14 @@ generate_test_report() {
   local path_to_binary
   path_to_binary=$(install_go "${GO_VERSION}")
   # Test
-  bash -c "${path_to_binary} test -json > test-report.out"
+  # bash -c "${path_to_binary} test -json > test-report.out"
+  CGO_ENABLED=0 bash -c "${path_to_binary} test -timeout 5s -coverprofile=build/test-coverage.out -json > build/test-report.json"
 }
 
 
 main() {
   if [[ "${#}" -ne 1 ]]; then
-    echo "Usage: ${0} build | clean | generate-test-report"
+    echo "Usage: ${0} build | clean | test"
     exit 0
   fi
   local command="${1}"
@@ -113,13 +114,13 @@ main() {
     build)
       compile_binaries
       ;;
-    generate-test-report)
+    test)
       generate_test_report
       ;;
     clean)
       rm -f goparser_generated.go
       rm -f build/sonar-go-to-slang-*
-      rm -f test-report.out
+      rm -f build/test-report.json
       ;;
     *)
       echo "Unrecognized command ${command}" >&2
