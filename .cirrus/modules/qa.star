@@ -1,7 +1,7 @@
 load("github.com/SonarSource/cirrus-modules/cloud-native/conditions.star@analysis/master", "is_branch_qa_eligible")
 load("github.com/SonarSource/cirrus-modules/cloud-native/platform.star@analysis/master", "base_image_container_builder")
 load(
-    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/petertrr/support-develocity-config",
+    "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/master",
     "gradle_cache",
     "cleanup_gradle_script",
     "gradle_wrapper_cache",
