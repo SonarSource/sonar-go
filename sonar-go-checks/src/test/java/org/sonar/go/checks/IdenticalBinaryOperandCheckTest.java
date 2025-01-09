@@ -22,7 +22,7 @@ class IdenticalBinaryOperandCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("IdenticalBinaryOperand.slang", new IdenticalBinaryOperandCheck());
+    GoVerifier.verify("IdenticalBinaryOperandCheck/IdenticalBinaryOperandCheck.go", new IdenticalBinaryOperandCheck());
   }
 
 }
