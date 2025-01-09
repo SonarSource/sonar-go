@@ -28,6 +28,8 @@ To always get the latest version of the build logic during git operations, set t
 git config submodule.recurse true
 ```
 
+For more information see [README.md](https://github.com/SonarSource/cloud-native-gradle-modules/pull/16) of cloud-native-gradle-modules.
+
 Additionally, if you are on Windows, read the [sonar-go-to-slang/README.md](sonar-go-to-slang/README.md) instructions.
 
 
