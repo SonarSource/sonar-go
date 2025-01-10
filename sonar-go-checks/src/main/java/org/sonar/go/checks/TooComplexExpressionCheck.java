@@ -47,7 +47,7 @@ public class TooComplexExpressionCheck implements SlangCheck {
         var complexity = computeExpressionComplexity(tree);
         if (complexity > max) {
           var message = "Reduce the number of conditional operators (%s) used in the expression (maximum allowed %s)."
-            .formatted(complexity,max);
+            .formatted(complexity, max);
           var gap = (double) complexity - max;
           ctx.reportIssue(tree, message, Collections.emptyList(), gap);
         }
