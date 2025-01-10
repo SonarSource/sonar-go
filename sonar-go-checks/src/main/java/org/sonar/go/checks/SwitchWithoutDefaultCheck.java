@@ -16,13 +16,24 @@
  */
 package org.sonar.go.checks;
 
-import org.junit.jupiter.api.Test;
+import org.sonar.check.Rule;
+import org.sonarsource.slang.api.MatchTree;
+import org.sonarsource.slang.api.Token;
+import org.sonarsource.slang.checks.api.InitContext;
+import org.sonarsource.slang.checks.api.SlangCheck;
 
-class MatchWithoutElseCheckTest {
+@Rule(key = "S131")
+public class SwitchWithoutDefaultCheck implements SlangCheck {
 
-  @Test
-  void test() {
-    SlangVerifier.verify("MatchWithoutElse.slang", new MatchWithoutElseCheck());
+  @Override
+  public void initialize(InitContext init) {
+    init.register(MatchTree.class, (ctx, tree) -> {
+      if (tree.cases().stream().noneMatch(matchCase -> matchCase.expression() == null)) {
+        Token keyword = tree.keyword();
+        String message = String.format("Add a default clause to this \"%s\" statement.", keyword.text());
+        ctx.reportIssue(keyword, message);
+      }
+    });
   }
 
 }

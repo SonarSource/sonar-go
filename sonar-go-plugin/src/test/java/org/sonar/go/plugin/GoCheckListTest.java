@@ -38,7 +38,7 @@ import org.sonar.go.checks.IdenticalBinaryOperandCheck;
 import org.sonar.go.checks.IdenticalConditionsCheck;
 import org.sonar.go.checks.IfConditionalAlwaysTrueOrFalseCheck;
 import org.sonar.go.checks.SwitchCaseTooBigCheck;
-import org.sonar.go.checks.MatchWithoutElseCheck;
+import org.sonar.go.checks.SwitchWithoutDefaultCheck;
 import org.sonar.go.checks.NestedMatchCheck;
 import org.sonar.go.checks.OctalValuesCheck;
 import org.sonar.go.checks.OneStatementPerLineGoCheck;
@@ -95,7 +95,7 @@ class GoCheckListTest {
       IdenticalConditionsCheck.class,
       IfConditionalAlwaysTrueOrFalseCheck.class,
       SwitchCaseTooBigCheck.class,
-      MatchWithoutElseCheck.class,
+      SwitchWithoutDefaultCheck.class,
       NestedMatchCheck.class,
       OctalValuesCheck.class,
       OneStatementPerLineGoCheck.class,
