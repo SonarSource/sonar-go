@@ -19,7 +19,6 @@ package org.sonar.go.checks;
 import java.util.List;
 import org.sonar.check.Rule;
 import org.sonarsource.slang.api.AssignmentExpressionTree;
-import org.sonarsource.slang.api.TextRange;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.api.UnaryExpressionTree;
@@ -35,26 +34,26 @@ import static org.sonarsource.slang.api.AssignmentExpressionTree.Operator.EQUAL;
 @Rule(key = "S2757")
 public class WrongAssignmentOperatorCheck implements SlangCheck {
 
-  private static final List<Operator> SUSPICIOUS_UNARY_OPERATORS = asList(Operator.NEGATE, Operator.PLUS, Operator.MINUS);
+  private static final List<Operator> SUSPICIOUS_UNARY_OPERATORS = List.of(Operator.NEGATE, Operator.PLUS, Operator.MINUS);
 
   @Override
   public void initialize(InitContext init) {
     init.register(AssignmentExpressionTree.class, (ctx, assignment) -> {
-      Tree rightHandSide = assignment.statementOrExpression();
+      var rightHandSide = assignment.statementOrExpression();
       if (assignment.operator() != EQUAL || !isSuspiciousUnaryExpression(rightHandSide)) {
         return;
       }
 
-      List<Token> leftHandSideTokens = assignment.leftHandSide().metaData().tokens();
-      Token variableLastToken = leftHandSideTokens.get(leftHandSideTokens.size() - 1);
+      var leftHandSideTokens = assignment.leftHandSide().metaData().tokens();
+      var variableLastToken = leftHandSideTokens.get(leftHandSideTokens.size() - 1);
 
-      List<Token> allTokens = assignment.metaData().tokens();
-      Token operatorToken = allTokens.get(allTokens.indexOf(variableLastToken) + 1);
+      var allTokens = assignment.metaData().tokens();
+      var operatorToken = allTokens.get(allTokens.indexOf(variableLastToken) + 1);
 
-      Token expressionFirstToken = rightHandSide.metaData().tokens().get(0);
+      var expressionFirstToken = rightHandSide.metaData().tokens().get(0);
 
       if (!hasSpacingBetween(operatorToken, expressionFirstToken) && hasSpacingBetween(variableLastToken, operatorToken)) {
-        TextRange range = TextRanges.merge(asList(operatorToken.textRange(), expressionFirstToken.textRange()));
+        var range = TextRanges.merge(asList(operatorToken.textRange(), expressionFirstToken.textRange()));
         ctx.reportIssue(range, getMessage(expressionFirstToken, ctx));
       }
     });

@@ -20,18 +20,18 @@ import org.junit.jupiter.api.Test;
 
 class TooManyCasesCheckTest {
 
-  private TooManyCasesCheck check = new TooManyCasesCheck();
+  private final TooManyCasesCheck check = new TooManyCasesCheck();
 
   @Test
-  void test_3() {
+  void shouldRaiseWithMax3Cases() {
     check.maximum = 3;
-    SlangVerifier.verify("TooManyCases_3.slang", check);
+    GoVerifier.verify("TooManyCasesCheck/TooManyCasesCheck3.go", check);
   }
 
   @Test
-  void test_4() {
+  void shouldRaiseWithMax4Cases() {
     check.maximum = 4;
-    SlangVerifier.verify("TooManyCases_4.slang", check);
+    GoVerifier.verify("TooManyCasesCheck/TooManyCasesCheck4.go", check);
   }
 
 }

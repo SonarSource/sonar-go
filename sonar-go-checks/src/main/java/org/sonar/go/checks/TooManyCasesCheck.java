@@ -39,7 +39,7 @@ public class TooManyCasesCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(MatchTree.class, (ctx, tree) -> {
-      int numberOfCases = tree.cases().size();
+      var numberOfCases = tree.cases().size();
       if (numberOfCases > maximum) {
         Token matchKeyword = tree.keyword();
         String message = String.format(

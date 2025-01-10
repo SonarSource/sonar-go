@@ -43,12 +43,12 @@ public class TooLongLineCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(TopLevelTree.class, ((ctx, topLevelTree) -> {
-      String[] lines = ctx.fileContent().split("\r\n|\n|\r", -1);
+      var lines = ctx.fileContent().split("\r\n|\n|\r", -1);
       IntStream.range(0, lines.length)
         .filter(lineNumber -> lines[lineNumber].length() > maximumLineLength)
         .forEach(lineNumber -> {
-          int lineLength = lines[lineNumber].length();
-          TextRange longLine = getLineRange(lineNumber + 1, lineLength);
+          var lineLength = lines[lineNumber].length();
+          var longLine = getLineRange(lineNumber + 1, lineLength);
           ctx.reportIssue(longLine, MessageFormat.format(MESSAGE, lineLength, maximumLineLength));
         });
     }));

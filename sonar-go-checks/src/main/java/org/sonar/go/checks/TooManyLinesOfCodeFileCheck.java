@@ -37,7 +37,7 @@ public class TooManyLinesOfCodeFileCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(TopLevelTree.class, (ctx, tree) -> {
-      int numberOfLinesOfCode = tree.metaData().linesOfCode().size();
+      var numberOfLinesOfCode = tree.metaData().linesOfCode().size();
       if (numberOfLinesOfCode > max) {
         String message = String.format(
           "File \"%s\" has %s lines, which is greater than %s authorized. Split it into smaller files.",
