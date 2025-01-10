@@ -62,7 +62,7 @@ if (isCi) {
         callMake("build")
     }
 
-    tasks.register<Exec>("lintGoCode") {
+    val lintGoCode = tasks.register<Exec>("lintGoCode") {
         description = "Run an external Go linter."
         group = "verification"
 
@@ -104,6 +104,16 @@ if (isCi) {
 
     tasks.named("test") {
         dependsOn("testGoCode")
+    }
+
+    tasks.named("check") {
+        dependsOn(lintGoCode)
+    }
+
+    rootProject.tasks.named("sonar") {
+        // As lintGoCode produces a report to be ingested by SonarQube, we need to add an explicit dependency to it.
+        // See https://docs.sonarsource.com/sonarqube-server/latest/analyzing-source-code/scanners/sonarscanner-for-gradle/#task-dependencies
+        dependsOn(lintGoCode)
     }
 
     spotless {
