@@ -22,7 +22,7 @@ class IfConditionalAlwaysTrueOrFalseCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("IfConditionalAlwaysTrueOrFalse.slang", new IfConditionalAlwaysTrueOrFalseCheck());
+    GoVerifier.verify("IfConditionalAlwaysTrueOrFalseCheck/IfConditionalAlwaysTrueOrFalseCheck.go", new IfConditionalAlwaysTrueOrFalseCheck());
   }
 
 }
