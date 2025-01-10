@@ -22,6 +22,14 @@ To configure build dependencies, run the following command:
 git submodule update --init -- build-logic
 ```
 
+To always get the latest version of the build logic during git operations, set the following configuration:
+
+```shell
+git config submodule.recurse true
+```
+
+For more information see [README.md](https://github.com/SonarSource/cloud-native-gradle-modules/blob/master/README.md) of cloud-native-gradle-modules.
+
 Additionally, if you are on Windows, read the [sonar-go-to-slang/README.md](sonar-go-to-slang/README.md) instructions.
 
 
