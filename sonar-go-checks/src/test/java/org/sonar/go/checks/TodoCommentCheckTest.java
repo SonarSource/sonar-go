@@ -22,7 +22,6 @@ class TodoCommentCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("TodoComment.slang", new TodoCommentCheck());
+    GoVerifier.verify("TodoCommentCheck/todo_comment.go", new TodoCommentCheck());
   }
-
 }

@@ -34,5 +34,4 @@ public class SelfAssignmentCheck implements SlangCheck {
       }
     });
   }
-
 }

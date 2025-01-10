@@ -84,5 +84,4 @@ public class TooComplexExpressionCheck implements SlangCheck {
       return 0;
     }
   }
-
 }

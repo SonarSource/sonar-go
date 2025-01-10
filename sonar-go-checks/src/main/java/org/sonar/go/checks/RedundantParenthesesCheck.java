@@ -34,5 +34,4 @@ public class RedundantParenthesesCheck implements SlangCheck {
       }
     });
   }
-
 }

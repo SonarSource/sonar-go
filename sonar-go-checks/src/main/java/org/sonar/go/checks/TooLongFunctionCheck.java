@@ -52,5 +52,4 @@ public class TooLongFunctionCheck implements SlangCheck {
       }
     });
   }
-
 }

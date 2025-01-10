@@ -60,9 +60,6 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
       // Ignore 'else-if' statements since the issue would already be raised on the first 'if' statement
       return;
     }
-    if (ExpressionUtils.isTernaryOperator(ctx.ancestors(), tree)) {
-      return;
-    }
 
     Iterator<Tree> iterator = ctx.ancestors().iterator();
     Deque<Token> nestedParentNodes = new LinkedList<>();
@@ -112,11 +109,8 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
       return ifTree.ifKeyword();
     } else if (tree instanceof MatchTree matchTree) {
       return matchTree.keyword();
-    } else if (tree instanceof ExceptionHandlingTree exceptionHandlingTree) {
-      return exceptionHandlingTree.tryKeyword();
     } else {
       return ((LoopTree) tree).keyword();
     }
   }
-
 }
