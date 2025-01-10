@@ -24,7 +24,7 @@ class WrongAssignmentOperatorCheckTest {
 
   @Test
   void shouldRaiseIssueWithSlangAST() {
-    // required for coverage
+    // TODO SONARGO-124; currently required for coverage
     SlangVerifier.verify("WrongAssignmentOperatorCheck/WrongAssignmentOperator.slang", check);
   }
 

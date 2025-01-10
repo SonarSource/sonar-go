@@ -24,7 +24,7 @@ class VariableAndParameterNameCheckTest {
 
   @Test
   void shouldRaiseOnSlangAST() {
-    // for coverage
+    // TODO SONARGO-123; currently required for coverage
     SlangVerifier.verify("VariableAndParameterNameCheck/VariableAndParameterName.slang", check);
   }
 

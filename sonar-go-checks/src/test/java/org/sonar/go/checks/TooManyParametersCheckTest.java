@@ -36,7 +36,7 @@ class TooManyParametersCheckTest {
 
   @Test
   void shouldRaiseWithDefaultThresholdSlangAST() {
-    // Required for coverage
+    // TODO SONARGO-121; currently required for coveragee
     SlangVerifier.verify("TooManyParametersCheck/TooManyParameters.slang", check);
   }
 
