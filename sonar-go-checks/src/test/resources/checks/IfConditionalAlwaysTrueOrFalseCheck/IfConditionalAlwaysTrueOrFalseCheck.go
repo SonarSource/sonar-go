@@ -24,6 +24,11 @@ func main() {
     return 1
   }
 
+  if !false { // Noncompliant
+  // ^^^^^^
+    return 1
+  }
+
   if condition {
     return 1
   } else if true { // Noncompliant
@@ -33,7 +38,8 @@ func main() {
   if !true { // Noncompliant
     return 1
   } else if cond && false { // Noncompliant
-         // ^^^^^^^^^^^^^
+    return 1
+  } else if isFoo() && false { // Compliant, isFoo can have a side-effect
     return 1
   } else if cond || false {
     return 1
