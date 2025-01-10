@@ -24,7 +24,6 @@ import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.MatchCaseTree;
 import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.TextRange;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
@@ -57,7 +56,7 @@ public class IdenticalConditionsCheck implements SlangCheck {
 
   private static List<Tree> collectConditions(IfTree ifTree, List<Tree> list) {
     list.add(skipParentheses(ifTree.condition()));
-    Tree elseBranch = ifTree.elseBranch();
+    var elseBranch = ifTree.elseBranch();
     if (elseBranch instanceof IfTree elseIfBranch) {
       return collectConditions(elseIfBranch, list);
     }
@@ -65,11 +64,11 @@ public class IdenticalConditionsCheck implements SlangCheck {
   }
 
   private static void checkConditions(CheckContext ctx, List<Tree> conditions) {
-    for (List<Tree> group : SyntacticEquivalence.findDuplicatedGroups(conditions)) {
-      Tree original = group.get(0);
+    for (var group : SyntacticEquivalence.findDuplicatedGroups(conditions)) {
+      var original = group.get(0);
       group.stream().skip(1)
         .forEach(duplicated -> {
-          TextRange originalRange = original.metaData().textRange();
+          var originalRange = original.metaData().textRange();
           ctx.reportIssue(
             duplicated,
             "This condition duplicates the one on line " + originalRange.start().line() + ".",

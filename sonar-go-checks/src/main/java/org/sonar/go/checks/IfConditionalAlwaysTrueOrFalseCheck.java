@@ -44,16 +44,16 @@ public class IfConditionalAlwaysTrueOrFalseCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(IfTree.class, (ctx, ifTree) -> {
-      Tree condition = ifTree.condition();
+      var condition = ifTree.condition();
       if (isAlwaysTrueOrFalse(condition)) {
-        String message = String.format(MESSAGE_TEMPLATE, ifTree.ifKeyword().text());
+        var message = String.format(MESSAGE_TEMPLATE, ifTree.ifKeyword().text());
         ctx.reportIssue(condition, message);
       }
     });
   }
 
   private static boolean isAlwaysTrueOrFalse(Tree originalCondition) {
-    Tree condition = skipParentheses(originalCondition);
+    var condition = skipParentheses(originalCondition);
     return isBooleanLiteral(condition)
       || isTrueValueLiteral(condition)
       || isFalseValueLiteral(condition)

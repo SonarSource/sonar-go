@@ -42,7 +42,7 @@ public class OctalValuesCheck implements SlangCheck {
 
   private static boolean isException(IntegerLiteralTree literalTree) {
     // octal literal < 8 are authorized, as well as octal literals with 3 digits, as they are often used for file permissions
-    BigInteger value = literalTree.getIntegerValue();
+    var value = literalTree.getIntegerValue();
     return value.compareTo(EIGHT) < 0 || literalTree.getNumericPart().length() == FILE_PERMISSION_MASK_LENGTH;
   }
 

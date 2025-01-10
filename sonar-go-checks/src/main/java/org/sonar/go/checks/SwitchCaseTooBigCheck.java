@@ -40,7 +40,7 @@ public class SwitchCaseTooBigCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(MatchCaseTree.class, (ctx, matchCaseTree) -> {
-      int linesOfCode = matchCaseTree.metaData().linesOfCode().size();
+      var linesOfCode = matchCaseTree.metaData().linesOfCode().size();
       if (linesOfCode > max) {
         ctx.reportIssue(matchCaseTree.rangeToHighlight(), MessageFormat.format(MESSAGE, linesOfCode, max));
       }

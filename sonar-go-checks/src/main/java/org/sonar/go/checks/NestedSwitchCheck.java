@@ -19,6 +19,7 @@ package org.sonar.go.checks;
 import java.text.MessageFormat;
 import org.sonar.check.Rule;
 import org.sonarsource.slang.api.MatchTree;
+import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
@@ -31,6 +32,10 @@ public class NestedSwitchCheck implements SlangCheck {
     init.register(MatchTree.class, (ctx, matchTree) -> ctx.ancestors().stream()
       .filter(MatchTree.class::isInstance)
       .findFirst()
-      .ifPresent(parentMatch -> ctx.reportIssue(matchTree.keyword(), MessageFormat.format(MESSAGE, matchTree.keyword().text()))));
+      .ifPresent(parentMatch -> reportIssue(ctx, matchTree)));
+  }
+
+  private static void reportIssue(CheckContext ctx, MatchTree matchTree) {
+    ctx.reportIssue(matchTree.keyword(), MessageFormat.format(MESSAGE, matchTree.keyword().text()));
   }
 }
