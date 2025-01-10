@@ -22,7 +22,7 @@ class RedundantParenthesesCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("RedundantParentheses.slang", new RedundantParenthesesCheck());
+    GoVerifier.verify("RedundantParenthesesCheck/redundant_parentheses.go", new RedundantParenthesesCheck());
   }
 
 }

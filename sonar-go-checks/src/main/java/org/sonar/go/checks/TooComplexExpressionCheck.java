@@ -17,7 +17,6 @@
 package org.sonar.go.checks;
 
 import java.util.Collections;
-import java.util.Iterator;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonarsource.slang.api.BinaryExpressionTree;
@@ -45,13 +44,11 @@ public class TooComplexExpressionCheck implements SlangCheck {
   public void initialize(InitContext init) {
     init.register(BinaryExpressionTree.class, (ctx, tree) -> {
       if (isParentExpression(ctx)) {
-        int complexity = computeExpressionComplexity(tree);
+        var complexity = computeExpressionComplexity(tree);
         if (complexity > max) {
-          String message = String.format(
-            "Reduce the number of conditional operators (%s) used in the expression (maximum allowed %s).",
-            complexity,
-            max);
-          double gap = (double) complexity - max;
+          var message = "Reduce the number of conditional operators (%s) used in the expression (maximum allowed %s)."
+            .formatted(complexity, max);
+          var gap = (double) complexity - max;
           ctx.reportIssue(tree, message, Collections.emptyList(), gap);
         }
       }
@@ -59,9 +56,9 @@ public class TooComplexExpressionCheck implements SlangCheck {
   }
 
   private static boolean isParentExpression(CheckContext ctx) {
-    Iterator<Tree> iterator = ctx.ancestors().iterator();
+    var iterator = ctx.ancestors().iterator();
     while (iterator.hasNext()) {
-      Tree parentExpression = iterator.next();
+      var parentExpression = iterator.next();
       if (parentExpression instanceof BinaryExpressionTree) {
         return false;
       } else if (!(parentExpression instanceof UnaryExpressionTree) || !(parentExpression instanceof ParenthesizedExpressionTree)) {
@@ -72,9 +69,9 @@ public class TooComplexExpressionCheck implements SlangCheck {
   }
 
   private static int computeExpressionComplexity(Tree originalTree) {
-    Tree tree = skipParentheses(originalTree);
+    var tree = skipParentheses(originalTree);
     if (tree instanceof BinaryExpressionTree binary) {
-      int complexity = isLogicalBinaryExpression(tree) ? 1 : 0;
+      var complexity = isLogicalBinaryExpression(tree) ? 1 : 0;
       return complexity
         + computeExpressionComplexity(binary.leftOperand())
         + computeExpressionComplexity(binary.rightOperand());
@@ -84,5 +81,4 @@ public class TooComplexExpressionCheck implements SlangCheck {
       return 0;
     }
   }
-
 }

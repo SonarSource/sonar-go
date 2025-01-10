@@ -21,6 +21,7 @@ import org.sonarsource.slang.api.AssignmentExpressionTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
+import static org.sonarsource.slang.api.AssignmentExpressionTree.Operator.EQUAL;
 import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S1656")
@@ -29,10 +30,9 @@ public class SelfAssignmentCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(AssignmentExpressionTree.class, (ctx, tree) -> {
-      if (tree.operator() == AssignmentExpressionTree.Operator.EQUAL && areEquivalent(tree.leftHandSide(), tree.statementOrExpression())) {
+      if (tree.operator() == EQUAL && areEquivalent(tree.leftHandSide(), tree.statementOrExpression())) {
         ctx.reportIssue(tree, "Remove or correct this useless self-assignment.");
       }
     });
   }
-
 }

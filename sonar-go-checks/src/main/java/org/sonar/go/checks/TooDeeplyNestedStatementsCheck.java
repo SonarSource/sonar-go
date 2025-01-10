@@ -18,13 +18,10 @@ package org.sonar.go.checks;
 
 import java.util.ArrayList;
 import java.util.Deque;
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.ExceptionHandlingTree;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.LoopTree;
@@ -60,16 +57,13 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
       // Ignore 'else-if' statements since the issue would already be raised on the first 'if' statement
       return;
     }
-    if (ExpressionUtils.isTernaryOperator(ctx.ancestors(), tree)) {
-      return;
-    }
 
-    Iterator<Tree> iterator = ctx.ancestors().iterator();
-    Deque<Token> nestedParentNodes = new LinkedList<>();
-    Tree last = tree;
+    var iterator = ctx.ancestors().iterator();
+    var nestedParentNodes = new LinkedList<Token>();
+    var last = tree;
 
     while (iterator.hasNext()) {
-      Tree parent = iterator.next();
+      var parent = iterator.next();
       if (isElseIfStatement(parent, last) && !nestedParentNodes.isEmpty()) {
         // Only the 'if' parent of the chained 'else-if' statements should be highlighted
         nestedParentNodes.removeLast();
@@ -93,17 +87,17 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
   }
 
   private void reportIssue(CheckContext ctx, Tree statement, Deque<Token> nestedStatements) {
-    String message = String.format("Refactor this code to not nest more than %s control flow statements.", max);
-    List<SecondaryLocation> secondaryLocations = new ArrayList<>(nestedStatements.size());
+    var message = "Refactor this code to not nest more than %s control flow statements.".formatted(max);
+    var secondaryLocations = new ArrayList<SecondaryLocation>(nestedStatements.size());
     int nestedDepth = 0;
 
     while (!nestedStatements.isEmpty()) {
       nestedDepth++;
-      String secondaryLocationMessage = String.format("Nesting depth %s", nestedDepth);
+      var secondaryLocationMessage = String.format("Nesting depth %s", nestedDepth);
       secondaryLocations.add(new SecondaryLocation(nestedStatements.removeLast().textRange(), secondaryLocationMessage));
     }
 
-    Token nodeToHighlight = getNodeToHighlight(statement);
+    var nodeToHighlight = getNodeToHighlight(statement);
     ctx.reportIssue(nodeToHighlight, message, secondaryLocations);
   }
 
@@ -112,11 +106,8 @@ public class TooDeeplyNestedStatementsCheck implements SlangCheck {
       return ifTree.ifKeyword();
     } else if (tree instanceof MatchTree matchTree) {
       return matchTree.keyword();
-    } else if (tree instanceof ExceptionHandlingTree exceptionHandlingTree) {
-      return exceptionHandlingTree.tryKeyword();
     } else {
       return ((LoopTree) tree).keyword();
     }
   }
-
 }

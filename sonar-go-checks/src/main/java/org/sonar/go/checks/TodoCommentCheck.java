@@ -16,12 +16,9 @@
  */
 package org.sonar.go.checks;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.sonar.check.Rule;
 import org.sonarsource.analyzer.commons.TokenLocation;
-import org.sonarsource.slang.api.TextPointer;
-import org.sonarsource.slang.api.TextRange;
 import org.sonarsource.slang.api.TopLevelTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
@@ -36,16 +33,15 @@ public class TodoCommentCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(TopLevelTree.class, (ctx, tree) -> tree.allComments().forEach(comment -> {
-      Matcher matcher = todoPattern.matcher(comment.text());
+      var matcher = todoPattern.matcher(comment.text());
       if (matcher.find()) {
-        TextPointer start = comment.textRange().start();
-        TokenLocation location = new TokenLocation(start.line(), start.lineOffset(), comment.text().substring(0, matcher.start(2)));
-        TextRange todoRange = new TextRangeImpl(
+        var start = comment.textRange().start();
+        var location = new TokenLocation(start.line(), start.lineOffset(), comment.text().substring(0, matcher.start(2)));
+        var todoRange = new TextRangeImpl(
           new TextPointerImpl(location.endLine(), location.endLineOffset()),
           new TextPointerImpl(location.endLine(), location.endLineOffset() + 4));
         ctx.reportIssue(todoRange, "Complete the task associated to this TODO comment.");
       }
     }));
   }
-
 }

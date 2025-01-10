@@ -22,14 +22,14 @@ class TooDeeplyNestedStatementsCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("TooDeeplyNestedStatements.slang", new TooDeeplyNestedStatementsCheck());
+    GoVerifier.verify("TooDeeplyNestedStatementsCheck/too_deeply_nested_statements.go", new TooDeeplyNestedStatementsCheck());
   }
 
   @Test
   void test_max_2() {
     TooDeeplyNestedStatementsCheck check = new TooDeeplyNestedStatementsCheck();
     check.max = 2;
-    SlangVerifier.verify("TooDeeplyNestedStatements.max_2.slang", check);
+    GoVerifier.verify("TooDeeplyNestedStatementsCheck/too_deeply_nested_statements_max_2.go", check);
   }
 
 }

@@ -22,14 +22,14 @@ class StringLiteralDuplicatedCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("StringLiteralDuplicated.slang", new StringLiteralDuplicatedCheck());
+    GoVerifier.verify("StringLiteralDuplicatedCheck/string_literal_duplicated.go", new StringLiteralDuplicatedCheck());
   }
 
   @Test
   void test_threshold_4() {
     StringLiteralDuplicatedCheck check = new StringLiteralDuplicatedCheck();
     check.threshold = 4;
-    SlangVerifier.verify("StringLiteralDuplicated.threshold_4.slang", check);
+    GoVerifier.verify("StringLiteralDuplicatedCheck/string_literal_duplicated_threshold_4.go", check);
   }
 
 }

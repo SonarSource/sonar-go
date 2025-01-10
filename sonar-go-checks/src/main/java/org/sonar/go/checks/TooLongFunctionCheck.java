@@ -18,7 +18,6 @@ package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
@@ -38,13 +37,13 @@ public class TooLongFunctionCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(FunctionDeclarationTree.class, (ctx, tree) -> {
-      BlockTree body = tree.body();
+      var body = tree.body();
       if (body == null) {
         return;
       }
-      int numberOfLinesOfCode = body.metaData().linesOfCode().size();
+      var numberOfLinesOfCode = body.metaData().linesOfCode().size();
       if (numberOfLinesOfCode > max) {
-        String message = String.format(
+        var message = String.format(
           "This function has %s lines of code, which is greater than the %s authorized. Split it into smaller functions.",
           numberOfLinesOfCode,
           max);
@@ -52,5 +51,4 @@ public class TooLongFunctionCheck implements SlangCheck {
       }
     });
   }
-
 }

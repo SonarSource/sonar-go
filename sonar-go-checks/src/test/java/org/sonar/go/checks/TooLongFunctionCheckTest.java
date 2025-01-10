@@ -23,15 +23,15 @@ class TooLongFunctionCheckTest {
   TooLongFunctionCheck check = new TooLongFunctionCheck();
 
   @Test
-  void max_3() {
+  void shouldVerifyFunctionMax3() {
     check.max = 3;
-    SlangVerifier.verify("TooLongFunction_3.slang", check);
+    GoVerifier.verify("TooLongFunctionCheck/too_long_function_3.go", check);
   }
 
   @Test
-  void max_4() {
+  void shouldVerifyFunctionMax4() {
     check.max = 4;
-    SlangVerifier.verify("TooLongFunction_4.slang", check);
+    GoVerifier.verify("TooLongFunctionCheck/too_long_function_4.go", check);
   }
 
 }

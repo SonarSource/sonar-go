@@ -46,7 +46,7 @@ public class StringLiteralDuplicatedCheck implements SlangCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(TopLevelTree.class, (ctx, tree) -> {
-      Map<String, List<StringLiteralTree>> occurrences = new HashMap<>();
+      var occurrences = new HashMap<String, List<StringLiteralTree>>();
       tree.descendants()
         .filter(StringLiteralTree.class::isInstance)
         .map(StringLiteralTree.class::cast)
@@ -58,19 +58,18 @@ public class StringLiteralDuplicatedCheck implements SlangCheck {
 
   private static void check(CheckContext ctx, Map<String, List<StringLiteralTree>> occurrencesMap, int threshold) {
     for (Map.Entry<String, List<StringLiteralTree>> entry : occurrencesMap.entrySet()) {
-      List<StringLiteralTree> occurrences = entry.getValue();
+      var occurrences = entry.getValue();
       int size = occurrences.size();
       if (size >= threshold) {
-        StringLiteralTree first = occurrences.get(0);
-        String message = String.format("Define a constant instead of duplicating this literal \"%s\" %s times.", first.content(), size);
-        List<SecondaryLocation> secondaryLocations = occurrences.stream()
+        var first = occurrences.get(0);
+        var message = "Define a constant instead of duplicating this literal \"%s\" %s times.".formatted(first.content(), size);
+        var secondaryLocations = occurrences.stream()
           .skip(1)
           .map(stringLiteral -> new SecondaryLocation(stringLiteral.metaData().textRange(), "Duplication"))
           .toList();
-        double gap = size - 1.0;
+        var gap = size - 1.0;
         ctx.reportIssue(first, message, secondaryLocations, gap);
       }
     }
   }
-
 }
