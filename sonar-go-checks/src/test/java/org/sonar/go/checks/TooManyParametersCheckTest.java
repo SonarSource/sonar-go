@@ -20,16 +20,24 @@ import org.junit.jupiter.api.Test;
 
 class TooManyParametersCheckTest {
 
+  private final TooManyParametersCheck check = new TooManyParametersCheck();
+
   @Test
-  void default_threshold() {
-    SlangVerifier.verify("TooManyParameters.slang", new TooManyParametersCheck());
+  void shouldRaiseWithDefaultThreshold() {
+    GoVerifier.verify("TooManyParametersCheck/TooManyParametersCheckDefault.go", check);
   }
 
   @Test
-  void threshold_3() {
-    TooManyParametersCheck check = new TooManyParametersCheck();
-    check.max = 3;
-    SlangVerifier.verify("TooManyParameters.threshold.3.slang", check);
+  void shouldRaiseWithMax3Threshold() {
+    var checkWithChangedThreshold = new TooManyParametersCheck();
+    checkWithChangedThreshold.max = 3;
+    GoVerifier.verify("TooManyParametersCheck/TooManyParametersCheck3.go", checkWithChangedThreshold);
+  }
+
+  @Test
+  void shouldRaiseWithDefaultThresholdSlangAST() {
+    // Required for coverage
+    SlangVerifier.verify("TooManyParametersCheck/TooManyParameters.slang", check);
   }
 
 }

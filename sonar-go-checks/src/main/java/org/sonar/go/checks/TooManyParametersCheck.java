@@ -16,7 +16,6 @@
  */
 package org.sonar.go.checks;
 
-import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
@@ -44,7 +43,7 @@ public class TooManyParametersCheck implements SlangCheck {
           "This function has %s parameters, which is greater than the %s authorized.",
           tree.formalParameters().size(),
           max);
-        List<SecondaryLocation> secondaryLocations = tree.formalParameters().stream()
+        var secondaryLocations = tree.formalParameters().stream()
           .skip(max)
           .map(SecondaryLocation::new)
           .toList();

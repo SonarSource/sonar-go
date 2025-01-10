@@ -39,7 +39,7 @@ public class VariableAndParameterNameCheck implements SlangCheck {
 
   @Override
   public void initialize(InitContext init) {
-    Pattern pattern = Pattern.compile(format);
+    var pattern = Pattern.compile(format);
 
     init.register(VariableDeclarationTree.class, (ctx, tree) -> {
       if (ctx.ancestors().stream().anyMatch(FunctionDeclarationTree.class::isInstance)) {
@@ -55,7 +55,7 @@ public class VariableAndParameterNameCheck implements SlangCheck {
 
   private void check(Pattern pattern, CheckContext ctx, @Nullable IdentifierTree identifier, String variableKind) {
     if (identifier != null && !pattern.matcher(identifier.name()).matches()) {
-      String message = String.format("Rename this %s to match the regular expression \"%s\".", variableKind, this.format);
+      var message = String.format("Rename this %s to match the regular expression \"%s\".", variableKind, this.format);
       ctx.reportIssue(identifier, message);
     }
   }

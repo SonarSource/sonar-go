@@ -20,18 +20,18 @@ import org.junit.jupiter.api.Test;
 
 class TooManyLinesOfCodeFileCheckTest {
 
-  TooManyLinesOfCodeFileCheck check = new TooManyLinesOfCodeFileCheck();
+  private final TooManyLinesOfCodeFileCheck check = new TooManyLinesOfCodeFileCheck();
 
   @Test
-  void max_4() {
-    check.max = 4;
-    SlangVerifier.verify("TooManyLinesOfCodeFile.max_4.slang", check);
+  void shouldRaiseWithMax6Lines() {
+    check.max = 6;
+    GoVerifier.verify("TooManyLinesOfCodeFileCheck/TooManyLinesOfCodeFileCheck6.go", check);
   }
 
   @Test
-  void max_5() {
-    check.max = 5;
-    SlangVerifier.verifyNoIssue("TooManyLinesOfCodeFile.max_5.slang", check);
+  void shouldNotRaiseWithMax7Lines() {
+    check.max = 7;
+    GoVerifier.verifyNoIssue("TooManyLinesOfCodeFileCheck/TooManyLinesOfCodeFileCheck7.go", check);
   }
 
 }

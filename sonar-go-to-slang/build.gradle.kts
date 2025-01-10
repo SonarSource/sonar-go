@@ -69,7 +69,7 @@ if (isCi) {
         val reportPath = layout.buildDirectory.file("reports/golangci-lint-report.xml")
         inputs.files(
             fileTree(projectDir).matching {
-                include("resources/**/*.go")
+                include("*.go")
             }
         )
         outputs.files(reportPath)

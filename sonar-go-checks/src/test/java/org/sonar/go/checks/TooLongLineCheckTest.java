@@ -20,17 +20,15 @@ import org.junit.jupiter.api.Test;
 
 class TooLongLineCheckTest {
 
-  private TooLongLineCheck check = new TooLongLineCheck();
-
   @Test
-  void max_120() {
-    check.maximumLineLength = 120;
-    SlangVerifier.verify("TooLongLine_120.slang", check);
+  void shouldRaiseWithMax120LineLength() {
+    GoVerifier.verify("TooLongLineCheck/TooLongLine120.go", new TooLongLineCheck());
   }
 
   @Test
-  void max_40() {
-    check.maximumLineLength = 40;
-    SlangVerifier.verify("TooLongLine_40.slang", check);
+  void shouldRaiseWithMax40LineLength() {
+    var checkWithChangedValue = new TooLongLineCheck();
+    checkWithChangedValue.maximumLineLength = 40;
+    GoVerifier.verify("TooLongLineCheck/TooLongLine40.go", checkWithChangedValue);
   }
 }
