@@ -22,7 +22,7 @@ class TooComplexExpressionCheckTest {
 
   @Test
   void test_max_3() {
-    GoVerifier.verify("TooComplexExpressionCheck/too_complex_expression_3.go", new TooComplexExpressionCheck());
+    GoVerifier.verify("TooComplexExpressionCheck/too_complex_expression.go", new TooComplexExpressionCheck());
   }
 
   @Test
