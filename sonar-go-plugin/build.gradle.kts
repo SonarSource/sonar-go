@@ -32,6 +32,7 @@ dependencies {
     implementation(project(":sonar-go-checks"))
     implementation(project(":sonar-go-commons"))
     implementation(libs.sonar.analyzer.commons)
+    implementation(libs.slang.api)
     implementation(libs.checkstyle.import)
     implementation(libs.minimal.json)
     implementation(project(":sonar-go-to-slang", configuration = "goBinaries"))

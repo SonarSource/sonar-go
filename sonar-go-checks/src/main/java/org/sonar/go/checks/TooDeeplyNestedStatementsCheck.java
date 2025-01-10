@@ -24,7 +24,6 @@ import java.util.List;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonarsource.slang.api.ExceptionHandlingTree;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.LoopTree;
