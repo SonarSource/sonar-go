@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 class IfConditionalAlwaysTrueOrFalseCheckTest {
 
   @Test
-  void test() {
+  void shouldRaiseIssues() {
     GoVerifier.verify("IfConditionalAlwaysTrueOrFalseCheck/IfConditionalAlwaysTrueOrFalseCheck.go", new IfConditionalAlwaysTrueOrFalseCheck());
   }
 

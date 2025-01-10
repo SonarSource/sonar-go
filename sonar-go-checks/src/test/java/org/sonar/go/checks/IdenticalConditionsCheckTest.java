@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 class IdenticalConditionsCheckTest {
 
   @Test
-  void test() {
+  void shouldRaiseIssues() {
     GoVerifier.verify("IdenticalConditionsCheck/IdenticalConditionsCheck.go", new IdenticalConditionsCheck());
   }
 

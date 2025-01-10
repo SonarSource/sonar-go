@@ -18,19 +18,18 @@ package org.sonar.go.checks;
 
 import org.junit.jupiter.api.Test;
 
-class MatchCaseTooBigCheckTest {
+class SwitchCaseTooBigCheckTest {
 
-  private MatchCaseTooBigCheck check = new MatchCaseTooBigCheck();
+  private final SwitchCaseTooBigCheck check = new SwitchCaseTooBigCheck();
 
   @Test
-  void max_5() {
-    check.max = 5;
-    SlangVerifier.verify("MatchCaseTooBig_5.slang", check);
+  void shouldRaiseIssuesWithDefaultMaxValue() {
+    GoVerifier.verify("SwitchCaseTooBigCheck/SwitchCaseTooBigCheck_6.go", check);
   }
 
   @Test
-  void max_3() {
+  void shouldRaiseIssuesWithCustomMaxValue() {
     check.max = 3;
-    SlangVerifier.verify("MatchCaseTooBig_3.slang", check);
+    GoVerifier.verify("SwitchCaseTooBigCheck/SwitchCaseTooBigCheck_3.go", check);
   }
 }

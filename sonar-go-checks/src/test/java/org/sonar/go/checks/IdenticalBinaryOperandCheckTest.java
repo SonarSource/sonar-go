@@ -21,7 +21,7 @@ import org.junit.jupiter.api.Test;
 class IdenticalBinaryOperandCheckTest {
 
   @Test
-  void test() {
+  void shouldRaiseIssues() {
     GoVerifier.verify("IdenticalBinaryOperandCheck/IdenticalBinaryOperandCheck.go", new IdenticalBinaryOperandCheck());
   }
 

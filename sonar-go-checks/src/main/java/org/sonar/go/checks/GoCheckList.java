@@ -47,7 +47,7 @@ public class GoCheckList {
       IdenticalBinaryOperandCheck.class,
       IdenticalConditionsCheck.class,
       IfConditionalAlwaysTrueOrFalseCheck.class,
-      MatchCaseTooBigCheck.class,
+      SwitchCaseTooBigCheck.class,
       MatchWithoutElseCheck.class,
       NestedMatchCheck.class,
       OctalValuesCheck.class,

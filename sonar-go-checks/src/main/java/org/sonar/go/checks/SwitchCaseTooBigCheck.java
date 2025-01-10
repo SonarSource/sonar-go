@@ -24,7 +24,7 @@ import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
 @Rule(key = "S1151")
-public class MatchCaseTooBigCheck implements SlangCheck {
+public class SwitchCaseTooBigCheck implements SlangCheck {
 
   private static final int DEFAULT_MAX = 6;
   private static final String DEFAULT_MAX_VALUE = "" + DEFAULT_MAX;
