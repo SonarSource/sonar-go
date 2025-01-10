@@ -23,7 +23,7 @@ import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
 @Rule(key = "S1821")
-public class NestedMatchCheck implements SlangCheck {
+public class NestedSwitchCheck implements SlangCheck {
   private static final String MESSAGE = "Refactor the code to eliminate this nested \"{0}\".";
 
   @Override

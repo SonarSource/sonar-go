@@ -49,7 +49,7 @@ public class GoCheckList {
       IfConditionalAlwaysTrueOrFalseCheck.class,
       SwitchCaseTooBigCheck.class,
       SwitchWithoutDefaultCheck.class,
-      NestedMatchCheck.class,
+      NestedSwitchCheck.class,
       OctalValuesCheck.class,
       OneStatementPerLineGoCheck.class,
       ParsingErrorCheck.class,

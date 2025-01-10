@@ -18,9 +18,10 @@ package org.sonar.go.checks;
 
 import org.junit.jupiter.api.Test;
 
-class NestedMatchCheckTest {
+class NestedSwitchCheckTest {
+
   @Test
-  void test() {
-    SlangVerifier.verify("NestedMatch.slang", new NestedMatchCheck());
+  void shouldRaiseIssues() {
+    GoVerifier.verify("NestedSwitchCheck/NestedSwitchCheck.go", new NestedSwitchCheck());
   }
 }
