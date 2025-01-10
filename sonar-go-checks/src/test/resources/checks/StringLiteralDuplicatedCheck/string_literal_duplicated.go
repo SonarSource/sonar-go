@@ -33,7 +33,7 @@ func function2() string {
   //    <^^^^^^^^^^^^^^^^^
   case "abc":
     return "string literal4"
-  //         <^^^^^^^^^^^^^^^^^
+//        <^^^^^^^^^^^^^^^^^
   case "string literal4":
     //  <^^^^^^^^^^^^^^^^^
     return "string literal4"

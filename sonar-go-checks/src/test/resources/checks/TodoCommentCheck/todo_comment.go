@@ -49,12 +49,12 @@ TODO Multiline comment */
 // valid end of line todo
 
 // Noncompliant@+1
-// valid end of file todo
-
-// Noncompliant@+1
 // TODO
 func main() {
 	// Noncompliant@+1
 	// TODO just do it
 	x := 0
 }
+
+// Noncompliant@+1
+// valid end of file todo
