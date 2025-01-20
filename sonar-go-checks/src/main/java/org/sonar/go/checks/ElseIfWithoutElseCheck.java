@@ -26,7 +26,6 @@ import org.sonarsource.slang.api.JumpTree;
 import org.sonarsource.slang.api.NativeTree;
 import org.sonarsource.slang.api.ReturnTree;
 import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.ThrowTree;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.checks.api.CheckContext;
