@@ -22,7 +22,7 @@ class BooleanInversionCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("BooleanInversion.slang", new BooleanInversionCheck());
+    GoVerifier.verify("BooleanInversionCheck/boolean_inversion.go", new BooleanInversionCheck());
   }
 
 }

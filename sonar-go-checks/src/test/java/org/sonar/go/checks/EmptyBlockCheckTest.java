@@ -22,7 +22,7 @@ class EmptyBlockCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("EmptyBlock.slang", new EmptyBlockCheck());
+    GoVerifier.verify("EmptyBlockCheck/empty_block.go", new EmptyBlockCheck());
   }
 
 }

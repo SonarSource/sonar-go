@@ -18,9 +18,12 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
+import org.sonar.go.checks.utils.TreeUtils;
 import org.sonarsource.slang.api.BlockTree;
+import org.sonarsource.slang.api.IdentifierTree;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.JumpTree;
+import org.sonarsource.slang.api.NativeTree;
 import org.sonarsource.slang.api.ReturnTree;
 import org.sonarsource.slang.api.TextRange;
 import org.sonarsource.slang.api.ThrowTree;
@@ -79,17 +82,30 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
   private static boolean endsWithReturnBreakOrThrow(IfTree ifTree) {
     Tree thenBranch = ifTree.thenBranch();
     if (thenBranch instanceof BlockTree blockTree) {
-      List<Tree> statements = blockTree.statementOrExpressions();
+      List<Tree> statements = blockTree.statementOrExpressions()
+        .stream().filter(TreeUtils.IS_NOT_SEMICOLON)
+        .toList();
       if (!statements.isEmpty()) {
         Tree lastStmt = statements.get(statements.size() - 1);
-        return isReturnBreakOrThrow(lastStmt);
+        return isReturnBreakOrPanic(lastStmt);
       }
     }
     // Curly braces can be omitted when there is only one statement inside the "if"
-    return isReturnBreakOrThrow(thenBranch);
+    return isReturnBreakOrPanic(thenBranch);
   }
 
-  private static boolean isReturnBreakOrThrow(Tree tree) {
-    return tree instanceof JumpTree || tree instanceof ReturnTree || tree instanceof ThrowTree;
+  private static boolean isReturnBreakOrPanic(Tree tree) {
+    return tree instanceof JumpTree || tree instanceof ReturnTree || isPanicCall(tree);
+  }
+
+  private static boolean isPanicCall(Tree tree) {
+    return tree instanceof NativeTree exptStmtNativeTree
+      && exptStmtNativeTree.nativeKind().toString().equals("[0](ExprStmt)")
+      && exptStmtNativeTree.children().size() == 1
+      && exptStmtNativeTree.children().get(0) instanceof NativeTree callExprNativeTree
+      && callExprNativeTree.nativeKind().toString().equals("X(CallExpr)")
+      && !callExprNativeTree.children().isEmpty()
+      && callExprNativeTree.children().get(0) instanceof IdentifierTree identifierTree
+      && identifierTree.name().equals("panic");
   }
 }

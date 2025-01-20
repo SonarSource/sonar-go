@@ -22,7 +22,7 @@ class AllBranchesIdenticalCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("AllBranchesIdentical.slang", new AllBranchesIdenticalCheck());
+    GoVerifier.verify("AllBranchesIdenticalCheck/all_branches_identical.go", new AllBranchesIdenticalCheck());
   }
 
 }

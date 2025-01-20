@@ -21,6 +21,6 @@ import org.junit.jupiter.api.Test;
 class BooleanLiteralCheckTest {
   @Test
   void test() {
-    SlangVerifier.verify("BooleanLiteral.slang", new BooleanLiteralCheck());
+    GoVerifier.verify("BooleanLiteralCheck/boolean_literal.go", new BooleanLiteralCheck());
   }
 }
