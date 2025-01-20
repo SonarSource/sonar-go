@@ -70,6 +70,7 @@ if (isCi) {
         inputs.files(
             fileTree(projectDir).matching {
                 include("*.go")
+                exclude("*_generated.go")
             }
         )
         outputs.files(reportPath)
