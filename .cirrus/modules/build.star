@@ -40,7 +40,7 @@ def build_env():
     env |= next_env()
     env |= {
         "DEPLOY_PULL_REQUEST": "true",
-        "BUILD_ARGUMENTS": "lintGoCode --build-cache"
+        "BUILD_ARGUMENTS": "--build-cache"
     }
     return env
 
