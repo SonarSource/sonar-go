@@ -46,11 +46,11 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
       }
 
       IfTree prevTree = ifTree;
-      boolean endsWithReturn = endsWithReturnBreakOrThrow(ifTree);
+      boolean endsWithReturn = endsWithReturnBreakOrPanic(ifTree);
       while (ifTree.elseBranch() instanceof IfTree) {
         prevTree = ifTree;
         ifTree = (IfTree) (ifTree.elseBranch());
-        endsWithReturn = endsWithReturn && endsWithReturnBreakOrThrow(ifTree);
+        endsWithReturn = endsWithReturn && endsWithReturnBreakOrPanic(ifTree);
       }
 
       // We raise an issue if
@@ -78,7 +78,7 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
     return true;
   }
 
-  private static boolean endsWithReturnBreakOrThrow(IfTree ifTree) {
+  private static boolean endsWithReturnBreakOrPanic(IfTree ifTree) {
     Tree thenBranch = ifTree.thenBranch();
     if (thenBranch instanceof BlockTree blockTree) {
       List<Tree> statements = blockTree.statementOrExpressions()

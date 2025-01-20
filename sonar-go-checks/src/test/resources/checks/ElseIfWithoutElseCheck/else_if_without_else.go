@@ -42,6 +42,15 @@ func main() {
         panic(1);
     }
 
+    // extra use cases
+    if x == 0 {
+        break;
+    } else if x == 1 {
+        panic;
+    } else if x == 2 {
+        panic.other;
+    }
+
     if x == 0 {
         break;
     } else if x == 1 { // Noncompliant {{Add the missing "else" clause.}}
