@@ -2,7 +2,7 @@
 slang-dependencies = "1.18.1.6411"
 analyzer-commons = "2.16.0.3141"
 plugin-api = "11.1.0.2693"
-sonarqube = "24.12.0.100206"
+sonarqube = "25.1.0.102122"
 orchestrator = "5.1.0.2254"
 sonarlint = "10.12.1.79852"
 minimal-json = "0.9.5"
