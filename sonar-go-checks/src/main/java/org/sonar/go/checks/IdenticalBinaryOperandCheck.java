@@ -29,6 +29,8 @@ import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
 @Rule(key = "S1764")
 public class IdenticalBinaryOperandCheck implements SlangCheck {
 
+  public static final String MESSAGE = "Correct one of the identical sub-expressions on both sides this operator";
+
   @Override
   public void initialize(InitContext init) {
     init.register(BinaryExpressionTree.class, (ctx, tree) -> {
@@ -36,10 +38,7 @@ public class IdenticalBinaryOperandCheck implements SlangCheck {
         && tree.operator() != BinaryExpressionTree.Operator.TIMES
         && !containsPlaceHolder(tree)
         && areEquivalent(skipParentheses(tree.leftOperand()), skipParentheses(tree.rightOperand()))) {
-        ctx.reportIssue(
-          tree.rightOperand(),
-          "Correct one of the identical sub-expressions on both sides this operator",
-          new SecondaryLocation(tree.leftOperand()));
+        ctx.reportIssue(tree.rightOperand(), MESSAGE, new SecondaryLocation(tree.leftOperand()));
       }
     });
   }

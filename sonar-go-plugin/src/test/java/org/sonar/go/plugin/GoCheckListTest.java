@@ -37,15 +37,15 @@ import org.sonar.go.checks.HardcodedIpCheck;
 import org.sonar.go.checks.IdenticalBinaryOperandCheck;
 import org.sonar.go.checks.IdenticalConditionsCheck;
 import org.sonar.go.checks.IfConditionalAlwaysTrueOrFalseCheck;
-import org.sonar.go.checks.MatchCaseTooBigCheck;
-import org.sonar.go.checks.MatchWithoutElseCheck;
-import org.sonar.go.checks.NestedMatchCheck;
+import org.sonar.go.checks.NestedSwitchCheck;
 import org.sonar.go.checks.OctalValuesCheck;
 import org.sonar.go.checks.OneStatementPerLineGoCheck;
 import org.sonar.go.checks.ParsingErrorCheck;
 import org.sonar.go.checks.RedundantParenthesesCheck;
 import org.sonar.go.checks.SelfAssignmentCheck;
 import org.sonar.go.checks.StringLiteralDuplicatedCheck;
+import org.sonar.go.checks.SwitchCaseTooBigCheck;
+import org.sonar.go.checks.SwitchWithoutDefaultCheck;
 import org.sonar.go.checks.TodoCommentCheck;
 import org.sonar.go.checks.TooComplexExpressionCheck;
 import org.sonar.go.checks.TooDeeplyNestedStatementsCheck;
@@ -94,9 +94,9 @@ class GoCheckListTest {
       IdenticalBinaryOperandCheck.class,
       IdenticalConditionsCheck.class,
       IfConditionalAlwaysTrueOrFalseCheck.class,
-      MatchCaseTooBigCheck.class,
-      MatchWithoutElseCheck.class,
-      NestedMatchCheck.class,
+      SwitchCaseTooBigCheck.class,
+      SwitchWithoutDefaultCheck.class,
+      NestedSwitchCheck.class,
       OctalValuesCheck.class,
       OneStatementPerLineGoCheck.class,
       ParsingErrorCheck.class,

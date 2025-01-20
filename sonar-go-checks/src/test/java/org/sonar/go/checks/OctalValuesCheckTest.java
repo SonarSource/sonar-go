@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 class OctalValuesCheckTest {
 
   @Test
-  void test() {
-    SlangVerifier.verify("OctalValues.slang", new OctalValuesCheck());
+  void shouldRaiseIssues() {
+    GoVerifier.verify("OctalValuesCheck/OctalValuesCheck.go", new OctalValuesCheck());
   }
 
 }

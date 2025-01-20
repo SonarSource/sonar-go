@@ -16,21 +16,12 @@
  */
 package org.sonar.go.checks;
 
-import java.text.MessageFormat;
-import org.sonar.check.Rule;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.junit.jupiter.api.Test;
 
-@Rule(key = "S1821")
-public class NestedMatchCheck implements SlangCheck {
-  private static final String MESSAGE = "Refactor the code to eliminate this nested \"{0}\".";
+class NestedSwitchCheckTest {
 
-  @Override
-  public void initialize(InitContext init) {
-    init.register(MatchTree.class, (ctx, matchTree) -> ctx.ancestors().stream()
-      .filter(MatchTree.class::isInstance)
-      .findFirst()
-      .ifPresent(parentMatch -> ctx.reportIssue(matchTree.keyword(), MessageFormat.format(MESSAGE, matchTree.keyword().text()))));
+  @Test
+  void shouldRaiseIssues() {
+    GoVerifier.verify("NestedSwitchCheck/NestedSwitchCheck.go", new NestedSwitchCheck());
   }
 }

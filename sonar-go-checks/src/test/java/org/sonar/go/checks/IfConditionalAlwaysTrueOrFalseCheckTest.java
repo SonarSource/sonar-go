@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 class IfConditionalAlwaysTrueOrFalseCheckTest {
 
   @Test
-  void test() {
-    SlangVerifier.verify("IfConditionalAlwaysTrueOrFalse.slang", new IfConditionalAlwaysTrueOrFalseCheck());
+  void shouldRaiseIssues() {
+    GoVerifier.verify("IfConditionalAlwaysTrueOrFalseCheck/IfConditionalAlwaysTrueOrFalseCheck.go", new IfConditionalAlwaysTrueOrFalseCheck());
   }
 
 }

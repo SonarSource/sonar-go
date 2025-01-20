@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 class IdenticalBinaryOperandCheckTest {
 
   @Test
-  void test() {
-    SlangVerifier.verify("IdenticalBinaryOperand.slang", new IdenticalBinaryOperandCheck());
+  void shouldRaiseIssues() {
+    GoVerifier.verify("IdenticalBinaryOperandCheck/IdenticalBinaryOperandCheck.go", new IdenticalBinaryOperandCheck());
   }
 
 }

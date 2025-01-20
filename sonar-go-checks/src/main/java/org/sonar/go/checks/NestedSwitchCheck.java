@@ -16,24 +16,26 @@
  */
 package org.sonar.go.checks;
 
+import java.text.MessageFormat;
 import org.sonar.check.Rule;
 import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.Token;
+import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 
-@Rule(key = "S131")
-public class MatchWithoutElseCheck implements SlangCheck {
+@Rule(key = "S1821")
+public class NestedSwitchCheck implements SlangCheck {
+  private static final String MESSAGE = "Refactor the code to eliminate this nested \"{0}\".";
 
   @Override
   public void initialize(InitContext init) {
-    init.register(MatchTree.class, (ctx, tree) -> {
-      if (tree.cases().stream().noneMatch(matchCase -> matchCase.expression() == null)) {
-        Token keyword = tree.keyword();
-        String message = String.format("Add a default clause to this \"%s\" statement.", keyword.text());
-        ctx.reportIssue(keyword, message);
-      }
-    });
+    init.register(MatchTree.class, (ctx, matchTree) -> ctx.ancestors().stream()
+      .filter(MatchTree.class::isInstance)
+      .findFirst()
+      .ifPresent(parentMatch -> reportIssue(ctx, matchTree)));
   }
 
+  private static void reportIssue(CheckContext ctx, MatchTree matchTree) {
+    ctx.reportIssue(matchTree.keyword(), MessageFormat.format(MESSAGE, matchTree.keyword().text()));
+  }
 }

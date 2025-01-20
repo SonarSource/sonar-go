@@ -21,8 +21,8 @@ import org.junit.jupiter.api.Test;
 class IdenticalConditionsCheckTest {
 
   @Test
-  void test() {
-    SlangVerifier.verify("IdenticalConditions.slang", new IdenticalConditionsCheck());
+  void shouldRaiseIssues() {
+    GoVerifier.verify("IdenticalConditionsCheck/IdenticalConditionsCheck.go", new IdenticalConditionsCheck());
   }
 
 }
