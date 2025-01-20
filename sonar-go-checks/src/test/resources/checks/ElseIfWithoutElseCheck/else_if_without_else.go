@@ -47,7 +47,7 @@ func main() {
         break;
     } else if x == 1 {
         panic;
-    } else if x == 2 {
+    } else if x == 2 { // Noncompliant {{Add the missing "else" clause.}}
         panic.other;
     }
 
