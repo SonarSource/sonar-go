@@ -494,7 +494,4 @@
 'go-project:sources/traefik/pkg/server/aggregator.go':[
 141,
 ],
-'go-project:sources/traefik/pkg/server/server.go':[
-86,
-],
 }

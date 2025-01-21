@@ -17,6 +17,8 @@
 package org.sonar.go.checks;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import org.sonar.check.Rule;
 import org.sonar.go.checks.utils.TreeUtils;
 import org.sonarsource.slang.api.BlockTree;
@@ -37,6 +39,12 @@ import org.sonarsource.slang.impl.TextRangeImpl;
 public class ElseIfWithoutElseCheck implements SlangCheck {
 
   private static final String MESSAGE = "Add the missing \"else\" clause.";
+  private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> {
+      if (tree instanceof IdentifierTree identifierTree) {
+        return identifierTree.name().equals("panic");
+      }
+      return false;
+    };
 
   @Override
   public void initialize(InitContext init) {
@@ -98,13 +106,22 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
   }
 
   private static boolean isPanicCall(Tree tree) {
-    return tree instanceof NativeTree exptStmtNativeTree
-      && exptStmtNativeTree.nativeKind().toString().equals("[0](ExprStmt)")
-      && exptStmtNativeTree.children().size() == 1
-      && exptStmtNativeTree.children().get(0) instanceof NativeTree callExprNativeTree
-      && callExprNativeTree.nativeKind().toString().equals("X(CallExpr)")
-      && !callExprNativeTree.children().isEmpty()
-      && callExprNativeTree.children().get(0) instanceof IdentifierTree identifierTree
-      && identifierTree.name().equals("panic");
+    return Optional.of(tree)
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
+      .filter(children -> children.size() == 1)
+      .map(children -> children.get(0))
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
+      .filter(children -> !children.isEmpty())
+      .map(children -> children.get(0))
+      .filter(IS_IDENTIFIER_PANIC)
+      .isPresent();
+  }
+
+  private static List<Tree> toNativeTreeChildren(Tree optTree) {
+    return Optional.of(optTree)
+      .filter(NativeTree.class::isInstance)
+      .map(NativeTree.class::cast)
+      .map(NativeTree::children)
+      .orElse(List.of());
   }
 }
