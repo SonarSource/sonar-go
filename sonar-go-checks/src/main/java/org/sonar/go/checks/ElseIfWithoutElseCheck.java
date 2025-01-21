@@ -39,12 +39,7 @@ import org.sonarsource.slang.impl.TextRangeImpl;
 public class ElseIfWithoutElseCheck implements SlangCheck {
 
   private static final String MESSAGE = "Add the missing \"else\" clause.";
-  private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> {
-    if (tree instanceof IdentifierTree identifierTree) {
-      return identifierTree.name().equals("panic");
-    }
-    return false;
-  };
+  private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> tree instanceof IdentifierTree identifierTree && identifierTree.name().equals("panic");
 
   @Override
   public void initialize(InitContext init) {
