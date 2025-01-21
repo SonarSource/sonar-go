@@ -40,11 +40,11 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
 
   private static final String MESSAGE = "Add the missing \"else\" clause.";
   private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> {
-      if (tree instanceof IdentifierTree identifierTree) {
-        return identifierTree.name().equals("panic");
-      }
-      return false;
-    };
+    if (tree instanceof IdentifierTree identifierTree) {
+      return identifierTree.name().equals("panic");
+    }
+    return false;
+  };
 
   @Override
   public void initialize(InitContext init) {
