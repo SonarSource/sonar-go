@@ -47,10 +47,10 @@ val projectTitle = properties["projectTitle"] as String
 sonar {
     properties {
         property("sonar.organization", "sonarsource")
-        property("sonar.projectKey", "SonarSource_sonar-go")
+        property("sonar.projectKey", "SonarSource_sonar-go-enterprise")
         property("sonar.projectName", projectTitle)
-        property("sonar.links.ci", "https://cirrus-ci.com/github/SonarSource/sonar-go")
-        property("sonar.links.scm", "https://github.com/SonarSource/sonar-go")
+        property("sonar.links.ci", "https://cirrus-ci.com/github/SonarSource/sonar-go-enterprise")
+        property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
         property("sonar.exclusions", "**/build/**/*")
     }
