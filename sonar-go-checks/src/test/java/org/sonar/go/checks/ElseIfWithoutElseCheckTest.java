@@ -21,6 +21,6 @@ import org.junit.jupiter.api.Test;
 class ElseIfWithoutElseCheckTest {
   @Test
   void test() {
-    SlangVerifier.verify("ElseIfWithoutElse.slang", new ElseIfWithoutElseCheck());
+    GoVerifier.verify("ElseIfWithoutElseCheck/else_if_without_else.go", new ElseIfWithoutElseCheck());
   }
 }

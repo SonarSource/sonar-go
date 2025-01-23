@@ -14,13 +14,18 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks;
+package org.sonar.go.checks.utils;
 
-import org.junit.jupiter.api.Test;
+import java.util.function.Predicate;
+import org.sonarsource.slang.api.NativeTree;
+import org.sonarsource.slang.api.Tree;
+import org.sonarsource.slang.persistence.conversion.StringNativeKind;
 
-class BooleanLiteralCheckTest {
-  @Test
-  void test() {
-    GoVerifier.verify("BooleanLiteralCheck/boolean_literal.go", new BooleanLiteralCheck());
+public class TreeUtils {
+  private TreeUtils() {
   }
+
+  public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> tree instanceof NativeTree nativeTree
+    && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
+    && stringNativeKind.toString().equals("Semicolon"));
 }

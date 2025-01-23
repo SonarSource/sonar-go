@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import org.sonar.check.Rule;
+import org.sonar.go.checks.utils.TreeUtils;
 import org.sonarsource.slang.api.BlockTree;
 import org.sonarsource.slang.api.FunctionDeclarationTree;
 import org.sonarsource.slang.api.IdentifierTree;
@@ -87,7 +88,7 @@ public class DuplicatedFunctionImplementationCheck implements SlangCheck {
     if (functionBody == null) {
       return false;
     }
-    return functionBody.statementOrExpressions().size() >= MINIMUM_STATEMENTS_COUNT;
+    return functionBody.statementOrExpressions().stream().filter(TreeUtils.IS_NOT_SEMICOLON).count() >= MINIMUM_STATEMENTS_COUNT;
   }
 
   private static boolean areDuplicatedImplementation(FunctionDeclarationTree original, FunctionDeclarationTree possibleDuplicate) {

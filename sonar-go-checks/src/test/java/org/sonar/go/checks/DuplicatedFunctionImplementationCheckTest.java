@@ -22,7 +22,7 @@ class DuplicatedFunctionImplementationCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("DuplicatedFunctionImplementation.slang", new DuplicatedFunctionImplementationCheck());
+    GoVerifier.verify("DuplicatedFunctionImplementationCheck/duplicated_function_implementation.go", new DuplicatedFunctionImplementationCheck());
   }
 
 }

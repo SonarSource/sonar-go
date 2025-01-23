@@ -22,13 +22,13 @@ class BadFunctionNameCheckTest {
 
   @Test
   void test() {
-    SlangVerifier.verify("BadFunctionName.slang", new BadFunctionNameCheck());
+    GoVerifier.verify("BadFunctionNameCheck/bad_function_name.go", new BadFunctionNameCheck());
   }
 
   @Test
   void test_upper_case() {
     BadFunctionNameCheck check = new BadFunctionNameCheck();
     check.format = "^[A-Z]*$";
-    SlangVerifier.verify("BadFunctionName.uppercase.slang", check);
+    GoVerifier.verify("BadFunctionNameCheck/bad_function_name_uppercase.go", check);
   }
 }

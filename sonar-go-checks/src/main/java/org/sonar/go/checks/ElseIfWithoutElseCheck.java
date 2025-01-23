@@ -17,13 +17,17 @@
 package org.sonar.go.checks;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Predicate;
 import org.sonar.check.Rule;
+import org.sonar.go.checks.utils.TreeUtils;
 import org.sonarsource.slang.api.BlockTree;
+import org.sonarsource.slang.api.IdentifierTree;
 import org.sonarsource.slang.api.IfTree;
 import org.sonarsource.slang.api.JumpTree;
+import org.sonarsource.slang.api.NativeTree;
 import org.sonarsource.slang.api.ReturnTree;
 import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.ThrowTree;
 import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.checks.api.CheckContext;
@@ -35,6 +39,7 @@ import org.sonarsource.slang.impl.TextRangeImpl;
 public class ElseIfWithoutElseCheck implements SlangCheck {
 
   private static final String MESSAGE = "Add the missing \"else\" clause.";
+  private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> tree instanceof IdentifierTree identifierTree && identifierTree.name().equals("panic");
 
   @Override
   public void initialize(InitContext init) {
@@ -44,11 +49,11 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
       }
 
       IfTree prevTree = ifTree;
-      boolean endsWithReturn = endsWithReturnBreakOrThrow(ifTree);
+      boolean endsWithReturn = endsWithReturnBreakOrPanic(ifTree);
       while (ifTree.elseBranch() instanceof IfTree) {
         prevTree = ifTree;
         ifTree = (IfTree) (ifTree.elseBranch());
-        endsWithReturn = endsWithReturn && endsWithReturnBreakOrThrow(ifTree);
+        endsWithReturn = endsWithReturn && endsWithReturnBreakOrPanic(ifTree);
       }
 
       // We raise an issue if
@@ -76,20 +81,42 @@ public class ElseIfWithoutElseCheck implements SlangCheck {
     return true;
   }
 
-  private static boolean endsWithReturnBreakOrThrow(IfTree ifTree) {
+  private static boolean endsWithReturnBreakOrPanic(IfTree ifTree) {
     Tree thenBranch = ifTree.thenBranch();
     if (thenBranch instanceof BlockTree blockTree) {
-      List<Tree> statements = blockTree.statementOrExpressions();
+      List<Tree> statements = blockTree.statementOrExpressions()
+        .stream().filter(TreeUtils.IS_NOT_SEMICOLON)
+        .toList();
       if (!statements.isEmpty()) {
         Tree lastStmt = statements.get(statements.size() - 1);
-        return isReturnBreakOrThrow(lastStmt);
+        return isReturnBreakOrPanic(lastStmt);
       }
     }
     // Curly braces can be omitted when there is only one statement inside the "if"
-    return isReturnBreakOrThrow(thenBranch);
+    return isReturnBreakOrPanic(thenBranch);
   }
 
-  private static boolean isReturnBreakOrThrow(Tree tree) {
-    return tree instanceof JumpTree || tree instanceof ReturnTree || tree instanceof ThrowTree;
+  private static boolean isReturnBreakOrPanic(Tree tree) {
+    return tree instanceof JumpTree || tree instanceof ReturnTree || isPanicCall(tree);
+  }
+
+  private static boolean isPanicCall(Tree tree) {
+    return Optional.of(tree)
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
+      .filter(children -> children.size() == 1)
+      .map(children -> children.get(0))
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
+      .filter(children -> !children.isEmpty())
+      .map(children -> children.get(0))
+      .filter(IS_IDENTIFIER_PANIC)
+      .isPresent();
+  }
+
+  private static List<Tree> toNativeTreeChildren(Tree optTree) {
+    return Optional.of(optTree)
+      .filter(NativeTree.class::isInstance)
+      .map(NativeTree.class::cast)
+      .map(NativeTree::children)
+      .orElse(List.of());
   }
 }
