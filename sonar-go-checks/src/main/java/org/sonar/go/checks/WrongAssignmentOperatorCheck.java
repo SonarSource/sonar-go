@@ -23,7 +23,6 @@ import org.sonarsource.slang.api.Token;
 import org.sonarsource.slang.api.Tree;
 import org.sonarsource.slang.api.UnaryExpressionTree;
 import org.sonarsource.slang.api.UnaryExpressionTree.Operator;
-import org.sonarsource.slang.checks.api.CheckContext;
 import org.sonarsource.slang.checks.api.InitContext;
 import org.sonarsource.slang.checks.api.SlangCheck;
 import org.sonarsource.slang.impl.TextRanges;
@@ -54,21 +53,17 @@ public class WrongAssignmentOperatorCheck implements SlangCheck {
 
       if (!hasSpacingBetween(operatorToken, expressionFirstToken) && hasSpacingBetween(variableLastToken, operatorToken)) {
         var range = TextRanges.merge(asList(operatorToken.textRange(), expressionFirstToken.textRange()));
-        ctx.reportIssue(range, getMessage(expressionFirstToken, ctx));
+        ctx.reportIssue(range, getMessage(expressionFirstToken));
       }
     });
   }
 
-  private static String getMessage(Token expressionFirstToken, CheckContext aeTree) {
-    if (isSingleNegationAssignment(expressionFirstToken, aeTree)) {
-      // For expressions such as "a = b =! c" we want to display the other message
+  private static String getMessage(Token expressionFirstToken) {
+    if ("!".equals(expressionFirstToken.text())) {
+      // Assignments are statements in go, we cannot have code such as "a = b =! c" to be confused with "a = b != c".
       return "Add a space between \"=\" and \"!\" to avoid confusion.";
     }
     return "Was \"" + expressionFirstToken.text() + "=\" meant instead?";
-  }
-
-  private static boolean isSingleNegationAssignment(Token firstToken, CheckContext aeTree) {
-    return "!".equals(firstToken.text()) && !(aeTree.parent() instanceof AssignmentExpressionTree);
   }
 
   private static boolean hasSpacingBetween(Token firstToken, Token secondToken) {
@@ -77,6 +72,11 @@ public class WrongAssignmentOperatorCheck implements SlangCheck {
   }
 
   private static boolean isSuspiciousUnaryExpression(Tree tree) {
+    // A tree is suspicious if a compound assignment operator exists for the current unary operator (ex. "=+" and "+=").
+    // Currently, the rule only covers "+", "-" and "!" operators, even if there are more cases that could be confusing.
+    // Note 1: "++" and "--" are unary statements in Go, they cannot appear at this point of the logic.
+    // Note 2: not only we want to cover only the three operator listed above, only these three are actually map to the ast.
+    // It means that the condition will never be false in the current state. We still keep it to support future changes.
     return tree instanceof UnaryExpressionTree unary && SUSPICIOUS_UNARY_OPERATORS.contains(unary.operator());
   }
 

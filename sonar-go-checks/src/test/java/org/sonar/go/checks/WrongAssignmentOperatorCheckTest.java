@@ -23,12 +23,6 @@ class WrongAssignmentOperatorCheckTest {
   private final WrongAssignmentOperatorCheck check = new WrongAssignmentOperatorCheck();
 
   @Test
-  void shouldRaiseIssueWithSlangAST() {
-    // TODO SONARGO-124; currently required for coverage
-    SlangVerifier.verify("WrongAssignmentOperatorCheck/WrongAssignmentOperator.slang", check);
-  }
-
-  @Test
   void shouldRaiseIssuesOnWrongAssignmentOperators() {
     GoVerifier.verify("WrongAssignmentOperatorCheck/WrongAssignmentOperator.go", check);
   }
