@@ -29,7 +29,7 @@ import org.sonar.go.testreport.GoTestSensor;
 
 public class GoPlugin implements Plugin {
 
-  static final String RESOURCE_FOLDER = "org/sonar/l10n/go/rules/go";
+  public static final String RESOURCE_FOLDER = "org/sonar/l10n/go/rules/go";
 
   public static final String EXCLUSIONS_KEY = "sonar.go.exclusions";
   public static final String EXCLUSIONS_DEFAULT_VALUE = "**/vendor/**";
@@ -47,8 +47,8 @@ public class GoPlugin implements Plugin {
       InstanceScopeGoConverter.class,
       GoSensor.class,
       GoExclusionsFileFilter.class,
-      GoRulesDefinition.class,
-      GoProfileDefinition.class,
+      rulesDefinition(),
+      profileDefinition(),
 
       PropertyDefinition.builder(GoLanguage.FILE_SUFFIXES_KEY)
         .index(10)
@@ -75,6 +75,14 @@ public class GoPlugin implements Plugin {
     if (context.getRuntime().getProduct() != SonarProduct.SONARLINT) {
       addReportExtensions(context);
     }
+  }
+
+  protected Class<?> rulesDefinition() {
+    return GoRulesDefinition.class;
+  }
+
+  protected Class<?> profileDefinition() {
+    return GoProfileDefinition.class;
   }
 
   private static void addReportExtensions(Context context) {

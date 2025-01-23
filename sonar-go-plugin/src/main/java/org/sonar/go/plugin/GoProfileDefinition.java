@@ -21,12 +21,12 @@ import org.sonarsource.analyzer.commons.BuiltInQualityProfileJsonLoader;
 
 public class GoProfileDefinition implements BuiltInQualityProfilesDefinition {
 
-  static final String PATH_TO_JSON = "org/sonar/l10n/go/rules/go/Sonar_way_profile.json";
+  public static final String PROFILE_PATH = "org/sonar/l10n/go/rules/go/Sonar_way_profile.json";
 
   @Override
   public void define(Context context) {
     NewBuiltInQualityProfile profile = context.createBuiltInQualityProfile("Sonar way", GoLanguage.KEY);
-    BuiltInQualityProfileJsonLoader.load(profile, GoRulesDefinition.REPOSITORY_KEY, PATH_TO_JSON);
+    BuiltInQualityProfileJsonLoader.load(profile, GoRulesDefinition.REPOSITORY_KEY, PROFILE_PATH);
     profile.setDefault(true);
     profile.done();
   }

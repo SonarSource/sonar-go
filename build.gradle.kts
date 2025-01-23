@@ -22,7 +22,7 @@ plugins {
 }
 
 artifactoryConfiguration {
-    buildName = "sonar-go"
+    buildName = providers.environmentVariable("CIRRUS_REPO_NAME").orElse("sonar-go")
     artifactsToPublish = "org.sonarsource.slang:sonar-go-plugin:jar"
     artifactsToDownload = ""
     repoKeyEnv = "ARTIFACTORY_DEPLOY_REPO"

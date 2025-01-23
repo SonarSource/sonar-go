@@ -29,7 +29,7 @@ public class GoRulesDefinition implements RulesDefinition {
 
   public static final String REPOSITORY_KEY = "go";
 
-  private final SonarRuntime runtime;
+  protected final SonarRuntime runtime;
 
   public GoRulesDefinition(SonarRuntime runtime) {
     this.runtime = runtime;
@@ -39,14 +39,17 @@ public class GoRulesDefinition implements RulesDefinition {
   public void define(Context context) {
     NewRepository repository = context.createRepository(REPOSITORY_KEY, GoLanguage.KEY)
       .setName("SonarAnalyzer");
-    RuleMetadataLoader metadataLoader = new RuleMetadataLoader(GoPlugin.RESOURCE_FOLDER, GoProfileDefinition.PATH_TO_JSON, runtime);
 
-    List<Class<?>> checks = GoCheckList.checks();
-    metadataLoader.addRulesByAnnotatedClass(repository, checks);
+    loadRepository(GoPlugin.RESOURCE_FOLDER, GoProfileDefinition.PROFILE_PATH, repository, GoCheckList.checks());
 
     repository.done();
 
     AbstractReportSensor.createExternalRuleRepository(context, GoVetReportSensor.LINTER_ID, GoVetReportSensor.LINTER_NAME);
     AbstractReportSensor.createExternalRuleRepository(context, GoLintReportSensor.LINTER_ID, GoLintReportSensor.LINTER_NAME);
+  }
+
+  protected void loadRepository(String resourcePath, String defaultProfilePath, RulesDefinition.NewRepository repository, List<Class<?>> checkClasses) {
+    var ruleMetadataLoader = new RuleMetadataLoader(resourcePath, defaultProfilePath, runtime);
+    ruleMetadataLoader.addRulesByAnnotatedClass(repository, checkClasses);
   }
 }

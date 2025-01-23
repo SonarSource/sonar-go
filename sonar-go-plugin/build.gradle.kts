@@ -16,14 +16,12 @@
  */
 import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.HashSet
-import java.util.jar.JarInputStream
+import org.sonarsource.cloudnative.gradle.checkJarEntriesPathUniqueness
+import org.sonarsource.cloudnative.gradle.commitHashProvider
+import org.sonarsource.cloudnative.gradle.enforceJarSize
 
 plugins {
-    id("org.sonarsource.cloud-native.java-conventions")
-    id("org.sonarsource.cloud-native.code-style-conventions")
-    id("org.sonarsource.cloud-native.publishing-configuration")
-    alias(libs.plugins.shadow)
+    id("org.sonarsource.cloud-native.sonar-plugin")
 }
 
 dependencies {
@@ -55,13 +53,12 @@ tasks.jar {
             if (!project.hasProperty("buildNumber")) {
                 project.version
             } else {
-                project.version.toString()
-                    .substring(0, project.version.toString().lastIndexOf(".")) + " (build ${project.property("buildNumber")})"
+                project.version.toString().run {
+                    "${substring(0, lastIndexOf("."))} (build ${project.property("buildNumber")})"
+                }
             }
         val buildDate = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ").format(Date())
-        val commitHash = providers.exec {
-            commandLine("git", "rev-parse", "HEAD")
-        }.standardOutput.asText.get().trim()
+        val commitHash = commitHashProvider().get().trim()
         attributes(
             mapOf(
                 "Build-Time" to buildDate,
@@ -105,12 +102,10 @@ tasks.shadowJar {
         exclude("spotless/**")
     }
     doLast {
-        enforceJarSizeAndCheckContent(tasks.shadowJar.get().archiveFile.get().asFile, 5_000_000L, 5_500_000L)
+        val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
+        enforceJarSize(pluginJar, 5_000_000L, 5_500_000L)
+        checkJarEntriesPathUniqueness(pluginJar)
     }
-}
-
-artifacts {
-    archives(tasks.shadowJar)
 }
 
 publishingConfiguration {
@@ -131,37 +126,5 @@ publishing {
         }
         artifact(tasks.sourcesJar)
         artifact(tasks.javadocJar)
-    }
-}
-
-fun enforceJarSizeAndCheckContent(
-    file: File,
-    minSize: Long,
-    maxSize: Long,
-) {
-    val size = file.length()
-    if (size < minSize) {
-        throw GradleException("${file.path} size ($size) too small. Min is $minSize")
-    } else if (size > maxSize) {
-        throw GradleException("${file.path} size ($size) too large. Max is $maxSize")
-    }
-    checkJarEntriesPathUniqueness(file)
-}
-
-// A jar should not contain 2 entries with the same path, furthermore Pack200 will fail to unpack it
-fun checkJarEntriesPathUniqueness(file: File) {
-    val allNames = HashSet<String>()
-    val duplicatedNames = HashSet<String>()
-    file.inputStream().use { input ->
-        JarInputStream(input).use { jarInput ->
-            for (jarEntry in generateSequence { jarInput.nextJarEntry }) {
-                if (!allNames.add(jarEntry.name)) {
-                    duplicatedNames.add(jarEntry.name)
-                }
-            }
-        }
-    }
-    if (duplicatedNames.isNotEmpty()) {
-        throw GradleException("Duplicated entries in the jar: '${file.path}': ${duplicatedNames.joinToString(", ")}")
     }
 }

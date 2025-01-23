@@ -7,7 +7,7 @@ load("github.com/SonarSource/cirrus-modules/cloud-native/conditions.star@analysi
 def promote_script():
     return [
         "source cirrus-env PROMOTE",
-        "cirrus_jfrog_promote",
+        "cirrus_jfrog_promote multi",
         "source ${PROJECT_VERSION_CACHE_DIR}/evaluated_project_version.txt",
         "github-notify-promotion",
     ]
