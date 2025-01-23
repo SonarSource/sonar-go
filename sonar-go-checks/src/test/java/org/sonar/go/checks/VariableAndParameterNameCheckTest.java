@@ -23,12 +23,6 @@ class VariableAndParameterNameCheckTest {
   private final VariableAndParameterNameCheck check = new VariableAndParameterNameCheck();
 
   @Test
-  void shouldRaiseOnSlangAST() {
-    // TODO SONARGO-123; currently required for coverage
-    SlangVerifier.verify("VariableAndParameterNameCheck/VariableAndParameterName.slang", check);
-  }
-
-  @Test
   void shouldRaiseOnVariableAndParameterNamesWithDefaultRegex() {
     GoVerifier.verify("VariableAndParameterNameCheck/VariableAndParameterNameCheckDefault.go", check);
   }

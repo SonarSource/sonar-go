@@ -50,6 +50,7 @@ public class VariableAndParameterNameCheck implements SlangCheck {
     init.register(FunctionDeclarationTree.class, (ctx, tree) -> tree.formalParameters().stream()
       .filter(ParameterTree.class::isInstance)
       .map(ParameterTree.class::cast)
+      // TODO SONARGO-152: In go, the identifier of a ParameterTree cannot be null.
       .forEach(param -> check(pattern, ctx, param.identifier(), "parameter")));
   }
 
