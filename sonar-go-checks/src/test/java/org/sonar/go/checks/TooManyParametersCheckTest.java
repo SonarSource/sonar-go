@@ -34,10 +34,4 @@ class TooManyParametersCheckTest {
     GoVerifier.verify("TooManyParametersCheck/TooManyParametersCheck3.go", checkWithChangedThreshold);
   }
 
-  @Test
-  void shouldRaiseWithDefaultThresholdSlangAST() {
-    // TODO SONARGO-121; currently required for coveragee
-    SlangVerifier.verify("TooManyParametersCheck/TooManyParameters.slang", check);
-  }
-
 }
