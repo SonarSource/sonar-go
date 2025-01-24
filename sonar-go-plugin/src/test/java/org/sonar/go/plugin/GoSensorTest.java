@@ -96,27 +96,27 @@ class GoSensorTest {
   void test_description() {
     DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
 
-    getSensor("S2068").describe(descriptor);
+    getSensor("S1110").describe(descriptor);
     assertThat(descriptor.name()).isEqualTo("Code Quality and Security for Go");
     assertThat(descriptor.languages()).containsOnly("go");
   }
 
   @Test
-  void test_issue() throws IOException {
+  void test_issue() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
       "package main \n" +
         "\n" +
         "func test() {\n" +
-        " pwd := \"secret\"\n" +
+        " x := ((2 + 3))\n" +
         "}");
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor("S2068");
+    GoSensor goSensor = getSensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
 
   @Test
-  void test_file_issue() throws IOException {
+  void test_file_issue() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
       "// TODO implement the logic \n package main \n");
     sensorContext.fileSystem().add(inputFile);
@@ -126,7 +126,7 @@ class GoSensorTest {
   }
 
   @Test
-  void test_line_issue() throws IOException {
+  void test_line_issue() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
       "package                                                                                                                                                                                                                               main\n");
     sensorContext.fileSystem().add(inputFile);
@@ -153,7 +153,7 @@ class GoSensorTest {
   }
 
   @Test
-  void test_empty_file() throws Exception {
+  void test_empty_file() {
     InputFile failingFile = createInputFile("lets.go", InputFile.Type.MAIN, "");
     sensorContext.fileSystem().add(failingFile);
     GoSensor goSensor = getSensor("S1135");

@@ -42,8 +42,6 @@ public class GoCheckList {
       FileHeaderCheck.class,
       FixMeCommentCheck.class,
       FunctionCognitiveComplexityCheck.class,
-      HardcodedCredentialsCheck.class,
-      HardcodedIpCheck.class,
       IdenticalBinaryOperandCheck.class,
       IdenticalConditionsCheck.class,
       IfConditionalAlwaysTrueOrFalseCheck.class,

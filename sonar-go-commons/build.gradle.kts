@@ -31,6 +31,8 @@ dependencies {
     testImplementation(libs.mockito.core)
     testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
 
+    testRuntimeOnly(libs.junit.jupiter.engine)
+
     testFixturesImplementation(project(":sonar-go-frontend"))
     testFixturesImplementation(libs.assertj.core)
     testFixturesImplementation(libs.mockito.core)
@@ -39,6 +41,4 @@ dependencies {
     testFixturesImplementation(libs.junit.jupiter.api)
     testFixturesImplementation(libs.sonar.plugin.api.impl)
     testFixturesImplementation(libs.sonar.plugin.api.test.fixtures)
-
-    testRuntimeOnly(libs.junit.jupiter.engine)
 }

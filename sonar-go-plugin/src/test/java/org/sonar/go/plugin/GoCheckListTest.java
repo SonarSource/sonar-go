@@ -32,8 +32,6 @@ import org.sonar.go.checks.FileHeaderCheck;
 import org.sonar.go.checks.FixMeCommentCheck;
 import org.sonar.go.checks.FunctionCognitiveComplexityCheck;
 import org.sonar.go.checks.GoCheckList;
-import org.sonar.go.checks.HardcodedCredentialsCheck;
-import org.sonar.go.checks.HardcodedIpCheck;
 import org.sonar.go.checks.IdenticalBinaryOperandCheck;
 import org.sonar.go.checks.IdenticalConditionsCheck;
 import org.sonar.go.checks.IfConditionalAlwaysTrueOrFalseCheck;
@@ -63,7 +61,7 @@ class GoCheckListTest {
 
   @Test
   void shouldVerifyChecksSize() {
-    assertThat(GoCheckList.checks()).hasSize(38);
+    assertThat(GoCheckList.checks()).hasSize(36);
   }
 
   @Test
@@ -88,8 +86,6 @@ class GoCheckListTest {
       FileHeaderCheck.class,
       FixMeCommentCheck.class,
       FunctionCognitiveComplexityCheck.class,
-      HardcodedCredentialsCheck.class,
-      HardcodedIpCheck.class,
       IdenticalBinaryOperandCheck.class,
       IdenticalConditionsCheck.class,
       IfConditionalAlwaysTrueOrFalseCheck.class,
