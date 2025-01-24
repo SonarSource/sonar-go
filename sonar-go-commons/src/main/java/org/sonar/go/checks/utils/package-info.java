@@ -14,18 +14,5 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+@javax.annotation.ParametersAreNonnullByDefault
 package org.sonar.go.checks.utils;
-
-import java.util.function.Predicate;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.persistence.conversion.StringNativeKind;
-
-public class TreeUtils {
-  private TreeUtils() {
-  }
-
-  public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> tree instanceof NativeTree nativeTree
-    && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-    && stringNativeKind.toString().equals("Semicolon"));
-}

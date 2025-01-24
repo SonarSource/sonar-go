@@ -25,33 +25,13 @@ import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
 
-import static org.sonar.go.api.ModifierTree.Kind.OVERRIDE;
-import static org.sonar.go.api.ModifierTree.Kind.PRIVATE;
-import static org.sonar.go.checks.utils.ExpressionUtils.getMemberSelectOrIdentifierName;
-
+// Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97
 public class FunctionUtils {
 
   private FunctionUtils() {
-  }
-
-  public static boolean isPrivateMethod(FunctionDeclarationTree method) {
-    return hasModifierMethod(method, PRIVATE);
-
-  }
-
-  public static boolean isOverrideMethod(FunctionDeclarationTree method) {
-    return hasModifierMethod(method, OVERRIDE);
-  }
-
-  public static boolean hasModifierMethod(FunctionDeclarationTree method, ModifierTree.Kind kind) {
-    return method.modifiers().stream()
-      .filter(ModifierTree.class::isInstance)
-      .map(ModifierTree.class::cast)
-      .anyMatch(modifier -> modifier.kind() == kind);
   }
 
   public static boolean hasFunctionCallNameIgnoreCase(FunctionInvocationTree tree, String name) {
@@ -69,7 +49,7 @@ public class FunctionUtils {
   }
 
   private static Optional<String> getFunctionInvocationName(FunctionInvocationTree tree) {
-    return getMemberSelectOrIdentifierName(tree.memberSelect());
+    return ExpressionUtils.getMemberSelectOrIdentifierName(tree.memberSelect());
   }
 
   public static boolean hasFunctionCallFullNameIgnoreCase(FunctionInvocationTree tree, String... names) {

@@ -74,7 +74,6 @@ class GoCheckListTest {
   @Test
   void shouldContainsClasses() {
     assertThat(GoCheckList.checks()).containsOnly(
-
       AllBranchesIdenticalCheck.class,
       BadFunctionNameCheck.class,
       BooleanInversionCheck.class,

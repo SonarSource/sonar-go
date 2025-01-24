@@ -14,12 +14,5 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+@javax.annotation.ParametersAreNonnullByDefault
 package org.sonar.go.checks;
-
-public final class NativeKinds {
-  public static final String LABEL = "LabeledStmt";
-  public static final String SEMICOLON = "Semicolon";
-
-  private NativeKinds() {
-  }
-}

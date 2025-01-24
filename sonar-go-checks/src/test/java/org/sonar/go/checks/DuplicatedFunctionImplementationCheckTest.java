@@ -17,6 +17,7 @@
 package org.sonar.go.checks;
 
 import org.junit.jupiter.api.Test;
+import org.sonar.go.testing.GoVerifier;
 
 class DuplicatedFunctionImplementationCheckTest {
 

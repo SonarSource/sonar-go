@@ -38,6 +38,7 @@ import org.sonar.go.api.UnaryExpressionTree;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
+// Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97
 public class ExpressionUtils {
   private static final String TRUE_LITERAL = "true";
   private static final String FALSE_LITERAL = "false";
