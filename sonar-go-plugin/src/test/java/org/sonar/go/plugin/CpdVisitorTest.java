@@ -37,13 +37,13 @@ import org.sonar.api.batch.sensor.cache.WriteCache;
 import org.sonar.api.batch.sensor.cpd.internal.TokensLine;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.Tree;
+import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.testing.TestGoConverter;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.impl.TextRangeImpl;
-import org.sonarsource.slang.impl.TokenImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

@@ -44,7 +44,7 @@ import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.go.plugin.GoLanguage;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.sonarsource.slang.utils.LogArg.lazyArg;
+import static org.sonar.go.utils.LogArg.lazyArg;
 
 public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor {
 

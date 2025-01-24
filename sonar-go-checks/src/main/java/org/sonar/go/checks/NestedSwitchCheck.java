@@ -18,13 +18,13 @@ package org.sonar.go.checks;
 
 import java.text.MessageFormat;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S1821")
-public class NestedSwitchCheck implements SlangCheck {
+public class NestedSwitchCheck implements GoCheck {
   private static final String MESSAGE = "Refactor the code to eliminate this nested \"{0}\".";
 
   @Override

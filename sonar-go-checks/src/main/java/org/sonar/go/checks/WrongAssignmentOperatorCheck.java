@@ -18,20 +18,20 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.AssignmentExpressionTree;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.UnaryExpressionTree;
-import org.sonarsource.slang.api.UnaryExpressionTree.Operator;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.impl.TextRanges;
+import org.sonar.go.api.AssignmentExpressionTree;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.impl.TextRanges;
 
 import static java.util.Arrays.asList;
-import static org.sonarsource.slang.api.AssignmentExpressionTree.Operator.EQUAL;
+import static org.sonar.go.api.AssignmentExpressionTree.Operator.EQUAL;
+import static org.sonar.go.api.UnaryExpressionTree.Operator;
 
 @Rule(key = "S2757")
-public class WrongAssignmentOperatorCheck implements SlangCheck {
+public class WrongAssignmentOperatorCheck implements GoCheck {
 
   private static final List<Operator> SUSPICIOUS_UNARY_OPERATORS = List.of(Operator.NEGATE, Operator.PLUS, Operator.MINUS);
 

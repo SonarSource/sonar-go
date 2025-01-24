@@ -18,8 +18,8 @@ package org.sonar.go.testing;
 
 import java.io.File;
 import java.nio.file.Paths;
+import org.sonar.go.api.Tree;
 import org.sonar.go.converter.GoConverter;
-import org.sonarsource.slang.api.Tree;
 
 public class TestGoConverter {
   private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();

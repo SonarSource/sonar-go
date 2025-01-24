@@ -19,19 +19,19 @@ package org.sonar.go.checks;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 
 import static org.sonar.go.checks.NativeKinds.SEMICOLON;
 
 @Rule(key = "S122")
-public class OneStatementPerLineGoCheck implements SlangCheck {
+public class OneStatementPerLineGoCheck implements GoCheck {
   private static final String MESSAGE = "Reformat the code to have only one statement per line.";
 
   @Override

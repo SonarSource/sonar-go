@@ -24,17 +24,17 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.VariableDeclarationTree;
+import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.VariableDeclarationTree;
-import org.sonarsource.slang.checks.api.SlangCheck;
 
 public class GoSensor extends SlangSensor {
 
-  private final Checks<SlangCheck> checks;
+  private final Checks<GoCheck> checks;
 
   private ASTConverter goConverter = null;
 
@@ -58,7 +58,7 @@ public class GoSensor extends SlangSensor {
   }
 
   @Override
-  protected Checks<SlangCheck> checks() {
+  protected Checks<GoCheck> checks() {
     return checks;
   }
 

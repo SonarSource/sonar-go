@@ -18,22 +18,22 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.HasKeyword;
-import org.sonarsource.slang.api.JumpTree;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.ReturnTree;
-import org.sonarsource.slang.api.ThrowTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.HasKeyword;
+import org.sonar.go.api.JumpTree;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.ReturnTree;
+import org.sonar.go.api.ThrowTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 import static org.sonar.go.checks.NativeKinds.LABEL;
 import static org.sonar.go.checks.NativeKinds.SEMICOLON;
 
 @Rule(key = "S1763")
-public class CodeAfterJumpGoCheck implements SlangCheck {
+public class CodeAfterJumpGoCheck implements GoCheck {
   private static final String MESSAGE = "Refactor this piece of code to not have any dead code after this \"%s\".";
 
   @Override

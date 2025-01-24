@@ -20,8 +20,8 @@ import java.io.File;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.sonar.api.utils.TempFolder;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

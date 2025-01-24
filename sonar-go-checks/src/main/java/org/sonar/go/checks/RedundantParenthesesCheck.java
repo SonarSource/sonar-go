@@ -17,13 +17,13 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.ParenthesizedExpressionTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.ParenthesizedExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1110")
-public class RedundantParenthesesCheck implements SlangCheck {
+public class RedundantParenthesesCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

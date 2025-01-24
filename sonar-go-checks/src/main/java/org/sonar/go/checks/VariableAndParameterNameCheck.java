@@ -20,16 +20,16 @@ import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.ParameterTree;
-import org.sonarsource.slang.api.VariableDeclarationTree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.ParameterTree;
+import org.sonar.go.api.VariableDeclarationTree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S117")
-public class VariableAndParameterNameCheck implements SlangCheck {
+public class VariableAndParameterNameCheck implements GoCheck {
 
   @RuleProperty(
     key = "format",

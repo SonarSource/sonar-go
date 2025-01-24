@@ -18,26 +18,26 @@ package org.sonar.go.checks;
 
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
+import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.IfTree;
+import org.sonar.go.api.LiteralTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.checks.utils.ExpressionUtils;
-import org.sonarsource.slang.api.BinaryExpressionTree.Operator;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.IfTree;
-import org.sonarsource.slang.api.LiteralTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
 
+import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
+import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.checks.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.checks.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.checks.utils.ExpressionUtils.isFalseValueLiteral;
 import static org.sonar.go.checks.utils.ExpressionUtils.isNegation;
 import static org.sonar.go.checks.utils.ExpressionUtils.isTrueValueLiteral;
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
-import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
-import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
 @Rule(key = "S1145")
-public class IfConditionalAlwaysTrueOrFalseCheck implements SlangCheck {
+public class IfConditionalAlwaysTrueOrFalseCheck implements GoCheck {
 
   public static final String MESSAGE_TEMPLATE = "Remove this useless \"%s\" statement.";
 
@@ -61,7 +61,7 @@ public class IfConditionalAlwaysTrueOrFalseCheck implements SlangCheck {
       || isSimpleExpressionWithLiteral(condition, CONDITIONAL_OR, ExpressionUtils::isTrueValueLiteral);
   }
 
-  private static boolean isSimpleExpressionWithLiteral(Tree condition, Operator operator, Predicate<? super Tree> hasLiteralValue) {
+  private static boolean isSimpleExpressionWithLiteral(Tree condition, BinaryExpressionTree.Operator operator, Predicate<? super Tree> hasLiteralValue) {
     boolean simpleExpression = isBinaryOperation(condition, operator)
       && condition.descendants()
         .map(ExpressionUtils::skipParentheses)

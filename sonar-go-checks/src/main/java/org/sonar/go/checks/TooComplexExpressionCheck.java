@@ -19,19 +19,19 @@ package org.sonar.go.checks;
 import java.util.Collections;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.BinaryExpressionTree;
-import org.sonarsource.slang.api.ParenthesizedExpressionTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.UnaryExpressionTree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.ParenthesizedExpressionTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1067")
-public class TooComplexExpressionCheck implements SlangCheck {
+public class TooComplexExpressionCheck implements GoCheck {
 
   private static final int DEFAULT_MAX_COMPLEXITY = 3;
 

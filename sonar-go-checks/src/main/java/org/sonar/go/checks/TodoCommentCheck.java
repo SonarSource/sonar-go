@@ -18,15 +18,15 @@ package org.sonar.go.checks;
 
 import java.util.regex.Pattern;
 import org.sonar.check.Rule;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.impl.TextPointerImpl;
+import org.sonar.go.impl.TextRangeImpl;
 import org.sonarsource.analyzer.commons.TokenLocation;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.impl.TextPointerImpl;
-import org.sonarsource.slang.impl.TextRangeImpl;
 
 @Rule(key = "S1135")
-public class TodoCommentCheck implements SlangCheck {
+public class TodoCommentCheck implements GoCheck {
 
   private final Pattern todoPattern = Pattern.compile("(?i)(^|[[^\\p{L}]&&\\D])(todo)($|[[^\\p{L}]&&\\D])");
 

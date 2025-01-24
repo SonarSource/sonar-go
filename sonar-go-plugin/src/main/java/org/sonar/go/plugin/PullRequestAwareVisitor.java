@@ -17,7 +17,7 @@
 package org.sonar.go.plugin;
 
 import org.sonar.api.batch.fs.InputFile;
-import org.sonarsource.slang.visitors.TreeVisitor;
+import org.sonar.go.visitors.TreeVisitor;
 
 /**
  * A type of Visitor that can leverage previous results rather than recompute findings from scratch.

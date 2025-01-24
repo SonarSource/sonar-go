@@ -23,9 +23,15 @@ plugins {
 dependencies {
     compileOnly(libs.slf4j.api)
 
-    implementation(libs.slang.api)
+    implementation(project(":sonar-go-frontend"))
+    implementation(libs.sonar.analyzer.commons)
 
-    testFixturesImplementation(libs.slang.api)
+    testImplementation(libs.assertj.core)
+    testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.mockito.core)
+    testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
+
+    testFixturesImplementation(project(":sonar-go-frontend"))
     testFixturesImplementation(libs.assertj.core)
     testFixturesImplementation(libs.mockito.core)
     testFixturesImplementation(libs.sonar.analyzer.test.commons)

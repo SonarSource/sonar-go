@@ -17,12 +17,12 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S4663")
-public class EmptyCommentCheck implements SlangCheck {
+public class EmptyCommentCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

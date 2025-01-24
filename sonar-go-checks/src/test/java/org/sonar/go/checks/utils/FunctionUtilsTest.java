@@ -20,18 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.FunctionInvocationTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.NativeKind;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.TreeMetaData;
-import org.sonarsource.slang.impl.FunctionInvocationTreeImpl;
-import org.sonarsource.slang.impl.IdentifierTreeImpl;
-import org.sonarsource.slang.impl.MemberSelectTreeImpl;
-import org.sonarsource.slang.impl.NativeTreeImpl;
-import org.sonarsource.slang.parser.SLangConverter;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.FunctionInvocationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.NativeKind;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.impl.FunctionInvocationTreeImpl;
+import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.go.impl.MemberSelectTreeImpl;
+import org.sonar.go.impl.NativeTreeImpl;
+import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.checks.utils.FunctionUtils.hasFunctionCallFullNameIgnoreCase;
@@ -44,8 +43,6 @@ class FunctionUtilsTest {
   private static TreeMetaData meta = null;
   private static IdentifierTree identifierTree = new IdentifierTreeImpl(meta, "function");
   private static List<Tree> args = new ArrayList<>();
-
-  private static final ASTConverter CONVERTER = new SLangConverter();
 
   @Test
   void test_has_function_name_identifier() {
@@ -109,12 +106,15 @@ class FunctionUtilsTest {
   @Test
   void test_get_strings_tokens_returns_tokens() {
     String code = """
-      void fun fooBar() {
-          val a = "one,two,three";
+      package main
+
+      func fooBar() {
+          var a = "one,two,three";
           foo("one,two$four");
       }""";
 
-    FunctionDeclarationTree root = (FunctionDeclarationTree) CONVERTER.parse(code, null).children().get(0);
+    Tree tree = TestGoConverter.GO_CONVERTER.parse(code, null);
+    FunctionDeclarationTree root = (FunctionDeclarationTree) tree.children().get(1);
 
     Set<String> tokens = FunctionUtils.getStringsTokens(root, ",|\\$");
 

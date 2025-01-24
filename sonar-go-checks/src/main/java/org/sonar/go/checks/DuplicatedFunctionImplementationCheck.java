@@ -24,23 +24,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import org.sonar.check.Rule;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.checks.utils.TreeUtils;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.visitors.TreeContext;
-import org.sonarsource.slang.visitors.TreeVisitor;
+import org.sonar.go.visitors.TreeContext;
+import org.sonar.go.visitors.TreeVisitor;
 
-import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S4144")
-public class DuplicatedFunctionImplementationCheck implements SlangCheck {
+public class DuplicatedFunctionImplementationCheck implements GoCheck {
 
   private static final String MESSAGE = "Update this function so that its implementation is not identical to \"%s\" on line %s.";
   private static final String MESSAGE_NO_NAME = "Update this function so that its implementation is not identical to the one on line %s.";

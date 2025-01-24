@@ -19,14 +19,14 @@ package org.sonar.go.checks;
 import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1479")
-public class TooManyCasesCheck implements SlangCheck {
+public class TooManyCasesCheck implements GoCheck {
 
   private static final int DEFAULT_MAX = 30;
 

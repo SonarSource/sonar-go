@@ -53,9 +53,9 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
+import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
-import org.sonarsource.slang.checks.api.SlangCheck;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -370,7 +370,7 @@ class GoSensorTest {
     });
     ActiveRules activeRules = rulesBuilder.build();
     CheckFactory checkFactory = new CheckFactory(activeRules);
-    Checks<SlangCheck> checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
+    Checks<GoCheck> checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
     checks.addAnnotatedChecks(ruleClasses);
     return new GoSensor(SQ_LTS_RUNTIME, checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
       new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);

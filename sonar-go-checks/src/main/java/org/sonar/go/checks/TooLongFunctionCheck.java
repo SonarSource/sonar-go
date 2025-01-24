@@ -18,12 +18,12 @@ package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S138")
-public class TooLongFunctionCheck implements SlangCheck {
+public class TooLongFunctionCheck implements GoCheck {
 
   private static final int DEFAULT_MAX = 120;
   private static final String DEFAULT_MAX_VALUE = "" + DEFAULT_MAX;

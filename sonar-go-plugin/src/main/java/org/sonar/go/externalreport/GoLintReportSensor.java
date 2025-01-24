@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.notifications.AnalysisWarnings;
 import org.sonar.api.rules.RuleType;
 
-import static org.sonarsource.slang.utils.LogArg.lazyArg;
+import static org.sonar.go.utils.LogArg.lazyArg;
 
 public class GoLintReportSensor extends AbstractReportSensor {
 

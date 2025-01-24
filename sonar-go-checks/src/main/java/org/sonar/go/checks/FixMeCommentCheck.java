@@ -19,17 +19,17 @@ package org.sonar.go.checks;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.sonar.check.Rule;
+import org.sonar.go.api.TextPointer;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.impl.TextPointerImpl;
+import org.sonar.go.impl.TextRangeImpl;
 import org.sonarsource.analyzer.commons.TokenLocation;
-import org.sonarsource.slang.api.TextPointer;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.impl.TextPointerImpl;
-import org.sonarsource.slang.impl.TextRangeImpl;
 
 @Rule(key = "S1134")
-public class FixMeCommentCheck implements SlangCheck {
+public class FixMeCommentCheck implements GoCheck {
 
   private final Pattern fixMePattern = Pattern.compile("(?i)(^|[[^\\p{L}]&&\\D])(fixme)($|[[^\\p{L}]&&\\D])");
 

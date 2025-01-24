@@ -18,18 +18,18 @@ package org.sonar.go.checks;
 
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.LoopTree;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.LoopTree;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S108")
-public class EmptyBlockCheck implements SlangCheck {
+public class EmptyBlockCheck implements GoCheck {
 
   private static final String MESSAGE = "Either remove or fill this block of code.";
 

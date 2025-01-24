@@ -20,15 +20,15 @@ import java.text.MessageFormat;
 import java.util.stream.IntStream;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.impl.TextPointerImpl;
-import org.sonarsource.slang.impl.TextRangeImpl;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.impl.TextPointerImpl;
+import org.sonar.go.impl.TextRangeImpl;
 
 @Rule(key = "S103")
-public class TooLongLineCheck implements SlangCheck {
+public class TooLongLineCheck implements GoCheck {
   private static final int DEFAULT_MAXIMUM_LINE_LENGTH = 120;
   private static final String DEFAULT_MAXIMUM_LINE_LENGTH_VALUE = "" + DEFAULT_MAXIMUM_LINE_LENGTH;
 

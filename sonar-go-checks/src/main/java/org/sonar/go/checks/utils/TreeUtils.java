@@ -17,9 +17,9 @@
 package org.sonar.go.checks.utils;
 
 import java.util.function.Predicate;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.persistence.conversion.StringNativeKind;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 
 public class TreeUtils {
   private TreeUtils() {

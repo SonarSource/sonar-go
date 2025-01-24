@@ -17,14 +17,17 @@
 package org.sonar.go.checks.utils;
 
 import org.junit.jupiter.api.Test;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.UnaryExpressionTree;
-import org.sonarsource.slang.impl.BinaryExpressionTreeImpl;
-import org.sonarsource.slang.impl.LiteralTreeImpl;
-import org.sonarsource.slang.impl.ParenthesizedExpressionTreeImpl;
-import org.sonarsource.slang.impl.UnaryExpressionTreeImpl;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.impl.BinaryExpressionTreeImpl;
+import org.sonar.go.impl.LiteralTreeImpl;
+import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
+import org.sonar.go.impl.UnaryExpressionTreeImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
+import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
+import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
 import static org.sonar.go.checks.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.checks.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.checks.utils.ExpressionUtils.isFalseValueLiteral;
@@ -32,9 +35,6 @@ import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpressio
 import static org.sonar.go.checks.utils.ExpressionUtils.isNegation;
 import static org.sonar.go.checks.utils.ExpressionUtils.isTrueValueLiteral;
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
-import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
-import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonarsource.slang.api.BinaryExpressionTree.Operator.EQUAL_TO;
 
 class ExpressionUtilsTest {
   private static final Tree TRUE_LITERAL = new LiteralTreeImpl(null, "true");

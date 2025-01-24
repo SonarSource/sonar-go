@@ -17,14 +17,14 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.TreeMetaData;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S1186")
-public class EmptyFunctionCheck implements SlangCheck {
+public class EmptyFunctionCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

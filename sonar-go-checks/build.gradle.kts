@@ -23,12 +23,12 @@ dependencies {
     compileOnly(libs.sonar.plugin.api)
 
     implementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
+    implementation(project(":sonar-go-commons"))
+    implementation(project(":sonar-go-frontend"))
     implementation(libs.sonar.analyzer.commons)
-    implementation(libs.slang.api)
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
-    testImplementation(libs.slang.antlr)
     testImplementation(libs.sonar.analyzer.test.commons)
     testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)

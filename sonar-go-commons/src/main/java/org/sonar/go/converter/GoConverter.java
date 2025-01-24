@@ -28,10 +28,10 @@ import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.ParseException;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.persistence.JsonTree;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.ParseException;
+import org.sonar.go.api.Tree;
+import org.sonar.go.persistence.JsonTree;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 

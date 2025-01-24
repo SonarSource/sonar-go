@@ -18,14 +18,14 @@ package org.sonar.go.checks;
 
 import java.math.BigInteger;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.IntegerLiteralTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.IntegerLiteralTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
-import static org.sonarsource.slang.api.IntegerLiteralTree.Base.OCTAL;
+import static org.sonar.go.api.IntegerLiteralTree.Base.OCTAL;
 
 @Rule(key = "S1314")
-public class OctalValuesCheck implements SlangCheck {
+public class OctalValuesCheck implements GoCheck {
 
   private static final String MESSAGE = "Use decimal values instead of octal ones.";
   private static final BigInteger EIGHT = BigInteger.valueOf(OCTAL.getRadix());

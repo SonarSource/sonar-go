@@ -17,15 +17,15 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.AssignmentExpressionTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.AssignmentExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
-import static org.sonarsource.slang.api.AssignmentExpressionTree.Operator.EQUAL;
-import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.go.api.AssignmentExpressionTree.Operator.EQUAL;
+import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S1656")
-public class SelfAssignmentCheck implements SlangCheck {
+public class SelfAssignmentCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

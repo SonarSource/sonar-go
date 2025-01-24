@@ -30,21 +30,21 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.config.Configuration;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.Comment;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.TextPointer;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.TreeMetaData;
-import org.sonarsource.slang.impl.LiteralTreeImpl;
-import org.sonarsource.slang.impl.NativeTreeImpl;
-import org.sonarsource.slang.impl.PlaceHolderTreeImpl;
-import org.sonarsource.slang.impl.TextPointerImpl;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.Comment;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.TextPointer;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.impl.LiteralTreeImpl;
+import org.sonar.go.impl.NativeTreeImpl;
+import org.sonar.go.impl.PlaceHolderTreeImpl;
+import org.sonar.go.impl.TextPointerImpl;
 
-import static org.sonarsource.slang.utils.LogArg.lazyArg;
+import static org.sonar.go.utils.LogArg.lazyArg;
 
 public class ASTConverterValidation implements ASTConverter {
 

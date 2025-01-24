@@ -50,16 +50,16 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.resources.Language;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.utils.Version;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.checks.IdenticalBinaryOperandCheck;
 import org.sonar.go.checks.StringLiteralDuplicatedCheck;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.testing.TestGoConverter;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.SlangCheck;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -307,7 +307,7 @@ class SlangSensorTest extends AbstractSensorTest {
     context.fileSystem().add(inputFile);
     CheckFactory checkFactory = mock(CheckFactory.class);
     var checks = mock(Checks.class);
-    SlangCheck failingCheck = init -> init.register(TopLevelTree.class, (ctx, tree) -> {
+    GoCheck failingCheck = init -> init.register(TopLevelTree.class, (ctx, tree) -> {
       throw new IllegalStateException("BOUM");
     });
     when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(repositoryKey(), "failing"));
@@ -679,8 +679,8 @@ class SlangSensorTest extends AbstractSensorTest {
       }
 
       @Override
-      protected Checks<SlangCheck> checks() {
-        Checks<SlangCheck> checks = checkFactory.create(repositoryKey());
+      protected Checks<GoCheck> checks() {
+        Checks<GoCheck> checks = checkFactory.create(repositoryKey());
         checks.addAnnotatedChecks(
           StringLiteralDuplicatedCheck.class,
           // TODO SONARGO-100 Fix NOSONAR suppression

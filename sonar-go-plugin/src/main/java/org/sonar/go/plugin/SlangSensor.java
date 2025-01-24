@@ -40,20 +40,20 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.resources.Language;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.ClassDeclarationTree;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.ImportDeclarationTree;
+import org.sonar.go.api.PackageDeclarationTree;
+import org.sonar.go.api.ParseException;
+import org.sonar.go.api.TextPointer;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.plugin.caching.HashCacheUtils;
 import org.sonar.go.plugin.converter.ASTConverterValidation;
+import org.sonar.go.visitors.TreeVisitor;
 import org.sonarsource.analyzer.commons.ProgressReport;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.ClassDeclarationTree;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.ImportDeclarationTree;
-import org.sonarsource.slang.api.PackageDeclarationTree;
-import org.sonarsource.slang.api.ParseException;
-import org.sonarsource.slang.api.TextPointer;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.visitors.TreeVisitor;
 
 public abstract class SlangSensor implements Sensor {
   static final Predicate<Tree> EXECUTABLE_LINE_PREDICATE = t -> !(t instanceof PackageDeclarationTree)
@@ -86,7 +86,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected abstract ASTConverter astConverter(SensorContext sensorContext);
 
-  protected abstract Checks<SlangCheck> checks();
+  protected abstract Checks<GoCheck> checks();
 
   protected abstract String repositoryKey();
 

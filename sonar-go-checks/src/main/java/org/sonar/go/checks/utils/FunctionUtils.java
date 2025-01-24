@@ -21,17 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.FunctionInvocationTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.MemberSelectTree;
-import org.sonarsource.slang.api.ModifierTree;
-import org.sonarsource.slang.api.StringLiteralTree;
-import org.sonarsource.slang.api.Tree;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.FunctionInvocationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.MemberSelectTree;
+import org.sonar.go.api.ModifierTree;
+import org.sonar.go.api.StringLiteralTree;
+import org.sonar.go.api.Tree;
 
+import static org.sonar.go.api.ModifierTree.Kind.OVERRIDE;
+import static org.sonar.go.api.ModifierTree.Kind.PRIVATE;
 import static org.sonar.go.checks.utils.ExpressionUtils.getMemberSelectOrIdentifierName;
-import static org.sonarsource.slang.api.ModifierTree.Kind.OVERRIDE;
-import static org.sonarsource.slang.api.ModifierTree.Kind.PRIVATE;
 
 public class FunctionUtils {
 

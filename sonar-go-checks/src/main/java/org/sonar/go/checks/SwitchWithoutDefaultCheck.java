@@ -17,12 +17,12 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S131")
-public class SwitchWithoutDefaultCheck implements SlangCheck {
+public class SwitchWithoutDefaultCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

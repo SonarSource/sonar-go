@@ -17,17 +17,17 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BinaryExpressionTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 
 import static org.sonar.go.checks.utils.ExpressionUtils.containsPlaceHolder;
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
-import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S1764")
-public class IdenticalBinaryOperandCheck implements SlangCheck {
+public class IdenticalBinaryOperandCheck implements GoCheck {
 
   public static final String MESSAGE = "Correct one of the identical sub-expressions on both sides this operator";
 

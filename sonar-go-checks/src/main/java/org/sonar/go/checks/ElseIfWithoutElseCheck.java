@@ -20,23 +20,23 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.IfTree;
+import org.sonar.go.api.JumpTree;
+import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.ReturnTree;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.checks.utils.TreeUtils;
-import org.sonarsource.slang.api.BlockTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.api.IfTree;
-import org.sonarsource.slang.api.JumpTree;
-import org.sonarsource.slang.api.NativeTree;
-import org.sonarsource.slang.api.ReturnTree;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.impl.TextRangeImpl;
+import org.sonar.go.impl.TextRangeImpl;
 
 @Rule(key = "S126")
-public class ElseIfWithoutElseCheck implements SlangCheck {
+public class ElseIfWithoutElseCheck implements GoCheck {
 
   private static final String MESSAGE = "Add the missing \"else\" clause.";
   private static final Predicate<Tree> IS_IDENTIFIER_PANIC = tree -> tree instanceof IdentifierTree identifierTree && identifierTree.name().equals("panic");

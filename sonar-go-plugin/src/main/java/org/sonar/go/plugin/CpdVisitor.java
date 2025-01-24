@@ -30,11 +30,11 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.cache.ReadCache;
 import org.sonar.api.batch.sensor.cpd.NewCpdTokens;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.Token;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.impl.TextRangeImpl;
-import org.sonarsource.slang.impl.TokenImpl;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.Token;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.go.impl.TokenImpl;
 
 public class CpdVisitor extends PullRequestAwareVisitor {
   static final char ASCII_UNIT_SEPARATOR = 31;

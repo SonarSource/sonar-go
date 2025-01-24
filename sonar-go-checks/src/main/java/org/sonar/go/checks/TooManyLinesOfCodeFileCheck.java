@@ -18,12 +18,12 @@ package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S104")
-public class TooManyLinesOfCodeFileCheck implements SlangCheck {
+public class TooManyLinesOfCodeFileCheck implements GoCheck {
 
   private static final int DEFAULT_MAX = 750;
   private static final String DEFAULT_MAX_VALUE = "" + DEFAULT_MAX;

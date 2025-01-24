@@ -31,13 +31,13 @@ import org.sonar.api.batch.sensor.error.NewAnalysisError;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.visitors.TreeContext;
+import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.go.visitors.TreeContext;
 
 public class InputFileContext extends TreeContext {
 
   private static final String PARSING_ERROR_RULE_KEY = "S2260";
-  private Map<String, Set<org.sonarsource.slang.api.TextRange>> filteredRules = new HashMap<>();
+  private Map<String, Set<org.sonar.go.api.TextRange>> filteredRules = new HashMap<>();
 
   public final SensorContext sensorContext;
 
@@ -48,7 +48,7 @@ public class InputFileContext extends TreeContext {
     this.inputFile = inputFile;
   }
 
-  public TextRange textRange(org.sonarsource.slang.api.TextRange textRange) {
+  public TextRange textRange(org.sonar.go.api.TextRange textRange) {
     return inputFile.newRange(
       textRange.start().line(),
       textRange.start().lineOffset(),
@@ -57,7 +57,7 @@ public class InputFileContext extends TreeContext {
   }
 
   public void reportIssue(RuleKey ruleKey,
-    @Nullable org.sonarsource.slang.api.TextRange textRange,
+    @Nullable org.sonar.go.api.TextRange textRange,
     String message,
     List<SecondaryLocation> secondaryLocations,
     @Nullable Double gap) {
@@ -91,7 +91,7 @@ public class InputFileContext extends TreeContext {
     issue.save();
   }
 
-  public void reportAnalysisParseError(String repositoryKey, InputFile inputFile, @Nullable org.sonarsource.slang.api.TextPointer location) {
+  public void reportAnalysisParseError(String repositoryKey, InputFile inputFile, @Nullable org.sonar.go.api.TextPointer location) {
     reportAnalysisError("Unable to parse file: " + inputFile, location);
     RuleKey parsingErrorRuleKey = RuleKey.of(repositoryKey, PARSING_ERROR_RULE_KEY);
     if (sensorContext.activeRules().find(parsingErrorRuleKey) == null) {
@@ -103,7 +103,7 @@ public class InputFileContext extends TreeContext {
       .message("A parsing error occurred in this file.");
 
     Optional.ofNullable(location)
-      .map(org.sonarsource.slang.api.TextPointer::line)
+      .map(org.sonar.go.api.TextPointer::line)
       .map(inputFile::selectLine)
       .ifPresent(parseErrorLocation::at);
 
@@ -113,7 +113,7 @@ public class InputFileContext extends TreeContext {
       .save();
   }
 
-  public void reportAnalysisError(String message, @Nullable org.sonarsource.slang.api.TextPointer location) {
+  public void reportAnalysisError(String message, @Nullable org.sonar.go.api.TextPointer location) {
     NewAnalysisError error = sensorContext.newAnalysisError();
     error
       .message(message)
@@ -127,7 +127,7 @@ public class InputFileContext extends TreeContext {
     error.save();
   }
 
-  public void setFilteredRules(Map<String, Set<org.sonarsource.slang.api.TextRange>> filteredRules) {
+  public void setFilteredRules(Map<String, Set<org.sonar.go.api.TextRange>> filteredRules) {
     this.filteredRules = filteredRules;
   }
 

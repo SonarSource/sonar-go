@@ -20,15 +20,15 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.sonar.check.Rule;
+import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.checks.utils.ExpressionUtils;
-import org.sonarsource.slang.api.BinaryExpressionTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.UnaryExpressionTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
 
 @Rule(key = "S1125")
-public class BooleanLiteralCheck implements SlangCheck {
+public class BooleanLiteralCheck implements GoCheck {
   private static final List<BinaryExpressionTree.Operator> CONDITIONAL_BINARY_OPERATORS = Arrays.asList(
     BinaryExpressionTree.Operator.CONDITIONAL_AND,
     BinaryExpressionTree.Operator.CONDITIONAL_OR);

@@ -19,12 +19,12 @@ package org.sonar.go.checks;
 import java.text.MessageFormat;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.MatchCaseTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.MatchCaseTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
 @Rule(key = "S1151")
-public class SwitchCaseTooBigCheck implements SlangCheck {
+public class SwitchCaseTooBigCheck implements GoCheck {
 
   private static final int DEFAULT_MAX = 6;
   private static final String DEFAULT_MAX_VALUE = "" + DEFAULT_MAX;

@@ -20,21 +20,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import org.sonar.check.Rule;
+import org.sonar.go.api.IfTree;
+import org.sonar.go.api.MatchCaseTree;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.checks.utils.ExpressionUtils;
-import org.sonarsource.slang.api.IfTree;
-import org.sonarsource.slang.api.MatchCaseTree;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.utils.SyntacticEquivalence;
+import org.sonar.go.utils.SyntacticEquivalence;
 
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1862")
-public class IdenticalConditionsCheck implements SlangCheck {
+public class IdenticalConditionsCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {

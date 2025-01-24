@@ -24,43 +24,43 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
+import org.sonar.go.api.ASTConverter;
+import org.sonar.go.api.HasTextRange;
+import org.sonar.go.api.TextPointer;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.visitors.TreeContext;
+import org.sonar.go.visitors.TreeVisitor;
 import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
-import org.sonarsource.slang.api.ASTConverter;
-import org.sonarsource.slang.api.HasTextRange;
-import org.sonarsource.slang.api.TextPointer;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.TopLevelTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.visitors.TreeContext;
-import org.sonarsource.slang.visitors.TreeVisitor;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class GoVerifier {
   private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");
 
-  public static void verify(String fileName, SlangCheck check) {
+  public static void verify(String fileName, GoCheck check) {
     verify(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
   }
 
-  public static void verify(ASTConverter converter, Path path, SlangCheck check) {
+  public static void verify(ASTConverter converter, Path path, GoCheck check) {
     createVerifier(converter, path, check).assertOneOrMoreIssues();
   }
 
-  public static void verifyNoIssue(String fileName, SlangCheck check) {
+  public static void verifyNoIssue(String fileName, GoCheck check) {
     verifyNoIssue(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
   }
 
-  public static void verifyNoIssue(ASTConverter converter, Path path, SlangCheck check) {
+  public static void verifyNoIssue(ASTConverter converter, Path path, GoCheck check) {
     createVerifier(converter, path, check).assertNoIssues();
   }
 
-  private static SingleFileVerifier createVerifier(ASTConverter converter, Path path, SlangCheck check) {
+  private static SingleFileVerifier createVerifier(ASTConverter converter, Path path, GoCheck check) {
 
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 

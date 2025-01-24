@@ -19,17 +19,17 @@ package org.sonar.go.checks;
 import java.util.EnumMap;
 import java.util.Map;
 import org.sonar.check.Rule;
-import org.sonarsource.slang.api.BinaryExpressionTree;
-import org.sonarsource.slang.api.BinaryExpressionTree.Operator;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.api.UnaryExpressionTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
+import static org.sonar.go.api.BinaryExpressionTree.*;
 import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1940")
-public class BooleanInversionCheck implements SlangCheck {
+public class BooleanInversionCheck implements GoCheck {
 
   private static final Map<Operator, String> OPERATORS = createOperatorsMap();
 

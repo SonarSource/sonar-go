@@ -18,17 +18,17 @@ package org.sonar.go.checks;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.sonarsource.slang.api.IfTree;
-import org.sonarsource.slang.api.MatchCaseTree;
-import org.sonarsource.slang.api.MatchTree;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.IfTree;
+import org.sonar.go.api.MatchCaseTree;
+import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 
-import static org.sonarsource.slang.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 
-public abstract class AbstractBranchDuplicationCheck implements SlangCheck {
+public abstract class AbstractBranchDuplicationCheck implements GoCheck {
 
   protected abstract void checkDuplicatedBranches(CheckContext ctx, Tree tree, List<Tree> branches);
 

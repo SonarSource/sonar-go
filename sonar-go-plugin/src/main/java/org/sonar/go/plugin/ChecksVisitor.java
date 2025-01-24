@@ -26,23 +26,23 @@ import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.rule.RuleKey;
-import org.sonarsource.slang.api.HasTextRange;
-import org.sonarsource.slang.api.TextRange;
-import org.sonarsource.slang.api.Tree;
-import org.sonarsource.slang.checks.api.CheckContext;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
-import org.sonarsource.slang.visitors.TreeVisitor;
+import org.sonar.go.api.HasTextRange;
+import org.sonar.go.api.TextRange;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.checks.CheckContext;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.go.visitors.TreeVisitor;
 
 public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final DurationStatistics statistics;
 
-  public ChecksVisitor(Checks<SlangCheck> checks, DurationStatistics statistics) {
+  public ChecksVisitor(Checks<GoCheck> checks, DurationStatistics statistics) {
     this.statistics = statistics;
-    Collection<SlangCheck> rulesActiveInSonarQube = checks.all();
-    for (SlangCheck check : rulesActiveInSonarQube) {
+    Collection<GoCheck> rulesActiveInSonarQube = checks.all();
+    for (GoCheck check : rulesActiveInSonarQube) {
       RuleKey ruleKey = checks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));

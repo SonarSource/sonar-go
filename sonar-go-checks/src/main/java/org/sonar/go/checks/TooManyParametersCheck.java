@@ -18,14 +18,14 @@ package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonarsource.slang.api.FunctionDeclarationTree;
-import org.sonarsource.slang.api.IdentifierTree;
-import org.sonarsource.slang.checks.api.InitContext;
-import org.sonarsource.slang.checks.api.SecondaryLocation;
-import org.sonarsource.slang.checks.api.SlangCheck;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S107")
-public class TooManyParametersCheck implements SlangCheck {
+public class TooManyParametersCheck implements GoCheck {
 
   private static final int DEFAULT_MAX = 7;
 
