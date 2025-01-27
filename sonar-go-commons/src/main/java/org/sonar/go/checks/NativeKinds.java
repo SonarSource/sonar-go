@@ -16,6 +16,8 @@
  */
 package org.sonar.go.checks;
 
+import java.util.function.Predicate;
+import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -43,6 +45,10 @@ public final class NativeKinds {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().endsWith(IMPORT_SUFFIX);
+  }
+
+  public static boolean isStringNativeKind(NativeKind nativeKind, Predicate<String> predicate) {
+    return nativeKind instanceof StringNativeKind stringNativeKind && predicate.test(stringNativeKind.toString());
   }
 
 }
