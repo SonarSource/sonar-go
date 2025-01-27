@@ -25,7 +25,7 @@ public final class NativeKinds {
   public static final String LABEL = "LabeledStmt";
   public static final String SEMICOLON = "Semicolon";
   public static final String FUNCTION_CALL = "X(CallExpr)";
-  public static final String STRUCT_FIELD_ACCESS = "Fun(SelectorExpr)";
+  public static final String FUNCTION_CALL_NAME = "Fun(SelectorExpr)";
   public static final String ARGUMENTS = "Args([]Expr)";
 
   private static final String IMPORT_SUFFIX = "](ImportSpec)";
