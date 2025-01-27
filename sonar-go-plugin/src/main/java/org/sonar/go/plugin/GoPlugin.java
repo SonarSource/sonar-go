@@ -18,6 +18,7 @@ package org.sonar.go.plugin;
 
 import org.sonar.api.Plugin;
 import org.sonar.api.SonarProduct;
+import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.go.coverage.GoCoverSensor;
@@ -45,7 +46,7 @@ public class GoPlugin implements Plugin {
     context.addExtensions(
       GoLanguage.class,
       InstanceScopeGoConverter.class,
-      GoSensor.class,
+      sensor(),
       GoExclusionsFileFilter.class,
       rulesDefinition(),
       profileDefinition(),
@@ -75,6 +76,10 @@ public class GoPlugin implements Plugin {
     if (context.getRuntime().getProduct() != SonarProduct.SONARLINT) {
       addReportExtensions(context);
     }
+  }
+
+  protected Class<? extends Sensor> sensor() {
+    return GoSensor.class;
   }
 
   protected Class<?> rulesDefinition() {

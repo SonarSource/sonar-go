@@ -11,8 +11,8 @@ load(
 )
 load("github.com/SonarSource/cirrus-modules/cloud-native/actions.star@analysis/master", "default_gradle_on_failure")
 
-QA_PLUGIN_GRADLE_TASK = "its:plugin:integrationTest"
-QA_RULING_GRADLE_TASK = "its:ruling:integrationTest"
+QA_PLUGIN_GRADLE_TASK = ":private:its:plugin:integrationTest"
+QA_RULING_GRADLE_TASK = ":private:its:ruling:integrationTest"
 QA_QUBE_LATEST_RELEASE = "LATEST_RELEASE"
 QA_QUBE_DEV = "DEV"
 

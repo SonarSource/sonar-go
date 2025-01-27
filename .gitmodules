@@ -1,14 +1,14 @@
 [submodule "its/sources/traefik"]
-	path = its/sources/traefik
+	path = private/its/sources/traefik
 	url = https://github.com/traefik/traefik
 [submodule "its/sources/minio"]
-	path = its/sources/minio
+	path = private/its/sources/minio
 	url = https://github.com/minio/minio
 [submodule "its/sources/prometheus"]
-	path = its/sources/prometheus
+	path = private/its/sources/prometheus
 	url = https://github.com/prometheus/prometheus
 [submodule "its/sources/kubernetes-client-go"]
-	path = its/sources/kubernetes-client-go
+	path = private/its/sources/kubernetes-client-go
 	url = https://github.com/kubernetes/client-go
 [submodule "build-logic"]
 	path = build-logic

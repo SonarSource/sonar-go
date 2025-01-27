@@ -25,7 +25,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,11 +67,10 @@ import static org.mockito.Mockito.when;
 class GoSensorTest {
 
   private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
-  private Path workDir;
   private GoConverter singleInstanceGoConverter;
   private Path projectDir;
   private SensorContextTester sensorContext;
-  private FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
+  private final FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
   private FileLinesContextTester fileLinesContext;
 
   @RegisterExtension
@@ -80,7 +78,7 @@ class GoSensorTest {
 
   @BeforeEach
   void setUp() throws IOException {
-    workDir = Files.createTempDirectory("gotest");
+    var workDir = Files.createTempDirectory("gotest");
     workDir.toFile().deleteOnExit();
     singleInstanceGoConverter = new GoConverter(workDir.toFile());
     projectDir = Files.createTempDirectory("gotestProject");
@@ -104,11 +102,12 @@ class GoSensorTest {
   @Test
   void test_issue() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "package main \n" +
-        "\n" +
-        "func test() {\n" +
-        " x := ((2 + 3))\n" +
-        "}");
+      """
+        package main\s
+
+        func test() {
+         x := ((2 + 3))
+        }""");
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor("S1110");
     goSensor.execute(sensorContext);
@@ -138,11 +137,12 @@ class GoSensorTest {
   @Test
   void test_failure() throws Exception {
     InputFile failingFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "package main \n" +
-        "\n" +
-        "func test() {\n" +
-        " pwd := \"secret\"\n" +
-        "}");
+      """
+        package main\s
+
+        func test() {
+         pwd := "secret"
+        }""");
     failingFile = spy(failingFile);
     doThrow(new IOException("The file is corrupted")).when(failingFile).contents();
 
@@ -211,20 +211,22 @@ class GoSensorTest {
   @Test
   void test_not_executable_lines() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "package awesomeProject\n" +
-        "const a = \"a\"\n" +
-        "var myVar int = 12\n" +
-        "var i, j int = 1, 2\n" +
-        "var c, c1, c2, c3, c4 int\n" +
-        "const (\n" +
-        "\tUpdate = \"update\"\n" +
-        "\tDelete = \"delete\"\n" +
-        ")\n" +
-        "type Message struct {\n" +
-        "}\n" +
-        "type (\n" +
-        "\tRrsType string\n" +
-        ")\n");
+      """
+        package awesomeProject
+        const a = "a"
+        var myVar int = 12
+        var i, j int = 1, 2
+        var c, c1, c2, c3, c4 int
+        const (
+        \tUpdate = "update"
+        \tDelete = "delete"
+        )
+        type Message struct {
+        }
+        type (
+        \tRrsType string
+        )
+        """);
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -236,12 +238,14 @@ class GoSensorTest {
   @Test
   void metrics_for_test_file() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.TEST,
-      "// This is not a line of code\n" +
-        "package main\n" +
-        "import \"fmt\"\n" +
-        "func main() {\n" +
-        "  fmt.Println(\"Hello\")\n" +
-        "}\n");
+      """
+        // This is not a line of code
+        package main
+        import "fmt"
+        func main() {
+          fmt.Println("Hello")
+        }
+        """);
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -260,27 +264,29 @@ class GoSensorTest {
   @Test
   void cognitive_complexity_metric() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "package main\n" +
-        "import \"fmt\"\n" +
-        "func fun1(i int) int {\n" +
-        "  if i < 0 { // +1\n" +
-        "    i++\n" +
-        "  }\n" +
-        "  return i\n" +
-        "}\n" +
-        "func fun2(i int) int {\n" +
-        "  if i < 0 { // +1\n" +
-        "    i--\n" +
-        "  }\n" +
-        "  f := func(int) int {\n" +
-        "    if i < 0 { // +2 (incl 1 for nesting)\n" +
-        "      i++\n" +
-        "    }\n" +
-        "    return i\n" +
-        "  }\n" +
-        "  return i + f(i)\n" +
-        "}\n" +
-        "\n");
+      """
+        package main
+        import "fmt"
+        func fun1(i int) int {
+          if i < 0 { // +1
+            i++
+          }
+          return i
+        }
+        func fun2(i int) int {
+          if i < 0 { // +1
+            i--
+          }
+          f := func(int) int {
+            if i < 0 { // +2 (incl 1 for nesting)
+              i++
+            }
+            return i
+          }
+          return i + f(i)
+        }
+
+        """);
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -295,16 +301,18 @@ class GoSensorTest {
   }
 
   @Test
-  void highlighting() throws Exception {
+  void highlighting() {
     InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "//abc\n" +
-        "/*x*/\n" +
-        "package main\n" +
-        "import \"fmt\"\n" +
-        "type class1 struct { }\n" +
-        "func fun2(x string) int {\n" +
-        "  return 42\n" +
-        "}\n");
+      """
+        //abc
+        /*x*/
+        package main
+        import "fmt"
+        type class1 struct { }
+        func fun2(x string) int {
+          return 42
+        }
+        """);
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -356,7 +364,7 @@ class GoSensorTest {
   private GoSensor getSensor(String... activeRuleArray) {
     Set<String> activeRuleSet = new HashSet<>(Arrays.asList(activeRuleArray));
     List<Class<?>> ruleClasses = GoCheckList.checks();
-    List<String> allKeys = ruleClasses.stream().map(ruleClass -> ((org.sonar.check.Rule) ruleClass.getAnnotations()[0]).key()).collect(Collectors.toList());
+    List<String> allKeys = ruleClasses.stream().map(ruleClass -> ((org.sonar.check.Rule) ruleClass.getAnnotations()[0]).key()).toList();
     ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
     allKeys.forEach(key -> {
       if (activeRuleSet.contains(key)) {

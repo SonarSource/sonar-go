@@ -40,26 +40,6 @@ Build and run Unit Tests:
 ./gradlew build
 ```
 `
-## Integration Tests
-
-By default, Integration Tests (ITs) are skipped during builds.
-If you want to run them, you need first to retrieve the related projects which are used as input:
-
-```shell
-git submodule update --init
-```
-
-Then build and run the Integration Tests using the `integrationTest` task:
-
-```shell
-    ./gradlew integrationTest --info --no-daemon
-```
-
-You can also build and run only Ruling Tests:
-
-```shell
-./gradlew :its:ruling:integrationTest --info --no-daemon
-```
 
 ## License headers
 

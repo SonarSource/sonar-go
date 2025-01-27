@@ -29,8 +29,6 @@ include(":sonar-go-plugin")
 include(":sonar-go-checks")
 include(":sonar-go-frontend")
 include(":sonar-go-commons")
-include(":its:plugin")
-include(":its:ruling")
 
 // "extraSettings.gradle" should not be renamed "settings.gradle" to not create a wrong project rootDir
 var extraSettings = File(rootDir, "private/extraSettings.gradle.kts")

@@ -41,8 +41,7 @@ public class GoSensor extends SlangSensor {
   public GoSensor(SonarRuntime sonarRuntime, CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
     super(sonarRuntime, noSonarFilter, fileLinesContextFactory, language);
-    checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
-    checks.addAnnotatedChecks(GoCheckList.checks());
+    checks = initializeChecks(checkFactory);
     this.goConverter = goConverter;
   }
 
@@ -55,6 +54,12 @@ public class GoSensor extends SlangSensor {
   @Override
   protected ASTConverter astConverter(SensorContext sensorContext) {
     return goConverter;
+  }
+
+  protected Checks<GoCheck> initializeChecks(CheckFactory checkFactory) {
+    var goChecks = checkFactory.<GoCheck>create(GoRulesDefinition.REPOSITORY_KEY);
+    goChecks.addAnnotatedChecks(GoCheckList.checks());
+    return goChecks;
   }
 
   @Override
