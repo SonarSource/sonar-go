@@ -25,8 +25,9 @@ dependencies {
     implementation(libs.sonar.analyzer.commons)
     implementation(libs.minimal.json)
 
-    testImplementation(platform("org.junit:junit-bom:5.10.0"))
+    testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
-    testImplementation("org.junit.jupiter:junit-jupiter")
+
+    testRuntimeOnly(libs.junit.jupiter.engine)
 }
