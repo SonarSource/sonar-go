@@ -1,5 +1,4 @@
 [versions]
-slang-dependencies = "1.18.1.6411"
 analyzer-commons = "2.16.0.3141"
 plugin-api = "11.1.0.2693"
 sonarqube = "24.12.0.100206"
@@ -20,7 +19,7 @@ yguard = "4.1.1"
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
 sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-commons", version.ref = "analyzer-commons" }
 sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-test-commons", version.ref = "analyzer-commons" }
-checkstyle-import = { group = "org.sonarsource.slang", name = "checkstyle-import", version.ref = "slang-dependencies" }
+sonar-xml-parsing = {group = "org.sonarsource.analyzer-commons", name = "sonar-xml-parsing", version.ref = "analyzer-commons" }
 minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
 sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
 sonar-plugin-api-impl = { group = "org.sonarsource.sonarqube", name = "sonar-plugin-api-impl", version.ref = "sonarqube" }
