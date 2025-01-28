@@ -21,7 +21,6 @@ import javax.annotation.CheckForNull;
 
 public interface ParameterTree extends Tree {
 
-  @CheckForNull
   IdentifierTree identifier();
 
   @CheckForNull

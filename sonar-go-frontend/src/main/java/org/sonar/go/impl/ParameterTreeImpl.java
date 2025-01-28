@@ -33,7 +33,7 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
   private final Tree defaultValue;
   private final List<Tree> modifiers;
 
-  public ParameterTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue, List<Tree> modifiers) {
+  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue, List<Tree> modifiers) {
     super(metaData);
     this.identifier = identifier;
     this.type = type;
@@ -41,11 +41,11 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
     this.modifiers = modifiers;
   }
 
-  public ParameterTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue) {
+  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue) {
     this(metaData, identifier, type, defaultValue, Collections.emptyList());
   }
 
-  public ParameterTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, @Nullable Tree type) {
+  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type) {
     this(metaData, identifier, type, null);
   }
 
