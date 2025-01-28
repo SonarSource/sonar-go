@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.ImportDeclarationTree;
 import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.StringLiteralTree;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 
@@ -61,5 +64,17 @@ public class TreeUtils {
       .map(IdentifierTree.class::cast)
       .map(IdentifierTree::name)
       .collect(Collectors.joining("."));
+  }
+
+  public static List<String> getImportsAsStrings(TopLevelTree file) {
+    return file.declarations().stream()
+      .filter(ImportDeclarationTree.class::isInstance)
+      .flatMap(it -> it.children().stream())
+      .filter(it -> it instanceof NativeTree nativeImport && nativeImport.nativeKind().toString().endsWith("](ImportSpec)"))
+      .flatMap(it -> it.children().stream())
+      .filter(StringLiteralTree.class::isInstance)
+      .map(StringLiteralTree.class::cast)
+      .map(StringLiteralTree::value)
+      .toList();
   }
 }

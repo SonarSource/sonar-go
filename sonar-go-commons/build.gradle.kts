@@ -28,6 +28,7 @@ dependencies {
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.mockito.core)
     testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
 

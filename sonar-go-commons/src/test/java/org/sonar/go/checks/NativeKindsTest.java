@@ -18,15 +18,65 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 
+import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.sonar.go.checks.NativeKinds.isFromCallExpr;
+import static org.sonar.go.checks.NativeKinds.isFromSelectorExpr;
+import static org.sonar.go.checks.NativeKinds.isFun;
+import static org.sonar.go.checks.NativeKinds.isX;
 
 class NativeKindsTest {
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    X(CallExpr),true
+    X(SelectorExpr),true
+    Fun(SelectorExpr),false
+    """)
+  void shouldFindXKinds(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
+    assertThat(isX(tree)).isEqualTo(shouldFind);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    X(CallExpr),false
+    X(SelectorExpr),false
+    Fun(SelectorExpr),true
+    """)
+  void shouldFindFunKinds(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
+    assertThat(isFun(tree)).isEqualTo(shouldFind);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    X(CallExpr),false
+    X(SelectorExpr),true
+    Fun(SelectorExpr),true
+    """)
+  void shouldFindSelectorSubExpr(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
+    assertThat(isFromSelectorExpr(tree)).isEqualTo(shouldFind);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    X(CallExpr),true
+    X(SelectorExpr),false
+    Fun(SelectorExpr),false
+    """)
+  void shouldFindCallSubExpr(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
+    assertThat(isFromCallExpr(tree)).isEqualTo(shouldFind);
+  }
 
   @Test
   void shouldBeStringNativeKindOfTypeA() {
