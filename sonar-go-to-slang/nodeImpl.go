@@ -904,7 +904,18 @@ func (t *SlangMapper) mapParenExprImpl(expr *ast.ParenExpr, fieldName string) *N
 }
 
 func (t *SlangMapper) mapSelectorExprImpl(expr *ast.SelectorExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	expression := t.mapExpr(expr.X, "X")
+	children = t.appendNode(children, expression)
+	slangField["expression"] = expression
+
+	identifier := t.mapIdent(expr.Sel, "Sel")
+	children = t.appendNode(children, identifier)
+	slangField["identifier"] = identifier
+
+	return t.createNode(expr, children, fieldName+"(SelectorExpr)", "MemberSelect", slangField)
 }
 
 func (t *SlangMapper) mapSliceExprImpl(expr *ast.SliceExpr, fieldName string) *Node {

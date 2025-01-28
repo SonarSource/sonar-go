@@ -1,0 +1,22 @@
+package main
+
+type Address struct {
+	street string
+}
+
+type Person struct {
+	name string
+	age  int
+	address Address
+}
+
+func (p *Person) getAddress() Address {
+	return p.address
+}
+
+func foo(value *Person) {
+	value.name = "a";
+	panic(value.age);
+	value.address.street = "b";
+	value.getAddress().street = "b";
+}

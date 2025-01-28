@@ -39,6 +39,7 @@ import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.MatchTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.PackageDeclarationTree;
@@ -70,6 +71,7 @@ import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
 import org.sonar.go.impl.MatchTreeImpl;
+import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.PackageDeclarationTreeImpl;
@@ -743,6 +745,29 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(VariableDeclarationTree.class))
       .containsExactlyInAnyOrder(IDENTIFIER, TYPE, INITIALIZER, IS_VAL);
+  }
+
+  @Test
+  void member_select() throws IOException {
+    // x.y.z
+    Token tokenX = otherToken(1, 0, "x");
+    Token tokenY = otherToken(1, 2, "y");
+    Token tokenZ = otherToken(1, 4, "z");
+    MemberSelectTree memberSelectTree = new MemberSelectTreeImpl(
+      metaData(tokenX, tokenZ),
+      new MemberSelectTreeImpl(
+        metaData(tokenX, tokenY),
+        new IdentifierTreeImpl(metaData(tokenX), tokenX.text()),
+        new IdentifierTreeImpl(metaData(tokenY), tokenY.text())),
+      new IdentifierTreeImpl(metaData(tokenZ), tokenZ.text()));
+
+    MemberSelectTree tree = checkJsonSerializationDeserialization(memberSelectTree, "member_select.json");
+    assertThat(tree.identifier().name()).isEqualTo("z");
+    assertThat(tree.expression()).isInstanceOf(MemberSelectTree.class);
+    MemberSelectTree nestedExpression = (MemberSelectTree) tree.expression();
+    assertThat(nestedExpression.identifier().name()).isEqualTo("y");
+    assertThat(nestedExpression.expression()).isInstanceOf(IdentifierTree.class);
+    assertThat(((IdentifierTree) nestedExpression.expression()).name()).isEqualTo("x");
   }
 
 }

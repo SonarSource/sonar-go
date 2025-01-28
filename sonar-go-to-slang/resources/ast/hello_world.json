@@ -46,11 +46,9 @@
             {"@type": "Identifier", "metaData": "8:1::4","name":"msg"}},
           {"@type": "Native", "metaData": "9:1::17","nativeKind":"[1](ExprStmt)","children":[
             {"@type": "Native", "metaData": "9:1::17","nativeKind":"X(CallExpr)","children":[
-              {"@type": "Native", "metaData": "9:1::12","nativeKind":"Fun(SelectorExpr)","children":[
-                {"@type": "Identifier", "metaData": "9:1::4","name":"fmt"},
-                {"@type": "Native", "metaData": "9:4::5"},
-                {"@type": "Identifier", "metaData": "9:5::12","name":"Println"}
-              ]},
+              {"@type": "MemberSelect", "metaData": "9:1::12","identifier":
+                {"@type": "Identifier", "metaData": "9:5::12","name":"Println"},"expression":
+                {"@type": "Identifier", "metaData": "9:1::4","name":"fmt"}},
               {"@type": "Native", "metaData": "9:12::13","nativeKind":"Lparen"},
               {"@type": "Native", "metaData": "9:13::16","nativeKind":"Args([]Expr)","children":[
                 {"@type": "Identifier", "metaData": "9:13::16","name":"msg"}

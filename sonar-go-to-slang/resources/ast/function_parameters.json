@@ -343,11 +343,9 @@
               {"@type": "Native", "metaData": "27:38::55","nativeKind":"[0](Field)","children":[
                 {"@type": "Native", "metaData": "27:38::55","nativeKind":"Type(StarExpr)","children":[
                   {"@type": "Native", "metaData": "27:38::39","nativeKind":"Star"},
-                  {"@type": "Native", "metaData": "27:39::55","nativeKind":"X(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "27:39::44","name":"store"},
-                    {"@type": "Native", "metaData": "27:44::45"},
-                    {"@type": "Identifier", "metaData": "27:45::55","name":"NodeExtern"}
-                  ]}
+                  {"@type": "MemberSelect", "metaData": "27:39::55","identifier":
+                    {"@type": "Identifier", "metaData": "27:45::55","name":"NodeExtern"},"expression":
+                    {"@type": "Identifier", "metaData": "27:39::44","name":"store"}}
                 ]}
               ]},
               {"@type": "Native", "metaData": "27:55::56","nativeKind":"Closing"}

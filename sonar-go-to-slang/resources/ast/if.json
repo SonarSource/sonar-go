@@ -94,11 +94,9 @@
             {"@type": "Block", "metaData": "6:9:8:2","statementOrExpressions":[
               {"@type": "Native", "metaData": "7:2::25","nativeKind":"[0](ExprStmt)","children":[
                 {"@type": "Native", "metaData": "7:2::25","nativeKind":"X(CallExpr)","children":[
-                  {"@type": "Native", "metaData": "7:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "7:2::5","name":"fmt"},
-                    {"@type": "Native", "metaData": "7:5::6"},
-                    {"@type": "Identifier", "metaData": "7:6::13","name":"Println"}
-                  ]},
+                  {"@type": "MemberSelect", "metaData": "7:2::13","identifier":
+                    {"@type": "Identifier", "metaData": "7:6::13","name":"Println"},"expression":
+                    {"@type": "Identifier", "metaData": "7:2::5","name":"fmt"}},
                   {"@type": "Native", "metaData": "7:13::14","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "7:14::24","nativeKind":"Args([]Expr)","children":[
                     {"@type": "StringLiteral", "metaData": "7:14::24","value":"\"thenPart\"","content":"thenPart"}
@@ -113,11 +111,9 @@
             {"@type": "Block", "metaData": "10:10:12:2","statementOrExpressions":[
               {"@type": "Native", "metaData": "11:2::25","nativeKind":"[0](ExprStmt)","children":[
                 {"@type": "Native", "metaData": "11:2::25","nativeKind":"X(CallExpr)","children":[
-                  {"@type": "Native", "metaData": "11:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "11:2::5","name":"fmt"},
-                    {"@type": "Native", "metaData": "11:5::6"},
-                    {"@type": "Identifier", "metaData": "11:6::13","name":"Println"}
-                  ]},
+                  {"@type": "MemberSelect", "metaData": "11:2::13","identifier":
+                    {"@type": "Identifier", "metaData": "11:6::13","name":"Println"},"expression":
+                    {"@type": "Identifier", "metaData": "11:2::5","name":"fmt"}},
                   {"@type": "Native", "metaData": "11:13::14","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "11:14::24","nativeKind":"Args([]Expr)","children":[
                     {"@type": "StringLiteral", "metaData": "11:14::24","value":"\"thenPart\"","content":"thenPart"}
@@ -129,11 +125,9 @@
             {"@type": "Block", "metaData": "12:8:14:2","statementOrExpressions":[
               {"@type": "Native", "metaData": "13:2::25","nativeKind":"[0](ExprStmt)","children":[
                 {"@type": "Native", "metaData": "13:2::25","nativeKind":"X(CallExpr)","children":[
-                  {"@type": "Native", "metaData": "13:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "13:2::5","name":"fmt"},
-                    {"@type": "Native", "metaData": "13:5::6"},
-                    {"@type": "Identifier", "metaData": "13:6::13","name":"Println"}
-                  ]},
+                  {"@type": "MemberSelect", "metaData": "13:2::13","identifier":
+                    {"@type": "Identifier", "metaData": "13:6::13","name":"Println"},"expression":
+                    {"@type": "Identifier", "metaData": "13:2::5","name":"fmt"}},
                   {"@type": "Native", "metaData": "13:13::14","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "13:14::24","nativeKind":"Args([]Expr)","children":[
                     {"@type": "StringLiteral", "metaData": "13:14::24","value":"\"elsePart\"","content":"elsePart"}
@@ -147,11 +141,9 @@
             {"@type": "Block", "metaData": "16:11:18:2","statementOrExpressions":[
               {"@type": "Native", "metaData": "17:2::25","nativeKind":"[0](ExprStmt)","children":[
                 {"@type": "Native", "metaData": "17:2::25","nativeKind":"X(CallExpr)","children":[
-                  {"@type": "Native", "metaData": "17:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "17:2::5","name":"fmt"},
-                    {"@type": "Native", "metaData": "17:5::6"},
-                    {"@type": "Identifier", "metaData": "17:6::13","name":"Println"}
-                  ]},
+                  {"@type": "MemberSelect", "metaData": "17:2::13","identifier":
+                    {"@type": "Identifier", "metaData": "17:6::13","name":"Println"},"expression":
+                    {"@type": "Identifier", "metaData": "17:2::5","name":"fmt"}},
                   {"@type": "Native", "metaData": "17:13::14","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "17:14::24","nativeKind":"Args([]Expr)","children":[
                     {"@type": "StringLiteral", "metaData": "17:14::24","value":"\"thenPart\"","content":"thenPart"}
@@ -167,11 +159,9 @@
             {"@type": "Block", "metaData": "20:27:22:5","statementOrExpressions":[
               {"@type": "Native", "metaData": "21:8::31","nativeKind":"[0](ExprStmt)","children":[
                 {"@type": "Native", "metaData": "21:8::31","nativeKind":"X(CallExpr)","children":[
-                  {"@type": "Native", "metaData": "21:8::19","nativeKind":"Fun(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "21:8::11","name":"fmt"},
-                    {"@type": "Native", "metaData": "21:11::12"},
-                    {"@type": "Identifier", "metaData": "21:12::19","name":"Println"}
-                  ]},
+                  {"@type": "MemberSelect", "metaData": "21:8::19","identifier":
+                    {"@type": "Identifier", "metaData": "21:12::19","name":"Println"},"expression":
+                    {"@type": "Identifier", "metaData": "21:8::11","name":"fmt"}},
                   {"@type": "Native", "metaData": "21:19::20","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "21:20::30","nativeKind":"Args([]Expr)","children":[
                     {"@type": "StringLiteral", "metaData": "21:20::30","value":"\"thenPart\"","content":"thenPart"}

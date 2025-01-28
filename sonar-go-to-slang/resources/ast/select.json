@@ -274,19 +274,15 @@
         {"@type": "Block", "metaData": "10:29:13:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "11:1::28","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "Native", "metaData": "11:1::28","nativeKind":"X(CallExpr)","children":[
-              {"@type": "Native", "metaData": "11:1::11","nativeKind":"Fun(SelectorExpr)","children":[
-                {"@type": "Identifier", "metaData": "11:1::5","name":"time"},
-                {"@type": "Native", "metaData": "11:5::6"},
-                {"@type": "Identifier", "metaData": "11:6::11","name":"Sleep"}
-              ]},
+              {"@type": "MemberSelect", "metaData": "11:1::11","identifier":
+                {"@type": "Identifier", "metaData": "11:6::11","name":"Sleep"},"expression":
+                {"@type": "Identifier", "metaData": "11:1::5","name":"time"}},
               {"@type": "Native", "metaData": "11:11::12","nativeKind":"Lparen"},
               {"@type": "Native", "metaData": "11:12::27","nativeKind":"Args([]Expr)","children":[
                 {"@type": "BinaryExpression", "metaData": "11:12::27","rightOperand":
-                  {"@type": "Native", "metaData": "11:16::27","nativeKind":"operand(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "11:16::20","name":"time"},
-                    {"@type": "Native", "metaData": "11:20::21"},
-                    {"@type": "Identifier", "metaData": "11:21::27","name":"Second"}
-                  ]},"operatorToken":"11:14::15","operator":"TIMES","leftOperand":
+                  {"@type": "MemberSelect", "metaData": "11:16::27","identifier":
+                    {"@type": "Identifier", "metaData": "11:21::27","name":"Second"},"expression":
+                    {"@type": "Identifier", "metaData": "11:16::20","name":"time"}},"operatorToken":"11:14::15","operator":"TIMES","leftOperand":
                   {"@type": "IntegerLiteral", "metaData": "11:12::13","value":"6"}}
               ]},
               {"@type": "Native", "metaData": "11:27::28","nativeKind":"Rparen"}
@@ -310,19 +306,15 @@
         {"@type": "Block", "metaData": "14:29:18:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "15:1::28","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "Native", "metaData": "15:1::28","nativeKind":"X(CallExpr)","children":[
-              {"@type": "Native", "metaData": "15:1::11","nativeKind":"Fun(SelectorExpr)","children":[
-                {"@type": "Identifier", "metaData": "15:1::5","name":"time"},
-                {"@type": "Native", "metaData": "15:5::6"},
-                {"@type": "Identifier", "metaData": "15:6::11","name":"Sleep"}
-              ]},
+              {"@type": "MemberSelect", "metaData": "15:1::11","identifier":
+                {"@type": "Identifier", "metaData": "15:6::11","name":"Sleep"},"expression":
+                {"@type": "Identifier", "metaData": "15:1::5","name":"time"}},
               {"@type": "Native", "metaData": "15:11::12","nativeKind":"Lparen"},
               {"@type": "Native", "metaData": "15:12::27","nativeKind":"Args([]Expr)","children":[
                 {"@type": "BinaryExpression", "metaData": "15:12::27","rightOperand":
-                  {"@type": "Native", "metaData": "15:16::27","nativeKind":"operand(SelectorExpr)","children":[
-                    {"@type": "Identifier", "metaData": "15:16::20","name":"time"},
-                    {"@type": "Native", "metaData": "15:20::21"},
-                    {"@type": "Identifier", "metaData": "15:21::27","name":"Second"}
-                  ]},"operatorToken":"15:14::15","operator":"TIMES","leftOperand":
+                  {"@type": "MemberSelect", "metaData": "15:16::27","identifier":
+                    {"@type": "Identifier", "metaData": "15:21::27","name":"Second"},"expression":
+                    {"@type": "Identifier", "metaData": "15:16::20","name":"time"}},"operatorToken":"15:14::15","operator":"TIMES","leftOperand":
                   {"@type": "IntegerLiteral", "metaData": "15:12::13","value":"3"}}
               ]},
               {"@type": "Native", "metaData": "15:27::28","nativeKind":"Rparen"}
@@ -401,11 +393,9 @@
                 {"@type": "Native", "metaData": "26:2:27:7","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "Native", "metaData": "26:2::17","nativeKind":"[0](ExprStmt)","children":[
                     {"@type": "Native", "metaData": "26:2::17","nativeKind":"X(CallExpr)","children":[
-                      {"@type": "Native", "metaData": "26:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                        {"@type": "Identifier", "metaData": "26:2::5","name":"fmt"},
-                        {"@type": "Native", "metaData": "26:5::6"},
-                        {"@type": "Identifier", "metaData": "26:6::13","name":"Println"}
-                      ]},
+                      {"@type": "MemberSelect", "metaData": "26:2::13","identifier":
+                        {"@type": "Identifier", "metaData": "26:6::13","name":"Println"},"expression":
+                        {"@type": "Identifier", "metaData": "26:2::5","name":"fmt"}},
                       {"@type": "Native", "metaData": "26:13::14","nativeKind":"Lparen"},
                       {"@type": "Native", "metaData": "26:14::16","nativeKind":"Args([]Expr)","children":[
                         {"@type": "Identifier", "metaData": "26:14::16","name":"s1"}
@@ -429,11 +419,9 @@
                 {"@type": "Native", "metaData": "29:2::17","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "Native", "metaData": "29:2::17","nativeKind":"[0](ExprStmt)","children":[
                     {"@type": "Native", "metaData": "29:2::17","nativeKind":"X(CallExpr)","children":[
-                      {"@type": "Native", "metaData": "29:2::13","nativeKind":"Fun(SelectorExpr)","children":[
-                        {"@type": "Identifier", "metaData": "29:2::5","name":"fmt"},
-                        {"@type": "Native", "metaData": "29:5::6"},
-                        {"@type": "Identifier", "metaData": "29:6::13","name":"Println"}
-                      ]},
+                      {"@type": "MemberSelect", "metaData": "29:2::13","identifier":
+                        {"@type": "Identifier", "metaData": "29:6::13","name":"Println"},"expression":
+                        {"@type": "Identifier", "metaData": "29:2::5","name":"fmt"}},
                       {"@type": "Native", "metaData": "29:13::14","nativeKind":"Lparen"},
                       {"@type": "Native", "metaData": "29:14::16","nativeKind":"Args([]Expr)","children":[
                         {"@type": "Identifier", "metaData": "29:14::16","name":"s2"}

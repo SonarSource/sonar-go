@@ -22,15 +22,14 @@ import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.checks.NativeKinds;
 
 public record MethodCall(String methodFqn, List<String> args) {
   private static final Predicate<String> IS_EXPR_STMT = Pattern.compile("\\[\\d++]\\(ExprStmt\\)").asMatchPredicate();
-  private static final Predicate<String> IS_SELECTOR_EXPR = Pattern.compile("\\[\\d++]\\(SelectorExpr\\)").asMatchPredicate().or("X(SelectorExpr)"::equals);
   private static final Predicate<String> IS_CALL_EXPR = "X(CallExpr)"::equals;
-  private static final Predicate<String> IS_FUN_SELECTOR_EXPR = "Fun(SelectorExpr)"::equals;
 
   @CheckForNull
   public static MethodCall of(NativeTree nativeTree) {
@@ -59,18 +58,10 @@ public record MethodCall(String methodFqn, List<String> args) {
   private static String treeToString(Tree tree) {
     if (tree instanceof IdentifierTree identifierTree) {
       return identifierTree.name();
-    } else if (tree instanceof NativeTree nativeTree
-      && (NativeKinds.isStringNativeKind(nativeTree.nativeKind(), IS_SELECTOR_EXPR) || NativeKinds.isStringNativeKind(nativeTree.nativeKind(), IS_FUN_SELECTOR_EXPR))) {
-        return nativeTreeChildrenToString(nativeTree);
-      }
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return treeToString(memberSelectTree.expression()) + "." + memberSelectTree.identifier().name();
+    }
     return "";
-  }
-
-  private static String nativeTreeChildrenToString(NativeTree nativeTree) {
-    return String.join(".", nativeTree.children().stream()
-      .map(MethodCall::treeToString)
-      .filter(s -> !s.isEmpty())
-      .toList());
   }
 
   public boolean is(String methodFqn) {

@@ -24,8 +24,10 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.LoopTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ParseException;
 import org.sonar.go.api.ReturnTree;
@@ -98,6 +100,17 @@ class GoConverterTest {
     List<Tree> f2Children = functions.get(1).children();
     Tree f = ((BlockTree) f2Children.get(1)).statementOrExpressions().get(0);
     assertThat(f).isInstanceOf(VariableDeclarationTree.class);
+  }
+
+  @Test
+  void test_parse_member_select() {
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {fmt.Println()}");
+    List<MemberSelectTree> returnList = tree.descendants().filter(MemberSelectTree.class::isInstance).map(MemberSelectTree.class::cast).toList();
+    assertThat(returnList).hasSize(1);
+    MemberSelectTree memberSelectTree = returnList.get(0);
+    assertThat(memberSelectTree.identifier().name()).isEqualTo("Println");
+    Tree expression = memberSelectTree.expression();
+    assertThat(expression).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("fmt"));
   }
 
   @Test

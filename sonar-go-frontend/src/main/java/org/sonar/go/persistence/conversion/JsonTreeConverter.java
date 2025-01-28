@@ -50,6 +50,7 @@ import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
 import org.sonar.go.impl.MatchTreeImpl;
+import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.PackageDeclarationTreeImpl;
@@ -369,6 +370,17 @@ public final class JsonTreeConverter {
         ctx.metaData(json),
         ctx.fieldToNullableObject(json, EXPRESSION, Tree.class),
         ctx.fieldToNullableObject(json, BODY, Tree.class)));
+
+    register(MemberSelectTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(EXPRESSION, ctx.toJson(tree.expression()))
+        .add(IDENTIFIER, ctx.toJson(tree.identifier())),
+
+      (ctx, json) -> new MemberSelectTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, EXPRESSION, Tree.class),
+        ctx.fieldToObject(json, IDENTIFIER, IdentifierTree.class)));
 
     register(ModifierTreeImpl.class,
 
