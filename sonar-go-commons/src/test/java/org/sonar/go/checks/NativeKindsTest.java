@@ -101,4 +101,28 @@ class NativeKindsTest {
     var result = NativeKinds.isStringNativeKindOfType(tree, "TypeA");
     assertThat(result).isFalse();
   }
+
+  @Test
+  void shouldBeStringNativeKindWithPredicateOnA() {
+    var kind = new StringNativeKind("TypeA");
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isStringNativeKind(tree, s -> s.endsWith("A"));
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldNotBeStringNativeKindWhenPredicateFalse() {
+    var kind = new StringNativeKind("TypeA");
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isStringNativeKind(tree, str -> false);
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldBeStringNativeKindWhenAnotherNativeKind() {
+    var kind = mock(NativeKind.class);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isStringNativeKind(tree, s -> s.endsWith("A"));
+    assertThat(result).isFalse();
+  }
 }

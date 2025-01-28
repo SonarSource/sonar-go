@@ -17,6 +17,7 @@
 package org.sonar.go.checks.utils;
 
 import java.util.List;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.sonar.go.api.IdentifierTree;
@@ -51,7 +52,7 @@ public class TreeUtils {
       .collect(Collectors.joining("."));
   }
 
-  public static List<String> getImportsAsStrings(TopLevelTree file) {
+  public static Set<String> getImportsAsStrings(TopLevelTree file) {
     return file.declarations().stream()
       .filter(ImportDeclarationTree.class::isInstance)
       .flatMap(it -> it.children().stream())
@@ -60,6 +61,6 @@ public class TreeUtils {
       .filter(StringLiteralTree.class::isInstance)
       .map(StringLiteralTree.class::cast)
       .map(StringLiteralTree::value)
-      .toList();
+      .collect(Collectors.toSet());
   }
 }

@@ -17,7 +17,8 @@
 package org.sonar.go.checks;
 
 import java.util.function.Predicate;
-import org.sonar.go.api.NativeKind;
+import java.util.regex.Pattern;
+import javax.annotation.Nullable;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -35,6 +36,7 @@ public final class NativeKinds {
   public static final String SEMICOLON = "Semicolon";
   public static final String FUNCTION_CALL = "X(CallExpr)";
   public static final String ARGUMENTS = "Args([]Expr)";
+  public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
   private static final String IMPORT_SUFFIX = "](ImportSpec)";
 
@@ -57,20 +59,20 @@ public final class NativeKinds {
     return isFrom("CallExpr").test(tree);
   }
 
-  public static boolean isStringNativeKindOfType(Tree tree, String type) {
+  public static boolean isStringNativeKind(@Nullable Tree tree, Predicate<String> predicate) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.toString().equals(type);
+      && predicate.test(stringNativeKind.toString());
+  }
+
+  public static boolean isStringNativeKindOfType(Tree tree, String type) {
+    return isStringNativeKind(tree, type::equals);
   }
 
   public static boolean isImport(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().endsWith(IMPORT_SUFFIX);
-  }
-
-  public static boolean isStringNativeKind(NativeKind nativeKind, Predicate<String> predicate) {
-    return nativeKind instanceof StringNativeKind stringNativeKind && predicate.test(stringNativeKind.toString());
   }
 
   private static Predicate<NativeTree> isMainKind(String nativeMainKind) {

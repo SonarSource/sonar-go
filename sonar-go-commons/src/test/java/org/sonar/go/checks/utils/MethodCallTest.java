@@ -16,9 +16,10 @@
  */
 package org.sonar.go.checks.utils;
 
-import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -38,6 +39,12 @@ class MethodCallTest {
   }
 
   @Test
+  void shouldReturnNullOnDifferentStatement() {
+    var methodCall = MethodCall.of((NativeTree) parse("1 | 2"));
+    assertThat(methodCall).isNull();
+  }
+
+  @Test
   void shouldParseMethodCallWithPackageName() {
     var methodCall = MethodCall.of((NativeTree) parse("com.sonar.foo()"));
     assertThat(methodCall).isNotNull();
@@ -51,7 +58,17 @@ class MethodCallTest {
     var methodCall = MethodCall.of((NativeTree) parse("foo(bar.test, again)"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
-    assertThat(methodCall.args()).isEqualTo(List.of("bar.test", "again"));
+    assertThat(methodCall.args()).hasSize(2);
+
+    var arg1 = (MemberSelectTree) methodCall.getArg(0);
+    assertThat(arg1.identifier().name()).isEqualTo("test");
+    assertThat(((IdentifierTree) arg1.expression()).name()).isEqualTo("bar");
+    var arg2 = methodCall.getArg(1);
+    assertThat(arg2).isInstanceOf(IdentifierTree.class);
+    assertThat(((IdentifierTree) arg2).identifier()).isEqualTo("again");
+    var arg3 = methodCall.getArg(2);
+    assertThat(arg3).isNull();
+
     assertThat(methodCall.is("foo")).isTrue();
   }
 
@@ -60,7 +77,6 @@ class MethodCallTest {
     var methodCall = MethodCall.of((NativeTree) parse("foo(bar.test, again)"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
-    assertThat(methodCall.args()).isEqualTo(List.of("bar.test", "again"));
     assertThat(methodCall.is("foo")).isTrue();
     assertThat(methodCall.is("foo", "bar.test")).isTrue();
     assertThat(methodCall.is("foo", "bar.test", "again")).isTrue();
@@ -77,6 +93,7 @@ class MethodCallTest {
       """);
     var mainFunc = topLevelTree.declarations().get(1);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
-    return mainBlock.statementOrExpressions().get(0);
+    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
+    return expressionStatement.children().get(0);
   }
 }

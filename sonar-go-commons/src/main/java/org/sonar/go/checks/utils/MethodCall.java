@@ -21,35 +21,34 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.checks.NativeKinds;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 
-public record MethodCall(String methodFqn, List<String> args) {
-  private static final Predicate<String> IS_EXPR_STMT = Pattern.compile("\\[\\d++]\\(ExprStmt\\)").asMatchPredicate();
-  private static final Predicate<String> IS_CALL_EXPR = "X(CallExpr)"::equals;
+public record MethodCall(String methodFqn, List<Tree> args) {
+  private static final Predicate<String> IS_CALL_EXPR = Pattern.compile("\\[\\d++]\\(CallExpr\\)").asMatchPredicate().or("X(CallExpr)"::equals);
 
   @CheckForNull
   public static MethodCall of(NativeTree nativeTree) {
-    if (NativeKinds.isStringNativeKind(nativeTree.nativeKind(), IS_EXPR_STMT)
-      && nativeTree.children().get(0) instanceof NativeTree callExprNativeTree && NativeKinds.isStringNativeKind(callExprNativeTree.nativeKind(), IS_CALL_EXPR)) {
-      var methodCall = callExprNativeTree.children().get(0);
+    if (NativeKinds.isStringNativeKind(nativeTree, IS_CALL_EXPR)) {
+      var methodCall = nativeTree.children().get(0);
       var fqnMethod = treeToString(methodCall);
-      var args = extractArgs(callExprNativeTree);
+      var args = extractArgs(nativeTree);
       return new MethodCall(fqnMethod, args);
     }
     return null;
   }
 
-  private static List<String> extractArgs(NativeTree nativeTree) {
+  private static List<Tree> extractArgs(NativeTree nativeTree) {
     // Check if we have four elements: the method name, opening parenthesis, arguments, and closing parenthesis.
     if (nativeTree.children().size() == 4) {
       var args = (NativeTree) nativeTree.children().get(2);
       return args.children().stream()
-        .map(MethodCall::treeToString)
-        .filter(s -> !s.isEmpty())
+        .filter(arg -> !(arg instanceof NativeTree nativeTree1 && nativeTree1.nativeKind() instanceof StringNativeKind stringNativeKind && stringNativeKind.toString().isEmpty()))
         .toList();
     }
     return Collections.emptyList();
@@ -70,10 +69,18 @@ public record MethodCall(String methodFqn, List<String> args) {
 
   public boolean is(String methodFqn, String... args) {
     for (int i = 0; i < args.length; i++) {
-      if (this.args.size() <= i || !this.args.get(i).equals(args[i])) {
+      if (this.args.size() <= i || !treeToString(this.args.get(i)).equals(args[i])) {
         return false;
       }
     }
     return this.methodFqn.equals(methodFqn);
+  }
+
+  @Nullable
+  public Tree getArg(int index) {
+    if (this.args.size() > index) {
+      return this.args.get(index);
+    }
+    return null;
   }
 }
