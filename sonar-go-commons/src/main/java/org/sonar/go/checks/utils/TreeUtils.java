@@ -16,8 +16,6 @@
  */
 package org.sonar.go.checks.utils;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -38,19 +36,6 @@ public class TreeUtils {
   public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> tree instanceof NativeTree nativeTree
     && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
     && stringNativeKind.toString().equals("Semicolon"));
-
-  public static List<Tree> getAllChildren(Tree tree) {
-    var result = new ArrayList<Tree>();
-    var children = tree.children();
-    while (!children.isEmpty()) {
-      result.addAll(children);
-      children = children.stream()
-        .map(Tree::children)
-        .flatMap(Collection::stream)
-        .toList();
-    }
-    return result;
-  }
 
   public static <T extends Tree> List<String> getIdentifierNames(List<T> trees) {
     return trees.stream().filter(IdentifierTree.class::isInstance)

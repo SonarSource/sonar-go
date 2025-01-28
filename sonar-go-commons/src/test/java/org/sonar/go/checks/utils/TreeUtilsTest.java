@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BlockTreeImpl;
-import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
@@ -52,19 +51,6 @@ class TreeUtilsTest {
     var initializer = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind("Semicolon"), List.of());
     var result = TreeUtils.IS_NOT_SEMICOLON.test(initializer);
     assertThat(result).isFalse();
-  }
-
-  @Test
-  void shouldGetAllChildren() {
-    var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
-    var id = new IdentifierTreeImpl(mock(TreeMetaData.class), "foo");
-    var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), id, null, initializer, false);
-    var body = new BlockTreeImpl(mock(TreeMetaData.class), List.of(variable));
-    var function = new FunctionDeclarationTreeImpl(mock(TreeMetaData.class), List.of(), false, null, null, List.of(), body, List.of());
-
-    var allChildren = TreeUtils.getAllChildren(function);
-
-    assertThat(allChildren).containsOnly(body, variable, id, initializer);
   }
 
   @Test
