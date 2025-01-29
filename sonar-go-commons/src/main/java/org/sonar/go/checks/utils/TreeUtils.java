@@ -57,6 +57,8 @@ public class TreeUtils {
       .filter(ImportDeclarationTree.class::isInstance)
       .flatMap(it -> it.children().stream())
       .filter(it -> it instanceof NativeTree nativeImport && nativeImport.nativeKind().toString().endsWith("](ImportSpec)"))
+      // Imports with aliases are not supported currently, they are filtered-out to avoid false positives
+      .filter(it -> it.children().size() == 1)
       .flatMap(it -> it.children().stream())
       .filter(StringLiteralTree.class::isInstance)
       .map(StringLiteralTree.class::cast)

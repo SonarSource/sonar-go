@@ -16,6 +16,7 @@
  */
 package org.sonar.go.checks.utils;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -90,6 +91,8 @@ public class MethodMatchers {
 
   public interface NameBuilder {
     ParametersBuilder withName(String name);
+
+    ParametersBuilder withNames(Collection<String> names);
   }
 
   public interface ParametersBuilder {
@@ -118,6 +121,12 @@ public class MethodMatchers {
     @Override
     public ParametersBuilder withName(String name) {
       this.namePredicate = s -> s.equals(name);
+      return this;
+    }
+
+    @Override
+    public ParametersBuilder withNames(Collection<String> names) {
+      this.namePredicate = names::contains;
       return this;
     }
 

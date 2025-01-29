@@ -118,9 +118,9 @@ class TreeUtilsTest {
         """, List.of("fmt")),
       arguments("""
         import f "fmt"
-        """, List.of("fmt")),
+        """, emptyList()), // These imports are not supported yet
       arguments("""
         import . "os"
-        """, List.of("os")));
+        """, emptyList())); // These imports are not supported yet
   }
 }

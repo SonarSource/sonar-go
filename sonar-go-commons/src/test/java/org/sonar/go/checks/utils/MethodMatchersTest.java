@@ -17,6 +17,7 @@
 package org.sonar.go.checks.utils;
 
 import java.util.Optional;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.IdentifierTree;
@@ -55,6 +56,21 @@ class MethodMatchersTest {
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldMatchWithMultipleMethodNames() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames(Set.of("foo", "bar", "baz"))
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("bar");
   }
 
   @Test
