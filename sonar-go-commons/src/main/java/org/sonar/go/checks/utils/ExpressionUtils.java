@@ -132,4 +132,7 @@ public class ExpressionUtils {
     }
   }
 
+  public static boolean isIdentifier(Tree tree, String name) {
+    return tree instanceof IdentifierTree identifierTree && name.equals(identifierTree.name());
+  }
 }

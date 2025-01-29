@@ -85,7 +85,7 @@ public final class NativeKinds {
     return tree -> tree.nativeKind().toString().startsWith(nativeMainKind + "(");
   }
 
-  private static Predicate<NativeTree> isFrom(String nativeSubKind) {
+  public static Predicate<NativeTree> isFrom(String nativeSubKind) {
     return tree -> tree.nativeKind().toString().endsWith("(" + nativeSubKind + ")");
   }
 
