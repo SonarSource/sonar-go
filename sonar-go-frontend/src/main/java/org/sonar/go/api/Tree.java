@@ -34,5 +34,4 @@ public interface Tree extends HasTextRange {
     return children().stream()
       .flatMap(tree -> Stream.concat(Stream.of(tree), tree.descendants()));
   }
-
 }

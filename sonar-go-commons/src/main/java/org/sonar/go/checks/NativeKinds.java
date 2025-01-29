@@ -19,6 +19,7 @@ package org.sonar.go.checks;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
+import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -39,6 +40,7 @@ public final class NativeKinds {
   public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
   private static final String IMPORT_SUFFIX = "](ImportSpec)";
+  public static final String METHOD_RECEIVER_SUFFIX = "]*Ident)";
 
   private NativeKinds() {
   }
@@ -75,10 +77,8 @@ public final class NativeKinds {
       && stringNativeKind.toString().contains("CallExpr");
   }
 
-  public static boolean isImport(Tree tree) {
-    return tree instanceof NativeTree nativeTree
-      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.toString().endsWith(IMPORT_SUFFIX);
+  public static boolean isStringNativeKind(NativeKind nativeKind, Predicate<String> predicate) {
+    return nativeKind instanceof StringNativeKind stringNativeKind && predicate.test(stringNativeKind.toString());
   }
 
   private static Predicate<NativeTree> isMainKind(String nativeMainKind) {
@@ -87,5 +87,20 @@ public final class NativeKinds {
 
   private static Predicate<NativeTree> isFrom(String nativeSubKind) {
     return tree -> tree.nativeKind().toString().endsWith("(" + nativeSubKind + ")");
+  }
+
+  /**
+   * For following Go code:
+   * <pre>
+   *   {@code
+   *   func (ctrl *MyController) users() {}
+   *   }
+   * </pre>
+   * the {@code ctrl} is method receiver
+   */
+  public static boolean isMethodReceiverTree(Tree tree) {
+    return tree instanceof NativeTree nativeTree
+      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
+      && stringNativeKind.toString().endsWith(METHOD_RECEIVER_SUFFIX);
   }
 }

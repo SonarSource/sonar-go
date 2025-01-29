@@ -144,7 +144,7 @@ public class JsonTestHelper {
 
   public static List<String> methodNames(Class<?> cls) {
     List<String> ignoredMethods = Arrays.asList(
-      "children", "descendants", "metaData", "textRange", "wait", "equals", "toString",
+      "children", "descendants", "descendantsDepthFirst", "metaData", "textRange", "wait", "equals", "toString",
       "hashCode", "getClass", "notify", "notifyAll");
     return new ArrayList<>(Stream.of(cls.getMethods())
       .map(Method::getName)

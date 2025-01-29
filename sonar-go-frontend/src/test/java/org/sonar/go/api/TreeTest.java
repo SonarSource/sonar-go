@@ -37,7 +37,7 @@ class TreeTest {
   };
 
   @Test
-  void test() {
+  void shouldVerifyDescendants() {
     Tree x = identifier("x");
     Tree y = identifier("y");
     Tree z = identifier("z");

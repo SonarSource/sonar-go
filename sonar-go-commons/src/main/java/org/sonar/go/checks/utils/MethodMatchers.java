@@ -16,7 +16,6 @@
  */
 package org.sonar.go.checks.utils;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -24,10 +23,9 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ImportDeclarationTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.StringLiteralTree;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.checks.NativeKinds;
 
@@ -50,19 +48,9 @@ public class MethodMatchers {
     return new MethodMatchersBuilder();
   }
 
-  public void addImports(ImportDeclarationTree importDeclaration) {
-    importDeclaration.children().stream()
-      .filter(NativeKinds::isImport)
-      .map(Tree::children)
-      .flatMap(Collection::stream)
-      .filter(StringLiteralTree.class::isInstance)
-      .map(StringLiteralTree.class::cast)
-      .map(StringLiteralTree::content)
-      .forEach(imports::add);
-  }
-
-  public void clearImports() {
+  public void addImports(TopLevelTree topLevelTree) {
     imports.clear();
+    imports.addAll(TreeUtils.getImportsAsStrings(topLevelTree));
   }
 
   public Optional<IdentifierTree> matches(Tree tree) {

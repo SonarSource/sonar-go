@@ -20,10 +20,13 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.go.testing.TestGoConverter;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -156,5 +159,30 @@ class NativeKindsTest {
     var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
     var result = NativeKinds.isFunctionCall(tree);
     assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldReturnMethodReceiver() {
+    var tree = (TopLevelTree) TestGoConverter.parse("""
+      package main
+      func (ctrl *MyController) users() {}
+      """);
+    var methodReceiver = tree.descendants()
+      .filter(NativeKinds::isMethodReceiverTree)
+      .findFirst()
+      .get();
+    assertThat(((IdentifierTree) methodReceiver.children().get(0)).name()).isEqualTo("ctrl");
+  }
+
+  @Test
+  void shouldNotFindMethodReceiver() {
+    var tree = (TopLevelTree) TestGoConverter.parse("""
+      package main
+      func users() {}
+      """);
+    var methodReceiver = tree.descendants()
+      .filter(NativeKinds::isMethodReceiverTree)
+      .findFirst();
+    assertThat(methodReceiver).isEmpty();
   }
 }

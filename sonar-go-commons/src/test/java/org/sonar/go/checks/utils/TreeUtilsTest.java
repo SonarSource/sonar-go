@@ -93,7 +93,7 @@ class TreeUtilsTest {
 
     var imports = TreeUtils.getImportsAsStrings(tree);
 
-    assertThat(imports).containsExactlyElementsOf(expected);
+    assertThat(imports).containsExactlyInAnyOrderElementsOf(expected);
   }
 
   static Stream<Arguments> shouldGetImports() {
@@ -103,24 +103,24 @@ class TreeUtilsTest {
           "fmt"
           "os"
         )
-        """, List.of("\"fmt\"", "\"os\"")),
+        """, List.of("fmt", "os")),
       arguments("""
         import (
           "fmt"
         )
-        """, List.of("\"fmt\"")),
+        """, List.of("fmt")),
       arguments("""
         import (
         )
         """, emptyList()),
       arguments("""
         import "fmt"
-        """, List.of("\"fmt\"")),
+        """, List.of("fmt")),
       arguments("""
         import f "fmt"
-        """, List.of("\"fmt\"")),
+        """, List.of("fmt")),
       arguments("""
         import . "os"
-        """, List.of("\"os\"")));
+        """, List.of("os")));
   }
 }

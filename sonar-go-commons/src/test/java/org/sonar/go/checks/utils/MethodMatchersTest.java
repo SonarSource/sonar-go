@@ -20,7 +20,6 @@ import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ImportDeclarationTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
@@ -55,26 +54,6 @@ class MethodMatchersTest {
     Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo()", "something/sonar", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
-    assertThat(matches).isEmpty();
-  }
-
-  @Test
-  void shouldNotMatchWhenImportsAreCleared() {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withName("foo")
-      .withAnyParameters()
-      .build();
-
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo()", "com/sonar", matcher);
-
-    Optional<IdentifierTree> matches = matcher.matches(methodCall);
-    assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
-
-    matcher.clearImports();
-
-    matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
   }
 
@@ -218,7 +197,7 @@ class MethodMatchersTest {
         %s
       }
       """.formatted(importedType, code));
-    matcher.addImports(((ImportDeclarationTree) topLevelTree.children().get(1)));
+    matcher.addImports(topLevelTree);
     var mainFunc = topLevelTree.declarations().get(2);
     BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
     return mainBlock.statementOrExpressions().get(0).children().get(0);
