@@ -125,4 +125,36 @@ class NativeKindsTest {
     var result = NativeKinds.isStringNativeKind(tree, s -> s.endsWith("A"));
     assertThat(result).isFalse();
   }
+
+  @Test
+  void shouldIdentifyFunctionComingFromStatements() {
+    var kind = new StringNativeKind("X(CallExpr)");
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isFunctionCall(tree);
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldIdentifyFunctionComingFromExpression() {
+    var kind = new StringNativeKind("[](CallExpr)");
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isFunctionCall(tree);
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldNotBeAFunctionWithUnrelatedNativeKind() {
+    var kind = mock(NativeKind.class);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isFunctionCall(tree);
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldNotBeAFunctionWithUnrelatedKind() {
+    var kind = new StringNativeKind("[](Array)");
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isFunctionCall(tree);
+    assertThat(result).isFalse();
+  }
 }
