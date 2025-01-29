@@ -19,7 +19,6 @@ package org.sonar.go.checks;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
-import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -39,7 +38,6 @@ public final class NativeKinds {
   public static final String ARGUMENTS = "Args([]Expr)";
   public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
-  private static final String IMPORT_SUFFIX = "](ImportSpec)";
   public static final String METHOD_RECEIVER_SUFFIX = "]*Ident)";
 
   private NativeKinds() {
@@ -75,10 +73,6 @@ public final class NativeKinds {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().contains("CallExpr");
-  }
-
-  public static boolean isStringNativeKind(NativeKind nativeKind, Predicate<String> predicate) {
-    return nativeKind instanceof StringNativeKind stringNativeKind && predicate.test(stringNativeKind.toString());
   }
 
   private static Predicate<NativeTree> isMainKind(String nativeMainKind) {
