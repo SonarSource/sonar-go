@@ -21,7 +21,7 @@ def qa_task(env, run_its_script):
     return {
         "only_if": is_branch_qa_eligible(),
         "depends_on": "build",
-        "eks_container": base_image_container_builder(cpu=4, memory="10G"),
+        "eks_container": base_image_container_builder(cpu=4, memory="12G"),
         "env": env,
         "gradle_cache": gradle_cache(),
         "gradle_wrapper_cache": gradle_wrapper_cache(),
@@ -41,7 +41,8 @@ def qa_plugin_env():
         "matrix": [
             {"SQ_VERSION": QA_QUBE_LATEST_RELEASE},
             {"SQ_VERSION": QA_QUBE_DEV},
-        ]
+        ],
+        "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
     }
 
 
@@ -64,7 +65,8 @@ def qa_ruling_env():
     return {
         "GRADLE_TASK": QA_RULING_GRADLE_TASK,
         "KEEP_ORCHESTRATOR_RUNNING": "true",
-        "SQ_VERSION": QA_QUBE_LATEST_RELEASE
+        "SQ_VERSION": QA_QUBE_LATEST_RELEASE,
+        "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
     }
 
 
