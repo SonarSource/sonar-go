@@ -1,29 +1,42 @@
 load("github.com/SonarSource/cirrus-modules@v3", "load_features")
+load("cirrus", "env", "fs", "yaml")
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/helper.star@analysis/master",
     "merge_dict"
 )
-load(".cirrus/modules/env.star", "env")
-load(
-    ".cirrus/modules/build.star",
-    "build_task",
-    "sca_scan_task"
-)
-load(
-    ".cirrus/modules/qa.star",
-    "qa_ruling_task",
-    "qa_plugin_task",
-)
-load(".cirrus/modules/promote.star", "promote_task")
+load(".enterprise-cirrus.star", "private_pipeline_builder")
 
+
+def private_conf(ctx):
+    features = load_features(ctx, only_if=dict())
+    doc = private_pipeline_builder()
+    conf = dict()
+    merge_dict(conf, features)
+    merge_dict(conf, doc)
+    return conf
+
+# workaround for BUILD-4413 (build number on public CI)
+def build_4413_workaround():
+    return {
+        'env': {
+            'CI_BUILD_NUMBER': env.get("CIRRUS_PR", "1")
+        },
+    }
+
+def public_conf(ctx):
+    conf = fs.read(".cirrus-public.yml")
+    if env.get("CIRRUS_USER_PERMISSION") in ["write", "admin"]:
+        features = load_features(ctx, features=["build_number", "aws"])
+    else:
+        features = build_4413_workaround()
+    features = yaml.dumps(features)
+    return features + conf
+
+def is_enterprise():
+    return env.get("CIRRUS_REPO_FULL_NAME") == 'SonarSource/sonar-go-enterprise'
 
 def main(ctx):
-    conf = dict()
-    merge_dict(conf, load_features(ctx))
-    merge_dict(conf, env())
-    merge_dict(conf, build_task())
-    merge_dict(conf, qa_ruling_task())
-    merge_dict(conf, qa_plugin_task())
-    merge_dict(conf, sca_scan_task())
-    merge_dict(conf, promote_task())
-    return conf
+    if is_enterprise():
+        return private_conf(ctx)
+    else:
+        return public_conf(ctx)
