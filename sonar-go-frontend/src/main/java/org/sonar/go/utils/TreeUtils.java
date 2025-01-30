@@ -61,13 +61,7 @@ public class TreeUtils {
       .flatMap(it -> it.children().stream())
       .filter(StringLiteralTree.class::isInstance)
       .map(StringLiteralTree.class::cast)
-      .map(StringLiteralTree::value)
-      .map(TreeUtils::trimQuotes)
+      .map(StringLiteralTree::content)
       .collect(Collectors.toSet());
-  }
-
-  private static String trimQuotes(String text) {
-    // the imports are always surrounded by double-quotes
-    return text.substring(1, text.length() - 1);
   }
 }
