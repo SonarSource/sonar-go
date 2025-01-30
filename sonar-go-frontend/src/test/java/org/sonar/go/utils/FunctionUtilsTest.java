@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks.utils;
+package org.sonar.go.utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +31,6 @@ import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
-import org.sonar.go.utils.FunctionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.FunctionUtils.hasFunctionCallFullNameIgnoreCase;

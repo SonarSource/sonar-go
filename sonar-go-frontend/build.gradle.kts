@@ -26,8 +26,11 @@ dependencies {
     implementation(libs.minimal.json)
 
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
+    testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
+    testImplementation(testFixtures(project(":sonar-go-commons")))
 
     testRuntimeOnly(libs.junit.jupiter.engine)
 }

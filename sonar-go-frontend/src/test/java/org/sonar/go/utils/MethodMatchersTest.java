@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks.utils;
+package org.sonar.go.utils;
 
 import java.util.Optional;
 import java.util.Set;
@@ -24,7 +24,6 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
-import org.sonar.go.utils.MethodMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
