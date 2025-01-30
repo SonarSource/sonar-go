@@ -53,6 +53,11 @@ public class MethodMatchers {
     imports.addAll(TreeUtils.getImportsAsStrings(topLevelTree));
   }
 
+  public void addImports(Set<String> importsList) {
+    imports.clear();
+    imports.addAll(importsList);
+  }
+
   public Optional<IdentifierTree> matches(Tree tree) {
     if (imports.contains(type) && NativeKinds.isFunctionCall(tree)) {
       return tree.children().stream()

@@ -31,9 +31,11 @@ import org.sonar.go.testing.TestGoConverter;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.sonar.go.utils.NativeKinds.isCompositeLit;
 import static org.sonar.go.utils.NativeKinds.isFromCallExpr;
 import static org.sonar.go.utils.NativeKinds.isFromSelectorExpr;
 import static org.sonar.go.utils.NativeKinds.isFun;
+import static org.sonar.go.utils.NativeKinds.isKeyValueExpr;
 import static org.sonar.go.utils.NativeKinds.isX;
 
 class NativeKindsTest {
@@ -184,5 +186,39 @@ class NativeKindsTest {
       .filter(NativeKinds::isMethodReceiverTree)
       .findFirst();
     assertThat(methodReceiver).isEmpty();
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    (CompositeLit),true
+    (Literal),false
+    """)
+  void shouldFindCompositeLit(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind(kind), emptyList());
+    assertThat(isCompositeLit(tree)).isEqualTo(shouldFind);
+  }
+
+  @Test
+  void shouldNotFindCompositeLitForUnrelatedNativeNode() {
+    var kind = mock(NativeKind.class);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    assertThat(isCompositeLit(tree)).isFalse();
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    (KeyValueExpr),true
+    (Expr),false
+    """)
+  void shouldFindKeyValueExpr(String kind, boolean shouldFind) {
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind(kind), emptyList());
+    assertThat(isKeyValueExpr(tree)).isEqualTo(shouldFind);
+  }
+
+  @Test
+  void shouldNotFindKeyValueExprForUnrelatedNativeNode() {
+    var kind = mock(NativeKind.class);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    assertThat(isKeyValueExpr(tree)).isFalse();
   }
 }

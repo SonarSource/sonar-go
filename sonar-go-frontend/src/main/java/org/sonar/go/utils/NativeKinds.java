@@ -74,6 +74,18 @@ public final class NativeKinds {
       && stringNativeKind.toString().contains("CallExpr");
   }
 
+  public static boolean isCompositeLit(Tree tree) {
+    return tree instanceof NativeTree nativeTree
+      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
+      && stringNativeKind.toString().contains("CompositeLit");
+  }
+
+  public static boolean isKeyValueExpr(Tree tree) {
+    return tree instanceof NativeTree nativeTree
+      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
+      && stringNativeKind.toString().contains("KeyValueExpr");
+  }
+
   private static Predicate<NativeTree> isMainKind(String nativeMainKind) {
     return tree -> tree.nativeKind().toString().startsWith(nativeMainKind + "(");
   }

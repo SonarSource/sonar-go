@@ -203,6 +203,33 @@ class MethodMatchersTest {
     assertThat(matches).isEmpty();
   }
 
+  @Test
+  void canProvideImportsDirectly() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withName("foo")
+      .withAnyParameters()
+      .build();
+
+    matcher.addImports(Set.of("com/sonar"));
+
+    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+      package main
+
+      func main() {
+        sonar.foo()
+      }
+      """);
+
+    var mainFunc = topLevelTree.declarations().get(1);
+    BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
+    Tree methodCall = mainBlock.statementOrExpressions().get(0).children().get(0);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("foo");
+  }
+
   public static Tree parseAndFeedImportsToMatcher(String code, String importedType, MethodMatchers matcher) {
     TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
