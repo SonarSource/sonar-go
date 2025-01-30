@@ -49,13 +49,12 @@ public class MethodMatchers {
   }
 
   public void addImports(TopLevelTree topLevelTree) {
-    imports.clear();
-    imports.addAll(TreeUtils.getImportsAsStrings(topLevelTree));
+    addImports(TreeUtils.getImportsAsStrings(topLevelTree));
   }
 
-  public void addImports(Set<String> importsList) {
+  public void addImports(Set<String> importStrings) {
     imports.clear();
-    imports.addAll(importsList);
+    imports.addAll(importStrings);
   }
 
   public Optional<IdentifierTree> matches(Tree tree) {
