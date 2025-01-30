@@ -29,6 +29,7 @@ import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.MemberSelectTree;
+import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ParenthesizedExpressionTree;
 import org.sonar.go.api.PlaceHolderTree;
 import org.sonar.go.api.TopLevelTree;
@@ -37,6 +38,9 @@ import org.sonar.go.api.UnaryExpressionTree;
 
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
+import static org.sonar.go.utils.NativeKinds.isFrom;
+import static org.sonar.go.utils.NativeKinds.isFunctionCall;
+import static org.sonar.go.utils.NativeKinds.isStringNativeKindOfType;
 
 public class ExpressionUtils {
   private static final String TRUE_LITERAL = "true";
@@ -133,5 +137,55 @@ public class ExpressionUtils {
 
   public static boolean isIdentifier(Tree tree, String name) {
     return tree instanceof IdentifierTree identifierTree && name.equals(identifierTree.name());
+  }
+
+  /**
+   * Retrieves the type of an expression that creates a struct or a pointer. There are several possible cases:
+   * <ul>
+   *   <li>{@code CompositeLit{}}</li>
+   *   <li>{@code &CompositeLit{}}</li>
+   *   <li>{@code new(Type)}</li>
+   * </ul>
+   *
+   * @param initializer a RHS of an assignment expression
+   * @return a base type of the expression (`&` is removed if present)
+   */
+  public static Optional<MemberSelectTree> getTypeOfStructOrPointerInitializer(Tree initializer) {
+    if (!(initializer instanceof NativeTree nativeInitializer)) {
+      return Optional.empty();
+    }
+
+    var isPointerType = isFrom("UnaryExpr").test(nativeInitializer) &&
+      nativeInitializer.children().size() == 2 &&
+      isStringNativeKindOfType(nativeInitializer.children().get(0), "Op");
+    var isNewFunction = isFunctionCall(nativeInitializer) &&
+      !nativeInitializer.children().isEmpty() &&
+      getMemberSelectOrIdentifierName(nativeInitializer.children().get(0)).map("new"::equals).orElse(false);
+    if (isFrom("CompositeLit").test(nativeInitializer)) {
+      return getTypeOfCompositeLiteral(nativeInitializer);
+    } else if (isPointerType && nativeInitializer.children().get(1) instanceof NativeTree type) {
+      return getTypeOfCompositeLiteral(type);
+    } else if (isNewFunction) {
+      return getTypeOfNewExpression(nativeInitializer);
+    } else {
+      return Optional.empty();
+    }
+  }
+
+  private static Optional<MemberSelectTree> getTypeOfCompositeLiteral(NativeTree compositeLiteral) {
+    return Optional.of(compositeLiteral)
+      .filter(it -> !it.children().isEmpty())
+      .map(it -> it.children().get(0))
+      .filter(MemberSelectTree.class::isInstance)
+      .map(MemberSelectTree.class::cast);
+  }
+
+  private static Optional<MemberSelectTree> getTypeOfNewExpression(NativeTree newExpression) {
+    return Optional.of(newExpression)
+      // get type that is a first argument of `new` function
+      .map(it -> (NativeTree) it.children().get(2))
+      .map(it -> it.children().get(0))
+      .filter(MemberSelectTree.class::isInstance)
+      .map(MemberSelectTree.class::cast);
   }
 }

@@ -17,14 +17,20 @@
 package org.sonar.go.utils;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
+import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
@@ -104,6 +110,42 @@ class ExpressionUtilsTest {
     assertThat(skipParentheses(parenthesizedExpression1)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(parenthesizedExpression2)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(TRUE_LITERAL)).isEqualTo(TRUE_LITERAL);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    http.Cookie{},true
+    &http.Cookie{},true
+    new(http.Cookie),true
+    NewCookie(),false
+    Cookie{},false
+    &Cookie{},false
+    new(Cookie),false
+    """)
+  void shouldExtractTypeOfInitializer(String code, boolean shouldBePresent) {
+    code = """
+      package test
+
+      func main() {
+        _ := %s
+      }
+      """.formatted(code);
+
+    var type = TestGoConverter.parse(code)
+      .descendants()
+      .filter(VariableDeclarationTree.class::isInstance)
+      .map(VariableDeclarationTree.class::cast)
+      .map(VariableDeclarationTree::initializer)
+      .findFirst()
+      .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
+
+    if (shouldBePresent) {
+      assertThat(type).get()
+        .returns("http", from(it -> ((IdentifierTree) it.expression()).name()))
+        .returns("Cookie", from(it -> it.identifier().name()));
+    } else {
+      assertThat(type).isEmpty();
+    }
   }
 
 }
