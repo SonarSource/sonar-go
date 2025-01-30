@@ -26,7 +26,7 @@ import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 
 import static org.sonar.go.api.BinaryExpressionTree.*;
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1940")
 public class BooleanInversionCheck implements GoCheck {

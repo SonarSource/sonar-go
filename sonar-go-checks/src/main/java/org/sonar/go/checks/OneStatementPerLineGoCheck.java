@@ -28,7 +28,7 @@ import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
 
-import static org.sonar.go.checks.NativeKinds.SEMICOLON;
+import static org.sonar.go.utils.NativeKinds.SEMICOLON;
 
 @Rule(key = "S122")
 public class OneStatementPerLineGoCheck implements GoCheck {

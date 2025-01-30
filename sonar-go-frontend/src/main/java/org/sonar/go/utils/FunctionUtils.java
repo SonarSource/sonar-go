@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks.utils;
+package org.sonar.go.utils;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -28,7 +28,6 @@ import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
 
-// Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97
 public class FunctionUtils {
 
   private FunctionUtils() {

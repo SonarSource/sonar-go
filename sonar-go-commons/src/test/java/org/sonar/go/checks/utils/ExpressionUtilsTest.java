@@ -28,13 +28,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
-import static org.sonar.go.checks.utils.ExpressionUtils.isBinaryOperation;
-import static org.sonar.go.checks.utils.ExpressionUtils.isBooleanLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.isFalseValueLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
-import static org.sonar.go.checks.utils.ExpressionUtils.isNegation;
-import static org.sonar.go.checks.utils.ExpressionUtils.isTrueValueLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
+import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
+import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
+import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
+import static org.sonar.go.utils.ExpressionUtils.isNegation;
+import static org.sonar.go.utils.ExpressionUtils.isTrueValueLiteral;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 class ExpressionUtilsTest {
   private static final Tree TRUE_LITERAL = new LiteralTreeImpl(null, "true");

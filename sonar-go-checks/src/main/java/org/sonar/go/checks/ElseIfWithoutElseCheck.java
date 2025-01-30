@@ -32,8 +32,8 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.checks.utils.TreeUtils;
 import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.go.utils.TreeUtils;
 
 @Rule(key = "S126")
 public class ElseIfWithoutElseCheck implements GoCheck {

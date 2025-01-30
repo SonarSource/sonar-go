@@ -27,14 +27,15 @@ import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.NativeKinds;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.sonar.go.checks.NativeKinds.isFromCallExpr;
-import static org.sonar.go.checks.NativeKinds.isFromSelectorExpr;
-import static org.sonar.go.checks.NativeKinds.isFun;
-import static org.sonar.go.checks.NativeKinds.isX;
+import static org.sonar.go.utils.NativeKinds.isFromCallExpr;
+import static org.sonar.go.utils.NativeKinds.isFromSelectorExpr;
+import static org.sonar.go.utils.NativeKinds.isFun;
+import static org.sonar.go.utils.NativeKinds.isX;
 
 class NativeKindsTest {
   @ParameterizedTest

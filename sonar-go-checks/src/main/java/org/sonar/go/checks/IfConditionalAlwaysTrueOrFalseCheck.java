@@ -25,16 +25,16 @@ import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.checks.utils.ExpressionUtils;
+import org.sonar.go.utils.ExpressionUtils;
 
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonar.go.checks.utils.ExpressionUtils.isBinaryOperation;
-import static org.sonar.go.checks.utils.ExpressionUtils.isBooleanLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.isFalseValueLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.isNegation;
-import static org.sonar.go.checks.utils.ExpressionUtils.isTrueValueLiteral;
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
+import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
+import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
+import static org.sonar.go.utils.ExpressionUtils.isNegation;
+import static org.sonar.go.utils.ExpressionUtils.isTrueValueLiteral;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1145")
 public class IfConditionalAlwaysTrueOrFalseCheck implements GoCheck {

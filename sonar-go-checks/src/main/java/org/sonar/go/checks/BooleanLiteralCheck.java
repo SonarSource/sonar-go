@@ -25,7 +25,7 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.checks.utils.ExpressionUtils;
+import org.sonar.go.utils.ExpressionUtils;
 
 @Rule(key = "S1125")
 public class BooleanLiteralCheck implements GoCheck {

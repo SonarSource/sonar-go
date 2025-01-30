@@ -29,8 +29,8 @@ import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 
-import static org.sonar.go.checks.NativeKinds.LABEL;
-import static org.sonar.go.checks.NativeKinds.SEMICOLON;
+import static org.sonar.go.utils.NativeKinds.LABEL;
+import static org.sonar.go.utils.NativeKinds.SEMICOLON;
 
 @Rule(key = "S1763")
 public class CodeAfterJumpGoCheck implements GoCheck {

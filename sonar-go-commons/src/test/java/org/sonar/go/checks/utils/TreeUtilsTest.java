@@ -31,6 +31,7 @@ import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.TreeUtils;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;

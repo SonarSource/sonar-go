@@ -24,6 +24,7 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.MethodMatchers;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

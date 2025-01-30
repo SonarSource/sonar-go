@@ -31,12 +31,12 @@ import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
-import org.sonar.go.checks.utils.ExpressionUtils;
 import org.sonar.go.impl.JumpTreeImpl;
+import org.sonar.go.utils.ExpressionUtils;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
 
-import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
+import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
 
 public class CognitiveComplexity {
 

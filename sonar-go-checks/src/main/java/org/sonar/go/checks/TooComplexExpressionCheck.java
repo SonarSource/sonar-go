@@ -27,8 +27,8 @@ import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 
-import static org.sonar.go.checks.utils.ExpressionUtils.isLogicalBinaryExpression;
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1067")
 public class TooComplexExpressionCheck implements GoCheck {

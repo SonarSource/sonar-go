@@ -31,10 +31,11 @@ import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.FunctionUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.checks.utils.FunctionUtils.hasFunctionCallFullNameIgnoreCase;
-import static org.sonar.go.checks.utils.FunctionUtils.hasFunctionCallNameIgnoreCase;
+import static org.sonar.go.utils.FunctionUtils.hasFunctionCallFullNameIgnoreCase;
+import static org.sonar.go.utils.FunctionUtils.hasFunctionCallNameIgnoreCase;
 
 class FunctionUtilsTest {
   private class TypeNativeKind implements NativeKind {

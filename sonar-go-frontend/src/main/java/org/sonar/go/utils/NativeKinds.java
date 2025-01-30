@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks;
+package org.sonar.go.utils;
 
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
@@ -25,7 +25,6 @@ import org.sonar.go.persistence.conversion.StringNativeKind;
 
 /**
  * Util class to work with native kinds.
- * Note: Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97.
  * <p>
  * Now it includes a collection of methods to access and check native kinds of NativeTree objects.
  * Methods {@code is<X>} check if the native kind starts with the given string.

@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks.utils;
+package org.sonar.go.utils;
 
 import java.util.Arrays;
 import java.util.Deque;
@@ -38,7 +38,6 @@ import org.sonar.go.api.UnaryExpressionTree;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
-// Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97
 public class ExpressionUtils {
   private static final String TRUE_LITERAL = "true";
   private static final String FALSE_LITERAL = "false";

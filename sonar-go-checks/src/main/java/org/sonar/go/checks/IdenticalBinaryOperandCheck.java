@@ -22,8 +22,8 @@ import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
 
-import static org.sonar.go.checks.utils.ExpressionUtils.containsPlaceHolder;
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.containsPlaceHolder;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 
 @Rule(key = "S1764")

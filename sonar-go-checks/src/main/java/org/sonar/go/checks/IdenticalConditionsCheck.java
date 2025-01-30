@@ -28,10 +28,10 @@ import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
-import org.sonar.go.checks.utils.ExpressionUtils;
+import org.sonar.go.utils.ExpressionUtils;
 import org.sonar.go.utils.SyntacticEquivalence;
 
-import static org.sonar.go.checks.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 @Rule(key = "S1862")
 public class IdenticalConditionsCheck implements GoCheck {

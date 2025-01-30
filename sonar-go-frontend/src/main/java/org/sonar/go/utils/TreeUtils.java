@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.checks.utils;
+package org.sonar.go.utils;
 
 import java.util.List;
 import java.util.Set;
@@ -28,7 +28,6 @@ import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 
-// Probably the sonar-go-frontend is a better place for this class after implementing SONARGO-97
 public class TreeUtils {
   private TreeUtils() {
     // empty, util class

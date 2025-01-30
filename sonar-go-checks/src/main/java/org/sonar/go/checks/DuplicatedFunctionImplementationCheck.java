@@ -33,7 +33,7 @@ import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
-import org.sonar.go.checks.utils.TreeUtils;
+import org.sonar.go.utils.TreeUtils;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
 
