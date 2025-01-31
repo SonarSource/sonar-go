@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.VariableDeclarationTree;
@@ -110,6 +111,33 @@ class ExpressionUtilsTest {
     assertThat(skipParentheses(parenthesizedExpression1)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(parenthesizedExpression2)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(TRUE_LITERAL)).isEqualTo(TRUE_LITERAL);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    x int, int
+    c Ctx, Ctx
+    c *Ctx, Ctx
+    c gin.Context, gin.Context
+    c *gin.Context, gin.Context
+    """)
+  void shouldExtractTypeOfParameter(String parameter, String expectedType) {
+    var code = """
+      package test
+
+      func main(%s) {
+      }
+      """.formatted(parameter);
+    var parameterTree = TestGoConverter.parse(code)
+      .descendants()
+      .filter(ParameterTree.class::isInstance)
+      .map(ParameterTree.class::cast)
+      .findFirst()
+      .get();
+
+    var type = ExpressionUtils.getTypeOf(parameterTree);
+
+    assertThat(type).isEqualTo(expectedType);
   }
 
   @ParameterizedTest
