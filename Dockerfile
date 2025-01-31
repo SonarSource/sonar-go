@@ -1,4 +1,4 @@
-ARG GO_VERSION=1.23.4
+ARG GO_VERSION
 # Possible values: ci, dev_custom_cert, dev
 ARG BUILD_ENV=ci
 # Placeholder; actual value is present on CI
@@ -33,7 +33,7 @@ ONBUILD RUN cp ${CA_CERT}.cer ${CA_CERT}.crt && update-ca-certificates
 # This mode can be activated by providing build argument `BUILD_ENV=ci`.
 FROM ${CIRRUS_AWS_ACCOUNT}.dkr.ecr.eu-central-1.amazonaws.com/base:j17-latest AS ci_image
 
-ARG GO_VERSION=1.23.4
+ARG GO_VERSION
 
 USER root
 
@@ -43,7 +43,7 @@ RUN wget --max-redirect=0 https://dl.google.com/go/go${GO_VERSION}.linux-amd64.t
 # Final stage using the base image from one of the previous stages.
 FROM ${BUILD_ENV}_image
 
-ARG GO_VERSION=1.23.4
+ARG GO_VERSION
 ARG MUSL_VERSION=1.2.4
 ARG GOLANG_CI_LINT_VERSION=1.62.2
 
