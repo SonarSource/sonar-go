@@ -69,12 +69,31 @@ class CompositeLiteralTest {
     // Two key values and one comma.
     assertThat(compositeLiteral.elements()).hasSize(3);
     assertThat(compositeLiteral.getKeyValuesElements()).hasSize(2);
+    assertThat(compositeLiteral.hasType("sonar", "Composite")).isFalse();
   }
 
   @Test
   void shouldNotParseOtherNativeTree() {
     var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("1 | 2"));
     assertThat(compositeLiteralOptional).isEmpty();
+  }
+
+  @Test
+  void shouldBePossibleToTestType() {
+    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("sonar.Composite{ }"));
+    assertThat(compositeLiteralOptional).isPresent();
+    CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
+    assertThat(compositeLiteral.hasType("sonar", "Composite")).isTrue();
+    assertThat(compositeLiteral.hasType("notSonar", "Composite")).isFalse();
+    assertThat(compositeLiteral.hasType("sonar", "notComposite")).isFalse();
+  }
+
+  @Test
+  void cannotTestNestedMemberSelect() {
+    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("com.sonar.Composite{ }"));
+    assertThat(compositeLiteralOptional).isPresent();
+    CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
+    assertThat(compositeLiteral.hasType("sonar", "Composite")).isFalse();
   }
 
   public static Tree parse(String code) {

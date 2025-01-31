@@ -19,6 +19,8 @@ package org.sonar.go.utils;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 
@@ -44,5 +46,12 @@ public record CompositeLiteral(Tree type, List<Tree> elements) {
       .filter(NativeTree.class::isInstance)
       .map(NativeTree.class::cast)
       .flatMap(element -> KeyValue.of(element).stream());
+  }
+
+  public boolean hasType(String packageName, String typeName) {
+    return type instanceof MemberSelectTree memberSelectTree
+      && typeName.equals(memberSelectTree.identifier().name())
+      && memberSelectTree.expression() instanceof IdentifierTree identifierTree
+      && packageName.equals(identifierTree.name());
   }
 }
