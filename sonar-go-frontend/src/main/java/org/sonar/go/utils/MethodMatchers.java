@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import javax.annotation.Nullable;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
@@ -57,7 +58,7 @@ public class MethodMatchers {
     imports.addAll(importStrings);
   }
 
-  public Optional<IdentifierTree> matches(Tree tree) {
+  public Optional<IdentifierTree> matches(@Nullable Tree tree) {
     if (imports.contains(type) && NativeKinds.isFunctionCall(tree)) {
       return tree.children().stream()
         .filter(MemberSelectTree.class::isInstance)

@@ -246,4 +246,28 @@ class MethodMatchersTest {
     return mainBlock.statementOrExpressions().get(0).children().get(0);
   }
 
+  @Test
+  void shouldNotMatchWhenTreeIsNullWithImportsPresent() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withName("foo")
+      .withAnyParameters()
+      .build();
+
+    Optional<IdentifierTree> matches = matcher.matches(null);
+    matcher.addImports(Set.of("com/sonar"));
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldNotMatchWhenTreeIsNull() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withName("foo")
+      .withAnyParameters()
+      .build();
+
+    Optional<IdentifierTree> matches = matcher.matches(null);
+    assertThat(matches).isEmpty();
+  }
 }

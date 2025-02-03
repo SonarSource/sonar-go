@@ -124,10 +124,16 @@ class NativeKindsTest {
   }
 
   @Test
-  void shouldBeStringNativeKindWhenAnotherNativeKind() {
+  void shouldNotBeStringNativeKindWhenAnotherNativeKind() {
     var kind = mock(NativeKind.class);
     var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
     var result = NativeKinds.isStringNativeKind(tree, s -> s.endsWith("A"));
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldNotBeStringNativeKindWhenTreeIsNull() {
+    var result = NativeKinds.isStringNativeKind(null, s -> s.endsWith("A"));
     assertThat(result).isFalse();
   }
 
@@ -160,6 +166,12 @@ class NativeKindsTest {
     var kind = new StringNativeKind("[](Array)");
     var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
     var result = NativeKinds.isFunctionCall(tree);
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldNotBeAFunctionWhenTreeIsNull() {
+    var result = NativeKinds.isFunctionCall(null);
     assertThat(result).isFalse();
   }
 

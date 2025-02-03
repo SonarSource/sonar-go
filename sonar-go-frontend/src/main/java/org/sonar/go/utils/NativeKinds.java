@@ -68,7 +68,7 @@ public final class NativeKinds {
     return isStringNativeKind(tree, type::equals);
   }
 
-  public static boolean isFunctionCall(Tree tree) {
+  public static boolean isFunctionCall(@Nullable Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().contains("CallExpr");
