@@ -69,10 +69,10 @@
         "git-submodules"
       ],
       "matchDepNames": [
-        "its/sources/traefik",
-        "its/sources/minio",
-        "its/sources/prometheus",
-        "its/sources/kubernetes-client-go"
+        "private/its/sources/traefik",
+        "private/its/sources/minio",
+        "private/its/sources/prometheus",
+        "private/its/sources/kubernetes-client-go"
       ],
       "enabled": false
     }
