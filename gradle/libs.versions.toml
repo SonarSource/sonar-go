@@ -1,5 +1,7 @@
 [versions]
 analyzer-commons = "2.16.0.3141"
+# Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
+# https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "11.1.0.2693"
 sonarqube = "25.1.0.102122"
 orchestrator = "5.1.0.2254"
