@@ -291,11 +291,8 @@
             ]},
             {"@type": "Native", "metaData": "25:8::10","nativeKind":"Tok"},
             {"@type": "Native", "metaData": "25:11::16","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "Native", "metaData": "25:11::16","nativeKind":"[0](CallExpr)","children":[
-                {"@type": "Identifier", "metaData": "25:11::14","name":"foo"},
-                {"@type": "Native", "metaData": "25:14::15","nativeKind":"Lparen"},
-                {"@type": "Native", "metaData": "25:15::16","nativeKind":"Rparen"}
-              ]}
+              {"@type": "FunctionInvocation", "metaData": "25:11::16","memberSelect":
+                {"@type": "Identifier", "metaData": "25:11::14","name":"foo"},"arguments":[]}
             ]}
           ]},
           {"@type": "Native", "metaData": "26:1::20","nativeKind":"[16](DeclStmt)","children":[

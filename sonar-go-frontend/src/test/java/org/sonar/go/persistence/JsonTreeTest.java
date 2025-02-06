@@ -30,6 +30,7 @@ import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.Comment;
 import org.sonar.go.api.ExceptionHandlingTree;
 import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IfTree;
 import org.sonar.go.api.ImportDeclarationTree;
@@ -62,6 +63,7 @@ import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
+import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
@@ -770,4 +772,16 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(((IdentifierTree) nestedExpression.expression()).name()).isEqualTo("x");
   }
 
+  @Test
+  void function_invocation() throws IOException {
+    Token tokenBar = otherToken(1, 0, "bar");
+    Token tokenArg = stringToken(1, 4, "\"arg\"");
+    Tree argument = new StringLiteralTreeImpl(metaData(tokenArg), tokenArg.text());
+    TreeMetaData metaData = metaData(tokenBar, tokenArg);
+    FunctionInvocationTree initialInvocation = new FunctionInvocationTreeImpl(metaData, new IdentifierTreeImpl(metaData(tokenBar), tokenBar.text()), singletonList(argument));
+    FunctionInvocationTree invocation = checkJsonSerializationDeserialization(initialInvocation, "function_invocation.json");
+    assertThat(invocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("bar"));
+    assertThat(invocation.arguments()).hasSize(1);
+    assertThat(((StringLiteralTree) invocation.arguments().get(0)).value()).isEqualTo("\"arg\"");
+  }
 }
