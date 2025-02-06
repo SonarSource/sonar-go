@@ -17,15 +17,16 @@
 package org.sonar.go.utils;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import javax.annotation.Nullable;
-import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
+import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 
@@ -58,12 +59,13 @@ public class MethodMatchers {
   }
 
   public Optional<IdentifierTree> matches(@Nullable Tree tree) {
-    if (imports.contains(type) && tree instanceof FunctionInvocationTree functionInvocation) {
-      return Optional.of(functionInvocation.memberSelect())
+    if (imports.contains(type) && NativeKinds.isFunctionCall(tree)) {
+      return tree.children().stream()
         .filter(MemberSelectTree.class::isInstance)
         .map(MemberSelectTree.class::cast)
+        .findFirst()
         .flatMap(this::getMethodIdentifierIfMatches)
-        .filter(i -> parametersPredicate.test(extractArgTypes(functionInvocation)));
+        .filter(i -> parametersPredicate.test(extractArgTypes((NativeTree) tree)));
     }
     return Optional.empty();
   }
@@ -75,9 +77,16 @@ public class MethodMatchers {
       .filter(i -> namePredicate.test(i.name()));
   }
 
-  private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
-    // We don't have any type information at this point.
-    return functionInvocation.arguments().stream().map(arg -> "UNKNOWN").toList();
+  private static List<String> extractArgTypes(NativeTree nativeTree) {
+    // Check if we have four elements: the method name, opening parenthesis, arguments, and closing parenthesis.
+    if (nativeTree.children().size() == 4) {
+      var args = (NativeTree) nativeTree.children().get(2);
+      return args.children().stream()
+        // We don't have any type information at this point.
+        .map(arg -> "UNKNOWN")
+        .toList();
+    }
+    return Collections.emptyList();
   }
 
   public interface TypeBuilder {

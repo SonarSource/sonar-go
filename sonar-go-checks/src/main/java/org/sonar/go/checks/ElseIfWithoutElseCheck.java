@@ -21,10 +21,10 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
 import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IfTree;
 import org.sonar.go.api.JumpTree;
+import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ReturnTree;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
@@ -102,14 +102,21 @@ public class ElseIfWithoutElseCheck implements GoCheck {
 
   private static boolean isPanicCall(Tree tree) {
     return Optional.of(tree)
-      // Skip Expression Statement
-      .map(Tree::children)
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
       .filter(children -> children.size() == 1)
       .map(children -> children.get(0))
-      .filter(FunctionInvocationTree.class::isInstance)
-      .map(FunctionInvocationTree.class::cast)
-      .map(FunctionInvocationTree::memberSelect)
+      .map(ElseIfWithoutElseCheck::toNativeTreeChildren)
+      .filter(children -> !children.isEmpty())
+      .map(children -> children.get(0))
       .filter(IS_IDENTIFIER_PANIC)
       .isPresent();
+  }
+
+  private static List<Tree> toNativeTreeChildren(Tree optTree) {
+    return Optional.of(optTree)
+      .filter(NativeTree.class::isInstance)
+      .map(NativeTree.class::cast)
+      .map(NativeTree::children)
+      .orElse(List.of());
   }
 }

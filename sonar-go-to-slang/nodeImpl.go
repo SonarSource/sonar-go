@@ -849,28 +849,7 @@ func (t *SlangMapper) mapBinaryExprImpl(expr *ast.BinaryExpr, fieldName string) 
 }
 
 func (t *SlangMapper) mapCallExprImpl(expr *ast.CallExpr, fieldName string) *Node {
-	var children []*Node
-	slangField := make(map[string]interface{})
-
-	functionExpression := t.mapExpr(expr.Fun, "Fun")
-	children = t.appendNode(children, functionExpression)
-	slangField["memberSelect"] = functionExpression
-
-	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Lparen, token.LPAREN, lParentKind))
-
-	var matchCases []*Node
-	for i := 0; i < len(expr.Args); i++ {
-		argument := t.mapExpr(expr.Args[i], "["+strconv.Itoa(i)+"]")
-		// We do not call appendNode here because it would add the missing token (comma) between arguments.
-		matchCases = append(matchCases, argument)
-		children = t.appendNode(children, argument)
-	}
-	slangField["arguments"] = t.filterOutComments(matchCases)
-
-	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Ellipsis, token.ELLIPSIS, "Ellipsis"))
-	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Rparen, token.RPAREN, lParentKind))
-
-	return t.createNode(expr, children, fieldName+"(CallExpr)", "FunctionInvocation", slangField)
+	return nil
 }
 
 func (t *SlangMapper) mapChanTypeImpl(chanType *ast.ChanType, fieldName string) *Node {

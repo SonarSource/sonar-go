@@ -33,11 +33,29 @@ import org.sonar.go.persistence.conversion.StringNativeKind;
 public final class NativeKinds {
   public static final String LABEL = "LabeledStmt";
   public static final String SEMICOLON = "Semicolon";
+  public static final String FUNCTION_CALL = "X(CallExpr)";
+  public static final String ARGUMENTS = "Args([]Expr)";
   public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
   public static final String METHOD_RECEIVER_SUFFIX = "]*Ident)";
 
   private NativeKinds() {
+  }
+
+  public static boolean isFun(NativeTree tree) {
+    return isMainKind("Fun").test(tree);
+  }
+
+  public static boolean isX(NativeTree tree) {
+    return isMainKind("X").test(tree);
+  }
+
+  public static boolean isFromSelectorExpr(NativeTree tree) {
+    return isFrom("SelectorExpr").test(tree);
+  }
+
+  public static boolean isFromCallExpr(NativeTree tree) {
+    return isFrom("CallExpr").test(tree);
   }
 
   public static boolean isStringNativeKind(@Nullable Tree tree, Predicate<String> predicate) {
@@ -50,6 +68,12 @@ public final class NativeKinds {
     return isStringNativeKind(tree, type::equals);
   }
 
+  public static boolean isFunctionCall(@Nullable Tree tree) {
+    return tree instanceof NativeTree nativeTree
+      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
+      && stringNativeKind.toString().contains("CallExpr");
+  }
+
   public static boolean isCompositeLit(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
@@ -60,6 +84,10 @@ public final class NativeKinds {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().contains("KeyValueExpr");
+  }
+
+  private static Predicate<NativeTree> isMainKind(String nativeMainKind) {
+    return tree -> tree.nativeKind().toString().startsWith(nativeMainKind + "(");
   }
 
   public static Predicate<NativeTree> isFrom(String nativeSubKind) {

@@ -18,11 +18,11 @@ package org.sonar.go.utils;
 
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +31,7 @@ class MethodCallTest {
 
   @Test
   void shouldParseSimpleMethodCall() {
-    var methodCall = MethodCall.of(parse("foo()"));
+    var methodCall = MethodCall.of((NativeTree) parse("foo()"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
     assertThat(methodCall.args()).isEmpty();
@@ -39,8 +39,14 @@ class MethodCallTest {
   }
 
   @Test
+  void shouldReturnNullOnDifferentStatement() {
+    var methodCall = MethodCall.of((NativeTree) parse("1 | 2"));
+    assertThat(methodCall).isNull();
+  }
+
+  @Test
   void shouldParseMethodCallWithPackageName() {
-    var methodCall = MethodCall.of(parse("com.sonar.foo()"));
+    var methodCall = MethodCall.of((NativeTree) parse("com.sonar.foo()"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("com.sonar.foo");
     assertThat(methodCall.args()).isEmpty();
@@ -49,7 +55,7 @@ class MethodCallTest {
 
   @Test
   void shouldParseMethodCallWithArguments() {
-    var methodCall = MethodCall.of(parse("foo(bar.test, again)"));
+    var methodCall = MethodCall.of((NativeTree) parse("foo(bar.test, again)"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
     assertThat(methodCall.args()).hasSize(2);
@@ -68,7 +74,7 @@ class MethodCallTest {
 
   @Test
   void testIsMethod() {
-    var methodCall = MethodCall.of(parse("foo(bar.test, again)"));
+    var methodCall = MethodCall.of((NativeTree) parse("foo(bar.test, again)"));
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
     assertThat(methodCall.is("foo")).isTrue();
@@ -78,7 +84,7 @@ class MethodCallTest {
     assertThat(methodCall.is("foo", "bar.test", "again", "unkknown")).isFalse();
   }
 
-  private FunctionInvocationTree parse(String code) {
+  private Tree parse(String code) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
       func main() {
@@ -88,6 +94,6 @@ class MethodCallTest {
     var mainFunc = topLevelTree.declarations().get(1);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
     var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
-    return (FunctionInvocationTree) expressionStatement.children().get(0);
+    return expressionStatement.children().get(0);
   }
 }

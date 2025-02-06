@@ -576,81 +576,137 @@
             ]},"identifier":
             {"@type": "Identifier", "metaData": "32:4::10","name":"floats"}},
           {"@type": "Native", "metaData": "37:4:39:26","nativeKind":"[2](ExprStmt)","children":[
-            {"@type": "FunctionInvocation", "metaData": "37:4:39:26","memberSelect":
+            {"@type": "Native", "metaData": "37:4:39:26","nativeKind":"X(CallExpr)","children":[
               {"@type": "MemberSelect", "metaData": "37:4::14","identifier":
                 {"@type": "Identifier", "metaData": "37:8::14","name":"Printf"},"expression":
-                {"@type": "Identifier", "metaData": "37:4::7","name":"fmt"}},"arguments":[
-              {"@type": "StringLiteral", "metaData": "37:15::46","value":"\"Non-Generic Sums: %v and %v\\n\"","content":"Non-Generic Sums: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "38:8::21","memberSelect":
-                {"@type": "Identifier", "metaData": "38:8::15","name":"SumInts"},"arguments":[
-                {"@type": "Identifier", "metaData": "38:16::20","name":"ints"}
+                {"@type": "Identifier", "metaData": "37:4::7","name":"fmt"}},
+              {"@type": "Native", "metaData": "37:14::15","nativeKind":"Lparen"},
+              {"@type": "Native", "metaData": "37:15:39:25","nativeKind":"Args([]Expr)","children":[
+                {"@type": "StringLiteral", "metaData": "37:15::46","value":"\"Non-Generic Sums: %v and %v\\n\"","content":"Non-Generic Sums: %v and %v\\n"},
+                {"@type": "Native", "metaData": "37:46::47"},
+                {"@type": "Native", "metaData": "38:8::21","nativeKind":"[1](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "38:8::15","name":"SumInts"},
+                  {"@type": "Native", "metaData": "38:15::16","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "38:16::20","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "38:16::20","name":"ints"}
+                  ]},
+                  {"@type": "Native", "metaData": "38:20::21","nativeKind":"Rparen"}
+                ]},
+                {"@type": "Native", "metaData": "38:21::22"},
+                {"@type": "Native", "metaData": "39:8::25","nativeKind":"[2](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "39:8::17","name":"SumFloats"},
+                  {"@type": "Native", "metaData": "39:17::18","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "39:18::24","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "39:18::24","name":"floats"}
+                  ]},
+                  {"@type": "Native", "metaData": "39:24::25","nativeKind":"Rparen"}
+                ]}
               ]},
-              {"@type": "FunctionInvocation", "metaData": "39:8::25","memberSelect":
-                {"@type": "Identifier", "metaData": "39:8::17","name":"SumFloats"},"arguments":[
-                {"@type": "Identifier", "metaData": "39:18::24","name":"floats"}
-              ]}
+              {"@type": "Native", "metaData": "39:25::26","nativeKind":"Rparen"}
             ]}
           ]},
           {"@type": "Native", "metaData": "41:4:43:49","nativeKind":"[3](ExprStmt)","children":[
-            {"@type": "FunctionInvocation", "metaData": "41:4:43:49","memberSelect":
+            {"@type": "Native", "metaData": "41:4:43:49","nativeKind":"X(CallExpr)","children":[
               {"@type": "MemberSelect", "metaData": "41:4::14","identifier":
                 {"@type": "Identifier", "metaData": "41:8::14","name":"Printf"},"expression":
-                {"@type": "Identifier", "metaData": "41:4::7","name":"fmt"}},"arguments":[
-              {"@type": "StringLiteral", "metaData": "41:15::42","value":"\"Generic Sums: %v and %v\\n\"","content":"Generic Sums: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "42:8::44","memberSelect":
-                {"@type": "Native", "metaData": "42:8::38","nativeKind":"Fun(IndexListExpr)","children":[
-                  {"@type": "Identifier", "metaData": "42:8::23","name":"SumIntsOrFloats"},
-                  {"@type": "Native", "metaData": "42:23::24","nativeKind":"Lbrack"},
-                  {"@type": "Identifier", "metaData": "42:24::30","name":"string"},
-                  {"@type": "Native", "metaData": "42:30::31"},
-                  {"@type": "Identifier", "metaData": "42:32::37","name":"int64"},
-                  {"@type": "Native", "metaData": "42:37::38","nativeKind":"Rbrack"}
-                ]},"arguments":[
-                {"@type": "Identifier", "metaData": "42:39::43","name":"ints"}
+                {"@type": "Identifier", "metaData": "41:4::7","name":"fmt"}},
+              {"@type": "Native", "metaData": "41:14::15","nativeKind":"Lparen"},
+              {"@type": "Native", "metaData": "41:15:43:48","nativeKind":"Args([]Expr)","children":[
+                {"@type": "StringLiteral", "metaData": "41:15::42","value":"\"Generic Sums: %v and %v\\n\"","content":"Generic Sums: %v and %v\\n"},
+                {"@type": "Native", "metaData": "41:42::43"},
+                {"@type": "Native", "metaData": "42:8::44","nativeKind":"[1](CallExpr)","children":[
+                  {"@type": "Native", "metaData": "42:8::38","nativeKind":"Fun(IndexListExpr)","children":[
+                    {"@type": "Identifier", "metaData": "42:8::23","name":"SumIntsOrFloats"},
+                    {"@type": "Native", "metaData": "42:23::24","nativeKind":"Lbrack"},
+                    {"@type": "Identifier", "metaData": "42:24::30","name":"string"},
+                    {"@type": "Native", "metaData": "42:30::31"},
+                    {"@type": "Identifier", "metaData": "42:32::37","name":"int64"},
+                    {"@type": "Native", "metaData": "42:37::38","nativeKind":"Rbrack"}
+                  ]},
+                  {"@type": "Native", "metaData": "42:38::39","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "42:39::43","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "42:39::43","name":"ints"}
+                  ]},
+                  {"@type": "Native", "metaData": "42:43::44","nativeKind":"Rparen"}
+                ]},
+                {"@type": "Native", "metaData": "42:44::45"},
+                {"@type": "Native", "metaData": "43:8::48","nativeKind":"[2](CallExpr)","children":[
+                  {"@type": "Native", "metaData": "43:8::40","nativeKind":"Fun(IndexListExpr)","children":[
+                    {"@type": "Identifier", "metaData": "43:8::23","name":"SumIntsOrFloats"},
+                    {"@type": "Native", "metaData": "43:23::24","nativeKind":"Lbrack"},
+                    {"@type": "Identifier", "metaData": "43:24::30","name":"string"},
+                    {"@type": "Native", "metaData": "43:30::31"},
+                    {"@type": "Identifier", "metaData": "43:32::39","name":"float64"},
+                    {"@type": "Native", "metaData": "43:39::40","nativeKind":"Rbrack"}
+                  ]},
+                  {"@type": "Native", "metaData": "43:40::41","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "43:41::47","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "43:41::47","name":"floats"}
+                  ]},
+                  {"@type": "Native", "metaData": "43:47::48","nativeKind":"Rparen"}
+                ]}
               ]},
-              {"@type": "FunctionInvocation", "metaData": "43:8::48","memberSelect":
-                {"@type": "Native", "metaData": "43:8::40","nativeKind":"Fun(IndexListExpr)","children":[
-                  {"@type": "Identifier", "metaData": "43:8::23","name":"SumIntsOrFloats"},
-                  {"@type": "Native", "metaData": "43:23::24","nativeKind":"Lbrack"},
-                  {"@type": "Identifier", "metaData": "43:24::30","name":"string"},
-                  {"@type": "Native", "metaData": "43:30::31"},
-                  {"@type": "Identifier", "metaData": "43:32::39","name":"float64"},
-                  {"@type": "Native", "metaData": "43:39::40","nativeKind":"Rbrack"}
-                ]},"arguments":[
-                {"@type": "Identifier", "metaData": "43:41::47","name":"floats"}
-              ]}
+              {"@type": "Native", "metaData": "43:48::49","nativeKind":"Rparen"}
             ]}
           ]},
           {"@type": "Native", "metaData": "45:4:47:32","nativeKind":"[4](ExprStmt)","children":[
-            {"@type": "FunctionInvocation", "metaData": "45:4:47:32","memberSelect":
+            {"@type": "Native", "metaData": "45:4:47:32","nativeKind":"X(CallExpr)","children":[
               {"@type": "MemberSelect", "metaData": "45:4::14","identifier":
                 {"@type": "Identifier", "metaData": "45:8::14","name":"Printf"},"expression":
-                {"@type": "Identifier", "metaData": "45:4::7","name":"fmt"}},"arguments":[
-              {"@type": "StringLiteral", "metaData": "45:15::68","value":"\"Generic Sums, type parameters inferred: %v and %v\\n\"","content":"Generic Sums, type parameters inferred: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "46:8::29","memberSelect":
-                {"@type": "Identifier", "metaData": "46:8::23","name":"SumIntsOrFloats"},"arguments":[
-                {"@type": "Identifier", "metaData": "46:24::28","name":"ints"}
+                {"@type": "Identifier", "metaData": "45:4::7","name":"fmt"}},
+              {"@type": "Native", "metaData": "45:14::15","nativeKind":"Lparen"},
+              {"@type": "Native", "metaData": "45:15:47:31","nativeKind":"Args([]Expr)","children":[
+                {"@type": "StringLiteral", "metaData": "45:15::68","value":"\"Generic Sums, type parameters inferred: %v and %v\\n\"","content":"Generic Sums, type parameters inferred: %v and %v\\n"},
+                {"@type": "Native", "metaData": "45:68::69"},
+                {"@type": "Native", "metaData": "46:8::29","nativeKind":"[1](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "46:8::23","name":"SumIntsOrFloats"},
+                  {"@type": "Native", "metaData": "46:23::24","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "46:24::28","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "46:24::28","name":"ints"}
+                  ]},
+                  {"@type": "Native", "metaData": "46:28::29","nativeKind":"Rparen"}
+                ]},
+                {"@type": "Native", "metaData": "46:29::30"},
+                {"@type": "Native", "metaData": "47:8::31","nativeKind":"[2](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "47:8::23","name":"SumIntsOrFloats"},
+                  {"@type": "Native", "metaData": "47:23::24","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "47:24::30","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "47:24::30","name":"floats"}
+                  ]},
+                  {"@type": "Native", "metaData": "47:30::31","nativeKind":"Rparen"}
+                ]}
               ]},
-              {"@type": "FunctionInvocation", "metaData": "47:8::31","memberSelect":
-                {"@type": "Identifier", "metaData": "47:8::23","name":"SumIntsOrFloats"},"arguments":[
-                {"@type": "Identifier", "metaData": "47:24::30","name":"floats"}
-              ]}
+              {"@type": "Native", "metaData": "47:31::32","nativeKind":"Rparen"}
             ]}
           ]},
           {"@type": "Native", "metaData": "49:4:51:27","nativeKind":"[5](ExprStmt)","children":[
-            {"@type": "FunctionInvocation", "metaData": "49:4:51:27","memberSelect":
+            {"@type": "Native", "metaData": "49:4:51:27","nativeKind":"X(CallExpr)","children":[
               {"@type": "MemberSelect", "metaData": "49:4::14","identifier":
                 {"@type": "Identifier", "metaData": "49:8::14","name":"Printf"},"expression":
-                {"@type": "Identifier", "metaData": "49:4::7","name":"fmt"}},"arguments":[
-              {"@type": "StringLiteral", "metaData": "49:15::58","value":"\"Generic Sums with Constraint: %v and %v\\n\"","content":"Generic Sums with Constraint: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "50:8::24","memberSelect":
-                {"@type": "Identifier", "metaData": "50:8::18","name":"SumNumbers"},"arguments":[
-                {"@type": "Identifier", "metaData": "50:19::23","name":"ints"}
+                {"@type": "Identifier", "metaData": "49:4::7","name":"fmt"}},
+              {"@type": "Native", "metaData": "49:14::15","nativeKind":"Lparen"},
+              {"@type": "Native", "metaData": "49:15:51:26","nativeKind":"Args([]Expr)","children":[
+                {"@type": "StringLiteral", "metaData": "49:15::58","value":"\"Generic Sums with Constraint: %v and %v\\n\"","content":"Generic Sums with Constraint: %v and %v\\n"},
+                {"@type": "Native", "metaData": "49:58::59"},
+                {"@type": "Native", "metaData": "50:8::24","nativeKind":"[1](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "50:8::18","name":"SumNumbers"},
+                  {"@type": "Native", "metaData": "50:18::19","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "50:19::23","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "50:19::23","name":"ints"}
+                  ]},
+                  {"@type": "Native", "metaData": "50:23::24","nativeKind":"Rparen"}
+                ]},
+                {"@type": "Native", "metaData": "50:24::25"},
+                {"@type": "Native", "metaData": "51:8::26","nativeKind":"[2](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "51:8::18","name":"SumNumbers"},
+                  {"@type": "Native", "metaData": "51:18::19","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "51:19::25","nativeKind":"Args([]Expr)","children":[
+                    {"@type": "Identifier", "metaData": "51:19::25","name":"floats"}
+                  ]},
+                  {"@type": "Native", "metaData": "51:25::26","nativeKind":"Rparen"}
+                ]}
               ]},
-              {"@type": "FunctionInvocation", "metaData": "51:8::26","memberSelect":
-                {"@type": "Identifier", "metaData": "51:8::18","name":"SumNumbers"},"arguments":[
-                {"@type": "Identifier", "metaData": "51:19::25","name":"floats"}
-              ]}
+              {"@type": "Native", "metaData": "51:26::27","nativeKind":"Rparen"}
             ]}
           ]}
         ]}},

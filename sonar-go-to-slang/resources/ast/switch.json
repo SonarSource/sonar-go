@@ -260,11 +260,15 @@
               null,"body":
               {"@type": "Block", "metaData": "8:17::39","statementOrExpressions":[
                 {"@type": "Native", "metaData": "8:17::39","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "8:17::39","memberSelect":
+                  {"@type": "Native", "metaData": "8:17::39","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "8:17::28","identifier":
                       {"@type": "Identifier", "metaData": "8:21::28","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "8:17::20","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "8:29::38","value":"\"default\"","content":"default"}
+                      {"@type": "Identifier", "metaData": "8:17::20","name":"fmt"}},
+                    {"@type": "Native", "metaData": "8:28::29","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "8:29::38","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "8:29::38","value":"\"default\"","content":"default"}
+                    ]},
+                    {"@type": "Native", "metaData": "8:38::39","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -278,11 +282,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "9:22::40","statementOrExpressions":[
                 {"@type": "Native", "metaData": "9:22::40","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "9:22::40","memberSelect":
+                  {"@type": "Native", "metaData": "9:22::40","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "9:22::33","identifier":
                       {"@type": "Identifier", "metaData": "9:26::33","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "9:22::25","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "9:34::39","value":"\"123\"","content":"123"}
+                      {"@type": "Identifier", "metaData": "9:22::25","name":"fmt"}},
+                    {"@type": "Native", "metaData": "9:33::34","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "9:34::39","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "9:34::39","value":"\"123\"","content":"123"}
+                    ]},
+                    {"@type": "Native", "metaData": "9:39::40","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -298,11 +306,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "10:25::44","statementOrExpressions":[
                 {"@type": "Native", "metaData": "10:25::44","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "10:25::44","memberSelect":
+                  {"@type": "Native", "metaData": "10:25::44","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "10:25::36","identifier":
                       {"@type": "Identifier", "metaData": "10:29::36","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "10:25::28","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "10:37::43","value":"\"4567\"","content":"4567"}
+                      {"@type": "Identifier", "metaData": "10:25::28","name":"fmt"}},
+                    {"@type": "Native", "metaData": "10:36::37","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "10:37::43","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "10:37::43","value":"\"4567\"","content":"4567"}
+                    ]},
+                    {"@type": "Native", "metaData": "10:43::44","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}}
@@ -326,11 +338,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "18:20::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "18:20::37","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "18:20::37","memberSelect":
+                  {"@type": "Native", "metaData": "18:20::37","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "18:20::31","identifier":
                       {"@type": "Identifier", "metaData": "18:24::31","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "18:20::23","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "18:32::36","value":"\"xy\"","content":"xy"}
+                      {"@type": "Identifier", "metaData": "18:20::23","name":"fmt"}},
+                    {"@type": "Native", "metaData": "18:31::32","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "18:32::36","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "18:32::36","value":"\"xy\"","content":"xy"}
+                    ]},
+                    {"@type": "Native", "metaData": "18:36::37","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -342,11 +358,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "19:20::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "19:20::37","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "19:20::37","memberSelect":
+                  {"@type": "Native", "metaData": "19:20::37","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "19:20::31","identifier":
                       {"@type": "Identifier", "metaData": "19:24::31","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "19:20::23","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "19:32::36","value":"\"xz\"","content":"xz"}
+                      {"@type": "Identifier", "metaData": "19:20::23","name":"fmt"}},
+                    {"@type": "Native", "metaData": "19:31::32","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "19:32::36","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "19:32::36","value":"\"xz\"","content":"xz"}
+                    ]},
+                    {"@type": "Native", "metaData": "19:36::37","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -358,11 +378,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "20:21::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "20:21::37","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "20:21::37","memberSelect":
+                  {"@type": "Native", "metaData": "20:21::37","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "20:21::32","identifier":
                       {"@type": "Identifier", "metaData": "20:25::32","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "20:21::24","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "20:33::36","value":"\"x\"","content":"x"}
+                      {"@type": "Identifier", "metaData": "20:21::24","name":"fmt"}},
+                    {"@type": "Native", "metaData": "20:32::33","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "20:33::36","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "20:33::36","value":"\"x\"","content":"x"}
+                    ]},
+                    {"@type": "Native", "metaData": "20:36::37","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}}
@@ -370,8 +394,11 @@
           {"@type": "Match", "metaData": "23:4:26:5","keyword":"23:4::10","expression":
             {"@type": "Native", "metaData": "23:11::19","nativeKind":"InitAndTag","children":[
               {"@type": "VariableDeclaration", "metaData": "23:11::19","type":null,"isVal":false,"initializer":
-                {"@type": "FunctionInvocation", "metaData": "23:16::19","memberSelect":
-                  {"@type": "Identifier", "metaData": "23:16::17","name":"f"},"arguments":[]},"identifier":
+                {"@type": "Native", "metaData": "23:16::19","nativeKind":"[0](CallExpr)","children":[
+                  {"@type": "Identifier", "metaData": "23:16::17","name":"f"},
+                  {"@type": "Native", "metaData": "23:17::18","nativeKind":"Lparen"},
+                  {"@type": "Native", "metaData": "23:18::19","nativeKind":"Rparen"}
+                ]},"identifier":
                 {"@type": "Identifier", "metaData": "23:11::12","name":"x"}}
             ]},"cases":[
             {"@type": "MatchCase", "metaData": "24:8::38","expression":
@@ -382,11 +409,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "24:20::38","statementOrExpressions":[
                 {"@type": "Native", "metaData": "24:20::38","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "24:20::38","memberSelect":
+                  {"@type": "Native", "metaData": "24:20::38","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "24:20::31","identifier":
                       {"@type": "Identifier", "metaData": "24:24::31","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "24:20::23","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "24:32::37","value":"\"x\u003c0\"","content":"x\u003c0"}
+                      {"@type": "Identifier", "metaData": "24:20::23","name":"fmt"}},
+                    {"@type": "Native", "metaData": "24:31::32","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "24:32::37","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "24:32::37","value":"\"x\u003c0\"","content":"x\u003c0"}
+                    ]},
+                    {"@type": "Native", "metaData": "24:37::38","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -394,11 +425,15 @@
               null,"body":
               {"@type": "Block", "metaData": "25:17::39","statementOrExpressions":[
                 {"@type": "Native", "metaData": "25:17::39","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "25:17::39","memberSelect":
+                  {"@type": "Native", "metaData": "25:17::39","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "25:17::28","identifier":
                       {"@type": "Identifier", "metaData": "25:21::28","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "25:17::20","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "25:29::38","value":"\"default\"","content":"default"}
+                      {"@type": "Identifier", "metaData": "25:17::20","name":"fmt"}},
+                    {"@type": "Native", "metaData": "25:28::29","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "25:29::38","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "25:29::38","value":"\"default\"","content":"default"}
+                    ]},
+                    {"@type": "Native", "metaData": "25:38::39","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}}
@@ -433,11 +468,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "32:12:33:17","statementOrExpressions":[
                 {"@type": "Native", "metaData": "32:12::63","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "32:12::63","memberSelect":
+                  {"@type": "Native", "metaData": "32:12::63","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "32:12::23","identifier":
                       {"@type": "Identifier", "metaData": "32:16::23","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "32:12::15","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "32:24::62","value":"\"type of i is type of x (interface{})\"","content":"type of i is type of x (interface{})"}
+                      {"@type": "Identifier", "metaData": "32:12::15","name":"fmt"}},
+                    {"@type": "Native", "metaData": "32:23::24","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "32:24::62","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "32:24::62","value":"\"type of i is type of x (interface{})\"","content":"type of i is type of x (interface{})"}
+                    ]},
+                    {"@type": "Native", "metaData": "32:62::63","nativeKind":"Rparen"}
                   ]}
                 ]},
                 {"@type": "Jump", "metaData": "33:12::17","label":
@@ -451,11 +490,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "35:12::51","statementOrExpressions":[
                 {"@type": "Native", "metaData": "35:12::51","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "35:12::51","memberSelect":
+                  {"@type": "Native", "metaData": "35:12::51","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "35:12::23","identifier":
                       {"@type": "Identifier", "metaData": "35:16::23","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "35:12::15","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "35:24::50","value":"\"type of i is int or bool\"","content":"type of i is int or bool"}
+                      {"@type": "Identifier", "metaData": "35:12::15","name":"fmt"}},
+                    {"@type": "Native", "metaData": "35:23::24","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "35:24::50","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "35:24::50","value":"\"type of i is int or bool\"","content":"type of i is int or bool"}
+                    ]},
+                    {"@type": "Native", "metaData": "35:50::51","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -479,11 +522,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "37:12:38:23","statementOrExpressions":[
                 {"@type": "Native", "metaData": "37:12::49","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "37:12::49","memberSelect":
+                  {"@type": "Native", "metaData": "37:12::49","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "37:12::23","identifier":
                       {"@type": "Identifier", "metaData": "37:16::23","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "37:12::15","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "37:24::48","value":"\"type of i is func(int)\"","content":"type of i is func(int)"}
+                      {"@type": "Identifier", "metaData": "37:12::15","name":"fmt"}},
+                    {"@type": "Native", "metaData": "37:23::24","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "37:24::48","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "37:24::48","value":"\"type of i is func(int)\"","content":"type of i is func(int)"}
+                    ]},
+                    {"@type": "Native", "metaData": "37:48::49","nativeKind":"Rparen"}
                   ]}
                 ]},
                 {"@type": "Native", "metaData": "38:12::23","nativeKind":"[1](BranchStmt)","children":[
@@ -496,13 +543,17 @@
               ]},"body":
               {"@type": "Block", "metaData": "39:21:41:13","statementOrExpressions":[
                 {"@type": "Native", "metaData": "40:16::67","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "40:16::67","memberSelect":
+                  {"@type": "Native", "metaData": "40:16::67","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "40:16::27","identifier":
                       {"@type": "Identifier", "metaData": "40:20::27","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "40:16::19","name":"fmt"}},"arguments":[
-                    {"@type": "BinaryExpression", "metaData": "40:28::66","rightOperand":
-                      {"@type": "Identifier", "metaData": "40:65::66","name":"i"},"operatorToken":"40:63::64","operator":"PLUS","leftOperand":
-                      {"@type": "StringLiteral", "metaData": "40:28::62","value":"\"type is string and the value is \"","content":"type is string and the value is "}}
+                      {"@type": "Identifier", "metaData": "40:16::19","name":"fmt"}},
+                    {"@type": "Native", "metaData": "40:27::28","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "40:28::66","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "BinaryExpression", "metaData": "40:28::66","rightOperand":
+                        {"@type": "Identifier", "metaData": "40:65::66","name":"i"},"operatorToken":"40:63::64","operator":"PLUS","leftOperand":
+                        {"@type": "StringLiteral", "metaData": "40:28::62","value":"\"type is string and the value is \"","content":"type is string and the value is "}}
+                    ]},
+                    {"@type": "Native", "metaData": "40:66::67","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}},
@@ -510,11 +561,15 @@
               null,"body":
               {"@type": "Block", "metaData": "43:12::46","statementOrExpressions":[
                 {"@type": "Native", "metaData": "43:12::46","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "43:12::46","memberSelect":
+                  {"@type": "Native", "metaData": "43:12::46","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "43:12::23","identifier":
                       {"@type": "Identifier", "metaData": "43:16::23","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "43:12::15","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "43:24::45","value":"\"don't know the type\"","content":"don't know the type"}
+                      {"@type": "Identifier", "metaData": "43:12::15","name":"fmt"}},
+                    {"@type": "Native", "metaData": "43:23::24","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "43:24::45","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "43:24::45","value":"\"don't know the type\"","content":"don't know the type"}
+                    ]},
+                    {"@type": "Native", "metaData": "43:45::46","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}}
@@ -529,11 +584,15 @@
               ]},"body":
               {"@type": "Block", "metaData": "48:16::33","statementOrExpressions":[
                 {"@type": "Native", "metaData": "48:16::33","nativeKind":"[0](ExprStmt)","children":[
-                  {"@type": "FunctionInvocation", "metaData": "48:16::33","memberSelect":
+                  {"@type": "Native", "metaData": "48:16::33","nativeKind":"X(CallExpr)","children":[
                     {"@type": "MemberSelect", "metaData": "48:16::27","identifier":
                       {"@type": "Identifier", "metaData": "48:20::27","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "48:16::19","name":"fmt"}},"arguments":[
-                    {"@type": "StringLiteral", "metaData": "48:28::32","value":"\"xy\"","content":"xy"}
+                      {"@type": "Identifier", "metaData": "48:16::19","name":"fmt"}},
+                    {"@type": "Native", "metaData": "48:27::28","nativeKind":"Lparen"},
+                    {"@type": "Native", "metaData": "48:28::32","nativeKind":"Args([]Expr)","children":[
+                      {"@type": "StringLiteral", "metaData": "48:28::32","value":"\"xy\"","content":"xy"}
+                    ]},
+                    {"@type": "Native", "metaData": "48:32::33","nativeKind":"Rparen"}
                   ]}
                 ]}
               ]}}

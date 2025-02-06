@@ -41,7 +41,6 @@ import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
-import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
@@ -71,7 +70,6 @@ import org.sonar.go.persistence.conversion.PolymorphicConverter.Serialize;
 
 public final class JsonTreeConverter {
 
-  public static final String ARGUMENTS = "arguments";
   public static final String BODY = "body";
   public static final String CASES = "cases";
   public static final String CATCH_BLOCK = "catchBlock";
@@ -103,7 +101,6 @@ public final class JsonTreeConverter {
   public static final String LEFT_HAND_SIDE = "leftHandSide";
   public static final String LEFT_OPERAND = "leftOperand";
   public static final String LEFT_PARENTHESIS = "leftParenthesis";
-  public static final String MEMBER_SELECT = "memberSelect";
   public static final String MODIFIERS = "modifiers";
   public static final String NAME = "name";
   public static final String NATIVE_CHILDREN = "nativeChildren";
@@ -268,17 +265,6 @@ public final class JsonTreeConverter {
         ctx.fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class),
         ctx.fieldToNullableObject(json, BODY, BlockTree.class),
         ctx.fieldToObjectList(json, NATIVE_CHILDREN, Tree.class)));
-
-    register(FunctionInvocationTreeImpl.class,
-
-      (ctx, tree) -> ctx.newTypedObject(tree)
-        .add(MEMBER_SELECT, ctx.toJson(tree.memberSelect()))
-        .add(ARGUMENTS, ctx.toJsonArray(tree.arguments())),
-
-      (ctx, json) -> new FunctionInvocationTreeImpl(
-        ctx.metaData(json),
-        ctx.fieldToObject(json, MEMBER_SELECT, Tree.class),
-        ctx.fieldToObjectList(json, ARGUMENTS, Tree.class)));
 
     register(IdentifierTreeImpl.class,
 

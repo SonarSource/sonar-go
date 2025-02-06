@@ -397,13 +397,16 @@
           {"@type": "Block", "metaData": "34:25:38:1","statementOrExpressions":[
             {"@type": "Native", "metaData": "36:4::22","nativeKind":"[0](GoStmt)","children":[
               {"@type": "Native", "metaData": "36:4::6","nativeKind":"Go"},
-              {"@type": "FunctionInvocation", "metaData": "36:7::22","memberSelect":
+              {"@type": "Native", "metaData": "36:7::22","nativeKind":"Call(CallExpr)","children":[
                 {"@type": "FunctionDeclaration", "metaData": "36:7::20","returnType":
                   null,"nativeChildren":null,"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
                   {"@type": "Block", "metaData": "36:13::20","statementOrExpressions":[
                     {"@type": "UnaryExpression", "metaData": "36:15::18","operator":"INCREMENT","operand":
                       {"@type": "Identifier", "metaData": "36:15::16","name":"a"}}
-                  ]}},"arguments":[]}
+                  ]}},
+                {"@type": "Native", "metaData": "36:20::21","nativeKind":"Lparen"},
+                {"@type": "Native", "metaData": "36:21::22","nativeKind":"Rparen"}
+              ]}
             ]},
             {"@type": "Return", "metaData": "37:4::12","keyword":"37:4::10","body":
               {"@type": "Identifier", "metaData": "37:11::12","name":"a"}}
