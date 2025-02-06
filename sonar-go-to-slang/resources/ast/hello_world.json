@@ -39,7 +39,7 @@
       ]},
       {"@type": "FunctionDeclaration", "metaData": "7:0:10:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "7:5::9","name":"main"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:10:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "8:1::22","type":null,"isVal":false,"initializer":
             {"@type": "StringLiteral", "metaData": "8:8::22","value":"\"hello, world\"","content":"hello, world"},"identifier":

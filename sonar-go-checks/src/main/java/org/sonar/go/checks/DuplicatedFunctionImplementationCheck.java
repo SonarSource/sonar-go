@@ -52,11 +52,9 @@ public class DuplicatedFunctionImplementationCheck implements GoCheck {
       Map<Tree, List<FunctionDeclarationTree>> functionsByParents = new HashMap<>();
       TreeVisitor<TreeContext> functionVisitor = new TreeVisitor<>();
       functionVisitor.register(FunctionDeclarationTree.class, (functionCtx, functionDeclarationTree) -> {
-        if (!functionDeclarationTree.isConstructor()) {
-          functionsByParents
-            .computeIfAbsent(functionCtx.ancestors().peek(), key -> new ArrayList<>())
-            .add(functionDeclarationTree);
-        }
+        functionsByParents
+          .computeIfAbsent(functionCtx.ancestors().peek(), key -> new ArrayList<>())
+          .add(functionDeclarationTree);
       });
       functionVisitor.scan(new TreeContext(), tree);
 

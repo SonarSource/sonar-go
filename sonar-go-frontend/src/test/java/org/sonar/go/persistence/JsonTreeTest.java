@@ -111,7 +111,6 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.FORMAL_PARAM
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIER;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IF_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.INITIALIZER;
-import static org.sonar.go.persistence.conversion.JsonTreeConverter.IS_CONSTRUCTOR;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IS_VAL;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KIND;
@@ -310,9 +309,6 @@ class JsonTreeTest extends JsonTestHelper {
   @Test
   void function_declaration() throws IOException {
     Token tokenPublic = keywordToken(1, 0, "public");
-    NativeTree modifier = new NativeTreeImpl(metaData(tokenPublic), StringNativeKind.of("modifier"), emptyList());
-    List<Tree> modifiers = singletonList(modifier);
-    boolean isConstructor = true;
     Token tokenInt = otherToken(1, 7, "int");
     Tree returnType = new IdentifierTreeImpl(metaData(tokenInt), tokenInt.text());
     Token tokenName = otherToken(1, 11, "foo");
@@ -326,12 +322,9 @@ class JsonTreeTest extends JsonTestHelper {
     Token tokenNative = keywordToken(1, 24, "->");
     List<Tree> nativeChildren = singletonList(new NativeTreeImpl(metaData(tokenNative), StringNativeKind.of("arrow"), emptyList()));
     TreeMetaData metaData = metaData(tokenPublic, tokenNative);
-    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, modifiers, isConstructor, returnType, name, parameters, body, nativeChildren);
+    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, name, parameters, body, nativeChildren);
     FunctionDeclarationTree function = checkJsonSerializationDeserialization(initialFunction, "function_declaration.json");
     assertThat(function.textRange()).isEqualTo(metaData.textRange());
-    assertThat(function.modifiers()).hasSize(1);
-    assertThat(function.modifiers().get(0).textRange()).isEqualTo(modifier.textRange());
-    assertThat(function.isConstructor()).isTrue();
     assertThat(function.returnType().textRange()).isEqualTo(tokenInt.textRange());
     assertThat(function.name().textRange()).isEqualTo(tokenName.textRange());
     assertThat(function.formalParameters()).hasSize(1);
@@ -341,7 +334,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(function.nativeChildren().get(0).textRange()).isEqualTo(tokenNative.textRange());
 
     assertThat(methodNames(FunctionDeclarationTree.class))
-      .containsExactlyInAnyOrder(MODIFIERS, IS_CONSTRUCTOR, RETURN_TYPE, NAME, FORMAL_PARAMETERS, BODY, NATIVE_CHILDREN, "rangeToHighlight");
+      .containsExactlyInAnyOrder(RETURN_TYPE, NAME, FORMAL_PARAMETERS, BODY, NATIVE_CHILDREN, "rangeToHighlight");
   }
 
   @Test

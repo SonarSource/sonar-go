@@ -21,10 +21,6 @@ import javax.annotation.CheckForNull;
 
 public interface FunctionDeclarationTree extends Tree {
 
-  List<Tree> modifiers();
-
-  boolean isConstructor();
-
   @CheckForNull
   Tree returnType();
 

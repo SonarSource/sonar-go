@@ -142,10 +142,6 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
-	//Required by SLang; Go does not have constructors
-	slangField["isConstructor"] = false
-	//Go does not have explicit modifiers
-	slangField[modifiersField] = nil
 	//Other children of the function node
 	slangField["nativeChildren"] = nativeChildren
 
@@ -170,10 +166,6 @@ func (t *SlangMapper) mapFuncLitImpl(lit *ast.FuncLit, fieldName string) *Node {
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
-	//Required by SLang; Go does not have constructors
-	slangField["isConstructor"] = false
-	//Go does not have explicit modifiers
-	slangField[modifiersField] = nil
 	//Other children of the function node
 	slangField["nativeChildren"] = nil
 

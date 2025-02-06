@@ -14,10 +14,6 @@
   "tree": {
     "@type": "FunctionDeclaration",
     "metaData": "1:0::26",
-    "modifiers": [
-      {"@type": "Native", "metaData": "1:0::6", "nativeKind": "modifier", "children": []}
-    ],
-    "isConstructor": true,
     "returnType": {"@type": "Identifier", "metaData": "1:7::10", "name": "int"},
     "name": {"@type": "Identifier", "metaData": "1:11::14", "name": "foo"},
     "formalParameters": [

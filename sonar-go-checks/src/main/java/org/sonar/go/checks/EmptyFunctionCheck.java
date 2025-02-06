@@ -30,7 +30,7 @@ public class EmptyFunctionCheck implements GoCheck {
   public void initialize(InitContext init) {
     init.register(FunctionDeclarationTree.class, (ctx, tree) -> {
       BlockTree body = tree.body();
-      if (!tree.isConstructor() && body != null && body.statementOrExpressions().isEmpty() && !hasComment(body, ctx.parent().metaData())) {
+      if (body != null && body.statementOrExpressions().isEmpty() && !hasComment(body, ctx.parent().metaData())) {
         ctx.reportIssue(body, "Add a nested comment explaining why this function is empty or complete the implementation.");
       }
     });

@@ -197,11 +197,11 @@
       ]},
       {"@type": "FunctionDeclaration", "metaData": "3:0::12","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "3:5::7","name":"f1"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::7","name":"f1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:10::12","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "5:0::17","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "5:5::7","name":"f2"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "5:5::7","name":"f2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "5:8::13","type":
           {"@type": "Identifier", "metaData": "5:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "5:8::9","name":"a"},"defaultValue":null}
@@ -209,7 +209,7 @@
         {"@type": "Block", "metaData": "5:15::17","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0::20","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "7:5::7","name":"f3"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "7:5::7","name":"f3"},"formalParameters":[
         {"@type": "Parameter", "metaData": "7:8::9","type":
           null,"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "7:8::9","name":"a"},"defaultValue":null},
@@ -220,7 +220,7 @@
         {"@type": "Block", "metaData": "7:18::20","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "9:0::24","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "9:5::7","name":"f4"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "9:5::7","name":"f4"},"formalParameters":[
         {"@type": "Parameter", "metaData": "9:8::13","type":
           {"@type": "Identifier", "metaData": "9:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "9:8::9","name":"a"},"defaultValue":null},
@@ -231,7 +231,7 @@
         {"@type": "Block", "metaData": "9:22::24","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "11:0::27","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "11:5::7","name":"f5"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "11:5::7","name":"f5"},"formalParameters":[
         {"@type": "Parameter", "metaData": "11:8::13","type":
           {"@type": "Identifier", "metaData": "11:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "11:8::9","name":"a"},"defaultValue":null},
@@ -242,7 +242,7 @@
         {"@type": "Block", "metaData": "11:25::27","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "13:0::30","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "13:5::7","name":"f6"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "13:5::7","name":"f6"},"formalParameters":[
         {"@type": "Parameter", "metaData": "13:8::13","type":
           {"@type": "Identifier", "metaData": "13:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "13:8::9","name":"a"},"defaultValue":null},
@@ -256,7 +256,7 @@
         {"@type": "Block", "metaData": "13:28::30","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "15:0::33","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "15:5::7","name":"f7"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "15:5::7","name":"f7"},"formalParameters":[
         {"@type": "Parameter", "metaData": "15:8::9","type":
           null,"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "15:8::9","name":"a"},"defaultValue":null},
@@ -277,7 +277,7 @@
             {"@type": "Identifier", "metaData": "17:15::18","name":"int"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "17:5::7","name":"f8"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "17:5::7","name":"f8"},"formalParameters":[
         {"@type": "Parameter", "metaData": "17:8::13","type":
           {"@type": "Identifier", "metaData": "17:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "17:8::9","name":"a"},"defaultValue":null}
@@ -298,7 +298,7 @@
           ]},
           {"@type": "Native", "metaData": "21:27::28","nativeKind":"Closing"}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "21:5::7","name":"f9"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "21:5::7","name":"f9"},"formalParameters":[
         {"@type": "Parameter", "metaData": "21:8::13","type":
           {"@type": "Identifier", "metaData": "21:10::13","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "21:8::9","name":"a"},"defaultValue":null}
@@ -327,11 +327,11 @@
           {"@type": "Native", "metaData": "25:20::21","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "25:22::25","name":"f10"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "25:22::25","name":"f10"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "25:28::31","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "27:0::61","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "27:5::8","name":"f11"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "27:5::8","name":"f11"},"formalParameters":[
         {"@type": "Parameter", "metaData": "27:9::20","type":
           {"@type": "Identifier", "metaData": "27:14::20","name":"string"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "27:9::13","name":"head"},"defaultValue":null},
@@ -356,7 +356,7 @@
         {"@type": "Block", "metaData": "27:58::61","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "29:0::31","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "29:5::7","name":"g1"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "29:5::7","name":"g1"},"formalParameters":[
         {"@type": "Parameter", "metaData": "29:8::9","type":
           null,"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "29:8::9","name":"i"},"defaultValue":null},
@@ -367,7 +367,7 @@
         {"@type": "Block", "metaData": "29:29::31","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "31:0::46","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "31:5::7","name":"g3"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "31:5::7","name":"g3"},"formalParameters":[
         {"@type": "Parameter", "metaData": "31:8::9","type":
           null,"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "31:8::9","name":"i"},"defaultValue":null},
@@ -389,7 +389,7 @@
             {"@type": "Native", "metaData": "34:21::24","nativeKind":"[0](Field)","children":[
               {"@type": "Identifier", "metaData": "34:21::24","name":"int"}
             ]}
-          ]},"nativeChildren":null,"modifiers":null,"isConstructor":false,"formalParameters":[
+          ]},"nativeChildren":null,"formalParameters":[
           {"@type": "Parameter", "metaData": "34:14::19","type":
             {"@type": "Identifier", "metaData": "34:16::19","name":"int"},"modifiers":null,"identifier":
             {"@type": "Identifier", "metaData": "34:14::15","name":"a"},"defaultValue":null}
@@ -399,7 +399,7 @@
               {"@type": "Native", "metaData": "36:4::6","nativeKind":"Go"},
               {"@type": "FunctionInvocation", "metaData": "36:7::22","memberSelect":
                 {"@type": "FunctionDeclaration", "metaData": "36:7::20","returnType":
-                  null,"nativeChildren":null,"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+                  null,"nativeChildren":null,"formalParameters":[],"body":
                   {"@type": "Block", "metaData": "36:13::20","statementOrExpressions":[
                     {"@type": "UnaryExpression", "metaData": "36:15::18","operator":"INCREMENT","operand":
                       {"@type": "Identifier", "metaData": "36:15::16","name":"a"}}

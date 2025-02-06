@@ -95,7 +95,6 @@ public final class JsonTreeConverter {
   public static final String IDENTIFIER = "identifier";
   public static final String IF_KEYWORD = "ifKeyword";
   public static final String INITIALIZER = "initializer";
-  public static final String IS_CONSTRUCTOR = "isConstructor";
   public static final String IS_VAL = "isVal";
   public static final String KEYWORD = "keyword";
   public static final String KIND = "kind";
@@ -251,8 +250,6 @@ public final class JsonTreeConverter {
     register(FunctionDeclarationTreeImpl.class,
 
       (ctx, tree) -> ctx.newTypedObject(tree)
-        .add(MODIFIERS, ctx.toJsonArray(tree.modifiers()))
-        .add(IS_CONSTRUCTOR, tree.isConstructor())
         .add(RETURN_TYPE, ctx.toJson(tree.returnType()))
         .add(NAME, ctx.toJson(tree.name()))
         .add(FORMAL_PARAMETERS, ctx.toJsonArray(tree.formalParameters()))
@@ -261,8 +258,6 @@ public final class JsonTreeConverter {
 
       (ctx, json) -> new FunctionDeclarationTreeImpl(
         ctx.metaData(json),
-        ctx.fieldToObjectList(json, MODIFIERS, Tree.class),
-        json.getBoolean(IS_CONSTRUCTOR, false),
         ctx.fieldToNullableObject(json, RETURN_TYPE, Tree.class),
         ctx.fieldToNullableObject(json, NAME, IdentifierTree.class),
         ctx.fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class),

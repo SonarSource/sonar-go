@@ -21,19 +21,16 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
-import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.visitors.TreePrinter;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.sonar.go.utils.TreeCreationUtils.assignment;
 import static org.sonar.go.utils.TreeCreationUtils.binary;
@@ -49,8 +46,7 @@ class TreePrinterTest {
     Tree literal1 = new LiteralTreeImpl(null, "42");
     Tree binaryExp = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, literal1);
     Tree assignExp = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, x1, binaryExp);
-    Tree modifier = new ModifierTreeImpl(null, ModifierTree.Kind.PRIVATE);
-    Tree function = new FunctionDeclarationTreeImpl(null, singletonList(modifier), false, null, null, emptyList(), null, emptyList());
+    Tree function = new FunctionDeclarationTreeImpl(null, null, null, emptyList(), null, emptyList());
     Assertions.assertThat(TreePrinter.tree2string(Arrays.asList(assignExp, function))).isEqualTo("""
       AssignmentExpressionTreeImpl EQUAL
         IdentifierTreeImpl x1
@@ -59,7 +55,6 @@ class TreePrinterTest {
           LiteralTreeImpl 42
 
       FunctionDeclarationTreeImpl
-        ModifierTreeImpl PRIVATE
       """);
   }
 

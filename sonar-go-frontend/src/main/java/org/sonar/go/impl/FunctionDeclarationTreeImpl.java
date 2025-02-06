@@ -17,7 +17,6 @@
 package org.sonar.go.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
@@ -31,8 +30,6 @@ import org.sonar.go.api.TreeMetaData;
 
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
 
-  private List<Tree> modifiers;
-  private final boolean isConstructor;
   private final Tree returnType;
   private final IdentifierTree name;
   private final List<Tree> formalParameters;
@@ -42,8 +39,6 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
-    List<Tree> modifiers,
-    boolean isConstructor,
     @Nullable Tree returnType,
     @Nullable IdentifierTree name,
     List<Tree> formalParameters,
@@ -51,15 +46,12 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
     List<Tree> nativeChildren) {
     super(metaData);
 
-    this.modifiers = modifiers;
-    this.isConstructor = isConstructor;
     this.returnType = returnType;
     this.name = name;
     this.formalParameters = formalParameters;
     this.body = body;
     this.nativeChildren = nativeChildren;
 
-    this.children.addAll(modifiers);
     if (returnType != null) {
       this.children.add(returnType);
     }
@@ -71,20 +63,6 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
       this.children.add(body);
     }
     this.children.addAll(nativeChildren);
-  }
-
-  @Override
-  public List<Tree> modifiers() {
-    return Collections.unmodifiableList(modifiers);
-  }
-
-  public void setModifiers(List<Tree> modifiers) {
-    this.modifiers = modifiers;
-  }
-
-  @Override
-  public boolean isConstructor() {
-    return isConstructor;
   }
 
   @CheckForNull

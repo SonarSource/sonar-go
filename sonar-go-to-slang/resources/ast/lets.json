@@ -148,7 +148,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "7:5::9","name":"fun1"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","name":"fun1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:9:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "8:2::28","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "8:2::28","memberSelect":
@@ -161,7 +161,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "10:0:17:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "10:5::9","name":"fun2"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::9","name":"fun2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:10::15","type":
           {"@type": "Identifier", "metaData": "10:12::15","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "10:10::11","name":"i"},"defaultValue":null}
@@ -193,7 +193,7 @@
             {"@type": "Identifier", "metaData": "18:25::28","name":"int"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "18:5::9","name":"fun3"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "18:5::9","name":"fun3"},"formalParameters":[
         {"@type": "Parameter", "metaData": "18:10::23","type":
           {"@type": "Native", "metaData": "18:12::23","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "18:12::21","nativeKind":"Interface"},

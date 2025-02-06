@@ -247,7 +247,7 @@
       ]},
       {"@type": "FunctionDeclaration", "metaData": "5:0:50:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:4::12","type":null,"isVal":false,"initializer":
             {"@type": "IntegerLiteral", "metaData": "6:11::12","value":"1"},"identifier":
@@ -545,7 +545,7 @@
             {"@type": "Identifier", "metaData": "52:9::12","name":"int"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "52:5::6","name":"f"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "52:5::6","name":"f"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","body":
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":

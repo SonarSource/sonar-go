@@ -38,7 +38,7 @@
           {"@type": "Native", "metaData": "3:14::15","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "3:16::19","name":"foo"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:16::19","name":"foo"},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:20::26","type":
           {"@type": "Identifier", "metaData": "3:23::26","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "3:20::22","name":"p1"},"defaultValue":null}

@@ -397,7 +397,7 @@
           {"@type": "Native", "metaData": "7:13::14","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "7:5::7","name":"f1"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::7","name":"f1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:17:8:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "9:0:10:1","returnType":
         null,"nativeChildren":[
@@ -432,7 +432,7 @@
           {"@type": "Native", "metaData": "9:37::38","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "9:5::7","name":"f2"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "9:5::7","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "9:41:10:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "11:0:12:1","returnType":
         null,"nativeChildren":[
@@ -461,7 +461,7 @@
           {"@type": "Native", "metaData": "11:21::22","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "11:5::7","name":"f3"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "11:5::7","name":"f3"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:25:12:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "13:0:14:1","returnType":
         null,"nativeChildren":[
@@ -481,7 +481,7 @@
           {"@type": "Native", "metaData": "13:16::17","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "13:5::7","name":"f4"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "13:5::7","name":"f4"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "13:20:14:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "15:0:16:1","returnType":
         null,"nativeChildren":[
@@ -496,7 +496,7 @@
           {"@type": "Native", "metaData": "15:13::14","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "15:5::7","name":"f5"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "15:5::7","name":"f5"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "15:17:16:1","statementOrExpressions":[]}},
       {"@type": "ClassDeclaration", "metaData": "20:0:22:1","identifier":"20:5::11","classTree":
         {"@type": "Native", "metaData": "20:0:22:1","nativeKind":"[7](TypeSpecWrapped)","children":[
@@ -519,7 +519,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "24:0:52:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "24:5::9","name":"main"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "24:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "24:12:52:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:4:29:5","type":null,"isVal":false,"initializer":
             {"@type": "Native", "metaData": "26:12:29:5","nativeKind":"[0](CompositeLit)","children":[
@@ -660,7 +660,7 @@
             {"@type": "Identifier", "metaData": "55:33::38","name":"int64"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "55:5::12","name":"SumInts"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "55:5::12","name":"SumInts"},"formalParameters":[
         {"@type": "Parameter", "metaData": "55:13::31","type":
           {"@type": "Native", "metaData": "55:15::31","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "55:15::18","nativeKind":"Map"},
@@ -701,7 +701,7 @@
             {"@type": "Identifier", "metaData": "64:37::44","name":"float64"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "64:5::14","name":"SumFloats"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "64:5::14","name":"SumFloats"},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:15::35","type":
           {"@type": "Native", "metaData": "64:17::35","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "64:17::20","nativeKind":"Map"},
@@ -764,7 +764,7 @@
           {"@type": "Native", "metaData": "74:52::53","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "74:5::20","name":"SumIntsOrFloats"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "74:5::20","name":"SumIntsOrFloats"},"formalParameters":[
         {"@type": "Parameter", "metaData": "74:54::63","type":
           {"@type": "Native", "metaData": "74:56::63","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "74:56::59","nativeKind":"Map"},
@@ -823,7 +823,7 @@
           {"@type": "Native", "metaData": "84:38::39","nativeKind":"Closing"}
         ]}
       ],"name":
-        {"@type": "Identifier", "metaData": "84:5::15","name":"SumNumbers"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "84:5::15","name":"SumNumbers"},"formalParameters":[
         {"@type": "Parameter", "metaData": "84:40::49","type":
           {"@type": "Native", "metaData": "84:42::49","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "84:42::45","nativeKind":"Map"},

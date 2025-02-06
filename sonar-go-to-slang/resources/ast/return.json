@@ -76,14 +76,14 @@
             {"@type": "Identifier", "metaData": "3:18::22","name":"bool"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "3:5::15","name":"returnTrue"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::15","name":"returnTrue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:23:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::12","keyword":"4:1::7","body":
             {"@type": "Literal", "metaData": "4:8::12","value":"true"}}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "7:5::16","name":"emptyReturn"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::16","name":"emptyReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:19:9:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "8:1::7","keyword":"8:1::7","body":null}
         ]}},
@@ -93,7 +93,7 @@
             {"@type": "Identifier", "metaData": "11:17::23","name":"string"}
           ]}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "11:5::14","name":"twoReturn"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "11:5::14","name":"twoReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:24:17:1","statementOrExpressions":[
           {"@type": "If", "metaData": "12:1:16:2","thenBranch":
             {"@type": "Block", "metaData": "12:9:14:2","statementOrExpressions":[
@@ -122,7 +122,7 @@
           ]},
           {"@type": "Native", "metaData": "19:47::48","nativeKind":"Closing"}
         ]},"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "19:5::24","name":"multipleReturnValue"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "19:5::24","name":"multipleReturnValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializer":
             {"@type": "StringLiteral", "metaData": "20:6::9","value":"\"b\"","content":"b"},"identifier":

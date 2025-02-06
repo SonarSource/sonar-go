@@ -100,7 +100,7 @@
       ]},
       {"@type": "FunctionDeclaration", "metaData": "3:0:15:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "3:5::11","name":"minMax"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::11","name":"minMax"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:14:15:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "5:4::16","nativeKind":"[0](DeclStmt)","children":[
             {"@type": "Native", "metaData": "5:4::16","nativeKind":"Decl(GenDecl)","children":[

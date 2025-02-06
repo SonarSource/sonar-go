@@ -264,7 +264,7 @@
       ]},
       {"@type": "FunctionDeclaration", "metaData": "10:0:13:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "10:5::12","name":"server1"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::12","name":"server1"},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:13::27","type":
           {"@type": "Native", "metaData": "10:21::27","nativeKind":"Type(ChanType)","children":[
             {"@type": "Identifier", "metaData": "10:21::27","name":"string"}
@@ -292,7 +292,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "14:0:18:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "14:5::12","name":"server2"},"modifiers":null,"isConstructor":false,"formalParameters":[
+        {"@type": "Identifier", "metaData": "14:5::12","name":"server2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "14:13::27","type":
           {"@type": "Native", "metaData": "14:21::27","nativeKind":"Type(ChanType)","children":[
             {"@type": "Identifier", "metaData": "14:21::27","name":"string"}
@@ -320,7 +320,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "19:0:31:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "19:5::9","name":"main"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "19:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:12:31:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::29","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "20:12::29","memberSelect":
@@ -402,7 +402,7 @@
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "34:0:65:1","returnType":
         null,"nativeChildren":[],"name":
-        {"@type": "Identifier", "metaData": "34:5::7","name":"f2"},"modifiers":null,"isConstructor":false,"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "34:5::7","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "34:10:65:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "35:4::15","nativeKind":"[0](DeclStmt)","children":[
             {"@type": "VariableDeclaration", "metaData": "35:4::15","type":
