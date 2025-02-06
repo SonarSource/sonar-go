@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.LoopTree;
@@ -31,6 +32,7 @@ import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ParseException;
 import org.sonar.go.api.ReturnTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
@@ -111,6 +113,20 @@ class GoConverterTest {
     assertThat(memberSelectTree.identifier().name()).isEqualTo("Println");
     Tree expression = memberSelectTree.expression();
     assertThat(expression).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("fmt"));
+  }
+
+  @Test
+  void test_parse_function_invocation() {
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {bar(\"arg\", 42)}");
+    List<Tree> functionInvocations = tree.descendants().filter(FunctionInvocationTree.class::isInstance).toList();
+    assertThat(functionInvocations).hasSize(1);
+    FunctionInvocationTree functionInvocation = (FunctionInvocationTree) functionInvocations.get(0);
+    assertThat(functionInvocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("bar"));
+    assertThat(functionInvocation.arguments()).hasSize(2);
+    assertThat(functionInvocation.arguments().get(0)).isInstanceOfSatisfying(StringLiteralTree.class,
+      stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("arg"));
+    assertThat(functionInvocation.arguments().get(1)).isInstanceOfSatisfying(IntegerLiteralTree.class,
+      integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(42));
   }
 
   @Test

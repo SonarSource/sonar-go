@@ -32,57 +32,9 @@ import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.sonar.go.utils.NativeKinds.isCompositeLit;
-import static org.sonar.go.utils.NativeKinds.isFromCallExpr;
-import static org.sonar.go.utils.NativeKinds.isFromSelectorExpr;
-import static org.sonar.go.utils.NativeKinds.isFun;
 import static org.sonar.go.utils.NativeKinds.isKeyValueExpr;
-import static org.sonar.go.utils.NativeKinds.isX;
 
 class NativeKindsTest {
-  @ParameterizedTest
-  @CsvSource(textBlock = """
-    X(CallExpr),true
-    X(SelectorExpr),true
-    Fun(SelectorExpr),false
-    """)
-  void shouldFindXKinds(String kind, boolean shouldFind) {
-    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
-    assertThat(isX(tree)).isEqualTo(shouldFind);
-  }
-
-  @ParameterizedTest
-  @CsvSource(textBlock = """
-    X(CallExpr),false
-    X(SelectorExpr),false
-    Fun(SelectorExpr),true
-    """)
-  void shouldFindFunKinds(String kind, boolean shouldFind) {
-    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
-    assertThat(isFun(tree)).isEqualTo(shouldFind);
-  }
-
-  @ParameterizedTest
-  @CsvSource(textBlock = """
-    X(CallExpr),false
-    X(SelectorExpr),true
-    Fun(SelectorExpr),true
-    """)
-  void shouldFindSelectorSubExpr(String kind, boolean shouldFind) {
-    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
-    assertThat(isFromSelectorExpr(tree)).isEqualTo(shouldFind);
-  }
-
-  @ParameterizedTest
-  @CsvSource(textBlock = """
-    X(CallExpr),true
-    X(SelectorExpr),false
-    Fun(SelectorExpr),false
-    """)
-  void shouldFindCallSubExpr(String kind, boolean shouldFind) {
-    var tree = new NativeTreeImpl(null, new StringNativeKind(kind), emptyList());
-    assertThat(isFromCallExpr(tree)).isEqualTo(shouldFind);
-  }
-
   @Test
   void shouldBeStringNativeKindOfTypeA() {
     var kind = new StringNativeKind("TypeA");
@@ -134,44 +86,6 @@ class NativeKindsTest {
   @Test
   void shouldNotBeStringNativeKindWhenTreeIsNull() {
     var result = NativeKinds.isStringNativeKind(null, s -> s.endsWith("A"));
-    assertThat(result).isFalse();
-  }
-
-  @Test
-  void shouldIdentifyFunctionComingFromStatements() {
-    var kind = new StringNativeKind("X(CallExpr)");
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isFunctionCall(tree);
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  void shouldIdentifyFunctionComingFromExpression() {
-    var kind = new StringNativeKind("[](CallExpr)");
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isFunctionCall(tree);
-    assertThat(result).isTrue();
-  }
-
-  @Test
-  void shouldNotBeAFunctionWithUnrelatedNativeKind() {
-    var kind = mock(NativeKind.class);
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isFunctionCall(tree);
-    assertThat(result).isFalse();
-  }
-
-  @Test
-  void shouldNotBeAFunctionWithUnrelatedKind() {
-    var kind = new StringNativeKind("[](Array)");
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isFunctionCall(tree);
-    assertThat(result).isFalse();
-  }
-
-  @Test
-  void shouldNotBeAFunctionWhenTreeIsNull() {
-    var result = NativeKinds.isFunctionCall(null);
     assertThat(result).isFalse();
   }
 

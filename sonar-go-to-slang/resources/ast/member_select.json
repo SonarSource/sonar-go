@@ -180,15 +180,11 @@
               {"@type": "Identifier", "metaData": "18:1::6","name":"value"}}},
           {"@type": "Native", "metaData": "18:17::18","nativeKind":"Semicolon"},
           {"@type": "Native", "metaData": "19:1::17","nativeKind":"[1](ExprStmt)","children":[
-            {"@type": "Native", "metaData": "19:1::17","nativeKind":"X(CallExpr)","children":[
-              {"@type": "Identifier", "metaData": "19:1::6","name":"panic"},
-              {"@type": "Native", "metaData": "19:6::7","nativeKind":"Lparen"},
-              {"@type": "Native", "metaData": "19:7::16","nativeKind":"Args([]Expr)","children":[
-                {"@type": "MemberSelect", "metaData": "19:7::16","identifier":
-                  {"@type": "Identifier", "metaData": "19:13::16","name":"age"},"expression":
-                  {"@type": "Identifier", "metaData": "19:7::12","name":"value"}}
-              ]},
-              {"@type": "Native", "metaData": "19:16::17","nativeKind":"Rparen"}
+            {"@type": "FunctionInvocation", "metaData": "19:1::17","memberSelect":
+              {"@type": "Identifier", "metaData": "19:1::6","name":"panic"},"arguments":[
+              {"@type": "MemberSelect", "metaData": "19:7::16","identifier":
+                {"@type": "Identifier", "metaData": "19:13::16","name":"age"},"expression":
+                {"@type": "Identifier", "metaData": "19:7::12","name":"value"}}
             ]}
           ]},
           {"@type": "Native", "metaData": "19:17::18","nativeKind":"Semicolon"},
@@ -204,13 +200,10 @@
             {"@type": "StringLiteral", "metaData": "21:29::32","value":"\"b\"","content":"b"},"operator":"EQUAL","leftHandSide":
             {"@type": "MemberSelect", "metaData": "21:1::26","identifier":
               {"@type": "Identifier", "metaData": "21:20::26","name":"street"},"expression":
-              {"@type": "Native", "metaData": "21:1::19","nativeKind":"X(CallExpr)","children":[
+              {"@type": "FunctionInvocation", "metaData": "21:1::19","memberSelect":
                 {"@type": "MemberSelect", "metaData": "21:1::17","identifier":
                   {"@type": "Identifier", "metaData": "21:7::17","name":"getAddress"},"expression":
-                  {"@type": "Identifier", "metaData": "21:1::6","name":"value"}},
-                {"@type": "Native", "metaData": "21:17::18","nativeKind":"Lparen"},
-                {"@type": "Native", "metaData": "21:18::19","nativeKind":"Rparen"}
-              ]}}},
+                  {"@type": "Identifier", "metaData": "21:1::6","name":"value"}},"arguments":[]}}},
           {"@type": "Native", "metaData": "21:32::33","nativeKind":"Semicolon"}
         ]}}
     ]}

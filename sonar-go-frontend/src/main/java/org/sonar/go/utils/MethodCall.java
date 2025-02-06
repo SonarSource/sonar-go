@@ -16,41 +16,17 @@
  */
 package org.sonar.go.utils;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
-import java.util.regex.Pattern;
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
-import org.sonar.go.persistence.conversion.StringNativeKind;
 
 public record MethodCall(String methodFqn, List<Tree> args) {
-  private static final Predicate<String> IS_CALL_EXPR = Pattern.compile("\\[\\d++]\\(CallExpr\\)").asMatchPredicate().or("X(CallExpr)"::equals);
-
-  @CheckForNull
-  public static MethodCall of(NativeTree nativeTree) {
-    if (NativeKinds.isStringNativeKind(nativeTree, IS_CALL_EXPR)) {
-      var methodCall = nativeTree.children().get(0);
-      var fqnMethod = treeToString(methodCall);
-      var args = extractArgs(nativeTree);
-      return new MethodCall(fqnMethod, args);
-    }
-    return null;
-  }
-
-  private static List<Tree> extractArgs(NativeTree nativeTree) {
-    // Check if we have four elements: the method name, opening parenthesis, arguments, and closing parenthesis.
-    if (nativeTree.children().size() == 4) {
-      var args = (NativeTree) nativeTree.children().get(2);
-      return args.children().stream()
-        .filter(arg -> !(arg instanceof NativeTree nativeTree1 && nativeTree1.nativeKind() instanceof StringNativeKind stringNativeKind && stringNativeKind.toString().isEmpty()))
-        .toList();
-    }
-    return Collections.emptyList();
+  public static MethodCall of(FunctionInvocationTree tree) {
+    var fqnMethod = treeToString(tree.memberSelect());
+    return new MethodCall(fqnMethod, tree.arguments());
   }
 
   private static String treeToString(Tree tree) {
