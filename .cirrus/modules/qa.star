@@ -39,8 +39,7 @@ def qa_plugin_env():
         "GRADLE_TASK": QA_PLUGIN_GRADLE_TASK,
         "KEEP_ORCHESTRATOR_RUNNING": "true",
         "matrix": [
-            # TODO: SONARGO-176 enable back after SQS release
-            # {"SQ_VERSION": QA_QUBE_LATEST_RELEASE},
+            {"SQ_VERSION": QA_QUBE_LATEST_RELEASE},
             {"SQ_VERSION": QA_QUBE_DEV},
         ],
         "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
@@ -66,8 +65,7 @@ def qa_ruling_env():
     return {
         "GRADLE_TASK": QA_RULING_GRADLE_TASK,
         "KEEP_ORCHESTRATOR_RUNNING": "true",
-        # TODO: SONARGO-176 use QA_QUBE_LATEST_RELEASE after SQS release
-        "SQ_VERSION": QA_QUBE_DEV,
+        "SQ_VERSION": QA_QUBE_LATEST_RELEASE,
         "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
     }
 
