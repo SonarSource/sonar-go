@@ -19,26 +19,18 @@ package org.sonar.go.utils;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 
-public record CompositeLiteral(Tree type, List<Tree> elements) {
+// TODO SONARGO-255 remove this redundant class and move its methods somwhere else
+public record CompositeLiteral(@Nullable Tree type, List<Tree> elements) {
 
-  public static Optional<CompositeLiteral> of(NativeTree nativeTree) {
-    List<Tree> children = nativeTree.children();
-    if (NativeKinds.isCompositeLit(nativeTree)) {
-      return Optional.of(new CompositeLiteral(children.get(0), getCompositeElements(nativeTree)));
-    }
-    return Optional.empty();
-  }
-
-  private static List<Tree> getCompositeElements(NativeTree nativeTree) {
-    return nativeTree.children().stream()
-      .filter(n -> NativeKinds.isStringNativeKind(n, t -> t.contains("Elts")))
-      .flatMap(n -> n.children().stream())
-      .toList();
+  public static Optional<CompositeLiteral> of(CompositeLiteralTree compositeLiteralTree) {
+    return Optional.of(new CompositeLiteral(compositeLiteralTree.type(), compositeLiteralTree.elements()));
   }
 
   public Stream<KeyValue> getKeyValuesElements() {

@@ -349,19 +349,14 @@
             ]}
           ]},
           {"@type": "VariableDeclaration", "metaData": "26:1::38","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "26:12::38","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "26:12::38","type":
               {"@type": "Native", "metaData": "26:12::20","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "26:12::13","nativeKind":"Lbrack"},
                 {"@type": "Native", "metaData": "26:13::14"},
                 {"@type": "Identifier", "metaData": "26:14::20","name":"string"}
-              ]},
-              {"@type": "Native", "metaData": "26:20::21","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "26:21::37","nativeKind":"Elts([]Expr)","children":[
-                {"@type": "StringLiteral", "metaData": "26:21::28","value":"\"hello\"","content":"hello"},
-                {"@type": "Native", "metaData": "26:28::29"},
-                {"@type": "StringLiteral", "metaData": "26:30::37","value":"\"world\"","content":"world"}
-              ]},
-              {"@type": "Native", "metaData": "26:37::38","nativeKind":"Rbrace"}
+              ]},"elements":[
+              {"@type": "StringLiteral", "metaData": "26:21::28","value":"\"hello\"","content":"hello"},
+              {"@type": "StringLiteral", "metaData": "26:30::37","value":"\"world\"","content":"world"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "26:1::8","name":"strings"}},
           {"@type": "Loop", "metaData": "27:1:29:2","kind":"FOR","keyword":"27:1::4","condition":
@@ -531,21 +526,15 @@
               ]}
             ]}},
           {"@type": "VariableDeclaration", "metaData": "58:4::23","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "58:9::23","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "58:9::23","type":
               {"@type": "Native", "metaData": "58:9::14","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "58:9::10","nativeKind":"Lbrack"},
                 {"@type": "Native", "metaData": "58:10::11"},
                 {"@type": "Identifier", "metaData": "58:11::14","name":"int"}
-              ]},
-              {"@type": "Native", "metaData": "58:14::15","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "58:15::22","nativeKind":"Elts([]Expr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "58:15::16","value":"1"},
-                {"@type": "Native", "metaData": "58:16::17"},
-                {"@type": "IntegerLiteral", "metaData": "58:18::19","value":"2"},
-                {"@type": "Native", "metaData": "58:19::20"},
-                {"@type": "IntegerLiteral", "metaData": "58:21::22","value":"3"}
-              ]},
-              {"@type": "Native", "metaData": "58:22::23","nativeKind":"Rbrace"}
+              ]},"elements":[
+              {"@type": "IntegerLiteral", "metaData": "58:15::16","value":"1"},
+              {"@type": "IntegerLiteral", "metaData": "58:18::19","value":"2"},
+              {"@type": "IntegerLiteral", "metaData": "58:21::22","value":"3"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "58:4::5","name":"l"}},
           {"@type": "Loop", "metaData": "59:4:61:5","kind":"FOR","keyword":"59:4::7","condition":
@@ -571,17 +560,14 @@
               ]}
             ]}},
           {"@type": "VariableDeclaration", "metaData": "63:4::25","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "63:9::25","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "63:9::25","type":
               {"@type": "Native", "metaData": "63:9::23","nativeKind":"Type(MapType)","children":[
                 {"@type": "Native", "metaData": "63:9::12","nativeKind":"Map"},
                 {"@type": "Native", "metaData": "63:12::13"},
                 {"@type": "Identifier", "metaData": "63:13::16","name":"int"},
                 {"@type": "Native", "metaData": "63:16::17"},
                 {"@type": "Identifier", "metaData": "63:17::23","name":"string"}
-              ]},
-              {"@type": "Native", "metaData": "63:23::24","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "63:24::25","nativeKind":"Rbrace"}
-            ]},"identifier":
+              ]},"elements":[]},"identifier":
             {"@type": "Identifier", "metaData": "63:4::5","name":"m"}},
           {"@type": "Loop", "metaData": "64:4:66:5","kind":"FOR","keyword":"64:4::7","condition":
             {"@type": "Native", "metaData": "64:8::33","nativeKind":"RangeHeader","children":[

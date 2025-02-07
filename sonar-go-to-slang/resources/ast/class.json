@@ -218,7 +218,7 @@
         ]}},
       {"@type": "VariableDeclaration", "metaData": "16:0::42","type":
         {"@type": "Identifier", "metaData": "16:14::20","name":"Class2"},"isVal":false,"initializer":
-        {"@type": "Native", "metaData": "16:23::42","nativeKind":"[0](CompositeLit)","children":[
+        {"@type": "CompositeLiteral", "metaData": "16:23::42","type":
           {"@type": "Native", "metaData": "16:23::40","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "16:23::29","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "16:30::40","nativeKind":"Fields(FieldList)","children":[
@@ -228,10 +228,7 @@
               ]},
               {"@type": "Native", "metaData": "16:39::40","nativeKind":"Closing"}
             ]}
-          ]},
-          {"@type": "Native", "metaData": "16:40::41","nativeKind":"Lbrace"},
-          {"@type": "Native", "metaData": "16:41::42","nativeKind":"Rbrace"}
-        ]},"identifier":
+          ]},"elements":[]},"identifier":
         {"@type": "Identifier", "metaData": "16:4::13","name":"anonymous"}},
       {"@type": "ClassDeclaration", "metaData": "18:0:21:1","identifier":"18:5::11","classTree":
         {"@type": "Native", "metaData": "18:0:21:1","nativeKind":"[6](TypeSpecWrapped)","children":[
@@ -317,7 +314,7 @@
           {"@type": "Native", "metaData": "26:5::47","nativeKind":"[0](DeclStmt)","children":[
             {"@type": "VariableDeclaration", "metaData": "26:5::47","type":
               {"@type": "Identifier", "metaData": "26:19::25","name":"Class2"},"isVal":false,"initializer":
-              {"@type": "Native", "metaData": "26:28::47","nativeKind":"[0](CompositeLit)","children":[
+              {"@type": "CompositeLiteral", "metaData": "26:28::47","type":
                 {"@type": "Native", "metaData": "26:28::45","nativeKind":"Type(StructType)","children":[
                   {"@type": "Native", "metaData": "26:28::34","nativeKind":"Struct"},
                   {"@type": "Native", "metaData": "26:35::45","nativeKind":"Fields(FieldList)","children":[
@@ -327,10 +324,7 @@
                     ]},
                     {"@type": "Native", "metaData": "26:44::45","nativeKind":"Closing"}
                   ]}
-                ]},
-                {"@type": "Native", "metaData": "26:45::46","nativeKind":"Lbrace"},
-                {"@type": "Native", "metaData": "26:46::47","nativeKind":"Rbrace"}
-              ]},"identifier":
+                ]},"elements":[]},"identifier":
               {"@type": "Identifier", "metaData": "26:9::18","name":"anonymous"}}
           ]}
         ]}},

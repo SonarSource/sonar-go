@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
@@ -127,6 +128,18 @@ class GoConverterTest {
       stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("arg"));
     assertThat(functionInvocation.arguments().get(1)).isInstanceOfSatisfying(IntegerLiteralTree.class,
       integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(42));
+  }
+
+  @Test
+  void test_parse_composite_literal() {
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {thing := Thing{\"value\"}}");
+    List<CompositeLiteralTree> returnList = tree.descendants().filter(CompositeLiteralTree.class::isInstance).map(CompositeLiteralTree.class::cast).toList();
+    assertThat(returnList).hasSize(1);
+    CompositeLiteralTree compositeLiteralTree = returnList.get(0);
+    assertThat(compositeLiteralTree.type()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("Thing"));
+    List<Tree> elements = compositeLiteralTree.elements();
+    assertThat(elements).hasSize(1);
+    assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
   }
 
   @Test

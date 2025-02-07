@@ -14,20 +14,18 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.utils;
+package org.sonar.go.api;
 
-import org.junit.jupiter.api.Test;
-import org.sonar.go.api.NativeTree;
+import java.util.List;
+import javax.annotation.CheckForNull;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.utils.ParseUtils.parse;
+public interface CompositeLiteralTree extends Tree {
 
-class KeyValueTest {
-  // Note: more tests indirectly cover KeyValue in CompositeLiteralTest.
+  /**
+   * Can return null when the type is set at higher level. (E.g. array of structured objects)
+   */
+  @CheckForNull
+  Tree type();
 
-  @Test
-  void shouldNotParseOtherNativeTree() {
-    var compositeLiteralOptional = KeyValue.of((NativeTree) parse("1 | 2"));
-    assertThat(compositeLiteralOptional).isEmpty();
-  }
+  List<Tree> elements();
 }

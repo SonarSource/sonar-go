@@ -39,6 +39,7 @@ import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CommentImpl;
+import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
@@ -86,6 +87,7 @@ public final class JsonTreeConverter {
   public static final String CONTENT_TEXT = "contentText";
   public static final String DECLARATIONS = "declarations";
   public static final String DEFAULT_VALUE = "defaultValue";
+  public static final String ELEMENTS = "elements";
   public static final String ELSE_BRANCH = "elseBranch";
   public static final String ELSE_KEYWORD = "elseKeyword";
   public static final String EXPRESSION = "expression";
@@ -231,6 +233,17 @@ public final class JsonTreeConverter {
           identifier,
           classTree);
       });
+
+    register(CompositeLiteralTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(TYPE, ctx.toJson(tree.type()))
+        .add(ELEMENTS, ctx.toJsonArray(tree.elements())),
+
+      (ctx, json) -> new CompositeLiteralTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToNullableObject(json, TYPE, Tree.class),
+        ctx.fieldToObjectList(json, ELEMENTS, Tree.class)));
 
     register(ExceptionHandlingTreeImpl.class,
 

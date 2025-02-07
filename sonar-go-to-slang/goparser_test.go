@@ -46,7 +46,7 @@ func astFromString(source string) (fileSet *token.FileSet, astFile *ast.File) {
 
 // Update all .txt files in resources/ast from all .go.source files
 // Add "Test_" before to run in IDE
-func fix_all_go_files_test_automatically(t *testing.T) {
+func Test_fix_all_go_files_test_automatically(t *testing.T) {
 	for _, file := range getAllGoFiles("resources/ast") {
 		source, err := ioutil.ReadFile(file)
 		if err != nil {

@@ -21,7 +21,7 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.utils.CompositeLiteralTest.parse;
+import static org.sonar.go.utils.ParseUtils.parse;
 
 class AddressOfTest {
 

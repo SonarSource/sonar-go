@@ -1,0 +1,21 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:0::6", "text": "MyType"},
+      {"textRange": "1:9::10", "text": "{"},
+      {"textRange": "1:11::12", "text": "}"}
+    ]
+  },
+  "tree": {
+    "@type": "CompositeLiteral",
+    "metaData": "1:0::12",
+    "type": {
+      "@type": "Identifier",
+      "metaData": "1:0::6",
+      "name": "MyType"
+    },
+    "elements": [
+    ]
+  }
+}

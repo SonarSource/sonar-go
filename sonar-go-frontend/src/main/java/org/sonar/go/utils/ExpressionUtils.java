@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.ExceptionHandlingTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
@@ -172,26 +173,24 @@ public class ExpressionUtils {
       && getMemberSelectOrIdentifierName(invocation.memberSelect()).filter("new"::equals).isPresent()) {
       return getTypeOfNewExpression(invocation);
     }
-    if (!(initializer instanceof NativeTree nativeInitializer)) {
-      return Optional.empty();
+    if (skipUnaryExprIfExist(initializer) instanceof CompositeLiteralTree compositeLiteralTree) {
+      return getTypeOfCompositeLiteral(compositeLiteralTree);
     }
 
-    var isPointerType = isFrom("UnaryExpr").test(nativeInitializer) &&
-      nativeInitializer.children().size() == 2 &&
-      isStringNativeKindOfType(nativeInitializer.children().get(0), "Op");
-    if (isFrom("CompositeLit").test(nativeInitializer)) {
-      return getTypeOfCompositeLiteral(nativeInitializer);
-    } else if (isPointerType && nativeInitializer.children().get(1) instanceof NativeTree type) {
-      return getTypeOfCompositeLiteral(type);
-    } else {
-      return Optional.empty();
-    }
+    return Optional.empty();
   }
 
-  private static Optional<MemberSelectTree> getTypeOfCompositeLiteral(NativeTree compositeLiteral) {
-    return Optional.of(compositeLiteral)
-      .filter(it -> !it.children().isEmpty())
-      .map(it -> it.children().get(0))
+  private static Tree skipUnaryExprIfExist(Tree tree) {
+    if (tree instanceof NativeTree nativeInitializer && isFrom("UnaryExpr").test(nativeInitializer)
+      && nativeInitializer.children().size() == 2 && isStringNativeKindOfType(nativeInitializer.children().get(0), "Op")) {
+      return nativeInitializer.children().get(1);
+    }
+    return tree;
+  }
+
+  private static Optional<MemberSelectTree> getTypeOfCompositeLiteral(CompositeLiteralTree compositeLiteralTree) {
+    return Optional.of(compositeLiteralTree)
+      .map(CompositeLiteralTree::type)
       .filter(MemberSelectTree.class::isInstance)
       .map(MemberSelectTree.class::cast);
   }

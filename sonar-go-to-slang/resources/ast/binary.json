@@ -119,121 +119,94 @@
         {"@type": "Identifier", "metaData": "10:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:11:37:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "11:1:22:2","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "11:13:22:2","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "11:13:22:2","type":
               {"@type": "Native", "metaData": "11:13::19","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "11:13::14","nativeKind":"Lbrack"},
                 {"@type": "Native", "metaData": "11:14::15"},
                 {"@type": "Identifier", "metaData": "11:15::19","name":"bool"}
-              ]},
-              {"@type": "Native", "metaData": "11:19::20","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "12:2:21:8","nativeKind":"Elts([]Expr)","children":[
-                {"@type": "BinaryExpression", "metaData": "12:2::15","rightOperand":
-                  {"@type": "Literal", "metaData": "12:10::15","value":"false"},"operatorToken":"12:7::9","operator":"CONDITIONAL_AND","leftOperand":
-                  {"@type": "Literal", "metaData": "12:2::6","value":"true"}},
-                {"@type": "Native", "metaData": "12:15::16"},
-                {"@type": "BinaryExpression", "metaData": "13:2::15","rightOperand":
-                  {"@type": "Literal", "metaData": "13:11::15","value":"true"},"operatorToken":"13:8::10","operator":"CONDITIONAL_OR","leftOperand":
-                  {"@type": "Literal", "metaData": "13:2::7","value":"false"}},
-                {"@type": "Native", "metaData": "13:15::16"},
-                {"@type": "BinaryExpression", "metaData": "14:2::32","rightOperand":
-                  {"@type": "BinaryExpression", "metaData": "14:19::32","rightOperand":
-                    {"@type": "Literal", "metaData": "14:28::32","value":"true"},"operatorToken":"14:25::27","operator":"CONDITIONAL_AND","leftOperand":
-                    {"@type": "Literal", "metaData": "14:19::24","value":"false"}},"operatorToken":"14:16::18","operator":"CONDITIONAL_OR","leftOperand":
-                  {"@type": "BinaryExpression", "metaData": "14:2::15","rightOperand":
-                    {"@type": "Literal", "metaData": "14:10::15","value":"false"},"operatorToken":"14:7::9","operator":"CONDITIONAL_AND","leftOperand":
-                    {"@type": "Literal", "metaData": "14:2::6","value":"true"}}},
-                {"@type": "Native", "metaData": "14:32::33"},
-                {"@type": "BinaryExpression", "metaData": "16:2::8","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "16:7::8","value":"1"},"operatorToken":"16:4::6","operator":"EQUAL_TO","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "16:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "16:8::9"},
-                {"@type": "BinaryExpression", "metaData": "17:2::8","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "17:7::8","value":"1"},"operatorToken":"17:4::6","operator":"NOT_EQUAL_TO","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "17:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "17:8::9"},
-                {"@type": "BinaryExpression", "metaData": "18:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "18:6::7","value":"1"},"operatorToken":"18:4::5","operator":"GREATER_THAN","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "18:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "18:7::8"},
-                {"@type": "BinaryExpression", "metaData": "19:2::8","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "19:7::8","value":"1"},"operatorToken":"19:4::6","operator":"GREATER_THAN_OR_EQUAL_TO","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "19:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "19:8::9"},
-                {"@type": "BinaryExpression", "metaData": "20:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "20:6::7","value":"1"},"operatorToken":"20:4::5","operator":"LESS_THAN","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "20:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "20:7::8"},
-                {"@type": "BinaryExpression", "metaData": "21:2::8","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "21:7::8","value":"1"},"operatorToken":"21:4::6","operator":"LESS_THAN_OR_EQUAL_TO","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "21:2::3","value":"0"}}
-              ]},
-              {"@type": "Native", "metaData": "21:8::9"},
-              {"@type": "Native", "metaData": "22:1::2","nativeKind":"Rbrace"}
+              ]},"elements":[
+              {"@type": "BinaryExpression", "metaData": "12:2::15","rightOperand":
+                {"@type": "Literal", "metaData": "12:10::15","value":"false"},"operatorToken":"12:7::9","operator":"CONDITIONAL_AND","leftOperand":
+                {"@type": "Literal", "metaData": "12:2::6","value":"true"}},
+              {"@type": "BinaryExpression", "metaData": "13:2::15","rightOperand":
+                {"@type": "Literal", "metaData": "13:11::15","value":"true"},"operatorToken":"13:8::10","operator":"CONDITIONAL_OR","leftOperand":
+                {"@type": "Literal", "metaData": "13:2::7","value":"false"}},
+              {"@type": "BinaryExpression", "metaData": "14:2::32","rightOperand":
+                {"@type": "BinaryExpression", "metaData": "14:19::32","rightOperand":
+                  {"@type": "Literal", "metaData": "14:28::32","value":"true"},"operatorToken":"14:25::27","operator":"CONDITIONAL_AND","leftOperand":
+                  {"@type": "Literal", "metaData": "14:19::24","value":"false"}},"operatorToken":"14:16::18","operator":"CONDITIONAL_OR","leftOperand":
+                {"@type": "BinaryExpression", "metaData": "14:2::15","rightOperand":
+                  {"@type": "Literal", "metaData": "14:10::15","value":"false"},"operatorToken":"14:7::9","operator":"CONDITIONAL_AND","leftOperand":
+                  {"@type": "Literal", "metaData": "14:2::6","value":"true"}}},
+              {"@type": "BinaryExpression", "metaData": "16:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "16:7::8","value":"1"},"operatorToken":"16:4::6","operator":"EQUAL_TO","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "16:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "17:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "17:7::8","value":"1"},"operatorToken":"17:4::6","operator":"NOT_EQUAL_TO","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "17:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "18:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "18:6::7","value":"1"},"operatorToken":"18:4::5","operator":"GREATER_THAN","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "18:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "19:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "19:7::8","value":"1"},"operatorToken":"19:4::6","operator":"GREATER_THAN_OR_EQUAL_TO","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "19:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "20:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "20:6::7","value":"1"},"operatorToken":"20:4::5","operator":"LESS_THAN","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "20:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "21:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "21:7::8","value":"1"},"operatorToken":"21:4::6","operator":"LESS_THAN_OR_EQUAL_TO","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "21:2::3","value":"0"}}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "11:1::9","name":"booleans"}},
           {"@type": "VariableDeclaration", "metaData": "24:1:35:2","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "24:13:35:2","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "24:13:35:2","type":
               {"@type": "Native", "metaData": "24:13::18","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "24:13::14","nativeKind":"Lbrack"},
                 {"@type": "Native", "metaData": "24:14::15"},
                 {"@type": "Identifier", "metaData": "24:15::18","name":"int"}
+              ]},"elements":[
+              {"@type": "BinaryExpression", "metaData": "25:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "25:6::7","value":"1"},"operatorToken":"25:4::5","operator":"PLUS","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "25:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "26:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "26:6::7","value":"1"},"operatorToken":"26:4::5","operator":"MINUS","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "26:2::3","value":"0"}},
+              {"@type": "Native", "metaData": "27:2::7","nativeKind":"[2](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "27:2::3","value":"0"},
+                {"@type": "Native", "metaData": "27:4::5","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "27:6::7","value":"1"}
               ]},
-              {"@type": "Native", "metaData": "24:18::19","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "25:2:34:8","nativeKind":"Elts([]Expr)","children":[
-                {"@type": "BinaryExpression", "metaData": "25:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "25:6::7","value":"1"},"operatorToken":"25:4::5","operator":"PLUS","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "25:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "25:7::8"},
-                {"@type": "BinaryExpression", "metaData": "26:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "26:6::7","value":"1"},"operatorToken":"26:4::5","operator":"MINUS","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "26:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "26:7::8"},
-                {"@type": "Native", "metaData": "27:2::7","nativeKind":"[2](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "27:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "27:4::5","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "27:6::7","value":"1"}
-                ]},
-                {"@type": "Native", "metaData": "27:7::8"},
-                {"@type": "Native", "metaData": "28:2::7","nativeKind":"[3](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "28:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "28:4::5","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "28:6::7","value":"1"}
-                ]},
-                {"@type": "Native", "metaData": "28:7::8"},
-                {"@type": "BinaryExpression", "metaData": "29:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "29:6::7","value":"1"},"operatorToken":"29:4::5","operator":"DIVIDED_BY","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "29:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "29:7::8"},
-                {"@type": "BinaryExpression", "metaData": "30:2::7","rightOperand":
-                  {"@type": "IntegerLiteral", "metaData": "30:6::7","value":"1"},"operatorToken":"30:4::5","operator":"TIMES","leftOperand":
-                  {"@type": "IntegerLiteral", "metaData": "30:2::3","value":"0"}},
-                {"@type": "Native", "metaData": "30:7::8"},
-                {"@type": "Native", "metaData": "31:2::7","nativeKind":"[6](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "31:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "31:4::5","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "31:6::7","value":"1"}
-                ]},
-                {"@type": "Native", "metaData": "31:7::8"},
-                {"@type": "Native", "metaData": "32:2::8","nativeKind":"[7](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "32:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "32:4::6","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "32:7::8","value":"1"}
-                ]},
-                {"@type": "Native", "metaData": "32:8::9"},
-                {"@type": "Native", "metaData": "33:2::8","nativeKind":"[8](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "33:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "33:4::6","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "33:7::8","value":"1"}
-                ]},
-                {"@type": "Native", "metaData": "33:8::9"},
-                {"@type": "Native", "metaData": "34:2::8","nativeKind":"[9](BinaryExpr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "34:2::3","value":"0"},
-                  {"@type": "Native", "metaData": "34:4::6","nativeKind":"Op"},
-                  {"@type": "IntegerLiteral", "metaData": "34:7::8","value":"1"}
-                ]}
+              {"@type": "Native", "metaData": "28:2::7","nativeKind":"[3](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "28:2::3","value":"0"},
+                {"@type": "Native", "metaData": "28:4::5","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "28:6::7","value":"1"}
               ]},
-              {"@type": "Native", "metaData": "34:8::9"},
-              {"@type": "Native", "metaData": "35:1::2","nativeKind":"Rbrace"}
+              {"@type": "BinaryExpression", "metaData": "29:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "29:6::7","value":"1"},"operatorToken":"29:4::5","operator":"DIVIDED_BY","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "29:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "30:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "30:6::7","value":"1"},"operatorToken":"30:4::5","operator":"TIMES","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "30:2::3","value":"0"}},
+              {"@type": "Native", "metaData": "31:2::7","nativeKind":"[6](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "31:2::3","value":"0"},
+                {"@type": "Native", "metaData": "31:4::5","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "31:6::7","value":"1"}
+              ]},
+              {"@type": "Native", "metaData": "32:2::8","nativeKind":"[7](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "32:2::3","value":"0"},
+                {"@type": "Native", "metaData": "32:4::6","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "32:7::8","value":"1"}
+              ]},
+              {"@type": "Native", "metaData": "33:2::8","nativeKind":"[8](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "33:2::3","value":"0"},
+                {"@type": "Native", "metaData": "33:4::6","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "33:7::8","value":"1"}
+              ]},
+              {"@type": "Native", "metaData": "34:2::8","nativeKind":"[9](BinaryExpr)","children":[
+                {"@type": "IntegerLiteral", "metaData": "34:2::3","value":"0"},
+                {"@type": "Native", "metaData": "34:4::6","nativeKind":"Op"},
+                {"@type": "IntegerLiteral", "metaData": "34:7::8","value":"1"}
+              ]}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "24:1::9","name":"integers"}}
         ]}}

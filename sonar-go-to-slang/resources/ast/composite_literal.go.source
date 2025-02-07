@@ -1,0 +1,23 @@
+package main
+
+var arr = [3]int{1, 2, 3}
+
+var slice = []int{1, 2, 3}
+
+type Person struct {
+    Name string
+    Age  int
+}
+
+var person = Person{Name: "Alice", Age: 30}
+var persons = [2]Person {
+    {Name: "Alice", Age: 30},
+    {Name: "Bob", Age: 31},
+}
+
+var m = map[string]int{"one": 1, "two": 2}
+
+var nested = []map[string]int{
+    {"one": 1, "two": 2},
+    {"three": 3, "four": 4},
+}

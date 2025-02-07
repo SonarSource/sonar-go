@@ -28,6 +28,7 @@ import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CatchTree;
 import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.Comment;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.ExceptionHandlingTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.FunctionInvocationTree;
@@ -61,6 +62,7 @@ import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
+import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
@@ -257,6 +259,19 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(tokens(tree)).isEqualTo("1:0:1:11 - class { }");
     assertThat(tree.identifier()).isNull();
     assertThat(tokens(tree.classTree())).isEqualTo("1:8:1:11 - { }");
+  }
+
+  @Test
+  void composite_literal() throws IOException {
+    Token tokenType = otherToken(1, 0, "MyType");
+    otherToken(1, 9, "{");
+    Token tokenClose = otherToken(1, 11, "}");
+    CompositeLiteralTree compositeLiteralTree = new CompositeLiteralTreeImpl(metaData(tokenType, tokenClose), new IdentifierTreeImpl(metaData(tokenType), tokenType.text()),
+      emptyList());
+    CompositeLiteralTree tree = checkJsonSerializationDeserialization(compositeLiteralTree, "composite_literal.json");
+    assertThat(tokens(tree)).isEqualTo("1:0:1:12 - MyType { }");
+    assertThat(tree.type()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("MyType"));
+    assertThat(tree.elements()).isEmpty();
   }
 
   @Test

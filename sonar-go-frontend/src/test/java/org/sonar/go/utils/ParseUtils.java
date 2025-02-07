@@ -16,18 +16,26 @@
  */
 package org.sonar.go.utils;
 
-import org.junit.jupiter.api.Test;
+import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.TopLevelTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.testing.TestGoConverter;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.utils.ParseUtils.parse;
+public class ParseUtils {
+  private ParseUtils() {
+  }
 
-class KeyValueTest {
-  // Note: more tests indirectly cover KeyValue in CompositeLiteralTest.
-
-  @Test
-  void shouldNotParseOtherNativeTree() {
-    var compositeLiteralOptional = KeyValue.of((NativeTree) parse("1 | 2"));
-    assertThat(compositeLiteralOptional).isEmpty();
+  public static Tree parse(String code) {
+    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+      package main
+      func main() {
+        %s
+      }
+      """.formatted(code));
+    var mainFunc = topLevelTree.declarations().get(1);
+    var mainBlock = (BlockTree) mainFunc.children().get(1);
+    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
+    return expressionStatement.children().get(0);
   }
 }

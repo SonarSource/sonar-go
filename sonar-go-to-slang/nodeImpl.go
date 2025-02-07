@@ -30,6 +30,8 @@ const conditionField = "condition"
 const expressionField = "expression"
 const lParentKind = "Lparen"
 const rParentKind = "Rparen"
+const lBraceKind = "Lbrace"
+const rBraceKind = "Rbrace"
 
 func (t *SlangMapper) mapReturnStmtImpl(stmt *ast.ReturnStmt, fieldName string) *Node {
 	var children []*Node
@@ -333,11 +335,11 @@ func (t *SlangMapper) mapFuncTypeDeclImpl(funcType *ast.FuncType, fieldName stri
 
 func (t *SlangMapper) mapBlockStmtImpl(blockStmt *ast.BlockStmt, fieldName string) *Node {
 	var children []*Node
-	children = t.appendNode(children, t.createTokenFromPosAstToken(blockStmt.Lbrace, token.LBRACE, "Lbrace"))
+	children = t.appendNode(children, t.createTokenFromPosAstToken(blockStmt.Lbrace, token.LBRACE, lBraceKind))
 	for i := 0; i < len(blockStmt.List); i++ {
 		children = t.appendNode(children, t.mapStmt(blockStmt.List[i], "["+strconv.Itoa(i)+"]"))
 	}
-	children = t.appendNode(children, t.createTokenFromPosAstToken(blockStmt.Rbrace, token.RBRACE, "Rbrace"))
+	children = t.appendNode(children, t.createTokenFromPosAstToken(blockStmt.Rbrace, token.RBRACE, rBraceKind))
 
 	slangField := make(map[string]interface{})
 
@@ -870,7 +872,25 @@ func (t *SlangMapper) mapChanTypeImpl(chanType *ast.ChanType, fieldName string) 
 }
 
 func (t *SlangMapper) mapCompositeLitImpl(lit *ast.CompositeLit, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	typeNode := t.mapExpr(lit.Type, "Type")
+	children = t.appendNode(children, typeNode)
+	slangField["type"] = typeNode
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(lit.Lbrace, token.LBRACE, lBraceKind))
+	var elements []*Node
+	for i := 0; i < len(lit.Elts); i++ {
+		element := t.mapExpr(lit.Elts[i], "["+strconv.Itoa(i)+"]")
+		elements = append(elements, element)
+		children = t.appendNode(children, element)
+	}
+	slangField["elements"] = t.filterOutComments(elements)
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(lit.Rbrace, token.RBRACE, rBraceKind))
+
+	return t.createNode(lit, children, fieldName+"(CompositeLit)", "CompositeLiteral", slangField)
 }
 
 func (t *SlangMapper) mapEllipsisImpl(ellipsis *ast.Ellipsis, fieldName string) *Node {

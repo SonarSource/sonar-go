@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.StringLiteralTree;
@@ -33,7 +34,7 @@ class CompositeLiteralTest {
 
   @Test
   void shouldParseEmptyCompositeLiteral() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("Composite{ }"));
+    var compositeLiteralOptional = CompositeLiteral.of(parseCompositeLiteral("Composite{ }"));
     assertThat(compositeLiteralOptional).isPresent();
     CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
 
@@ -44,7 +45,7 @@ class CompositeLiteralTest {
 
   @Test
   void shouldParseCompositeLiteralWithKeyValues() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("Composite{ Key: \"value\" }"));
+    var compositeLiteralOptional = CompositeLiteral.of(parseCompositeLiteral("Composite{ Key: \"value\" }"));
     assertThat(compositeLiteralOptional).isPresent();
     CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
 
@@ -61,26 +62,36 @@ class CompositeLiteralTest {
 
   @Test
   void shouldParseCompositeLiteralWithMultipleKeyValues() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("Composite{ Key: \"value\", Key2: \"value2\" }"));
+    var compositeLiteralOptional = CompositeLiteral.of(parseCompositeLiteral("Composite{ Key: \"value\", Key2: \"value2\" }"));
     assertThat(compositeLiteralOptional).isPresent();
     CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
 
     assertThat(compositeLiteral.type()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("Composite"));
-    // Two key values and one comma.
-    assertThat(compositeLiteral.elements()).hasSize(3);
+    assertThat(compositeLiteral.elements()).hasSize(2);
     assertThat(compositeLiteral.getKeyValuesElements()).hasSize(2);
     assertThat(compositeLiteral.hasType("sonar", "Composite")).isFalse();
   }
 
   @Test
-  void shouldNotParseOtherNativeTree() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("1 | 2"));
-    assertThat(compositeLiteralOptional).isEmpty();
+  void shouldParseInnerCompositeLiteralWithoutType() {
+    var compositeLiteral = parseCompositeLiteral("""
+      []map[string]int{
+          {"one": 1, "two": 2},
+          {"three": 3, "four": 4},
+      }""");
+    assertThat(compositeLiteral.type()).isNotNull();
+    assertThat(compositeLiteral.elements()).hasSize(2);
+    var element1 = (CompositeLiteralTree) compositeLiteral.elements().get(0);
+    assertThat(element1.type()).isNull();
+    assertThat(element1.elements()).hasSize(2);
+    var element2 = (CompositeLiteralTree) compositeLiteral.elements().get(1);
+    assertThat(element2.type()).isNull();
+    assertThat(element2.elements()).hasSize(2);
   }
 
   @Test
   void shouldBePossibleToTestType() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("sonar.Composite{ }"));
+    var compositeLiteralOptional = CompositeLiteral.of(parseCompositeLiteral("sonar.Composite{ }"));
     assertThat(compositeLiteralOptional).isPresent();
     CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
     assertThat(compositeLiteral.hasType("sonar", "Composite")).isTrue();
@@ -90,13 +101,13 @@ class CompositeLiteralTest {
 
   @Test
   void cannotTestNestedMemberSelect() {
-    var compositeLiteralOptional = CompositeLiteral.of((NativeTree) parse("com.sonar.Composite{ }"));
+    var compositeLiteralOptional = CompositeLiteral.of(parseCompositeLiteral("com.sonar.Composite{ }"));
     assertThat(compositeLiteralOptional).isPresent();
     CompositeLiteral compositeLiteral = compositeLiteralOptional.get();
     assertThat(compositeLiteral.hasType("sonar", "Composite")).isFalse();
   }
 
-  public static Tree parse(String code) {
+  public static CompositeLiteralTree parseCompositeLiteral(String code) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
       func main() {
@@ -106,6 +117,6 @@ class CompositeLiteralTest {
     var mainFunc = topLevelTree.declarations().get(1);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
     var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
-    return expressionStatement.children().get(0);
+    return (CompositeLiteralTree) expressionStatement.children().get(0);
   }
 }

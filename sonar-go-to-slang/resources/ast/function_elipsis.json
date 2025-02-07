@@ -127,7 +127,7 @@
             ]}
           ]},
           {"@type": "VariableDeclaration", "metaData": "11:1::48","type":null,"isVal":false,"initializer":
-            {"@type": "Native", "metaData": "11:11::48","nativeKind":"[0](CompositeLit)","children":[
+            {"@type": "CompositeLiteral", "metaData": "11:11::48","type":
               {"@type": "Native", "metaData": "11:11::24","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "11:11::12","nativeKind":"Lbrack"},
                 {"@type": "Native", "metaData": "11:12::13"},
@@ -138,18 +138,11 @@
                     {"@type": "Native", "metaData": "11:23::24","nativeKind":"Closing"}
                   ]}
                 ]}
-              ]},
-              {"@type": "Native", "metaData": "11:24::25","nativeKind":"Lbrace"},
-              {"@type": "Native", "metaData": "11:25::47","nativeKind":"Elts([]Expr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "11:25::26","value":"2"},
-                {"@type": "Native", "metaData": "11:26::27"},
-                {"@type": "StringLiteral", "metaData": "11:28::34","value":"\"test\"","content":"test"},
-                {"@type": "Native", "metaData": "11:34::35"},
-                {"@type": "Native", "metaData": "11:36::40","nativeKind":"[2](BasicLit)"},
-                {"@type": "Native", "metaData": "11:40::41"},
-                {"@type": "Literal", "metaData": "11:42::47","value":"false"}
-              ]},
-              {"@type": "Native", "metaData": "11:47::48","nativeKind":"Rbrace"}
+              ]},"elements":[
+              {"@type": "IntegerLiteral", "metaData": "11:25::26","value":"2"},
+              {"@type": "StringLiteral", "metaData": "11:28::34","value":"\"test\"","content":"test"},
+              {"@type": "Native", "metaData": "11:36::40","nativeKind":"[2](BasicLit)"},
+              {"@type": "Literal", "metaData": "11:42::47","value":"false"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "11:1::7","name":"values"}},
           {"@type": "Native", "metaData": "12:1::34","nativeKind":"[2](ExprStmt)","children":[
