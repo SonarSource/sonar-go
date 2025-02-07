@@ -48,6 +48,7 @@ import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
+import org.sonar.go.impl.KeyValueTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
@@ -127,6 +128,7 @@ public final class JsonTreeConverter {
   public static final String TRY_BLOCK = "tryBlock";
   public static final String TRY_KEYWORD = "tryKeyword";
   public static final String TYPE = "type";
+  public static final String KEY = "key";
   public static final String VALUE = "value";
   public static final String OTHER = "OTHER";
 
@@ -245,6 +247,17 @@ public final class JsonTreeConverter {
         ctx.metaData(json),
         ctx.fieldToNullableObject(json, TYPE, Tree.class),
         ctx.fieldToObjectList(json, ELEMENTS, Tree.class)));
+
+    register(KeyValueTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(KEY, ctx.toJson(tree.key()))
+        .add(VALUE, ctx.toJson(tree.value())),
+
+      (ctx, json) -> new KeyValueTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, KEY, Tree.class),
+        ctx.fieldToObject(json, VALUE, Tree.class)));
 
     register(ExceptionHandlingTreeImpl.class,
 

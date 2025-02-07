@@ -912,7 +912,21 @@ func (t *SlangMapper) mapInterfaceTypeImpl(interfaceType *ast.InterfaceType, fie
 }
 
 func (t *SlangMapper) mapKeyValueExprImpl(expr *ast.KeyValueExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	key := t.mapExpr(expr.Key, "Key")
+	slangField["key"] = key
+	children = t.appendNode(children, key)
+
+	colon := t.createTokenFromPosAstToken(expr.Colon, token.COLON, "colon")
+	children = t.appendNode(children, colon)
+
+	value := t.mapExpr(expr.Value, "Value")
+	slangField["value"] = value
+	children = t.appendNode(children, value)
+
+	return t.createNode(expr, children, fieldName+"(KeyValueExpr)", "KeyValue", slangField)
 }
 
 func (t *SlangMapper) mapMapTypeImpl(mapType *ast.MapType, fieldName string) *Node {

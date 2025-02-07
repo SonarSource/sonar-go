@@ -24,7 +24,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go/ast"
 	"go/token"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,16 +45,16 @@ func astFromString(source string) (fileSet *token.FileSet, astFile *ast.File) {
 
 // Update all .txt files in resources/ast from all .go.source files
 // Add "Test_" before to run in IDE
-func Test_fix_all_go_files_test_automatically(t *testing.T) {
+func fix_all_go_files_test_automatically(t *testing.T) {
 	for _, file := range getAllGoFiles("resources/ast") {
-		source, err := ioutil.ReadFile(file)
+		source, err := os.ReadFile(file)
 		if err != nil {
 			panic(err)
 		}
 
 		actual := toJsonSlang(slangFromString(string(source), ""))
 		d1 := []byte(actual)
-		errWrite := ioutil.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
+		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
 		if errWrite != nil {
 			panic(errWrite)
 		}
@@ -64,7 +63,7 @@ func Test_fix_all_go_files_test_automatically(t *testing.T) {
 
 func Test_all_go_files(t *testing.T) {
 	for _, file := range getAllGoFiles("resources/ast") {
-		source, err := ioutil.ReadFile(file)
+		source, err := os.ReadFile(file)
 		if err != nil {
 			panic(err)
 		}
@@ -76,7 +75,7 @@ func Test_all_go_files(t *testing.T) {
 			panic(err1)
 		}
 
-		expectedData, err := ioutil.ReadFile(strings.Replace(file, "go.source", "json", 1))
+		expectedData, err := os.ReadFile(strings.Replace(file, "go.source", "json", 1))
 		if err != nil {
 			panic(err)
 		}

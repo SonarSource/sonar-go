@@ -21,3 +21,8 @@ var nested = []map[string]int{
     {"one": 1, "two": 2},
     {"three": 3, "four": 4},
 }
+
+var personValueInitializer = Person{
+    "Bob",
+    31,
+}

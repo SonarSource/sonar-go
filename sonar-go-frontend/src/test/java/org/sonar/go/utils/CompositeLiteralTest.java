@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.KeyValueTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
@@ -52,10 +53,10 @@ class CompositeLiteralTest {
     assertThat(compositeLiteral.type()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("Composite"));
     List<Tree> elements = compositeLiteral.elements();
     assertThat(elements).hasSize(1);
-    assertThat(elements.get(0)).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind().toString()).contains("KeyValue"));
-    Optional<KeyValue> keyValuesElements = compositeLiteral.getKeyValuesElements().findFirst();
+    assertThat(elements.get(0)).isInstanceOf(KeyValueTree.class);
+    Optional<KeyValueTree> keyValuesElements = compositeLiteral.getKeyValuesElements().findFirst();
     assertThat(keyValuesElements).isPresent();
-    KeyValue keyValue = keyValuesElements.get();
+    KeyValueTree keyValue = keyValuesElements.get();
     assertThat(keyValue.key()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("Key"));
     assertThat(keyValue.value()).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteral -> assertThat(stringLiteral.content()).isEqualTo("value"));
   }

@@ -27,5 +27,10 @@ public interface CompositeLiteralTree extends Tree {
   @CheckForNull
   Tree type();
 
+  /**
+   * Elements of this composite literal. A composite literal in Go either has all elements as KeyValueTree (field initialization),
+   * or all elements as non-KeyValueTree (value initialization, when field names are omitted). Mixture of value and field initialization
+   * is not allowed.
+   */
   List<Tree> elements();
 }

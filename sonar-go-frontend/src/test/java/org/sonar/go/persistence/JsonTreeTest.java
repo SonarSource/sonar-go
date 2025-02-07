@@ -71,6 +71,7 @@ import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
+import org.sonar.go.impl.KeyValueTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
@@ -172,7 +173,8 @@ class JsonTreeTest extends JsonTestHelper {
     Tree identifierX = new IdentifierTreeImpl(metaData(tokenX), tokenX.text());
     Tree identifierY = new IdentifierTreeImpl(metaData(tokenY), tokenY.text());
     TreeMetaData metaData = metaData(tokenX, tokenY);
-    BinaryExpressionTree initialExpression = new BinaryExpressionTreeImpl(metaData, BinaryExpressionTree.Operator.LESS_THAN, tokenLess, identifierX, identifierY);
+    BinaryExpressionTree initialExpression = new BinaryExpressionTreeImpl(metaData, BinaryExpressionTree.Operator.LESS_THAN, tokenLess,
+      identifierX, identifierY);
     BinaryExpressionTree expression = checkJsonSerializationDeserialization(initialExpression, "binary_expression.json");
     assertThat(expression.leftOperand().textRange()).isEqualTo(tokenX.textRange());
     assertThat(expression.operator()).isEqualTo(BinaryExpressionTree.Operator.LESS_THAN);
@@ -267,12 +269,29 @@ class JsonTreeTest extends JsonTestHelper {
     Token tokenType = otherToken(1, 0, "MyType");
     otherToken(1, 9, "{");
     Token tokenClose = otherToken(1, 11, "}");
-    CompositeLiteralTree compositeLiteralTree = new CompositeLiteralTreeImpl(metaData(tokenType, tokenClose), new IdentifierTreeImpl(metaData(tokenType), tokenType.text()),
+    CompositeLiteralTree compositeLiteralTree = new CompositeLiteralTreeImpl(metaData(tokenType, tokenClose),
+      new IdentifierTreeImpl(metaData(tokenType), tokenType.text()),
       emptyList());
     CompositeLiteralTree tree = checkJsonSerializationDeserialization(compositeLiteralTree, "composite_literal.json");
     assertThat(tokens(tree)).isEqualTo("1:0:1:12 - MyType { }");
-    assertThat(tree.type()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("MyType"));
+    assertThat(tree.type()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo(
+      "MyType"));
     assertThat(tree.elements()).isEmpty();
+  }
+
+  @Test
+  void key_value() throws IOException {
+    var key = otherToken(1, 0, "Name");
+    otherToken(1, 5, ":");
+    var value = otherToken(1, 7, "Example");
+    var keyValueTree = new KeyValueTreeImpl(metaData(key, value), new IdentifierTreeImpl(metaData(key), key.text()),
+      new LiteralTreeImpl(metaData(value), value.text()));
+
+    var tree = checkJsonSerializationDeserialization(keyValueTree, "key_value.json");
+
+    assertThat(tokens(tree)).isEqualTo("1:0:1:14 - Name : Example");
+    assertThat(tree.key()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("Name"));
+    assertThat(tree.value()).isInstanceOfSatisfying(LiteralTree.class, literal -> assertThat(literal.value()).isEqualTo("Example"));
   }
 
   @Test
@@ -340,7 +359,8 @@ class JsonTreeTest extends JsonTestHelper {
     Token tokenNative = keywordToken(1, 24, "->");
     List<Tree> nativeChildren = singletonList(new NativeTreeImpl(metaData(tokenNative), StringNativeKind.of("arrow"), emptyList()));
     TreeMetaData metaData = metaData(tokenPublic, tokenNative);
-    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeTree, name, parameters, body, nativeChildren);
+    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeTree, name, parameters, body,
+      nativeChildren);
     FunctionDeclarationTree function = checkJsonSerializationDeserialization(initialFunction, "function_declaration.json");
     assertThat(function.textRange()).isEqualTo(metaData.textRange());
     assertThat(function.returnType().textRange()).isEqualTo(tokenInt.textRange());
@@ -804,9 +824,11 @@ class JsonTreeTest extends JsonTestHelper {
     Token tokenArg = stringToken(1, 4, "\"arg\"");
     Tree argument = new StringLiteralTreeImpl(metaData(tokenArg), tokenArg.text());
     TreeMetaData metaData = metaData(tokenBar, tokenArg);
-    FunctionInvocationTree initialInvocation = new FunctionInvocationTreeImpl(metaData, new IdentifierTreeImpl(metaData(tokenBar), tokenBar.text()), singletonList(argument));
+    FunctionInvocationTree initialInvocation = new FunctionInvocationTreeImpl(metaData, new IdentifierTreeImpl(metaData(tokenBar),
+      tokenBar.text()), singletonList(argument));
     FunctionInvocationTree invocation = checkJsonSerializationDeserialization(initialInvocation, "function_invocation.json");
-    assertThat(invocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("bar"));
+    assertThat(invocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifier -> assertThat(identifier.name()).isEqualTo("bar"));
     assertThat(invocation.arguments()).hasSize(1);
     assertThat(((StringLiteralTree) invocation.arguments().get(0)).value()).isEqualTo("\"arg\"");
   }

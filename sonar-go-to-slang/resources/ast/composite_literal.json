@@ -131,11 +131,21 @@
       {"text":",","textRange":"21:24::25"},
       {"text":"}","textRange":"23:0::1"},
       {"text":",","textRange":"22:27::28"},
-      {"text":"=","textRange":"20:11::12"}
+      {"text":"=","textRange":"20:11::12"},
+      {"text":"var","textRange":"25:0::3","type":"KEYWORD"},
+      {"text":"personValueInitializer","textRange":"25:4::26"},
+      {"text":"Person","textRange":"25:29::35"},
+      {"text":"{","textRange":"25:35::36"},
+      {"text":"\"Bob\"","textRange":"26:4::9","type":"STRING_LITERAL"},
+      {"text":"31","textRange":"27:4::6"},
+      {"text":",","textRange":"26:9::10"},
+      {"text":"}","textRange":"28:0::1"},
+      {"text":",","textRange":"27:6::7"},
+      {"text":"=","textRange":"25:27::28"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:24:0","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:28:1","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
@@ -195,16 +205,12 @@
         null,"isVal":false,"initializer":
         {"@type": "CompositeLiteral", "metaData": "12:13::43","type":
           {"@type": "Identifier", "metaData": "12:13::19","name":"Person"},"elements":[
-          {"@type": "Native", "metaData": "12:20::33","nativeKind":"[0](KeyValueExpr)","children":[
-            {"@type": "Identifier", "metaData": "12:20::24","name":"Name"},
-            {"@type": "Native", "metaData": "12:24::25","nativeKind":"Colon"},
-            {"@type": "StringLiteral", "metaData": "12:26::33","value":"\"Alice\"","content":"Alice"}
-          ]},
-          {"@type": "Native", "metaData": "12:35::42","nativeKind":"[1](KeyValueExpr)","children":[
-            {"@type": "Identifier", "metaData": "12:35::38","name":"Age"},
-            {"@type": "Native", "metaData": "12:38::39","nativeKind":"Colon"},
-            {"@type": "IntegerLiteral", "metaData": "12:40::42","value":"30"}
-          ]}
+          {"@type": "KeyValue", "metaData": "12:20::33","value":
+            {"@type": "StringLiteral", "metaData": "12:26::33","value":"\"Alice\"","content":"Alice"},"key":
+            {"@type": "Identifier", "metaData": "12:20::24","name":"Name"}},
+          {"@type": "KeyValue", "metaData": "12:35::42","value":
+            {"@type": "IntegerLiteral", "metaData": "12:40::42","value":"30"},"key":
+            {"@type": "Identifier", "metaData": "12:35::38","name":"Age"}}
         ]},"identifier":
         {"@type": "Identifier", "metaData": "12:4::10","name":"person"}},
       {"@type": "VariableDeclaration", "metaData": "13:0:16:1","type":
@@ -218,29 +224,21 @@
           ]},"elements":[
           {"@type": "CompositeLiteral", "metaData": "14:4::28","type":
             null,"elements":[
-            {"@type": "Native", "metaData": "14:5::18","nativeKind":"[0](KeyValueExpr)","children":[
-              {"@type": "Identifier", "metaData": "14:5::9","name":"Name"},
-              {"@type": "Native", "metaData": "14:9::10","nativeKind":"Colon"},
-              {"@type": "StringLiteral", "metaData": "14:11::18","value":"\"Alice\"","content":"Alice"}
-            ]},
-            {"@type": "Native", "metaData": "14:20::27","nativeKind":"[1](KeyValueExpr)","children":[
-              {"@type": "Identifier", "metaData": "14:20::23","name":"Age"},
-              {"@type": "Native", "metaData": "14:23::24","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "14:25::27","value":"30"}
-            ]}
+            {"@type": "KeyValue", "metaData": "14:5::18","value":
+              {"@type": "StringLiteral", "metaData": "14:11::18","value":"\"Alice\"","content":"Alice"},"key":
+              {"@type": "Identifier", "metaData": "14:5::9","name":"Name"}},
+            {"@type": "KeyValue", "metaData": "14:20::27","value":
+              {"@type": "IntegerLiteral", "metaData": "14:25::27","value":"30"},"key":
+              {"@type": "Identifier", "metaData": "14:20::23","name":"Age"}}
           ]},
           {"@type": "CompositeLiteral", "metaData": "15:4::26","type":
             null,"elements":[
-            {"@type": "Native", "metaData": "15:5::16","nativeKind":"[0](KeyValueExpr)","children":[
-              {"@type": "Identifier", "metaData": "15:5::9","name":"Name"},
-              {"@type": "Native", "metaData": "15:9::10","nativeKind":"Colon"},
-              {"@type": "StringLiteral", "metaData": "15:11::16","value":"\"Bob\"","content":"Bob"}
-            ]},
-            {"@type": "Native", "metaData": "15:18::25","nativeKind":"[1](KeyValueExpr)","children":[
-              {"@type": "Identifier", "metaData": "15:18::21","name":"Age"},
-              {"@type": "Native", "metaData": "15:21::22","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "15:23::25","value":"31"}
-            ]}
+            {"@type": "KeyValue", "metaData": "15:5::16","value":
+              {"@type": "StringLiteral", "metaData": "15:11::16","value":"\"Bob\"","content":"Bob"},"key":
+              {"@type": "Identifier", "metaData": "15:5::9","name":"Name"}},
+            {"@type": "KeyValue", "metaData": "15:18::25","value":
+              {"@type": "IntegerLiteral", "metaData": "15:23::25","value":"31"},"key":
+              {"@type": "Identifier", "metaData": "15:18::21","name":"Age"}}
           ]}
         ]},"identifier":
         {"@type": "Identifier", "metaData": "13:4::11","name":"persons"}},
@@ -254,16 +252,12 @@
             {"@type": "Native", "metaData": "18:18::19"},
             {"@type": "Identifier", "metaData": "18:19::22","name":"int"}
           ]},"elements":[
-          {"@type": "Native", "metaData": "18:23::31","nativeKind":"[0](KeyValueExpr)","children":[
-            {"@type": "StringLiteral", "metaData": "18:23::28","value":"\"one\"","content":"one"},
-            {"@type": "Native", "metaData": "18:28::29","nativeKind":"Colon"},
-            {"@type": "IntegerLiteral", "metaData": "18:30::31","value":"1"}
-          ]},
-          {"@type": "Native", "metaData": "18:33::41","nativeKind":"[1](KeyValueExpr)","children":[
-            {"@type": "StringLiteral", "metaData": "18:33::38","value":"\"two\"","content":"two"},
-            {"@type": "Native", "metaData": "18:38::39","nativeKind":"Colon"},
-            {"@type": "IntegerLiteral", "metaData": "18:40::41","value":"2"}
-          ]}
+          {"@type": "KeyValue", "metaData": "18:23::31","value":
+            {"@type": "IntegerLiteral", "metaData": "18:30::31","value":"1"},"key":
+            {"@type": "StringLiteral", "metaData": "18:23::28","value":"\"one\"","content":"one"}},
+          {"@type": "KeyValue", "metaData": "18:33::41","value":
+            {"@type": "IntegerLiteral", "metaData": "18:40::41","value":"2"},"key":
+            {"@type": "StringLiteral", "metaData": "18:33::38","value":"\"two\"","content":"two"}}
         ]},"identifier":
         {"@type": "Identifier", "metaData": "18:4::5","name":"m"}},
       {"@type": "VariableDeclaration", "metaData": "20:0:23:1","type":
@@ -282,31 +276,31 @@
           ]},"elements":[
           {"@type": "CompositeLiteral", "metaData": "21:4::24","type":
             null,"elements":[
-            {"@type": "Native", "metaData": "21:5::13","nativeKind":"[0](KeyValueExpr)","children":[
-              {"@type": "StringLiteral", "metaData": "21:5::10","value":"\"one\"","content":"one"},
-              {"@type": "Native", "metaData": "21:10::11","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "21:12::13","value":"1"}
-            ]},
-            {"@type": "Native", "metaData": "21:15::23","nativeKind":"[1](KeyValueExpr)","children":[
-              {"@type": "StringLiteral", "metaData": "21:15::20","value":"\"two\"","content":"two"},
-              {"@type": "Native", "metaData": "21:20::21","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "21:22::23","value":"2"}
-            ]}
+            {"@type": "KeyValue", "metaData": "21:5::13","value":
+              {"@type": "IntegerLiteral", "metaData": "21:12::13","value":"1"},"key":
+              {"@type": "StringLiteral", "metaData": "21:5::10","value":"\"one\"","content":"one"}},
+            {"@type": "KeyValue", "metaData": "21:15::23","value":
+              {"@type": "IntegerLiteral", "metaData": "21:22::23","value":"2"},"key":
+              {"@type": "StringLiteral", "metaData": "21:15::20","value":"\"two\"","content":"two"}}
           ]},
           {"@type": "CompositeLiteral", "metaData": "22:4::27","type":
             null,"elements":[
-            {"@type": "Native", "metaData": "22:5::15","nativeKind":"[0](KeyValueExpr)","children":[
-              {"@type": "StringLiteral", "metaData": "22:5::12","value":"\"three\"","content":"three"},
-              {"@type": "Native", "metaData": "22:12::13","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "22:14::15","value":"3"}
-            ]},
-            {"@type": "Native", "metaData": "22:17::26","nativeKind":"[1](KeyValueExpr)","children":[
-              {"@type": "StringLiteral", "metaData": "22:17::23","value":"\"four\"","content":"four"},
-              {"@type": "Native", "metaData": "22:23::24","nativeKind":"Colon"},
-              {"@type": "IntegerLiteral", "metaData": "22:25::26","value":"4"}
-            ]}
+            {"@type": "KeyValue", "metaData": "22:5::15","value":
+              {"@type": "IntegerLiteral", "metaData": "22:14::15","value":"3"},"key":
+              {"@type": "StringLiteral", "metaData": "22:5::12","value":"\"three\"","content":"three"}},
+            {"@type": "KeyValue", "metaData": "22:17::26","value":
+              {"@type": "IntegerLiteral", "metaData": "22:25::26","value":"4"},"key":
+              {"@type": "StringLiteral", "metaData": "22:17::23","value":"\"four\"","content":"four"}}
           ]}
         ]},"identifier":
-        {"@type": "Identifier", "metaData": "20:4::10","name":"nested"}}
+        {"@type": "Identifier", "metaData": "20:4::10","name":"nested"}},
+      {"@type": "VariableDeclaration", "metaData": "25:0:28:1","type":
+        null,"isVal":false,"initializer":
+        {"@type": "CompositeLiteral", "metaData": "25:29:28:1","type":
+          {"@type": "Identifier", "metaData": "25:29::35","name":"Person"},"elements":[
+          {"@type": "StringLiteral", "metaData": "26:4::9","value":"\"Bob\"","content":"Bob"},
+          {"@type": "IntegerLiteral", "metaData": "27:4::6","value":"31"}
+        ]},"identifier":
+        {"@type": "Identifier", "metaData": "25:4::26","name":"personValueInitializer"}}
     ]}
 } 

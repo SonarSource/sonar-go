@@ -14,21 +14,13 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.utils;
+package org.sonar.go.api;
 
-import java.util.List;
-import java.util.Optional;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Tree;
+/**
+ * Represents {@code go.ast.KeyValueExpr}.
+ */
+public interface KeyValueTree extends Tree {
+  Tree key();
 
-public record KeyValue(Tree key, Tree value) {
-  public static Optional<KeyValue> of(NativeTree nativeTree) {
-    List<Tree> children = nativeTree.children();
-    // Expected children: Key, Colon, Value.
-    // Anything else should not happen, but we keep the check for defensive programming.
-    if (NativeKinds.isKeyValueExpr(nativeTree) && children.size() == 3) {
-      return Optional.of(new KeyValue(children.get(0), children.get(2)));
-    }
-    return Optional.empty();
-  }
+  Tree value();
 }

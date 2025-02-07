@@ -22,8 +22,8 @@ import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.KeyValueTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 
 // TODO SONARGO-255 remove this redundant class and move its methods somwhere else
@@ -33,11 +33,15 @@ public record CompositeLiteral(@Nullable Tree type, List<Tree> elements) {
     return Optional.of(new CompositeLiteral(compositeLiteralTree.type(), compositeLiteralTree.elements()));
   }
 
-  public Stream<KeyValue> getKeyValuesElements() {
+  /**
+   * Returns a Stream of KeyValueTree elements. A composite literal in Go either has all elements as KeyValueTree (field initialization),
+   * or all elements as non-KeyValueTree (value initialization, when field names are omitted). Mixture of value and field initialization
+   * is not allowed.
+   */
+  public Stream<KeyValueTree> getKeyValuesElements() {
     return elements.stream()
-      .filter(NativeTree.class::isInstance)
-      .map(NativeTree.class::cast)
-      .flatMap(element -> KeyValue.of(element).stream());
+      .filter(KeyValueTree.class::isInstance)
+      .map(KeyValueTree.class::cast);
   }
 
   public boolean hasType(String packageName, String typeName) {

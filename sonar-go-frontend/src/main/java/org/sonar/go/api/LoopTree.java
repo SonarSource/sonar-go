@@ -20,7 +20,7 @@ import javax.annotation.CheckForNull;
 
 public interface LoopTree extends Tree {
 
-  public enum LoopKind {
+  enum LoopKind {
     FOR,
     WHILE,
     DOWHILE

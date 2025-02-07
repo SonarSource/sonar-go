@@ -14,20 +14,35 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.utils;
+package org.sonar.go.impl;
 
-import org.junit.jupiter.api.Test;
-import org.sonar.go.api.NativeTree;
+import java.util.List;
+import org.sonar.go.api.KeyValueTree;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.TreeMetaData;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.utils.ParseUtils.parse;
+public class KeyValueTreeImpl extends BaseTreeImpl implements KeyValueTree {
+  private final Tree key;
+  private final Tree value;
 
-class KeyValueTest {
-  // Note: more tests indirectly cover KeyValue in CompositeLiteralTest.
+  public KeyValueTreeImpl(TreeMetaData metaData, Tree key, Tree value) {
+    super(metaData);
+    this.key = key;
+    this.value = value;
+  }
 
-  @Test
-  void shouldNotParseOtherNativeTree() {
-    var compositeLiteralOptional = KeyValue.of((NativeTree) parse("1 | 2"));
-    assertThat(compositeLiteralOptional).isEmpty();
+  @Override
+  public Tree key() {
+    return key;
+  }
+
+  @Override
+  public Tree value() {
+    return value;
+  }
+
+  @Override
+  public List<Tree> children() {
+    return List.of(key, value);
   }
 }
