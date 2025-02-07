@@ -1,3 +1,17 @@
 package main
 
-func (v Vertex) foo(p1 int) {}
+import "fmt"
+
+type MyStruct struct {
+    value int
+}
+
+// Method with a value receiver
+func (m MyStruct) PrintValue() {
+    fmt.Println("Value receiver:", m.value)
+}
+
+// Method with a pointer receiver
+func (m *MyStruct) IncrementValue() {
+    m.value++
+}

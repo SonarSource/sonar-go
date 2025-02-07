@@ -75,7 +75,7 @@ public final class NativeKinds {
    * </pre>
    * the {@code ctrl} is method receiver
    */
-  public static boolean isMethodReceiverTree(Tree tree) {
+  public static boolean isMethodReceiverTreeIdentifier(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.toString().endsWith(METHOD_RECEIVER_SUFFIX);

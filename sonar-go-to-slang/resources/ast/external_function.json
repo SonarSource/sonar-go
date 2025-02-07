@@ -1,0 +1,46 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+            {"text":"//go:noescape", "contentText":"go:noescape", "range":"3:0::13", "contentRange": "3:2::13"}
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"func","textRange":"4:0::4","type":"KEYWORD"},
+      {"text":"externalFunction","textRange":"4:5::21"},
+      {"text":"(","textRange":"4:21::22"},
+      {"text":")","textRange":"4:22::23"},
+      {"text":"func","textRange":"6:0::4","type":"KEYWORD"},
+      {"text":"main","textRange":"6:5::9"},
+      {"text":"(","textRange":"6:9::10"},
+      {"text":")","textRange":"6:10::11"},
+      {"text":"{","textRange":"6:12::13"},
+      {"text":"externalFunction","textRange":"7:4::20"},
+      {"text":"(","textRange":"7:20::21"},
+      {"text":")","textRange":"7:21::22"},
+      {"text":"}","textRange":"8:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:9:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
+      ]},
+      {"@type": "FunctionDeclaration", "metaData": "4:0::23","returnType":
+        null,"receiver":
+        null,"nativeChildren":[],"name":
+        {"@type": "Identifier", "metaData": "4:5::21","name":"externalFunction"},"formalParameters":[],"body":
+        null},
+      {"@type": "FunctionDeclaration", "metaData": "6:0:8:1","returnType":
+        null,"receiver":
+        null,"nativeChildren":[],"name":
+        {"@type": "Identifier", "metaData": "6:5::9","name":"main"},"formalParameters":[],"body":
+        {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
+          {"@type": "Native", "metaData": "7:4::22","nativeKind":"[0](ExprStmt)","children":[
+            {"@type": "FunctionInvocation", "metaData": "7:4::22","memberSelect":
+              {"@type": "Identifier", "metaData": "7:4::20","name":"externalFunction"},"arguments":[]}
+          ]}
+        ]}}
+    ]}
+} 

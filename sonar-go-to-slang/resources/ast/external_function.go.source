@@ -1,0 +1,8 @@
+package main
+
+//go:noescape
+func externalFunction()
+
+func main() {
+    externalFunction()
+}

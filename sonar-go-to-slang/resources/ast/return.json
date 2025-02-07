@@ -75,13 +75,15 @@
           {"@type": "Native", "metaData": "3:18::22","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "3:18::22","name":"bool"}
           ]}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "3:5::15","name":"returnTrue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:23:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::12","keyword":"4:1::7","body":
             {"@type": "Literal", "metaData": "4:8::12","value":"true"}}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "7:5::16","name":"emptyReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:19:9:1","statementOrExpressions":[
@@ -92,7 +94,8 @@
           {"@type": "Native", "metaData": "11:17::23","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "11:17::23","name":"string"}
           ]}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "11:5::14","name":"twoReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:24:17:1","statementOrExpressions":[
           {"@type": "If", "metaData": "12:1:16:2","thenBranch":
@@ -121,7 +124,8 @@
             {"@type": "Identifier", "metaData": "19:41::47","name":"string"}
           ]},
           {"@type": "Native", "metaData": "19:47::48","nativeKind":"Closing"}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "19:5::24","name":"multipleReturnValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializer":

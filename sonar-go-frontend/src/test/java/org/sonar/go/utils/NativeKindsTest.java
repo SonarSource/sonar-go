@@ -96,7 +96,7 @@ class NativeKindsTest {
       func (ctrl *MyController) users() {}
       """);
     var methodReceiver = tree.descendants()
-      .filter(NativeKinds::isMethodReceiverTree)
+      .filter(NativeKinds::isMethodReceiverTreeIdentifier)
       .findFirst()
       .get();
     assertThat(((IdentifierTree) methodReceiver.children().get(0)).name()).isEqualTo("ctrl");
@@ -109,7 +109,7 @@ class NativeKindsTest {
       func users() {}
       """);
     var methodReceiver = tree.descendants()
-      .filter(NativeKinds::isMethodReceiverTree)
+      .filter(NativeKinds::isMethodReceiverTreeIdentifier)
       .findFirst();
     assertThat(methodReceiver).isEmpty();
   }

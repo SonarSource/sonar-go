@@ -92,6 +92,7 @@
           ]}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "12:0:25:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "12:5::8","name":"foo"},"formalParameters":[
         {"@type": "Parameter", "metaData": "12:9::22","type":

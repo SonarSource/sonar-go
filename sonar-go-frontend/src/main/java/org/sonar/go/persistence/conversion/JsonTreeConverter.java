@@ -114,6 +114,7 @@ public final class JsonTreeConverter {
   public static final String OPERATOR_TOKEN = "operatorToken";
   public static final String PLACE_HOLDER_TOKEN = "placeHolderToken";
   public static final String RANGE = "range";
+  public static final String RECEIVER = "receiver";
   public static final String RETURN_TYPE = "returnType";
   public static final String RIGHT_OPERAND = "rightOperand";
   public static final String RIGHT_PARENTHESIS = "rightParenthesis";
@@ -264,6 +265,7 @@ public final class JsonTreeConverter {
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(RETURN_TYPE, ctx.toJson(tree.returnType()))
+        .add(RECEIVER, ctx.toJson(tree.receiver()))
         .add(NAME, ctx.toJson(tree.name()))
         .add(FORMAL_PARAMETERS, ctx.toJsonArray(tree.formalParameters()))
         .add(BODY, ctx.toJson(tree.body()))
@@ -272,6 +274,7 @@ public final class JsonTreeConverter {
       (ctx, json) -> new FunctionDeclarationTreeImpl(
         ctx.metaData(json),
         ctx.fieldToNullableObject(json, RETURN_TYPE, Tree.class),
+        ctx.fieldToNullableObject(json, RECEIVER, Tree.class),
         ctx.fieldToNullableObject(json, NAME, IdentifierTree.class),
         ctx.fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class),
         ctx.fieldToNullableObject(json, BODY, BlockTree.class),

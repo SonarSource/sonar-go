@@ -195,6 +195,7 @@
         {"@type": "Identifier", "metaData": "1:8::11","name":"ast"}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "3:0:23:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "3:5::16","name":"allLiterals"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:19:23:1","statementOrExpressions":[

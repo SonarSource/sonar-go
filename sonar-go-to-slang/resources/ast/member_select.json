@@ -140,7 +140,7 @@
           {"@type": "Native", "metaData": "13:30::37","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "13:30::37","name":"Address"}
           ]}
-        ]},"nativeChildren":[
+        ]},"receiver":
         {"@type": "Native", "metaData": "13:5::16","nativeKind":"Recv(FieldList)","children":[
           {"@type": "Native", "metaData": "13:5::6","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "13:6::15","nativeKind":"[0](Field)","children":[
@@ -153,8 +153,7 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "13:15::16","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "13:17::27","name":"getAddress"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "13:38:15:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "14:1::17","keyword":"14:1::7","body":
@@ -163,6 +162,7 @@
               {"@type": "Identifier", "metaData": "14:8::9","name":"p"}}}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "17:0:22:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "17:5::8","name":"foo"},"formalParameters":[
         {"@type": "Parameter", "metaData": "17:9::22","type":

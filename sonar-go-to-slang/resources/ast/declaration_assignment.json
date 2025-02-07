@@ -184,6 +184,7 @@
         ]}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "5:0:43:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:43:1","statementOrExpressions":[
@@ -437,7 +438,8 @@
             {"@type": "Identifier", "metaData": "45:17::23","name":"string"}
           ]},
           {"@type": "Native", "metaData": "45:23::24","nativeKind":"Closing"}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "45:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "45:25:47:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "46:1::16","keyword":"46:1::7","body":

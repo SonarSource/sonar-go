@@ -385,6 +385,7 @@
           ]}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0:8:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[
         {"@type": "Native", "metaData": "7:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "7:7::8","nativeKind":"Opening"},
@@ -400,6 +401,7 @@
         {"@type": "Identifier", "metaData": "7:5::7","name":"f1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:17:8:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "9:0:10:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[
         {"@type": "Native", "metaData": "9:7::38","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "9:7::8","nativeKind":"Opening"},
@@ -435,6 +437,7 @@
         {"@type": "Identifier", "metaData": "9:5::7","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "9:41:10:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "11:0:12:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[
         {"@type": "Native", "metaData": "11:7::22","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "11:7::8","nativeKind":"Opening"},
@@ -464,6 +467,7 @@
         {"@type": "Identifier", "metaData": "11:5::7","name":"f3"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:25:12:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "13:0:14:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[
         {"@type": "Native", "metaData": "13:7::17","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "13:7::8","nativeKind":"Opening"},
@@ -484,6 +488,7 @@
         {"@type": "Identifier", "metaData": "13:5::7","name":"f4"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "13:20:14:1","statementOrExpressions":[]}},
       {"@type": "FunctionDeclaration", "metaData": "15:0:16:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[
         {"@type": "Native", "metaData": "15:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "15:7::8","nativeKind":"Opening"},
@@ -518,6 +523,7 @@
           ]}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "24:0:52:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "24:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "24:12:52:1","statementOrExpressions":[
@@ -647,7 +653,8 @@
           {"@type": "Native", "metaData": "55:33::38","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "55:33::38","name":"int64"}
           ]}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "55:5::12","name":"SumInts"},"formalParameters":[
         {"@type": "Parameter", "metaData": "55:13::31","type":
           {"@type": "Native", "metaData": "55:15::31","nativeKind":"Type(MapType)","children":[
@@ -688,7 +695,8 @@
           {"@type": "Native", "metaData": "64:37::44","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "64:37::44","name":"float64"}
           ]}
-        ]},"nativeChildren":[],"name":
+        ]},"receiver":
+        null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "64:5::14","name":"SumFloats"},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:15::35","type":
           {"@type": "Native", "metaData": "64:17::35","nativeKind":"Type(MapType)","children":[
@@ -729,7 +737,8 @@
           {"@type": "Native", "metaData": "74:65::66","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "74:65::66","name":"V"}
           ]}
-        ]},"nativeChildren":[
+        ]},"receiver":
+        null,"nativeChildren":[
         {"@type": "Native", "metaData": "74:20::53","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "74:20::21","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "74:21::33","nativeKind":"[0](Field)","children":[
@@ -792,7 +801,8 @@
           {"@type": "Native", "metaData": "84:51::52","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "84:51::52","name":"V"}
           ]}
-        ]},"nativeChildren":[
+        ]},"receiver":
+        null,"nativeChildren":[
         {"@type": "Native", "metaData": "84:15::39","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "84:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "84:16::28","nativeKind":"[0](Field)","children":[

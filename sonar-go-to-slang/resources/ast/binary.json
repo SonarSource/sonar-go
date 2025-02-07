@@ -115,6 +115,7 @@
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "10:0:37:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "10:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:11:37:1","statementOrExpressions":[

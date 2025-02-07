@@ -31,6 +31,7 @@ import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
+import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.ParseException;
 import org.sonar.go.api.ReturnTree;
 import org.sonar.go.api.StringLiteralTree;
@@ -140,6 +141,35 @@ class GoConverterTest {
     List<Tree> elements = compositeLiteralTree.elements();
     assertThat(elements).hasSize(1);
     assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
+  }
+
+  @Test
+  void test_parse_function_declaration_with_receiver() {
+    Tree tree = TestGoConverter.parse("package main\nfunc (m MyType) foo(i int) {}");
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(functionDeclaration.name().name()).isEqualTo("foo");
+    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("Recv(FieldList)"));
+    assertThat(functionDeclaration.formalParameters()).hasSize(1);
+    assertThat(functionDeclaration.formalParameters().get(0)).isInstanceOf(ParameterTree.class);
+  }
+
+  @Test
+  void test_parse_external_function_declaration() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      //go:noescape
+      func externalFunction()
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(functionDeclaration.name().name()).isEqualTo("externalFunction");
+    assertThat(functionDeclaration.formalParameters()).isEmpty();
+    assertThat(functionDeclaration.body()).isNull();
   }
 
   @Test

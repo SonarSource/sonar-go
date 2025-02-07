@@ -30,9 +30,14 @@ import org.sonar.go.api.TreeMetaData;
 
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
 
+  @Nullable
   private final Tree returnType;
+  @Nullable
+  private final Tree receiver;
+  @Nullable
   private final IdentifierTree name;
   private final List<Tree> formalParameters;
+  @Nullable
   private final BlockTree body;
   private final List<Tree> children = new ArrayList<>();
   private final List<Tree> nativeChildren;
@@ -40,6 +45,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
     @Nullable Tree returnType,
+    @Nullable Tree receiver,
     @Nullable IdentifierTree name,
     List<Tree> formalParameters,
     @Nullable BlockTree body,
@@ -47,6 +53,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
     super(metaData);
 
     this.returnType = returnType;
+    this.receiver = receiver;
     this.name = name;
     this.formalParameters = formalParameters;
     this.body = body;
@@ -54,6 +61,9 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
     if (returnType != null) {
       this.children.add(returnType);
+    }
+    if (receiver != null) {
+      this.children.add(receiver);
     }
     if (name != null) {
       this.children.add(name);
@@ -86,6 +96,12 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public BlockTree body() {
     return body;
+  }
+
+  @CheckForNull
+  @Override
+  public Tree receiver() {
+    return receiver;
   }
 
   @Override

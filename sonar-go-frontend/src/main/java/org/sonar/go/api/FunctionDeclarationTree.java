@@ -24,13 +24,22 @@ public interface FunctionDeclarationTree extends Tree {
   @CheckForNull
   Tree returnType();
 
+  /**
+   * Can return null when the function is a function literal (closure).
+   */
   @CheckForNull
   IdentifierTree name();
 
   List<Tree> formalParameters();
 
+  /**
+   * Can return null when the function is external (non-Go)
+   */
   @CheckForNull
   BlockTree body();
+
+  @CheckForNull
+  Tree receiver();
 
   List<Tree> nativeChildren();
 

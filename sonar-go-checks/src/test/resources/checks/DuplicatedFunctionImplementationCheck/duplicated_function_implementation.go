@@ -105,3 +105,23 @@ func f12(a int, b int) {
   _ = foobar
   _ = bar
 }
+
+type MyStruct1 struct {
+  value int
+}
+
+type MyStruct2 struct {
+  value int
+}
+
+func (m MyStruct1) myStructFunction() {
+  foo := 1;
+  bar := foo > 3 || false
+  m.value++
+}
+
+func (m MyStruct2) myStructFunction() { // Compliant - not the same receiver type
+  foo := 1;
+  bar := foo > 3 || false
+  m.value++
+}

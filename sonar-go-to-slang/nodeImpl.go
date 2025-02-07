@@ -120,7 +120,7 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 
 	receiver := t.mapFieldListReceiver(decl.Recv, "Recv")
 	children = t.appendNode(children, receiver)
-	nativeChildren = t.appendNode(nativeChildren, receiver)
+	slangField["receiver"] = receiver
 
 	funcName := t.mapIdent(decl.Name, "Name")
 	children = t.appendNode(children, funcName)
@@ -168,6 +168,8 @@ func (t *SlangMapper) mapFuncLitImpl(lit *ast.FuncLit, fieldName string) *Node {
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
+	//FuncLit does not have a reciever
+	slangField["receiver"] = nil
 	//Other children of the function node
 	slangField["nativeChildren"] = nil
 

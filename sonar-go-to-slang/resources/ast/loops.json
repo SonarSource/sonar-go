@@ -296,6 +296,7 @@
         {"@type": "Native", "metaData": "6:0::1","nativeKind":"Rparen"}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "8:0:67:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "8:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "8:11:67:1","statementOrExpressions":[

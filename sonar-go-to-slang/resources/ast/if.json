@@ -87,6 +87,7 @@
         ]}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "5:0:23:1","returnType":
+        null,"receiver":
         null,"nativeChildren":[],"name":
         {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:23:1","statementOrExpressions":[

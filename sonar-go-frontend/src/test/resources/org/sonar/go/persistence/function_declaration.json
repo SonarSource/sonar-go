@@ -4,6 +4,7 @@
     "tokens": [
       {"textRange": "1:0::6", "text": "public", "type": "KEYWORD"},
       {"textRange": "1:7::10", "text": "int"},
+      {"textRange": "1:11::12", "text": "R"},
       {"textRange": "1:11::14", "text": "foo"},
       {"textRange": "1:15::20", "text": "param"},
       {"textRange": "1:20::21", "text": "{"},
@@ -15,6 +16,7 @@
     "@type": "FunctionDeclaration",
     "metaData": "1:0::26",
     "returnType": {"@type": "Identifier", "metaData": "1:7::10", "name": "int"},
+    "receiver": {"@type": "Native", "metaData": "1:11::12", "nativeKind": "Field", "children": []},
     "name": {"@type": "Identifier", "metaData": "1:11::14", "name": "foo"},
     "formalParameters": [
       {"@type": "Identifier", "metaData": "1:15::20", "name": "param"}
