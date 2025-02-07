@@ -14,6 +14,10 @@ func foo(value *Person) {
 	var y = -1
 	var c = ^4
 
+	var ch = make(chan int)
+	go func() { ch <- 1 }()
+	var z = <-ch
+
 	// increment and decrement are not operators, but statements
 	x++
 	x--

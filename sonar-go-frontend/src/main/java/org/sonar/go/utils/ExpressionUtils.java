@@ -41,7 +41,6 @@ import org.sonar.go.api.UnaryExpressionTree;
 
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonar.go.utils.NativeKinds.isFrom;
 import static org.sonar.go.utils.NativeKinds.isStringNativeKindOfType;
 import static org.sonar.go.utils.TreeUtils.getIdentifierName;
 
@@ -181,9 +180,9 @@ public class ExpressionUtils {
   }
 
   private static Tree skipUnaryExprIfExist(Tree tree) {
-    if (tree instanceof NativeTree nativeInitializer && isFrom("UnaryExpr").test(nativeInitializer)
-      && nativeInitializer.children().size() == 2 && isStringNativeKindOfType(nativeInitializer.children().get(0), "Op")) {
-      return nativeInitializer.children().get(1);
+    if (tree instanceof UnaryExpressionTree unaryExpression
+      && unaryExpression.operator() == UnaryExpressionTree.Operator.ADDRESS_OF) {
+      return unaryExpression.operand();
     }
     return tree;
   }

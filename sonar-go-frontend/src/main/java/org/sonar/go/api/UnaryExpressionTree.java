@@ -22,6 +22,9 @@ public interface UnaryExpressionTree extends Tree {
     NEGATE,
     PLUS,
     MINUS,
+    BITWISE_COMPLEMENT,
+    ADDRESS_OF,
+    ARROW,
     INCREMENT,
     DECREMENT
   }

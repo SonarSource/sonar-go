@@ -978,8 +978,16 @@ func (t *SlangMapper) mapUnaryExprImpl(expr *ast.UnaryExpr, fieldName string) *N
 		operatorName = "MINUS"
 	case token.NOT:
 		operatorName = "NEGATE"
+	case token.AND:
+		operatorName = "ADDRESS_OF"
+	case token.ARROW:
+		operatorName = "ARROW"
+	case token.XOR:
+		operatorName = "BITWISE_COMPLEMENT"
 	default:
-		// only covering unary operators which are supported by SLang
+		// token.Mul (*) will be handle as a StarExpr.
+		// According to the documentation (https://go.dev/ref/spec#Operators), we cover all the possible unary expressions.
+		// While this should not be reachable, we keep this for defensive programming.
 		return nil
 	}
 

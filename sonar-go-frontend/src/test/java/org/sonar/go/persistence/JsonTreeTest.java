@@ -741,6 +741,21 @@ class JsonTreeTest extends JsonTestHelper {
   }
 
   @Test
+  void unary_expression_address_of() throws IOException {
+    Token tokenAddressOf = otherToken(1, 0, "&");
+    Token tokenX = otherToken(1, 1, "x");
+    UnaryExpressionTree.Operator operator = UnaryExpressionTree.Operator.ADDRESS_OF;
+    Tree operand = new IdentifierTreeImpl(metaData(tokenX), tokenX.text());
+    UnaryExpressionTree initialTree = new UnaryExpressionTreeImpl(metaData(tokenAddressOf, tokenX), operator, operand);
+    UnaryExpressionTree tree = checkJsonSerializationDeserialization(initialTree, "unary_expression_address_of.json");
+    assertThat(tree.operator()).isEqualTo(UnaryExpressionTree.Operator.ADDRESS_OF);
+    assertThat(tree.operand().textRange()).isEqualTo(operand.textRange());
+
+    assertThat(methodNames(UnaryExpressionTree.class))
+      .containsExactlyInAnyOrder(OPERATOR, OPERAND);
+  }
+
+  @Test
   void variable_declaration() throws IOException {
     Token tokenInt = otherToken(1, 0, "int");
     Token tokenX = otherToken(1, 4, "x");
