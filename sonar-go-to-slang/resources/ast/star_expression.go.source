@@ -1,0 +1,9 @@
+package main
+
+func main(c *SomeType) {
+    var pointer = *string
+
+    *pointer = "Hello"
+
+    var value = *pointer
+}

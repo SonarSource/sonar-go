@@ -61,6 +61,7 @@ import org.sonar.go.impl.ParameterTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.ReturnTreeImpl;
+import org.sonar.go.impl.StarExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.ThrowTreeImpl;
 import org.sonar.go.impl.TokenImpl;
@@ -502,6 +503,15 @@ public final class JsonTreeConverter {
         ctx.metaData(json),
         ctx.fieldToToken(json, KEYWORD),
         ctx.fieldToNullableObject(json, BODY, Tree.class)));
+
+    register(StarExpressionTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(EXPRESSION, ctx.toJson(tree.operand())),
+
+      (ctx, json) -> new StarExpressionTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, EXPRESSION, Tree.class)));
 
     register(StringLiteralTreeImpl.class,
 

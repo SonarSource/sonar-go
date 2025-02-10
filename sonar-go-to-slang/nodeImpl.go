@@ -972,7 +972,17 @@ func (t *SlangMapper) mapSliceExprImpl(expr *ast.SliceExpr, fieldName string) *N
 }
 
 func (t *SlangMapper) mapStarExprImpl(expr *ast.StarExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	star := t.createTokenFromPosAstToken(expr.Star, token.MUL, "Star")
+	children = t.appendNode(children, star)
+
+	expression := t.mapExpr(expr.X, "X")
+	children = t.appendNode(children, expression)
+	slangField["expression"] = expression
+
+	return t.createNode(expr, children, fieldName+"(StarExpr)", "StarExpression", slangField)
 }
 
 func (t *SlangMapper) mapStructTypeImpl(structType *ast.StructType, fieldName string) *Node {

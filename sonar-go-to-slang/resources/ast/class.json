@@ -189,10 +189,8 @@
                 {"@type": "Native", "metaData": "10:1::10","nativeKind":"Names([]*Ident)","children":[
                   {"@type": "Identifier", "metaData": "10:1::10","name":"TextRange"}
                 ]},
-                {"@type": "Native", "metaData": "10:11::21","nativeKind":"Type(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "10:11::12","nativeKind":"Star"},
-                  {"@type": "Identifier", "metaData": "10:12::21","name":"TextRange"}
-                ]}
+                {"@type": "StarExpression", "metaData": "10:11::21","expression":
+                  {"@type": "Identifier", "metaData": "10:12::21","name":"TextRange"}}
               ]},
               {"@type": "Native", "metaData": "11:1::17","nativeKind":"[2](Field)","children":[
                 {"@type": "Native", "metaData": "11:1::10","nativeKind":"Names([]*Ident)","children":[

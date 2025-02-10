@@ -49,6 +49,7 @@ import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.ParenthesizedExpressionTree;
 import org.sonar.go.api.PlaceHolderTree;
 import org.sonar.go.api.ReturnTree;
+import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.ThrowTree;
 import org.sonar.go.api.Token;
@@ -84,6 +85,7 @@ import org.sonar.go.impl.ParameterTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.ReturnTreeImpl;
+import org.sonar.go.impl.StarExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.ThrowTreeImpl;
@@ -681,6 +683,16 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(ReturnTree.class))
       .containsExactlyInAnyOrder(BODY, KEYWORD);
+  }
+
+  @Test
+  void star_expression() throws IOException {
+    Token tokenStar = otherToken(1, 0, "*");
+    Token tokenString = otherToken(1, 1, "string");
+    IdentifierTree identifierTree = new IdentifierTreeImpl(metaData(tokenString), tokenString.text());
+    StarExpressionTree initialStarExpression = new StarExpressionTreeImpl(metaData(tokenStar, tokenString), identifierTree);
+    StarExpressionTree starExpressionTree = checkJsonSerializationDeserialization(initialStarExpression, "star_expression.json");
+    assertThat(starExpressionTree.operand()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("string"));
   }
 
   @Test

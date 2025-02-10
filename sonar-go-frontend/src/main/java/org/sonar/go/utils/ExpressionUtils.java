@@ -31,17 +31,16 @@ import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.ParenthesizedExpressionTree;
 import org.sonar.go.api.PlaceHolderTree;
+import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.UnaryExpressionTree;
 
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonar.go.utils.NativeKinds.isStringNativeKindOfType;
 import static org.sonar.go.utils.TreeUtils.getIdentifierName;
 
 public class ExpressionUtils {
@@ -146,9 +145,8 @@ public class ExpressionUtils {
     if (type == null) {
       return "";
     }
-    if (type instanceof NativeTree nativeType && isStringNativeKindOfType(nativeType, "Type(StarExpr)")) {
-      // Pointer type; get the type of the pointed-to object
-      type = type.children().get(1);
+    if (type instanceof StarExpressionTree starExpressionTree) {
+      type = starExpressionTree.operand();
     }
     return Optional.of(type)
       .filter(IdentifierTree.class::isInstance)

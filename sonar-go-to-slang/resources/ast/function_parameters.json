@@ -328,10 +328,8 @@
             {"@type": "Native", "metaData": "25:6::7","nativeKind":"Names([]*Ident)","children":[
               {"@type": "Identifier", "metaData": "25:6::7","name":"t"}
             ]},
-            {"@type": "Native", "metaData": "25:8::20","nativeKind":"Type(StarExpr)","children":[
-              {"@type": "Native", "metaData": "25:8::9","nativeKind":"Star"},
-              {"@type": "Identifier", "metaData": "25:9::20","name":"SlangMapper"}
-            ]}
+            {"@type": "StarExpression", "metaData": "25:8::20","expression":
+              {"@type": "Identifier", "metaData": "25:9::20","name":"SlangMapper"}}
           ]},
           {"@type": "Native", "metaData": "25:20::21","nativeKind":"Closing"}
         ]},"nativeChildren":[],"name":
@@ -350,12 +348,10 @@
             {"@type": "Native", "metaData": "27:37::56","nativeKind":"Params(FieldList)","children":[
               {"@type": "Native", "metaData": "27:37::38","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "27:38::55","nativeKind":"[0](Field)","children":[
-                {"@type": "Native", "metaData": "27:38::55","nativeKind":"Type(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "27:38::39","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "27:38::55","expression":
                   {"@type": "MemberSelect", "metaData": "27:39::55","identifier":
                     {"@type": "Identifier", "metaData": "27:45::55","name":"NodeExtern"},"expression":
-                    {"@type": "Identifier", "metaData": "27:39::44","name":"store"}}
-                ]}
+                    {"@type": "Identifier", "metaData": "27:39::44","name":"store"}}}
               ]},
               {"@type": "Native", "metaData": "27:55::56","nativeKind":"Closing"}
             ]}

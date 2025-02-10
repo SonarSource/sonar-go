@@ -1,0 +1,18 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:0::1", "text": "*"},
+      {"textRange": "1:1::7", "text": "string"}
+    ]
+  },
+  "tree": {
+    "@type": "StarExpression",
+    "metaData": "1:0::7",
+    "expression": {
+      "@type": "Identifier",
+      "metaData": "1:1::7",
+      "name": "string"
+    }
+  }
+}

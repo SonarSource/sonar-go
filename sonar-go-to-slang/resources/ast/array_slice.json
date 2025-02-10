@@ -264,30 +264,26 @@
           {"@type": "VariableDeclaration", "metaData": "11:4::23","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "11:10::23","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "11:10::20","rightParenthesis":"11:19::20","leftParenthesis":"11:10::11","expression":
-                {"@type": "Native", "metaData": "11:11::19","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "11:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "11:11::19","expression":
                   {"@type": "Native", "metaData": "11:12::19","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "11:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "11:13::14","value":"0"},
                     {"@type": "Native", "metaData": "11:14::15"},
                     {"@type": "Identifier", "metaData": "11:15::19","name":"byte"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "11:21::22","name":"s"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "11:4::6","name":"s0"}},
           {"@type": "VariableDeclaration", "metaData": "12:4::27","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "12:10::27","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "12:10::20","rightParenthesis":"12:19::20","leftParenthesis":"12:10::11","expression":
-                {"@type": "Native", "metaData": "12:11::19","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "12:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "12:11::19","expression":
                   {"@type": "Native", "metaData": "12:12::19","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "12:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "12:13::14","value":"1"},
                     {"@type": "Native", "metaData": "12:14::15"},
                     {"@type": "Identifier", "metaData": "12:15::19","name":"byte"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Native", "metaData": "12:21::26","nativeKind":"[0](SliceExpr)","children":[
                 {"@type": "Identifier", "metaData": "12:21::22","name":"s"},
                 {"@type": "Native", "metaData": "12:22::23","nativeKind":"Lbrack"},
@@ -300,30 +296,26 @@
           {"@type": "VariableDeclaration", "metaData": "13:4::23","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "13:10::23","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "13:10::20","rightParenthesis":"13:19::20","leftParenthesis":"13:10::11","expression":
-                {"@type": "Native", "metaData": "13:11::19","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "13:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "13:11::19","expression":
                   {"@type": "Native", "metaData": "13:12::19","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "13:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "13:13::14","value":"2"},
                     {"@type": "Native", "metaData": "13:14::15"},
                     {"@type": "Identifier", "metaData": "13:15::19","name":"byte"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "13:21::22","name":"s"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "13:4::6","name":"s2"}},
           {"@type": "VariableDeclaration", "metaData": "14:4::23","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "14:10::23","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "14:10::20","rightParenthesis":"14:19::20","leftParenthesis":"14:10::11","expression":
-                {"@type": "Native", "metaData": "14:11::19","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "14:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "14:11::19","expression":
                   {"@type": "Native", "metaData": "14:12::19","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "14:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "14:13::14","value":"4"},
                     {"@type": "Native", "metaData": "14:14::15"},
                     {"@type": "Identifier", "metaData": "14:15::19","name":"byte"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "14:21::22","name":"s"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "14:4::6","name":"s4"}},
@@ -351,30 +343,26 @@
           {"@type": "VariableDeclaration", "metaData": "18:4::25","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "18:10::25","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "18:10::22","rightParenthesis":"18:21::22","leftParenthesis":"18:10::11","expression":
-                {"@type": "Native", "metaData": "18:11::21","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "18:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "18:11::21","expression":
                   {"@type": "Native", "metaData": "18:12::21","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "18:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "18:13::14","value":"0"},
                     {"@type": "Native", "metaData": "18:14::15"},
                     {"@type": "Identifier", "metaData": "18:15::21","name":"string"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "18:23::24","name":"t"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "18:4::6","name":"t1"}},
           {"@type": "VariableDeclaration", "metaData": "19:4::25","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "19:10::25","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "19:10::22","rightParenthesis":"19:21::22","leftParenthesis":"19:10::11","expression":
-                {"@type": "Native", "metaData": "19:11::21","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "19:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "19:11::21","expression":
                   {"@type": "Native", "metaData": "19:12::21","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "19:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "19:13::14","value":"1"},
                     {"@type": "Native", "metaData": "19:14::15"},
                     {"@type": "Identifier", "metaData": "19:15::21","name":"string"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "19:23::24","name":"t"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "19:4::6","name":"t2"}},
@@ -392,15 +380,13 @@
           {"@type": "VariableDeclaration", "metaData": "22:4::23","type":null,"isVal":false,"initializer":
             {"@type": "FunctionInvocation", "metaData": "22:10::23","memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "22:10::20","rightParenthesis":"22:19::20","leftParenthesis":"22:10::11","expression":
-                {"@type": "Native", "metaData": "22:11::19","nativeKind":"X(StarExpr)","children":[
-                  {"@type": "Native", "metaData": "22:11::12","nativeKind":"Star"},
+                {"@type": "StarExpression", "metaData": "22:11::19","expression":
                   {"@type": "Native", "metaData": "22:12::19","nativeKind":"X(ArrayType)","children":[
                     {"@type": "Native", "metaData": "22:12::13","nativeKind":"Lbrack"},
                     {"@type": "IntegerLiteral", "metaData": "22:13::14","value":"0"},
                     {"@type": "Native", "metaData": "22:14::15"},
                     {"@type": "Identifier", "metaData": "22:15::19","name":"byte"}
-                  ]}
-                ]}},"arguments":[
+                  ]}}},"arguments":[
               {"@type": "Identifier", "metaData": "22:21::22","name":"u"}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "22:4::6","name":"u0"}}

@@ -117,10 +117,8 @@
             {"@type": "Native", "metaData": "15:6::7","nativeKind":"Names([]*Ident)","children":[
               {"@type": "Identifier", "metaData": "15:6::7","name":"m"}
             ]},
-            {"@type": "Native", "metaData": "15:8::17","nativeKind":"Type(StarExpr)","children":[
-              {"@type": "Native", "metaData": "15:8::9","nativeKind":"Star"},
-              {"@type": "Identifier", "metaData": "15:9::17","name":"MyStruct"}
-            ]}
+            {"@type": "StarExpression", "metaData": "15:8::17","expression":
+              {"@type": "Identifier", "metaData": "15:9::17","name":"MyStruct"}}
           ]},
           {"@type": "Native", "metaData": "15:17::18","nativeKind":"Closing"}
         ]},"nativeChildren":[],"name":

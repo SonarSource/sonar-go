@@ -34,6 +34,7 @@ import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.ParseException;
 import org.sonar.go.api.ReturnTree;
+import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -141,6 +142,15 @@ class GoConverterTest {
     List<Tree> elements = compositeLiteralTree.elements();
     assertThat(elements).hasSize(1);
     assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
+  }
+
+  @Test
+  void test_parse_star_expression() {
+    Tree tree = TestGoConverter.parse("package main\nfunc foo() {*string}");
+    List<StarExpressionTree> starExpressionsList = tree.descendants().filter(StarExpressionTree.class::isInstance).map(StarExpressionTree.class::cast).toList();
+    assertThat(starExpressionsList).hasSize(1);
+    StarExpressionTree starExpressionTree = starExpressionsList.get(0);
+    assertThat(starExpressionTree.operand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("string"));
   }
 
   @Test
