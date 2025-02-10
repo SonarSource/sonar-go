@@ -1,0 +1,5 @@
+package main
+
+func MyFunction[T any](param T) int {
+	return 42
+}

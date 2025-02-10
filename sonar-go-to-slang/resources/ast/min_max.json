@@ -98,9 +98,10 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::11","name":"ast"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:15:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:15:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "3:5::11","name":"minMax"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:14:15:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "5:4::16","nativeKind":"[0](DeclStmt)","children":[

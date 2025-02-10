@@ -86,9 +86,10 @@
           {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"}
         ]}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "5:0:23:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "5:0:23:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:23:1","statementOrExpressions":[
           {"@type": "If", "metaData": "6:1:8:2","thenBranch":

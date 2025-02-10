@@ -93,13 +93,17 @@ class GoConverterTest {
   @Test
   void test_parse_generics() {
     Tree tree = TestGoConverter.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
-    List<Tree> functions = tree.descendants().filter(t -> t instanceof FunctionDeclarationTree).collect(Collectors.toList());
+    List<FunctionDeclarationTree> functions = tree.descendants()
+      .filter(FunctionDeclarationTree.class::isInstance)
+      .map(FunctionDeclarationTree.class::cast)
+      .collect(Collectors.toList());
     assertThat(functions).hasSize(2);
 
-    List<Tree> f1Children = functions.get(0).children();
+    FunctionDeclarationTree functionDeclarationTree = functions.get(0);
+    List<Tree> f1Children = functionDeclarationTree.children();
     assertThat(f1Children).hasSize(3);
-    Tree typeParams = f1Children.get(2);
-    assertThat(typeParams).isInstanceOf(NativeTree.class);
+    Tree typeParams = f1Children.get(1);
+    assertThat(typeParams).isEqualTo(functionDeclarationTree.typeParameters()).isInstanceOf(NativeTree.class);
     assertThat(((NativeTree) typeParams).nativeKind()).hasToString("TypeParams(FieldList)");
 
     List<Tree> f2Children = functions.get(1).children();
@@ -161,6 +165,7 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(functionDeclaration.name().name()).isEqualTo("foo");
+    assertThat(functionDeclaration.typeParameters()).isNull();
     assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("Recv(FieldList)"));
     assertThat(functionDeclaration.formalParameters()).hasSize(1);
     assertThat(functionDeclaration.formalParameters().get(0)).isInstanceOf(ParameterTree.class);
@@ -180,6 +185,22 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("externalFunction");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.body()).isNull();
+  }
+
+  @Test
+  void test_parse_function_declaration_with_type_parameter() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      func funWithTypeParameter[T any]() {}
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(functionDeclaration.name().name()).isEqualTo("funWithTypeParameter");
+    assertThat(functionDeclaration.formalParameters()).isEmpty();
+    assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("TypeParams(FieldList)"));
   }
 
   @Test

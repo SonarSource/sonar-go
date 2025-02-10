@@ -90,9 +90,9 @@ public class DuplicatedFunctionImplementationCheck implements GoCheck {
   }
 
   private static boolean areDuplicatedImplementation(FunctionDeclarationTree original, FunctionDeclarationTree possibleDuplicate) {
-    return areEquivalent(original.nativeChildren(), possibleDuplicate.nativeChildren())
-      && areEquivalent(original.receiver(), possibleDuplicate.receiver())
+    return areEquivalent(original.receiver(), possibleDuplicate.receiver())
       && areEquivalent(original.formalParameters(), possibleDuplicate.formalParameters())
+      && areEquivalent(original.typeParameters(), possibleDuplicate.typeParameters())
       && areEquivalent(original.body(), possibleDuplicate.body());
   }
 

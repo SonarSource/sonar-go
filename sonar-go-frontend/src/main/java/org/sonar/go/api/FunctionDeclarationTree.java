@@ -41,7 +41,8 @@ public interface FunctionDeclarationTree extends Tree {
   @CheckForNull
   Tree receiver();
 
-  List<Tree> nativeChildren();
+  @CheckForNull
+  Tree typeParameters();
 
   TextRange rangeToHighlight();
 

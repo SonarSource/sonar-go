@@ -36,9 +36,10 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:9:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:9:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "3:5::9","name":"main"},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:10::21","type":
           {"@type": "StarExpression", "metaData": "3:12::21","expression":

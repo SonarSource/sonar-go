@@ -27,14 +27,16 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "4:0::23","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "4:0::23","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "4:5::21","name":"externalFunction"},"formalParameters":[],"body":
         null},
-      {"@type": "FunctionDeclaration", "metaData": "6:0:8:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "6:0:8:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "6:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "7:4::22","nativeKind":"[0](ExprStmt)","children":[

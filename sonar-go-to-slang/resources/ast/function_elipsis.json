@@ -76,9 +76,10 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:7:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:7:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "3:5::27","name":"declarationWithElipsis"},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:28::47","type":
           {"@type": "Native", "metaData": "3:33::47","nativeKind":"Type(Ellipsis)","children":[
@@ -114,9 +115,10 @@
               ]}
             ]}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "9:0:13:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "9:0:13:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "9:5::20","name":"callWithElipsis"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "9:23:13:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "10:1::49","nativeKind":"[0](ExprStmt)","children":[

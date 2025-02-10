@@ -295,9 +295,10 @@
         ]},
         {"@type": "Native", "metaData": "6:0::1","nativeKind":"Rparen"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "8:0:67:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "8:0:67:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "8:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "8:11:67:1","statementOrExpressions":[
           {"@type": "Loop", "metaData": "9:1:10:2","kind":"FOR","keyword":"9:1::4","condition":

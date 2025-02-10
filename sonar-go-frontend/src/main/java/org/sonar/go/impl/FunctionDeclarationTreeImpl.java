@@ -38,9 +38,10 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   private final IdentifierTree name;
   private final List<Tree> formalParameters;
   @Nullable
+  private final Tree typeParameters;
+  @Nullable
   private final BlockTree body;
   private final List<Tree> children = new ArrayList<>();
-  private final List<Tree> nativeChildren;
 
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
@@ -48,16 +49,16 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
     @Nullable Tree receiver,
     @Nullable IdentifierTree name,
     List<Tree> formalParameters,
-    @Nullable BlockTree body,
-    List<Tree> nativeChildren) {
+    @Nullable Tree typeParameters,
+    @Nullable BlockTree body) {
     super(metaData);
 
     this.returnType = returnType;
     this.receiver = receiver;
     this.name = name;
     this.formalParameters = formalParameters;
+    this.typeParameters = typeParameters;
     this.body = body;
-    this.nativeChildren = nativeChildren;
 
     if (returnType != null) {
       this.children.add(returnType);
@@ -69,10 +70,12 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
       this.children.add(name);
     }
     this.children.addAll(formalParameters);
+    if (typeParameters != null) {
+      this.children.add(typeParameters);
+    }
     if (body != null) {
       this.children.add(body);
     }
-    this.children.addAll(nativeChildren);
   }
 
   @CheckForNull
@@ -94,6 +97,12 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   @CheckForNull
   @Override
+  public Tree typeParameters() {
+    return typeParameters;
+  }
+
+  @CheckForNull
+  @Override
   public BlockTree body() {
     return body;
   }
@@ -102,11 +111,6 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public Tree receiver() {
     return receiver;
-  }
-
-  @Override
-  public List<Tree> nativeChildren() {
-    return nativeChildren;
   }
 
   @Override

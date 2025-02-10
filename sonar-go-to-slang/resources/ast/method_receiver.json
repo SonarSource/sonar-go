@@ -83,7 +83,8 @@
             ]}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "10:0:12:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "10:0:12:1","typeParameters":
+        null,"returnType":
         null,"receiver":
         {"@type": "Native", "metaData": "10:5::17","nativeKind":"Recv(FieldList)","children":[
           {"@type": "Native", "metaData": "10:5::6","nativeKind":"Opening"},
@@ -94,7 +95,7 @@
             {"@type": "Identifier", "metaData": "10:8::16","name":"MyStruct"}
           ]},
           {"@type": "Native", "metaData": "10:16::17","nativeKind":"Closing"}
-        ]},"nativeChildren":[],"name":
+        ]},"name":
         {"@type": "Identifier", "metaData": "10:18::28","name":"PrintValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:31:12:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "11:4::43","nativeKind":"[0](ExprStmt)","children":[
@@ -109,7 +110,8 @@
             ]}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "15:0:17:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "15:0:17:1","typeParameters":
+        null,"returnType":
         null,"receiver":
         {"@type": "Native", "metaData": "15:5::18","nativeKind":"Recv(FieldList)","children":[
           {"@type": "Native", "metaData": "15:5::6","nativeKind":"Opening"},
@@ -121,7 +123,7 @@
               {"@type": "Identifier", "metaData": "15:9::17","name":"MyStruct"}}
           ]},
           {"@type": "Native", "metaData": "15:17::18","nativeKind":"Closing"}
-        ]},"nativeChildren":[],"name":
+        ]},"name":
         {"@type": "Identifier", "metaData": "15:19::33","name":"IncrementValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "15:36:17:1","statementOrExpressions":[
           {"@type": "UnaryExpression", "metaData": "16:4::13","operator":"INCREMENT","operand":

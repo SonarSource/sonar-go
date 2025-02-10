@@ -54,7 +54,6 @@ import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 
-import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -124,7 +123,7 @@ public class TreeCreationUtils {
   }
 
   public static FunctionDeclarationTree simpleFunction(IdentifierTree name, BlockTree body) {
-    return new FunctionDeclarationTreeImpl(null, null, null, name, Collections.emptyList(), body, emptyList());
+    return new FunctionDeclarationTreeImpl(null, null, null, name, Collections.emptyList(), null, body);
   }
 
   public static AssignmentExpressionTree assignment(AssignmentExpressionTree.Operator operator, Tree leftOperand, Tree rightOperand) {

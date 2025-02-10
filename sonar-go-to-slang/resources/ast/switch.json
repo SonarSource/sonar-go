@@ -245,9 +245,10 @@
           {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"}
         ]}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "5:0:50:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "5:0:50:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "5:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:4::12","type":null,"isVal":false,"initializer":
@@ -540,13 +541,14 @@
               ]}}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "52:0:54:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "52:0:54:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "52:9::12","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "52:9::12","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "52:9::12","name":"int"}
           ]}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "52:5::6","name":"f"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","body":

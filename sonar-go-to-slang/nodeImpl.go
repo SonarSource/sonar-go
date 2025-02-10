@@ -113,7 +113,6 @@ func (t *SlangMapper) mapBadDeclImpl(decl *ast.BadDecl, fieldName string) *Node 
 
 func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Node {
 	var children []*Node
-	var nativeChildren []*Node
 	slangField := make(map[string]interface{})
 
 	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.Type.Func, token.FUNC, "Type.Func"))
@@ -126,10 +125,9 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 	children = t.appendNode(children, funcName)
 	slangField["name"] = funcName
 
-	// Add type parameters to native children of the function declaration
 	typeParams := t.mapFieldListTypeParams(decl.Type.TypeParams, "TypeParams")
 	children = t.appendNode(children, typeParams)
-	nativeChildren = t.appendNode(nativeChildren, typeParams)
+	slangField["typeParameters"] = typeParams
 
 	parameters := t.mapFieldListParams(decl.Type.Params, "Params")
 	children = t.appendNode(children, parameters)
@@ -143,9 +141,6 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 	funcBody := t.mapBlockStmt(decl.Body, "Body")
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
-
-	//Other children of the function node
-	slangField["nativeChildren"] = nativeChildren
 
 	return t.createNode(decl, children, fieldName+"(FuncDecl)", "FunctionDeclaration", slangField)
 }
@@ -164,14 +159,16 @@ func (t *SlangMapper) mapFuncLitImpl(lit *ast.FuncLit, fieldName string) *Node {
 	children = t.appendNode(children, funcResults)
 	slangField["returnType"] = funcResults
 
+	typeParams := t.mapFieldListTypeParams(lit.Type.TypeParams, "TypeParams")
+	children = t.appendNode(children, typeParams)
+	slangField["typeParameters"] = typeParams
+
 	funcBody := t.mapBlockStmt(lit.Body, "Body")
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
 	//FuncLit does not have a reciever
 	slangField["receiver"] = nil
-	//Other children of the function node
-	slangField["nativeChildren"] = nil
 
 	return t.createNode(lit, children, fieldName+"(FuncLit)", "FunctionDeclaration", slangField)
 }

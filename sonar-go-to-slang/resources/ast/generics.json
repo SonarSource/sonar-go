@@ -384,9 +384,7 @@
             {"@type": "Identifier", "metaData": "5:16::17","name":"T"}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "7:0:8:1","returnType":
-        null,"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "7:0:8:1","typeParameters":
         {"@type": "Native", "metaData": "7:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "7:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "7:8::13","nativeKind":"[0](Field)","children":[
@@ -396,13 +394,12 @@
             {"@type": "Identifier", "metaData": "7:10::13","name":"any"}
           ]},
           {"@type": "Native", "metaData": "7:13::14","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        null,"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "7:5::7","name":"f1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:17:8:1","statementOrExpressions":[]}},
-      {"@type": "FunctionDeclaration", "metaData": "9:0:10:1","returnType":
-        null,"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "9:0:10:1","typeParameters":
         {"@type": "Native", "metaData": "9:7::38","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "9:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "9:8::37","nativeKind":"[0](Field)","children":[
@@ -432,13 +429,12 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "9:37::38","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        null,"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "9:5::7","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "9:41:10:1","statementOrExpressions":[]}},
-      {"@type": "FunctionDeclaration", "metaData": "11:0:12:1","returnType":
-        null,"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "11:0:12:1","typeParameters":
         {"@type": "Native", "metaData": "11:7::22","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "11:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "11:8::14","nativeKind":"[0](Field)","children":[
@@ -462,13 +458,12 @@
             {"@type": "Identifier", "metaData": "11:18::21","name":"any"}
           ]},
           {"@type": "Native", "metaData": "11:21::22","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        null,"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "11:5::7","name":"f3"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:25:12:1","statementOrExpressions":[]}},
-      {"@type": "FunctionDeclaration", "metaData": "13:0:14:1","returnType":
-        null,"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "13:0:14:1","typeParameters":
         {"@type": "Native", "metaData": "13:7::17","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "13:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "13:8::16","nativeKind":"[0](Field)","children":[
@@ -483,13 +478,12 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "13:16::17","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        null,"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "13:5::7","name":"f4"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "13:20:14:1","statementOrExpressions":[]}},
-      {"@type": "FunctionDeclaration", "metaData": "15:0:16:1","returnType":
-        null,"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "15:0:16:1","typeParameters":
         {"@type": "Native", "metaData": "15:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "15:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "15:8::13","nativeKind":"[0](Field)","children":[
@@ -499,8 +493,9 @@
             {"@type": "Identifier", "metaData": "15:10::13","name":"any"}
           ]},
           {"@type": "Native", "metaData": "15:13::14","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        null,"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "15:5::7","name":"f5"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "15:17:16:1","statementOrExpressions":[]}},
       {"@type": "ClassDeclaration", "metaData": "20:0:22:1","identifier":"20:5::11","classTree":
@@ -522,9 +517,10 @@
             ]}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "24:0:52:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "24:0:52:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "24:5::9","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "24:12:52:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:4:29:5","type":null,"isVal":false,"initializer":
@@ -640,13 +636,14 @@
             ]}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "55:0:61:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "55:0:61:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "55:33::38","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "55:33::38","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "55:33::38","name":"int64"}
           ]}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "55:5::12","name":"SumInts"},"formalParameters":[
         {"@type": "Parameter", "metaData": "55:13::31","type":
           {"@type": "Native", "metaData": "55:15::31","nativeKind":"Type(MapType)","children":[
@@ -682,13 +679,14 @@
           {"@type": "Return", "metaData": "60:4::12","keyword":"60:4::10","body":
             {"@type": "Identifier", "metaData": "60:11::12","name":"s"}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "64:0:70:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "64:0:70:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "64:37::44","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "64:37::44","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "64:37::44","name":"float64"}
           ]}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "64:5::14","name":"SumFloats"},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:15::35","type":
           {"@type": "Native", "metaData": "64:17::35","nativeKind":"Type(MapType)","children":[
@@ -724,13 +722,7 @@
           {"@type": "Return", "metaData": "69:4::12","keyword":"69:4::10","body":
             {"@type": "Identifier", "metaData": "69:11::12","name":"s"}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "74:0:80:1","returnType":
-        {"@type": "Native", "metaData": "74:65::66","nativeKind":"Results(FieldList)","children":[
-          {"@type": "Native", "metaData": "74:65::66","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "74:65::66","name":"V"}
-          ]}
-        ]},"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "74:0:80:1","typeParameters":
         {"@type": "Native", "metaData": "74:20::53","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "74:20::21","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "74:21::33","nativeKind":"[0](Field)","children":[
@@ -751,8 +743,13 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "74:52::53","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        {"@type": "Native", "metaData": "74:65::66","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "74:65::66","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "74:65::66","name":"V"}
+          ]}
+        ]},"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "74:5::20","name":"SumIntsOrFloats"},"formalParameters":[
         {"@type": "Parameter", "metaData": "74:54::63","type":
           {"@type": "Native", "metaData": "74:56::63","nativeKind":"Type(MapType)","children":[
@@ -788,13 +785,7 @@
           {"@type": "Return", "metaData": "79:4::12","keyword":"79:4::10","body":
             {"@type": "Identifier", "metaData": "79:11::12","name":"s"}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "84:0:90:1","returnType":
-        {"@type": "Native", "metaData": "84:51::52","nativeKind":"Results(FieldList)","children":[
-          {"@type": "Native", "metaData": "84:51::52","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "84:51::52","name":"V"}
-          ]}
-        ]},"receiver":
-        null,"nativeChildren":[
+      {"@type": "FunctionDeclaration", "metaData": "84:0:90:1","typeParameters":
         {"@type": "Native", "metaData": "84:15::39","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "84:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "84:16::28","nativeKind":"[0](Field)","children":[
@@ -811,8 +802,13 @@
             {"@type": "Identifier", "metaData": "84:32::38","name":"Number"}
           ]},
           {"@type": "Native", "metaData": "84:38::39","nativeKind":"Closing"}
-        ]}
-      ],"name":
+        ]},"returnType":
+        {"@type": "Native", "metaData": "84:51::52","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "84:51::52","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "84:51::52","name":"V"}
+          ]}
+        ]},"receiver":
+        null,"name":
         {"@type": "Identifier", "metaData": "84:5::15","name":"SumNumbers"},"formalParameters":[
         {"@type": "Parameter", "metaData": "84:40::49","type":
           {"@type": "Native", "metaData": "84:42::49","nativeKind":"Type(MapType)","children":[

@@ -114,14 +114,26 @@ type MyStruct2 struct {
   value int
 }
 
-func (m MyStruct1) myStructFunction() {
+func (m MyStruct1) myStructFunction1() {
   foo := 1;
   bar := foo > 3 || false
   m.value++
 }
 
-func (m MyStruct2) myStructFunction() { // Compliant - not the same receiver type
+func (m MyStruct2) myStructFunction2() { // Compliant - not the same receiver type
   foo := 1;
   bar := foo > 3 || false
   m.value++
+}
+
+func funWithTypeParam1[T any](param T) {
+  foo := 1;
+  bar := foo > 3 || false
+  _ = bar
+}
+
+func funWithTypeParam2[Q any](param Q) { // Compliant, not exactly the same type parameter (even if same semantic)
+  foo := 1;
+  bar := foo > 3 || false
+  _ = bar
 }

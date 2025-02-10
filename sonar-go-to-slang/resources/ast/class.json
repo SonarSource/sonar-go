@@ -284,9 +284,10 @@
             ]}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "25:0:27:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "25:0:27:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "25:5::8","name":"foo"},"formalParameters":[
         {"@type": "Parameter", "metaData": "25:9::37","type":
           {"@type": "Native", "metaData": "25:19::37","nativeKind":"Type(InterfaceType)","children":[
@@ -327,9 +328,10 @@
               {"@type": "Identifier", "metaData": "26:9::18","name":"anonymous"}}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "29:0:31:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "29:0:31:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "29:5::8","name":"bar"},"formalParameters":[
         {"@type": "Parameter", "metaData": "29:9::14","type":
           {"@type": "Identifier", "metaData": "29:11::14","name":"int"},"modifiers":null,"identifier":

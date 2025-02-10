@@ -70,32 +70,35 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:5:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:5:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "3:18::22","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "3:18::22","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "3:18::22","name":"bool"}
           ]}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "3:5::15","name":"returnTrue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:23:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::12","keyword":"4:1::7","body":
             {"@type": "Literal", "metaData": "4:8::12","value":"true"}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","typeParameters":
+        null,"returnType":
         null,"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "7:5::16","name":"emptyReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:19:9:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "8:1::7","keyword":"8:1::7","body":null}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "11:0:17:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "11:0:17:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "11:17::23","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "11:17::23","nativeKind":"[0](Field)","children":[
             {"@type": "Identifier", "metaData": "11:17::23","name":"string"}
           ]}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "11:5::14","name":"twoReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:24:17:1","statementOrExpressions":[
           {"@type": "If", "metaData": "12:1:16:2","thenBranch":
@@ -109,7 +112,8 @@
             ]},"condition":
             {"@type": "Literal", "metaData": "12:4::8","value":"true"}}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "19:0:22:1","returnType":
+      {"@type": "FunctionDeclaration", "metaData": "19:0:22:1","typeParameters":
+        null,"returnType":
         {"@type": "Native", "metaData": "19:27::48","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "19:27::28","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "19:28::34","nativeKind":"[0](Field)","children":[
@@ -125,7 +129,7 @@
           ]},
           {"@type": "Native", "metaData": "19:47::48","nativeKind":"Closing"}
         ]},"receiver":
-        null,"nativeChildren":[],"name":
+        null,"name":
         {"@type": "Identifier", "metaData": "19:5::24","name":"multipleReturnValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializer":

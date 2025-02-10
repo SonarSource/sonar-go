@@ -125,7 +125,6 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_OPERAND
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_PARENTHESIS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.MODIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NAME;
-import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_CHILDREN;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_KIND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERATOR;
@@ -141,6 +140,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.THEN_BRANCH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.TRY_BLOCK;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.TRY_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.TYPE;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.TYPE_PARAMETERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.VALUE;
 
 class JsonTreeTest extends JsonTestHelper {
@@ -345,24 +345,25 @@ class JsonTreeTest extends JsonTestHelper {
 
   @Test
   void function_declaration() throws IOException {
-    Token tokenPublic = keywordToken(1, 0, "public");
-    Token tokenInt = otherToken(1, 7, "int");
-    Tree returnType = new IdentifierTreeImpl(metaData(tokenInt), tokenInt.text());
-    Token tokenR = otherToken(1, 11, "R");
-    NativeTree nativeTree = new NativeTreeImpl(metaData(tokenR), StringNativeKind.of("Field"), emptyList());
-    Token tokenName = otherToken(1, 11, "foo");
+    // A function declaration with everything could look like:
+    // func (r MyType[T]) foo[T any](param T) int { }
+    // In our case, we simplified the example and content of the children to keep the test simple.
+    Token tokenR = otherToken(1, 5, "r");
+    NativeTree nativeReceiver = new NativeTreeImpl(metaData(tokenR), StringNativeKind.of("Field"), emptyList());
+    Token tokenName = otherToken(1, 7, "foo");
     IdentifierTree name = new IdentifierTreeImpl(metaData(tokenName), tokenName.text());
+    Token tokenTypeParam = otherToken(1, 11, "T");
+    NativeTree nativeTypeParameters = new NativeTreeImpl(metaData(tokenTypeParam), StringNativeKind.of("Field"), emptyList());
     Token tokenParam = otherToken(1, 15, "param");
     Tree param = new IdentifierTreeImpl(metaData(tokenParam), tokenParam.text());
     List<Tree> parameters = singletonList(param);
-    Token tokenOpen = otherToken(1, 20, "{");
-    Token tokenClose = otherToken(1, 22, "}");
+    Token tokenInt = otherToken(1, 20, "int");
+    Tree returnType = new IdentifierTreeImpl(metaData(tokenInt), tokenInt.text());
+    Token tokenOpen = otherToken(1, 23, "{");
+    Token tokenClose = otherToken(1, 24, "}");
     BlockTree body = new BlockTreeImpl(metaData(tokenOpen, tokenClose), emptyList());
-    Token tokenNative = keywordToken(1, 24, "->");
-    List<Tree> nativeChildren = singletonList(new NativeTreeImpl(metaData(tokenNative), StringNativeKind.of("arrow"), emptyList()));
-    TreeMetaData metaData = metaData(tokenPublic, tokenNative);
-    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeTree, name, parameters, body,
-      nativeChildren);
+    TreeMetaData metaData = metaData(tokenR, tokenClose);
+    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeReceiver, name, parameters, nativeTypeParameters, body);
     FunctionDeclarationTree function = checkJsonSerializationDeserialization(initialFunction, "function_declaration.json");
     assertThat(function.textRange()).isEqualTo(metaData.textRange());
     assertThat(function.returnType().textRange()).isEqualTo(tokenInt.textRange());
@@ -370,11 +371,9 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(function.formalParameters()).hasSize(1);
     assertThat(function.formalParameters().get(0).textRange()).isEqualTo(tokenParam.textRange());
     assertThat(function.body().textRange()).isEqualTo(body.textRange());
-    assertThat(function.nativeChildren()).hasSize(1);
-    assertThat(function.nativeChildren().get(0).textRange()).isEqualTo(tokenNative.textRange());
 
     assertThat(methodNames(FunctionDeclarationTree.class))
-      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, BODY, NATIVE_CHILDREN, "rangeToHighlight");
+      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, TYPE_PARAMETERS, BODY, "rangeToHighlight");
   }
 
   @Test

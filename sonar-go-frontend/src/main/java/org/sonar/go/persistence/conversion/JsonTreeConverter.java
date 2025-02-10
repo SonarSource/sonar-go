@@ -109,7 +109,6 @@ public final class JsonTreeConverter {
   public static final String MEMBER_SELECT = "memberSelect";
   public static final String MODIFIERS = "modifiers";
   public static final String NAME = "name";
-  public static final String NATIVE_CHILDREN = "nativeChildren";
   public static final String NATIVE_KIND = "nativeKind";
   public static final String OPERAND = "operand";
   public static final String OPERATOR = "operator";
@@ -129,6 +128,7 @@ public final class JsonTreeConverter {
   public static final String TRY_BLOCK = "tryBlock";
   public static final String TRY_KEYWORD = "tryKeyword";
   public static final String TYPE = "type";
+  public static final String TYPE_PARAMETERS = "typeParameters";
   public static final String KEY = "key";
   public static final String VALUE = "value";
   public static final String OTHER = "OTHER";
@@ -282,8 +282,8 @@ public final class JsonTreeConverter {
         .add(RECEIVER, ctx.toJson(tree.receiver()))
         .add(NAME, ctx.toJson(tree.name()))
         .add(FORMAL_PARAMETERS, ctx.toJsonArray(tree.formalParameters()))
-        .add(BODY, ctx.toJson(tree.body()))
-        .add(NATIVE_CHILDREN, ctx.toJsonArray(tree.nativeChildren())),
+        .add(TYPE_PARAMETERS, ctx.toJson(tree.typeParameters()))
+        .add(BODY, ctx.toJson(tree.body())),
 
       (ctx, json) -> new FunctionDeclarationTreeImpl(
         ctx.metaData(json),
@@ -291,8 +291,8 @@ public final class JsonTreeConverter {
         ctx.fieldToNullableObject(json, RECEIVER, Tree.class),
         ctx.fieldToNullableObject(json, NAME, IdentifierTree.class),
         ctx.fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class),
-        ctx.fieldToNullableObject(json, BODY, BlockTree.class),
-        ctx.fieldToObjectList(json, NATIVE_CHILDREN, Tree.class)));
+        ctx.fieldToNullableObject(json, TYPE_PARAMETERS, Tree.class),
+        ctx.fieldToNullableObject(json, BODY, BlockTree.class)));
 
     register(FunctionInvocationTreeImpl.class,
 
