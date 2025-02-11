@@ -36,6 +36,8 @@ class MethodCallTest {
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
     assertThat(methodCall.args()).isEmpty();
     assertThat(methodCall.is("foo")).isTrue();
+    assertThat(methodCall.is("foo"::equals)).isTrue();
+    assertThat(methodCall.is("bar"::equals)).isFalse();
   }
 
   @Test
@@ -45,6 +47,7 @@ class MethodCallTest {
     assertThat(methodCall.methodFqn()).isEqualTo("com.sonar.foo");
     assertThat(methodCall.args()).isEmpty();
     assertThat(methodCall.is("com.sonar.foo")).isTrue();
+    assertThat(methodCall.is("com.sonar.foo"::equals)).isTrue();
   }
 
   @Test
@@ -64,6 +67,7 @@ class MethodCallTest {
     assertThat(arg3).isNull();
 
     assertThat(methodCall.is("foo")).isTrue();
+    assertThat(methodCall.is("foo"::equals)).isTrue();
   }
 
   @Test
@@ -72,6 +76,7 @@ class MethodCallTest {
     assertThat(methodCall).isNotNull();
     assertThat(methodCall.methodFqn()).isEqualTo("foo");
     assertThat(methodCall.is("foo")).isTrue();
+    assertThat(methodCall.is("foo"::equals)).isTrue();
     assertThat(methodCall.is("foo", "bar.test")).isTrue();
     assertThat(methodCall.is("foo", "bar.test", "again")).isTrue();
     assertThat(methodCall.is("foo", "again")).isFalse();

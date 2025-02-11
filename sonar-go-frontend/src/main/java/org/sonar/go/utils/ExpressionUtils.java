@@ -163,7 +163,7 @@ public class ExpressionUtils {
    * </ul>
    *
    * @param initializer a RHS of an assignment expression
-   * @return a base type of the expression (`&` is removed if present)
+   * @return a base type of the expression ({@code &} is removed if present)
    */
   public static Optional<MemberSelectTree> getTypeOfStructOrPointerInitializer(Tree initializer) {
     if (initializer instanceof FunctionInvocationTree invocation

@@ -26,6 +26,7 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 
 class MethodMatchersTest {
 
@@ -33,7 +34,7 @@ class MethodMatchersTest {
   void shouldMatchMethodCallWithPackageName() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -45,10 +46,17 @@ class MethodMatchersTest {
   }
 
   @Test
+  void shouldThrowExceptionWhenMethodCallWithoutPackageName() {
+    assertThatIllegalArgumentException().isThrownBy(() -> MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("foo"));
+  }
+
+  @Test
   void shouldNotMatchWithUnrelatedImports() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -59,10 +67,40 @@ class MethodMatchersTest {
   }
 
   @Test
-  void shouldMatchWithMultipleMethodNames() {
+  void shouldMatchWithMultipleMethodNamesCollection() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withNames(Set.of("foo", "bar", "baz"))
+      .withNames(Set.of("sonar.foo", "sonar.bar", "sonar.baz"))
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("bar");
+  }
+
+  @Test
+  void shouldMatchWithMultipleMethodNamesVararg() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("sonar.foo", "sonar.bar", "sonar.baz")
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("bar");
+  }
+
+  @Test
+  void shouldMatchWithMultipleMethodNamesWithPrefix() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withPrefixAndNames("sonar", "foo", "bar", "baz")
       .withAnyParameters()
       .build();
 
@@ -77,7 +115,7 @@ class MethodMatchersTest {
   void shouldMatchWithParameterPredicate() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withParameters(p -> p.size() == 1)
       .build();
 
@@ -92,7 +130,7 @@ class MethodMatchersTest {
   void shouldMatchWithMultiplesParameterPredicateWithOr() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withParameters(p -> false)
       .withParameters(p -> true)
       .build();
@@ -108,7 +146,7 @@ class MethodMatchersTest {
   void shouldNotMatchWithParameterPredicate() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withParameters(p -> p.size() == 7)
       .build();
 
@@ -122,7 +160,7 @@ class MethodMatchersTest {
   void shouldNotMatchWithWrongName() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("somethingElse")
+      .withNames("sonar.somethingElse")
       .withAnyParameters()
       .build();
 
@@ -136,7 +174,7 @@ class MethodMatchersTest {
   void shouldNotMatchWithWrongType() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/somethingElse")
-      .withName("foo")
+      .withNames("somethingElse.foo")
       .withAnyParameters()
       .build();
 
@@ -150,7 +188,7 @@ class MethodMatchersTest {
   void shouldNotMatchNestedMemberSelect() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -164,7 +202,7 @@ class MethodMatchersTest {
   void shouldNotMatchWithWrongPackageName() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("sonar/foo")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -178,7 +216,7 @@ class MethodMatchersTest {
   void shouldMatchSingleImport() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -193,7 +231,7 @@ class MethodMatchersTest {
   void shouldNotMatchOtherNativeNode() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -207,7 +245,7 @@ class MethodMatchersTest {
   void canProvideImportsDirectly() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -250,7 +288,7 @@ class MethodMatchersTest {
   void shouldNotMatchWhenTreeIsNullWithImportsPresent() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
@@ -263,11 +301,50 @@ class MethodMatchersTest {
   void shouldNotMatchWhenTreeIsNull() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
-      .withName("foo")
+      .withNames("sonar.foo")
       .withAnyParameters()
       .build();
 
     Optional<IdentifierTree> matches = matcher.matches(null);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldMatchChainCall() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("a.b.c.foo")
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("a.b.c.foo(\"bar\")", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("foo");
+  }
+
+  @Test
+  void shouldNotMatchChainCall() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("a.b.c.foo")
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("""
+      a.foo()
+      b.foo()
+      c.foo()
+      a.b.foo()
+      b.c.foo()
+      a.b.c.d.foo()
+      a.b.c.bar()
+      """,
+      "com/sonar",
+      matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
   }
 }

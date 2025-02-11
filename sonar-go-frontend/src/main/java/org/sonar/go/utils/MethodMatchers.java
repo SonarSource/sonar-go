@@ -16,12 +16,14 @@
  */
 package org.sonar.go.utils;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
@@ -31,7 +33,6 @@ import org.sonar.go.api.Tree;
 
 public class MethodMatchers {
   private final String type;
-  private final String packageName;
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersPredicate;
 
@@ -39,7 +40,6 @@ public class MethodMatchers {
 
   private MethodMatchers(String type, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate) {
     this.type = type;
-    this.packageName = type.substring(type.lastIndexOf('/') + 1);
     this.namePredicate = namePredicate;
     this.parametersPredicate = parametersPredicate;
   }
@@ -58,21 +58,17 @@ public class MethodMatchers {
   }
 
   public Optional<IdentifierTree> matches(@Nullable Tree tree) {
-    if (imports.contains(type) && tree instanceof FunctionInvocationTree functionInvocation) {
+    if (imports.contains(type)
+      && tree instanceof FunctionInvocationTree functionInvocation
+      && MethodCall.of(functionInvocation).is(namePredicate)
+      && parametersPredicate.test(extractArgTypes(functionInvocation))) {
+
       return Optional.of(functionInvocation.memberSelect())
         .filter(MemberSelectTree.class::isInstance)
         .map(MemberSelectTree.class::cast)
-        .flatMap(this::getMethodIdentifierIfMatches)
-        .filter(i -> parametersPredicate.test(extractArgTypes(functionInvocation)));
+        .map(MemberSelectTree::identifier);
     }
     return Optional.empty();
-  }
-
-  private Optional<IdentifierTree> getMethodIdentifierIfMatches(MemberSelectTree memberSelectTree) {
-    return Optional.of(memberSelectTree)
-      .filter(m -> m.expression() instanceof IdentifierTree currentPackageName && packageName.equals(currentPackageName.name()))
-      .map(MemberSelectTree::identifier)
-      .filter(i -> namePredicate.test(i.name()));
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
@@ -85,9 +81,11 @@ public class MethodMatchers {
   }
 
   public interface NameBuilder {
-    ParametersBuilder withName(String name);
-
     ParametersBuilder withNames(Collection<String> names);
+
+    ParametersBuilder withNames(String... names);
+
+    ParametersBuilder withPrefixAndNames(String commonPrefix, String... names);
   }
 
   public interface ParametersBuilder {
@@ -114,14 +112,31 @@ public class MethodMatchers {
     }
 
     @Override
-    public ParametersBuilder withName(String name) {
-      this.namePredicate = s -> s.equals(name);
+    public ParametersBuilder withNames(Collection<String> names) {
+      validateNames(names);
+      this.namePredicate = names::contains;
       return this;
     }
 
+    private static void validateNames(Collection<String> names) {
+      var nameWithoutDot = names.stream()
+        .filter(s -> !s.contains("."))
+        .findAny();
+      if (nameWithoutDot.isPresent()) {
+        var message = "The method resolution \"%s\" doesn't contain a dot. Detection on local method is not supported yet.".formatted(nameWithoutDot.get());
+        throw new IllegalArgumentException(message);
+      }
+    }
+
     @Override
-    public ParametersBuilder withNames(Collection<String> names) {
-      this.namePredicate = names::contains;
+    public ParametersBuilder withNames(String... names) {
+      return withNames(Arrays.asList(names));
+    }
+
+    @Override
+    public ParametersBuilder withPrefixAndNames(String commonPrefix, String... names) {
+      var namesWithPrefix = Arrays.stream(names).map(name -> commonPrefix + "." + name).collect(Collectors.toSet());
+      this.namePredicate = namesWithPrefix::contains;
       return this;
     }
 

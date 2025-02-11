@@ -17,6 +17,7 @@
 package org.sonar.go.utils;
 
 import java.util.List;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
@@ -49,6 +50,10 @@ public record MethodCall(String methodFqn, List<Tree> args) {
       }
     }
     return this.methodFqn.equals(methodFqn);
+  }
+
+  public boolean is(Predicate<String> namePredicate) {
+    return namePredicate.test(this.methodFqn);
   }
 
   @Nullable
