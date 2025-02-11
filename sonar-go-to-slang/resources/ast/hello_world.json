@@ -33,9 +33,9 @@
       ]},
       {"@type": "ImportDeclaration", "metaData": "5:0::12","children":[
         {"@type": "Native", "metaData": "5:0::6","nativeKind":"Tok"},
-        {"@type": "Native", "metaData": "5:7::12","nativeKind":"[0](ImportSpec)","children":[
-          {"@type": "StringLiteral", "metaData": "5:7::12","value":"\"fmt\"","content":"fmt"}
-        ]}
+        {"@type": "ImportSpecification", "metaData": "5:7::12","path":
+          {"@type": "StringLiteral", "metaData": "5:7::12","value":"\"fmt\"","content":"fmt"},"name":
+          null}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "7:0:10:1","typeParameters":
         null,"returnType":

@@ -1,0 +1,15 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:7::11", "text": "name"},
+      {"textRange": "1:13::19", "text": "\"path\""}
+    ]
+  },
+  "tree": {
+    "@type": "ImportSpecification",
+    "metaData": "1:7::19",
+    "name": {"@type": "Identifier", "metaData": "1:7::11", "name": "name"},
+    "path": {"@type": "StringLiteral", "metaData": "1:13::19", "content": "path", "value": "\"path\""}
+  }
+}

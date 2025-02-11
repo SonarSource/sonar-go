@@ -35,6 +35,7 @@ import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IfTree;
 import org.sonar.go.api.ImportDeclarationTree;
+import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.JumpTree;
 import org.sonar.go.api.LiteralTree;
@@ -70,6 +71,7 @@ import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
+import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
@@ -129,6 +131,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_KIND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERATOR;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERATOR_TOKEN;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.PATH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.PLACE_HOLDER_TOKEN;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.RECEIVER;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.RETURN_TYPE;
@@ -445,6 +448,23 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(ImportDeclarationTree.class))
       .isEmpty();
+  }
+
+  @Test
+  void import_specification() throws IOException {
+    Token tokenName = otherToken(1, 7, "name");
+    IdentifierTree name = new IdentifierTreeImpl(metaData(tokenName), tokenName.text());
+    Token tokenPath = otherToken(1, 13, "\"path\"");
+    StringLiteralTree path = new StringLiteralTreeImpl(metaData(tokenPath), tokenPath.text());
+    ImportSpecificationTree initialTree = new ImportSpecificationTreeImpl(metaData(tokenName, tokenPath), name, path);
+    ImportSpecificationTree tree = checkJsonSerializationDeserialization(initialTree, "import_specification.json");
+    assertThat(tokens(tree)).isEqualTo("1:7:1:19 - name \"path\"");
+    assertThat(tree.children()).hasSize(2);
+    assertThat(tokens(tree.name())).isNotNull().isEqualTo("1:7:1:11 - name");
+    assertThat(tokens(tree.path())).isEqualTo("1:13:1:19 - \"path\"");
+
+    assertThat(methodNames(ImportSpecificationTree.class))
+      .containsExactlyInAnyOrder(NAME, PATH);
   }
 
   @Test

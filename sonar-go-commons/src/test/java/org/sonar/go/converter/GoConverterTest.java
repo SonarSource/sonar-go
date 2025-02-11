@@ -27,6 +27,8 @@ import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.ImportDeclarationTree;
+import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MemberSelectTree;
@@ -201,6 +203,38 @@ class GoConverterTest {
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
       nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("TypeParams(FieldList)"));
+  }
+
+  @Test
+  void test_parse_imports() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import (
+      	"io"
+      	name "log"
+      )
+      """);
+    List<Tree> importDeclarations = tree.descendants().filter(ImportDeclarationTree.class::isInstance).toList();
+    assertThat(importDeclarations).hasSize(1);
+    ImportDeclarationTree importDeclaration = (ImportDeclarationTree) importDeclarations.get(0);
+
+    // Token "import", "(", ImportSpec, ImportSpec, ")"
+    assertThat(importDeclaration.children()).hasSize(5);
+
+    Tree firstImport = importDeclaration.children().get(2);
+    assertThat(firstImport).isInstanceOf(ImportSpecificationTree.class);
+    ImportSpecificationTree firstImportSpecification = (ImportSpecificationTree) firstImport;
+    assertThat(firstImportSpecification.name()).isNull();
+    assertThat(firstImportSpecification.path()).isInstanceOfSatisfying(StringLiteralTree.class,
+      stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("io"));
+
+    Tree secondImport = importDeclaration.children().get(3);
+    assertThat(secondImport).isInstanceOf(ImportSpecificationTree.class);
+    ImportSpecificationTree secondImportSpecification = (ImportSpecificationTree) secondImport;
+    assertThat(secondImportSpecification.name()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierTree -> assertThat(identifierTree.name()).isEqualTo("name"));
+    assertThat(secondImportSpecification.path()).isInstanceOfSatisfying(StringLiteralTree.class,
+      stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("log"));
   }
 
   @Test

@@ -287,12 +287,12 @@
       {"@type": "ImportDeclaration", "metaData": "3:0:6:1","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
         {"@type": "Native", "metaData": "3:7::8","nativeKind":"Lparen"},
-        {"@type": "Native", "metaData": "4:4::9","nativeKind":"[0](ImportSpec)","children":[
-          {"@type": "StringLiteral", "metaData": "4:4::9","value":"\"fmt\"","content":"fmt"}
-        ]},
-        {"@type": "Native", "metaData": "5:1::9","nativeKind":"[1](ImportSpec)","children":[
-          {"@type": "StringLiteral", "metaData": "5:1::9","value":"\"slices\"","content":"slices"}
-        ]},
+        {"@type": "ImportSpecification", "metaData": "4:4::9","path":
+          {"@type": "StringLiteral", "metaData": "4:4::9","value":"\"fmt\"","content":"fmt"},"name":
+          null},
+        {"@type": "ImportSpecification", "metaData": "5:1::9","path":
+          {"@type": "StringLiteral", "metaData": "5:1::9","value":"\"slices\"","content":"slices"},"name":
+          null},
         {"@type": "Native", "metaData": "6:0::1","nativeKind":"Rparen"}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "8:0:67:1","typeParameters":

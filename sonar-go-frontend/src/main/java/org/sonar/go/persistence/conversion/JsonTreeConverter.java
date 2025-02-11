@@ -29,6 +29,7 @@ import org.sonar.go.api.JumpTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.ModifierTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
@@ -46,6 +47,7 @@ import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
+import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
@@ -113,6 +115,7 @@ public final class JsonTreeConverter {
   public static final String OPERAND = "operand";
   public static final String OPERATOR = "operator";
   public static final String OPERATOR_TOKEN = "operatorToken";
+  public static final String PATH = "path";
   public static final String PLACE_HOLDER_TOKEN = "placeHolderToken";
   public static final String RANGE = "range";
   public static final String RECEIVER = "receiver";
@@ -339,6 +342,17 @@ public final class JsonTreeConverter {
       (ctx, json) -> new ImportDeclarationTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObjectList(json, CHILDREN, Tree.class)));
+
+    register(ImportSpecificationTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(NAME, ctx.toJson(tree.name()))
+        .add(PATH, ctx.toJson(tree.path())),
+
+      (ctx, json) -> new ImportSpecificationTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToNullableObject(json, NAME, IdentifierTree.class),
+        ctx.fieldToObject(json, PATH, StringLiteralTree.class)));
 
     register(IntegerLiteralTreeImpl.class,
 

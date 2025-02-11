@@ -22,8 +22,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.ImportDeclarationTree;
+import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -55,13 +55,11 @@ public class TreeUtils {
     return file.declarations().stream()
       .filter(ImportDeclarationTree.class::isInstance)
       .flatMap(it -> it.children().stream())
-      .filter(it -> it instanceof NativeTree nativeImport && nativeImport.nativeKind().toString().endsWith("](ImportSpec)"))
+      .filter(ImportSpecificationTree.class::isInstance)
+      .map(ImportSpecificationTree.class::cast)
       // Imports with aliases are not supported currently, they are filtered-out to avoid false positives
-      .filter(it -> it.children().size() == 1)
-      .flatMap(it -> it.children().stream())
-      .filter(StringLiteralTree.class::isInstance)
-      .map(StringLiteralTree.class::cast)
-      .map(StringLiteralTree::content)
+      .filter(spec -> spec.name() == null)
+      .map(spec -> spec.path().content())
       .collect(Collectors.toSet());
   }
 }

@@ -402,7 +402,18 @@ func (t *SlangMapper) mapStmtImpl(stmt ast.Stmt, fieldName string) *Node {
 }
 
 func (t *SlangMapper) mapImportSpecImpl(spec *ast.ImportSpec, fieldName string) *Node {
-	return nil
+	slangField := make(map[string]interface{})
+	var children []*Node
+
+	name := t.mapIdent(spec.Name, "Name")
+	children = t.appendNode(children, name)
+	slangField["name"] = name
+
+	path := t.mapBasicLit(spec.Path, "Path")
+	children = t.appendNode(children, path)
+	slangField["path"] = path
+
+	return t.createNode(spec, children, fieldName+"(ImportSpec)", "ImportSpecification", slangField)
 }
 
 func (t *SlangMapper) mapTypeSpecImpl(spec *ast.TypeSpec, fieldName string) *Node {

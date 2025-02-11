@@ -1,0 +1,21 @@
+// +build ignore
+
+package main
+
+// Single import
+import "math"
+
+// Renamed import
+import m "math"
+
+// Dot import
+import . "fmt"
+
+// Blank import
+import _ "net/http"
+
+// Grouped imports
+import (
+	"io"
+	"log"
+)

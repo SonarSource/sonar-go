@@ -1,0 +1,74 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+            {"text":"// +build ignore", "contentText":" +build ignore", "range":"1:0::16", "contentRange": "1:2::16"},
+            {"text":"// Single import", "contentText":" Single import", "range":"5:0::16", "contentRange": "5:2::16"},
+            {"text":"// Renamed import", "contentText":" Renamed import", "range":"8:0::17", "contentRange": "8:2::17"},
+            {"text":"// Dot import", "contentText":" Dot import", "range":"11:0::13", "contentRange": "11:2::13"},
+            {"text":"// Blank import", "contentText":" Blank import", "range":"14:0::15", "contentRange": "14:2::15"},
+            {"text":"// Grouped imports", "contentText":" Grouped imports", "range":"17:0::18", "contentRange": "17:2::18"}
+    ],
+    "tokens": [
+      {"text":"package","textRange":"3:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"3:8::12"},
+      {"text":"import","textRange":"6:0::6","type":"KEYWORD"},
+      {"text":"\"math\"","textRange":"6:7::13","type":"STRING_LITERAL"},
+      {"text":"import","textRange":"9:0::6","type":"KEYWORD"},
+      {"text":"m","textRange":"9:7::8"},
+      {"text":"\"math\"","textRange":"9:9::15","type":"STRING_LITERAL"},
+      {"text":"import","textRange":"12:0::6","type":"KEYWORD"},
+      {"text":".","textRange":"12:7::8"},
+      {"text":"\"fmt\"","textRange":"12:9::14","type":"STRING_LITERAL"},
+      {"text":"import","textRange":"15:0::6","type":"KEYWORD"},
+      {"text":"_","textRange":"15:7::8","type":"KEYWORD"},
+      {"text":"\"net/http\"","textRange":"15:9::19","type":"STRING_LITERAL"},
+      {"text":"import","textRange":"18:0::6","type":"KEYWORD"},
+      {"text":"(","textRange":"18:7::8"},
+      {"text":"\"io\"","textRange":"19:1::5","type":"STRING_LITERAL"},
+      {"text":"\"log\"","textRange":"20:1::6","type":"STRING_LITERAL"},
+      {"text":")","textRange":"21:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:22:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0:3:12","children":[
+        {"@type": "Native", "metaData": "3:0::7"},
+        {"@type": "Identifier", "metaData": "3:8::12","name":"main"}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "6:0::13","children":[
+        {"@type": "Native", "metaData": "6:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "6:7::13","path":
+          {"@type": "StringLiteral", "metaData": "6:7::13","value":"\"math\"","content":"math"},"name":
+          null}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "9:0::15","children":[
+        {"@type": "Native", "metaData": "9:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "9:7::15","path":
+          {"@type": "StringLiteral", "metaData": "9:9::15","value":"\"math\"","content":"math"},"name":
+          {"@type": "Identifier", "metaData": "9:7::8","name":"m"}}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "12:0::14","children":[
+        {"@type": "Native", "metaData": "12:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "12:7::14","path":
+          {"@type": "StringLiteral", "metaData": "12:9::14","value":"\"fmt\"","content":"fmt"},"name":
+          {"@type": "Identifier", "metaData": "12:7::8","name":"."}}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "15:0::19","children":[
+        {"@type": "Native", "metaData": "15:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "15:7::19","path":
+          {"@type": "StringLiteral", "metaData": "15:9::19","value":"\"net/http\"","content":"net/http"},"name":
+          {"@type": "PlaceHolder", "metaData": "15:7::8","placeHolderToken":"15:7::8"}}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "18:0:21:1","children":[
+        {"@type": "Native", "metaData": "18:0::6","nativeKind":"Tok"},
+        {"@type": "Native", "metaData": "18:7::8","nativeKind":"Lparen"},
+        {"@type": "ImportSpecification", "metaData": "19:1::5","path":
+          {"@type": "StringLiteral", "metaData": "19:1::5","value":"\"io\"","content":"io"},"name":
+          null},
+        {"@type": "ImportSpecification", "metaData": "20:1::6","path":
+          {"@type": "StringLiteral", "metaData": "20:1::6","value":"\"log\"","content":"log"},"name":
+          null},
+        {"@type": "Native", "metaData": "21:0::1","nativeKind":"Rparen"}
+      ]}
+    ]}
+} 

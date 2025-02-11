@@ -61,9 +61,9 @@
       ]},
       {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
-        {"@type": "Native", "metaData": "3:7::12","nativeKind":"[0](ImportSpec)","children":[
-          {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"}
-        ]}
+        {"@type": "ImportSpecification", "metaData": "3:7::12","path":
+          {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
+          null}
       ]},
       {"@type": "ClassDeclaration", "metaData": "5:0:7:1","identifier":"5:5::13","classTree":
         {"@type": "Native", "metaData": "5:0:7:1","nativeKind":"[1](TypeSpecWrapped)","children":[
