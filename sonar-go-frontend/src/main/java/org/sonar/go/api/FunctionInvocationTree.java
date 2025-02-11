@@ -20,6 +20,9 @@ import java.util.List;
 
 public interface FunctionInvocationTree extends Tree {
 
+  /**
+   * The callee of the function invocation. Can be a member select, or a simple identifier, or an anonymous function.
+   */
   Tree memberSelect();
 
   List<Tree> arguments();
