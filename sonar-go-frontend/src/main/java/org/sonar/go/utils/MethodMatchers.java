@@ -31,15 +31,99 @@ import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 
+/**
+ * Helps identify a method with given Type, Receiver, Name and Parameters.
+ * <p>
+ * The starting point to define a MethodMatchers is {@link #create()}.
+ * <p>
+ * It is required to provide the following:
+ * <ul>
+ *  <li> a type definition (import):
+ *    <ul>
+ *      <li> {@link TypeBuilder#ofType(String)} </li>
+ *    </ul>
+ *  </li>
+ *  <li> a method name
+ *    <ul>
+ *      <li> {@link NameBuilder#withNames(String...)} </li>
+ *      <li> {@link NameBuilder#withNames(Collection)} </li>
+ *      <li> {@link NameBuilder#withPrefixAndNames(String, String...)} </li>
+ *    </ul>
+ *  </li>
+ *  <li> and parameters:
+ *    <ul>
+ *      <li> {@link ParametersBuilder#withAnyParameters()} </li>
+ *      <li> {@link ParametersBuilder#withParameters(Predicate)} </li>
+ *    </ul>
+ *  </li>
+ * </ul>
+ * Optional methods:
+ * <ul>
+ *   <li> {@link NameBuilder#withReceiver()} - by default no receiver is expected </li>
+ * </ul>
+ * <p>
+ * Examples:
+ * <p>
+ * Example 1. Match method rand.Int() from "math/rand" package
+ * <p>
+ *   <pre>
+ *     {@code
+ *     var randIntMatcher = MethodMatchers.create()
+ *       .ofType("math/rand")
+ *       .withName("rand.Int")
+ *       .withAnyParameters()
+ *       .build();
+ *     TopLevelTree topLevelTree = ...
+ *     FunctionInvocationTree tree = ...
+ *     randIntMatcher.addImports(topLevelTree);
+ *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
+ *     }
+ *   </pre>
+ * <p>
+ *   Example 2. Match method Int() or Int31() from "math/rand" package
+ * <p>
+ *   <pre>
+ *     {@code
+ *     MethodMatchers.create()
+ *       .ofType("math/rand")
+ *       .withPrefixAndNames("rand", "Int", "Int31")
+ *       .withAnyParameters()
+ *       .build();
+ *     }
+ *   </pre>
+ * <p>
+ *   Example 3. Match method bar() called on object "foo" from "com/example" package
+ *   <pre>
+ *     {@code
+ *     var fooBarMatcher = MethodMatchers.create()
+ *       .ofType("com/example")
+ *       .withReceiver()
+ *       .withName("bar")
+ *       .withAnyParameters()
+ *       .build();
+ *     }
+ *     TopLevelTree topLevelTree = ...
+ *     FunctionInvocationTree tree = ...
+ *     fooBarMatcher.addImports(topLevelTree);
+ *     // when withReceiver() is called then setReceiverName() needs to be called before matches()
+ *     fooBarMatcher.setReceiverName("foo");
+ *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
+ *   </pre>
+ * <p>
+ */
 public class MethodMatchers {
   private final String type;
+  private final boolean withReceiver;
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersPredicate;
 
   private final Set<String> imports = new HashSet<>();
+  @Nullable
+  private String methodReceiverName;
 
-  private MethodMatchers(String type, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate) {
+  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate) {
     this.type = type;
+    this.withReceiver = withReceiver;
     this.namePredicate = namePredicate;
     this.parametersPredicate = parametersPredicate;
   }
@@ -57,10 +141,26 @@ public class MethodMatchers {
     imports.addAll(importStrings);
   }
 
+  /**
+   * Set the name of receiver. It needs to be called when {@code MethodMatchers} was created using
+   * {@link NameBuilder#withReceiver()} method. Otherwise, the method will be not resolved.
+   * <p>
+   * When receiver is not available anymore (e.g. outside the function where it is declared) the
+   * receiver name should be set to {@code null} to "reset" the value and not match anymore.
+   * @throws IllegalArgumentException when the receiver is not expected in {@code MethodMatcher}.
+   */
+  public void setReceiverName(@Nullable String methodReceiverName) {
+    if (!withReceiver) {
+      var message = "Setting receiver name, when MethodMatcher is not configured to expect receiver, doesn't make sense.";
+      throw new IllegalArgumentException(message);
+    }
+    this.methodReceiverName = methodReceiverName;
+  }
+
   public Optional<IdentifierTree> matches(@Nullable Tree tree) {
     if (imports.contains(type)
       && tree instanceof FunctionInvocationTree functionInvocation
-      && MethodCall.of(functionInvocation).is(namePredicate)
+      && matchesFunctionInvocation(functionInvocation)
       && parametersPredicate.test(extractArgTypes(functionInvocation))) {
 
       return Optional.of(functionInvocation.memberSelect())
@@ -69,6 +169,22 @@ public class MethodMatchers {
         .map(MemberSelectTree::identifier);
     }
     return Optional.empty();
+  }
+
+  private boolean matchesFunctionInvocation(FunctionInvocationTree functionInvocation) {
+    if (!withReceiver) {
+      return MethodCall.of(functionInvocation).is(namePredicate);
+    }
+    if (methodReceiverName == null) {
+      return false;
+    }
+    var methodFqn = MethodCall.of(functionInvocation).methodFqn();
+    if (methodFqn.contains(".")) {
+      var firstPart = methodFqn.substring(0, methodFqn.indexOf("."));
+      var secondPart = methodFqn.substring(Math.min(methodFqn.indexOf(".") + 1, methodFqn.length() - 1));
+      return firstPart.equals(methodReceiverName) && namePredicate.test(secondPart);
+    }
+    return false;
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
@@ -86,6 +202,8 @@ public class MethodMatchers {
     ParametersBuilder withNames(String... names);
 
     ParametersBuilder withPrefixAndNames(String commonPrefix, String... names);
+
+    NameBuilder withReceiver();
   }
 
   public interface ParametersBuilder {
@@ -103,6 +221,7 @@ public class MethodMatchers {
   public static class MethodMatchersBuilder implements TypeBuilder, NameBuilder, ParametersBuilder {
     private String type;
     private Predicate<String> namePredicate;
+    private boolean methodReceiver = false;
     private Predicate<List<String>> parametersPredicate;
 
     @Override
@@ -141,6 +260,12 @@ public class MethodMatchers {
     }
 
     @Override
+    public NameBuilder withReceiver() {
+      methodReceiver = true;
+      return this;
+    }
+
+    @Override
     public ParametersBuilder withAnyParameters() {
       return withParameters(s -> true);
     }
@@ -157,7 +282,7 @@ public class MethodMatchers {
 
     @Override
     public MethodMatchers build() {
-      return new MethodMatchers(type, namePredicate, parametersPredicate);
+      return new MethodMatchers(type, methodReceiver, namePredicate, parametersPredicate);
     }
   }
 }

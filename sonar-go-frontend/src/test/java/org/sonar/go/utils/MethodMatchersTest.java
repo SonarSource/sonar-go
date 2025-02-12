@@ -18,7 +18,11 @@ package org.sonar.go.utils;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.TopLevelTree;
@@ -27,6 +31,7 @@ import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class MethodMatchersTest {
 
@@ -343,6 +348,53 @@ class MethodMatchersTest {
       """,
       "com/sonar",
       matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldMatchReceiver() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withReceiver()
+      .withNames("a.foo")
+      .withAnyParameters()
+      .build();
+
+    matcher.setReceiverName("receiver");
+
+    Tree methodCall = parseAndFeedImportsToMatcher("receiver.a.foo(\"bar\")", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("foo");
+  }
+
+  static Stream<Arguments> shouldNotMatchReceiver() {
+    return Stream.of(
+      arguments(null, "receiver.a.foo(\"bar\")"),
+      arguments("somethingElse", "receiver.a.foo(\"bar\")"),
+      arguments("receiver", "receiver.a.somethingElse(\"bar\")"),
+      arguments("receiver", """
+        go func() {
+          receiver.a.foo()
+        }()"""));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldNotMatchReceiver(String receiver, String code) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withReceiver()
+      .withNames("a.foo")
+      .withAnyParameters()
+      .build();
+
+    matcher.setReceiverName(receiver);
+
+    Tree methodCall = parseAndFeedImportsToMatcher(code, "com/sonar", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
