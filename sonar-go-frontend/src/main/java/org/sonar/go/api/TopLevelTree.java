@@ -28,4 +28,9 @@ public interface TopLevelTree extends Tree {
   @CheckForNull
   Token firstCpdToken();
 
+  /**
+   * @return whether the file imports the given type.
+   */
+  boolean doesImportType(String type);
+
 }

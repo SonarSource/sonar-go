@@ -17,9 +17,13 @@
 package org.sonar.go.impl;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.go.api.Comment;
+import org.sonar.go.api.ImportDeclarationTree;
+import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -30,6 +34,7 @@ public class TopLevelTreeImpl extends BaseTreeImpl implements TopLevelTree {
   private final List<Tree> declarations;
   private final List<Comment> allComments;
   private final Token firstCpdToken;
+  private final Set<String> importsAsStrings;
 
   public TopLevelTreeImpl(TreeMetaData metaData, List<Tree> declarations, List<Comment> allComments) {
     this(metaData, declarations, allComments, null);
@@ -40,6 +45,7 @@ public class TopLevelTreeImpl extends BaseTreeImpl implements TopLevelTree {
     this.declarations = declarations;
     this.allComments = allComments;
     this.firstCpdToken = firstCpdToken;
+    this.importsAsStrings = getImportsAsStrings(declarations);
   }
 
   @Override
@@ -61,5 +67,22 @@ public class TopLevelTreeImpl extends BaseTreeImpl implements TopLevelTree {
   @Override
   public List<Tree> children() {
     return declarations();
+  }
+
+  @Override
+  public boolean doesImportType(String type) {
+    return importsAsStrings.contains(type);
+  }
+
+  private static Set<String> getImportsAsStrings(List<Tree> declarations) {
+    return declarations.stream()
+      .filter(ImportDeclarationTree.class::isInstance)
+      .flatMap(it -> it.children().stream())
+      .filter(ImportSpecificationTree.class::isInstance)
+      .map(ImportSpecificationTree.class::cast)
+      // Imports with aliases are not supported currently, they are filtered-out to avoid false positives
+      .filter(spec -> spec.name() == null)
+      .map(spec -> spec.path().content())
+      .collect(Collectors.toSet());
   }
 }
