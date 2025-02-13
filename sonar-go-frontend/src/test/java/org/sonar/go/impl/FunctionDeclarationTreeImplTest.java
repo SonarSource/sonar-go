@@ -26,9 +26,10 @@ import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 
 import static java.util.Collections.emptyList;
-import static java.util.Collections.singletonList;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.impl.TextRanges.range;
 import static org.sonar.go.utils.TreeCreationUtils.simpleNative;
@@ -36,25 +37,29 @@ import static org.sonar.go.utils.TreeCreationUtils.simpleNative;
 class FunctionDeclarationTreeImplTest {
   private static final NativeKind SIMPLE_KIND = new NativeKind() {
   };
+  private static final NativeKind METHOD_RECEIVER = new StringNativeKind("Names([]*Ident)");
 
   @Test
   void test() {
     TreeMetaData meta = null;
     Tree returnType = new IdentifierTreeImpl(meta, "int");
-    Tree receiver = simpleNative(SIMPLE_KIND, singletonList(new IdentifierTreeImpl(meta, "r")));
+    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(new IdentifierTreeImpl(meta, "r")));
+    Tree receiverWrapper = simpleNative(SIMPLE_KIND, List.of(receiver));
     IdentifierTree name = new IdentifierTreeImpl(meta, "foo");
     IdentifierTree paramName = new IdentifierTreeImpl(meta, "p1");
     ParameterTree param = new ParameterTreeImpl(meta, paramName, null);
-    List<Tree> params = singletonList(param);
-    Tree typeParameters = simpleNative(SIMPLE_KIND, singletonList(new IdentifierTreeImpl(meta, "T")));
+    List<Tree> params = List.of(param);
+    Tree typeParameters = simpleNative(SIMPLE_KIND, List.of(new IdentifierTreeImpl(meta, "T")));
     BlockTree body = new BlockTreeImpl(meta, emptyList());
 
-    FunctionDeclarationTreeImpl tree = new FunctionDeclarationTreeImpl(meta, returnType, receiver, name, params, typeParameters, body);
-    assertThat(tree.children()).containsExactly(returnType, receiver, name, param, typeParameters, body);
+    FunctionDeclarationTreeImpl tree = new FunctionDeclarationTreeImpl(meta, returnType, receiverWrapper, name, params, typeParameters, body);
+    assertThat(tree.children()).containsExactly(returnType, receiverWrapper, name, param, typeParameters, body);
     assertThat(tree.returnType()).isEqualTo(returnType);
     assertThat(tree.name()).isEqualTo(name);
     assertThat(tree.formalParameters()).isEqualTo(params);
     assertThat(tree.body()).isEqualTo(body);
+    assertThat(tree.receiver()).isSameAs(receiverWrapper);
+    assertThat(tree.receiverName()).isEqualTo("r");
 
     FunctionDeclarationTreeImpl lightweightConstructor = new FunctionDeclarationTreeImpl(meta, null, null, null, emptyList(), null, null);
 

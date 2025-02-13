@@ -17,7 +17,10 @@
 package org.sonar.go.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.go.api.BlockTree;
@@ -27,6 +30,7 @@ import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.NativeKinds;
 
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
 
@@ -42,6 +46,8 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Nullable
   private final BlockTree body;
   private final List<Tree> children = new ArrayList<>();
+  private String receiverName;
+  private boolean isReceiverNameCalculated = false;
 
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
@@ -111,6 +117,26 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public Tree receiver() {
     return receiver;
+  }
+
+  @CheckForNull
+  @Override
+  public String receiverName() {
+    if (!isReceiverNameCalculated) {
+      receiverName = Stream.of(receiver)
+        .filter(Objects::nonNull)
+        .flatMap(Tree::descendants)
+        .filter(NativeKinds::isMethodReceiverTreeIdentifier)
+        .map(Tree::children)
+        .flatMap(Collection::stream)
+        .filter(IdentifierTree.class::isInstance)
+        .map(IdentifierTree.class::cast)
+        .map(IdentifierTree::name)
+        .findAny()
+        .orElse(null);
+      isReceiverNameCalculated = true;
+    }
+    return receiverName;
   }
 
   @Override

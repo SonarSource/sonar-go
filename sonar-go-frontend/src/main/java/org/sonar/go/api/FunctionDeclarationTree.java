@@ -42,6 +42,9 @@ public interface FunctionDeclarationTree extends Tree {
   Tree receiver();
 
   @CheckForNull
+  String receiverName();
+
+  @CheckForNull
   Tree typeParameters();
 
   TextRange rangeToHighlight();

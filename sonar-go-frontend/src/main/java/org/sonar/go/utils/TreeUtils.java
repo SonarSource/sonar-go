@@ -20,9 +20,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.ImportDeclarationTree;
 import org.sonar.go.api.ImportSpecificationTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -61,5 +63,18 @@ public class TreeUtils {
       .filter(spec -> spec.name() == null)
       .map(spec -> spec.path().content())
       .collect(Collectors.toSet());
+  }
+
+  public static String treeToString(Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      return identifierTree.name();
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return treeToString(memberSelectTree.expression()) + "." + memberSelectTree.identifier().name();
+    }
+    return "";
+  }
+
+  public static String methodFnq(FunctionInvocationTree tree) {
+    return treeToString(tree.memberSelect());
   }
 }

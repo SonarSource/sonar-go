@@ -54,6 +54,7 @@ import org.sonar.go.api.Tree;
  *    <ul>
  *      <li> {@link ParametersBuilder#withAnyParameters()} </li>
  *      <li> {@link ParametersBuilder#withParameters(Predicate)} </li>
+ *      <li> {@link ParametersBuilder#withNumberOfParameters(int)} </li>
  *    </ul>
  *  </li>
  * </ul>
@@ -147,6 +148,7 @@ public class MethodMatchers {
    * <p>
    * When receiver is not available anymore (e.g. outside the function where it is declared) the
    * receiver name should be set to {@code null} to "reset" the value and not match anymore.
+   *
    * @throws IllegalArgumentException when the receiver is not expected in {@code MethodMatcher}.
    */
   public void setReceiverName(@Nullable String methodReceiverName) {
@@ -171,14 +173,24 @@ public class MethodMatchers {
     return Optional.empty();
   }
 
+  @Nullable
+  public static Tree getArg(FunctionInvocationTree tree, int index) {
+    var args = tree.arguments();
+    if (args.size() > index) {
+      return args.get(index);
+    }
+    return null;
+  }
+
   private boolean matchesFunctionInvocation(FunctionInvocationTree functionInvocation) {
     if (!withReceiver) {
-      return MethodCall.of(functionInvocation).is(namePredicate);
+      var methodFqn = TreeUtils.methodFnq(functionInvocation);
+      return namePredicate.test(methodFqn);
     }
     if (methodReceiverName == null) {
       return false;
     }
-    var methodFqn = MethodCall.of(functionInvocation).methodFqn();
+    var methodFqn = TreeUtils.methodFnq(functionInvocation);
     if (methodFqn.contains(".")) {
       var firstPart = methodFqn.substring(0, methodFqn.indexOf("."));
       var secondPart = methodFqn.substring(Math.min(methodFqn.indexOf(".") + 1, methodFqn.length() - 1));
@@ -215,6 +227,8 @@ public class MethodMatchers {
      */
     ParametersBuilder withParameters(Predicate<List<String>> parametersPredicate);
 
+    ParametersBuilder withNumberOfParameters(int numberOfParameters);
+
     MethodMatchers build();
   }
 
@@ -237,13 +251,15 @@ public class MethodMatchers {
       return this;
     }
 
-    private static void validateNames(Collection<String> names) {
-      var nameWithoutDot = names.stream()
-        .filter(s -> !s.contains("."))
-        .findAny();
-      if (nameWithoutDot.isPresent()) {
-        var message = "The method resolution \"%s\" doesn't contain a dot. Detection on local method is not supported yet.".formatted(nameWithoutDot.get());
-        throw new IllegalArgumentException(message);
+    private void validateNames(Collection<String> names) {
+      if (!methodReceiver) {
+        var nameWithoutDot = names.stream()
+          .filter(s -> !s.contains("."))
+          .findAny();
+        if (nameWithoutDot.isPresent()) {
+          var message = "The method resolution \"%s\" doesn't contain a dot. Detection on local method is not supported yet.".formatted(nameWithoutDot.get());
+          throw new IllegalArgumentException(message);
+        }
       }
     }
 
@@ -276,6 +292,16 @@ public class MethodMatchers {
         this.parametersPredicate = this.parametersPredicate.or(parametersPredicate);
       } else {
         this.parametersPredicate = parametersPredicate;
+      }
+      return this;
+    }
+
+    @Override
+    public ParametersBuilder withNumberOfParameters(int numberOfParameters) {
+      if (this.parametersPredicate != null) {
+        this.parametersPredicate = this.parametersPredicate.or(p -> p.size() == numberOfParameters);
+      } else {
+        this.parametersPredicate = p -> p.size() == numberOfParameters;
       }
       return this;
     }

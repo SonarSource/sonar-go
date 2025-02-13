@@ -399,4 +399,22 @@ class MethodMatchersTest {
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
   }
+
+  @Test
+  void shouldMatchReceiverAndFunction() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withReceiver()
+      .withNames("foo")
+      .withAnyParameters()
+      .build();
+
+    matcher.setReceiverName("receiver");
+
+    Tree methodCall = parseAndFeedImportsToMatcher("receiver.foo()", "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isPresent();
+    assertThat(matches.get().name()).isEqualTo("foo");
+  }
 }
