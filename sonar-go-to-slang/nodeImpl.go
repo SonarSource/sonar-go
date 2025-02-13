@@ -827,10 +827,21 @@ func (t *SlangMapper) mapBinaryExprImpl(expr *ast.BinaryExpr, fieldName string) 
 		operatorName = "CONDITIONAL_AND"
 	case token.LOR:
 		operatorName = "CONDITIONAL_OR"
+	case token.AND:
+		operatorName = "BITWISE_AND"
+	case token.OR:
+		operatorName = "BITWISE_OR"
+	case token.XOR:
+		operatorName = "BITWISE_XOR"
+	case token.SHL:
+		operatorName = "BITWISE_SHL"
+	case token.SHR:
+		operatorName = "BITWISE_SHR"
+	case token.AND_NOT:
+		operatorName = "BITWISE_AND_NOT"
 	default:
 		// all the other binary operators are not mapped
 		return nil
-
 	}
 
 	var children []*Node

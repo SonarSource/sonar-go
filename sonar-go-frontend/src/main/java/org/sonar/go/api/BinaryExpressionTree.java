@@ -18,7 +18,7 @@ package org.sonar.go.api;
 
 public interface BinaryExpressionTree extends Tree {
 
-  public enum Operator {
+  enum Operator {
     PLUS,
     MINUS,
     TIMES,
@@ -33,6 +33,13 @@ public interface BinaryExpressionTree extends Tree {
 
     CONDITIONAL_AND,
     CONDITIONAL_OR,
+
+    BITWISE_AND,
+    BITWISE_OR,
+    BITWISE_XOR,
+    BITWISE_SHL,
+    BITWISE_SHR,
+    BITWISE_AND_NOT,
   }
 
   Operator operator();

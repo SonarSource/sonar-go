@@ -173,42 +173,30 @@
               {"@type": "BinaryExpression", "metaData": "26:2::7","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "26:6::7","value":"1"},"operatorToken":"26:4::5","operator":"MINUS","leftOperand":
                 {"@type": "IntegerLiteral", "metaData": "26:2::3","value":"0"}},
-              {"@type": "Native", "metaData": "27:2::7","nativeKind":"[2](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "27:2::3","value":"0"},
-                {"@type": "Native", "metaData": "27:4::5","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "27:6::7","value":"1"}
-              ]},
-              {"@type": "Native", "metaData": "28:2::7","nativeKind":"[3](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "28:2::3","value":"0"},
-                {"@type": "Native", "metaData": "28:4::5","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "28:6::7","value":"1"}
-              ]},
+              {"@type": "BinaryExpression", "metaData": "27:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "27:6::7","value":"1"},"operatorToken":"27:4::5","operator":"BITWISE_XOR","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "27:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "28:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "28:6::7","value":"1"},"operatorToken":"28:4::5","operator":"BITWISE_OR","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "28:2::3","value":"0"}},
               {"@type": "BinaryExpression", "metaData": "29:2::7","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "29:6::7","value":"1"},"operatorToken":"29:4::5","operator":"DIVIDED_BY","leftOperand":
                 {"@type": "IntegerLiteral", "metaData": "29:2::3","value":"0"}},
               {"@type": "BinaryExpression", "metaData": "30:2::7","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "30:6::7","value":"1"},"operatorToken":"30:4::5","operator":"TIMES","leftOperand":
                 {"@type": "IntegerLiteral", "metaData": "30:2::3","value":"0"}},
-              {"@type": "Native", "metaData": "31:2::7","nativeKind":"[6](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "31:2::3","value":"0"},
-                {"@type": "Native", "metaData": "31:4::5","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "31:6::7","value":"1"}
-              ]},
-              {"@type": "Native", "metaData": "32:2::8","nativeKind":"[7](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "32:2::3","value":"0"},
-                {"@type": "Native", "metaData": "32:4::6","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "32:7::8","value":"1"}
-              ]},
-              {"@type": "Native", "metaData": "33:2::8","nativeKind":"[8](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "33:2::3","value":"0"},
-                {"@type": "Native", "metaData": "33:4::6","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "33:7::8","value":"1"}
-              ]},
-              {"@type": "Native", "metaData": "34:2::8","nativeKind":"[9](BinaryExpr)","children":[
-                {"@type": "IntegerLiteral", "metaData": "34:2::3","value":"0"},
-                {"@type": "Native", "metaData": "34:4::6","nativeKind":"Op"},
-                {"@type": "IntegerLiteral", "metaData": "34:7::8","value":"1"}
-              ]}
+              {"@type": "BinaryExpression", "metaData": "31:2::7","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "31:6::7","value":"1"},"operatorToken":"31:4::5","operator":"BITWISE_AND","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "31:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "32:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "32:7::8","value":"1"},"operatorToken":"32:4::6","operator":"BITWISE_AND_NOT","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "32:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "33:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "33:7::8","value":"1"},"operatorToken":"33:4::6","operator":"BITWISE_SHL","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "33:2::3","value":"0"}},
+              {"@type": "BinaryExpression", "metaData": "34:2::8","rightOperand":
+                {"@type": "IntegerLiteral", "metaData": "34:7::8","value":"1"},"operatorToken":"34:4::6","operator":"BITWISE_SHR","leftOperand":
+                {"@type": "IntegerLiteral", "metaData": "34:2::3","value":"0"}}
             ]},"identifier":
             {"@type": "Identifier", "metaData": "24:1::9","name":"integers"}}
         ]}}

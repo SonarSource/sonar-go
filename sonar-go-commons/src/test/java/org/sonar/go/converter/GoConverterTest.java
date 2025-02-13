@@ -20,7 +20,12 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.CompositeLiteralTree;
@@ -45,6 +50,7 @@ import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.sonar.go.converter.GoConverter.DefaultCommand.getExecutableForCurrentOS;
@@ -148,6 +154,47 @@ class GoConverterTest {
     List<Tree> elements = compositeLiteralTree.elements();
     assertThat(elements).hasSize(1);
     assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
+  }
+
+  static Stream<Arguments> test_parse_binary_expression() {
+    return Stream.of(
+      arguments("a + b", BinaryExpressionTree.Operator.PLUS),
+      arguments("a - b", BinaryExpressionTree.Operator.MINUS),
+      arguments("a * b", BinaryExpressionTree.Operator.TIMES),
+      arguments("a / b", BinaryExpressionTree.Operator.DIVIDED_BY),
+      arguments("a == b", BinaryExpressionTree.Operator.EQUAL_TO),
+      arguments("a != b", BinaryExpressionTree.Operator.NOT_EQUAL_TO),
+      arguments("a > b", BinaryExpressionTree.Operator.GREATER_THAN),
+      arguments("a >= b", BinaryExpressionTree.Operator.GREATER_THAN_OR_EQUAL_TO),
+      arguments("a < b", BinaryExpressionTree.Operator.LESS_THAN),
+      arguments("a <= b", BinaryExpressionTree.Operator.LESS_THAN_OR_EQUAL_TO),
+      arguments("a && b", BinaryExpressionTree.Operator.CONDITIONAL_AND),
+      arguments("a || b", BinaryExpressionTree.Operator.CONDITIONAL_OR),
+      arguments("a & b", BinaryExpressionTree.Operator.BITWISE_AND),
+      arguments("a | b", BinaryExpressionTree.Operator.BITWISE_OR),
+      arguments("a ^ b", BinaryExpressionTree.Operator.BITWISE_XOR),
+      arguments("a << b", BinaryExpressionTree.Operator.BITWISE_SHL),
+      arguments("a >> b", BinaryExpressionTree.Operator.BITWISE_SHR),
+      arguments("a &^ b", BinaryExpressionTree.Operator.BITWISE_AND_NOT));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void test_parse_binary_expression(String code, BinaryExpressionTree.Operator operator) {
+    var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement(code);
+    assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("a"));
+    assertThat(binaryExpression.operator()).isSameAs(operator);
+    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("b"));
+  }
+
+  @Test
+  void shouldParseComplexBinaryExpression() {
+    var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement("a + b + c");
+    assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(BinaryExpressionTree.class, subBinaryExpression -> {
+      assertThat(subBinaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierA -> assertThat(identifierA.name()).isEqualTo("a"));
+      assertThat(subBinaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierB -> assertThat(identifierB.name()).isEqualTo("b"));
+    });
+    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierC -> assertThat(identifierC.name()).isEqualTo("c"));
   }
 
   @Test

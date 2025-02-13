@@ -18,6 +18,8 @@ package org.sonar.go.testing;
 
 import java.io.File;
 import java.nio.file.Paths;
+import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.converter.GoConverter;
 
@@ -27,5 +29,16 @@ public class TestGoConverter {
 
   public static Tree parse(String content) {
     return GO_CONVERTER.parse(content);
+  }
+
+  public static Tree parseStatement(String content) {
+    var root = (TopLevelTree) GO_CONVERTER.parse("""
+      package main
+      func main() {
+        %s
+      }
+      """.formatted(content));
+    var main = (FunctionDeclarationTree) root.declarations().get(1);
+    return main.body().statementOrExpressions().get(0).children().get(0);
   }
 }
