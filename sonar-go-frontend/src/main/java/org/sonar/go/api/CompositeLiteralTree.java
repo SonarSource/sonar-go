@@ -17,8 +17,23 @@
 package org.sonar.go.api;
 
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 
+/**
+ * Composite literal in Go.
+ * They can be defined with key value pairs or just with values (no mix).
+ * <pre>
+ * {@code
+ * // key value pairs
+ * m := map[string]int{"one": 1, "two": 2}
+ * p := Point{x: 1, y: 2}
+ * // just values
+ * s := []int{1, 2, 3}
+ * p := Point{1, 2}
+ * }
+ * </pre>
+ */
 public interface CompositeLiteralTree extends Tree {
 
   /**
@@ -33,4 +48,13 @@ public interface CompositeLiteralTree extends Tree {
    * is not allowed.
    */
   List<Tree> elements();
+
+  /**
+   * Returns a Stream of KeyValueTree elements. A composite literal in Go either has all elements as KeyValueTree (field initialization),
+   * or all elements as non-KeyValueTree (value initialization, when field names are omitted). Mixture of value and field initialization
+   * is not allowed.
+   */
+  Stream<KeyValueTree> getKeyValuesElements();
+
+  boolean hasType(String packageName, String typeName);
 }

@@ -18,9 +18,13 @@ package org.sonar.go.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.go.api.CompositeLiteralTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.KeyValueTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 
@@ -54,5 +58,20 @@ public class CompositeLiteralTreeImpl extends BaseTreeImpl implements CompositeL
     }
     children.addAll(elements);
     return children;
+  }
+
+  @Override
+  public Stream<KeyValueTree> getKeyValuesElements() {
+    return elements.stream()
+      .filter(KeyValueTree.class::isInstance)
+      .map(KeyValueTree.class::cast);
+  }
+
+  @Override
+  public boolean hasType(String packageName, String typeName) {
+    return type instanceof MemberSelectTree memberSelectTree
+      && typeName.equals(memberSelectTree.identifier().name())
+      && memberSelectTree.expression() instanceof IdentifierTree identifierTree
+      && packageName.equals(identifierTree.name());
   }
 }
