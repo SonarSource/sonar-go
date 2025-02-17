@@ -17,12 +17,7 @@
 package org.sonar.go.utils;
 
 import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
@@ -30,11 +25,8 @@ import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverter;
 
-import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.mock;
 
 class TreeUtilsTest {
@@ -77,50 +69,5 @@ class TreeUtilsTest {
     var names = TreeUtils.getIdentifierName(List.of(initializer, id, variable, body, id2));
 
     assertThat(names).isEqualTo("foo.bar");
-  }
-
-  @ParameterizedTest
-  @MethodSource("shouldGetImports")
-  void shouldGetImports(String importsFilePart, List<String> expected) {
-    var code = """
-      package main
-      %s
-      func main() {
-        fmt.Println("Hello, World!")
-      }
-      """.formatted(importsFilePart);
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
-
-    var imports = TreeUtils.getImportsAsStrings(tree);
-
-    assertThat(imports).containsExactlyInAnyOrderElementsOf(expected);
-  }
-
-  static Stream<Arguments> shouldGetImports() {
-    return Stream.of(
-      arguments("""
-        import (
-          "fmt"
-          "os"
-        )
-        """, List.of("fmt", "os")),
-      arguments("""
-        import (
-          "fmt"
-        )
-        """, List.of("fmt")),
-      arguments("""
-        import (
-        )
-        """, emptyList()),
-      arguments("""
-        import "fmt"
-        """, List.of("fmt")),
-      arguments("""
-        import f "fmt"
-        """, emptyList()), // These imports are not supported yet
-      arguments("""
-        import . "os"
-        """, emptyList())); // These imports are not supported yet
   }
 }

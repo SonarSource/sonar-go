@@ -17,16 +17,12 @@
 package org.sonar.go.utils;
 
 import java.util.List;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ImportDeclarationTree;
-import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 
@@ -51,18 +47,6 @@ public class TreeUtils {
       .map(IdentifierTree.class::cast)
       .map(IdentifierTree::name)
       .collect(Collectors.joining("."));
-  }
-
-  public static Set<String> getImportsAsStrings(TopLevelTree file) {
-    return file.declarations().stream()
-      .filter(ImportDeclarationTree.class::isInstance)
-      .flatMap(it -> it.children().stream())
-      .filter(ImportSpecificationTree.class::isInstance)
-      .map(ImportSpecificationTree.class::cast)
-      // Imports with aliases are not supported currently, they are filtered-out to avoid false positives
-      .filter(spec -> spec.name() == null)
-      .map(spec -> spec.path().content())
-      .collect(Collectors.toSet());
   }
 
   public static String treeToString(Tree tree) {

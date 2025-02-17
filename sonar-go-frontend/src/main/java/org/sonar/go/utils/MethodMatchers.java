@@ -18,10 +18,8 @@ package org.sonar.go.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -76,7 +74,7 @@ import org.sonar.go.api.Tree;
  *       .build();
  *     TopLevelTree topLevelTree = ...
  *     FunctionInvocationTree tree = ...
- *     randIntMatcher.addImports(topLevelTree);
+ *     randIntMatcher.validateTypeInContext(topLevelTree);
  *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
  *     }
  *   </pre>
@@ -105,7 +103,7 @@ import org.sonar.go.api.Tree;
  *     }
  *     TopLevelTree topLevelTree = ...
  *     FunctionInvocationTree tree = ...
- *     fooBarMatcher.addImports(topLevelTree);
+ *     fooBarMatcher.validateTypeInContext(topLevelTree);
  *     // when withReceiver() is called then setReceiverName() needs to be called before matches()
  *     fooBarMatcher.setReceiverName("foo");
  *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
@@ -118,9 +116,9 @@ public class MethodMatchers {
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersPredicate;
 
-  private final Set<String> imports = new HashSet<>();
   @Nullable
   private String methodReceiverName;
+  private boolean validateTypeInTree = false;
 
   private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate) {
     this.type = type;
@@ -133,13 +131,17 @@ public class MethodMatchers {
     return new MethodMatchersBuilder();
   }
 
-  public void addImports(TopLevelTree topLevelTree) {
-    addImports(TreeUtils.getImportsAsStrings(topLevelTree));
-  }
-
-  public void addImports(Set<String> importStrings) {
-    imports.clear();
-    imports.addAll(importStrings);
+  /**
+   * Make sure the type provided to the Method Matcher is present in the (top level) tree the matcher will be used.
+   * This is typically expected to be called at runtime, at the beginning of the analysis of each file.
+   * If the type is not present, none of the following call to {@link #matches(Tree)} will match.
+   * If the type is present, no further validation will be done for the type.
+   * It can be called multiple times to update the validation status.
+   * This is obviously imprecise, as we are not testing the actual type of the given invocation.
+   * This is an approximation, as we don't have proper types resolution for now.
+   */
+  public void validateTypeInTree(TopLevelTree topLevelTree) {
+    this.validateTypeInTree = topLevelTree.doesImportType(type);
   }
 
   /**
@@ -160,7 +162,7 @@ public class MethodMatchers {
   }
 
   public Optional<IdentifierTree> matches(@Nullable Tree tree) {
-    if (imports.contains(type)
+    if (validateTypeInTree
       && tree instanceof FunctionInvocationTree functionInvocation
       && matchesFunctionInvocation(functionInvocation)
       && parametersPredicate.test(extractArgTypes(functionInvocation))) {
