@@ -16,17 +16,17 @@
  */
 package org.sonar.go.api;
 
+import java.util.List;
 import javax.annotation.CheckForNull;
 
 public interface VariableDeclarationTree extends Tree {
 
-  IdentifierTree identifier();
+  List<IdentifierTree> identifiers();
 
   @CheckForNull
   Tree type();
 
-  @CheckForNull
-  Tree initializer();
+  List<Tree> initializers();
 
   boolean isVal();
 

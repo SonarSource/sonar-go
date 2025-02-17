@@ -42,7 +42,9 @@ public class VariableAndParameterNameCheck implements GoCheck {
 
     init.register(VariableDeclarationTree.class, (ctx, tree) -> {
       if (ctx.ancestors().stream().anyMatch(FunctionDeclarationTree.class::isInstance)) {
-        check(pattern, ctx, tree.identifier(), "local variable");
+        for (var identifier : tree.identifiers()) {
+          check(pattern, ctx, identifier, "local variable");
+        }
       }
     });
 

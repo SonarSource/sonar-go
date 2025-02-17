@@ -16,6 +16,8 @@
  */
 package org.sonar.go.impl;
 
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
@@ -36,16 +38,16 @@ class VariableDeclarationTreeImplTest {
     Tree variableType = new NativeTreeImpl(meta, new TypeNativeKind(), null);
     IdentifierTree identifierTreeX = new IdentifierTreeImpl(meta, "x");
     IdentifierTree identifierTreeY = new IdentifierTreeImpl(meta, "y");
-    VariableDeclarationTreeImpl variableTreeX = new VariableDeclarationTreeImpl(meta, identifierTreeX, null, null, false);
-    VariableDeclarationTreeImpl variableTreeXCopy = new VariableDeclarationTreeImpl(meta, new IdentifierTreeImpl(meta, "x"), null, null, false);
-    VariableDeclarationTreeImpl valueTreeX = new VariableDeclarationTreeImpl(meta, new IdentifierTreeImpl(meta, "x"), null, null, true);
-    VariableDeclarationTreeImpl variableTreeXTyped = new VariableDeclarationTreeImpl(meta, identifierTreeX, variableType, null, false);
-    VariableDeclarationTreeImpl variableTreeY = new VariableDeclarationTreeImpl(meta, identifierTreeY, variableType, null, false);
+    VariableDeclarationTreeImpl variableTreeX = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeX), null, Collections.emptyList(), false);
+    VariableDeclarationTreeImpl variableTreeXCopy = new VariableDeclarationTreeImpl(meta, List.of(new IdentifierTreeImpl(meta, "x")), null, Collections.emptyList(), false);
+    VariableDeclarationTreeImpl valueTreeX = new VariableDeclarationTreeImpl(meta, List.of(new IdentifierTreeImpl(meta, "x")), null, Collections.emptyList(), true);
+    VariableDeclarationTreeImpl variableTreeXTyped = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeX), variableType, Collections.emptyList(), false);
+    VariableDeclarationTreeImpl variableTreeY = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeY), variableType, Collections.emptyList(), false);
 
     assertThat(variableTreeXTyped.children()).hasSize(2);
     assertThat(variableTreeX.children()).hasSize(1);
     assertThat(variableTreeX.type()).isNull();
-    assertThat(variableTreeX.identifier()).isEqualTo(identifierTreeX);
+    assertThat(variableTreeX.identifiers()).containsExactly(identifierTreeX);
     assertThat(areEquivalent(variableTreeX, variableTreeXCopy)).isTrue();
     assertThat(areEquivalent(variableTreeX, valueTreeX)).isFalse();
     assertThat(areEquivalent(variableTreeX, variableTreeXTyped)).isFalse();

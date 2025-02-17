@@ -27,22 +27,22 @@ import org.sonar.go.api.VariableDeclarationTree;
 
 public class VariableDeclarationTreeImpl extends BaseTreeImpl implements VariableDeclarationTree {
 
-  private final IdentifierTree identifier;
+  private final List<IdentifierTree> identifiers;
   private final Tree type;
-  private final Tree initializer;
+  private final List<Tree> initializers;
   private final boolean isVal;
 
-  public VariableDeclarationTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type, @Nullable Tree initializer, boolean isVal) {
+  public VariableDeclarationTreeImpl(TreeMetaData metaData, List<IdentifierTree> identifiers, @Nullable Tree type, List<Tree> initializers, boolean isVal) {
     super(metaData);
-    this.identifier = identifier;
+    this.identifiers = identifiers;
     this.type = type;
-    this.initializer = initializer;
+    this.initializers = initializers;
     this.isVal = isVal;
   }
 
   @Override
-  public IdentifierTree identifier() {
-    return identifier;
+  public List<IdentifierTree> identifiers() {
+    return identifiers;
   }
 
   @CheckForNull
@@ -51,10 +51,9 @@ public class VariableDeclarationTreeImpl extends BaseTreeImpl implements Variabl
     return type;
   }
 
-  @CheckForNull
   @Override
-  public Tree initializer() {
-    return initializer;
+  public List<Tree> initializers() {
+    return initializers;
   }
 
   @Override
@@ -64,18 +63,11 @@ public class VariableDeclarationTreeImpl extends BaseTreeImpl implements Variabl
 
   @Override
   public List<Tree> children() {
-    List<Tree> children = new ArrayList<>();
-    children.add(identifier);
-
+    List<Tree> children = new ArrayList<>(identifiers);
     if (type != null) {
       children.add(type);
     }
-
-    if (initializer != null) {
-      children.add(initializer);
-    }
-
+    children.addAll(initializers);
     return children;
   }
-
 }

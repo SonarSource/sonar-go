@@ -120,7 +120,7 @@
         null,"name":
         {"@type": "Identifier", "metaData": "10:5::8","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:11:37:1","statementOrExpressions":[
-          {"@type": "VariableDeclaration", "metaData": "11:1:22:2","type":null,"isVal":false,"initializer":
+          {"@type": "VariableDeclaration", "metaData": "11:1:22:2","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:13:22:2","type":
               {"@type": "Native", "metaData": "11:13::19","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "11:13::14","nativeKind":"Lbrack"},
@@ -158,9 +158,11 @@
               {"@type": "BinaryExpression", "metaData": "21:2::8","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "21:7::8","value":"1"},"operatorToken":"21:4::6","operator":"LESS_THAN_OR_EQUAL_TO","leftOperand":
                 {"@type": "IntegerLiteral", "metaData": "21:2::3","value":"0"}}
-            ]},"identifier":
-            {"@type": "Identifier", "metaData": "11:1::9","name":"booleans"}},
-          {"@type": "VariableDeclaration", "metaData": "24:1:35:2","type":null,"isVal":false,"initializer":
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "11:1::9","name":"booleans"}
+          ]},
+          {"@type": "VariableDeclaration", "metaData": "24:1:35:2","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "24:13:35:2","type":
               {"@type": "Native", "metaData": "24:13::18","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "24:13::14","nativeKind":"Lbrack"},
@@ -197,8 +199,10 @@
               {"@type": "BinaryExpression", "metaData": "34:2::8","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "34:7::8","value":"1"},"operatorToken":"34:4::6","operator":"BITWISE_SHR","leftOperand":
                 {"@type": "IntegerLiteral", "metaData": "34:2::3","value":"0"}}
-            ]},"identifier":
-            {"@type": "Identifier", "metaData": "24:1::9","name":"integers"}}
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "24:1::9","name":"integers"}
+          ]}
         ]}}
     ]}
 } 

@@ -21,6 +21,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -234,6 +235,78 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("externalFunction");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.body()).isNull();
+  }
+
+  enum Result {
+    LITERAL_ONE,
+    LITERAL_TWO,
+    METHOD_FOO
+  }
+
+  static Stream<Arguments> test_parse_variable_declaration_detailed() {
+    return Stream.of(
+      arguments("var a = 1             ", List.of("a"), List.of(Result.LITERAL_ONE), null, false),
+      arguments("var a int             ", List.of("a"), List.of(), "int", false),
+      arguments("var a int = 1         ", List.of("a"), List.of(Result.LITERAL_ONE), "int", false),
+      arguments("var a, b = foo()      ", List.of("a", "b"), List.of(Result.METHOD_FOO), null, false),
+      arguments("var a, b int = foo()  ", List.of("a", "b"), List.of(Result.METHOD_FOO), "int", false),
+      arguments("var a, b = 1, 2       ", List.of("a", "b"), List.of(Result.LITERAL_ONE, Result.LITERAL_TWO), null, false),
+      arguments("var a, b int = 1, 2   ", List.of("a", "b"), List.of(Result.LITERAL_ONE, Result.LITERAL_TWO), "int", false),
+      arguments("const a = 1           ", List.of("a"), List.of(Result.LITERAL_ONE), null, true),
+      arguments("const a int           ", List.of("a"), List.of(), "int", true),
+      arguments("const a int = 1       ", List.of("a"), List.of(Result.LITERAL_ONE), "int", true),
+      arguments("const a, b = foo()    ", List.of("a", "b"), List.of(Result.METHOD_FOO), null, true),
+      arguments("const a, b int = foo()", List.of("a", "b"), List.of(Result.METHOD_FOO), "int", true),
+      arguments("const a, b = 1, 2     ", List.of("a", "b"), List.of(Result.LITERAL_ONE, Result.LITERAL_TWO), null, true),
+      arguments("const a, b int = 1, 2 ", List.of("a", "b"), List.of(Result.LITERAL_ONE, Result.LITERAL_TWO), "int", true),
+      arguments("a := 1                ", List.of("a"), List.of(Result.LITERAL_ONE), null, false),
+      arguments("a, b := foo()         ", List.of("a", "b"), List.of(Result.METHOD_FOO), null, false),
+      arguments("a, b := 1, 2          ", List.of("a", "b"), List.of(Result.LITERAL_ONE, Result.LITERAL_TWO), null, false));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void test_parse_variable_declaration_detailed(String code, List<String> variableNames, List<Result> variableValues, @Nullable String type, boolean isVal) {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      func foo() {
+        %s
+      }
+      """.formatted(code));
+    List<Tree> variableDeclarations = tree.descendants().filter(VariableDeclarationTree.class::isInstance).toList();
+    var variableDeclaration = (VariableDeclarationTree) variableDeclarations.get(0);
+
+    assertThat(variableDeclaration.identifiers()).hasSize(variableNames.size());
+    for (IdentifierTree identifierTree : variableDeclaration.identifiers()) {
+      assertThat(variableNames).contains(identifierTree.name());
+    }
+
+    assertThat(variableDeclaration.initializers()).hasSize(variableValues.size());
+    for (int i = 0; i < variableValues.size(); i++) {
+      Result result = variableValues.get(i);
+      switch (result) {
+        case LITERAL_ONE:
+          assertThat(variableDeclaration.initializers().get(i)).isInstanceOfSatisfying(IntegerLiteralTree.class,
+            integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(1));
+          break;
+        case LITERAL_TWO:
+          assertThat(variableDeclaration.initializers().get(i)).isInstanceOfSatisfying(IntegerLiteralTree.class,
+            integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(2));
+          break;
+        case METHOD_FOO:
+          assertThat(variableDeclaration.initializers().get(i)).isInstanceOfSatisfying(FunctionInvocationTree.class, functionInvocationTree -> {
+            assertThat(functionInvocationTree.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("foo"));
+          });
+      }
+    }
+
+    assertThat(variableDeclaration.isVal()).isEqualTo(isVal);
+
+    if (type == null) {
+      assertThat(variableDeclaration.type()).isNull();
+    } else {
+      assertThat(variableDeclaration.type()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo(type));
+    }
   }
 
   @Test

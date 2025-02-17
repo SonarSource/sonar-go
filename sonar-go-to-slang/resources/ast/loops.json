@@ -303,9 +303,11 @@
         {"@type": "Block", "metaData": "8:11:67:1","statementOrExpressions":[
           {"@type": "Loop", "metaData": "9:1:10:2","kind":"FOR","keyword":"9:1::4","condition":
             {"@type": "Native", "metaData": "9:5::24","nativeKind":"ForHeader","children":[
-              {"@type": "VariableDeclaration", "metaData": "9:5::11","type":null,"isVal":false,"initializer":
-                {"@type": "IntegerLiteral", "metaData": "9:10::11","value":"0"},"identifier":
-                {"@type": "Identifier", "metaData": "9:5::6","name":"i"}},
+              {"@type": "VariableDeclaration", "metaData": "9:5::11","type":null,"isVal":false,"initializers":[
+                {"@type": "IntegerLiteral", "metaData": "9:10::11","value":"0"}
+              ],"identifiers":[
+                {"@type": "Identifier", "metaData": "9:5::6","name":"i"}
+              ]},
               {"@type": "Native", "metaData": "9:11::12","nativeKind":"Semicolon"},
               {"@type": "BinaryExpression", "metaData": "9:13::19","rightOperand":
                 {"@type": "IntegerLiteral", "metaData": "9:17::19","value":"10"},"operatorToken":"9:15::16","operator":"LESS_THAN","leftOperand":
@@ -315,9 +317,11 @@
                 {"@type": "Identifier", "metaData": "9:21::22","name":"i"}}
             ]},"body":
             {"@type": "Block", "metaData": "9:25:10:2","statementOrExpressions":[]}},
-          {"@type": "VariableDeclaration", "metaData": "13:1::7","type":null,"isVal":false,"initializer":
-            {"@type": "IntegerLiteral", "metaData": "13:6::7","value":"1"},"identifier":
-            {"@type": "Identifier", "metaData": "13:1::2","name":"n"}},
+          {"@type": "VariableDeclaration", "metaData": "13:1::7","type":null,"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "13:6::7","value":"1"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "13:1::2","name":"n"}
+          ]},
           {"@type": "Loop", "metaData": "14:1:16:2","kind":"WHILE","keyword":"14:1::4","condition":
             {"@type": "BinaryExpression", "metaData": "14:5::10","rightOperand":
               {"@type": "IntegerLiteral", "metaData": "14:9::10","value":"5"},"operatorToken":"14:7::8","operator":"LESS_THAN","leftOperand":
@@ -333,9 +337,11 @@
                 ]}
               ]}
             ]}},
-          {"@type": "VariableDeclaration", "metaData": "19:1::9","type":null,"isVal":false,"initializer":
-            {"@type": "IntegerLiteral", "metaData": "19:8::9","value":"0"},"identifier":
-            {"@type": "Identifier", "metaData": "19:1::4","name":"sum"}},
+          {"@type": "VariableDeclaration", "metaData": "19:1::9","type":null,"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "19:8::9","value":"0"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "19:1::4","name":"sum"}
+          ]},
           {"@type": "Loop", "metaData": "20:1:22:2","kind":"WHILE","keyword":"20:1::4","condition":
             null,"body":
             {"@type": "Block", "metaData": "20:5:22:2","statementOrExpressions":[
@@ -350,7 +356,7 @@
               {"@type": "Identifier", "metaData": "23:13::16","name":"sum"}
             ]}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "26:1::38","type":null,"isVal":false,"initializer":
+          {"@type": "VariableDeclaration", "metaData": "26:1::38","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "26:12::38","type":
               {"@type": "Native", "metaData": "26:12::20","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "26:12::13","nativeKind":"Lbrack"},
@@ -359,8 +365,10 @@
               ]},"elements":[
               {"@type": "StringLiteral", "metaData": "26:21::28","value":"\"hello\"","content":"hello"},
               {"@type": "StringLiteral", "metaData": "26:30::37","value":"\"world\"","content":"world"}
-            ]},"identifier":
-            {"@type": "Identifier", "metaData": "26:1::8","name":"strings"}},
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "26:1::8","name":"strings"}
+          ]},
           {"@type": "Loop", "metaData": "27:1:29:2","kind":"FOR","keyword":"27:1::4","condition":
             {"@type": "Native", "metaData": "27:5::26","nativeKind":"RangeHeader","children":[
               {"@type": "Identifier", "metaData": "27:5::6","name":"i"},
@@ -381,17 +389,21 @@
                 ]}
               ]}
             ]}},
-          {"@type": "VariableDeclaration", "metaData": "32:1::9","type":null,"isVal":false,"initializer":
-            {"@type": "IntegerLiteral", "metaData": "32:8::9","value":"0"},"identifier":
-            {"@type": "Identifier", "metaData": "32:1::4","name":"sum"}},
+          {"@type": "VariableDeclaration", "metaData": "32:1::9","type":null,"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "32:8::9","value":"0"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "32:1::4","name":"sum"}
+          ]},
           {"@type": "Native", "metaData": "33:0:45:2","nativeKind":"[9](LabeledStmt)","children":[
             {"@type": "Identifier", "metaData": "33:0::5","name":"OUTER"},
             {"@type": "Native", "metaData": "33:5::6","nativeKind":"Colon"},
             {"@type": "Loop", "metaData": "34:1:45:2","kind":"FOR","keyword":"34:1::4","condition":
               {"@type": "Native", "metaData": "34:5::25","nativeKind":"ForHeader","children":[
-                {"@type": "VariableDeclaration", "metaData": "34:5::11","type":null,"isVal":false,"initializer":
-                  {"@type": "IntegerLiteral", "metaData": "34:10::11","value":"1"},"identifier":
-                  {"@type": "Identifier", "metaData": "34:5::6","name":"i"}},
+                {"@type": "VariableDeclaration", "metaData": "34:5::11","type":null,"isVal":false,"initializers":[
+                  {"@type": "IntegerLiteral", "metaData": "34:10::11","value":"1"}
+                ],"identifiers":[
+                  {"@type": "Identifier", "metaData": "34:5::6","name":"i"}
+                ]},
                 {"@type": "Native", "metaData": "34:11::12","nativeKind":"Semicolon"},
                 {"@type": "BinaryExpression", "metaData": "34:13::20","rightOperand":
                   {"@type": "IntegerLiteral", "metaData": "34:17::20","value":"500"},"operatorToken":"34:15::16","operator":"LESS_THAN","leftOperand":
@@ -443,22 +455,14 @@
           ]},
           {"@type": "Loop", "metaData": "48:1:50:2","kind":"FOR","keyword":"48:1::4","condition":
             {"@type": "Native", "metaData": "48:5::86","nativeKind":"ForHeader","children":[
-              {"@type": "Native", "metaData": "48:5::25","nativeKind":"Init(AssignStmt)","children":[
-                {"@type": "Native", "metaData": "48:5::12","nativeKind":"Lhs([]Expr)","children":[
-                  {"@type": "Identifier", "metaData": "48:5::6","name":"i"},
-                  {"@type": "Native", "metaData": "48:6::7"},
-                  {"@type": "Identifier", "metaData": "48:8::9","name":"j"},
-                  {"@type": "Native", "metaData": "48:9::10"},
-                  {"@type": "Identifier", "metaData": "48:11::12","name":"s"}
-                ]},
-                {"@type": "Native", "metaData": "48:13::15","nativeKind":"Tok"},
-                {"@type": "Native", "metaData": "48:16::25","nativeKind":"Rhs([]Expr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "48:16::17","value":"0"},
-                  {"@type": "Native", "metaData": "48:17::18"},
-                  {"@type": "IntegerLiteral", "metaData": "48:19::20","value":"5"},
-                  {"@type": "Native", "metaData": "48:20::21"},
-                  {"@type": "StringLiteral", "metaData": "48:22::25","value":"\"a\"","content":"a"}
-                ]}
+              {"@type": "VariableDeclaration", "metaData": "48:5::25","type":null,"isVal":false,"initializers":[
+                {"@type": "IntegerLiteral", "metaData": "48:16::17","value":"0"},
+                {"@type": "IntegerLiteral", "metaData": "48:19::20","value":"5"},
+                {"@type": "StringLiteral", "metaData": "48:22::25","value":"\"a\"","content":"a"}
+              ],"identifiers":[
+                {"@type": "Identifier", "metaData": "48:5::6","name":"i"},
+                {"@type": "Identifier", "metaData": "48:8::9","name":"j"},
+                {"@type": "Identifier", "metaData": "48:11::12","name":"s"}
               ]},
               {"@type": "Native", "metaData": "48:25::26","nativeKind":"Semicolon"},
               {"@type": "BinaryExpression", "metaData": "48:27::59","rightOperand":
@@ -527,7 +531,7 @@
                 ]}
               ]}
             ]}},
-          {"@type": "VariableDeclaration", "metaData": "58:4::23","type":null,"isVal":false,"initializer":
+          {"@type": "VariableDeclaration", "metaData": "58:4::23","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "58:9::23","type":
               {"@type": "Native", "metaData": "58:9::14","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "58:9::10","nativeKind":"Lbrack"},
@@ -537,8 +541,10 @@
               {"@type": "IntegerLiteral", "metaData": "58:15::16","value":"1"},
               {"@type": "IntegerLiteral", "metaData": "58:18::19","value":"2"},
               {"@type": "IntegerLiteral", "metaData": "58:21::22","value":"3"}
-            ]},"identifier":
-            {"@type": "Identifier", "metaData": "58:4::5","name":"l"}},
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "58:4::5","name":"l"}
+          ]},
           {"@type": "Loop", "metaData": "59:4:61:5","kind":"FOR","keyword":"59:4::7","condition":
             {"@type": "Native", "metaData": "59:8::35","nativeKind":"RangeHeader","children":[
               {"@type": "Identifier", "metaData": "59:8::9","name":"v"},
@@ -561,7 +567,7 @@
                 ]}
               ]}
             ]}},
-          {"@type": "VariableDeclaration", "metaData": "63:4::25","type":null,"isVal":false,"initializer":
+          {"@type": "VariableDeclaration", "metaData": "63:4::25","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "63:9::25","type":
               {"@type": "Native", "metaData": "63:9::23","nativeKind":"Type(MapType)","children":[
                 {"@type": "Native", "metaData": "63:9::12","nativeKind":"Map"},
@@ -569,8 +575,10 @@
                 {"@type": "Identifier", "metaData": "63:13::16","name":"int"},
                 {"@type": "Native", "metaData": "63:16::17"},
                 {"@type": "Identifier", "metaData": "63:17::23","name":"string"}
-              ]},"elements":[]},"identifier":
-            {"@type": "Identifier", "metaData": "63:4::5","name":"m"}},
+              ]},"elements":[]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "63:4::5","name":"m"}
+          ]},
           {"@type": "Loop", "metaData": "64:4:66:5","kind":"FOR","keyword":"64:4::7","condition":
             {"@type": "Native", "metaData": "64:8::33","nativeKind":"RangeHeader","children":[
               {"@type": "Identifier", "metaData": "64:8::9","name":"k"},

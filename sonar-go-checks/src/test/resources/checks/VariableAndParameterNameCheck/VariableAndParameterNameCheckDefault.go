@@ -21,6 +21,17 @@ func localVariables() {
    var (
        invalid_local_3 = "test" // Noncompliant
    )
+   var INVALID_LOCAL, validLocal int // Noncompliant
+ //    ^^^^^^^^^^^^^
+   var validLocal, INVALID_LOCAL int // Noncompliant
+ //                ^^^^^^^^^^^^^
+    validLocal := 5
+    INVALID_LOCAL := 5 // Noncompliant
+ // ^^^^^^^^^^^^^
+    INVALID_LOCAL, validLocal := 5 // Noncompliant
+ // ^^^^^^^^^^^^^
+    validLocal, INVALID_LOCAL := 5 // Noncompliant
+ //             ^^^^^^^^^^^^^
 }
 
 func parameters(p1 string, _PARAM2 string, p3 string) { // Noncompliant {{Rename this parameter to match the regular expression "^(_|[a-zA-Z0-9]+)$".}}

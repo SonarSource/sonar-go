@@ -99,8 +99,10 @@ public final class JsonTreeConverter {
   public static final String FIRST_CPD_TOKEN = "firstCpdToken";
   public static final String FORMAL_PARAMETERS = "formalParameters";
   public static final String IDENTIFIER = "identifier";
+  public static final String IDENTIFIERS = "identifiers";
   public static final String IF_KEYWORD = "ifKeyword";
   public static final String INITIALIZER = "initializer";
+  public static final String INITIALIZERS = "initializers";
   public static final String IS_VAL = "isVal";
   public static final String KEYWORD = "keyword";
   public static final String KIND = "kind";
@@ -576,16 +578,16 @@ public final class JsonTreeConverter {
     register(VariableDeclarationTreeImpl.class,
 
       (ctx, tree) -> ctx.newTypedObject(tree)
-        .add(IDENTIFIER, ctx.toJson(tree.identifier()))
+        .add(IDENTIFIERS, ctx.toJsonArray(tree.identifiers()))
         .add(TYPE, ctx.toJson(tree.type()))
-        .add(INITIALIZER, ctx.toJson(tree.initializer()))
+        .add(INITIALIZERS, ctx.toJsonArray(tree.initializers()))
         .add(IS_VAL, tree.isVal()),
 
       (ctx, json) -> new VariableDeclarationTreeImpl(
         ctx.metaData(json),
-        ctx.fieldToObject(json, IDENTIFIER, IdentifierTree.class),
+        ctx.fieldToObjectList(json, IDENTIFIERS, IdentifierTree.class),
         ctx.fieldToNullableObject(json, TYPE, Tree.class),
-        ctx.fieldToNullableObject(json, INITIALIZER, Tree.class),
+        ctx.fieldToObjectList(json, INITIALIZERS, Tree.class),
         json.getBoolean(IS_VAL, false)));
 
   }

@@ -91,11 +91,11 @@ public class TreeCreationUtils {
   }
 
   public static VariableDeclarationTree variable(String name) {
-    return new VariableDeclarationTreeImpl(null, identifier(name), null, null, false);
+    return new VariableDeclarationTreeImpl(null, List.of(identifier(name)), null, Collections.emptyList(), false);
   }
 
   public static VariableDeclarationTree value(String name) {
-    return new VariableDeclarationTreeImpl(null, identifier(name), null, null, true);
+    return new VariableDeclarationTreeImpl(null, List.of(identifier(name)), null, Collections.emptyList(), true);
   }
 
   public static BinaryExpressionTree binary(BinaryExpressionTree.Operator operator, Tree leftOperand, Tree rightOperand) {

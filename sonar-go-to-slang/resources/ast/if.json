@@ -154,9 +154,11 @@
             ]},"ifKeyword":"20:1::3","elseKeyword":null,"elseBranch":
             null,"condition":
             {"@type": "Native", "metaData": "20:4::26","nativeKind":"InitAndCond","children":[
-              {"@type": "VariableDeclaration", "metaData": "20:4::11","type":null,"isVal":false,"initializer":
-                {"@type": "IntegerLiteral", "metaData": "20:9::11","value":"42"},"identifier":
-                {"@type": "Identifier", "metaData": "20:4::5","name":"x"}},
+              {"@type": "VariableDeclaration", "metaData": "20:4::11","type":null,"isVal":false,"initializers":[
+                {"@type": "IntegerLiteral", "metaData": "20:9::11","value":"42"}
+              ],"identifiers":[
+                {"@type": "Identifier", "metaData": "20:4::5","name":"x"}
+              ]},
               {"@type": "Native", "metaData": "20:11::12","nativeKind":"Semicolon"},
               {"@type": "BinaryExpression", "metaData": "20:13::26","rightOperand":
                 {"@type": "BinaryExpression", "metaData": "20:21::26","rightOperand":

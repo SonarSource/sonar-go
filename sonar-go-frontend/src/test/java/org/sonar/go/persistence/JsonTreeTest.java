@@ -116,8 +116,9 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.FINALLY_BLOC
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FIRST_CPD_TOKEN;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FORMAL_PARAMETERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIER;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IF_KEYWORD;
-import static org.sonar.go.persistence.conversion.JsonTreeConverter.INITIALIZER;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.INITIALIZERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IS_VAL;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KIND;
@@ -815,15 +816,17 @@ class JsonTreeTest extends JsonTestHelper {
     IdentifierTree type = new IdentifierTreeImpl(metaData(tokenInt), tokenInt.text());
     Tree initializer = new IntegerLiteralTreeImpl(metaData(tokenValue), tokenValue.text());
     VariableDeclarationTree initialTree = new VariableDeclarationTreeImpl(
-      metaData(tokenInt, tokenValue), identifier, type, initializer, true);
+      metaData(tokenInt, tokenValue), List.of(identifier), type, List.of(initializer), true);
     VariableDeclarationTree tree = checkJsonSerializationDeserialization(initialTree, "variable_declaration.json");
-    assertThat(tree.identifier().name()).isEqualTo("x");
+    assertThat(tree.identifiers()).hasSize(1);
+    assertThat(tree.identifiers().get(0).name()).isEqualTo("x");
     assertThat(((IdentifierTree) tree.type()).name()).isEqualTo("int");
-    assertThat(((IntegerLiteralTree) tree.initializer()).getIntegerValue()).isEqualTo(BigInteger.valueOf(42));
+    assertThat(tree.initializers()).hasSize(1);
+    assertThat(tree.initializers().get(0)).isInstanceOfSatisfying(IntegerLiteralTree.class, val -> assertThat(val.getIntegerValue()).isEqualTo(BigInteger.valueOf(42)));
     assertThat(tree.isVal()).isTrue();
 
     assertThat(methodNames(VariableDeclarationTree.class))
-      .containsExactlyInAnyOrder(IDENTIFIER, TYPE, INITIALIZER, IS_VAL);
+      .containsExactlyInAnyOrder(IDENTIFIERS, TYPE, INITIALIZERS, IS_VAL);
   }
 
   @Test

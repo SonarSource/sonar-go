@@ -151,7 +151,7 @@
         {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
       ]},
       {"@type": "VariableDeclaration", "metaData": "3:0::25","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "3:10::25","type":
           {"@type": "Native", "metaData": "3:10::16","nativeKind":"Type(ArrayType)","children":[
             {"@type": "Native", "metaData": "3:10::11","nativeKind":"Lbrack"},
@@ -162,10 +162,12 @@
           {"@type": "IntegerLiteral", "metaData": "3:17::18","value":"1"},
           {"@type": "IntegerLiteral", "metaData": "3:20::21","value":"2"},
           {"@type": "IntegerLiteral", "metaData": "3:23::24","value":"3"}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "3:4::7","name":"arr"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "3:4::7","name":"arr"}
+      ]},
       {"@type": "VariableDeclaration", "metaData": "5:0::26","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "5:12::26","type":
           {"@type": "Native", "metaData": "5:12::17","nativeKind":"Type(ArrayType)","children":[
             {"@type": "Native", "metaData": "5:12::13","nativeKind":"Lbrack"},
@@ -175,8 +177,10 @@
           {"@type": "IntegerLiteral", "metaData": "5:18::19","value":"1"},
           {"@type": "IntegerLiteral", "metaData": "5:21::22","value":"2"},
           {"@type": "IntegerLiteral", "metaData": "5:24::25","value":"3"}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "5:4::9","name":"slice"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "5:4::9","name":"slice"}
+      ]},
       {"@type": "ClassDeclaration", "metaData": "7:0:10:1","identifier":"7:5::11","classTree":
         {"@type": "Native", "metaData": "7:0:10:1","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
@@ -202,7 +206,7 @@
           ]}
         ]}},
       {"@type": "VariableDeclaration", "metaData": "12:0::43","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "12:13::43","type":
           {"@type": "Identifier", "metaData": "12:13::19","name":"Person"},"elements":[
           {"@type": "KeyValue", "metaData": "12:20::33","value":
@@ -211,10 +215,12 @@
           {"@type": "KeyValue", "metaData": "12:35::42","value":
             {"@type": "IntegerLiteral", "metaData": "12:40::42","value":"30"},"key":
             {"@type": "Identifier", "metaData": "12:35::38","name":"Age"}}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "12:4::10","name":"person"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "12:4::10","name":"person"}
+      ]},
       {"@type": "VariableDeclaration", "metaData": "13:0:16:1","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "13:14:16:1","type":
           {"@type": "Native", "metaData": "13:14::23","nativeKind":"Type(ArrayType)","children":[
             {"@type": "Native", "metaData": "13:14::15","nativeKind":"Lbrack"},
@@ -240,10 +246,12 @@
               {"@type": "IntegerLiteral", "metaData": "15:23::25","value":"31"},"key":
               {"@type": "Identifier", "metaData": "15:18::21","name":"Age"}}
           ]}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "13:4::11","name":"persons"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "13:4::11","name":"persons"}
+      ]},
       {"@type": "VariableDeclaration", "metaData": "18:0::42","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "18:8::42","type":
           {"@type": "Native", "metaData": "18:8::22","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "18:8::11","nativeKind":"Map"},
@@ -258,10 +266,12 @@
           {"@type": "KeyValue", "metaData": "18:33::41","value":
             {"@type": "IntegerLiteral", "metaData": "18:40::41","value":"2"},"key":
             {"@type": "StringLiteral", "metaData": "18:33::38","value":"\"two\"","content":"two"}}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "18:4::5","name":"m"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "18:4::5","name":"m"}
+      ]},
       {"@type": "VariableDeclaration", "metaData": "20:0:23:1","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "20:13:23:1","type":
           {"@type": "Native", "metaData": "20:13::29","nativeKind":"Type(ArrayType)","children":[
             {"@type": "Native", "metaData": "20:13::14","nativeKind":"Lbrack"},
@@ -292,15 +302,19 @@
               {"@type": "IntegerLiteral", "metaData": "22:25::26","value":"4"},"key":
               {"@type": "StringLiteral", "metaData": "22:17::23","value":"\"four\"","content":"four"}}
           ]}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "20:4::10","name":"nested"}},
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "20:4::10","name":"nested"}
+      ]},
       {"@type": "VariableDeclaration", "metaData": "25:0:28:1","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "25:29:28:1","type":
           {"@type": "Identifier", "metaData": "25:29::35","name":"Person"},"elements":[
           {"@type": "StringLiteral", "metaData": "26:4::9","value":"\"Bob\"","content":"Bob"},
           {"@type": "IntegerLiteral", "metaData": "27:4::6","value":"31"}
-        ]},"identifier":
-        {"@type": "Identifier", "metaData": "25:4::26","name":"personValueInitializer"}}
+        ]}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "25:4::26","name":"personValueInitializer"}
+      ]}
     ]}
 } 

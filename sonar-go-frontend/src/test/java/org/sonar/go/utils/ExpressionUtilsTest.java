@@ -16,6 +16,7 @@
  */
 package org.sonar.go.utils;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -163,7 +164,8 @@ class ExpressionUtilsTest {
       .descendants()
       .filter(VariableDeclarationTree.class::isInstance)
       .map(VariableDeclarationTree.class::cast)
-      .map(VariableDeclarationTree::initializer)
+      .map(VariableDeclarationTree::initializers)
+      .flatMap(List::stream)
       .findFirst()
       .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
 

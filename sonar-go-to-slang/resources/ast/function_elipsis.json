@@ -130,7 +130,7 @@
               {"@type": "Literal", "metaData": "10:44::48","value":"true"}
             ]}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "11:1::48","type":null,"isVal":false,"initializer":
+          {"@type": "VariableDeclaration", "metaData": "11:1::48","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:11::48","type":
               {"@type": "Native", "metaData": "11:11::24","nativeKind":"Type(ArrayType)","children":[
                 {"@type": "Native", "metaData": "11:11::12","nativeKind":"Lbrack"},
@@ -147,8 +147,10 @@
               {"@type": "StringLiteral", "metaData": "11:28::34","value":"\"test\"","content":"test"},
               {"@type": "Native", "metaData": "11:36::40","nativeKind":"[2](BasicLit)"},
               {"@type": "Literal", "metaData": "11:42::47","value":"false"}
-            ]},"identifier":
-            {"@type": "Identifier", "metaData": "11:1::7","name":"values"}},
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "11:1::7","name":"values"}
+          ]},
           {"@type": "Native", "metaData": "12:1::34","nativeKind":"[2](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "12:1::34","memberSelect":
               {"@type": "Identifier", "metaData": "12:1::23","name":"declarationWithElipsis"},"arguments":[

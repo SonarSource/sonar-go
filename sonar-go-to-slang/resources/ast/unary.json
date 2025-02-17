@@ -126,37 +126,37 @@
           {"@type": "Identifier", "metaData": "12:9::14","name":"value"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "12:24:29:1","statementOrExpressions":[
-          {"@type": "Native", "metaData": "13:1::11","nativeKind":"[0](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "13:1::11","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "13:9::11","operator":"PLUS","operand":
-                {"@type": "IntegerLiteral", "metaData": "13:10::11","value":"1"}},"identifier":
-              {"@type": "Identifier", "metaData": "13:5::6","name":"x"}}
+          {"@type": "VariableDeclaration", "metaData": "13:1::11","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "13:9::11","operator":"PLUS","operand":
+              {"@type": "IntegerLiteral", "metaData": "13:10::11","value":"1"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "13:5::6","name":"x"}
           ]},
-          {"@type": "Native", "metaData": "14:1::11","nativeKind":"[1](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "14:1::11","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "14:9::11","operator":"MINUS","operand":
-                {"@type": "IntegerLiteral", "metaData": "14:10::11","value":"1"}},"identifier":
-              {"@type": "Identifier", "metaData": "14:5::6","name":"y"}}
+          {"@type": "VariableDeclaration", "metaData": "14:1::11","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "14:9::11","operator":"MINUS","operand":
+              {"@type": "IntegerLiteral", "metaData": "14:10::11","value":"1"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "14:5::6","name":"y"}
           ]},
-          {"@type": "Native", "metaData": "15:1::11","nativeKind":"[2](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "15:1::11","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "15:9::11","operator":"BITWISE_COMPLEMENT","operand":
-                {"@type": "IntegerLiteral", "metaData": "15:10::11","value":"4"}},"identifier":
-              {"@type": "Identifier", "metaData": "15:5::6","name":"c"}}
+          {"@type": "VariableDeclaration", "metaData": "15:1::11","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "15:9::11","operator":"BITWISE_COMPLEMENT","operand":
+              {"@type": "IntegerLiteral", "metaData": "15:10::11","value":"4"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "15:5::6","name":"c"}
           ]},
-          {"@type": "Native", "metaData": "17:1::24","nativeKind":"[3](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "17:1::24","type":
-              null,"isVal":false,"initializer":
-              {"@type": "FunctionInvocation", "metaData": "17:10::24","memberSelect":
-                {"@type": "Identifier", "metaData": "17:10::14","name":"make"},"arguments":[
-                {"@type": "Native", "metaData": "17:20::23","nativeKind":"[0](ChanType)","children":[
-                  {"@type": "Identifier", "metaData": "17:20::23","name":"int"}
-                ]}
-              ]},"identifier":
-              {"@type": "Identifier", "metaData": "17:5::7","name":"ch"}}
+          {"@type": "VariableDeclaration", "metaData": "17:1::24","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "17:10::24","memberSelect":
+              {"@type": "Identifier", "metaData": "17:10::14","name":"make"},"arguments":[
+              {"@type": "Native", "metaData": "17:20::23","nativeKind":"[0](ChanType)","children":[
+                {"@type": "Identifier", "metaData": "17:20::23","name":"int"}
+              ]}
+            ]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "17:5::7","name":"ch"}
           ]},
           {"@type": "Native", "metaData": "18:1::24","nativeKind":"[4](GoStmt)","children":[
             {"@type": "Native", "metaData": "18:1::3","nativeKind":"Go"},
@@ -172,37 +172,37 @@
                   ]}
                 ]}},"arguments":[]}
           ]},
-          {"@type": "Native", "metaData": "19:1::13","nativeKind":"[5](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "19:1::13","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "19:9::13","operator":"ARROW","operand":
-                {"@type": "Identifier", "metaData": "19:11::13","name":"ch"}},"identifier":
-              {"@type": "Identifier", "metaData": "19:5::6","name":"z"}}
+          {"@type": "VariableDeclaration", "metaData": "19:1::13","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "19:9::13","operator":"ARROW","operand":
+              {"@type": "Identifier", "metaData": "19:11::13","name":"ch"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "19:5::6","name":"z"}
           ]},
           {"@type": "UnaryExpression", "metaData": "22:1::4","operator":"INCREMENT","operand":
             {"@type": "Identifier", "metaData": "22:1::2","name":"x"}},
           {"@type": "UnaryExpression", "metaData": "23:1::4","operator":"DECREMENT","operand":
             {"@type": "Identifier", "metaData": "23:1::2","name":"x"}},
-          {"@type": "Native", "metaData": "25:1::14","nativeKind":"[8](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "25:1::14","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "25:9::14","operator":"NEGATE","operand":
-                {"@type": "Literal", "metaData": "25:10::14","value":"true"}},"identifier":
-              {"@type": "Identifier", "metaData": "25:5::6","name":"b"}}
+          {"@type": "VariableDeclaration", "metaData": "25:1::14","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "25:9::14","operator":"NEGATE","operand":
+              {"@type": "Literal", "metaData": "25:10::14","value":"true"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "25:5::6","name":"b"}
           ]},
-          {"@type": "Native", "metaData": "27:1::15","nativeKind":"[9](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "27:1::15","type":
-              null,"isVal":false,"initializer":
-              {"@type": "StarExpression", "metaData": "27:9::15","expression":
-                {"@type": "Identifier", "metaData": "27:10::15","name":"value"}},"identifier":
-              {"@type": "Identifier", "metaData": "27:5::6","name":"p"}}
+          {"@type": "VariableDeclaration", "metaData": "27:1::15","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "StarExpression", "metaData": "27:9::15","expression":
+              {"@type": "Identifier", "metaData": "27:10::15","name":"value"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "27:5::6","name":"p"}
           ]},
-          {"@type": "Native", "metaData": "28:1::15","nativeKind":"[10](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "28:1::15","type":
-              null,"isVal":false,"initializer":
-              {"@type": "UnaryExpression", "metaData": "28:9::15","operator":"ADDRESS_OF","operand":
-                {"@type": "Identifier", "metaData": "28:10::15","name":"value"}},"identifier":
-              {"@type": "Identifier", "metaData": "28:5::6","name":"a"}}
+          {"@type": "VariableDeclaration", "metaData": "28:1::15","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "UnaryExpression", "metaData": "28:9::15","operator":"ADDRESS_OF","operand":
+              {"@type": "Identifier", "metaData": "28:10::15","name":"value"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "28:5::6","name":"a"}
           ]}
         ]}}
     ]}

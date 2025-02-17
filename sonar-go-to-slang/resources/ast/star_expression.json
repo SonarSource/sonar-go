@@ -47,23 +47,23 @@
           {"@type": "Identifier", "metaData": "3:10::11","name":"c"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "3:23:9:1","statementOrExpressions":[
-          {"@type": "Native", "metaData": "4:4::25","nativeKind":"[0](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "4:4::25","type":
-              null,"isVal":false,"initializer":
-              {"@type": "StarExpression", "metaData": "4:18::25","expression":
-                {"@type": "Identifier", "metaData": "4:19::25","name":"string"}},"identifier":
-              {"@type": "Identifier", "metaData": "4:8::15","name":"pointer"}}
+          {"@type": "VariableDeclaration", "metaData": "4:4::25","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "StarExpression", "metaData": "4:18::25","expression":
+              {"@type": "Identifier", "metaData": "4:19::25","name":"string"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "4:8::15","name":"pointer"}
           ]},
           {"@type": "AssignmentExpression", "metaData": "6:4::22","statementOrExpression":
             {"@type": "StringLiteral", "metaData": "6:15::22","value":"\"Hello\"","content":"Hello"},"operator":"EQUAL","leftHandSide":
             {"@type": "StarExpression", "metaData": "6:4::12","expression":
               {"@type": "Identifier", "metaData": "6:5::12","name":"pointer"}}},
-          {"@type": "Native", "metaData": "8:4::24","nativeKind":"[2](DeclStmt)","children":[
-            {"@type": "VariableDeclaration", "metaData": "8:4::24","type":
-              null,"isVal":false,"initializer":
-              {"@type": "StarExpression", "metaData": "8:16::24","expression":
-                {"@type": "Identifier", "metaData": "8:17::24","name":"pointer"}},"identifier":
-              {"@type": "Identifier", "metaData": "8:8::13","name":"value"}}
+          {"@type": "VariableDeclaration", "metaData": "8:4::24","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "StarExpression", "metaData": "8:16::24","expression":
+              {"@type": "Identifier", "metaData": "8:17::24","name":"pointer"}}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "8:8::13","name":"value"}
           ]}
         ]}}
     ]}

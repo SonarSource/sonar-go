@@ -24,6 +24,7 @@ import (
 const keywordField = "keyword"
 const modifiersField = "modifiers"
 const identifierField = "identifier"
+const identifiersField = "identifiers"
 const operatorField = "operator"
 const operandField = "operand"
 const conditionField = "condition"
@@ -263,8 +264,8 @@ func (t *SlangMapper) mapGenDeclImpl(decl *ast.GenDecl, fieldName string) *Node 
 	}
 
 	valueSpec, ok := decl.Specs[0].(*ast.ValueSpec)
-	if !ok || len(valueSpec.Names) != 1 {
-		// The spec of this declaration is not a valueSpec, or have multiple identifier (i, j := 1, 2), we map it to native
+	if !ok {
+		// The spec of this declaration is not a valueSpec, we map it to native
 		return nil
 	}
 
@@ -272,32 +273,27 @@ func (t *SlangMapper) mapGenDeclImpl(decl *ast.GenDecl, fieldName string) *Node 
 	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.TokPos, decl.Tok, "Tok"))
 	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.Lparen, token.LPAREN, lParentKind))
 
-	identifier := t.mapIdent(valueSpec.Names[0], "[0]")
-	children = t.appendNode(children, identifier)
-	slangField[identifierField] = identifier
+	var identifiers []*Node
+	for i := 0; i < len(valueSpec.Names); i++ {
+		identifier := t.mapIdent(valueSpec.Names[i], "["+strconv.Itoa(i)+"]")
+		identifiers = append(identifiers, identifier)
+		children = t.appendNode(children, identifier)
+	}
+	slangField[identifiersField] = identifiers
 
 	typ := t.mapExpr(valueSpec.Type, "Type")
 	children = t.appendNode(children, typ)
 	slangField["type"] = typ
 
-	var initializer *Node
-	nValues := len(valueSpec.Values)
+	var initializers []*Node
 
-	if nValues > 1 {
-		var nodeListValues []*Node
-		for i := 0; i < len(valueSpec.Values); i++ {
-			nodeListValues = t.appendNode(nodeListValues, t.mapExpr(valueSpec.Values[i], "["+strconv.Itoa(i)+"]"))
-		}
-		//Wrap all values in a native node
-		initializer = t.createNativeNodeWithChildren(nodeListValues, "Values([]Expr)")
-	} else if nValues == 1 {
-		initializer = t.mapExpr(valueSpec.Values[0], "[0]")
-	} else {
-		initializer = nil
+	for i := 0; i < len(valueSpec.Values); i++ {
+		initializer := t.mapExpr(valueSpec.Values[i], "["+strconv.Itoa(i)+"]")
+		initializers = append(initializers, initializer)
+		children = t.appendNode(children, initializer)
 	}
 
-	children = t.appendNode(children, initializer)
-	slangField["initializer"] = initializer
+	slangField["initializers"] = initializers
 
 	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.Rparen, token.RPAREN, rParentKind))
 
@@ -436,18 +432,13 @@ func (t *SlangMapper) mapAssignStmtImpl(stmt *ast.AssignStmt, fieldName string) 
 	}
 
 	var operator string
-	var isVarDecl = false
 	switch stmt.Tok {
 	case token.ASSIGN:
 		operator = "EQUAL"
 	case token.ADD_ASSIGN:
 		operator = "PLUS_EQUAL"
 	case token.DEFINE:
-		if len(stmt.Lhs) != 1 {
-			//i, j := 1, 2; SLang does not support this, map to Native
-			return nil
-		}
-		isVarDecl = true
+		return t.createVariableDeclaration(stmt, fieldName)
 	default:
 		// Slang only support = and +=, other compound assignments are ignored.
 		return nil
@@ -482,18 +473,37 @@ func (t *SlangMapper) mapAssignStmtImpl(stmt *ast.AssignStmt, fieldName string) 
 	children = t.appendNode(children, rightHandSide)
 
 	slangField := make(map[string]interface{})
-	if isVarDecl {
-		slangField[identifierField] = leftHandSide
-		slangField["type"] = nil
-		slangField["initializer"] = rightHandSide
-		slangField["isVal"] = false
-		return t.createNode(stmt, children, fieldName+"(AssignDefineStmt)", "VariableDeclaration", slangField)
-	} else {
-		slangField[operatorField] = operator
-		slangField["leftHandSide"] = leftHandSide
-		slangField["statementOrExpression"] = rightHandSide
-		return t.createNode(stmt, children, fieldName+"(AssignStmt)", "AssignmentExpression", slangField)
+	slangField[operatorField] = operator
+	slangField["leftHandSide"] = leftHandSide
+	slangField["statementOrExpression"] = rightHandSide
+	return t.createNode(stmt, children, fieldName+"(AssignStmt)", "AssignmentExpression", slangField)
+}
+
+func (t *SlangMapper) createVariableDeclaration(stmt *ast.AssignStmt, fieldName string) *Node {
+	slangField := make(map[string]interface{})
+	var children []*Node
+
+	slangField["isVal"] = false
+	var identifiers []*Node
+	for i := 0; i < len(stmt.Lhs); i++ {
+		identifier := t.mapExpr(stmt.Lhs[i], "["+strconv.Itoa(i)+"]")
+		identifiers = append(identifiers, identifier)
+		children = t.appendNode(children, identifier)
 	}
+	slangField[identifiersField] = identifiers
+	slangField["type"] = nil
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(stmt.TokPos, stmt.Tok, "Tok"))
+
+	var initializers []*Node
+	for i := 0; i < len(stmt.Rhs); i++ {
+		initializer := t.mapExpr(stmt.Rhs[i], "["+strconv.Itoa(i)+"]")
+		initializers = append(initializers, initializer)
+		children = t.appendNode(children, initializer)
+	}
+	slangField["initializers"] = initializers
+
+	return t.createNode(stmt, children, fieldName+"(AssignDefineStmt)", "VariableDeclaration", slangField)
 }
 
 func (t *SlangMapper) mapBadStmtImpl(stmt *ast.BadStmt, fieldName string) *Node {
@@ -572,7 +582,12 @@ func (t *SlangMapper) mapCommClauseImpl(clause *ast.CommClause, fieldName string
 }
 
 func (t *SlangMapper) mapDeclStmtImpl(stmt *ast.DeclStmt, fieldName string) *Node {
-	return nil
+	// In case of a GenDecl statement, we map the declaration itself to avoid an extra native node layer
+	genDecl, ok := stmt.Decl.(*ast.GenDecl)
+	if !ok {
+		return nil
+	}
+	return t.mapGenDecl(genDecl, fieldName)
 }
 
 func (t *SlangMapper) mapDeferStmtImpl(stmt *ast.DeferStmt, fieldName string) *Node {

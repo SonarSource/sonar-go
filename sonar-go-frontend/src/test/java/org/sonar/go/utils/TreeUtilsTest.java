@@ -57,7 +57,7 @@ class TreeUtilsTest {
   void shouldGetOnlyIdentifierNames() {
     var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
     var id = new IdentifierTreeImpl(mock(TreeMetaData.class), "foo");
-    var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), id, null, initializer, false);
+    var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), List.of(id), null, List.of(initializer), false);
     var body = new BlockTreeImpl(mock(TreeMetaData.class), List.of(variable));
     var id2 = new IdentifierTreeImpl(mock(TreeMetaData.class), "bar");
 
@@ -70,7 +70,7 @@ class TreeUtilsTest {
   void shouldGetOnlyIdentifierName() {
     var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
     var id = new IdentifierTreeImpl(mock(TreeMetaData.class), "foo");
-    var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), id, null, initializer, false);
+    var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), List.of(id), null, List.of(initializer), false);
     var body = new BlockTreeImpl(mock(TreeMetaData.class), List.of(variable));
     var id2 = new IdentifierTreeImpl(mock(TreeMetaData.class), "bar");
 

@@ -403,7 +403,7 @@
       ],"body":
         {"@type": "Block", "metaData": "31:44::46","statementOrExpressions":[]}},
       {"@type": "VariableDeclaration", "metaData": "34:0:38:1","type":
-        null,"isVal":false,"initializer":
+        null,"isVal":false,"initializers":[
         {"@type": "FunctionDeclaration", "metaData": "34:9:38:1","typeParameters":
           null,"returnType":
           {"@type": "Native", "metaData": "34:21::24","nativeKind":"Results(FieldList)","children":[
@@ -429,7 +429,9 @@
             ]},
             {"@type": "Return", "metaData": "37:4::12","keyword":"37:4::10","body":
               {"@type": "Identifier", "metaData": "37:11::12","name":"a"}}
-          ]}},"identifier":
-        {"@type": "Identifier", "metaData": "34:4::6","name":"g4"}}
+          ]}}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "34:4::6","name":"g4"}
+      ]}
     ]}
 } 

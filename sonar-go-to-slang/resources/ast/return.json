@@ -132,9 +132,11 @@
         null,"name":
         {"@type": "Identifier", "metaData": "19:5::24","name":"multipleReturnValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
-          {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializer":
-            {"@type": "StringLiteral", "metaData": "20:6::9","value":"\"b\"","content":"b"},"identifier":
-            {"@type": "Identifier", "metaData": "20:1::2","name":"b"}},
+          {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializers":[
+            {"@type": "StringLiteral", "metaData": "20:6::9","value":"\"b\"","content":"b"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "20:1::2","name":"b"}
+          ]},
           {"@type": "Return", "metaData": "21:1::17","keyword":"21:1::7","body":
             {"@type": "Native", "metaData": "21:8::17","nativeKind":"ReturnExprList","children":[
               {"@type": "Identifier", "metaData": "21:8::9","name":"b"},
