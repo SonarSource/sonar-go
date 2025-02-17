@@ -263,18 +263,6 @@ class MethodMatchersTest {
   }
 
   @Test
-  void shouldNotMatchWhenTreeIsNullWithImportsPresent() {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
-      .withAnyParameters()
-      .build();
-
-    Optional<IdentifierTree> matches = matcher.matches(null);
-    assertThat(matches).isEmpty();
-  }
-
-  @Test
   void shouldNotMatchWhenTreeIsNull() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
