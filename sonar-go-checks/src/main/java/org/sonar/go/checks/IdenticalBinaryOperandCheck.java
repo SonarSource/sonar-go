@@ -16,12 +16,15 @@
  */
 package org.sonar.go.checks;
 
+import java.util.EnumSet;
+import java.util.Set;
 import org.sonar.check.Rule;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
 
+import static org.sonar.go.api.BinaryExpressionTree.*;
 import static org.sonar.go.utils.ExpressionUtils.containsPlaceHolder;
 import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -29,13 +32,13 @@ import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 @Rule(key = "S1764")
 public class IdenticalBinaryOperandCheck implements GoCheck {
 
-  public static final String MESSAGE = "Correct one of the identical sub-expressions on both sides this operator";
+  public static final String MESSAGE = "Correct one of the identical sub-expressions on both sides of this operator.";
+  private static final Set<Operator> EXCEPTIONS = EnumSet.of(Operator.PLUS, Operator.TIMES, Operator.BITWISE_SHL);
 
   @Override
   public void initialize(InitContext init) {
     init.register(BinaryExpressionTree.class, (ctx, tree) -> {
-      if (tree.operator() != BinaryExpressionTree.Operator.PLUS
-        && tree.operator() != BinaryExpressionTree.Operator.TIMES
+      if (!EXCEPTIONS.contains(tree.operator())
         && !containsPlaceHolder(tree)
         && areEquivalent(skipParentheses(tree.leftOperand()), skipParentheses(tree.rightOperand()))) {
         ctx.reportIssue(tree.rightOperand(), MESSAGE, new SecondaryLocation(tree.leftOperand()));

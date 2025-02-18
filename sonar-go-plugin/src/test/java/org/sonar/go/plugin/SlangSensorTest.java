@@ -91,7 +91,7 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(issue.ruleKey().rule()).isEqualTo("S1764");
     IssueLocation location = issue.primaryLocation();
     assertThat(location.inputComponent()).isEqualTo(inputFile);
-    assertThat(location.message()).isEqualTo("Correct one of the identical sub-expressions on both sides this operator");
+    assertThat(location.message()).isEqualTo("Correct one of the identical sub-expressions on both sides of this operator.");
     assertThat(location.textRange()).hasRange(3, 14, 3, 15);
   }
 
