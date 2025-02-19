@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
+import javax.annotation.Nullable;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CompositeLiteralTree;
@@ -79,7 +80,7 @@ public class ExpressionUtils {
     return isBinaryOperation(tree, CONDITIONAL_AND) || isBinaryOperation(tree, CONDITIONAL_OR);
   }
 
-  public static Tree skipParentheses(Tree tree) {
+  public static Tree skipParentheses(@Nullable Tree tree) {
     Tree result = tree;
     while (result instanceof ParenthesizedExpressionTree parenthesizedExpressionTree) {
       result = parenthesizedExpressionTree.expression();
