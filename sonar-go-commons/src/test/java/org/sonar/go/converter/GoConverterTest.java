@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -49,6 +50,7 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.testing.TestGoConverter;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -215,6 +217,7 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(functionDeclaration.name().name()).isEqualTo("foo");
+    assertThat(functionDeclaration.name().type()).isEqualTo("func(i int)");
     assertThat(functionDeclaration.typeParameters()).isNull();
     assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("Recv(FieldList)"));
     assertThat(functionDeclaration.formalParameters()).hasSize(1);
@@ -233,6 +236,7 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(functionDeclaration.name().name()).isEqualTo("externalFunction");
+    assertThat(functionDeclaration.name().type()).isEqualTo("func()");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.body()).isNull();
   }
@@ -320,6 +324,7 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(functionDeclaration.name().name()).isEqualTo("funWithTypeParameter");
+    assertThat(functionDeclaration.name().type()).isEqualTo("func[T any]()");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
       nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("TypeParams(FieldList)"));
@@ -408,6 +413,64 @@ class GoConverterTest {
     assertThat(getExecutableForCurrentOS("Windows 10", "x86_64")).isEqualTo("sonar-go-to-slang-windows-amd64.exe");
     assertThat(getExecutableForCurrentOS("Mac OS X", "x86_64")).isEqualTo("sonar-go-to-slang-darwin-amd64");
     assertThat(getExecutableForCurrentOS("Mac OS X", "aarch64")).isEqualTo("sonar-go-to-slang-darwin-arm64");
+  }
+
+  @Test
+  // TODO SONARGO-311 Fix type resolution when building Go executable locally
+  @EnabledIfSystemProperty(named = "CI", matches = "true")
+  void shouldParseFunctionWithTypeDetectionDatabaseSql() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import (
+          "database/sql"
+          "strconv"
+      )
+      func selectFromTable(id int) *sql.Rows {
+          driverName := "mysql"
+          dataSource := "dataSource"
+          var db, _ = sql.Open(driverName, dataSource)
+          var rows, _ = db.Query("SELECT * FROM table WHERE id = " + strconv.Itoa(id))
+          return rows
+      }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "id").type()).isEqualTo("int");
+    assertThat(getIdentifierByName(functionDeclaration, "driverName").type()).isEqualTo("string");
+    assertThat(getIdentifierByName(functionDeclaration, "db").type()).isEqualTo("*database/sql.DB");
+  }
+
+  @Test
+  // TODO SONARGO-311 Fix type resolution when building Go executable locally
+  @EnabledIfSystemProperty(named = "CI", matches = "true")
+  void shouldParseFunctionWithTypeDetectionHttpCookie() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import (
+          	"fmt"
+            "net/http"
+      )
+      func printCookie(id int) {
+          	cookie := http.Cookie{}
+            fmt.Println(cookie)
+      }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "cookie").type()).isEqualTo("net/http.Cookie");
+  }
+
+  private static IdentifierTree getIdentifierByName(FunctionDeclarationTree functionDeclaration, String name) {
+    return functionDeclaration.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(t -> name.equals(t.name()))
+      .findFirst()
+      .orElse(null);
   }
 
   private List<ReturnTree> getReturnsList(Tree tree) {

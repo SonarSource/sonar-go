@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,8 +30,8 @@ class IfTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree condition = new LiteralTreeImpl(meta, "42");
-    Tree thenBranch = new IdentifierTreeImpl(meta, "x");
-    Tree elseBranch = new IdentifierTreeImpl(meta, "y");
+    Tree thenBranch = TreeCreationUtils.identifier("x");
+    Tree elseBranch = TreeCreationUtils.identifier("y");
     TokenImpl ifToken = new TokenImpl(new TextRangeImpl(1, 0, 1, 2), "if", Token.Type.KEYWORD);
     TokenImpl elseToken = new TokenImpl(new TextRangeImpl(2, 0, 1, 4), "else", Token.Type.KEYWORD);
     IfTreeImpl tree = new IfTreeImpl(meta, condition, thenBranch, elseBranch, ifToken, elseToken);

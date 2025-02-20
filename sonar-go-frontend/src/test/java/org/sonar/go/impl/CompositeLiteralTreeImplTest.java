@@ -31,6 +31,7 @@ import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +40,7 @@ class CompositeLiteralTreeImplTest {
   @Test
   void testSimpleCompositeLiteral() {
     TreeMetaData meta = null;
-    Tree identifierTree = new IdentifierTreeImpl(meta, "x");
+    Tree identifierTree = TreeCreationUtils.identifier("x", "y");
     List<Tree> elements = new ArrayList<>();
 
     CompositeLiteralTree tree = new CompositeLiteralTreeImpl(meta, identifierTree, elements);
@@ -52,8 +53,8 @@ class CompositeLiteralTreeImplTest {
   @Test
   void testCompositeLiteralWithElements() {
     TreeMetaData meta = null;
-    Tree identifierTree = new IdentifierTreeImpl(meta, "x");
-    Tree el1 = new IdentifierTreeImpl(meta, "x");
+    Tree identifierTree = TreeCreationUtils.identifier("x", "y");
+    Tree el1 = TreeCreationUtils.identifier("x", "y");
     Tree el2 = new LiteralTreeImpl(meta, "x");
     List<Tree> elements = new ArrayList<>();
     elements.add(el1);

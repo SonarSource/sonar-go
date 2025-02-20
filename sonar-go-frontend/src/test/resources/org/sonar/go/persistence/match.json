@@ -11,7 +11,7 @@
   "tree": {
     "@type": "Match",
     "metaData": "1:0::19",
-    "expression": {"@type": "Identifier", "metaData": "1:7::8", "name": "x"},
+    "expression": {"@type": "Identifier", "metaData": "1:7::8", "name": "x", "type": "UNKNOWN"},
     "cases": [
       {
         "@type": "MatchCase",

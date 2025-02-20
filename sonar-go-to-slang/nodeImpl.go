@@ -78,6 +78,10 @@ func (t *SlangMapper) mapIdentImpl(ident *ast.Ident, fieldName string) *Node {
 	default:
 		slangType = "Identifier"
 		slangField["name"] = ident.Name
+		if t.info != nil {
+			typ := t.getTypeOfIdent(ident)
+			slangField["type"] = typ
+		}
 	}
 
 	return t.createNode(ident, children, fieldName+"(Ident)", slangType, slangField)

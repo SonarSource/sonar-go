@@ -23,6 +23,7 @@ import org.sonar.go.api.MatchTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +32,7 @@ class MatchTreeImplTest {
   @Test
   void test() {
     TreeMetaData meta = null;
-    Tree expression = new IdentifierTreeImpl(null, "x");
+    Tree expression = TreeCreationUtils.identifier("x");
     MatchCaseTree case1 = new MatchCaseTreeImpl(null, null, new LiteralTreeImpl(meta, "42"));
     Token keywordToken = new TokenImpl(new TextRangeImpl(1, 0, 1, 20), "match", Token.Type.KEYWORD);
     MatchTree tree = new MatchTreeImpl(meta, expression, Collections.singletonList(case1), keywordToken);

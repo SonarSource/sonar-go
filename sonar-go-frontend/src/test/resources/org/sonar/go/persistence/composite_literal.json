@@ -13,7 +13,8 @@
     "type": {
       "@type": "Identifier",
       "metaData": "1:0::6",
-      "name": "MyType"
+      "name": "MyType",
+      "type": "UNKNOWN"
     },
     "elements": [
     ]

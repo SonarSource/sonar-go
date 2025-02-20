@@ -16,9 +16,14 @@
  */
 package org.sonar.go.api;
 
+import javax.annotation.CheckForNull;
+
 public interface IdentifierTree extends Tree {
 
   String name();
+
+  @CheckForNull
+  String type();
 
   // identifier is used for equivalence comparison
   default String identifier() {

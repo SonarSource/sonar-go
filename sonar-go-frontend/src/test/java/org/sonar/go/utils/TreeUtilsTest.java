@@ -20,7 +20,6 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BlockTreeImpl;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
@@ -48,10 +47,10 @@ class TreeUtilsTest {
   @Test
   void shouldGetOnlyIdentifierNames() {
     var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
-    var id = new IdentifierTreeImpl(mock(TreeMetaData.class), "foo");
+    var id = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
     var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), List.of(id), null, List.of(initializer), false);
     var body = new BlockTreeImpl(mock(TreeMetaData.class), List.of(variable));
-    var id2 = new IdentifierTreeImpl(mock(TreeMetaData.class), "bar");
+    var id2 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
 
     var names = TreeUtils.getIdentifierNames(List.of(initializer, id, variable, body, id2));
 
@@ -61,10 +60,10 @@ class TreeUtilsTest {
   @Test
   void shouldGetOnlyIdentifierName() {
     var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
-    var id = new IdentifierTreeImpl(mock(TreeMetaData.class), "foo");
+    var id = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
     var variable = new VariableDeclarationTreeImpl(mock(TreeMetaData.class), List.of(id), null, List.of(initializer), false);
     var body = new BlockTreeImpl(mock(TreeMetaData.class), List.of(variable));
-    var id2 = new IdentifierTreeImpl(mock(TreeMetaData.class), "bar");
+    var id2 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
 
     var names = TreeUtils.getIdentifierName(List.of(initializer, id, variable, body, id2));
 

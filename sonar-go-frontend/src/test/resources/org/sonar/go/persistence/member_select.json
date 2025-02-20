@@ -12,9 +12,9 @@
     "metaData": "1:0::5",
     "expression": {
       "@type": "MemberSelect", "metaData": "1:0::3",
-      "expression": {"@type": "Identifier", "metaData": "1:0::1", "name": "x"},
-      "identifier": {"@type": "Identifier", "metaData": "1:2::3", "name": "y"}
+      "expression": {"@type": "Identifier", "metaData": "1:0::1", "name": "x", "type": "UNKNOWN"},
+      "identifier": {"@type": "Identifier", "metaData": "1:2::3", "name": "y", "type": "UNKNOWN"}
     },
-    "identifier": {"@type": "Identifier", "metaData": "1:4::5", "name": "z"}
+    "identifier": {"@type": "Identifier", "metaData": "1:4::5", "name": "z", "type": "UNKNOWN"}
   }
 }

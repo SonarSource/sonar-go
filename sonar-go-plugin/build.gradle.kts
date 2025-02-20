@@ -103,7 +103,7 @@ tasks.shadowJar {
     }
     doLast {
         val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
-        enforceJarSize(pluginJar, 5_000_000L, 5_500_000L)
+        enforceJarSize(pluginJar, 8_500_000L, 9_000_000L)
         checkJarEntriesPathUniqueness(pluginJar)
     }
 }

@@ -23,7 +23,8 @@
     "key": {
       "@type": "Identifier",
       "metaData": "1:0::4",
-      "name": "Name"
+      "name": "Name",
+      "type": "UNKNOWN"
     },
     "value": {
       "@type": "Literal",

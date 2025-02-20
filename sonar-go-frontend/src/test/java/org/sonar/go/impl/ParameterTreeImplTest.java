@@ -23,6 +23,7 @@ import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -36,10 +37,10 @@ class ParameterTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree parameterType = new NativeTreeImpl(meta, new TypeNativeKind(), null);
-    IdentifierTree identifierTreeX = new IdentifierTreeImpl(meta, "x");
-    IdentifierTree identifierTreeY = new IdentifierTreeImpl(meta, "y");
+    IdentifierTree identifierTreeX = TreeCreationUtils.identifier("x");
+    IdentifierTree identifierTreeY = TreeCreationUtils.identifier("y");
     ParameterTreeImpl parameterTreeX = new ParameterTreeImpl(meta, identifierTreeX, null);
-    ParameterTreeImpl parameterTreeXCopy = new ParameterTreeImpl(meta, new IdentifierTreeImpl(meta, "x"), null);
+    ParameterTreeImpl parameterTreeXCopy = new ParameterTreeImpl(meta, TreeCreationUtils.identifier("x"), null);
     ParameterTreeImpl parameterTreeXTyped = new ParameterTreeImpl(meta, identifierTreeX, parameterType);
     ParameterTreeImpl parameterTreeY = new ParameterTreeImpl(meta, identifierTreeY, parameterType);
 
@@ -56,12 +57,12 @@ class ParameterTreeImplTest {
   @Test
   void test_default_value() {
     TreeMetaData meta = null;
-    IdentifierTree identifierTreeX = new IdentifierTreeImpl(meta, "x");
-    IdentifierTree identifierTreeY = new IdentifierTreeImpl(meta, "y");
-    IdentifierTree defaultValue1 = new IdentifierTreeImpl(meta, "1");
+    IdentifierTree identifierTreeX = TreeCreationUtils.identifier("x");
+    IdentifierTree identifierTreeY = TreeCreationUtils.identifier("y");
+    IdentifierTree defaultValue1 = TreeCreationUtils.identifier("1");
     ParameterTreeImpl parameterTreeXDefault1 = new ParameterTreeImpl(meta, identifierTreeX, null, defaultValue1);
-    ParameterTreeImpl parameterTreeXDefault1Copy = new ParameterTreeImpl(meta, new IdentifierTreeImpl(meta, "x"), null, new IdentifierTreeImpl(meta, "1"));
-    ParameterTreeImpl parameterTreeXDefault2 = new ParameterTreeImpl(meta, identifierTreeX, null, new IdentifierTreeImpl(meta, "2"));
+    ParameterTreeImpl parameterTreeXDefault1Copy = new ParameterTreeImpl(meta, TreeCreationUtils.identifier("x"), null, TreeCreationUtils.identifier("1"));
+    ParameterTreeImpl parameterTreeXDefault2 = new ParameterTreeImpl(meta, identifierTreeX, null, TreeCreationUtils.identifier("2"));
     ParameterTreeImpl parameterTreeXDefaultNative = new ParameterTreeImpl(meta, identifierTreeX, null, new NativeTreeImpl(meta, new TypeNativeKind(), null));
     ParameterTreeImpl parameterTreeY = new ParameterTreeImpl(meta, identifierTreeY, null);
 
@@ -81,13 +82,13 @@ class ParameterTreeImplTest {
   @Test
   void test_modifiers() {
     TreeMetaData meta = null;
-    IdentifierTree identifierTreeX = new IdentifierTreeImpl(meta, "x");
-    IdentifierTree identifierTreeY = new IdentifierTreeImpl(meta, "y");
+    IdentifierTree identifierTreeX = TreeCreationUtils.identifier("x");
+    IdentifierTree identifierTreeY = TreeCreationUtils.identifier("y");
     Tree publicModifier = new ModifierTreeImpl(meta, ModifierTree.Kind.PUBLIC);
 
     ParameterTreeImpl parameterTreeXPublic = new ParameterTreeImpl(meta, identifierTreeX, null, null,
       Collections.singletonList(publicModifier));
-    ParameterTreeImpl parameterTreeXPublicCopy = new ParameterTreeImpl(meta, new IdentifierTreeImpl(meta, "x"),
+    ParameterTreeImpl parameterTreeXPublicCopy = new ParameterTreeImpl(meta, TreeCreationUtils.identifier("x"),
       null, null, Collections.singletonList(new ModifierTreeImpl(meta, ModifierTree.Kind.PUBLIC)));
     ParameterTreeImpl parameterTreeXPrivate = new ParameterTreeImpl(meta, identifierTreeX,
       null, null, Collections.singletonList(new ModifierTreeImpl(meta, ModifierTree.Kind.PRIVATE)));

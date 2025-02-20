@@ -1,0 +1,81 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"2:0::6","type":"KEYWORD"},
+      {"text":"(","textRange":"2:7::8"},
+      {"text":"\"fmt\"","textRange":"3:4::9","type":"STRING_LITERAL"},
+      {"text":"\"net/http\"","textRange":"4:4::14","type":"STRING_LITERAL"},
+      {"text":")","textRange":"5:0::1"},
+      {"text":"func","textRange":"6:0::4","type":"KEYWORD"},
+      {"text":"printCookie","textRange":"6:5::16"},
+      {"text":"(","textRange":"6:16::17"},
+      {"text":"id","textRange":"6:17::19"},
+      {"text":"int","textRange":"6:20::23"},
+      {"text":")","textRange":"6:23::24"},
+      {"text":"{","textRange":"6:25::26"},
+      {"text":"cookie","textRange":"7:4::10"},
+      {"text":":=","textRange":"7:11::13"},
+      {"text":"http","textRange":"7:14::18"},
+      {"text":"Cookie","textRange":"7:19::25"},
+      {"text":".","textRange":"7:18::19"},
+      {"text":"{","textRange":"7:25::26"},
+      {"text":"}","textRange":"7:26::27"},
+      {"text":"fmt","textRange":"8:4::7"},
+      {"text":"Println","textRange":"8:8::15"},
+      {"text":".","textRange":"8:7::8"},
+      {"text":"(","textRange":"8:15::16"},
+      {"text":"cookie","textRange":"8:16::22"},
+      {"text":")","textRange":"8:22::23"},
+      {"text":"}","textRange":"9:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:10:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","name":"main"}
+      ]},
+      {"@type": "ImportDeclaration", "metaData": "2:0:5:1","children":[
+        {"@type": "Native", "metaData": "2:0::6","nativeKind":"Tok"},
+        {"@type": "Native", "metaData": "2:7::8","nativeKind":"Lparen"},
+        {"@type": "ImportSpecification", "metaData": "3:4::9","path":
+          {"@type": "StringLiteral", "metaData": "3:4::9","value":"\"fmt\"","content":"fmt"},"name":
+          null},
+        {"@type": "ImportSpecification", "metaData": "4:4::14","path":
+          {"@type": "StringLiteral", "metaData": "4:4::14","value":"\"net/http\"","content":"net/http"},"name":
+          null},
+        {"@type": "Native", "metaData": "5:0::1","nativeKind":"Rparen"}
+      ]},
+      {"@type": "FunctionDeclaration", "metaData": "6:0:9:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "6:5::16","type":"UNKNOWN","name":"printCookie"},"formalParameters":[
+        {"@type": "Parameter", "metaData": "6:17::23","type":
+          {"@type": "Identifier", "metaData": "6:20::23","type":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "6:17::19","type":"UNKNOWN","name":"id"},"defaultValue":null}
+      ],"body":
+        {"@type": "Block", "metaData": "6:25:9:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "7:4::27","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "7:14::27","type":
+              {"@type": "MemberSelect", "metaData": "7:14::25","identifier":
+                {"@type": "Identifier", "metaData": "7:19::25","type":"UNKNOWN","name":"Cookie"},"expression":
+                {"@type": "Identifier", "metaData": "7:14::18","type":"UNKNOWN","name":"http"}},"elements":[]}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "7:4::10","type":"UNKNOWN","name":"cookie"}
+          ]},
+          {"@type": "Native", "metaData": "8:4::23","nativeKind":"[1](ExprStmt)","children":[
+            {"@type": "FunctionInvocation", "metaData": "8:4::23","memberSelect":
+              {"@type": "MemberSelect", "metaData": "8:4::15","identifier":
+                {"@type": "Identifier", "metaData": "8:8::15","type":"UNKNOWN","name":"Println"},"expression":
+                {"@type": "Identifier", "metaData": "8:4::7","type":"UNKNOWN","name":"fmt"}},"arguments":[
+              {"@type": "Identifier", "metaData": "8:16::22","type":"UNKNOWN","name":"cookie"}
+            ]}
+          ]}
+        ]}}
+    ]}
+} 

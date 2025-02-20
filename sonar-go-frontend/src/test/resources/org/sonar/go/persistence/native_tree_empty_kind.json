@@ -17,7 +17,8 @@
       {
         "@type": "Identifier",
         "metaData": "1:0::1",
-        "name": "MyClass"
+        "name": "MyClass",
+        "type": "UNKNOWN"
       }
     ]
   }

@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -28,7 +29,7 @@ class StarExpressionTreeImplTest {
   @Test
   void simple_star_expression() {
     TreeMetaData meta = null;
-    Tree identifierTree = new IdentifierTreeImpl(meta, "x");
+    Tree identifierTree = TreeCreationUtils.identifier("x");
 
     StarExpressionTree tree = new StarExpressionTreeImpl(meta, identifierTree);
     assertThat(tree.children()).containsExactly(identifierTree);

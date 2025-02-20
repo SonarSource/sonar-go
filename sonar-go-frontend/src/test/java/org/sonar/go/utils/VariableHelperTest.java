@@ -18,7 +18,6 @@ package org.sonar.go.utils;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 
@@ -28,7 +27,7 @@ class VariableHelperTest {
 
   @Test
   void shouldProvideSingleVariableWithValue() {
-    var identifier = new IdentifierTreeImpl(null, "a");
+    var identifier = TreeCreationUtils.identifier("a");
     var value = new IntegerLiteralTreeImpl(null, "1");
     var variableDeclaration = new VariableDeclarationTreeImpl(null, List.of(identifier), null, List.of(value), false);
 
@@ -41,7 +40,7 @@ class VariableHelperTest {
 
   @Test
   void shouldProvideSingleVariableNoValue() {
-    var identifier = new IdentifierTreeImpl(null, "a");
+    var identifier = TreeCreationUtils.identifier("a");
     var variableDeclaration = new VariableDeclarationTreeImpl(null, List.of(identifier), null, List.of(), false);
 
     var variables = VariableHelper.getVariables(variableDeclaration);
@@ -53,8 +52,8 @@ class VariableHelperTest {
 
   @Test
   void shouldProvideMultipleVariablesWithValues() {
-    var identifier1 = new IdentifierTreeImpl(null, "a");
-    var identifier2 = new IdentifierTreeImpl(null, "b");
+    var identifier1 = TreeCreationUtils.identifier("a");
+    var identifier2 = TreeCreationUtils.identifier("b");
     var value1 = new IntegerLiteralTreeImpl(null, "1");
     var value2 = new IntegerLiteralTreeImpl(null, "2");
     var variableDeclaration = new VariableDeclarationTreeImpl(null, List.of(identifier1, identifier2), null, List.of(value1, value2), false);
@@ -71,8 +70,8 @@ class VariableHelperTest {
 
   @Test
   void shouldProvideMultipleVariablesNoValues() {
-    var identifier1 = new IdentifierTreeImpl(null, "a");
-    var identifier2 = new IdentifierTreeImpl(null, "b");
+    var identifier1 = TreeCreationUtils.identifier("a");
+    var identifier2 = TreeCreationUtils.identifier("b");
     var variableDeclaration = new VariableDeclarationTreeImpl(null, List.of(identifier1, identifier2), null, List.of(), false);
 
     var variables = VariableHelper.getVariables(variableDeclaration);
@@ -87,8 +86,8 @@ class VariableHelperTest {
 
   @Test
   void shouldProvideMultipleVariablesSingleValue() {
-    var identifier1 = new IdentifierTreeImpl(null, "a");
-    var identifier2 = new IdentifierTreeImpl(null, "b");
+    var identifier1 = TreeCreationUtils.identifier("a");
+    var identifier2 = TreeCreationUtils.identifier("b");
     var value = new IntegerLiteralTreeImpl(null, "1");
     var variableDeclaration = new VariableDeclarationTreeImpl(null, List.of(identifier1, identifier2), null, List.of(value), false);
 

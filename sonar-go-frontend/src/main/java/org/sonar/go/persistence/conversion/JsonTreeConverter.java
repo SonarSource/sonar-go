@@ -313,11 +313,13 @@ public final class JsonTreeConverter {
     register(IdentifierTreeImpl.class,
 
       (ctx, tree) -> ctx.newTypedObject(tree)
-        .add(NAME, tree.name()),
+        .add(NAME, tree.name())
+        .add(TYPE, tree.type()),
 
       (ctx, json) -> new IdentifierTreeImpl(
         ctx.metaData(json),
-        ctx.fieldToString(json, NAME)));
+        ctx.fieldToString(json, NAME),
+        ctx.fieldToString(json, TYPE)));
 
     register(IfTreeImpl.class,
 

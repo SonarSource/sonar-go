@@ -23,6 +23,7 @@ import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -31,7 +32,7 @@ class FunctionInvocationTreeImplTest {
   @Test
   void simple_function_invocation() {
     TreeMetaData meta = null;
-    Tree identifierTree = new IdentifierTreeImpl(meta, "x");
+    Tree identifierTree = TreeCreationUtils.identifier("x");
     List<Tree> args = new ArrayList<>();
 
     FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, identifierTree, args);
@@ -44,8 +45,8 @@ class FunctionInvocationTreeImplTest {
   @Test
   void function_invocation_with_arguments() {
     TreeMetaData meta = null;
-    Tree identifierTree = new IdentifierTreeImpl(meta, "x");
-    Tree arg1 = new IdentifierTreeImpl(meta, "x");
+    Tree identifierTree = TreeCreationUtils.identifier("x");
+    Tree arg1 = TreeCreationUtils.identifier("x");
     Tree arg2 = new LiteralTreeImpl(meta, "x");
     List<Tree> args = new ArrayList<>();
     args.add(arg1);
@@ -63,8 +64,8 @@ class FunctionInvocationTreeImplTest {
   @Test
   void function_invocation_with_member_select() {
     TreeMetaData meta = null;
-    IdentifierTree identifierTree = new IdentifierTreeImpl(meta, "y");
-    Tree member = new IdentifierTreeImpl(meta, "x");
+    IdentifierTree identifierTree = TreeCreationUtils.identifier("y");
+    Tree member = TreeCreationUtils.identifier("x");
     Tree memberSelect = new MemberSelectTreeImpl(meta, member, identifierTree);
     List<Tree> args = new ArrayList<>();
 

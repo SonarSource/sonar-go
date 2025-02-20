@@ -22,6 +22,7 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.JumpTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -76,7 +77,7 @@ class JumpTreeImplTest {
     TokenImpl keyword = new TokenImpl(new TextRangeImpl(1, 0, 1, keywordText.length()), keywordText, Token.Type.KEYWORD);
     IdentifierTree label = null;
     if (labelText != null) {
-      label = new IdentifierTreeImpl(meta, labelText);
+      label = TreeCreationUtils.identifier(labelText);
     }
     return new JumpTreeImpl(meta, keyword, kind, label);
   }

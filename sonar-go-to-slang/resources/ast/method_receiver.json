@@ -57,7 +57,7 @@
     {"@type": "TopLevel", "metaData": "1:0:18:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","name":"main"}
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","name":"main"}
       ]},
       {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
@@ -68,16 +68,16 @@
       {"@type": "ClassDeclaration", "metaData": "5:0:7:1","identifier":"5:5::13","classTree":
         {"@type": "Native", "metaData": "5:0:7:1","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "5:5::13","name":"MyStruct"},
+          {"@type": "Identifier", "metaData": "5:5::13","type":"UNKNOWN","name":"MyStruct"},
           {"@type": "Native", "metaData": "5:14:7:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "5:14::20","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "5:21:7:1","nativeKind":"Fields(FieldList)","children":[
               {"@type": "Native", "metaData": "5:21::22","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "6:4::13","nativeKind":"[0](Field)","children":[
                 {"@type": "Native", "metaData": "6:4::9","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "6:4::9","name":"value"}
+                  {"@type": "Identifier", "metaData": "6:4::9","type":"UNKNOWN","name":"value"}
                 ]},
-                {"@type": "Identifier", "metaData": "6:10::13","name":"int"}
+                {"@type": "Identifier", "metaData": "6:10::13","type":"UNKNOWN","name":"int"}
               ]},
               {"@type": "Native", "metaData": "7:0::1","nativeKind":"Closing"}
             ]}
@@ -90,23 +90,23 @@
           {"@type": "Native", "metaData": "10:5::6","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "10:6::16","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "10:6::7","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "10:6::7","name":"m"}
+              {"@type": "Identifier", "metaData": "10:6::7","type":"UNKNOWN","name":"m"}
             ]},
-            {"@type": "Identifier", "metaData": "10:8::16","name":"MyStruct"}
+            {"@type": "Identifier", "metaData": "10:8::16","type":"UNKNOWN","name":"MyStruct"}
           ]},
           {"@type": "Native", "metaData": "10:16::17","nativeKind":"Closing"}
         ]},"name":
-        {"@type": "Identifier", "metaData": "10:18::28","name":"PrintValue"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "10:18::28","type":"UNKNOWN","name":"PrintValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:31:12:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "11:4::43","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "11:4::43","memberSelect":
               {"@type": "MemberSelect", "metaData": "11:4::15","identifier":
-                {"@type": "Identifier", "metaData": "11:8::15","name":"Println"},"expression":
-                {"@type": "Identifier", "metaData": "11:4::7","name":"fmt"}},"arguments":[
+                {"@type": "Identifier", "metaData": "11:8::15","type":"UNKNOWN","name":"Println"},"expression":
+                {"@type": "Identifier", "metaData": "11:4::7","type":"UNKNOWN","name":"fmt"}},"arguments":[
               {"@type": "StringLiteral", "metaData": "11:16::33","value":"\"Value receiver:\"","content":"Value receiver:"},
               {"@type": "MemberSelect", "metaData": "11:35::42","identifier":
-                {"@type": "Identifier", "metaData": "11:37::42","name":"value"},"expression":
-                {"@type": "Identifier", "metaData": "11:35::36","name":"m"}}
+                {"@type": "Identifier", "metaData": "11:37::42","type":"UNKNOWN","name":"value"},"expression":
+                {"@type": "Identifier", "metaData": "11:35::36","type":"UNKNOWN","name":"m"}}
             ]}
           ]}
         ]}},
@@ -117,19 +117,19 @@
           {"@type": "Native", "metaData": "15:5::6","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "15:6::17","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "15:6::7","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "15:6::7","name":"m"}
+              {"@type": "Identifier", "metaData": "15:6::7","type":"UNKNOWN","name":"m"}
             ]},
             {"@type": "StarExpression", "metaData": "15:8::17","expression":
-              {"@type": "Identifier", "metaData": "15:9::17","name":"MyStruct"}}
+              {"@type": "Identifier", "metaData": "15:9::17","type":"UNKNOWN","name":"MyStruct"}}
           ]},
           {"@type": "Native", "metaData": "15:17::18","nativeKind":"Closing"}
         ]},"name":
-        {"@type": "Identifier", "metaData": "15:19::33","name":"IncrementValue"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "15:19::33","type":"UNKNOWN","name":"IncrementValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "15:36:17:1","statementOrExpressions":[
           {"@type": "UnaryExpression", "metaData": "16:4::13","operator":"INCREMENT","operand":
             {"@type": "MemberSelect", "metaData": "16:4::11","identifier":
-              {"@type": "Identifier", "metaData": "16:6::11","name":"value"},"expression":
-              {"@type": "Identifier", "metaData": "16:4::5","name":"m"}}}
+              {"@type": "Identifier", "metaData": "16:6::11","type":"UNKNOWN","name":"value"},"expression":
+              {"@type": "Identifier", "metaData": "16:4::5","type":"UNKNOWN","name":"m"}}}
         ]}}
     ]}
 } 

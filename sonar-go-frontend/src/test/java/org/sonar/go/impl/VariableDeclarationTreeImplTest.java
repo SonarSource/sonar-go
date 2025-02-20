@@ -23,6 +23,7 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -36,11 +37,11 @@ class VariableDeclarationTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree variableType = new NativeTreeImpl(meta, new TypeNativeKind(), null);
-    IdentifierTree identifierTreeX = new IdentifierTreeImpl(meta, "x");
-    IdentifierTree identifierTreeY = new IdentifierTreeImpl(meta, "y");
+    IdentifierTree identifierTreeX = TreeCreationUtils.identifier("x");
+    IdentifierTree identifierTreeY = TreeCreationUtils.identifier("y");
     VariableDeclarationTreeImpl variableTreeX = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeX), null, Collections.emptyList(), false);
-    VariableDeclarationTreeImpl variableTreeXCopy = new VariableDeclarationTreeImpl(meta, List.of(new IdentifierTreeImpl(meta, "x")), null, Collections.emptyList(), false);
-    VariableDeclarationTreeImpl valueTreeX = new VariableDeclarationTreeImpl(meta, List.of(new IdentifierTreeImpl(meta, "x")), null, Collections.emptyList(), true);
+    VariableDeclarationTreeImpl variableTreeXCopy = new VariableDeclarationTreeImpl(meta, List.of(TreeCreationUtils.identifier("x")), null, Collections.emptyList(), false);
+    VariableDeclarationTreeImpl valueTreeX = new VariableDeclarationTreeImpl(meta, List.of(TreeCreationUtils.identifier("x")), null, Collections.emptyList(), true);
     VariableDeclarationTreeImpl variableTreeXTyped = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeX), variableType, Collections.emptyList(), false);
     VariableDeclarationTreeImpl variableTreeY = new VariableDeclarationTreeImpl(meta, List.of(identifierTreeY), variableType, Collections.emptyList(), false);
 

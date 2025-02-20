@@ -20,6 +20,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.api.LoopTree.LoopKind.DOWHILE;
@@ -33,7 +34,7 @@ class LoopTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree condition = new LiteralTreeImpl(meta, "1");
-    Tree body = new IdentifierTreeImpl(meta, "x");
+    Tree body = TreeCreationUtils.identifier("x");
 
     TokenImpl forToken = new TokenImpl(new TextRangeImpl(1, 0, 1, 3), "for", Token.Type.KEYWORD);
     TokenImpl whileToken = new TokenImpl(new TextRangeImpl(1, 0, 1, 5), "while", Token.Type.KEYWORD);

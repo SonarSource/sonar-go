@@ -13,16 +13,16 @@
   "tree": {
     "@type": "ExceptionHandling",
     "metaData": "1:0::51",
-    "tryBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "x"},
+    "tryBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "x", "type": "UNKNOWN"},
     "tryKeyword": "1:0::3",
     "catchBlocks": [
       {"@type": "Catch",
         "metaData": "1:20::31",
         "catchParameter": null,
-        "catchBlock": {"@type": "Identifier", "metaData": "1:30::31", "name": "y"},
+        "catchBlock": {"@type": "Identifier", "metaData": "1:30::31", "name": "y", "type": "UNKNOWN"},
         "keyword": "1:20::25"
       }
     ],
-    "finallyBlock": {"@type": "Identifier", "metaData": "1:50::51", "name": "z"}
+    "finallyBlock": {"@type": "Identifier", "metaData": "1:50::51", "name": "z", "type": "UNKNOWN"}
   }
 }

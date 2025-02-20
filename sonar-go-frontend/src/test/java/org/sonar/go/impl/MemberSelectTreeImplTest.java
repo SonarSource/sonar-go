@@ -21,6 +21,7 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,8 +30,8 @@ class MemberSelectTreeImplTest {
   @Test
   void test() {
     TreeMetaData meta = null;
-    IdentifierTree identifierTree = new IdentifierTreeImpl(meta, "y");
-    Tree member = new IdentifierTreeImpl(meta, "x");
+    IdentifierTree identifierTree = TreeCreationUtils.identifier("y");
+    Tree member = TreeCreationUtils.identifier("x");
     MemberSelectTree memberSelect = new MemberSelectTreeImpl(meta, member, identifierTree);
     assertThat(memberSelect.children()).containsExactly(member, identifierTree);
     assertThat(memberSelect.expression()).isEqualTo(member);

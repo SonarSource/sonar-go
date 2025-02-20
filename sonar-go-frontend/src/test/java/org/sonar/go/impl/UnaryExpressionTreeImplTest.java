@@ -22,6 +22,7 @@ import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -34,7 +35,7 @@ class UnaryExpressionTreeImplTest {
   @Test
   void test() {
     TreeMetaData meta = null;
-    Tree condition = new IdentifierTreeImpl(meta, "x");
+    Tree condition = TreeCreationUtils.identifier("x");
     Tree negCondition = new UnaryExpressionTreeImpl(meta, UnaryExpressionTree.Operator.NEGATE, condition);
     Tree negConditionCopy = new UnaryExpressionTreeImpl(meta, UnaryExpressionTree.Operator.NEGATE, condition);
     Tree nativeTree = new NativeTreeImpl(meta, new TypeNativeKind(), Arrays.asList(condition));

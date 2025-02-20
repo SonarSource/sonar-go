@@ -60,7 +60,8 @@ public class GoConverter implements ASTConverter {
         " its size is " + content.length() + " (maximum allowed is " + MAX_SUPPORTED_SOURCE_FILE_SIZE + " bytes)");
     }
     try {
-      return JsonTree.fromJson(executeGoToJsonProcess(content));
+      var json = executeGoToJsonProcess(content);
+      return JsonTree.fromJson(json);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
       throw new ParseException("Go parser external process interrupted: " + e.getMessage(), null, e);

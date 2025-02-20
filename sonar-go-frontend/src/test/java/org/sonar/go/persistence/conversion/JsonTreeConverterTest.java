@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.Comment;
+import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.JumpTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.TextRange;
@@ -29,13 +30,13 @@ import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BaseTreeImpl;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
 import org.sonar.go.persistence.JsonTestHelper;
 import org.sonar.go.persistence.JsonTree;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -133,7 +134,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   @Test
   void nativeTree_emptyKind() throws IOException {
     TreeMetaData metaData = metaData(otherToken(1, 0, "x"));
-    IdentifierTreeImpl className = new IdentifierTreeImpl(metaData, "MyClass");
+    IdentifierTree className = TreeCreationUtils.identifier(metaData, "MyClass");
     Tree classDecl = new NativeTreeImpl(metaData, new NativeKind() {
       @Override
       public String toString() {
@@ -147,7 +148,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   @Test
   void nativeTree_withKind() throws IOException {
     TreeMetaData metaData = metaData(otherToken(1, 0, "x"));
-    IdentifierTreeImpl className = new IdentifierTreeImpl(metaData, "MyClass");
+    IdentifierTree className = TreeCreationUtils.identifier(metaData, "MyClass");
     Tree classDecl = new NativeTreeImpl(metaData, new NativeKind() {
       @Override
       public String toString() {

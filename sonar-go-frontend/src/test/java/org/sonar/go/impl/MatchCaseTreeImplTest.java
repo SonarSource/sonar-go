@@ -25,6 +25,7 @@ import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -42,7 +43,7 @@ class MatchCaseTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree expression = new LiteralTreeImpl(meta, "42");
-    Tree body = new IdentifierTreeImpl(meta, "x");
+    Tree body = TreeCreationUtils.identifier("x");
     MatchCaseTree tree = new MatchCaseTreeImpl(meta, expression, body);
     assertThat(tree.children()).containsExactly(expression, body);
     assertThat(tree.expression()).isEqualTo(expression);
@@ -57,7 +58,7 @@ class MatchCaseTreeImplTest {
     TreeMetaDataProvider metaDataProvider = new TreeMetaDataProvider(emptyList(), TOKENS);
     TreeMetaData matchCaseMetaData = metaDataProvider.metaData(range(1, 1, 1, 10));
     TreeMetaData bodyMetaData = metaDataProvider.metaData(range(1, 9, 1, 10));
-    BlockTree body = new BlockTreeImpl(bodyMetaData, Collections.singletonList(new IdentifierTreeImpl(bodyMetaData, "a")));
+    BlockTree body = new BlockTreeImpl(bodyMetaData, Collections.singletonList(TreeCreationUtils.identifier(bodyMetaData, "x")));
 
     assertThat(new MatchCaseTreeImpl(matchCaseMetaData, null, body).rangeToHighlight())
       .isEqualTo(range(1, 1, 1, 8));

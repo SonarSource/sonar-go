@@ -27,6 +27,7 @@ import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.*;
@@ -42,14 +43,14 @@ class FunctionDeclarationTreeImplTest {
   @Test
   void test() {
     TreeMetaData meta = null;
-    Tree returnType = new IdentifierTreeImpl(meta, "int");
-    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(new IdentifierTreeImpl(meta, "r")));
+    Tree returnType = TreeCreationUtils.identifier("int");
+    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r")));
     Tree receiverWrapper = simpleNative(SIMPLE_KIND, List.of(receiver));
-    IdentifierTree name = new IdentifierTreeImpl(meta, "foo");
-    IdentifierTree paramName = new IdentifierTreeImpl(meta, "p1");
+    IdentifierTree name = TreeCreationUtils.identifier("foo");
+    IdentifierTree paramName = TreeCreationUtils.identifier("p1");
     ParameterTree param = new ParameterTreeImpl(meta, paramName, null);
     List<Tree> params = List.of(param);
-    Tree typeParameters = simpleNative(SIMPLE_KIND, List.of(new IdentifierTreeImpl(meta, "T")));
+    Tree typeParameters = simpleNative(SIMPLE_KIND, List.of(TreeCreationUtils.identifier("T")));
     BlockTree body = new BlockTreeImpl(meta, emptyList());
 
     FunctionDeclarationTreeImpl tree = new FunctionDeclarationTreeImpl(meta, returnType, receiverWrapper, name, params, typeParameters, body);
@@ -71,7 +72,7 @@ class FunctionDeclarationTreeImplTest {
     TreeMetaDataProvider metaDataProvider = new TreeMetaDataProvider(emptyList(), emptyList());
     TreeMetaData nameMetaData = metaDataProvider.metaData(range(1, 2, 3, 4));
     TreeMetaData bodyMetaData = metaDataProvider.metaData(range(5, 1, 5, 7));
-    IdentifierTree name = new IdentifierTreeImpl(nameMetaData, "foo");
+    IdentifierTree name = TreeCreationUtils.identifier(nameMetaData, "foo");
     BlockTree body = new BlockTreeImpl(bodyMetaData, emptyList());
     assertThat(new FunctionDeclarationTreeImpl(body.metaData(), null, null, name, emptyList(), null, body).rangeToHighlight())
       .isEqualTo(nameMetaData.textRange());

@@ -26,6 +26,7 @@ import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -34,8 +35,8 @@ class ExceptionHandlingTreeImplTest {
   @Test
   void test() {
     TreeMetaData meta = null;
-    ParameterTree parameter = new ParameterTreeImpl(meta, new IdentifierTreeImpl(meta, "e"), null);
-    Tree lhs = new IdentifierTreeImpl(meta, "x");
+    ParameterTree parameter = new ParameterTreeImpl(meta, TreeCreationUtils.identifier("e"), null);
+    Tree lhs = TreeCreationUtils.identifier("x");
     Tree one = new LiteralTreeImpl(meta, "1");
     Tree assignmentExpressionTree = new AssignmentExpressionTreeImpl(meta, AssignmentExpressionTree.Operator.EQUAL, lhs, one);
     CatchTreeImpl catchWithIdentifier = new CatchTreeImpl(meta, parameter, assignmentExpressionTree, null);

@@ -25,7 +25,6 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.visitors.TreePrinter;
@@ -41,8 +40,8 @@ class TreePrinterTest {
 
   @Test
   void test() {
-    Tree x1 = new IdentifierTreeImpl(null, "x1");
-    Tree var1 = new IdentifierTreeImpl(null, "var1");
+    Tree x1 = TreeCreationUtils.identifier("x1");
+    Tree var1 = TreeCreationUtils.identifier("var1");
     Tree literal1 = new LiteralTreeImpl(null, "42");
     Tree binaryExp = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, literal1);
     Tree assignExp = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, x1, binaryExp);

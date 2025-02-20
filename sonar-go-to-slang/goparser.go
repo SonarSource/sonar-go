@@ -24,6 +24,7 @@ import (
 	"go/ast"
 	"go/parser"
 	"go/token"
+	"go/types"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -65,27 +66,26 @@ const other = "OTHER"
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
-func toSlangTree(fileSet *token.FileSet, astFile *ast.File, fileContent string) (*Node, []*Node, []*Token) {
-	return NewSlangMapper(fileSet, astFile, fileContent).toSlang()
+func toSlangTree(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) (*Node, []*Node, []*Token) {
+	return NewSlangMapper(fileSet, astFile, fileContent, info).toSlang()
 }
 
-func readAstFile(filename string) (fileSet *token.FileSet, astFile *ast.File, fileContent string, err error) {
-	var bytes []byte
+func readAstFile(fileSet *token.FileSet, filename string) (astFile *ast.File, fileContent string, err error) {
+	var bytesArray []byte
 	if filename == "-" {
-		bytes, err = ioutil.ReadAll(os.Stdin)
+		bytesArray, err = ioutil.ReadAll(os.Stdin)
 	} else {
-		bytes, err = ioutil.ReadFile(filename)
+		bytesArray, err = ioutil.ReadFile(filename)
 	}
 	if err != nil {
 		return
 	}
-	fileContent = string(bytes)
-	fileSet, astFile, err = readAstString(filename, fileContent)
+	fileContent = string(bytesArray)
+	astFile, err = readAstString(fileSet, filename, fileContent)
 	return
 }
 
-func readAstString(filename string, fileContent string) (fileSet *token.FileSet, astFile *ast.File, err error) {
-	fileSet = token.NewFileSet()
+func readAstString(fileSet *token.FileSet, filename string, fileContent string) (astFile *ast.File, err error) {
 	astFile, err = parser.ParseFile(fileSet, filename, fileContent, parser.ParseComments)
 	if err != nil {
 		return
@@ -107,9 +107,10 @@ type SlangMapper struct {
 	commentPos        int
 	tokens            []*Token
 	paranoiac         bool
+	info              *types.Info
 }
 
-func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string) *SlangMapper {
+func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) *SlangMapper {
 	t := &SlangMapper{
 		astFile:           astFile,
 		fileContent:       fileContent,
@@ -117,6 +118,7 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		file:              fileSet.File(astFile.Pos()),
 		tokens:            nil,
 		paranoiac:         true,
+		info:              info,
 	}
 	t.comments = t.mapAllComments()
 	t.commentPos = 0
@@ -568,6 +570,36 @@ func (t *SlangMapper) location(offset, endOffset int) string {
 		out.WriteString(fmt.Sprintf(":%d:%d", p.Line, p.Column))
 	}
 	return out.String()
+}
+
+func (t *SlangMapper) getTypeOfIdent(ident *ast.Ident) string {
+	if obj, ok := t.info.Defs[ident]; ok && obj != nil {
+		if strings.HasSuffix(obj.Type().String(), "invalid type") {
+			return t.getTypeFromAst(ident)
+		}
+		return obj.Type().String()
+	}
+	if obj, ok := t.info.Uses[ident]; ok && obj != nil {
+		if strings.HasSuffix(obj.Type().String(), "invalid type") {
+			return t.getTypeFromAst(ident)
+		}
+		return obj.Type().String()
+	}
+	return "UNKNOWN"
+}
+
+// getTypeFromAst returns the type of the given identifier by looking at the AST
+// At this point, ident.Obj.Decl.Names should point to the declaration of the variable and hence contain access to the raw type as an AST node.
+// Note: according to the docs, this is discouraged and a correct approach would be to set the `parser.SkipObjectResolution` flag and then
+// use the full-fledged type checker.
+func (t *SlangMapper) getTypeFromAst(ident *ast.Ident) string {
+	if ident.Obj != nil && ident.Obj.Decl != nil {
+		if field, ok := ident.Obj.Decl.(*ast.Field); ok {
+			typeExpr := field.Type
+			return t.fileContent[t.file.Offset(typeExpr.Pos()):t.file.Offset(typeExpr.End())]
+		}
+	}
+	return "UNKNOWN"
 }
 
 func isEndOfLine(ch byte) bool {

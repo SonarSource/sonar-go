@@ -12,7 +12,8 @@
     "memberSelect": {
       "@type": "Identifier",
       "metaData": "1:0::3",
-      "name": "bar"
+      "name": "bar",
+      "type": "UNKNOWN"
     },
     "arguments": [
       {

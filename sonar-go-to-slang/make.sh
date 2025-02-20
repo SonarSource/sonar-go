@@ -121,6 +121,7 @@ main() {
       rm -f goparser_generated.go
       rm -f build/sonar-go-to-slang-*
       rm -f build/test-report.json
+      rm -f build/executable/*
       ;;
     *)
       echo "Unrecognized command ${command}" >&2

@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
@@ -41,6 +42,7 @@ import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
+import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
@@ -56,6 +58,7 @@ import org.sonar.go.impl.VariableDeclarationTreeImpl;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.sonar.go.impl.IdentifierTreeImpl.UNKNOWN_TYPE;
 
 public class TreeCreationUtils {
   private TreeCreationUtils() {
@@ -83,11 +86,27 @@ public class TreeCreationUtils {
   }
 
   public static IdentifierTree identifier(String name) {
-    return new IdentifierTreeImpl(null, name);
+    return new IdentifierTreeImpl(null, name, UNKNOWN_TYPE);
+  }
+
+  public static IdentifierTree identifier(String name, String type) {
+    return new IdentifierTreeImpl(null, name, type);
   }
 
   public static IdentifierTree identifier(String name, TextRange textRange, String... tokens) {
-    return new IdentifierTreeImpl(metaData(textRange, tokens), name);
+    return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE);
+  }
+
+  public static IdentifierTree identifier(TreeMetaData meta, String name) {
+    return new IdentifierTreeImpl(meta, name, UNKNOWN_TYPE);
+  }
+
+  public static IdentifierTree identifier(TreeMetaData meta, String name, String type) {
+    return new IdentifierTreeImpl(meta, name, type);
+  }
+
+  public static ClassDeclarationTree classDeclarationTree(IdentifierTree className, Tree classDecl) {
+    return new ClassDeclarationTreeImpl(null, className, classDecl);
   }
 
   public static VariableDeclarationTree variable(String name) {

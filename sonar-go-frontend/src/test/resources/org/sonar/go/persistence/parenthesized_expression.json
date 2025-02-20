@@ -10,7 +10,7 @@
   "tree": {
     "@type": "ParenthesizedExpression",
     "metaData": "1:0::3",
-    "expression": {"@type": "Identifier", "metaData": "1:1::2", "name": "x"},
+    "expression": {"@type": "Identifier", "metaData": "1:1::2", "name": "x", "type": "UNKNOWN"},
     "leftParenthesis": "1:0::1",
     "rightParenthesis": "1:2::3"
   }

@@ -33,7 +33,7 @@
     {"@type": "TopLevel", "metaData": "1:0:22:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0:3:12","children":[
         {"@type": "Native", "metaData": "3:0::7"},
-        {"@type": "Identifier", "metaData": "3:8::12","name":"main"}
+        {"@type": "Identifier", "metaData": "3:8::12","type":"UNKNOWN","name":"main"}
       ]},
       {"@type": "ImportDeclaration", "metaData": "6:0::13","children":[
         {"@type": "Native", "metaData": "6:0::6","nativeKind":"Tok"},
@@ -45,13 +45,13 @@
         {"@type": "Native", "metaData": "9:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "9:7::15","path":
           {"@type": "StringLiteral", "metaData": "9:9::15","value":"\"math\"","content":"math"},"name":
-          {"@type": "Identifier", "metaData": "9:7::8","name":"m"}}
+          {"@type": "Identifier", "metaData": "9:7::8","type":"UNKNOWN","name":"m"}}
       ]},
       {"@type": "ImportDeclaration", "metaData": "12:0::14","children":[
         {"@type": "Native", "metaData": "12:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "12:7::14","path":
           {"@type": "StringLiteral", "metaData": "12:9::14","value":"\"fmt\"","content":"fmt"},"name":
-          {"@type": "Identifier", "metaData": "12:7::8","name":"."}}
+          {"@type": "Identifier", "metaData": "12:7::8","type":"UNKNOWN","name":"."}}
       ]},
       {"@type": "ImportDeclaration", "metaData": "15:0::19","children":[
         {"@type": "Native", "metaData": "15:0::6","nativeKind":"Tok"},

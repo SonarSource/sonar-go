@@ -84,10 +84,10 @@
     {"@type": "TopLevel", "metaData": "1:0:24:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::11","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::11","name":"ast"}
+        {"@type": "Identifier", "metaData": "1:8::11","type":"UNKNOWN","name":"ast"}
       ]},
       {"@type": "VariableDeclaration", "metaData": "3:1::14","type":
-        {"@type": "Identifier", "metaData": "3:7::10","name":"int"},"isVal":false,"initializers":[
+        {"@type": "Identifier", "metaData": "3:7::10","type":"UNKNOWN","name":"int"},"isVal":false,"initializers":[
         {"@type": "IntegerLiteral", "metaData": "3:13::14","value":"1"}
       ],"identifiers":[
         {"@type": "PlaceHolder", "metaData": "3:5::6","placeHolderToken":"3:5::6"}
@@ -96,25 +96,25 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:6::9","name":"bar"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:6::9","type":"UNKNOWN","name":"bar"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:11:2","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:5::18","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "6:13::18","memberSelect":
-              {"@type": "Identifier", "metaData": "6:13::16","name":"foo"},"arguments":[]}
+              {"@type": "Identifier", "metaData": "6:13::16","type":"UNKNOWN","name":"foo"},"arguments":[]}
           ],"identifiers":[
             {"@type": "PlaceHolder", "metaData": "6:5::6","placeHolderToken":"6:5::6"},
-            {"@type": "Identifier", "metaData": "6:8::9","name":"s"}
+            {"@type": "Identifier", "metaData": "6:8::9","type":"UNKNOWN","name":"s"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "7:5::18","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "7:13::18","memberSelect":
-              {"@type": "Identifier", "metaData": "7:13::16","name":"foo"},"arguments":[]}
+              {"@type": "Identifier", "metaData": "7:13::16","type":"UNKNOWN","name":"foo"},"arguments":[]}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "7:5::6","name":"i"},
+            {"@type": "Identifier", "metaData": "7:5::6","type":"UNKNOWN","name":"i"},
             {"@type": "PlaceHolder", "metaData": "7:8::9","placeHolderToken":"7:8::9"}
           ]},
           {"@type": "AssignmentExpression", "metaData": "9:5::17","statementOrExpression":
             {"@type": "FunctionInvocation", "metaData": "9:12::17","memberSelect":
-              {"@type": "Identifier", "metaData": "9:12::15","name":"foo"},"arguments":[]},"operator":"EQUAL","leftHandSide":
+              {"@type": "Identifier", "metaData": "9:12::15","type":"UNKNOWN","name":"foo"},"arguments":[]},"operator":"EQUAL","leftHandSide":
             {"@type": "Native", "metaData": "9:5::9","nativeKind":"Lhs([]Expr)","children":[
               {"@type": "PlaceHolder", "metaData": "9:5::6","placeHolderToken":"9:5::6"},
               {"@type": "Native", "metaData": "9:6::7"},
@@ -128,16 +128,16 @@
         null,"returnType":
         {"@type": "Native", "metaData": "13:21::25","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "13:21::25","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "13:21::25","name":"bool"}
+            {"@type": "Identifier", "metaData": "13:21::25","type":"UNKNOWN","name":"bool"}
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "13:6::10","name":"bar2"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "13:6::10","type":"UNKNOWN","name":"bar2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "13:11::12","type":
           null,"modifiers":null,"identifier":
           {"@type": "PlaceHolder", "metaData": "13:11::12","placeHolderToken":"13:11::12"},"defaultValue":null},
         {"@type": "Parameter", "metaData": "13:14::19","type":
-          {"@type": "Identifier", "metaData": "13:16::19","name":"int"},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "13:16::19","type":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
           {"@type": "PlaceHolder", "metaData": "13:14::15","placeHolderToken":"13:14::15"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "13:26:15:2","statementOrExpressions":[
@@ -149,16 +149,16 @@
         {"@type": "Native", "metaData": "17:12::25","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "17:12::13","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "17:13::16","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "17:13::16","name":"int"}
+            {"@type": "Identifier", "metaData": "17:13::16","type":"UNKNOWN","name":"int"}
           ]},
           {"@type": "Native", "metaData": "17:16::17"},
           {"@type": "Native", "metaData": "17:18::24","nativeKind":"[1](Field)","children":[
-            {"@type": "Identifier", "metaData": "17:18::24","name":"string"}
+            {"@type": "Identifier", "metaData": "17:18::24","type":"UNKNOWN","name":"string"}
           ]},
           {"@type": "Native", "metaData": "17:24::25","nativeKind":"Closing"}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "17:6::9","name":"foo"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "17:6::9","type":"UNKNOWN","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "17:26:19:2","statementOrExpressions":[
           {"@type": "Return", "metaData": "18:5::20","keyword":"18:5::11","body":
             {"@type": "Native", "metaData": "18:12::20","nativeKind":"ReturnExprList","children":[

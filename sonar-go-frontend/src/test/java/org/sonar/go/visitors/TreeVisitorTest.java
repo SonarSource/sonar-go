@@ -29,9 +29,9 @@ import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -40,7 +40,7 @@ class TreeVisitorTest {
   private class DummyNativeKind implements NativeKind {
   }
 
-  private IdentifierTree var1 = new IdentifierTreeImpl(null, "var1");
+  private IdentifierTree var1 = TreeCreationUtils.identifier("var1");
   private LiteralTree number1 = new LiteralTreeImpl(null, "1");
   private BinaryExpressionTree binary = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, number1);
   private BinaryExpressionTree binminus = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.MINUS, null, var1, var1);

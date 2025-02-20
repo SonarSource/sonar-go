@@ -12,7 +12,8 @@
     "expression": {
       "@type": "Identifier",
       "metaData": "1:1::7",
-      "name": "string"
+      "name": "string",
+      "type": "UNKNOWN"
     }
   }
 }

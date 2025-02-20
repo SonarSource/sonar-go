@@ -22,7 +22,7 @@ import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
@@ -34,10 +34,9 @@ class ClassDeclarationTreeImplTest {
 
   @Test
   void test() {
-    TreeMetaData meta = null;
-    IdentifierTree className = new IdentifierTreeImpl(meta, "MyClass");
-    Tree classDecl = new NativeTreeImpl(meta, new ClassNativeKind(), Collections.singletonList(className));
-    ClassDeclarationTree tree = new ClassDeclarationTreeImpl(meta, className, classDecl);
+    IdentifierTree className = TreeCreationUtils.identifier("MyClass", "MyType");
+    Tree classDecl = TreeCreationUtils.simpleNative(new ClassNativeKind(), Collections.singletonList(className));
+    ClassDeclarationTree tree = TreeCreationUtils.classDeclarationTree(className, classDecl);
     assertThat(tree.children()).hasSize(1);
     assertThat(areEquivalent(tree.children().get(0), classDecl)).isTrue();
     assertThat(areEquivalent(tree.identifier(), className)).isTrue();

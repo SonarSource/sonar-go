@@ -27,7 +27,6 @@ import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
@@ -41,7 +40,7 @@ class FunctionUtilsTest {
   }
 
   private static TreeMetaData meta = null;
-  private static IdentifierTree identifierTree = new IdentifierTreeImpl(meta, "function");
+  private static IdentifierTree identifierTree = TreeCreationUtils.identifier("function");
   private static List<Tree> args = new ArrayList<>();
 
   @Test
@@ -54,7 +53,7 @@ class FunctionUtilsTest {
 
   @Test
   void test_has_function_name_method_select() {
-    Tree member = new IdentifierTreeImpl(meta, "A");
+    Tree member = TreeCreationUtils.identifier("A");
     Tree methodSelect = new MemberSelectTreeImpl(meta, member, identifierTree);
     FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, methodSelect, args);
     assertThat(hasFunctionCallNameIgnoreCase(tree, "function")).isTrue();
@@ -79,8 +78,8 @@ class FunctionUtilsTest {
 
   @Test
   void test_has_function_full_name_method_select() {
-    IdentifierTree memberA = new IdentifierTreeImpl(meta, "A");
-    IdentifierTree memberB = new IdentifierTreeImpl(meta, "B");
+    IdentifierTree memberA = TreeCreationUtils.identifier("A");
+    IdentifierTree memberB = TreeCreationUtils.identifier("B");
     Tree methodSelectAB = new MemberSelectTreeImpl(meta, memberA, memberB);
     Tree methodSelect = new MemberSelectTreeImpl(meta, methodSelectAB, identifierTree);
     FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, methodSelect, args);

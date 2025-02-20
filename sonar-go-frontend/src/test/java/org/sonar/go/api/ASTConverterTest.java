@@ -17,14 +17,14 @@
 package org.sonar.go.api;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.junit.jupiter.api.Assertions.assertSame;
 
 class ASTConverterTest {
 
   private static final ASTConverter DUMMY_CONVERTER = new ASTConverter() {
-    private final Tree SIMPLE_TREE = new IdentifierTreeImpl(null, "name");
+    private final Tree SIMPLE_TREE = TreeCreationUtils.identifier("name");
 
     @Override
     public Tree parse(String content) {

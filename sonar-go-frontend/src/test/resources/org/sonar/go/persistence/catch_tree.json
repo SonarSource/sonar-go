@@ -10,8 +10,8 @@
   "tree": {
     "@type": "Catch",
     "metaData": "1:0::11",
-    "catchParameter": {"@type": "Identifier", "metaData": "1:8::9", "name": "x"},
-    "catchBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "y"},
+    "catchParameter": {"@type": "Identifier", "metaData": "1:8::9", "name": "x", "type": "UNKNOWN"},
+    "catchBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "y", "type": "UNKNOWN"},
     "keyword": "1:0::5"
   }
 }

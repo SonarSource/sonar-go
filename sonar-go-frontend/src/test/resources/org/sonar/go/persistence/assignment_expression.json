@@ -11,7 +11,7 @@
     "@type": "AssignmentExpression",
     "metaData": "1:0::5",
     "operator": "EQUAL",
-    "leftHandSide": {"@type": "Identifier", "metaData": "1:0::1", "name": "x"},
+    "leftHandSide": {"@type": "Identifier", "metaData": "1:0::1", "name": "x", "type": "UNKNOWN"},
     "statementOrExpression": {"@type": "IntegerLiteral", "metaData": "1:4::5", "value": "2"}
   }
 }
