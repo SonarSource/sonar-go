@@ -18,6 +18,7 @@ load(
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/master",
     "gradle_cache",
+    "go_build_cache",
     "cleanup_gradle_script",
     "gradle_wrapper_cache",
     "project_version_cache",
@@ -64,6 +65,7 @@ def build_task():
             "project_version_cache": project_version_cache(),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
+            "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
             "build_script": build_script(),
             "cleanup_gradle_script": cleanup_gradle_script(),
             "store_project_version_script": store_project_version_script(),
@@ -96,6 +98,7 @@ def sca_scan_task():
             "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=1, memory="4G"),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
+            "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
             "project_version_cache": project_version_cache(),
             "whitesource_script": whitesource_script(),
             "cleanup_gradle_script": cleanup_gradle_script(),

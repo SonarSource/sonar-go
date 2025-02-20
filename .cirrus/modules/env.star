@@ -5,6 +5,7 @@ load(
     "gradle_base_env",
     "gradle_develocity_env",
     "gradle_signing_env",
+    "go_env",
     "next_env",
     "gradle_env",
     "DEFAULT_GRADLE_FLAGS"
@@ -16,11 +17,6 @@ def project_version_env():
         "PROJECT_VERSION_CACHE_DIR": "project-version",
     }
 
-
-def go_env():
-    return {
-        "GO_VERSION": "1.23.4",
-    }
 
 def env():
     vars = artifactory_env()
