@@ -17,17 +17,11 @@
 package org.sonar.go.api;
 
 import javax.annotation.CheckForNull;
+import org.sonar.go.symbols.Symbol;
 
-public interface IdentifierTree extends Tree, HasSymbol {
-
-  String name();
-
+public interface HasSymbol {
   @CheckForNull
-  String type();
+  Symbol symbol();
 
-  // identifier is used for equivalence comparison
-  default String identifier() {
-    return name();
-  }
-
+  void setSymbol(Symbol symbol);
 }

@@ -45,6 +45,20 @@ class TreeUtilsTest {
   }
 
   @Test
+  void shouldCheckIsNotEmptyNativeTree() {
+    var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
+    var result = TreeUtils.IS_NOT_EMPTY_NATIVE_TREE.test(initializer);
+    assertThat(result).isTrue();
+  }
+
+  @Test
+  void shouldCheckIsEmptyNativeTree() {
+    var initializer = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind(""), List.of());
+    var result = TreeUtils.IS_NOT_EMPTY_NATIVE_TREE.test(initializer);
+    assertThat(result).isFalse();
+  }
+
+  @Test
   void shouldGetOnlyIdentifierNames() {
     var initializer = new LiteralTreeImpl(mock(TreeMetaData.class), "42");
     var id = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");

@@ -28,7 +28,7 @@ public class StringNativeKind implements NativeKind {
   }
 
   @Nullable
-  public static NativeKind of(@Nullable String value) {
+  public static StringNativeKind of(@Nullable String value) {
     if (value == null) {
       return null;
     }
@@ -37,14 +37,13 @@ public class StringNativeKind implements NativeKind {
 
   @Nullable
   public static String toString(@Nullable NativeKind nativeKind) {
-    if (nativeKind == null) {
-      return null;
+    if (nativeKind instanceof StringNativeKind stringNativeKind) {
+      return stringNativeKind.kind();
     }
-    return nativeKind.toString();
+    return null;
   }
 
-  @Override
-  public String toString() {
+  public String kind() {
     return kind;
   }
 

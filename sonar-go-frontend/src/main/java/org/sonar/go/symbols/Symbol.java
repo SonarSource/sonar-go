@@ -14,20 +14,33 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.symbols;
 
-import javax.annotation.CheckForNull;
+import java.util.ArrayList;
+import java.util.List;
 
-public interface IdentifierTree extends Tree, HasSymbol {
+public class Symbol {
+  public static final String UNKNOWN_TYPE = "UNKNOWN";
 
-  String name();
+  private final String type;
+  private final Scope scope;
+  private final List<Usage> usages;
 
-  @CheckForNull
-  String type();
-
-  // identifier is used for equivalence comparison
-  default String identifier() {
-    return name();
+  public Symbol(String type, Scope scope) {
+    this.type = type;
+    this.scope = scope;
+    this.usages = new ArrayList<>();
   }
 
+  public String getType() {
+    return type;
+  }
+
+  public Scope getScope() {
+    return scope;
+  }
+
+  public List<Usage> getUsages() {
+    return usages;
+  }
 }

@@ -17,53 +17,68 @@
 package org.sonar.go.visitors;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
-import org.sonar.go.impl.BinaryExpressionTreeImpl;
-import org.sonar.go.impl.LiteralTreeImpl;
-import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
 
 class TreeVisitorTest {
 
-  private class DummyNativeKind implements NativeKind {
+  private static class DummyNativeKind implements NativeKind {
   }
 
-  private IdentifierTree var1 = TreeCreationUtils.identifier("var1");
-  private LiteralTree number1 = new LiteralTreeImpl(null, "1");
-  private BinaryExpressionTree binary = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, number1);
-  private BinaryExpressionTree binminus = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.MINUS, null, var1, var1);
+  private final IdentifierTree var1 = TreeCreationUtils.identifier("var1");
+  private final LiteralTree number1 = TreeCreationUtils.literal("1");
+  private final BinaryExpressionTree binary = TreeCreationUtils.binary(BinaryExpressionTree.Operator.PLUS, var1, number1);
+  private final BinaryExpressionTree binminus = TreeCreationUtils.binary(BinaryExpressionTree.Operator.MINUS, var1, var1);
 
-  private DummyNativeKind nkind = new DummyNativeKind();
-  private NativeTree nativeNode = new NativeTreeImpl(null, nkind, Arrays.asList(binary, binminus));
+  private final DummyNativeKind nkind = new DummyNativeKind();
+  private final NativeTree nativeNode = TreeCreationUtils.simpleNative(nkind, List.of(binary, binminus));
 
-  private TreeVisitor<TreeContext> visitor = new TreeVisitor<>();
+  private final TreeVisitor<TreeContext> visitor = new TreeVisitor<>();
 
   @Test
   void visitSimpleTree() {
-    List<Tree> visited = new ArrayList<>();
+    List<Tree> visited = spy(new ArrayList<>());
+    List<Tree> visitedAfter = spy(new ArrayList<>());
     visitor.register(Tree.class, (ctx, tree) -> visited.add(tree));
+    visitor.registerOnLeaveTree(Tree.class, (ctx, tree) -> visitedAfter.add(tree));
     visitor.scan(new TreeContext(), binary);
+
+    InOrder inOrder = Mockito.inOrder(visited, visitedAfter);
+    inOrder.verify(visited).add(binary);
+    inOrder.verify(visited).add(var1);
+    inOrder.verify(visitedAfter).add(var1);
+    inOrder.verify(visited).add(number1);
+    inOrder.verify(visitedAfter).add(number1);
+    inOrder.verify(visitedAfter).add(binary);
+    inOrder.verifyNoMoreInteractions();
+
     assertThat(visited).containsExactly(binary, var1, number1);
+    assertThat(visitedAfter).containsExactly(var1, number1, binary);
   }
 
   @Test
   void visitNativeTree() {
     List<Tree> visited = new ArrayList<>();
+    List<Tree> visitedAfter = new ArrayList<>();
     visitor.register(Tree.class, (ctx, tree) -> visited.add(tree));
+    visitor.registerOnLeaveTree(Tree.class, (ctx, tree) -> visitedAfter.add(tree));
     visitor.scan(new TreeContext(), nativeNode);
     assertThat(visited).containsExactly(nativeNode, binary, var1, number1, binminus, var1, var1);
+    assertThat(visitedAfter).containsExactly(var1, number1, binary, var1, var1, binminus, nativeNode);
   }
 
   @Test

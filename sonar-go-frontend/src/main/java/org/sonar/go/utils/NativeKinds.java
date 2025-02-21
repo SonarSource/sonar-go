@@ -43,27 +43,27 @@ public final class NativeKinds {
   public static boolean isStringNativeKind(@Nullable Tree tree, Predicate<String> predicate) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && predicate.test(stringNativeKind.toString());
+      && predicate.test(stringNativeKind.kind());
   }
 
   public static boolean isStringNativeKindOfType(Tree tree, String type) {
     return isStringNativeKind(tree, type::equals);
   }
 
+  public static boolean isStringNativeKindOfType(Tree tree, String type, String subtype) {
+    return isStringNativeKind(tree, s -> s.startsWith(type + "([") && s.endsWith("]" + subtype + ")"));
+  }
+
   public static boolean isCompositeLit(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.toString().contains("CompositeLit");
+      && stringNativeKind.kind().contains("CompositeLit");
   }
 
   public static boolean isKeyValueExpr(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.toString().contains("KeyValueExpr");
-  }
-
-  public static Predicate<NativeTree> isFrom(String nativeSubKind) {
-    return tree -> tree.nativeKind().toString().endsWith("(" + nativeSubKind + ")");
+      && stringNativeKind.kind().contains("KeyValueExpr");
   }
 
   /**
@@ -78,6 +78,6 @@ public final class NativeKinds {
   public static boolean isMethodReceiverTreeIdentifier(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.toString().endsWith(METHOD_RECEIVER_SUFFIX);
+      && stringNativeKind.kind().endsWith(METHOD_RECEIVER_SUFFIX);
   }
 }

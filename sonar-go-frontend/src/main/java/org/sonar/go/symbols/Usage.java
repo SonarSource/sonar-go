@@ -14,20 +14,16 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.symbols;
 
-import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.Tree;
 
-public interface IdentifierTree extends Tree, HasSymbol {
-
-  String name();
-
-  @CheckForNull
-  String type();
-
-  // identifier is used for equivalence comparison
-  default String identifier() {
-    return name();
+public record Usage(IdentifierTree identifier, @Nullable Tree value, UsageType type) {
+  public enum UsageType {
+    DECLARATION,
+    ASSIGNMENT,
+    REFERENCE
   }
-
 }

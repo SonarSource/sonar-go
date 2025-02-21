@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.sonar.check.Rule;
 import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.go.utils.NativeKinds;
 
 import static org.sonar.go.utils.NativeKinds.SEMICOLON;
 
@@ -67,7 +67,6 @@ public class OneStatementPerLineGoCheck implements GoCheck {
   }
 
   private static boolean shouldIgnore(Tree tree) {
-    return tree instanceof NativeTree nativeTree &&
-      nativeTree.nativeKind().toString().equals(SEMICOLON);
+    return NativeKinds.isStringNativeKindOfType(tree, SEMICOLON);
   }
 }

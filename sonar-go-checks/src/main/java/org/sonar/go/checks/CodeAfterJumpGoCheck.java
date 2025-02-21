@@ -21,13 +21,13 @@ import org.sonar.check.Rule;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.HasKeyword;
 import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.ReturnTree;
 import org.sonar.go.api.ThrowTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
+import org.sonar.go.utils.NativeKinds;
 
 import static org.sonar.go.utils.NativeKinds.LABEL;
 import static org.sonar.go.utils.NativeKinds.SEMICOLON;
@@ -70,12 +70,10 @@ public class CodeAfterJumpGoCheck implements GoCheck {
   }
 
   private static boolean isValidAfterJump(Tree tree) {
-    return tree instanceof NativeTree nativeTree &&
-      nativeTree.nativeKind().toString().contains(LABEL);
+    return NativeKinds.isStringNativeKind(tree, str -> str.contains(LABEL));
   }
 
   private static boolean shouldIgnore(Tree tree) {
-    return tree instanceof NativeTree nativeTree &&
-      nativeTree.nativeKind().toString().equals(SEMICOLON);
+    return NativeKinds.isStringNativeKindOfType(tree, SEMICOLON);
   }
 }

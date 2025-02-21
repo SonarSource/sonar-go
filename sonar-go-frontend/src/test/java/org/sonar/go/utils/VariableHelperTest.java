@@ -34,7 +34,7 @@ class VariableHelperTest {
     var variables = VariableHelper.getVariables(variableDeclaration);
     assertThat(variables).hasSize(1);
     var variable = variables.get(0);
-    assertThat(variable.name()).isSameAs(identifier);
+    assertThat(variable.identifier()).isSameAs(identifier);
     assertThat(variable.value()).isSameAs(value);
   }
 
@@ -46,7 +46,7 @@ class VariableHelperTest {
     var variables = VariableHelper.getVariables(variableDeclaration);
     assertThat(variables).hasSize(1);
     var variable = variables.get(0);
-    assertThat(variable.name()).isSameAs(identifier);
+    assertThat(variable.identifier()).isSameAs(identifier);
     assertThat(variable.value()).isNull();
   }
 
@@ -61,10 +61,10 @@ class VariableHelperTest {
     var variables = VariableHelper.getVariables(variableDeclaration);
     assertThat(variables).hasSize(2);
     var variable1 = variables.get(0);
-    assertThat(variable1.name()).isSameAs(identifier1);
+    assertThat(variable1.identifier()).isSameAs(identifier1);
     assertThat(variable1.value()).isSameAs(value1);
     var variable2 = variables.get(1);
-    assertThat(variable2.name()).isSameAs(identifier2);
+    assertThat(variable2.identifier()).isSameAs(identifier2);
     assertThat(variable2.value()).isSameAs(value2);
   }
 
@@ -77,10 +77,10 @@ class VariableHelperTest {
     var variables = VariableHelper.getVariables(variableDeclaration);
     assertThat(variables).hasSize(2);
     var variable1 = variables.get(0);
-    assertThat(variable1.name()).isSameAs(identifier1);
+    assertThat(variable1.identifier()).isSameAs(identifier1);
     assertThat(variable1.value()).isNull();
     var variable2 = variables.get(1);
-    assertThat(variable2.name()).isSameAs(identifier2);
+    assertThat(variable2.identifier()).isSameAs(identifier2);
     assertThat(variable2.value()).isNull();
   }
 
@@ -94,10 +94,10 @@ class VariableHelperTest {
     var variables = VariableHelper.getVariables(variableDeclaration);
     assertThat(variables).hasSize(2);
     var variable1 = variables.get(0);
-    assertThat(variable1.name()).isSameAs(identifier1);
+    assertThat(variable1.identifier()).isSameAs(identifier1);
     assertThat(variable1.value()).isSameAs(value);
     var variable2 = variables.get(1);
-    assertThat(variable2.name()).isSameAs(identifier2);
+    assertThat(variable2.identifier()).isSameAs(identifier2);
     assertThat(variable2.value()).isSameAs(value);
   }
 }

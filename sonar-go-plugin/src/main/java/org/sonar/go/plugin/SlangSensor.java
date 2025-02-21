@@ -253,12 +253,14 @@ public abstract class SlangSensor implements Sensor {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
+        new SymbolVisitor(),
         new ChecksVisitor(checks(), statistics));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
+        new SymbolVisitor(),
         new ChecksVisitor(checks(), statistics),
         new CpdVisitor(),
         new SyntaxHighlighter());

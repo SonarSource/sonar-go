@@ -17,7 +17,7 @@
 package org.sonar.go.utils;
 
 import java.util.Arrays;
-import org.assertj.core.api.Assertions;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
@@ -27,9 +27,11 @@ import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.visitors.TreePrinter;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.sonar.go.utils.TreeCreationUtils.assignment;
 import static org.sonar.go.utils.TreeCreationUtils.binary;
@@ -46,7 +48,7 @@ class TreePrinterTest {
     Tree binaryExp = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, literal1);
     Tree assignExp = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, x1, binaryExp);
     Tree function = new FunctionDeclarationTreeImpl(null, null, null, null, emptyList(), null, null);
-    Assertions.assertThat(TreePrinter.tree2string(Arrays.asList(assignExp, function))).isEqualTo("""
+    assertThat(TreePrinter.tree2string(Arrays.asList(assignExp, function))).isEqualTo("""
       AssignmentExpressionTreeImpl EQUAL
         IdentifierTreeImpl x1
         BinaryExpressionTreeImpl PLUS
@@ -58,7 +60,7 @@ class TreePrinterTest {
   }
 
   @Test
-  void table_test() {
+  void testTable() {
     // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx = x-1;
     Tree add = binary(BinaryExpressionTree.Operator.PLUS,
       identifier("x", new TextRangeImpl(1, 42, 1, 43), "x"),
@@ -80,5 +82,24 @@ class TreePrinterTest {
     expected.add("  }", "", "");
     expected.add("}", "", "");
     assertEquals(expected.toString(), actual);
+  }
+
+  @Test
+  void testKind() {
+    Tree x1 = TreeCreationUtils.identifier("x1");
+    Tree var1 = TreeCreationUtils.identifier("var1");
+    Tree literal1 = TreeCreationUtils.literal("42");
+    Tree binaryExp = TreeCreationUtils.binary(BinaryExpressionTree.Operator.PLUS, var1, literal1);
+    Tree assignExp = TreeCreationUtils.assignment(AssignmentExpressionTree.Operator.EQUAL, x1, binaryExp);
+    Tree function = TreeCreationUtils.simpleFunction(null, null);
+    Tree nativeTree = TreeCreationUtils.simpleNative(new StringNativeKind("myKind"), Collections.emptyList());
+
+    assertThat(TreePrinter.kind(x1)).isEqualTo("IdentifierTree");
+    assertThat(TreePrinter.kind(var1)).isEqualTo("IdentifierTree");
+    assertThat(TreePrinter.kind(literal1)).isEqualTo("LiteralTree");
+    assertThat(TreePrinter.kind(binaryExp)).isEqualTo("BinaryExpressionTree");
+    assertThat(TreePrinter.kind(assignExp)).isEqualTo("AssignmentExpressionTree");
+    assertThat(TreePrinter.kind(function)).isEqualTo("FunctionDeclarationTree");
+    assertThat(TreePrinter.kind(nativeTree)).isEqualTo("?myKind?");
   }
 }

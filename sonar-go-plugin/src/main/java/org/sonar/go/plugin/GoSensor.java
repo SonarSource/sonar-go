@@ -25,12 +25,12 @@ import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.go.api.ASTConverter;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.utils.NativeKinds;
 
 public class GoSensor extends SlangSensor {
 
@@ -79,7 +79,6 @@ public class GoSensor extends SlangSensor {
   }
 
   private static boolean isGenericDeclaration(Tree tree) {
-    return tree instanceof NativeTree &&
-      ((NativeTree) tree).nativeKind().toString().contains("GenDecl");
+    return NativeKinds.isStringNativeKind(tree, str -> str.contains("GenDecl"));
   }
 }

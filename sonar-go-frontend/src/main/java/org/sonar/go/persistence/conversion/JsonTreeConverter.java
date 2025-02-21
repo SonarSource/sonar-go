@@ -73,6 +73,7 @@ import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.PolymorphicConverter.Deserialize;
 import org.sonar.go.persistence.conversion.PolymorphicConverter.Serialize;
+import org.sonar.go.utils.NativeKinds;
 
 public final class JsonTreeConverter {
 
@@ -453,7 +454,7 @@ public final class JsonTreeConverter {
       (ctx, tree) -> {
         JsonObject json = ctx.newTypedObject(tree);
 
-        if (!tree.nativeKind().toString().isEmpty()) {
+        if (!NativeKinds.isStringNativeKindOfType(tree, "")) {
           json.add(NATIVE_KIND, ctx.toJson(tree.nativeKind()));
         }
 

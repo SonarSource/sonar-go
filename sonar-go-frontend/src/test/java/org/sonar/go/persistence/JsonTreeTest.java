@@ -391,7 +391,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(identifier.textRange()).isEqualTo(token.textRange());
 
     assertThat(methodNames(IdentifierTree.class))
-      .containsExactlyInAnyOrder(NAME, "identifier", "type");
+      .containsExactlyInAnyOrder(NAME, "identifier", "type", "symbol", "setSymbol");
   }
 
   @Test
@@ -405,7 +405,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(identifier.textRange()).isEqualTo(token.textRange());
 
     assertThat(methodNames(IdentifierTree.class))
-      .containsExactlyInAnyOrder(NAME, "identifier", "type");
+      .containsExactlyInAnyOrder(NAME, "identifier", "type", "symbol", "setSymbol");
   }
 
   @Test
@@ -617,9 +617,10 @@ class JsonTreeTest extends JsonTestHelper {
         new NativeTreeImpl(metaData(token21), StringNativeKind.of("CHILD"), emptyList()),
         new NativeTreeImpl(metaData(token22), StringNativeKind.of("CHILD"), emptyList())));
     NativeTree tree = checkJsonSerializationDeserialization(initialTree, "native_tree.json");
-    assertThat(tree.nativeKind()).hasToString("PARENT");
+    assertThat(tree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class, stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("PARENT"));
     assertThat(tree.children()).hasSize(2);
-    assertThat(((NativeTree) tree.children().get(0)).nativeKind()).hasToString("CHILD");
+    assertThat(((NativeTree) tree.children().get(0)).nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+      stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("CHILD"));
     assertThat(tokens(tree.children().get(0))).isEqualTo("21:0:21:7 - token21");
     assertThat(tokens(tree.children().get(1))).isEqualTo("22:0:22:7 - token22");
 
@@ -697,7 +698,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(tree.placeHolderToken().text()).isEqualTo("_");
 
     assertThat(methodNames(PlaceHolderTree.class))
-      .containsExactlyInAnyOrder(PLACE_HOLDER_TOKEN, IDENTIFIER, NAME, "type");
+      .containsExactlyInAnyOrder(PLACE_HOLDER_TOKEN, IDENTIFIER, NAME, "type", "symbol", "setSymbol");
   }
 
   @Test

@@ -19,21 +19,19 @@ package org.sonar.go.utils;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Tree;
-import org.sonar.go.persistence.conversion.StringNativeKind;
 
 public class TreeUtils {
   private TreeUtils() {
     // empty, util class
   }
 
-  public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> tree instanceof NativeTree nativeTree
-    && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-    && stringNativeKind.toString().equals("Semicolon"));
+  public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> NativeKinds.isStringNativeKindOfType(tree, "Semicolon"));
+  public static final Predicate<Tree> IS_NOT_EMPTY_NATIVE_TREE = Predicate.not(tree -> NativeKinds.isStringNativeKindOfType(tree, ""));
 
   public static <T extends Tree> List<String> getIdentifierNames(List<T> trees) {
     return trees.stream().filter(IdentifierTree.class::isInstance)
@@ -49,7 +47,7 @@ public class TreeUtils {
       .collect(Collectors.joining("."));
   }
 
-  public static String treeToString(Tree tree) {
+  public static String treeToString(@Nullable Tree tree) {
     if (tree instanceof IdentifierTree identifierTree) {
       return identifierTree.name();
     } else if (tree instanceof MemberSelectTree memberSelectTree) {

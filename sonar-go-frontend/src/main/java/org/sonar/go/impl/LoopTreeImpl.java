@@ -38,7 +38,6 @@ public class LoopTreeImpl extends BaseTreeImpl implements LoopTree {
     this.body = body;
     this.kind = kind;
     this.keyword = keyword;
-
   }
 
   @CheckForNull

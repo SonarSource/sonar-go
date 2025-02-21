@@ -14,20 +14,11 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.symbols;
 
-import javax.annotation.CheckForNull;
-
-public interface IdentifierTree extends Tree, HasSymbol {
-
-  String name();
-
-  @CheckForNull
-  String type();
-
-  // identifier is used for equivalence comparison
-  default String identifier() {
-    return name();
-  }
-
+public enum Scope {
+  /**
+   * List of visibility according to <a href="https://go.dev/talks/2012/splash.article#TOC_11">Go design</> article.
+   */
+  PACKAGE, FUNCTION, BLOCK
 }

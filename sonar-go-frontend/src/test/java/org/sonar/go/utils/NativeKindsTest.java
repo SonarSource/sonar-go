@@ -20,6 +20,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.TopLevelTree;
@@ -146,5 +147,37 @@ class NativeKindsTest {
     var kind = mock(NativeKind.class);
     var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
     assertThat(isKeyValueExpr(tree)).isFalse();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "Type([]Subtype)",
+    "Type([12]Subtype)",
+  })
+  void shouldFindStringNativeKind(String stringKind) {
+    var kind = new StringNativeKind(stringKind);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
+    assertThat(result).isTrue();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "Other([]Subtype)",
+    "Type([]Other)",
+    "Other([]Other)",
+  })
+  void shouldNotFindStringNativeKindWithDifferentTypeSubtype(String stringKind) {
+    var kind = new StringNativeKind(stringKind);
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
+    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
+    assertThat(result).isFalse();
+  }
+
+  @Test
+  void shouldNotFindStringNativeKind() {
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), mock(), List.of());
+    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
+    assertThat(result).isFalse();
   }
 }

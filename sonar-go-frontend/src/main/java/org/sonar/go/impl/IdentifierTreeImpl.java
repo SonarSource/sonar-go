@@ -22,12 +22,14 @@ import javax.annotation.CheckForNull;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.symbols.Symbol;
 
 public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
 
   public static final String UNKNOWN_TYPE = "UNKNOWN";
 
   private final String name;
+  private Symbol symbol;
 
   private final String type;
 
@@ -50,5 +52,18 @@ public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
   @Override
   public List<Tree> children() {
     return Collections.emptyList();
+  }
+
+  @CheckForNull
+  @Override
+  public Symbol symbol() {
+    return symbol;
+  }
+
+  public void setSymbol(Symbol symbol) {
+    if (this.symbol != null) {
+      throw new IllegalArgumentException("A symbol is already set");
+    }
+    this.symbol = symbol;
   }
 }

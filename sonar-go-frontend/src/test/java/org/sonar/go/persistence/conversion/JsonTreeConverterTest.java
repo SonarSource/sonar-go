@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.Comment;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
@@ -135,12 +134,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void nativeTree_emptyKind() throws IOException {
     TreeMetaData metaData = metaData(otherToken(1, 0, "x"));
     IdentifierTree className = TreeCreationUtils.identifier(metaData, "MyClass");
-    Tree classDecl = new NativeTreeImpl(metaData, new NativeKind() {
-      @Override
-      public String toString() {
-        return "";
-      }
-    }, Collections.singletonList(className));
+    Tree classDecl = new NativeTreeImpl(metaData, new StringNativeKind(""), Collections.singletonList(className));
     String actual = indentedJson(JsonTree.toJson(classDecl));
     assertThat(actual).isEqualTo(indentedJsonFromFile("native_tree_empty_kind.json"));
   }
@@ -149,12 +143,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void nativeTree_withKind() throws IOException {
     TreeMetaData metaData = metaData(otherToken(1, 0, "x"));
     IdentifierTree className = TreeCreationUtils.identifier(metaData, "MyClass");
-    Tree classDecl = new NativeTreeImpl(metaData, new NativeKind() {
-      @Override
-      public String toString() {
-        return "kind";
-      }
-    }, Collections.singletonList(className));
+    Tree classDecl = new NativeTreeImpl(metaData, new StringNativeKind("kind"), Collections.singletonList(className));
     String actual = indentedJson(JsonTree.toJson(classDecl));
     assertThat(actual).isEqualTo(indentedJsonFromFile("native_tree_with_kind.json"));
   }

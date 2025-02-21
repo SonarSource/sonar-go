@@ -48,6 +48,7 @@ import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.*;
@@ -115,7 +116,8 @@ class GoConverterTest {
     assertThat(f1Children).hasSize(3);
     Tree typeParams = f1Children.get(1);
     assertThat(typeParams).isEqualTo(functionDeclarationTree.typeParameters()).isInstanceOf(NativeTree.class);
-    assertThat(((NativeTree) typeParams).nativeKind()).hasToString("TypeParams(FieldList)");
+    assertThat(((NativeTree) typeParams).nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+      stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)"));
 
     List<Tree> f2Children = functions.get(1).children();
     Tree f = ((BlockTree) f2Children.get(1)).statementOrExpressions().get(0);
@@ -219,7 +221,8 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("foo");
     assertThat(functionDeclaration.name().type()).isEqualTo("func(i int)");
     assertThat(functionDeclaration.typeParameters()).isNull();
-    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("Recv(FieldList)"));
+    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind())
+      .isInstanceOfSatisfying(StringNativeKind.class, stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
     assertThat(functionDeclaration.formalParameters()).hasSize(1);
     assertThat(functionDeclaration.formalParameters().get(0)).isInstanceOf(ParameterTree.class);
   }
@@ -327,7 +330,8 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().type()).isEqualTo("func[T any]()");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
     assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
-      nativeTree -> assertThat(nativeTree.nativeKind()).hasToString("TypeParams(FieldList)"));
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)")));
   }
 
   @Test

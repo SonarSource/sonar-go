@@ -24,10 +24,12 @@ import org.sonar.go.api.Tree;
 
 public class TreeVisitor<C extends TreeContext> {
 
-  private List<ConsumerFilter<C, ?>> consumers;
+  private List<ConsumerFilter<C, ?>> consumersOnEnterTree;
+  private List<ConsumerFilter<C, ?>> consumersOnLeaveTree;
 
   public TreeVisitor() {
-    consumers = null;
+    consumersOnEnterTree = new ArrayList<>();
+    consumersOnLeaveTree = new ArrayList<>();
   }
 
   public void scan(C ctx, @Nullable Tree root) {
@@ -42,13 +44,16 @@ public class TreeVisitor<C extends TreeContext> {
   private void visit(C ctx, @Nullable Tree node) {
     if (node != null) {
       ctx.enter(node);
-      if (consumers != null) {
-        for (ConsumerFilter<C, ?> consumer : consumers) {
-          consumer.accept(ctx, node);
-        }
-      }
+      callConsumers(ctx, node, consumersOnEnterTree);
       node.children().forEach(child -> visit(ctx, child));
+      callConsumers(ctx, node, consumersOnLeaveTree);
       ctx.leave(node);
+    }
+  }
+
+  private void callConsumers(C ctx, Tree node, List<ConsumerFilter<C, ?>> consumerList) {
+    for (ConsumerFilter<C, ?> consumer : consumerList) {
+      consumer.accept(ctx, node);
     }
   }
 
@@ -61,10 +66,12 @@ public class TreeVisitor<C extends TreeContext> {
   }
 
   public <T extends Tree> TreeVisitor<C> register(Class<T> cls, BiConsumer<C, T> visitor) {
-    if (consumers == null) {
-      consumers = new ArrayList<>();
-    }
-    consumers.add(new ConsumerFilter<>(cls, visitor));
+    consumersOnEnterTree.add(new ConsumerFilter<>(cls, visitor));
+    return this;
+  }
+
+  public <T extends Tree> TreeVisitor<C> registerOnLeaveTree(Class<T> cls, BiConsumer<C, T> visitor) {
+    consumersOnLeaveTree.add(new ConsumerFilter<>(cls, visitor));
     return this;
   }
 
@@ -84,7 +91,5 @@ public class TreeVisitor<C extends TreeContext> {
         delegate.accept(ctx, cls.cast(node));
       }
     }
-
   }
-
 }

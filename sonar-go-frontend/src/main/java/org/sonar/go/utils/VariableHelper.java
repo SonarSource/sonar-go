@@ -30,7 +30,7 @@ public class VariableHelper {
 
   /**
    * Return the list of variables defined in the given variable declaration.
-   * Those variables are stored in a list of {@link Variable} objects, each containing the variable name and its value.
+   * Those variables are stored in a list of {@link Variable} objects, each containing the variable identifier and its value.
    * In case of {@code var a, b = 1, 2}, it will associate {@code a} to {@code 1} and {@code b} to {@code 2}.
    * In case of {@code var a, b}, it will associate both {@code a} and {@code b} to {@code null}.
    * In case of {@code var a, b = foo()}, it will associate both {@code a} and {@code b} to {@code foo()}.
@@ -39,6 +39,7 @@ public class VariableHelper {
     var result = new ArrayList<Variable>();
     for (int i = 0; i < variableDeclarationTree.identifiers().size(); i++) {
       IdentifierTree name = variableDeclarationTree.identifiers().get(i);
+
       Tree value;
       if (variableDeclarationTree.initializers().isEmpty()) {
         value = null;
@@ -47,11 +48,12 @@ public class VariableHelper {
       } else {
         value = variableDeclarationTree.initializers().get(0);
       }
-      result.add(new Variable(name, value));
+
+      result.add(new Variable(name, variableDeclarationTree.type(), value));
     }
     return result;
   }
 
-  public record Variable(IdentifierTree name, @Nullable Tree value) {
+  public record Variable(IdentifierTree identifier, @Nullable Tree type, @Nullable Tree value) {
   }
 }

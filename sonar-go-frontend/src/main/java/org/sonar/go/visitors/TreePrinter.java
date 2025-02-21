@@ -30,6 +30,7 @@ import org.sonar.go.api.TextPointer;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 
 public class TreePrinter {
 
@@ -125,8 +126,8 @@ public class TreePrinter {
   }
 
   public static String kind(Tree node) {
-    if (node instanceof NativeTree) {
-      return "?" + ((NativeTree) node).nativeKind().toString() + "?";
+    if (node instanceof NativeTree nativeTree && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind) {
+      return "?" + stringNativeKind.kind() + "?";
     } else {
       return node.getClass().getSimpleName().replaceFirst("Impl$", "");
     }

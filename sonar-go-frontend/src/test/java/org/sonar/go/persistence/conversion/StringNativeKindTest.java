@@ -30,11 +30,15 @@ class StringNativeKindTest {
   }
 
   @Test
-  void to_string() {
-    assertThat(new StringNativeKind("ast.Element")).hasToString("ast.Element");
-    assertThat(StringNativeKind.of("ast.Element")).hasToString("ast.Element");
-    assertThat(StringNativeKind.toString(null)).isNull();
+  void kind() {
+    assertThat(new StringNativeKind("ast.Element").kind()).isEqualTo("ast.Element");
+    assertThat(StringNativeKind.of("ast.Element").kind()).isEqualTo("ast.Element");
     assertThat(StringNativeKind.toString(new StringNativeKind("ast.Element"))).isEqualTo("ast.Element");
+  }
+
+  @Test
+  void toStringShouldReturnNullOnNullKind() {
+    assertThat(StringNativeKind.toString(null)).isNull();
   }
 
   @Test
