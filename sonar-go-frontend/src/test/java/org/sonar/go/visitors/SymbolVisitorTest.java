@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.plugin;
+package org.sonar.go.visitors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,6 @@ import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverter;
-import org.sonar.go.visitors.TreeVisitor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -595,9 +594,9 @@ class SymbolVisitorTest {
    */
   private List<Symbol> parseAndGetSymbols(String code) {
     var ast = TestGoConverter.parse(code);
-    new SymbolVisitor().scan(mock(), ast);
+    new SymbolVisitor<>().scan(mock(), ast);
     var symbols = new ArrayList<Symbol>();
-    var symbolsRetriever = new TreeVisitor<InputFileContext>();
+    var symbolsRetriever = new TreeVisitor<>();
     symbolsRetriever.register(IdentifierTree.class, (ctx, identifier) -> {
       var symbol = identifier.symbol();
       if (symbol != null) {

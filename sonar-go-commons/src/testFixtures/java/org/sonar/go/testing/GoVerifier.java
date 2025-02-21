@@ -34,6 +34,7 @@ import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
@@ -73,6 +74,7 @@ public class GoVerifier {
       });
 
     TestContext ctx = new TestContext(verifier, path.getFileName().toString(), testFileContent);
+    new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
 

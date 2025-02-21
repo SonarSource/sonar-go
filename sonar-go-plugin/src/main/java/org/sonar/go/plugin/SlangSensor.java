@@ -52,6 +52,7 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.plugin.caching.HashCacheUtils;
 import org.sonar.go.plugin.converter.ASTConverterValidation;
+import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonarsource.analyzer.commons.ProgressReport;
 
@@ -253,14 +254,14 @@ public abstract class SlangSensor implements Sensor {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
-        new SymbolVisitor(),
+        new SymbolVisitor<>(),
         new ChecksVisitor(checks(), statistics));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
-        new SymbolVisitor(),
+        new SymbolVisitor<>(),
         new ChecksVisitor(checks(), statistics),
         new CpdVisitor(),
         new SyntaxHighlighter());

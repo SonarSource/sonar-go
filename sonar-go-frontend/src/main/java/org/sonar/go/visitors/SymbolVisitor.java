@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.plugin;
+package org.sonar.go.visitors;
 
 import java.util.Collections;
 import java.util.Deque;
@@ -40,7 +40,6 @@ import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.NativeKinds;
 import org.sonar.go.utils.TreeUtils;
 import org.sonar.go.utils.VariableHelper;
-import org.sonar.go.visitors.TreeVisitor;
 
 import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
 
@@ -48,7 +47,7 @@ import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
  * Class used to visit a {@link Tree} and build {@link Symbol} and their {@link Usage} for variables.
  * Those Symbol/Usage can later be used in checks to report issues in the variable flow.
  */
-public class SymbolVisitor extends TreeVisitor<InputFileContext> {
+public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   private final Deque<Map<String, Symbol>> variablesPerScope = new LinkedList<>();
   private final Deque<Scope> scopes = new LinkedList<>();
   private int memberSelectMet = 0;
@@ -90,7 +89,7 @@ public class SymbolVisitor extends TreeVisitor<InputFileContext> {
     }
   }
 
-  private void leaveScope(InputFileContext inputFileContext, Tree tree) {
+  private void leaveScope(C context, Tree tree) {
     variablesPerScope.removeLast();
     scopes.removeLast();
   }
@@ -109,7 +108,7 @@ public class SymbolVisitor extends TreeVisitor<InputFileContext> {
     }
   }
 
-  private void processIdentifier(InputFileContext inputFileContext, IdentifierTreeImpl identifier) {
+  private void processIdentifier(C context, IdentifierTreeImpl identifier) {
     // We don't create a symbol reference if a symbol is already set (variable declaration, parameter or assignement) or if we are in a member
     // select AST node.
     if (identifier.symbol() == null && memberSelectMet == 0) {
@@ -117,7 +116,7 @@ public class SymbolVisitor extends TreeVisitor<InputFileContext> {
     }
   }
 
-  private void processAssignment(InputFileContext inputFileContext, AssignmentExpressionTree assignmentExpression) {
+  private void processAssignment(C context, AssignmentExpressionTree assignmentExpression) {
     var identifiers = extractIdentifiers(assignmentExpression.leftHandSide());
     if (isRightHandSideArrayOfExpression(assignmentExpression.statementOrExpression())) {
       var values = assignmentExpression.leftHandSide().children().stream().filter(IS_NOT_EMPTY_NATIVE_TREE).toList();
@@ -151,7 +150,7 @@ public class SymbolVisitor extends TreeVisitor<InputFileContext> {
     return NativeKinds.isStringNativeKindOfType(tree, "Rhs", "Expr");
   }
 
-  private void onMemberSelectLeave(InputFileContext inputFileContext, MemberSelectTree memberSelectTree) {
+  private void onMemberSelectLeave(C context, MemberSelectTree memberSelectTree) {
     // We manually create a variable reference in member select if the expression is an identifier.
     if (memberSelectTree.expression() instanceof IdentifierTree identifier) {
       addVariableUsage(identifier, null, Usage.UsageType.REFERENCE);
@@ -159,7 +158,7 @@ public class SymbolVisitor extends TreeVisitor<InputFileContext> {
     memberSelectMet++;
   }
 
-  private void onMemberSelectEnter(InputFileContext inputFileContext, MemberSelectTree memberSelectTree) {
+  private void onMemberSelectEnter(C context, MemberSelectTree memberSelectTree) {
     memberSelectMet--;
   }
 
