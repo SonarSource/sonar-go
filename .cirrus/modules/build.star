@@ -41,7 +41,7 @@ def build_env():
     env |= next_env()
     env |= {
         "DEPLOY_PULL_REQUEST": "true",
-        "BUILD_ARGUMENTS": "--build-cache"
+        "BUILD_ARGUMENTS": "--build-cache -x test -x sonar"
     }
     return env
 
@@ -61,7 +61,7 @@ def build_task():
     return {
         "build_task": {
             "env": build_env(),
-            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="6G"),
+            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="4G"),
             "project_version_cache": project_version_cache(),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
@@ -69,6 +69,29 @@ def build_task():
             "build_script": build_script(),
             "cleanup_gradle_script": cleanup_gradle_script(),
             "store_project_version_script": store_project_version_script(),
+            "on_failure": default_gradle_on_failure()
+        }
+    }
+
+
+def build_test_sonar_env():
+    return next_env() | {
+        "DEPLOY_PULL_REQUEST": "false",
+        "BUILD_ARGUMENTS": "--build-cache -x build -x artifactoryPublish test"
+    }
+
+
+def build_test_sonar_task():
+    return {
+        "build_test_sonar_task": {
+            "env": build_test_sonar_env(),
+            "depends_on": "build",
+            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="6G"),
+            "gradle_cache": gradle_cache(),
+            "gradle_wrapper_cache": gradle_wrapper_cache(),
+            "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
+            "build_script": build_script(),
+            "cleanup_gradle_script": cleanup_gradle_script(),
             "on_failure": default_gradle_on_failure()
         }
     }
