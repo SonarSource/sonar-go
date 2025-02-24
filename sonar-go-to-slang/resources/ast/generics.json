@@ -548,10 +548,10 @@
                 {"@type": "Identifier", "metaData": "32:25::32","type":"UNKNOWN","name":"float64"}
               ]},"elements":[
               {"@type": "KeyValue", "metaData": "33:8::22","value":
-                {"@type": "Native", "metaData": "33:17::22","nativeKind":"Value(BasicLit)"},"key":
+                {"@type": "FloatLiteral", "metaData": "33:17::22","value":"35.98"},"key":
                 {"@type": "StringLiteral", "metaData": "33:8::15","value":"\"first\"","content":"first"}},
               {"@type": "KeyValue", "metaData": "34:8::23","value":
-                {"@type": "Native", "metaData": "34:18::23","nativeKind":"Value(BasicLit)"},"key":
+                {"@type": "FloatLiteral", "metaData": "34:18::23","value":"26.99"},"key":
                 {"@type": "StringLiteral", "metaData": "34:8::16","value":"\"second\"","content":"second"}}
             ]}
           ],"identifiers":[

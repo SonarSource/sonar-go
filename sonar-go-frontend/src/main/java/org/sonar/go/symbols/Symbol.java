@@ -18,10 +18,10 @@ package org.sonar.go.symbols;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.CheckForNull;
+import org.sonar.go.api.Tree;
 
 public class Symbol {
-  public static final String UNKNOWN_TYPE = "UNKNOWN";
-
   private final String type;
   private final Scope scope;
   private final List<Usage> usages;
@@ -42,5 +42,20 @@ public class Symbol {
 
   public List<Usage> getUsages() {
     return usages;
+  }
+
+  /**
+   * Returns the value of the symbol if it is safe to do so.
+   * A value is considered safe if it is assigned in the declaration and not other value is assigned afterward.
+   */
+  @CheckForNull
+  public Tree getSafeValue() {
+    var declarationAndAssignments = usages.stream()
+      .filter(usage -> usage.type() == Usage.UsageType.DECLARATION || usage.type() == Usage.UsageType.ASSIGNMENT)
+      .toList();
+    if (declarationAndAssignments.size() != 1) {
+      return null;
+    }
+    return declarationAndAssignments.get(0).value();
   }
 }

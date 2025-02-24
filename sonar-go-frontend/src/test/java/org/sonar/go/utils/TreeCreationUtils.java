@@ -24,6 +24,7 @@ import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
+import org.sonar.go.api.FloatLiteralTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
@@ -43,6 +44,7 @@ import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
+import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
@@ -71,6 +73,10 @@ public class TreeCreationUtils {
 
   public static IntegerLiteralTree integerLiteral(String value) {
     return new IntegerLiteralTreeImpl(null, value);
+  }
+
+  public static FloatLiteralTree floatLiteral(String value) {
+    return new FloatLiteralTreeImpl(null, value);
   }
 
   public static PlaceHolderTree placeHolderTree() {

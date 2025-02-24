@@ -21,6 +21,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
+import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverter;
@@ -43,7 +44,7 @@ class SymbolVisitorTest {
     assertThat(symbols).hasSize(1);
     var x = symbols.get(0);
     assertThat(x.getScope()).isSameAs(PACKAGE);
-    assertThat(x.getType()).isEqualTo("int");
+    assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type").containsExactly(Usage.UsageType.DECLARATION);
   }
 
@@ -62,7 +63,7 @@ class SymbolVisitorTest {
     var x = symbols.get(0);
     assertThat(x).isSameAs(symbols.get(1)).isSameAs(symbols.get(2));
     assertThat(x.getScope()).isSameAs(FUNCTION);
-    assertThat(x.getType()).isEqualTo(Symbol.UNKNOWN_TYPE);
+    assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
 
@@ -98,14 +99,14 @@ class SymbolVisitorTest {
     var x = symbols.get(0);
     assertThat(x).isSameAs(symbols.get(2)).isSameAs(symbols.get(4));
     assertThat(x.getScope()).isSameAs(FUNCTION);
-    assertThat(x.getType()).isEqualTo(Symbol.UNKNOWN_TYPE);
+    assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.ASSIGNMENT);
 
     var y = symbols.get(1);
     assertThat(y).isSameAs(symbols.get(3)).isSameAs(symbols.get(5));
     assertThat(y.getScope()).isSameAs(FUNCTION);
-    assertThat(y.getType()).isEqualTo(Symbol.UNKNOWN_TYPE);
+    assertThat(y.getType()).isEqualTo(GoNativeType.INT);
     assertThat(y.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.ASSIGNMENT);
 

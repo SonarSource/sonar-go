@@ -201,6 +201,14 @@ func (t *SlangMapper) mapBasicLit(astNode *ast.BasicLit, fieldName string) *Node
 		slangType = "IntegerLiteral"
 		slangField["value"] = astNode.Value
 		return t.createExpectedNode(astNode.Pos(), astNode.Value, fieldName+"(IntLit)", tokenType, slangType, slangField)
+	case token.FLOAT:
+		slangType = "FloatLiteral"
+		slangField["value"] = astNode.Value
+		return t.createExpectedNode(astNode.Pos(), astNode.Value, fieldName+"(FloatLit)", tokenType, slangType, slangField)
+	case token.IMAG:
+		slangType = "ImaginaryLiteral"
+		slangField["value"] = astNode.Value
+		return t.createExpectedNode(astNode.Pos(), astNode.Value, fieldName+"(ImaginaryLit)", tokenType, slangType, slangField)
 	default:
 		//Binary literal are expected in GO 1.13 (https://github.com/golang/go/issues/19308)
 		return t.createExpectedToken(astNode.Pos(), astNode.Value, fieldName+basicLiteral, tokenType)

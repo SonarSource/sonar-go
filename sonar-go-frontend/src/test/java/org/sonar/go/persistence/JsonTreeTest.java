@@ -17,6 +17,7 @@
 package org.sonar.go.persistence;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
@@ -30,10 +31,12 @@ import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.Comment;
 import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.ExceptionHandlingTree;
+import org.sonar.go.api.FloatLiteralTree;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IfTree;
+import org.sonar.go.api.ImaginaryLiteralTree;
 import org.sonar.go.api.ImportDeclarationTree;
 import org.sonar.go.api.ImportSpecificationTree;
 import org.sonar.go.api.IntegerLiteralTree;
@@ -66,9 +69,11 @@ import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
+import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
+import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
@@ -495,6 +500,29 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(IntegerLiteralTree.class))
       .containsExactlyInAnyOrder(VALUE, "getBase", "getIntegerValue", "getNumericPart");
+  }
+
+  @Test
+  void float_literal() throws IOException {
+    Token token = otherToken(1, 0, "5.0");
+    FloatLiteralTree initialLiteral = new FloatLiteralTreeImpl(metaData(token), token.text());
+    FloatLiteralTree literal = checkJsonSerializationDeserialization(initialLiteral, "float_literal.json");
+    assertThat(literal.value()).isEqualTo("5.0");
+    assertThat(literal.getFloatValue()).isEqualTo(BigDecimal.valueOf(5.0));
+
+    assertThat(methodNames(FloatLiteralTree.class))
+      .containsExactlyInAnyOrder(VALUE, "getFloatValue");
+  }
+
+  @Test
+  void imaginary_literal() throws IOException {
+    Token token = otherToken(1, 0, "5i");
+    ImaginaryLiteralTree initialLiteral = new ImaginaryLiteralTreeImpl(metaData(token), token.text());
+    ImaginaryLiteralTree literal = checkJsonSerializationDeserialization(initialLiteral, "imaginary_literal.json");
+    assertThat(literal.value()).isEqualTo("5i");
+
+    assertThat(methodNames(ImaginaryLiteralTree.class))
+      .containsExactlyInAnyOrder(VALUE);
   }
 
   @Test

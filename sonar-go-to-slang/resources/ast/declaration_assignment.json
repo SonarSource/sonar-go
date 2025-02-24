@@ -316,13 +316,13 @@
             ]}},
           {"@type": "VariableDeclaration", "metaData": "30:1::16","type":
             null,"isVal":true,"initializers":[
-            {"@type": "Native", "metaData": "30:12::16","nativeKind":"[0](BasicLit)"}
+            {"@type": "FloatLiteral", "metaData": "30:12::16","value":"3.14"}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "30:7::9","type":"UNKNOWN","name":"Pi"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "31:1::21","type":
             {"@type": "Identifier", "metaData": "31:9::14","type":"UNKNOWN","name":"float"},"isVal":true,"initializers":[
-            {"@type": "Native", "metaData": "31:17::21","nativeKind":"[0](BasicLit)"}
+            {"@type": "FloatLiteral", "metaData": "31:17::21","value":"9.81"}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "31:7::8","type":"UNKNOWN","name":"g"}
           ]},

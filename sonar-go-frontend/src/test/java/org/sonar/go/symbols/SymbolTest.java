@@ -18,6 +18,7 @@ package org.sonar.go.symbols;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.impl.IntegerLiteralTreeImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -52,5 +53,34 @@ class SymbolTest {
     assertThat(symbol.getUsages().get(0)).isSameAs(declaration);
     assertThat(symbol.getUsages().get(1)).isSameAs(assignment);
     assertThat(symbol.getUsages().get(2)).isSameAs(reference);
+  }
+
+  @Test
+  void getSafeValueShouldReturnValueForSingleDeclaration() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var value = new IntegerLiteralTreeImpl(mock(), "42");
+    var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
+    symbol.getUsages().add(declaration);
+    assertThat(symbol.getSafeValue()).isEqualTo(value);
+  }
+
+  @Test
+  void getSafeValueShouldReturnValueWhenThereIsNoAssignment() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var value = new IntegerLiteralTreeImpl(mock(), "42");
+    var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
+    var reference = new Usage(mock(), null, Usage.UsageType.REFERENCE);
+    symbol.getUsages().addAll(List.of(declaration, reference));
+    assertThat(symbol.getSafeValue()).isEqualTo(value);
+  }
+
+  @Test
+  void getSafeValueShouldReturnNullWhenThereIsAnAssignment() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var value = new IntegerLiteralTreeImpl(mock(), "42");
+    var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
+    var assignment = new Usage(mock(), null, Usage.UsageType.ASSIGNMENT);
+    symbol.getUsages().addAll(List.of(declaration, assignment));
+    assertThat(symbol.getSafeValue()).isNull();
   }
 }

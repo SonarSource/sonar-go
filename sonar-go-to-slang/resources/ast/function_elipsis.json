@@ -126,7 +126,7 @@
               {"@type": "Identifier", "metaData": "10:1::23","type":"UNKNOWN","name":"declarationWithElipsis"},"arguments":[
               {"@type": "IntegerLiteral", "metaData": "10:24::25","value":"1"},
               {"@type": "StringLiteral", "metaData": "10:27::36","value":"\"example\"","content":"example"},
-              {"@type": "Native", "metaData": "10:38::42","nativeKind":"[2](BasicLit)"},
+              {"@type": "FloatLiteral", "metaData": "10:38::42","value":"3.14"},
               {"@type": "Literal", "metaData": "10:44::48","value":"true"}
             ]}
           ]},
@@ -145,7 +145,7 @@
               ]},"elements":[
               {"@type": "IntegerLiteral", "metaData": "11:25::26","value":"2"},
               {"@type": "StringLiteral", "metaData": "11:28::34","value":"\"test\"","content":"test"},
-              {"@type": "Native", "metaData": "11:36::40","nativeKind":"[2](BasicLit)"},
+              {"@type": "FloatLiteral", "metaData": "11:36::40","value":"4.56"},
               {"@type": "Literal", "metaData": "11:42::47","value":"false"}
             ]}
           ],"identifiers":[

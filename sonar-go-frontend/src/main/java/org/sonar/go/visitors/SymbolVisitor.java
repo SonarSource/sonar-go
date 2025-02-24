@@ -34,6 +34,7 @@ import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
@@ -95,16 +96,19 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   }
 
   private void addVariable(@Nullable Tree type, IdentifierTree identifier, @Nullable Tree value) {
-    var symbol = new Symbol(computeType(type), scopes.getLast());
+    var symbol = new Symbol(computeType(type, value), scopes.getLast());
     variablesPerScope.getLast().put(identifier.name(), symbol);
     addVariableUsage(identifier, value, Usage.UsageType.DECLARATION);
   }
 
-  private static String computeType(@Nullable Tree type) {
-    if (type == null) {
-      return Symbol.UNKNOWN_TYPE;
-    } else {
+  private static String computeType(@Nullable Tree type, @Nullable Tree value) {
+    if (type != null) {
       return TreeUtils.treeToString(type);
+    } else if (value != null) {
+      return GoNativeType.computeTypeFromValue(value);
+    } else {
+      // should never happen
+      return GoNativeType.UNKNOWN;
     }
   }
 

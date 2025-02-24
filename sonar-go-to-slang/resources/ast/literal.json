@@ -1,7 +1,7 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"//mapped to native node", "contentText":"mapped to native node", "range":"11:20::43", "contentRange": "11:22::43"}
+            {"text":"//mapped to native node", "contentText":"mapped to native node", "range":"12:20::43", "contentRange": "12:22::43"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
@@ -17,39 +17,42 @@
       {"text":"multiLineStringLit","textRange":"5:1::19"},
       {"text":":=","textRange":"5:20::22"},
       {"text":"`hello world`","textRange":"5:23::36"},
-      {"text":"intLit","textRange":"6:1::7"},
-      {"text":":=","textRange":"6:8::10"},
-      {"text":"42","textRange":"6:11::13"},
-      {"text":"hexLit","textRange":"7:1::7"},
+      {"text":"boolLit","textRange":"6:1::8"},
+      {"text":":=","textRange":"6:9::11"},
+      {"text":"true","textRange":"6:12::16"},
+      {"text":"intLit","textRange":"7:1::7"},
       {"text":":=","textRange":"7:8::10"},
-      {"text":"0xFF42","textRange":"7:11::17"},
-      {"text":"octalLit","textRange":"8:1::9"},
-      {"text":":=","textRange":"8:10::12"},
-      {"text":"042","textRange":"8:13::16"},
-      {"text":"floatLit","textRange":"9:1::9"},
+      {"text":"42","textRange":"7:11::13"},
+      {"text":"hexLit","textRange":"8:1::7"},
+      {"text":":=","textRange":"8:8::10"},
+      {"text":"0xFF42","textRange":"8:11::17"},
+      {"text":"octalLit","textRange":"9:1::9"},
       {"text":":=","textRange":"9:10::12"},
-      {"text":"4.2","textRange":"9:13::16"},
-      {"text":"charLit","textRange":"10:1::8"},
-      {"text":":=","textRange":"10:9::11"},
-      {"text":"'c'","textRange":"10:12::15"},
-      {"text":"imagLit","textRange":"11:1::8"},
+      {"text":"042","textRange":"9:13::16"},
+      {"text":"floatLit","textRange":"10:1::9"},
+      {"text":":=","textRange":"10:10::12"},
+      {"text":"4.2","textRange":"10:13::16"},
+      {"text":"charLit","textRange":"11:1::8"},
       {"text":":=","textRange":"11:9::11"},
-      {"text":"123.45i","textRange":"11:12::19"},
-      {"text":"}","textRange":"12:0::1"}
+      {"text":"'c'","textRange":"11:12::15"},
+      {"text":"imagLit","textRange":"12:1::8"},
+      {"text":":=","textRange":"12:9::11"},
+      {"text":"123.45i","textRange":"12:12::19"},
+      {"text":"}","textRange":"13:0::1"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:13:0","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:14:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::11","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::11","type":"UNKNOWN","name":"ast"}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:12:1","typeParameters":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:13:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
         {"@type": "Identifier", "metaData": "3:5::16","type":"UNKNOWN","name":"allLiterals"},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "3:19:12:1","statementOrExpressions":[
+        {"@type": "Block", "metaData": "3:19:13:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::28","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "4:14::28","value":"\"hello, world\"","content":"hello, world"}
           ],"identifiers":[
@@ -60,35 +63,40 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "5:1::19","type":"UNKNOWN","name":"multiLineStringLit"}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "6:1::13","type":null,"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "6:11::13","value":"42"}
+          {"@type": "VariableDeclaration", "metaData": "6:1::16","type":null,"isVal":false,"initializers":[
+            {"@type": "Literal", "metaData": "6:12::16","value":"true"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "6:1::7","type":"UNKNOWN","name":"intLit"}
+            {"@type": "Identifier", "metaData": "6:1::8","type":"UNKNOWN","name":"boolLit"}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "7:1::17","type":null,"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "7:11::17","value":"0xFF42"}
+          {"@type": "VariableDeclaration", "metaData": "7:1::13","type":null,"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "7:11::13","value":"42"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "7:1::7","type":"UNKNOWN","name":"hexLit"}
+            {"@type": "Identifier", "metaData": "7:1::7","type":"UNKNOWN","name":"intLit"}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "8:1::16","type":null,"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "8:13::16","value":"042"}
+          {"@type": "VariableDeclaration", "metaData": "8:1::17","type":null,"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "8:11::17","value":"0xFF42"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "8:1::9","type":"UNKNOWN","name":"octalLit"}
+            {"@type": "Identifier", "metaData": "8:1::7","type":"UNKNOWN","name":"hexLit"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "9:1::16","type":null,"isVal":false,"initializers":[
-            {"@type": "Native", "metaData": "9:13::16","nativeKind":"[0](BasicLit)"}
+            {"@type": "IntegerLiteral", "metaData": "9:13::16","value":"042"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "9:1::9","type":"UNKNOWN","name":"floatLit"}
+            {"@type": "Identifier", "metaData": "9:1::9","type":"UNKNOWN","name":"octalLit"}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "10:1::15","type":null,"isVal":false,"initializers":[
-            {"@type": "Native", "metaData": "10:12::15","nativeKind":"[0](BasicLit)"}
+          {"@type": "VariableDeclaration", "metaData": "10:1::16","type":null,"isVal":false,"initializers":[
+            {"@type": "FloatLiteral", "metaData": "10:13::16","value":"4.2"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "10:1::8","type":"UNKNOWN","name":"charLit"}
+            {"@type": "Identifier", "metaData": "10:1::9","type":"UNKNOWN","name":"floatLit"}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "11:1::19","type":null,"isVal":false,"initializers":[
-            {"@type": "Native", "metaData": "11:12::19","nativeKind":"[0](BasicLit)"}
+          {"@type": "VariableDeclaration", "metaData": "11:1::15","type":null,"isVal":false,"initializers":[
+            {"@type": "Native", "metaData": "11:12::15","nativeKind":"[0](BasicLit)"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "11:1::8","type":"UNKNOWN","name":"imagLit"}
+            {"@type": "Identifier", "metaData": "11:1::8","type":"UNKNOWN","name":"charLit"}
+          ]},
+          {"@type": "VariableDeclaration", "metaData": "12:1::19","type":null,"isVal":false,"initializers":[
+            {"@type": "ImaginaryLiteral", "metaData": "12:12::19","value":"123.45i"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "12:1::8","type":"UNKNOWN","name":"imagLit"}
           ]}
         ]}}
     ]}

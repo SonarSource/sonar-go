@@ -140,7 +140,7 @@
             {"@type": "FunctionInvocation", "metaData": "9:9::24","memberSelect":
               {"@type": "Identifier", "metaData": "9:9::12","type":"UNKNOWN","name":"max"},"arguments":[
               {"@type": "IntegerLiteral", "metaData": "9:13::14","value":"1"},
-              {"@type": "Native", "metaData": "9:16::19","nativeKind":"[1](BasicLit)"},
+              {"@type": "FloatLiteral", "metaData": "9:16::19","value":"2.0"},
               {"@type": "IntegerLiteral", "metaData": "9:21::23","value":"10"}
             ]}
           ],"identifiers":[

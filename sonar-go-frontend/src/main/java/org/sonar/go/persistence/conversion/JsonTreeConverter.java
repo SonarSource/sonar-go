@@ -42,10 +42,12 @@ import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
+import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
+import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
@@ -365,6 +367,24 @@ public final class JsonTreeConverter {
         .add(VALUE, tree.value()),
 
       (ctx, json) -> new IntegerLiteralTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToString(json, VALUE)));
+
+    register(FloatLiteralTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(VALUE, tree.value()),
+
+      (ctx, json) -> new FloatLiteralTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToString(json, VALUE)));
+
+    register(ImaginaryLiteralTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(VALUE, tree.value()),
+
+      (ctx, json) -> new ImaginaryLiteralTreeImpl(
         ctx.metaData(json),
         ctx.fieldToString(json, VALUE)));
 
