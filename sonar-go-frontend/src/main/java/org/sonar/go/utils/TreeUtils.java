@@ -17,12 +17,14 @@
 package org.sonar.go.utils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
+import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.Tree;
 
 public class TreeUtils {
@@ -50,13 +52,38 @@ public class TreeUtils {
   public static String treeToString(@Nullable Tree tree) {
     if (tree instanceof IdentifierTree identifierTree) {
       return identifierTree.name();
+    } else if (tree instanceof StarExpressionTree starExpressionTree) {
+      return treeToString(starExpressionTree.operand());
     } else if (tree instanceof MemberSelectTree memberSelectTree) {
       return treeToString(memberSelectTree.expression()) + "." + memberSelectTree.identifier().name();
     }
     return "";
   }
 
-  public static String methodFnq(FunctionInvocationTree tree) {
+  public static String methodFqn(FunctionInvocationTree tree) {
     return treeToString(tree.memberSelect());
+  }
+
+  /**
+   * Used mainly for {@link MemberSelectTree}, to get the first identifier, ignoring others. E.g.:
+   * <pre>
+   * {@code
+   * a.b    -> a
+   * a.b.c  -> a
+   * a      -> a
+   * 5      -> null
+   * }
+   * </pre>
+   */
+  public static Optional<IdentifierTree> retrieveFirstIdentifier(Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.of(identifierTree);
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return retrieveFirstIdentifier(memberSelectTree.expression());
+    } else if (tree instanceof FunctionInvocationTree functionInvocationTree) { // something.call1().call2()
+      return retrieveFirstIdentifier(functionInvocationTree.memberSelect());
+    } else {
+      return Optional.empty();
+    }
   }
 }

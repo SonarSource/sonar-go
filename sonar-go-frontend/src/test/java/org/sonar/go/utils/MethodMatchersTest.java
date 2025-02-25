@@ -16,6 +16,8 @@
  */
 package org.sonar.go.utils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -23,15 +25,21 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.visitors.SymbolVisitor;
+import org.sonar.go.visitors.TreeVisitor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.Mockito.mock;
+import static org.sonar.go.testing.TextRangeGoAssert.assertThat;
 
 class MethodMatchersTest {
 
@@ -246,22 +254,6 @@ class MethodMatchersTest {
     assertThat(matches).isEmpty();
   }
 
-  public static Tree parseAndFeedImportsToMatcher(String code, String importedType, MethodMatchers matcher) {
-    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
-      package main
-
-      import("%s")
-
-      func main() {
-        %s
-      }
-      """.formatted(importedType, code));
-    matcher.validateTypeInTree(topLevelTree);
-    var mainFunc = topLevelTree.declarations().get(2);
-    BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
-    return mainBlock.statementOrExpressions().get(0).children().get(0);
-  }
-
   @Test
   void shouldNotMatchWhenTreeIsNull() {
     MethodMatchers matcher = MethodMatchers.create()
@@ -376,5 +368,194 @@ class MethodMatchersTest {
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
     assertThat(matches.get().name()).isEqualTo("foo");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "*sonar.Connection",
+    "sonar.Connection",
+    "*sonar.GlobalConnection",
+    "sonar.GlobalConnection"
+  })
+  void shouldMatchWithVariableOfTypeInParameters(String type) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withVariableTypeIn("sonar.Connection", "sonar.GlobalConnection")
+      .withNames("Query")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+       func main(x %s) {
+         x.Query()
+       }
+      """.formatted(type), "com/sonar", matcher);
+
+    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).hasSize(1);
+    var matchedIdentifier = matches.get(0);
+    assertThat(matchedIdentifier.identifier()).isEqualTo("Query");
+    assertThat(matchedIdentifier.textRange()).hasRange(6, 5, 6, 10);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "var x sonar.Connection",
+    "var x sonar.Connection = sonar.Open()",
+    "var x sonar.Connection = 1",
+  })
+  void shouldMatchWithVariableOfTypeInVariableDeclaration(String type) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withVariableTypeIn("sonar.Connection")
+      .withNames("Query")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+       func main() {
+         %s
+         x.Query()
+       }
+      """.formatted(type), "com/sonar", matcher);
+
+    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).hasSize(1);
+    var matchedIdentifier = matches.get(0);
+    assertThat(matchedIdentifier.identifier()).isEqualTo("Query");
+    assertThat(matchedIdentifier.textRange()).hasRange(7, 5, 7, 10);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "sonar.Open",
+    "sonar.OpenConnection"
+  })
+  void shouldMatchWithVariableResultFromMethod(String createMethod) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withVariableResultFromMethodIn("sonar.Open", "sonar.OpenConnection")
+      .withNames("Query")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+       func main() {
+         var x = %s()
+         x.Query()
+       }
+      """.formatted(createMethod), "com/sonar", matcher);
+
+    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).hasSize(1);
+    var matchedIdentifier = matches.get(0);
+    assertThat(matchedIdentifier.identifier()).isEqualTo("Query");
+    assertThat(matchedIdentifier.textRange()).hasRange(7, 5, 7, 10);
+  }
+
+  @Test
+  void shouldNotMatchWithIdentifierWithoutSymbol() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withVariableTypeIn("sonar.Connection")
+      .withVariableResultFromMethodIn("sonar.Open")
+      .withNames("Query")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+       func main() {
+         x.Query()
+       }
+      """, "com/sonar", matcher);
+
+    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).isEmpty();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "good()",
+    "good.Other()",
+    "good.Open()",
+    "good.Query.Launch()",
+    "good.QueryRow()",
+    "good.RowQuery()",
+    "sonar.Open()",
+    "sonar.Query()",
+    "Open()",
+    "Query()",
+    "bad_1.Query()",
+    "bad_1()",
+    "bad_2.Query()",
+    "bad_2()",
+    "bad_3.Query()",
+    "bad_3()",
+  })
+  void shouldNotMatchWithInvalidMethodCall(String methodCall) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withVariableResultFromMethodIn("sonar.Open")
+      .withNames("Query")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+       func main() {
+         var good = sonar.Open()
+         var bad_1 = sonar.Other()
+         var bad_2 = other.Open()
+         var bad_3 = Open()
+         %s
+       }
+      """.formatted(methodCall), "com/sonar", matcher);
+
+    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).isEmpty();
+  }
+
+  public static TopLevelTree parseFunctionAndFeedImportsToMatcher(String functionCode, String importedType, MethodMatchers matcher) {
+    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+      package main
+
+      import("%s")
+
+      %s
+      """.formatted(importedType, functionCode));
+    matcher.validateTypeInTree(topLevelTree);
+    new SymbolVisitor<>().scan(mock(), topLevelTree);
+    return topLevelTree;
+  }
+
+  public static Tree parseAndFeedImportsToMatcher(String code, String importedType, MethodMatchers matcher) {
+    return parseCodeAndFeedImportsToMatcher("""
+      package main
+
+      import("%s")
+
+      func main() {
+        %s
+      }
+      """.formatted(importedType, code), matcher);
+  }
+
+  private static Tree parseCodeAndFeedImportsToMatcher(String wholeCode, MethodMatchers matcher) {
+    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
+    matcher.validateTypeInTree(topLevelTree);
+    new SymbolVisitor<>().scan(mock(), topLevelTree);
+    var mainFunc = topLevelTree.declarations().get(2);
+    BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
+    return mainBlock.statementOrExpressions().get(0).children().get(0);
+  }
+
+  private static List<IdentifierTree> applyMatcherToAllFunctionInvocation(Tree tree, MethodMatchers matcher) {
+    var functionCalls = new ArrayList<FunctionInvocationTree>();
+    var methodVisiter = new TreeVisitor<>();
+    methodVisiter.register(FunctionInvocationTree.class, (ctx, functionInvocationTree) -> functionCalls.add(functionInvocationTree));
+    methodVisiter.scan(mock(), tree);
+    return functionCalls.stream()
+      .map(matcher::matches)
+      .flatMap(Optional::stream)
+      .toList();
   }
 }

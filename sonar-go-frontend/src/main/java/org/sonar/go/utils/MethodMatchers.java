@@ -18,8 +18,10 @@ package org.sonar.go.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -28,6 +30,8 @@ import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
+
+import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
 
 /**
  * Helps identify a method with given Type, Receiver, Name and Parameters.
@@ -59,6 +63,8 @@ import org.sonar.go.api.Tree;
  * Optional methods:
  * <ul>
  *   <li> {@link NameBuilder#withReceiver()} - by default no receiver is expected </li>
+ *   <li> {@link VariableMatcherBuilder#withVariableTypeIn(String...)} - allow to specify the type of variable expected </li>
+ *   <li> {@link VariableMatcherBuilder#withVariableResultFromMethodIn(String...)} - allow to specify the method call to look for in the symbol variable usage </li>
  * </ul>
  * <p>
  * Examples:
@@ -109,22 +115,45 @@ import org.sonar.go.api.Tree;
  *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
  *   </pre>
  * <p>
+ * <p>
+ *   Example 4. Match method bar() called on object of type "example.foo" or result of method call "example.baz()" from "com/example" package
+ *   <pre>
+ *     {@code
+ *     var fooBarMatcher = MethodMatchers.create()
+ *       .ofType("com/example")
+ *       .withVariableTypeIn("example.foo")
+ *       .withVariableResultFromMethodIn("example.baz")
+ *       .withName("bar")
+ *       .withAnyParameters()
+ *       .build();
+ *     }
+ *     TopLevelTree topLevelTree = ...
+ *     FunctionInvocationTree tree = ...
+ *     fooBarMatcher.validateTypeInContext(topLevelTree);
+ *     var matchedMethodOrEmpty = randIntMatcher.matches(tree);
+ *   </pre>
+ * <p>
  */
 public class MethodMatchers {
   private final String type;
   private final boolean withReceiver;
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersPredicate;
+  private final Predicate<String> variableTypePredicate;
+  private final Predicate<String> variableMethodResultPredicate;
 
   @Nullable
   private String methodReceiverName;
   private boolean validateTypeInTree = false;
 
-  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate) {
+  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate,
+    Predicate<String> variableTypePredicate, Predicate<String> variableMethodResultPredicate) {
     this.type = type;
     this.withReceiver = withReceiver;
     this.namePredicate = namePredicate;
     this.parametersPredicate = parametersPredicate;
+    this.variableTypePredicate = variableTypePredicate;
+    this.variableMethodResultPredicate = variableMethodResultPredicate;
   }
 
   public static TypeBuilder create() {
@@ -185,20 +214,35 @@ public class MethodMatchers {
   }
 
   private boolean matchesFunctionInvocation(FunctionInvocationTree functionInvocation) {
-    if (!withReceiver) {
-      var methodFqn = TreeUtils.methodFnq(functionInvocation);
-      return namePredicate.test(methodFqn);
+    Tree functionNameTree = functionInvocation.memberSelect();
+
+    if (functionNameTree instanceof MemberSelectTree memberSelectTree) {
+      var firstIdentifier = retrieveFirstIdentifier(memberSelectTree);
+      if (firstIdentifier.isPresent()) {
+        if (withReceiver) {
+          return firstIdentifier.get().name().equals(methodReceiverName) && namePredicate.test(subMethodName(memberSelectTree));
+        } else if (matchVariable(firstIdentifier.get())) {
+          return namePredicate.test(subMethodName(memberSelectTree));
+        }
+      }
     }
-    if (methodReceiverName == null) {
-      return false;
+
+    return namePredicate.test(TreeUtils.treeToString(functionNameTree));
+  }
+
+  private static String subMethodName(MemberSelectTree memberSelectTree) {
+    var listNames = new LinkedList<String>();
+    Tree currentTree = memberSelectTree;
+    while (currentTree instanceof MemberSelectTree memberSelect) {
+      listNames.addFirst(memberSelect.identifier().name());
+      currentTree = memberSelect.expression();
     }
-    var methodFqn = TreeUtils.methodFnq(functionInvocation);
-    if (methodFqn.contains(".")) {
-      var firstPart = methodFqn.substring(0, methodFqn.indexOf("."));
-      var secondPart = methodFqn.substring(Math.min(methodFqn.indexOf(".") + 1, methodFqn.length() - 1));
-      return firstPart.equals(methodReceiverName) && namePredicate.test(secondPart);
-    }
-    return false;
+    return String.join(".", listNames);
+  }
+
+  private boolean matchVariable(IdentifierTree identifier) {
+    var symbol = identifier.symbol();
+    return symbol != null && (variableTypePredicate.test(symbol.getType()) || variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse(null)));
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
@@ -210,7 +254,7 @@ public class MethodMatchers {
     NameBuilder ofType(String type);
   }
 
-  public interface NameBuilder {
+  public interface NameBuilder extends VariableMatcherBuilder {
     ParametersBuilder withNames(Collection<String> names);
 
     ParametersBuilder withNames(String... names);
@@ -234,11 +278,20 @@ public class MethodMatchers {
     MethodMatchers build();
   }
 
+  public interface VariableMatcherBuilder {
+    NameBuilder withVariableTypeIn(String... types);
+
+    NameBuilder withVariableResultFromMethodIn(String... methodNames);
+  }
+
   public static class MethodMatchersBuilder implements TypeBuilder, NameBuilder, ParametersBuilder {
     private String type;
     private Predicate<String> namePredicate;
     private boolean methodReceiver = false;
     private Predicate<List<String>> parametersPredicate;
+    private boolean withVariable = false;
+    private Predicate<String> variableTypePredicate = v -> false;
+    private Predicate<String> variableMethodResultPredicate = v -> false;
 
     @Override
     public NameBuilder ofType(String type) {
@@ -254,7 +307,7 @@ public class MethodMatchers {
     }
 
     private void validateNames(Collection<String> names) {
-      if (!methodReceiver) {
+      if (!methodReceiver && !withVariable) {
         var nameWithoutDot = names.stream()
           .filter(s -> !s.contains("."))
           .findAny();
@@ -309,8 +362,22 @@ public class MethodMatchers {
     }
 
     @Override
+    public NameBuilder withVariableTypeIn(String... types) {
+      withVariable = true;
+      variableTypePredicate = Set.of(types)::contains;
+      return this;
+    }
+
+    @Override
+    public NameBuilder withVariableResultFromMethodIn(String... methodNames) {
+      withVariable = true;
+      variableMethodResultPredicate = Set.of(methodNames)::contains;
+      return this;
+    }
+
+    @Override
     public MethodMatchers build() {
-      return new MethodMatchers(type, methodReceiver, namePredicate, parametersPredicate);
+      return new MethodMatchers(type, methodReceiver, namePredicate, parametersPredicate, variableTypePredicate, variableMethodResultPredicate);
     }
   }
 }

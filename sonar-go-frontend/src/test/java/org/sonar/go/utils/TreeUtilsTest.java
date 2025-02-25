@@ -83,4 +83,41 @@ class TreeUtilsTest {
 
     assertThat(names).isEqualTo("foo.bar");
   }
+
+  @Test
+  void shouldRetrieveFirstIdentifierOfSimpleMemberSelect() {
+    var prefix = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var suffix = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
+    var memberSelect = TreeCreationUtils.memberSelect(prefix, suffix);
+    var result = TreeUtils.retrieveFirstIdentifier(memberSelect);
+    assertThat(result).containsSame(prefix);
+  }
+
+  @Test
+  void shouldRetrieveFirstIdentifierOfComposedMemberSelect() {
+    var identifier1 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var identifier2 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
+    var identifier3 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "baz");
+    var innerMemberSelect = TreeCreationUtils.memberSelect(identifier1, identifier2);
+    var memberSelect = TreeCreationUtils.memberSelect(innerMemberSelect, identifier3);
+    var result = TreeUtils.retrieveFirstIdentifier(memberSelect);
+    assertThat(result).containsSame(identifier1);
+  }
+
+  @Test
+  void shouldRetrieveFirstIdentifierOfComposedFunctionCallMemberSelect() {
+    var identifier1 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var identifier2 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
+    var functionCall = TreeCreationUtils.simpleFunctionCall(identifier1);
+    var memberSelect = TreeCreationUtils.memberSelect(functionCall, identifier2);
+    var result = TreeUtils.retrieveFirstIdentifier(memberSelect);
+    assertThat(result).containsSame(identifier1);
+  }
+
+  @Test
+  void shouldGetNullWhenExpressionIsNotIdentifierOrMemberSelectOrFunctionCall() {
+    var literal = TreeCreationUtils.literal("foo");
+    var result = TreeUtils.retrieveFirstIdentifier(literal);
+    assertThat(result).isEmpty();
+  }
 }

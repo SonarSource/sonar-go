@@ -26,10 +26,12 @@ import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.ClassDeclarationTree;
 import org.sonar.go.api.FloatLiteralTree;
 import org.sonar.go.api.FunctionDeclarationTree;
+import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
@@ -46,10 +48,12 @@ import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
+import org.sonar.go.impl.FunctionInvocationTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
+import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
@@ -111,6 +115,10 @@ public class TreeCreationUtils {
     return new IdentifierTreeImpl(meta, name, type);
   }
 
+  public static MemberSelectTree memberSelect(Tree expression, IdentifierTree identifier) {
+    return new MemberSelectTreeImpl(null, expression, identifier);
+  }
+
   public static ClassDeclarationTree classDeclarationTree(IdentifierTree className, Tree classDecl) {
     return new ClassDeclarationTreeImpl(null, className, classDecl);
   }
@@ -147,8 +155,16 @@ public class TreeCreationUtils {
     return new BlockTreeImpl(metaData(textRange, tokens), body);
   }
 
+  public static FunctionDeclarationTree anonymousFunction(BlockTree body) {
+    return new FunctionDeclarationTreeImpl(null, null, null, null, Collections.emptyList(), null, body);
+  }
+
   public static FunctionDeclarationTree simpleFunction(IdentifierTree name, BlockTree body) {
     return new FunctionDeclarationTreeImpl(null, null, null, name, Collections.emptyList(), null, body);
+  }
+
+  public static FunctionInvocationTree simpleFunctionCall(Tree memberSelect) {
+    return new FunctionInvocationTreeImpl(null, memberSelect, Collections.emptyList());
   }
 
   public static AssignmentExpressionTree assignment(AssignmentExpressionTree.Operator operator, Tree leftOperand, Tree rightOperand) {
