@@ -41,10 +41,12 @@ import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
 import static org.sonar.go.utils.ExpressionUtils.isNegation;
+import static org.sonar.go.utils.ExpressionUtils.isNilLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isTrueValueLiteral;
 import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 
 class ExpressionUtilsTest {
+  private static final Tree NIL_LITERAL = new LiteralTreeImpl(null, "nil");
   private static final Tree TRUE_LITERAL = new LiteralTreeImpl(null, "true");
   private static final Tree FALSE_LITERAL = new LiteralTreeImpl(null, "false");
   private static final Tree NUMBER_LITERAL = new LiteralTreeImpl(null, "34");
@@ -52,7 +54,17 @@ class ExpressionUtilsTest {
   private static final Tree FALSE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, FALSE_LITERAL);
 
   @Test
+  void testNilLiteral() {
+    assertThat(isNilLiteral(NIL_LITERAL)).isTrue();
+    assertThat(isNilLiteral(TRUE_LITERAL)).isFalse();
+    assertThat(isNilLiteral(FALSE_LITERAL)).isFalse();
+    assertThat(isNilLiteral(NUMBER_LITERAL)).isFalse();
+    assertThat(isNilLiteral(TRUE_NEGATED)).isFalse();
+  }
+
+  @Test
   void test_boolean_literal() {
+    assertThat(isBooleanLiteral(NIL_LITERAL)).isFalse();
     assertThat(isBooleanLiteral(TRUE_LITERAL)).isTrue();
     assertThat(isBooleanLiteral(FALSE_LITERAL)).isTrue();
     assertThat(isBooleanLiteral(NUMBER_LITERAL)).isFalse();
@@ -61,6 +73,7 @@ class ExpressionUtilsTest {
 
   @Test
   void test_false_literal_value() {
+    assertThat(isFalseValueLiteral(NIL_LITERAL)).isFalse();
     assertThat(isFalseValueLiteral(TRUE_LITERAL)).isFalse();
     assertThat(isFalseValueLiteral(FALSE_LITERAL)).isTrue();
     assertThat(isFalseValueLiteral(NUMBER_LITERAL)).isFalse();
@@ -70,6 +83,7 @@ class ExpressionUtilsTest {
 
   @Test
   void test_true_literal_value() {
+    assertThat(isTrueValueLiteral(NIL_LITERAL)).isFalse();
     assertThat(isTrueValueLiteral(TRUE_LITERAL)).isTrue();
     assertThat(isTrueValueLiteral(FALSE_LITERAL)).isFalse();
     assertThat(isTrueValueLiteral(NUMBER_LITERAL)).isFalse();
@@ -79,6 +93,7 @@ class ExpressionUtilsTest {
 
   @Test
   void test_negation() {
+    assertThat(isNegation(NIL_LITERAL)).isFalse();
     assertThat(isNegation(FALSE_LITERAL)).isFalse();
     assertThat(isNegation(NUMBER_LITERAL)).isFalse();
     assertThat(isNegation(TRUE_NEGATED)).isTrue();

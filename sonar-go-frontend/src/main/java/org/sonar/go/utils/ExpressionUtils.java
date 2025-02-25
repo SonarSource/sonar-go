@@ -45,11 +45,16 @@ import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.utils.TreeUtils.getIdentifierName;
 
 public class ExpressionUtils {
+  private static final String NIL_LITERAL = "nil";
   private static final String TRUE_LITERAL = "true";
   private static final String FALSE_LITERAL = "false";
   private static final List<String> BOOLEAN_LITERALS = Arrays.asList(TRUE_LITERAL, FALSE_LITERAL);
 
   private ExpressionUtils() {
+  }
+
+  public static boolean isNilLiteral(@Nullable Tree tree) {
+    return tree instanceof LiteralTree literalTree && NIL_LITERAL.equals(literalTree.value());
   }
 
   public static boolean isBooleanLiteral(Tree tree) {
