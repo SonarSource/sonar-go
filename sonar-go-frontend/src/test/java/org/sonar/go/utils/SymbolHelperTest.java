@@ -92,4 +92,28 @@ class SymbolHelperTest {
     Optional<String> lastAssignedMethodCall = SymbolHelper.getLastAssignedMethodCall(symbol);
     assertThat(lastAssignedMethodCall).contains("my_func_declaration");
   }
+
+  @Test
+  void shouldReturnLastAssignedValue() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var usageIdentifier = TreeCreationUtils.identifier("a");
+    var functionIdentifier = TreeCreationUtils.identifier("my_func");
+    var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);
+    var literalValueAssignment = TreeCreationUtils.literal("some_value");
+    var assignment = new Usage(usageIdentifier, literalValueAssignment, Usage.UsageType.ASSIGNMENT);
+    symbol.getUsages().add(declaration);
+    symbol.getUsages().add(assignment);
+
+    var lastAssignedValue = SymbolHelper.getLastAssignedValue(symbol);
+    assertThat(lastAssignedValue).isPresent();
+  }
+
+  @Test
+  void shouldReturnEmptyIfNoAssignedValue() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+
+    var lastAssignedValue = SymbolHelper.getLastAssignedValue(symbol);
+
+    assertThat(lastAssignedValue).isEmpty();
+  }
 }

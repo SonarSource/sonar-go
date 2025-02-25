@@ -18,6 +18,7 @@ package org.sonar.go.utils;
 
 import java.util.Optional;
 import org.sonar.go.api.FunctionInvocationTree;
+import org.sonar.go.api.Tree;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 
@@ -39,12 +40,22 @@ public class SymbolHelper {
    */
   public static Optional<String> getLastAssignedMethodCall(Symbol symbol) {
     for (int i = symbol.getUsages().size() - 1; i >= 0; i--) {
-      Usage usage = symbol.getUsages().get(i);
+      var usage = symbol.getUsages().get(i);
       if (usage.type() == Usage.UsageType.ASSIGNMENT || usage.type() == Usage.UsageType.DECLARATION) {
         var value = usage.value();
         if (value instanceof FunctionInvocationTree functionInvocation) {
           return Optional.of(TreeUtils.methodFqn(functionInvocation));
         }
+      }
+    }
+    return Optional.empty();
+  }
+
+  public static Optional<Tree> getLastAssignedValue(Symbol symbol) {
+    for (int i = symbol.getUsages().size() - 1; i >= 0; i--) {
+      var usage = symbol.getUsages().get(i);
+      if (usage.type() == Usage.UsageType.ASSIGNMENT || usage.type() == Usage.UsageType.DECLARATION) {
+        return Optional.ofNullable(usage.value());
       }
     }
     return Optional.empty();
