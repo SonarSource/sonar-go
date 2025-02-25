@@ -1,6 +1,6 @@
 /*
  * SonarSource Go
- * Copyright (C) 2018-2024 SonarSource SA
+ * Copyright (C) 2018-2025 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -36,7 +36,7 @@ class GoProfileDefinitionTest {
 
     assertThat(profile.language()).isEqualTo("go");
     assertThat(profile.name()).isEqualTo("Sonar way");
-    assertThat(profile.rules()).hasSize(25);
+    assertThat(profile.rules()).hasSize(24);
     assertThat(validation.hasErrors()).isFalse();
   }
 
