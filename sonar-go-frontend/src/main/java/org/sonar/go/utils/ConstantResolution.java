@@ -43,6 +43,13 @@ public class ConstantResolution {
   }
 
   /**
+   * @return true when the tree represents a static string constant, false otherwise.
+   */
+  public static boolean isConstantString(Tree tree) {
+    return !resolveAsStringConstant(tree).contains(PLACEHOLDER);
+  }
+
+  /**
    * In order to avoid any risk of infinite recursion, we only follow identifier value once, depending on "followIdentifier" argument.
    * This approximation seems reasonable because we want to support the obvious cases (global constant, local variable used as constant),
    * and not trying to build a complex constant folding logic.

@@ -170,4 +170,30 @@ class ConstantResolutionTest {
 
     assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo("HelloWorld");
   }
+
+  @Test
+  void simpleStringIsConstantString() {
+    assertThat(ConstantResolution.isConstantString(HELLO)).isTrue();
+  }
+
+  @Test
+  void binaryNestedIsConstantString() {
+    Tree comma = new StringLiteralTreeImpl(null, "\", \"");
+    BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, comma);
+    BinaryExpressionTree binaryNested = TreeCreationUtils.binary(PLUS, binary, WORLD);
+    assertThat(ConstantResolution.isConstantString(binaryNested)).isTrue();
+  }
+
+  @Test
+  void unresolvedIsNotConstantString() {
+    NativeTree tree = TreeCreationUtils.simpleNative(new StringNativeKind("Kind"), Collections.emptyList());
+    assertThat(ConstantResolution.isConstantString(tree)).isFalse();
+  }
+
+  @Test
+  void binaryWithUnresolvedConstantIsNoConstantString() {
+    NativeTree tree = TreeCreationUtils.simpleNative(new StringNativeKind("Kind"), Collections.emptyList());
+    BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, tree);
+    assertThat(ConstantResolution.isConstantString(binary)).isFalse();
+  }
 }
