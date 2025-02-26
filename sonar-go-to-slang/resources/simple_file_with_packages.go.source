@@ -1,0 +1,12 @@
+package main
+import (
+  "github.com/beego/beego/v2/server/web"
+)
+
+type MainController struct {
+  web.Controller
+}
+
+func (ctrl *MainController) getSessionStore() {
+  session, _ := ctrl.Ctx.Session()
+}

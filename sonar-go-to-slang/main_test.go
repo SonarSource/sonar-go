@@ -90,6 +90,20 @@ func TestMainWithFilePath(t *testing.T) {
 	assert.Contains(t, output, "\"@type\": \"PackageDeclaration\", \"metaData\": \"1:0::17\"")
 }
 
+func TestMainWithPackageResolution(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "resources/simple_file_with_packages.go.source"}
+
+	writeOut, oldStdOut, outChanel := captureStandardOutput()
+
+	main()
+
+	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+
+	// Validate the output
+	assert.Contains(t, output, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
+}
+
 func TestMainWithInvalidFile(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/invalid_file.go.source"}

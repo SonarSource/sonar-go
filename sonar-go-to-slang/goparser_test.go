@@ -31,7 +31,7 @@ import (
 	"testing"
 )
 
-func slangFromString(source string, nodeQueryPath string) (*Node, []*Node, []*Token) {
+func slangFromString(source string) (*Node, []*Node, []*Token) {
 	fileSet, astNode := astFromString(source)
 	info := new(types.Info)
 	return toSlangTree(fileSet, astNode, source, info)
@@ -55,7 +55,7 @@ func fix_all_go_files_test_automatically(t *testing.T) {
 			panic(err)
 		}
 
-		actual := toJsonSlang(slangFromString(string(source), ""))
+		actual := toJsonSlang(slangFromString(string(source)))
 		d1 := []byte(actual)
 		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
 		if errWrite != nil {
@@ -70,7 +70,7 @@ func Test_all_go_files(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		actual := toJsonSlang(slangFromString(string(source), ""))
+		actual := toJsonSlang(slangFromString(string(source)))
 
 		var jsonActual interface{}
 		err1 := json.Unmarshal([]byte(actual), &jsonActual)

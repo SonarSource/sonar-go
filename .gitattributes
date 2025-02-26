@@ -6,4 +6,4 @@
 its/sources/** -text
 its/plugin/projects/** -text
 **/src/test/resources/** -text
-
+sonar-go-to-slang/packages/** -text

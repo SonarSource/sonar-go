@@ -23,7 +23,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.EnabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -51,7 +50,6 @@ import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
 
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -420,8 +418,6 @@ class GoConverterTest {
   }
 
   @Test
-  // TODO SONARGO-311 Fix type resolution when building Go executable locally
-  @EnabledIfSystemProperty(named = "CI", matches = "true")
   void shouldParseFunctionWithTypeDetectionDatabaseSql() {
     Tree tree = TestGoConverter.parse("""
       package main
@@ -447,8 +443,24 @@ class GoConverterTest {
   }
 
   @Test
-  // TODO SONARGO-311 Fix type resolution when building Go executable locally
-  @EnabledIfSystemProperty(named = "CI", matches = "true")
+  void shouldParseFunctionWithTypeDetectionNativeType() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import "fmt"
+
+      func main() {
+        n := 42
+        fmt.Println(n)
+      }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "n").type()).isEqualTo("int");
+  }
+
+  @Test
   void shouldParseFunctionWithTypeDetectionHttpCookie() {
     Tree tree = TestGoConverter.parse("""
       package main
@@ -466,6 +478,73 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(getIdentifierByName(functionDeclaration, "cookie").type()).isEqualTo("net/http.Cookie");
+  }
+
+  @Test
+  void shouldParseFunctionWithTypeDetectionBeegoServerWeb() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import "github.com/beego/beego/v2/server/web"
+
+      type MainController struct {
+        web.Controller
+      }
+
+      func (ctrl *MainController) getSessionStore() {
+        session, _ := ctrl.Ctx.Session()
+      }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "session").type()).isEqualTo("github.com/beego/beego/v2/server/web/session.Store");
+  }
+
+  @Test
+  void shouldParseFunctionWithTypeDetectionLocalType() {
+    Tree tree = TestGoConverter.parse("""
+       package main
+       import "fmt"
+
+       type Person struct {
+         name string
+         age int
+       }
+
+       func main() {
+         person := Person{"John", 42}
+         fmt.Println(person.name)
+       }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "person").type()).isEqualTo("-.Person");
+  }
+
+  @Test
+  void shouldParseFunctionWithUnresolvedPackages() {
+    Tree tree = TestGoConverter.parse("""
+       package main
+       import (
+         "errors"
+         "github.com/rs/zerolog/log"
+       )
+
+       func main() {
+         sublogger := log.With().Str("component", "foo").Logger()
+         err := errors.New("an error occurred")
+         sublogger.Error().Err(err).Msg("hello world")
+       }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+
+    assertThat(getIdentifierByName(functionDeclaration, "sublogger").type()).isEqualTo("UNKNOWN");
+    assertThat(getIdentifierByName(functionDeclaration, "err").type()).isEqualTo("UNKNOWN");
   }
 
   private static IdentifierTree getIdentifierByName(FunctionDeclarationTree functionDeclaration, String name) {
