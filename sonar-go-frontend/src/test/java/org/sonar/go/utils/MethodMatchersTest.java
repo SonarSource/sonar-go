@@ -29,6 +29,8 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.IntegerLiteralTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
@@ -512,6 +514,87 @@ class MethodMatchersTest {
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).isEmpty();
+  }
+
+  static Stream<Arguments> testMatchWithParameterValuePredicate() {
+    return Stream.of(
+      arguments("sonar.foo(\"bar\", 2)", true),
+      arguments("sonar.foo(\"bar\", 2, 3)", true),
+      arguments("sonar.foo(\"bar\")", false),
+      arguments("sonar.foo()", false),
+      arguments("sonar.foo(3, 3)", false),
+      arguments("sonar.foo(\"bar\", \"baz\")", false));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testMatchWithParameterValuePredicate(String code, boolean shouldMatch) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("sonar.foo")
+      .withAnyParameters()
+      .withParameterAtIndexMatching(0, StringLiteralTree.class::isInstance)
+      .withParameterAtIndexMatching(1, IntegerLiteralTree.class::isInstance)
+      .build();
+
+    parseAndCheckMatch(matcher, code, shouldMatch);
+  }
+
+  static Stream<Arguments> testMatchNumberOfParameter() {
+    return Stream.of(
+      arguments("sonar.foo(\"bar\", 2)", true),
+      arguments("sonar.foo(\"bar\", 2, 3)", false),
+      arguments("sonar.foo(\"bar\")", false),
+      arguments("sonar.foo()", false),
+      arguments("sonar.foo(3, 3)", true),
+      arguments("sonar.foo(\"bar\", \"baz\")", true));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testMatchNumberOfParameter(String code, boolean shouldMatch) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("sonar.foo")
+      .withNumberOfParameters(2)
+      .build();
+
+    parseAndCheckMatch(matcher, code, shouldMatch);
+  }
+
+  // Currently we fail all matches because we don't have yet the detection of types
+  static Stream<Arguments> testMatchNumberOfParameterWithAdditionalTypePredicate() {
+    return Stream.of(
+      arguments("sonar.foo(\"bar\", 2)", true),
+      arguments("sonar.foo(\"bar\", 2, 3)", false),
+      arguments("sonar.foo(\"bar\")", false),
+      arguments("sonar.foo()", false),
+      arguments("sonar.foo(3, 3)", true),
+      arguments("sonar.foo(\"bar\", \"baz\")", true));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testMatchNumberOfParameterWithAdditionalTypePredicate(String code, boolean shouldMatch) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNames("sonar.foo")
+      .withNumberOfParameters(2)
+      .withParameters(listType -> listType.size() >= 2 && listType.get(0).equals("string") && listType.get(0).equals("int"))
+      .build();
+
+    parseAndCheckMatch(matcher, code, shouldMatch);
+  }
+
+  private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
+    Tree methodCall = parseAndFeedImportsToMatcher(code, "com/sonar", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    if (shouldMatch) {
+      assertThat(matches).isPresent();
+    } else {
+      assertThat(matches).isEmpty();
+    }
   }
 
   public static TopLevelTree parseFunctionAndFeedImportsToMatcher(String functionCode, String importedType, MethodMatchers matcher) {

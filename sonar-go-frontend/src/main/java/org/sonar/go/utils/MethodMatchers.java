@@ -18,8 +18,10 @@ package org.sonar.go.utils;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -57,6 +59,7 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  *      <li> {@link ParametersBuilder#withAnyParameters()} </li>
  *      <li> {@link ParametersBuilder#withParameters(Predicate)} </li>
  *      <li> {@link ParametersBuilder#withNumberOfParameters(int)} </li>
+ *      <li> {@link ParametersBuilder#withParameterAtIndexMatching(int, Predicate)} </li>
  *    </ul>
  *  </li>
  * </ul>
@@ -138,7 +141,8 @@ public class MethodMatchers {
   private final String type;
   private final boolean withReceiver;
   private final Predicate<String> namePredicate;
-  private final Predicate<List<String>> parametersPredicate;
+  private final Predicate<List<String>> parametersTypePredicate;
+  private final Map<Integer, Predicate<Tree>> parametersTreePredicate;
   private final Predicate<String> variableTypePredicate;
   private final Predicate<String> variableMethodResultPredicate;
 
@@ -146,12 +150,13 @@ public class MethodMatchers {
   private String methodReceiverName;
   private boolean validateTypeInTree = false;
 
-  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersPredicate,
-    Predicate<String> variableTypePredicate, Predicate<String> variableMethodResultPredicate) {
+  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
+    Map<Integer, Predicate<Tree>> parametersTreePredicate, Predicate<String> variableTypePredicate, Predicate<String> variableMethodResultPredicate) {
     this.type = type;
     this.withReceiver = withReceiver;
     this.namePredicate = namePredicate;
-    this.parametersPredicate = parametersPredicate;
+    this.parametersTypePredicate = parametersTypePredicate;
+    this.parametersTreePredicate = parametersTreePredicate;
     this.variableTypePredicate = variableTypePredicate;
     this.variableMethodResultPredicate = variableMethodResultPredicate;
   }
@@ -194,7 +199,8 @@ public class MethodMatchers {
     if (validateTypeInTree
       && tree instanceof FunctionInvocationTree functionInvocation
       && matchesFunctionInvocation(functionInvocation)
-      && parametersPredicate.test(extractArgTypes(functionInvocation))) {
+      && parametersTypePredicate.test(extractArgTypes(functionInvocation))
+      && matchParametersTreePredicate(functionInvocation)) {
 
       return Optional.of(functionInvocation.memberSelect())
         .filter(MemberSelectTree.class::isInstance)
@@ -202,6 +208,16 @@ public class MethodMatchers {
         .map(MemberSelectTree::identifier);
     }
     return Optional.empty();
+  }
+
+  private boolean matchParametersTreePredicate(FunctionInvocationTree functionInvocation) {
+    for (var entry : parametersTreePredicate.entrySet()) {
+      var arg = getArg(functionInvocation, entry.getKey());
+      if (arg == null || !entry.getValue().test(arg)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Nullable
@@ -242,11 +258,11 @@ public class MethodMatchers {
 
   private boolean matchVariable(IdentifierTree identifier) {
     var symbol = identifier.symbol();
-    return symbol != null && (variableTypePredicate.test(symbol.getType()) || variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse(null)));
+    return symbol != null && (variableTypePredicate.test(symbol.getType()) || variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse("")));
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
-    // We don't have any type information at this point.
+    // TODO We don't have any type information at this point.
     return functionInvocation.arguments().stream().map(arg -> "UNKNOWN").toList();
   }
 
@@ -275,6 +291,8 @@ public class MethodMatchers {
 
     ParametersBuilder withNumberOfParameters(int numberOfParameters);
 
+    ParametersBuilder withParameterAtIndexMatching(int indexParameter, Predicate<Tree> predicate);
+
     MethodMatchers build();
   }
 
@@ -288,7 +306,8 @@ public class MethodMatchers {
     private String type;
     private Predicate<String> namePredicate;
     private boolean methodReceiver = false;
-    private Predicate<List<String>> parametersPredicate;
+    private Predicate<List<String>> parametersTypesPredicate;
+    private Map<Integer, Predicate<Tree>> parametersTreePredicate = new HashMap<>();
     private boolean withVariable = false;
     private Predicate<String> variableTypePredicate = v -> false;
     private Predicate<String> variableMethodResultPredicate = v -> false;
@@ -343,21 +362,27 @@ public class MethodMatchers {
 
     @Override
     public ParametersBuilder withParameters(Predicate<List<String>> parametersPredicate) {
-      if (this.parametersPredicate != null) {
-        this.parametersPredicate = this.parametersPredicate.or(parametersPredicate);
+      if (this.parametersTypesPredicate != null) {
+        this.parametersTypesPredicate = this.parametersTypesPredicate.or(parametersPredicate);
       } else {
-        this.parametersPredicate = parametersPredicate;
+        this.parametersTypesPredicate = parametersPredicate;
       }
       return this;
     }
 
     @Override
     public ParametersBuilder withNumberOfParameters(int numberOfParameters) {
-      if (this.parametersPredicate != null) {
-        this.parametersPredicate = this.parametersPredicate.or(p -> p.size() == numberOfParameters);
+      if (this.parametersTypesPredicate != null) {
+        this.parametersTypesPredicate = this.parametersTypesPredicate.or(p -> p.size() == numberOfParameters);
       } else {
-        this.parametersPredicate = p -> p.size() == numberOfParameters;
+        this.parametersTypesPredicate = p -> p.size() == numberOfParameters;
       }
+      return this;
+    }
+
+    @Override
+    public ParametersBuilder withParameterAtIndexMatching(int indexParameter, Predicate<Tree> predicate) {
+      parametersTreePredicate.put(indexParameter, predicate);
       return this;
     }
 
@@ -377,7 +402,7 @@ public class MethodMatchers {
 
     @Override
     public MethodMatchers build() {
-      return new MethodMatchers(type, methodReceiver, namePredicate, parametersPredicate, variableTypePredicate, variableMethodResultPredicate);
+      return new MethodMatchers(type, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate, variableTypePredicate, variableMethodResultPredicate);
     }
   }
 }
