@@ -36,6 +36,7 @@ import org.sonar.go.api.ModifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.PlaceHolderTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.TopLevelTree;
@@ -57,6 +58,7 @@ import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
+import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
@@ -93,6 +95,10 @@ public class TreeCreationUtils {
 
   public static LiteralTree literal(String value) {
     return new LiteralTreeImpl(null, value);
+  }
+
+  public static StringLiteralTree stringLiteral(String value) {
+    return new StringLiteralTreeImpl(null, value);
   }
 
   public static IdentifierTree identifier(String name) {

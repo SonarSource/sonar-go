@@ -18,6 +18,7 @@ package org.sonar.go.utils;
 
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
@@ -115,5 +116,27 @@ class SymbolHelperTest {
     var lastAssignedValue = SymbolHelper.getLastAssignedValue(symbol);
 
     assertThat(lastAssignedValue).isEmpty();
+  }
+
+  @Test
+  void shouldResolveStringValueFromStringLiteral() {
+    var stringLiteral = TreeCreationUtils.stringLiteral("\"my_string\"");
+    var resolvedValue = SymbolHelper.resolveStringValue(stringLiteral);
+
+    assertThat(resolvedValue).isEqualTo("my_string");
+  }
+
+  @Test
+  void shouldResolveStringValueFromSymbol() {
+    var symbol = new Symbol(GoNativeType.STRING, Scope.BLOCK);
+    var usageIdentifier = TreeCreationUtils.identifier("a");
+    usageIdentifier.setSymbol(symbol);
+    var stringLiteral = TreeCreationUtils.stringLiteral("\"my_string\"");
+    var declaration = new Usage(usageIdentifier, stringLiteral, Usage.UsageType.DECLARATION);
+    symbol.getUsages().add(declaration);
+
+    var resolvedValue = SymbolHelper.resolveStringValue(usageIdentifier);
+
+    assertThat(resolvedValue).isEqualTo("my_string");
   }
 }

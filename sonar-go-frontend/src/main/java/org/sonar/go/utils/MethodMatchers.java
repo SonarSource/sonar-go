@@ -277,6 +277,8 @@ public class MethodMatchers {
 
     ParametersBuilder withPrefixAndNames(String commonPrefix, String... names);
 
+    ParametersBuilder withNamesMatching(Predicate<String> namePredicate);
+
     NameBuilder withReceiver();
   }
 
@@ -346,6 +348,12 @@ public class MethodMatchers {
     public ParametersBuilder withPrefixAndNames(String commonPrefix, String... names) {
       var namesWithPrefix = Arrays.stream(names).map(name -> commonPrefix + "." + name).collect(Collectors.toSet());
       this.namePredicate = namesWithPrefix::contains;
+      return this;
+    }
+
+    @Override
+    public ParametersBuilder withNamesMatching(Predicate<String> namePredicate) {
+      this.namePredicate = namePredicate;
       return this;
     }
 

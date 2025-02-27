@@ -24,6 +24,7 @@ import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.BlockTree;
@@ -581,6 +582,25 @@ class MethodMatchersTest {
       .withNames("sonar.foo")
       .withNumberOfParameters(2)
       .withParameters(listType -> listType.size() >= 2 && listType.get(0).equals("string") && listType.get(0).equals("int"))
+      .build();
+
+    parseAndCheckMatch(matcher, code, shouldMatch);
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    "sonar.foo(), true",
+    "sonar.barfoo(), true",
+    "sonar.foobar(), false",
+    "sonar.fooBar(), false",
+    "sonar.barFoo(), false",
+    "sonar.foofoo(), true"
+  })
+  void testMatchNamesByPredicate(String code, boolean shouldMatch) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      .withNamesMatching(functionName -> functionName.endsWith("foo"))
+      .withAnyParameters()
       .build();
 
     parseAndCheckMatch(matcher, code, shouldMatch);

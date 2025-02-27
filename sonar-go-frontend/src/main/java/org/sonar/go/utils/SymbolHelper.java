@@ -17,8 +17,13 @@
 package org.sonar.go.utils;
 
 import java.util.Optional;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
+import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
+import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 
@@ -59,5 +64,18 @@ public class SymbolHelper {
       }
     }
     return Optional.empty();
+  }
+
+  @CheckForNull
+  public static String resolveStringValue(@Nullable Tree tree) {
+    if (tree instanceof StringLiteralTree stringLiteralTree) {
+      return stringLiteralTree.content();
+    } else if (tree instanceof IdentifierTree identifierTree) {
+      var symbol = identifierTree.symbol();
+      if (symbol != null && symbol.getType().equals(GoNativeType.STRING)) {
+        return resolveStringValue(symbol.getSafeValue());
+      }
+    }
+    return null;
   }
 }
