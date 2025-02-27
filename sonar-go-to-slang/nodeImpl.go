@@ -33,6 +33,7 @@ const lParentKind = "Lparen"
 const rParentKind = "Rparen"
 const lBraceKind = "Lbrace"
 const rBraceKind = "Rbrace"
+const lBrackKind = "Lbrack"
 
 func (t *SlangMapper) mapReturnStmtImpl(stmt *ast.ReturnStmt, fieldName string) *Node {
 	var children []*Node
@@ -811,7 +812,23 @@ func (t *SlangMapper) getMatchCases(node *Node) []*Node {
 }
 
 func (t *SlangMapper) mapArrayTypeImpl(arrayType *ast.ArrayType, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(arrayType.Lbrack, token.LBRACK, lBrackKind))
+	if arrayType.Len != nil {
+		length := t.mapExpr(arrayType.Len, "Len")
+		slangField["length"] = length
+		children = t.appendNode(children, length)
+	} else {
+		slangField["length"] = nil
+	}
+
+	element := t.mapExpr(arrayType.Elt, "Elt")
+	slangField["element"] = element
+	children = t.appendNode(children, element)
+
+	return t.createNode(arrayType, children, fieldName+"(ArrayType)", "ArrayType", slangField)
 }
 
 func (t *SlangMapper) mapBadExprImpl(expr *ast.BadExpr, fieldName string) *Node {

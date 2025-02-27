@@ -34,6 +34,7 @@ import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.impl.ArrayTypeTreeImpl;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
@@ -94,6 +95,7 @@ public final class JsonTreeConverter {
   public static final String CONTENT_TEXT = "contentText";
   public static final String DECLARATIONS = "declarations";
   public static final String DEFAULT_VALUE = "defaultValue";
+  public static final String ELEMENT = "element";
   public static final String ELEMENTS = "elements";
   public static final String ELSE_BRANCH = "elseBranch";
   public static final String ELSE_KEYWORD = "elseKeyword";
@@ -113,6 +115,7 @@ public final class JsonTreeConverter {
   public static final String LEFT_HAND_SIDE = "leftHandSide";
   public static final String LEFT_OPERAND = "leftOperand";
   public static final String LEFT_PARENTHESIS = "leftParenthesis";
+  public static final String LENGTH = "length";
   public static final String MEMBER_SELECT = "memberSelect";
   public static final String MODIFIERS = "modifiers";
   public static final String NAME = "name";
@@ -179,6 +182,17 @@ public final class JsonTreeConverter {
     ctx.objectList(json.get(TOKENS), TOKEN_FROM_JSON));
 
   static {
+
+    register(ArrayTypeTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(ELEMENT, ctx.toJson(tree.element()))
+        .add(LENGTH, ctx.toJson(tree.length())),
+
+      (ctx, json) -> new ArrayTypeTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToNullableObject(json, LENGTH, Tree.class),
+        ctx.fieldToObject(json, ELEMENT, Tree.class)));
 
     register(AssignmentExpressionTreeImpl.class,
 

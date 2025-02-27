@@ -89,6 +89,10 @@ public class TreeCreationUtils {
     return new PlaceHolderTreeImpl(null, null);
   }
 
+  public static IntegerLiteralTree integerLiteral(TreeMetaData metaData, String value) {
+    return new IntegerLiteralTreeImpl(metaData, value);
+  }
+
   public static IntegerLiteralTree integerLiteral(String value, TextRange textRange, String... tokens) {
     return new IntegerLiteralTreeImpl(metaData(textRange, tokens), value);
   }

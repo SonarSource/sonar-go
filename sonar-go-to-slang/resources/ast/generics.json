@@ -378,11 +378,8 @@
             ]},
             {"@type": "Native", "metaData": "5:12::13","nativeKind":"Closing"}
           ]},
-          {"@type": "Native", "metaData": "5:14::17","nativeKind":"Type(ArrayType)","children":[
-            {"@type": "Native", "metaData": "5:14::15","nativeKind":"Lbrack"},
-            {"@type": "Native", "metaData": "5:15::16"},
-            {"@type": "Identifier", "metaData": "5:16::17","type":"UNKNOWN","name":"T"}
-          ]}
+          {"@type": "ArrayType", "metaData": "5:14::17","length":null,"element":
+            {"@type": "Identifier", "metaData": "5:16::17","type":"UNKNOWN","name":"T"}}
         ]}},
       {"@type": "FunctionDeclaration", "metaData": "7:0:8:1","typeParameters":
         {"@type": "Native", "metaData": "7:7::14","nativeKind":"TypeParams(FieldList)","children":[
@@ -415,11 +412,8 @@
                     {"@type": "Identifier", "metaData": "9:29::35","type":"UNKNOWN","name":"string"},"operatorToken":"9:28::29","operator":"BITWISE_OR","leftOperand":
                     {"@type": "Native", "metaData": "9:21::28","nativeKind":"operand(UnaryExpr)","children":[
                       {"@type": "Native", "metaData": "9:21::22","nativeKind":"Op"},
-                      {"@type": "Native", "metaData": "9:22::28","nativeKind":"X(ArrayType)","children":[
-                        {"@type": "Native", "metaData": "9:22::23","nativeKind":"Lbrack"},
-                        {"@type": "Native", "metaData": "9:23::24"},
-                        {"@type": "Identifier", "metaData": "9:24::28","type":"UNKNOWN","name":"byte"}
-                      ]}
+                      {"@type": "ArrayType", "metaData": "9:22::28","length":null,"element":
+                        {"@type": "Identifier", "metaData": "9:24::28","type":"UNKNOWN","name":"byte"}}
                     ]}}
                 ]},
                 {"@type": "Native", "metaData": "9:36::37","nativeKind":"Closing"}
@@ -441,11 +435,8 @@
             ]},
             {"@type": "Native", "metaData": "11:10::14","nativeKind":"Type(UnaryExpr)","children":[
               {"@type": "Native", "metaData": "11:10::11","nativeKind":"Op"},
-              {"@type": "Native", "metaData": "11:11::14","nativeKind":"X(ArrayType)","children":[
-                {"@type": "Native", "metaData": "11:11::12","nativeKind":"Lbrack"},
-                {"@type": "Native", "metaData": "11:12::13"},
-                {"@type": "Identifier", "metaData": "11:13::14","type":"UNKNOWN","name":"E"}
-              ]}
+              {"@type": "ArrayType", "metaData": "11:11::14","length":null,"element":
+                {"@type": "Identifier", "metaData": "11:13::14","type":"UNKNOWN","name":"E"}}
             ]}
           ]},
           {"@type": "Native", "metaData": "11:14::15"},

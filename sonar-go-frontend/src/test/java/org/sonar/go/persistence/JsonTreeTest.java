@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.api.ArrayTypeTree;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
@@ -62,6 +63,7 @@ import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.VariableDeclarationTree;
+import org.sonar.go.impl.ArrayTypeTreeImpl;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
@@ -114,6 +116,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONDITION;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONTENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.DECLARATIONS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.DEFAULT_VALUE;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELEMENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_BRANCH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.EXPRESSION;
@@ -131,6 +134,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.LABEL;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_HAND_SIDE;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_PARENTHESIS;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.LENGTH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.MODIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NAME;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_KIND;
@@ -153,6 +157,27 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.TYPE_PARAMET
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.VALUE;
 
 class JsonTreeTest extends JsonTestHelper {
+
+  @Test
+  void array_type() throws IOException {
+    Token tokenBracketOpen = otherToken(1, 0, "[");
+    Token tokenIndex = otherToken(1, 1, "1");
+    otherToken(1, 2, "]");
+    Token tokenType = otherToken(1, 3, "byte");
+
+    Tree integerLiteral = TreeCreationUtils.integerLiteral(metaData(tokenIndex), tokenIndex.text());
+    Tree identifier = TreeCreationUtils.identifier(metaData(tokenType), tokenType.text());
+
+    TreeMetaData metaData = metaData(tokenBracketOpen, tokenType);
+    ArrayTypeTree arrayTypeTree = new ArrayTypeTreeImpl(metaData, integerLiteral, identifier);
+
+    ArrayTypeTree expression = checkJsonSerializationDeserialization(arrayTypeTree, "array_type.json");
+    assertThat(expression.length().textRange()).isEqualTo(tokenIndex.textRange());
+    assertThat(expression.element().textRange()).isEqualTo(tokenType.textRange());
+
+    assertThat(methodNames(ArrayTypeTree.class))
+      .containsExactlyInAnyOrder(ELEMENT, LENGTH);
+  }
 
   @Test
   void assignment_expression() throws IOException {

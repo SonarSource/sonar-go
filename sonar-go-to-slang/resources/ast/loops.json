@@ -358,11 +358,8 @@
           ]},
           {"@type": "VariableDeclaration", "metaData": "26:1::38","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "26:12::38","type":
-              {"@type": "Native", "metaData": "26:12::20","nativeKind":"Type(ArrayType)","children":[
-                {"@type": "Native", "metaData": "26:12::13","nativeKind":"Lbrack"},
-                {"@type": "Native", "metaData": "26:13::14"},
-                {"@type": "Identifier", "metaData": "26:14::20","type":"UNKNOWN","name":"string"}
-              ]},"elements":[
+              {"@type": "ArrayType", "metaData": "26:12::20","length":null,"element":
+                {"@type": "Identifier", "metaData": "26:14::20","type":"UNKNOWN","name":"string"}},"elements":[
               {"@type": "StringLiteral", "metaData": "26:21::28","value":"\"hello\"","content":"hello"},
               {"@type": "StringLiteral", "metaData": "26:30::37","value":"\"world\"","content":"world"}
             ]}
@@ -533,11 +530,8 @@
             ]}},
           {"@type": "VariableDeclaration", "metaData": "58:4::23","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "58:9::23","type":
-              {"@type": "Native", "metaData": "58:9::14","nativeKind":"Type(ArrayType)","children":[
-                {"@type": "Native", "metaData": "58:9::10","nativeKind":"Lbrack"},
-                {"@type": "Native", "metaData": "58:10::11"},
-                {"@type": "Identifier", "metaData": "58:11::14","type":"UNKNOWN","name":"int"}
-              ]},"elements":[
+              {"@type": "ArrayType", "metaData": "58:9::14","length":null,"element":
+                {"@type": "Identifier", "metaData": "58:11::14","type":"UNKNOWN","name":"int"}},"elements":[
               {"@type": "IntegerLiteral", "metaData": "58:15::16","value":"1"},
               {"@type": "IntegerLiteral", "metaData": "58:18::19","value":"2"},
               {"@type": "IntegerLiteral", "metaData": "58:21::22","value":"3"}

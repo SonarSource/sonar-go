@@ -417,11 +417,8 @@
         {"@type": "Identifier", "metaData": "34:5::7","type":"UNKNOWN","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "34:10:65:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "35:4::15","type":
-            {"@type": "Native", "metaData": "35:10::15","nativeKind":"Type(ArrayType)","children":[
-              {"@type": "Native", "metaData": "35:10::11","nativeKind":"Lbrack"},
-              {"@type": "Native", "metaData": "35:11::12"},
-              {"@type": "Identifier", "metaData": "35:12::15","type":"UNKNOWN","name":"int"}
-            ]},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "ArrayType", "metaData": "35:10::15","length":null,"element":
+              {"@type": "Identifier", "metaData": "35:12::15","type":"UNKNOWN","name":"int"}},"isVal":false,"initializers":[],"identifiers":[
             {"@type": "Identifier", "metaData": "35:8::9","type":"UNKNOWN","name":"a"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "36:4::34","type":

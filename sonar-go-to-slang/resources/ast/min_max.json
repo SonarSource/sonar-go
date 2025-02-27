@@ -159,11 +159,8 @@
             {"@type": "Identifier", "metaData": "10:4::5","type":"UNKNOWN","name":"f"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "11:4::18","type":
-            {"@type": "Native", "metaData": "11:10::18","nativeKind":"Type(ArrayType)","children":[
-              {"@type": "Native", "metaData": "11:10::11","nativeKind":"Lbrack"},
-              {"@type": "Native", "metaData": "11:11::12"},
-              {"@type": "Identifier", "metaData": "11:12::18","type":"UNKNOWN","name":"string"}
-            ]},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "ArrayType", "metaData": "11:10::18","length":null,"element":
+              {"@type": "Identifier", "metaData": "11:12::18","type":"UNKNOWN","name":"string"}},"isVal":false,"initializers":[],"identifiers":[
             {"@type": "Identifier", "metaData": "11:8::9","type":"UNKNOWN","name":"s"}
           ]},
           {"@type": "AssignmentExpression", "metaData": "12:4::17","statementOrExpression":
