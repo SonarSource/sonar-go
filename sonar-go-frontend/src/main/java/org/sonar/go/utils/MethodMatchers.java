@@ -258,7 +258,9 @@ public class MethodMatchers {
 
   private boolean matchVariable(IdentifierTree identifier) {
     var symbol = identifier.symbol();
-    return symbol != null && (variableTypePredicate.test(symbol.getType()) || variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse("")));
+    return symbol != null && (variableTypePredicate.test(identifier.type()) ||
+      variableTypePredicate.test(symbol.getType()) ||
+      variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse("")));
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
@@ -410,7 +412,12 @@ public class MethodMatchers {
 
     @Override
     public MethodMatchers build() {
-      return new MethodMatchers(type, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate, variableTypePredicate, variableMethodResultPredicate);
+      if (parametersTypesPredicate == null) {
+        // This can happen if only parametersTreePredicate is set
+        parametersTypesPredicate = p -> true;
+      }
+      return new MethodMatchers(type, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate,
+        variableTypePredicate, variableMethodResultPredicate);
     }
   }
 }
