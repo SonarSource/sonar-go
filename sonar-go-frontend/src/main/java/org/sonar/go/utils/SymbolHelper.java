@@ -96,4 +96,18 @@ public class SymbolHelper {
     }
     return tree;
   }
+
+  /**
+  * If the argument is an identifier with a symbol, then return the safe value of the symbol if it exists.
+  * Otherwise, just return the argument itself.
+  */
+  public static Tree unpackToSafeSymbolValueIfExisting(@Nullable Tree argument) {
+    if (argument instanceof IdentifierTree identifier && identifier.symbol() != null) {
+      var safeValue = identifier.symbol().getSafeValue();
+      if (safeValue != null) {
+        argument = safeValue;
+      }
+    }
+    return argument;
+  }
 }

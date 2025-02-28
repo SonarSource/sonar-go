@@ -17,7 +17,13 @@
 package org.sonar.go.utils;
 
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.sonar.go.api.Tree;
+import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
@@ -173,5 +179,54 @@ class SymbolHelperTest {
     identifier.setSymbol(symbol);
     var resolvedValue = SymbolHelper.resolveValue(identifier);
     assertThat(resolvedValue).isSameAs(value);
+  }
+
+  @Test
+  void shouldUnpackSymbolToSafeValue() {
+    var symbol = new Symbol(GoNativeType.STRING, Scope.FUNCTION);
+    var identifier = TreeCreationUtils.identifier("myVar");
+    var literalValueAssignment = TreeCreationUtils.literal("some_value");
+    identifier.setSymbol(symbol);
+    var declaration = new Usage(identifier, literalValueAssignment, Usage.UsageType.DECLARATION);
+    var reference = new Usage(identifier, null, Usage.UsageType.REFERENCE);
+    symbol.getUsages().add(declaration);
+    symbol.getUsages().add(reference);
+
+    var safeSymbolValue = SymbolHelper.unpackToSafeSymbolValueIfExisting(identifier);
+    assertThat(safeSymbolValue).isSameAs(literalValueAssignment);
+  }
+
+  @Test
+  void shouldNotUnpackSymbolWhenSafeValueIsNull() {
+    var symbol = new Symbol(GoNativeType.STRING, Scope.FUNCTION);
+    var identifier = TreeCreationUtils.identifier("myVar");
+    identifier.setSymbol(symbol);
+    var literalValueAssignment = TreeCreationUtils.literal("some_value");
+    var declaration = new Usage(identifier, literalValueAssignment, Usage.UsageType.DECLARATION);
+    var literalValueAssignment2 = TreeCreationUtils.literal("some_value_2");
+    var assignment = new Usage(identifier, literalValueAssignment2, Usage.UsageType.ASSIGNMENT);
+    var reference = new Usage(identifier, null, Usage.UsageType.REFERENCE);
+    symbol.getUsages().add(declaration);
+    symbol.getUsages().add(assignment);
+    symbol.getUsages().add(reference);
+
+    var safeSymbolValue = SymbolHelper.unpackToSafeSymbolValueIfExisting(identifier);
+    assertThat(safeSymbolValue).isSameAs(identifier);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldReturnOriginalTreeWhenTryingToUnpack(Tree argument) {
+    var safeSymbolValue = SymbolHelper.unpackToSafeSymbolValueIfExisting(argument);
+    assertThat(safeSymbolValue).isSameAs(argument);
+  }
+
+  static Stream<Arguments> shouldReturnOriginalTreeWhenTryingToUnpack() {
+    Tree nullTree = null;
+
+    return Stream.of(
+      Arguments.of(TreeCreationUtils.identifier("myVar")),
+      Arguments.of(nullTree),
+      Arguments.of(new LiteralTreeImpl(null, "nil")));
   }
 }
