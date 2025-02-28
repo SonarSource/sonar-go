@@ -201,6 +201,11 @@ sonar {
         property 'sonar.links.scm', "${sonarLinksScm}"
         property 'sonar.links.issue', 'https://jira.sonarsource.com/browse/SONARGO'
         property 'sonar.exclusions', '**/build/**/*'
+        property 'sonar.analysis.repository', System.getenv("CIRRUS_REPO_FULL_NAME")
+        property 'sonar.analysis.sha1', System.getenv("CIRRUS_CHANGE_IN_REPO")
+        property 'sonar.analysis.buildNumber', System.getenv("CI_BUILD_NUMBER")
+        property 'sonar.analysis.pipeline', System.getenv("CIRRUS_BUILD_ID")
+        property 'sonar.projectVersion', '1.18.1-SNAPSHOT'
     }
 }
 
