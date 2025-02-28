@@ -139,4 +139,39 @@ class SymbolHelperTest {
 
     assertThat(resolvedValue).isEqualTo("my_string");
   }
+
+  @Test
+  void shouldReturnCurrentTreeIfNotAnIdentifier() {
+    var stringLiteral = TreeCreationUtils.stringLiteral("\"my_string\"");
+    var resolvedValue = SymbolHelper.resolveValue(stringLiteral);
+    assertThat(resolvedValue).isSameAs(stringLiteral);
+  }
+
+  @Test
+  void shouldReturnCurrentIdentifierIfNoSymbolIsPresent() {
+    var identifier = TreeCreationUtils.identifier("a");
+    var resolvedValue = SymbolHelper.resolveValue(identifier);
+    assertThat(resolvedValue).isSameAs(identifier);
+  }
+
+  @Test
+  void shouldReturnCurrentIdentifierIfNoVlueIsAssigned() {
+    var symbol = new Symbol("int", Scope.FUNCTION);
+    var identifier = TreeCreationUtils.identifier("a");
+    symbol.getUsages().add(new Usage(identifier, null, Usage.UsageType.DECLARATION));
+    identifier.setSymbol(symbol);
+    var resolvedValue = SymbolHelper.resolveValue(identifier);
+    assertThat(resolvedValue).isSameAs(identifier);
+  }
+
+  @Test
+  void shouldReturnAssignedValue() {
+    var symbol = new Symbol("int", Scope.FUNCTION);
+    var value = TreeCreationUtils.integerLiteral("5");
+    var identifier = TreeCreationUtils.identifier("a");
+    symbol.getUsages().add(new Usage(identifier, value, Usage.UsageType.DECLARATION));
+    identifier.setSymbol(symbol);
+    var resolvedValue = SymbolHelper.resolveValue(identifier);
+    assertThat(resolvedValue).isSameAs(value);
+  }
 }

@@ -78,4 +78,22 @@ public class SymbolHelper {
     }
     return null;
   }
+
+  /**
+   * If the provided value is an identifier, try to get the symbol and call {@link SymbolHelper#getLastAssignedValue(Symbol)} on it. If it gets a value return it.
+   * Otherwise, just return the provided tree.
+   */
+  @CheckForNull
+  public static Tree resolveValue(@Nullable Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      var symbol = identifierTree.symbol();
+      if (symbol != null) {
+        Optional<Tree> value = SymbolHelper.getLastAssignedValue(symbol);
+        if (value.isPresent()) {
+          return value.get();
+        }
+      }
+    }
+    return tree;
+  }
 }
