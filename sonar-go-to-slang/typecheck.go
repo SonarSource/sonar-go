@@ -78,7 +78,8 @@ func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File) (*type
 	conf := types.Config{
 		Importer: &localImporter{},
 		Error: func(err error) {
-			fmt.Fprintf(os.Stderr, "Error while type checking the AST: %s\n", err)
+			// Ignore errors on type checking for now
+			// TODO Investigate errors SONARGO-368
 		},
 	}
 
