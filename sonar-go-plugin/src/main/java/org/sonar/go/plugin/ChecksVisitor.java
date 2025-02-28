@@ -23,6 +23,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.rule.RuleKey;
@@ -37,6 +38,8 @@ import org.sonar.go.visitors.TreeVisitor;
 
 public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
+  private Consumer<Tree> onLeaveFile;
+
   private final DurationStatistics statistics;
 
   public ChecksVisitor(Checks<GoCheck> checks, DurationStatistics statistics) {
@@ -46,6 +49,13 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
       RuleKey ruleKey = checks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));
+    }
+  }
+
+  @Override
+  protected void after(InputFileContext ctx, Tree root) {
+    if (onLeaveFile != null) {
+      onLeaveFile.accept(root);
     }
   }
 
@@ -64,6 +74,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
         currentCtx = ctx;
         visitor.accept(this, tree);
       }));
+    }
+
+    @Override
+    public void registerOnLeave(BiConsumer<CheckContext, Tree> visitor) {
+      ChecksVisitor.this.onLeaveFile = tree -> visitor.accept(this, tree);
     }
 
     @Override

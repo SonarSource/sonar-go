@@ -138,7 +138,7 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  * <p>
  */
 public class MethodMatchers {
-  private final String type;
+  private final List<String> types;
   private final boolean withReceiver;
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersTypePredicate;
@@ -150,9 +150,9 @@ public class MethodMatchers {
   private String methodReceiverName;
   private boolean validateTypeInTree = false;
 
-  private MethodMatchers(String type, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
+  private MethodMatchers(List<String> types, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
     Map<Integer, Predicate<Tree>> parametersTreePredicate, Predicate<String> variableTypePredicate, Predicate<String> variableMethodResultPredicate) {
-    this.type = type;
+    this.types = types;
     this.withReceiver = withReceiver;
     this.namePredicate = namePredicate;
     this.parametersTypePredicate = parametersTypePredicate;
@@ -175,7 +175,7 @@ public class MethodMatchers {
    * This is an approximation, as we don't have proper types resolution for now.
    */
   public void validateTypeInTree(TopLevelTree topLevelTree) {
-    this.validateTypeInTree = topLevelTree.doesImportType(type);
+    this.validateTypeInTree = types.stream().anyMatch(topLevelTree::doesImportType);
   }
 
   /**
@@ -270,6 +270,8 @@ public class MethodMatchers {
 
   public interface TypeBuilder {
     NameBuilder ofType(String type);
+
+    NameBuilder ofTypes(Collection<String> types);
   }
 
   public interface NameBuilder extends VariableMatcherBuilder {
@@ -307,7 +309,7 @@ public class MethodMatchers {
   }
 
   public static class MethodMatchersBuilder implements TypeBuilder, NameBuilder, ParametersBuilder {
-    private String type;
+    private List<String> types;
     private Predicate<String> namePredicate;
     private boolean methodReceiver = false;
     private Predicate<List<String>> parametersTypesPredicate;
@@ -318,7 +320,13 @@ public class MethodMatchers {
 
     @Override
     public NameBuilder ofType(String type) {
-      this.type = type;
+      this.types = List.of(type);
+      return this;
+    }
+
+    @Override
+    public NameBuilder ofTypes(Collection<String> types) {
+      this.types = List.copyOf(types);
       return this;
     }
 
@@ -416,7 +424,7 @@ public class MethodMatchers {
         // This can happen if only parametersTreePredicate is set
         parametersTypesPredicate = p -> true;
       }
-      return new MethodMatchers(type, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate,
+      return new MethodMatchers(types, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate,
         variableTypePredicate, variableMethodResultPredicate);
     }
   }

@@ -26,6 +26,7 @@ var (
 		"github.com/emersion/go-smtp":          "emersion_smtp.o",
 		"github.com/gin-gonic/gin":             "gin.o",
 		"github.com/gofiber/fiber/v2":          "fiber_v2.o",
+		"gopkg.in/dutchcoders/goftp.v1":        "dutchcoders_goftp_v1.o",
 		"golang.org/x/crypto/md4":              "x_crypto_md4.o",
 		"golang.org/x/crypto/ripemd160":        "x_crypto_ripemd160.o",
 		"golang.org/x/sys/unix":                "x_sys_unix.o",

@@ -23,4 +23,6 @@ public interface InitContext {
 
   <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor);
 
+  void registerOnLeave(BiConsumer<CheckContext, Tree> visitor);
+
 }

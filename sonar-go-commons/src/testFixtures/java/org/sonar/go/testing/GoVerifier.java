@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.sonar.go.api.ASTConverter;
 import org.sonar.go.api.HasTextRange;
@@ -95,6 +96,7 @@ public class GoVerifier {
     private final SingleFileVerifier verifier;
     private final String filename;
     private String testFileContent;
+    private Consumer<Tree> onLeave;
 
     public TestContext(SingleFileVerifier verifier, String filename, String testFileContent) {
       this.verifier = verifier;
@@ -105,11 +107,19 @@ public class GoVerifier {
 
     public void scan(@Nullable Tree root) {
       visitor.scan(this, root);
+      if (onLeave != null) {
+        onLeave.accept(root);
+      }
     }
 
     @Override
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> consumer) {
       visitor.register(cls, (ctx, node) -> consumer.accept(this, node));
+    }
+
+    @Override
+    public void registerOnLeave(BiConsumer<CheckContext, Tree> visitor) {
+      this.onLeave = tree -> visitor.accept(this, tree);
     }
 
     @Override

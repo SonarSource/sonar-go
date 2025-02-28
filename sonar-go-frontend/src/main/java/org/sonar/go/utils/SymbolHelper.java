@@ -32,6 +32,13 @@ public class SymbolHelper {
   private SymbolHelper() {
   }
 
+  public static Usage getDeclaration(Symbol symbol) {
+    return symbol.getUsages().stream()
+      .filter(usage -> usage.type() == Usage.UsageType.DECLARATION)
+      .findFirst()
+      .orElseThrow(() -> new IllegalStateException("Symbol has no declaration: " + symbol));
+  }
+
   /**
    * Provide the last assigned method call name to the variable.
    * If there is none, then return null. E.g.:

@@ -229,4 +229,17 @@ class SymbolHelperTest {
       Arguments.of(nullTree),
       Arguments.of(new LiteralTreeImpl(null, "nil")));
   }
+
+  @Test
+  void shouldReturnSymbolsDeclaration() {
+    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var usageIdentifier = TreeCreationUtils.identifier("a");
+    var functionIdentifier = TreeCreationUtils.identifier("my_func");
+    var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);
+    symbol.getUsages().add(declaration);
+
+    var symbolsDeclaration = SymbolHelper.getDeclaration(symbol);
+
+    assertThat(symbolsDeclaration).isEqualTo(declaration);
+  }
 }
