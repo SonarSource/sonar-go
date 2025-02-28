@@ -103,7 +103,13 @@ tasks.shadowJar {
     }
     doLast {
         val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
-        enforceJarSize(pluginJar, 8_500_000L, 9_500_000L)
+        val isCrossCompile: Boolean = providers.environmentVariable("GO_CROSS_COMPILE").map { it == "1" }.getOrElse(false)
+        val (minSize, maxSize) = if (isCrossCompile) {
+            8_500_000L to 9_500_000L
+        } else {
+            3_000_000L to 3_500_000L
+        }
+        enforceJarSize(pluginJar, minSize, maxSize)
         checkJarEntriesPathUniqueness(pluginJar)
     }
 }

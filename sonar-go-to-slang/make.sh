@@ -88,10 +88,18 @@ compile_binaries() {
   mkdir -p build/executable
   # Note: -ldflags="-s -w" is used to strip debug information from the binary and reduce its size.
   GO_FLAGS=(-ldflags='-s -w' -buildmode=exe)
-  CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64 "${GO_FLAGS[@]}"
-  CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64 "${GO_FLAGS[@]}"
-  CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}"
-  CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe "${GO_FLAGS[@]}"
+  if [ "${GO_CROSS_COMPILE:-}" != 0 ]; then
+    echo "Building for all supported platforms"
+    CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64 "${GO_FLAGS[@]}"
+    CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64 "${GO_FLAGS[@]}"
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}"
+    CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe "${GO_FLAGS[@]}"
+  else
+    GOOS=$("${path_to_binary}" env GOOS)
+    GOARCH=$("${path_to_binary}" env GOARCH)
+    echo "Building only for host architecture: ${GOOS}/${GOARCH}"
+    env CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" "${path_to_binary}" build -o build/executable/sonar-go-to-slang-"$GOOS"-"$GOARCH" "${GO_FLAGS[@]}"
+  fi
 }
 
 generate_test_report() {
@@ -102,7 +110,6 @@ generate_test_report() {
   # bash -c "${path_to_binary} test -json > test-report.out"
   CGO_ENABLED=0 bash -c "${path_to_binary} test -timeout 5s -coverprofile=build/test-coverage.out -json > build/test-report.json"
 }
-
 
 main() {
   if [[ "${#}" -ne 1 ]]; then

@@ -215,7 +215,7 @@ if (!isCi) {
             "--mount",
             "type=bind,source=${project.projectDir},target=/home/sonarsource/sonar-go-to-slang",
             "--env",
-            "GO_CROSS_COMPILE=${System.getenv("GO_CROSS_COMPILE") ?: "1"}",
+            "GO_CROSS_COMPILE=${System.getenv("GO_CROSS_COMPILE") ?: "0"}",
             "sonar-go-go-builder",
             "bash",
             "-c",
