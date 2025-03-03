@@ -80,6 +80,8 @@ install_go() {
 
 compile_binaries() {
   # Install the proper go version
+  local platform="${1:-}"
+  local architecture="${2:-}"
   local path_to_binary
   path_to_binary=$(install_go "${GO_VERSION}")
   # Build
@@ -95,10 +97,20 @@ compile_binaries() {
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}"
     CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe "${GO_FLAGS[@]}"
   else
-    GOOS=$("${path_to_binary}" env GOOS)
-    GOARCH=$("${path_to_binary}" env GOARCH)
-    echo "Building only for host architecture: ${GOOS}/${GOARCH}"
-    env CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" "${path_to_binary}" build -o build/executable/sonar-go-to-slang-"$GOOS"-"$GOARCH" "${GO_FLAGS[@]}"
+    if [[ -n "$platform" && -n "$architecture" ]]; then
+      GOOS=$platform
+      GOARCH=$architecture
+    else
+      GOOS=$("${path_to_binary}" env GOOS)
+      GOARCH=$("${path_to_binary}" env GOARCH)
+    fi
+    if [[ "$GOOS" == "windows" ]]; then
+      EXTENSION=".exe"
+    else
+      EXTENSION=""
+    fi
+    echo "Building for platform: ${GOOS}/${GOARCH}"
+    env CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" "${path_to_binary}" build -o build/executable/sonar-go-to-slang-"$GOOS"-"$GOARCH""$EXTENSION" "${GO_FLAGS[@]}"
   fi
 }
 
@@ -112,14 +124,16 @@ generate_test_report() {
 }
 
 main() {
-  if [[ "${#}" -ne 1 ]]; then
-    echo "Usage: ${0} build | clean | test"
+  if [[ "${#}" -lt 1 ]]; then
+    echo "Usage: ${0} build \[platform\] \[arch\] | clean | test"
     exit 0
   fi
   local command="${1}"
+  local platform="${2:-}"
+  local architecture="${3:-}"
   case "${command}" in
     build)
-      compile_binaries
+      compile_binaries "${platform}" "${architecture}"
       ;;
     test)
       generate_test_report

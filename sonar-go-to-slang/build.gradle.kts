@@ -14,6 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+import java.util.Locale
 import org.gradle.nativeplatform.platform.internal.DefaultNativePlatform
 import org.sonarsource.cloudnative.gradle.callMake
 
@@ -205,6 +206,9 @@ if (!isCi) {
         outputs.dir("build/executable")
         outputs.cacheIf { true }
 
+        val platform = getPlatform()
+        val arch = getArchitecture()
+
         commandLine(
             "docker",
             "run",
@@ -219,7 +223,7 @@ if (!isCi) {
             "sonar-go-go-builder",
             "bash",
             "-c",
-            "cd /home/sonarsource/sonar-go-to-slang && ./make.sh clean && ./make.sh build && ./make.sh test"
+            "cd /home/sonarsource/sonar-go-to-slang && ./make.sh clean && ./make.sh build $platform $arch && ./make.sh test"
         )
     }
 
@@ -232,5 +236,22 @@ if (!isCi) {
             // No Java sources in this project
             target("")
         }
+    }
+}
+
+fun getPlatform(): String {
+    val os = System.getProperty("os.name").lowercase(Locale.getDefault())
+    return when {
+        os.contains("mac") -> "darwin"
+        os.contains("win") -> "windows"
+        else -> "linux"
+    }
+}
+
+fun getArchitecture(): String {
+    val arch = System.getProperty("os.arch").lowercase(Locale.getDefault())
+    return when {
+        arch.contains("aarch64") -> "arm64"
+        else -> "amd64"
     }
 }
