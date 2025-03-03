@@ -20,8 +20,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.ParameterTree;
+import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.VariableDeclarationTree;
@@ -191,6 +194,78 @@ class ExpressionUtilsTest {
     } else {
       assertThat(type).isEmpty();
     }
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "[]byte(\"my string\")",
+    "[]byte(\"my string\", \"unexpected second arg\")",
+  })
+  void shouldReturnByteArrayCallArg(String call) {
+    var byteArrayCall = parseExpression(call);
+    var arg = ExpressionUtils.retrieveByteArrayCallArg(byteArrayCall).orElse(null);
+    assertThat(arg)
+      .isNotNull()
+      .isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("my string"));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "[]byte()",
+    "byte(\"some string\")",
+    "[]val.byte(\"some string\")",
+    "[]int(5)",
+    "\"some string\""
+  })
+  void shouldNotReturnByteArrayCallArg(String call) {
+    var byteArrayCall = parseExpression(call);
+    var arg = ExpressionUtils.retrieveByteArrayCallArg(byteArrayCall).orElse(null);
+    assertThat(arg).isNull();
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "make([]byte, 16)",
+    "make([]byte, 16, 32)",
+  })
+  void shouldReturnByteArrayMakeSize(String call) {
+    var byteArrayCall = parseExpression(call);
+    var arg = ExpressionUtils.retrieveByteArrayMakeSizeTree(byteArrayCall).orElse(null);
+    assertThat(arg)
+      .isNotNull()
+      .isInstanceOfSatisfying(IntegerLiteralTree.class, integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(16));
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "make([]int, 16)",
+    "val.make([]byte, 16)",
+    "made([]byte, 16)",
+    "make([]byte)",
+    "make()",
+    "\"some string\""
+  })
+  void shouldNotReturnByteArrayMakeSize(String call) {
+    var byteArrayCall = parseExpression(call);
+    var arg = ExpressionUtils.retrieveByteArrayMakeSizeTree(byteArrayCall).orElse(null);
+    assertThat(arg).isNull();
+  }
+
+  private Tree parseExpression(String expression) {
+    var code = """
+      package test
+
+      func main() {
+        _ := %s
+      }
+      """.formatted(expression);
+
+    var variableDeclaration = TestGoConverter.parse(code)
+      .descendants()
+      .filter(VariableDeclarationTree.class::isInstance)
+      .map(VariableDeclarationTree.class::cast)
+      .findFirst().get();
+    return variableDeclaration.initializers().get(0);
   }
 
 }

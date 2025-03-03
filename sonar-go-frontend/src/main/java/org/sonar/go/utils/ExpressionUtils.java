@@ -21,6 +21,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nullable;
+import org.sonar.go.api.ArrayTypeTree;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CompositeLiteralTree;
@@ -206,5 +207,44 @@ public class ExpressionUtils {
     return Optional.of(arguments.get(0))
       .filter(MemberSelectTree.class::isInstance)
       .map(MemberSelectTree.class::cast);
+  }
+
+  /**
+   * Ensure the provided tree is a function invocation with a byte array as member select, and if so return the argument tree.
+   * <pre>
+   * {@code
+   * []byte("salt")
+   *        ^^^^^^
+   * }
+   * </pre>
+   */
+  public static Optional<Tree> retrieveByteArrayCallArg(@Nullable Tree tree) {
+    if (tree instanceof FunctionInvocationTree functionInvocation && !functionInvocation.arguments().isEmpty()
+      && isByteArray(functionInvocation.memberSelect())) {
+      return Optional.of(functionInvocation.arguments().get(0));
+    }
+    return Optional.empty();
+  }
+
+  public static boolean isByteArray(Tree tree) {
+    return tree instanceof ArrayTypeTree arrayType && arrayType.element() instanceof IdentifierTree identifier && "byte".equals(identifier.name());
+  }
+
+  /**
+   * Ensure the provided tree is a function invocation to 'make' with first parameter as a byte array and return the second parameter.
+   * <pre>
+   * {@code
+   * make([]byte, 16)
+   *              ^^
+   * }
+   * </pre>
+   */
+  public static Optional<Tree> retrieveByteArrayMakeSizeTree(@Nullable Tree tree) {
+    if (tree instanceof FunctionInvocationTree functionInvocation && functionInvocation.arguments().size() >= 2
+      && functionInvocation.memberSelect() instanceof IdentifierTree functionName && "make".equals(functionName.name())
+      && isByteArray(functionInvocation.arguments().get(0))) {
+      return Optional.of(functionInvocation.arguments().get(1));
+    }
+    return Optional.empty();
   }
 }
