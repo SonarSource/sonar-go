@@ -114,7 +114,7 @@ def sca_scan_task():
             "only_if": is_main_branch(),
             "depends_on": "build",
             "env": whitesource_api_env(),
-            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=1, memory="4G"),
+            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=1, memory="6G"),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
             "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
