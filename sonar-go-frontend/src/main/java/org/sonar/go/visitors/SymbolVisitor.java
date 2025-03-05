@@ -31,6 +31,7 @@ import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchTree;
 import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.ParameterTree;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
@@ -76,6 +77,16 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     register(IdentifierTreeImpl.class, this::processIdentifier);
     register(MemberSelectTree.class, this::onMemberSelectEnter);
     registerOnLeaveTree(MemberSelectTree.class, this::onMemberSelectLeave);
+
+    registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> {
+      // Reset the state of the visitor for the next file.
+      variablesPerScope.clear();
+      variablesPerScope.addLast(new HashMap<>());
+      scopes.clear();
+      scopes.addLast(Scope.PACKAGE);
+      skipNextBlockScopeInsertion = false;
+      memberSelectMet = 0;
+    });
   }
 
   private void enterScope(Scope scope) {

@@ -18,6 +18,7 @@ package org.sonar.go.visitors;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
@@ -588,6 +589,23 @@ class SymbolVisitorTest {
 
     assertThat(aMain).isNotSameAs(myFunc).isNotSameAs(aInner);
     assertThat(myFunc).isNotSameAs(aInner);
+  }
+
+  @Test
+  void testSymbolVisitorCleanUpItsStateAfterVisit() {
+    var ast = TestGoConverter.parse("package main\n const x = 1");
+    SymbolVisitor<TreeContext> visitor = new SymbolVisitor<>();
+    visitor.scan(mock(), ast);
+    var secondAst = TestGoConverter.parse("package main\n func main() { x }");
+    visitor.scan(mock(), secondAst);
+    Optional<IdentifierTree> xSymbol = secondAst.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(identifier -> identifier.name().equals("x"))
+      .findFirst();
+    assertThat(xSymbol).isPresent();
+    // We do not track cross file symbols.
+    assertThat(xSymbol.get().symbol()).isNull();
   }
 
   /**
