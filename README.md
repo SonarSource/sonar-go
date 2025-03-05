@@ -39,7 +39,7 @@ Build and run Unit Tests:
 ```shell
 ./gradlew build
 ```
-`
+
 
 ## License headers
 
