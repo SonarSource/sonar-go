@@ -3,33 +3,15 @@
     "comments": [
     ],
     "tokens": [
-      {
-        "textRange": "1:0::4",
-        "text": "Name"
-      },
-      {
-        "textRange": "1:5::6",
-        "text": ":"
-      },
-      {
-        "textRange": "1:7::14",
-        "text": "Example"
-      }
+      {"textRange": "1:0::4", "text": "Name"},
+      {"textRange": "1:5::6", "text": ":"},
+      {"textRange": "1:7::14", "text": "Example"}
     ]
   },
   "tree": {
     "@type": "KeyValue",
     "metaData": "1:0::14",
-    "key": {
-      "@type": "Identifier",
-      "metaData": "1:0::4",
-      "name": "Name",
-      "type": "UNKNOWN"
-    },
-    "value": {
-      "@type": "Literal",
-      "metaData": "1:7::14",
-      "value": "Example"
-    }
+    "key": {"@type": "Identifier", "metaData": "1:0::4", "name": "Name", "type": "UNKNOWN"},
+    "value": {"@type": "Literal", "metaData": "1:7::14", "value": "Example"}
   }
 }

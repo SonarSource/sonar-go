@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
@@ -404,10 +405,15 @@ public class MethodMatchers {
       return this;
     }
 
+    /**
+     * Allow to detect the method call on a variable of a specific type.
+     * This will match the specific type (e.g. {@code sql.DB}) but also a pointer to the type (e.g. {@code *sql.DB}).
+     */
     @Override
     public NameBuilder withVariableTypeIn(String... types) {
       withVariable = true;
-      variableTypePredicate = Set.of(types)::contains;
+      var typesWithStar = Arrays.stream(types).map(t -> "*" + t);
+      variableTypePredicate = Stream.concat(Arrays.stream(types), typesWithStar).collect(Collectors.toSet())::contains;
       return this;
     }
 

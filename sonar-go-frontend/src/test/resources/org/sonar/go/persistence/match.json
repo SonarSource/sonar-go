@@ -13,12 +13,7 @@
     "metaData": "1:0::19",
     "expression": {"@type": "Identifier", "metaData": "1:7::8", "name": "x", "type": "UNKNOWN"},
     "cases": [
-      {
-        "@type": "MatchCase",
-        "metaData": "1:9::19",
-        "expression": null,
-        "body": {"@type": "IntegerLiteral", "metaData": "1:17::19", "value": "42"}
-      }
+      {"@type": "MatchCase", "metaData": "1:9::19", "expression": null, "body": {"@type": "IntegerLiteral", "metaData": "1:17::19", "value": "42"}}
     ],
     "keyword": "1:0::6"
   }

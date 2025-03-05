@@ -1,13 +1,8 @@
 {
   "treeMetaData": {
-    "comments": [
-
-    ],
+    "comments": [],
     "tokens": [
-      {
-        "textRange": "1:0::1",
-        "text": "x"
-      }
+      {"textRange": "1:0::1", "text": "x"}
     ]
   },
   "tree": {
@@ -15,12 +10,7 @@
     "metaData": "1:0::1",
     "nativeKind": "kind",
     "children": [
-      {
-        "@type": "Identifier",
-        "metaData": "1:0::1",
-        "name": "MyClass",
-        "type": "UNKNOWN"
-      }
+      {"@type": "Identifier", "metaData": "1:0::1", "name": "MyClass", "type": "UNKNOWN"}
     ]
   }
 }

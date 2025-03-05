@@ -375,15 +375,15 @@ class MethodMatchersTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-    "*sonar.Connection",
-    "sonar.Connection",
-    "*sonar.GlobalConnection",
-    "sonar.GlobalConnection"
+    "*sql.DB",
+    "sql.DB",
+    "*sql.Tx",
+    "sql.Tx"
   })
   void shouldMatchWithVariableOfTypeInParameters(String type) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withVariableTypeIn("sonar.Connection", "sonar.GlobalConnection")
+      .ofType("database/sql")
+      .withVariableTypeIn("database/sql.DB", "database/sql.Tx")
       .withNames("Query")
       .withAnyParameters()
       .build();
@@ -392,7 +392,7 @@ class MethodMatchersTest {
        func main(x %s) {
          x.Query()
        }
-      """.formatted(type), "com/sonar", matcher);
+      """.formatted(type), "database/sql", matcher);
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).hasSize(1);
@@ -403,14 +403,14 @@ class MethodMatchersTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-    "var x sonar.Connection",
-    "var x sonar.Connection = sonar.Open()",
-    "var x sonar.Connection = 1",
+    "var x sql.DB",
+    "var x sql.DB = sql.Open()",
+    "var x sql.DB = 1",
   })
   void shouldMatchWithVariableOfTypeInVariableDeclaration(String type) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withVariableTypeIn("sonar.Connection")
+      .ofType("database/sql")
+      .withVariableTypeIn("database/sql.DB")
       .withNames("Query")
       .withAnyParameters()
       .build();
@@ -420,7 +420,7 @@ class MethodMatchersTest {
          %s
          x.Query()
        }
-      """.formatted(type), "com/sonar", matcher);
+      """.formatted(type), "database/sql", matcher);
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).hasSize(1);

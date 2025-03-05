@@ -34,12 +34,10 @@ import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
-import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.NativeKinds;
-import org.sonar.go.utils.TreeUtils;
 import org.sonar.go.utils.VariableHelper;
 
 import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
@@ -72,8 +70,8 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     registerOnLeaveTree(MatchTree.class, this::leaveScope);
 
     register(VariableDeclarationTree.class, (ctx, variableDeclarationTree) -> VariableHelper.getVariables(variableDeclarationTree)
-      .forEach(variable -> addVariable(variable.type(), variable.identifier(), variable.value())));
-    register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.type(), parameterTree.identifier(), null));
+      .forEach(variable -> addVariable(variable.identifier(), variable.value())));
+    register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.identifier(), null));
     register(AssignmentExpressionTree.class, this::processAssignment);
     register(IdentifierTreeImpl.class, this::processIdentifier);
     register(MemberSelectTree.class, this::onMemberSelectEnter);
@@ -95,21 +93,10 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     scopes.removeLast();
   }
 
-  private void addVariable(@Nullable Tree type, IdentifierTree identifier, @Nullable Tree value) {
-    var symbol = new Symbol(computeType(type, value), scopes.getLast());
+  private void addVariable(IdentifierTree identifier, @Nullable Tree value) {
+    var symbol = new Symbol(identifier.type(), scopes.getLast());
     variablesPerScope.getLast().put(identifier.name(), symbol);
     addVariableUsage(identifier, value, Usage.UsageType.DECLARATION);
-  }
-
-  private static String computeType(@Nullable Tree type, @Nullable Tree value) {
-    if (type != null) {
-      return TreeUtils.treeToString(type);
-    } else if (value != null) {
-      return GoNativeType.computeTypeFromValue(value);
-    } else {
-      // should never happen
-      return GoNativeType.UNKNOWN;
-    }
   }
 
   private void processIdentifier(C context, IdentifierTreeImpl identifier) {

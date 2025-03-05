@@ -114,7 +114,7 @@ class GoNativeTypeTest {
       arguments("var a bool", GoNativeType.BOOL),
 
       arguments("var a = TRUE", GoNativeType.UNKNOWN),
-      arguments("var a = 3 + 5", GoNativeType.UNKNOWN));
+      arguments("var a = 3 + 5", GoNativeType.INT));
   }
 
   @ParameterizedTest

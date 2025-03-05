@@ -18,16 +18,19 @@ package org.sonar.go.symbols;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
 import org.sonar.go.api.Tree;
+import org.sonar.go.impl.IdentifierTreeImpl;
 
 public class Symbol {
   private final String type;
   private final Scope scope;
   private final List<Usage> usages;
 
-  public Symbol(String type, Scope scope) {
-    this.type = type;
+  public Symbol(@Nullable String type, Scope scope) {
+    this.type = Objects.requireNonNullElse(type, IdentifierTreeImpl.UNKNOWN_TYPE);
     this.scope = scope;
     this.usages = new ArrayList<>();
   }
