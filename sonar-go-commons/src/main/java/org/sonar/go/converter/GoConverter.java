@@ -94,7 +94,7 @@ public class GoConverter implements ASTConverter {
   private static String readAsString(InputStream in) throws IOException {
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
     copy(in, outputStream);
-    return new String(outputStream.toByteArray(), UTF_8);
+    return outputStream.toString(UTF_8);
   }
 
   private static void copy(InputStream in, OutputStream out) throws IOException {
