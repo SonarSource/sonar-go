@@ -97,7 +97,7 @@ public abstract class SlangSensor implements Sensor {
 
   private boolean analyseFiles(ASTConverter converter,
     SensorContext sensorContext,
-    Iterable<InputFile> inputFiles,
+    List<InputFile> inputFiles,
     ProgressReport progressReport,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics) {
@@ -230,8 +230,9 @@ public abstract class SlangSensor implements Sensor {
     FilePredicate mainFilePredicate = fileSystem.predicates().and(
       fileSystem.predicates().hasLanguage(language.getKey()),
       fileSystem.predicates().hasType(InputFile.Type.MAIN));
-    Iterable<InputFile> inputFiles = fileSystem.inputFiles(mainFilePredicate);
-    List<String> filenames = StreamSupport.stream(inputFiles.spliterator(), false).map(InputFile::toString).toList();
+    List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
+      .toList();
+    List<String> filenames = inputFiles.stream().map(InputFile::toString).toList();
     ProgressReport progressReport = new ProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(10));
     progressReport.start(filenames);
     boolean success = false;
