@@ -1,17 +1,17 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// a1[0] == s[1]", "contentText":" a1[0] == s[1]", "range":"7:29::45", "contentRange": "7:31::45"},
-            {"text":"// a2[0] == s[0]", "contentText":" a2[0] == s[0]", "range":"8:29::45", "contentRange": "8:31::45"},
-            {"text":"// panics: len([4]byte) \u003e len(s)", "contentText":" panics: len([4]byte) \u003e len(s)", "range":"9:29::61", "contentRange": "9:31::61"},
-            {"text":"// s0 != nil", "contentText":" s0 != nil", "range":"11:29::41", "contentRange": "11:31::41"},
-            {"text":"// \u0026s1[0] == \u0026s[1]", "contentText":" \u0026s1[0] == \u0026s[1]", "range":"12:29::47", "contentRange": "12:31::47"},
-            {"text":"// \u0026s2[0] == \u0026s[0]", "contentText":" \u0026s2[0] == \u0026s[0]", "range":"13:29::47", "contentRange": "13:31::47"},
-            {"text":"// panics: len([4]byte) \u003e len(s)", "contentText":" panics: len([4]byte) \u003e len(s)", "range":"14:29::61", "contentRange": "14:31::61"},
-            {"text":"// ok for nil slice t", "contentText":" ok for nil slice t", "range":"17:29::50", "contentRange": "17:31::50"},
-            {"text":"// t1 == nil", "contentText":" t1 == nil", "range":"18:29::41", "contentRange": "18:31::41"},
-            {"text":"// panics: len([1]string) \u003e len(t)", "contentText":" panics: len([1]string) \u003e len(t)", "range":"19:29::63", "contentRange": "19:31::63"},
-            {"text":"// u0 != nil", "contentText":" u0 != nil", "range":"22:29::41", "contentRange": "22:31::41"}
+      {"text":"// a1[0] == s[1]", "contentText":" a1[0] == s[1]", "range":"7:29::45", "contentRange": "7:31::45"},
+      {"text":"// a2[0] == s[0]", "contentText":" a2[0] == s[0]", "range":"8:29::45", "contentRange": "8:31::45"},
+      {"text":"// panics: len([4]byte) \u003e len(s)", "contentText":" panics: len([4]byte) \u003e len(s)", "range":"9:29::61", "contentRange": "9:31::61"},
+      {"text":"// s0 != nil", "contentText":" s0 != nil", "range":"11:29::41", "contentRange": "11:31::41"},
+      {"text":"// \u0026s1[0] == \u0026s[1]", "contentText":" \u0026s1[0] == \u0026s[1]", "range":"12:29::47", "contentRange": "12:31::47"},
+      {"text":"// \u0026s2[0] == \u0026s[0]", "contentText":" \u0026s2[0] == \u0026s[0]", "range":"13:29::47", "contentRange": "13:31::47"},
+      {"text":"// panics: len([4]byte) \u003e len(s)", "contentText":" panics: len([4]byte) \u003e len(s)", "range":"14:29::61", "contentRange": "14:31::61"},
+      {"text":"// ok for nil slice t", "contentText":" ok for nil slice t", "range":"17:29::50", "contentRange": "17:31::50"},
+      {"text":"// t1 == nil", "contentText":" t1 == nil", "range":"18:29::41", "contentRange": "18:31::41"},
+      {"text":"// panics: len([1]string) \u003e len(t)", "contentText":" panics: len([1]string) \u003e len(t)", "range":"19:29::63", "contentRange": "19:31::63"},
+      {"text":"// u0 != nil", "contentText":" u0 != nil", "range":"22:29::41", "contentRange": "22:31::41"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

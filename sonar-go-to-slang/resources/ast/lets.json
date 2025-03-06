@@ -1,9 +1,9 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// This is not a line of code", "contentText":" This is not a line of code", "range":"1:0::29", "contentRange": "1:2::29"},
-            {"text":"// Statement 2", "contentText":" Statement 2", "range":"11:13::27", "contentRange": "11:15::27"},
-            {"text":"// Statement 4", "contentText":" Statement 4", "range":"19:12::26", "contentRange": "19:14::26"}
+      {"text":"// This is not a line of code", "contentText":" This is not a line of code", "range":"1:0::29", "contentRange": "1:2::29"},
+      {"text":"// Statement 2", "contentText":" Statement 2", "range":"11:13::27", "contentRange": "11:15::27"},
+      {"text":"// Statement 4", "contentText":" Statement 4", "range":"19:12::26", "contentRange": "19:14::26"}
     ],
     "tokens": [
       {"text":"package","textRange":"2:0::7","type":"KEYWORD"},

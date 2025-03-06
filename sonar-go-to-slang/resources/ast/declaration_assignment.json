@@ -1,18 +1,18 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"//Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "contentText":"Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "range":"16:9::124", "contentRange": "16:11::124"},
-            {"text":"/*comment0*/", "contentText":"comment0", "range":"28:3::15", "contentRange": "28:5::13"},
-            {"text":"/*comment0*/", "contentText":"comment0", "range":"28:21::33", "contentRange": "28:23::31"},
-            {"text":"/*comment0*/", "contentText":"comment0", "range":"34:8::20", "contentRange": "34:10::18"},
-            {"text":"/*comment1*/", "contentText":"comment1", "range":"34:22::34", "contentRange": "34:24::32"},
-            {"text":"/*comment2*/", "contentText":"comment2", "range":"34:35::47", "contentRange": "34:37::45"},
-            {"text":"/*comment3*/", "contentText":"comment3", "range":"34:49::61", "contentRange": "34:51::59"},
-            {"text":"/*comment4*/", "contentText":"comment4", "range":"35:20::32", "contentRange": "35:22::30"},
-            {"text":"/*comment4*/", "contentText":"comment4", "range":"35:34::46", "contentRange": "35:36::44"},
-            {"text":"/*comment4*/", "contentText":"comment4", "range":"35:47::59", "contentRange": "35:49::57"},
-            {"text":"//Comment2", "contentText":"Comment2", "range":"35:61::71", "contentRange": "35:63::71"},
-            {"text":"//Comment01", "contentText":"Comment01", "range":"38:10::21", "contentRange": "38:12::21"}
+      {"text":"//Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "contentText":"Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "range":"16:9::124", "contentRange": "16:11::124"},
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"28:3::15", "contentRange": "28:5::13"},
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"28:21::33", "contentRange": "28:23::31"},
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"34:8::20", "contentRange": "34:10::18"},
+      {"text":"/*comment1*/", "contentText":"comment1", "range":"34:22::34", "contentRange": "34:24::32"},
+      {"text":"/*comment2*/", "contentText":"comment2", "range":"34:35::47", "contentRange": "34:37::45"},
+      {"text":"/*comment3*/", "contentText":"comment3", "range":"34:49::61", "contentRange": "34:51::59"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:20::32", "contentRange": "35:22::30"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:34::46", "contentRange": "35:36::44"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:47::59", "contentRange": "35:49::57"},
+      {"text":"//Comment2", "contentText":"Comment2", "range":"35:61::71", "contentRange": "35:63::71"},
+      {"text":"//Comment01", "contentText":"Comment01", "range":"38:10::21", "contentRange": "38:12::21"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

@@ -1,8 +1,8 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"/*\nhttps://golang.org/ref/spec#unary_op\nunary_op   = \"+\" | \"-\" | \"!\" | \"^\" | \"*\" | \"\u0026\" | \"\u003c-\"\n*/", "contentText":"\nhttps://golang.org/ref/spec#unary_op\nunary_op   = \"+\" | \"-\" | \"!\" | \"^\" | \"*\" | \"\u0026\" | \"\u003c-\"\n", "range":"8:0:11:2", "contentRange": "8:2:11:0"},
-            {"text":"// increment and decrement are not operators, but statements", "contentText":" increment and decrement are not operators, but statements", "range":"21:1::61", "contentRange": "21:3::61"}
+      {"text":"/*\nhttps://golang.org/ref/spec#unary_op\nunary_op   = \"+\" | \"-\" | \"!\" | \"^\" | \"*\" | \"\u0026\" | \"\u003c-\"\n*/", "contentText":"\nhttps://golang.org/ref/spec#unary_op\nunary_op   = \"+\" | \"-\" | \"!\" | \"^\" | \"*\" | \"\u0026\" | \"\u003c-\"\n", "range":"8:0:11:2", "contentRange": "8:2:11:0"},
+      {"text":"// increment and decrement are not operators, but statements", "contentText":" increment and decrement are not operators, but statements", "range":"21:1::61", "contentRange": "21:3::61"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

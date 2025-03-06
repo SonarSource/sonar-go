@@ -1,8 +1,8 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// Method with a value receiver", "contentText":" Method with a value receiver", "range":"9:0::31", "contentRange": "9:2::31"},
-            {"text":"// Method with a pointer receiver", "contentText":" Method with a pointer receiver", "range":"14:0::33", "contentRange": "14:2::33"}
+      {"text":"// Method with a value receiver", "contentText":" Method with a value receiver", "range":"9:0::31", "contentRange": "9:2::31"},
+      {"text":"// Method with a pointer receiver", "contentText":" Method with a pointer receiver", "range":"14:0::33", "contentRange": "14:2::33"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

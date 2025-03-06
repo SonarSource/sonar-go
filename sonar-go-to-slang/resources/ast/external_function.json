@@ -1,7 +1,7 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"//go:noescape", "contentText":"go:noescape", "range":"3:0::13", "contentRange": "3:2::13"}
+      {"text":"//go:noescape", "contentText":"go:noescape", "range":"3:0::13", "contentRange": "3:2::13"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

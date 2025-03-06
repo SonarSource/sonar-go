@@ -1,10 +1,10 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// missing switch expression means \"true\"", "contentText":" missing switch expression means \"true\"", "range":"17:13::54", "contentRange": "17:15::54"},
-            {"text":"// This is a TypeSwitchStmt (others are SwitchStmt in this file)", "contentText":" This is a TypeSwitchStmt (others are SwitchStmt in this file)", "range":"30:33::97", "contentRange": "30:35::97"},
-            {"text":"// type of i is type of x (interface{})", "contentText":" type of i is type of x (interface{})", "range":"35:52::91", "contentRange": "35:54::91"},
-            {"text":"// in Go AST, \";\" is in the children of the switch body (Block), and of the Case body", "contentText":" in Go AST, \";\" is in the children of the switch body (Block), and of the Case body", "range":"48:35::120", "contentRange": "48:37::120"}
+      {"text":"// missing switch expression means \"true\"", "contentText":" missing switch expression means \"true\"", "range":"17:13::54", "contentRange": "17:15::54"},
+      {"text":"// This is a TypeSwitchStmt (others are SwitchStmt in this file)", "contentText":" This is a TypeSwitchStmt (others are SwitchStmt in this file)", "range":"30:33::97", "contentRange": "30:35::97"},
+      {"text":"// type of i is type of x (interface{})", "contentText":" type of i is type of x (interface{})", "range":"35:52::91", "contentRange": "35:54::91"},
+      {"text":"// in Go AST, \";\" is in the children of the switch body (Block), and of the Case body", "contentText":" in Go AST, \";\" is in the children of the switch body (Block), and of the Case body", "range":"48:35::120", "contentRange": "48:37::120"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

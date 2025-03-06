@@ -1,12 +1,12 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// +build ignore", "contentText":" +build ignore", "range":"1:0::16", "contentRange": "1:2::16"},
-            {"text":"// Single import", "contentText":" Single import", "range":"5:0::16", "contentRange": "5:2::16"},
-            {"text":"// Renamed import", "contentText":" Renamed import", "range":"8:0::17", "contentRange": "8:2::17"},
-            {"text":"// Dot import", "contentText":" Dot import", "range":"11:0::13", "contentRange": "11:2::13"},
-            {"text":"// Blank import", "contentText":" Blank import", "range":"14:0::15", "contentRange": "14:2::15"},
-            {"text":"// Grouped imports", "contentText":" Grouped imports", "range":"17:0::18", "contentRange": "17:2::18"}
+      {"text":"// +build ignore", "contentText":" +build ignore", "range":"1:0::16", "contentRange": "1:2::16"},
+      {"text":"// Single import", "contentText":" Single import", "range":"5:0::16", "contentRange": "5:2::16"},
+      {"text":"// Renamed import", "contentText":" Renamed import", "range":"8:0::17", "contentRange": "8:2::17"},
+      {"text":"// Dot import", "contentText":" Dot import", "range":"11:0::13", "contentRange": "11:2::13"},
+      {"text":"// Blank import", "contentText":" Blank import", "range":"14:0::15", "contentRange": "14:2::15"},
+      {"text":"// Grouped imports", "contentText":" Grouped imports", "range":"17:0::18", "contentRange": "17:2::18"}
     ],
     "tokens": [
       {"text":"package","textRange":"3:0::7","type":"KEYWORD"},

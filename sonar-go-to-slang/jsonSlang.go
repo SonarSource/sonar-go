@@ -23,13 +23,12 @@ import (
 	"strings"
 )
 
-func toJsonSlang(node *Node, comments []*Node, tokens []*Token) string {
+func toJsonSlang(node *Node, comments []*Node, tokens []*Token, indent string) string {
 	var buf bytes.Buffer
-	indent := "  "
 	buf.WriteString("{ \n")
 	marshallSlangMetaData(&buf, comments, tokens, indent)
 	buf.WriteString(indent + "\"tree\":\n")
-	marshalIndentSlang(&buf, node, "    ", indent)
+	marshalIndentSlang(&buf, node, strings.Repeat(indent, 2), indent)
 	buf.WriteString("\n} \n")
 	return string(buf.Bytes())
 }
@@ -42,11 +41,11 @@ func marshallSlangMetaData(dst *bytes.Buffer, comments []*Node, tokens []*Token,
 	if sizeComments != 0 {
 		for i := 0; i < sizeComments-1; i++ {
 			dst.WriteString(strings.Repeat(indent, 3))
-			marshallComment(dst, comments[i], strings.Repeat(indent, 3))
+			marshallComment(dst, comments[i])
 			dst.WriteString(",\n")
 		}
 		dst.WriteString(strings.Repeat(indent, 3))
-		marshallComment(dst, comments[sizeComments-1], strings.Repeat(indent, 3))
+		marshallComment(dst, comments[sizeComments-1])
 		dst.WriteString("\n")
 	}
 
@@ -67,7 +66,7 @@ func marshallSlangMetaData(dst *bytes.Buffer, comments []*Node, tokens []*Token,
 	dst.WriteString(indent + "},\n")
 }
 
-func marshallComment(dst *bytes.Buffer, comment *Node, prefix string) {
+func marshallComment(dst *bytes.Buffer, comment *Node) {
 	text := comment.Token.Value
 	var contentText string
 
@@ -84,7 +83,7 @@ func marshallComment(dst *bytes.Buffer, comment *Node, prefix string) {
 		panic("Unknown comment content: " + text)
 	}
 
-	dst.WriteString(prefix + "{\"text\":")
+	dst.WriteString("{\"text\":")
 	writeObjectSlang(dst, text)
 	dst.WriteString(", \"contentText\":")
 	writeObjectSlang(dst, contentText)

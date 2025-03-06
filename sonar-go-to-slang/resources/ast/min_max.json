@@ -1,13 +1,13 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// m == x", "contentText":" m == x", "range":"6:32::41", "contentRange": "6:34::41"},
-            {"text":"// m is the smaller of x and y", "contentText":" m is the smaller of x and y", "range":"7:32::62", "contentRange": "7:34::62"},
-            {"text":"// m is the larger of x and y but at least 10", "contentText":" m is the larger of x and y but at least 10", "range":"8:32::77", "contentRange": "8:34::77"},
-            {"text":"// c == 10.0 (floating-point kind)", "contentText":" c == 10.0 (floating-point kind)", "range":"9:32::66", "contentRange": "9:34::66"},
-            {"text":"// type of f is float32", "contentText":" type of f is float32", "range":"10:32::55", "contentRange": "10:34::55"},
-            {"text":"// invalid: slice arguments are not permitted", "contentText":" invalid: slice arguments are not permitted", "range":"12:32::77", "contentRange": "12:34::77"},
-            {"text":"// t == \"foo\" (string kind)", "contentText":" t == \"foo\" (string kind)", "range":"13:32::59", "contentRange": "13:34::59"}
+      {"text":"// m == x", "contentText":" m == x", "range":"6:32::41", "contentRange": "6:34::41"},
+      {"text":"// m is the smaller of x and y", "contentText":" m is the smaller of x and y", "range":"7:32::62", "contentRange": "7:34::62"},
+      {"text":"// m is the larger of x and y but at least 10", "contentText":" m is the larger of x and y but at least 10", "range":"8:32::77", "contentRange": "8:34::77"},
+      {"text":"// c == 10.0 (floating-point kind)", "contentText":" c == 10.0 (floating-point kind)", "range":"9:32::66", "contentRange": "9:34::66"},
+      {"text":"// type of f is float32", "contentText":" type of f is float32", "range":"10:32::55", "contentRange": "10:34::55"},
+      {"text":"// invalid: slice arguments are not permitted", "contentText":" invalid: slice arguments are not permitted", "range":"12:32::77", "contentRange": "12:34::77"},
+      {"text":"// t == \"foo\" (string kind)", "contentText":" t == \"foo\" (string kind)", "range":"13:32::59", "contentRange": "13:34::59"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

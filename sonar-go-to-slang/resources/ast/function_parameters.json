@@ -1,10 +1,10 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"/*comment*/", "contentText":"comment", "range":"29:11::22", "contentRange": "29:13::20"},
-            {"text":"/*comment*/", "contentText":"comment", "range":"31:19::30", "contentRange": "31:21::28"},
-            {"text":"// function literal (lambda)", "contentText":" function literal (lambda)", "range":"33:0::28", "contentRange": "33:2::28"},
-            {"text":"// goroutine", "contentText":" goroutine", "range":"35:4::16", "contentRange": "35:6::16"}
+      {"text":"/*comment*/", "contentText":"comment", "range":"29:11::22", "contentRange": "29:13::20"},
+      {"text":"/*comment*/", "contentText":"comment", "range":"31:19::30", "contentRange": "31:21::28"},
+      {"text":"// function literal (lambda)", "contentText":" function literal (lambda)", "range":"33:0::28", "contentRange": "33:2::28"},
+      {"text":"// goroutine", "contentText":" goroutine", "range":"35:4::16", "contentRange": "35:6::16"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

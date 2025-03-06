@@ -1,8 +1,8 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"//Not a TypeSpec, but a StructType, it will not be a class", "contentText":"Not a TypeSpec, but a StructType, it will not be a class", "range":"16:43::101", "contentRange": "16:45::101"},
-            {"text":"//Not a TypeSpec, but a InterfaceType; not a class", "contentText":"Not a TypeSpec, but a InterfaceType; not a class", "range":"25:41::91", "contentRange": "25:43::91"}
+      {"text":"//Not a TypeSpec, but a StructType, it will not be a class", "contentText":"Not a TypeSpec, but a StructType, it will not be a class", "range":"16:43::101", "contentRange": "16:45::101"},
+      {"text":"//Not a TypeSpec, but a InterfaceType; not a class", "contentText":"Not a TypeSpec, but a InterfaceType; not a class", "range":"25:41::91", "contentRange": "25:43::91"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

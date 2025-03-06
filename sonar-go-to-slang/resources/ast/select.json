@@ -1,14 +1,14 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"//Select are not translated to MatchTree", "contentText":"Select are not translated to MatchTree", "range":"3:0::40", "contentRange": "3:2::40"},
-            {"text":"// same as: i3, ok := \u003c-c3", "contentText":" same as: i3, ok := \u003c-c3", "range":"43:28::54", "contentRange": "43:30::54"},
-            {"text":"// same as:", "contentText":" same as:", "range":"50:8::19", "contentRange": "50:10::19"},
-            {"text":"// case t := \u003c-c4", "contentText":" case t := \u003c-c4", "range":"51:8::25", "contentRange": "51:10::25"},
-            {"text":"//\ta[f()] = t", "contentText":"\ta[f()] = t", "range":"52:8::21", "contentRange": "52:10::21"},
-            {"text":"// send random sequence of bits to c", "contentText":" send random sequence of bits to c", "range":"57:11::47", "contentRange": "57:13::47"},
-            {"text":"// note: no statement, no fallthrough, no folding of cases", "contentText":" note: no statement, no fallthrough, no folding of cases", "range":"59:22::80", "contentRange": "59:24::80"},
-            {"text":"// block forever", "contentText":" block forever", "range":"64:15::31", "contentRange": "64:17::31"}
+      {"text":"//Select are not translated to MatchTree", "contentText":"Select are not translated to MatchTree", "range":"3:0::40", "contentRange": "3:2::40"},
+      {"text":"// same as: i3, ok := \u003c-c3", "contentText":" same as: i3, ok := \u003c-c3", "range":"43:28::54", "contentRange": "43:30::54"},
+      {"text":"// same as:", "contentText":" same as:", "range":"50:8::19", "contentRange": "50:10::19"},
+      {"text":"// case t := \u003c-c4", "contentText":" case t := \u003c-c4", "range":"51:8::25", "contentRange": "51:10::25"},
+      {"text":"//\ta[f()] = t", "contentText":"\ta[f()] = t", "range":"52:8::21", "contentRange": "52:10::21"},
+      {"text":"// send random sequence of bits to c", "contentText":" send random sequence of bits to c", "range":"57:11::47", "contentRange": "57:13::47"},
+      {"text":"// note: no statement, no fallthrough, no folding of cases", "contentText":" note: no statement, no fallthrough, no folding of cases", "range":"59:22::80", "contentRange": "59:24::80"},
+      {"text":"// block forever", "contentText":" block forever", "range":"64:15::31", "contentRange": "64:17::31"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

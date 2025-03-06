@@ -1,7 +1,7 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// +build ignore", "contentText":" +build ignore", "range":"1:0::16", "contentRange": "1:2::16"}
+      {"text":"// +build ignore", "contentText":" +build ignore", "range":"1:0::16", "contentRange": "1:2::16"}
     ],
     "tokens": [
       {"text":"package","textRange":"3:0::7","type":"KEYWORD"},

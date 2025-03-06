@@ -1,10 +1,10 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// This is not a VariableDeclaration", "contentText":" This is not a VariableDeclaration", "range":"3:15::51", "contentRange": "3:17::51"},
-            {"text":"// _ := \"42\" is a compilation error", "contentText":" _ := \"42\" is a compilation error", "range":"8:5::40", "contentRange": "8:7::40"},
-            {"text":"// These are not two parameters", "contentText":" These are not two parameters", "range":"13:28::59", "contentRange": "13:30::59"},
-            {"text":"// Empty", "contentText":" Empty", "range":"22:4::12", "contentRange": "22:6::12"}
+      {"text":"// This is not a VariableDeclaration", "contentText":" This is not a VariableDeclaration", "range":"3:15::51", "contentRange": "3:17::51"},
+      {"text":"// _ := \"42\" is a compilation error", "contentText":" _ := \"42\" is a compilation error", "range":"8:5::40", "contentRange": "8:7::40"},
+      {"text":"// These are not two parameters", "contentText":" These are not two parameters", "range":"13:28::59", "contentRange": "13:30::59"},
+      {"text":"// Empty", "contentText":" Empty", "range":"22:4::12", "contentRange": "22:6::12"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

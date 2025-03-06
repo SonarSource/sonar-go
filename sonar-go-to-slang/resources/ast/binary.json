@@ -1,7 +1,7 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"/*\nhttps://golang.org/ref/spec#binary_op\nbinary_op  = \"||\" | \"\u0026\u0026\" | rel_op | add_op | mul_op .\nrel_op     = \"==\" | \"!=\" | \"\u003c\" | \"\u003c=\" | \"\u003e\" | \"\u003e=\" .\nadd_op     = \"+\" | \"-\" | \"|\" | \"^\" .\nmul_op     = \"*\" | \"/\" | \"%\" | \"\u003c\u003c\" | \"\u003e\u003e\" | \"\u0026\" | \"\u0026^\" .\n*/", "contentText":"\nhttps://golang.org/ref/spec#binary_op\nbinary_op  = \"||\" | \"\u0026\u0026\" | rel_op | add_op | mul_op .\nrel_op     = \"==\" | \"!=\" | \"\u003c\" | \"\u003c=\" | \"\u003e\" | \"\u003e=\" .\nadd_op     = \"+\" | \"-\" | \"|\" | \"^\" .\nmul_op     = \"*\" | \"/\" | \"%\" | \"\u003c\u003c\" | \"\u003e\u003e\" | \"\u0026\" | \"\u0026^\" .\n", "range":"3:0:9:2", "contentRange": "3:2:9:0"}
+      {"text":"/*\nhttps://golang.org/ref/spec#binary_op\nbinary_op  = \"||\" | \"\u0026\u0026\" | rel_op | add_op | mul_op .\nrel_op     = \"==\" | \"!=\" | \"\u003c\" | \"\u003c=\" | \"\u003e\" | \"\u003e=\" .\nadd_op     = \"+\" | \"-\" | \"|\" | \"^\" .\nmul_op     = \"*\" | \"/\" | \"%\" | \"\u003c\u003c\" | \"\u003e\u003e\" | \"\u0026\" | \"\u0026^\" .\n*/", "contentText":"\nhttps://golang.org/ref/spec#binary_op\nbinary_op  = \"||\" | \"\u0026\u0026\" | rel_op | add_op | mul_op .\nrel_op     = \"==\" | \"!=\" | \"\u003c\" | \"\u003c=\" | \"\u003e\" | \"\u003e=\" .\nadd_op     = \"+\" | \"-\" | \"|\" | \"^\" .\nmul_op     = \"*\" | \"/\" | \"%\" | \"\u003c\u003c\" | \"\u003e\u003e\" | \"\u0026\" | \"\u0026^\" .\n", "range":"3:0:9:2", "contentRange": "3:2:9:0"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

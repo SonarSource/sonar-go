@@ -1,15 +1,15 @@
 { 
   "treeMetaData": {
     "comments": [
-            {"text":"// Code taken from https://go.dev/doc/tutorial/generics", "contentText":" Code taken from https://go.dev/doc/tutorial/generics", "range":"18:0::55", "contentRange": "18:2::55"},
-            {"text":"// Initialize a map for the integer values", "contentText":" Initialize a map for the integer values", "range":"25:4::46", "contentRange": "25:6::46"},
-            {"text":"// Initialize a map for the float values", "contentText":" Initialize a map for the float values", "range":"31:4::44", "contentRange": "31:6::44"},
-            {"text":"// SumInts adds together the values of m.", "contentText":" SumInts adds together the values of m.", "range":"54:0::41", "contentRange": "54:2::41"},
-            {"text":"// SumFloats adds together the values of m.", "contentText":" SumFloats adds together the values of m.", "range":"63:0::43", "contentRange": "63:2::43"},
-            {"text":"// SumIntsOrFloats sums the values of map m. It supports both floats and integers", "contentText":" SumIntsOrFloats sums the values of map m. It supports both floats and integers", "range":"72:0::81", "contentRange": "72:2::81"},
-            {"text":"// as map values.", "contentText":" as map values.", "range":"73:0::17", "contentRange": "73:2::17"},
-            {"text":"// SumNumbers sums the values of map m. Its supports both integers", "contentText":" SumNumbers sums the values of map m. Its supports both integers", "range":"82:0::66", "contentRange": "82:2::66"},
-            {"text":"// and floats as map values.", "contentText":" and floats as map values.", "range":"83:0::28", "contentRange": "83:2::28"}
+      {"text":"// Code taken from https://go.dev/doc/tutorial/generics", "contentText":" Code taken from https://go.dev/doc/tutorial/generics", "range":"18:0::55", "contentRange": "18:2::55"},
+      {"text":"// Initialize a map for the integer values", "contentText":" Initialize a map for the integer values", "range":"25:4::46", "contentRange": "25:6::46"},
+      {"text":"// Initialize a map for the float values", "contentText":" Initialize a map for the float values", "range":"31:4::44", "contentRange": "31:6::44"},
+      {"text":"// SumInts adds together the values of m.", "contentText":" SumInts adds together the values of m.", "range":"54:0::41", "contentRange": "54:2::41"},
+      {"text":"// SumFloats adds together the values of m.", "contentText":" SumFloats adds together the values of m.", "range":"63:0::43", "contentRange": "63:2::43"},
+      {"text":"// SumIntsOrFloats sums the values of map m. It supports both floats and integers", "contentText":" SumIntsOrFloats sums the values of map m. It supports both floats and integers", "range":"72:0::81", "contentRange": "72:2::81"},
+      {"text":"// as map values.", "contentText":" as map values.", "range":"73:0::17", "contentRange": "73:2::17"},
+      {"text":"// SumNumbers sums the values of map m. Its supports both integers", "contentText":" SumNumbers sums the values of map m. Its supports both integers", "range":"82:0::66", "contentRange": "82:2::66"},
+      {"text":"// and floats as map values.", "contentText":" and floats as map values.", "range":"83:0::28", "contentRange": "83:2::28"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},

@@ -58,6 +58,6 @@ func main() {
 		fmt.Println(render(astFile))
 	} else {
 		slangTree, comments, tokens := toSlangTree(fileSet, astFile, fileContent, info)
-		fmt.Println(toJsonSlang(slangTree, comments, tokens))
+		fmt.Println(toJsonSlang(slangTree, comments, tokens, ""))
 	}
 }

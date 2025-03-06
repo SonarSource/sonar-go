@@ -54,8 +54,8 @@ func fix_all_go_files_test_automatically(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-
-		actual := toJsonSlang(slangFromString(string(source)))
+		node, comment, tokens := slangFromString(string(source))
+		actual := toJsonSlang(node, comment, tokens, "  ")
 		d1 := []byte(actual)
 		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
 		if errWrite != nil {
@@ -70,7 +70,8 @@ func Test_all_go_files(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		actual := toJsonSlang(slangFromString(string(source)))
+		node, comment, tokens := slangFromString(string(source))
+		actual := toJsonSlang(node, comment, tokens, "  ")
 
 		var jsonActual interface{}
 		err1 := json.Unmarshal([]byte(actual), &jsonActual)
