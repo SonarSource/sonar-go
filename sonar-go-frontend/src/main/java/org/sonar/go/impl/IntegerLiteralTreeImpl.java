@@ -32,25 +32,27 @@ public class IntegerLiteralTreeImpl extends LiteralTreeImpl implements IntegerLi
   public IntegerLiteralTreeImpl(TreeMetaData metaData, String stringValue) {
     super(metaData, stringValue);
 
+    var numeric = "";
     if (hasExplicitHexadecimalPrefix(stringValue)) {
       base = IntegerLiteralTree.Base.HEXADECIMAL;
-      numericPart = stringValue.substring(2);
+      numeric = stringValue.substring(2);
     } else if (hasExplicitBinaryPrefix(stringValue)) {
       base = IntegerLiteralTree.Base.BINARY;
-      numericPart = stringValue.substring(2);
+      numeric = stringValue.substring(2);
     } else if (hasExplicitDecimalPrefix(stringValue)) {
       base = IntegerLiteralTree.Base.DECIMAL;
-      numericPart = stringValue.substring(2);
+      numeric = stringValue.substring(2);
     } else if (hasExplicitOctalPrefix(stringValue)) {
       base = IntegerLiteralTree.Base.OCTAL;
-      numericPart = stringValue.substring(2);
+      numeric = stringValue.substring(2);
     } else if (!stringValue.equals("0") && stringValue.startsWith("0")) {
       base = IntegerLiteralTree.Base.OCTAL;
-      numericPart = stringValue.substring(1);
+      numeric = stringValue.substring(1);
     } else {
       base = Base.DECIMAL;
-      numericPart = stringValue;
+      numeric = stringValue;
     }
+    numericPart = numeric.replace("_", "");
   }
 
   @Override

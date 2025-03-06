@@ -74,7 +74,7 @@ class GoConverterTest {
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
 
-    checkIntegerValue(returnList.get(0), "_0010_1010");
+    checkIntegerValue(returnList.get(0), "00101010");
   }
 
   @Test
