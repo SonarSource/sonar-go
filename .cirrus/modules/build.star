@@ -73,7 +73,7 @@ def build_task():
 def build_test_sonar_env():
     return next_env() | {
         "DEPLOY_PULL_REQUEST": "false",
-        "BUILD_ARGUMENTS": "--build-cache -x build -x artifactoryPublish test"
+        "BUILD_ARGUMENTS": "--build-cache -x build -x artifactoryPublish test --configuration-cache"
     }
 
 

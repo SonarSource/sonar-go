@@ -101,9 +101,9 @@ tasks.shadowJar {
         exclude("tmp/**")
         exclude("spotless/**")
     }
+    val isCrossCompile: Boolean = providers.environmentVariable("GO_CROSS_COMPILE").map { it == "1" }.getOrElse(false)
+    val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
     doLast {
-        val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
-        val isCrossCompile: Boolean = providers.environmentVariable("GO_CROSS_COMPILE").map { it == "1" }.getOrElse(false)
         val (minSize, maxSize) = if (isCrossCompile) {
             9_000_000L to 10_000_000L
         } else {
