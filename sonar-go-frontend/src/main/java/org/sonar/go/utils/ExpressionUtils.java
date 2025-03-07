@@ -177,14 +177,14 @@ public class ExpressionUtils {
       && getMemberSelectOrIdentifierName(invocation.memberSelect()).filter("new"::equals).isPresent()) {
       return getTypeOfNewExpression(invocation);
     }
-    if (skipUnaryExprIfExist(initializer) instanceof CompositeLiteralTree compositeLiteralTree) {
+    if (getUnaryOperandOrTree(initializer) instanceof CompositeLiteralTree compositeLiteralTree) {
       return getTypeOfCompositeLiteral(compositeLiteralTree);
     }
 
     return Optional.empty();
   }
 
-  private static Tree skipUnaryExprIfExist(Tree tree) {
+  public static Tree getUnaryOperandOrTree(Tree tree) {
     if (tree instanceof UnaryExpressionTree unaryExpression
       && unaryExpression.operator() == UnaryExpressionTree.Operator.ADDRESS_OF) {
       return unaryExpression.operand();
