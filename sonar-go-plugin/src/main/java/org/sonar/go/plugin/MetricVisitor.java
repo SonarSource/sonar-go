@@ -53,10 +53,11 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
     register(TopLevelTree.class, (ctx, tree) -> {
       List<Tree> declarations = tree.declarations();
       int firstTokenLine = declarations.isEmpty() ? tree.textRange().end().line() : declarations.get(0).textRange().start().line();
+      var numberOfLinesInFile = ctx.inputFile.lines();
       tree.allComments()
         .forEach(comment -> commentLines.addAll(findNonEmptyCommentLines(comment, firstTokenLine)));
       addExecutableLines(declarations);
-      linesOfCode.addAll(tree.metaData().linesOfCode());
+      linesOfCode.addAll(tree.metaData().linesOfCode().stream().filter(line -> line <= numberOfLinesInFile).toList());
       complexity = new CyclomaticComplexityVisitor().complexityTrees(tree).size();
       statements = new StatementsVisitor().statements(tree);
       cognitiveComplexity = new CognitiveComplexity(tree).value();

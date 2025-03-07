@@ -1,0 +1,73 @@
+/*
+ * SonarSource Go
+ * Copyright (C) 2018-2025 SonarSource SA
+ * mailto:info AT sonarsource DOT com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the Sonar Source-Available License Version 1, as published by SonarSource SA.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the Sonar Source-Available License for more details.
+ *
+ * You should have received a copy of the Sonar Source-Available License
+ * along with this program; if not, see https://sonarsource.com/license/ssal/
+ */
+package org.sonar.go.plugin;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
+import org.slf4j.event.Level;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.internal.DefaultTextPointer;
+import org.sonar.api.batch.sensor.SensorContext;
+import org.sonar.api.batch.sensor.error.NewAnalysisError;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.go.impl.TextPointerImpl;
+import org.sonar.go.impl.TextRanges;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.anyInt;
+import static org.mockito.Mockito.anyString;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
+class InputFileContextTest {
+
+  @RegisterExtension
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
+
+  @Test
+  void shouldReturnNullWhenLocationIsWrong() {
+    var inputFile = mock(InputFile.class);
+    when(inputFile.newRange(anyInt(), anyInt(), anyInt(), anyInt())).thenThrow(new IllegalArgumentException("boom"));
+    when(inputFile.lines()).thenReturn(5);
+    when(inputFile.toString()).thenReturn("foo/bar.go");
+    var inputFileContext = new InputFileContext(null, inputFile);
+    var range = TextRanges.range(10, 1, 10, 5);
+
+    var actual = inputFileContext.textRange(range);
+
+    assertThat(actual).isNull();
+    assertThat(logTester.logs(Level.DEBUG)).contains("Invalid TextRange[10, 1, 10, 5], for file: foo/bar.go, number of lines: 5");
+  }
+
+  @Test
+  void shouldReportAnalysisErrorForDefinedLocation() {
+    SensorContext sensorContext = mock(SensorContext.class);
+    var analysisError = mock(NewAnalysisError.class);
+    when(analysisError.message(anyString())).thenReturn(analysisError);
+    when(sensorContext.newAnalysisError()).thenReturn(analysisError);
+    var inputFile = mock(InputFile.class);
+    var defaultTextPointer = new DefaultTextPointer(1, 2);
+    when(inputFile.newPointer(1, 2)).thenReturn(defaultTextPointer);
+    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var textPointer = new TextPointerImpl(1, 2);
+
+    inputFileContext.reportAnalysisError("msg", textPointer);
+
+    verify(analysisError).at(defaultTextPointer);
+  }
+}

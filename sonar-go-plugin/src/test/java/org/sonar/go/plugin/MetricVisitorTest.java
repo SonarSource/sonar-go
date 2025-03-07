@@ -40,7 +40,7 @@ import static org.mockito.Mockito.when;
 class MetricVisitorTest {
 
   private File tempFolder;
-  private org.sonar.go.plugin.MetricVisitor visitor;
+  private MetricVisitor visitor;
   private SensorContextTester sensorContext;
   private DefaultInputFile inputFile;
 
@@ -262,6 +262,23 @@ class MetricVisitorTest {
         x = 42
       }""");
     assertThat(visitor.executableLines()).containsExactly(5, 10);
+  }
+
+  @Test
+  void shouldCreateMetricsWhenContainsInvalidLineComments() throws IOException {
+    scan("""
+      package p
+
+      // Use a different line number for each token
+      var _ = struct{}{ /*line :6:1*/foo /*line :7:1*/: /*line :8:1*/0 }
+
+      // ERROR "unknown field foo"
+      """);
+
+    // The 7th line is empty, but the ':' has line 7 in metadata, set by '/*line :7:1*/' comment
+    assertThat(visitor.linesOfCode()).containsExactly(1, 4, 6, 7);
+    assertThat(visitor.commentLines()).containsExactly(3, 4, 6, 7, 10);
+    assertThat(visitor.executableLines()).containsExactly(4);
   }
 
   private void scan(String code) throws IOException {

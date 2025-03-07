@@ -53,7 +53,11 @@ public class CpdVisitor extends PullRequestAwareVisitor {
         foundFirstToken = foundFirstToken || (token == tree.firstCpdToken());
         if (foundFirstToken) {
           String text = substituteText(token);
-          cpdTokens.addToken(ctx.textRange(token.textRange()), text);
+          var textRange = token.textRange();
+          var range = ctx.textRange(textRange);
+          if (range != null) {
+            cpdTokens.addToken(range, text);
+          }
           if (ctx.sensorContext.isCacheEnabled()) {
             tokensToCache.add(token);
           }
@@ -83,11 +87,7 @@ public class CpdVisitor extends PullRequestAwareVisitor {
           LOG.warn("Failed to load cached CPD tokens for input file %s.".formatted(fileKey));
           return false;
         }
-        LOG.debug("Loaded cached CPD tokens for {}.", fileKey);
-        for (Token token : tokens) {
-          String text = substituteText(token);
-          reusedTokens.addToken(ctx.textRange(token.textRange()), text);
-        }
+        loadCachedTokens(ctx, fileKey, tokens, reusedTokens);
         try {
           ctx.sensorContext.nextCache().copyFromPrevious(key);
         } catch (IllegalArgumentException e) {
@@ -99,6 +99,17 @@ public class CpdVisitor extends PullRequestAwareVisitor {
       }
     }
     return false;
+  }
+
+  private static void loadCachedTokens(InputFileContext ctx, String fileKey, List<Token> tokens, NewCpdTokens reusedTokens) {
+    LOG.debug("Loaded cached CPD tokens for {}.", fileKey);
+    for (Token token : tokens) {
+      String text = substituteText(token);
+      var range = ctx.textRange(token.textRange());
+      if (range != null) {
+        reusedTokens.addToken(range, text);
+      }
+    }
   }
 
   private static void cacheNewTokens(InputFileContext ctx, List<Token> tokens) {

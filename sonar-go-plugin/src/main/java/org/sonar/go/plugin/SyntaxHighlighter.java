@@ -44,7 +44,10 @@ public class SyntaxHighlighter extends TreeVisitor<InputFileContext> {
         .forEach(token -> highlight(ctx, token.textRange(), KEYWORD));
     });
 
-    register(LiteralTree.class, (ctx, tree) -> highlight(ctx, tree.metaData().textRange(), tree instanceof StringLiteralTree ? STRING : CONSTANT));
+    register(LiteralTree.class, (ctx, tree) -> highlight(
+      ctx,
+      tree.metaData().textRange(),
+      tree instanceof StringLiteralTree ? STRING : CONSTANT));
   }
 
   @Override
@@ -59,7 +62,10 @@ public class SyntaxHighlighter extends TreeVisitor<InputFileContext> {
   }
 
   private void highlight(InputFileContext ctx, TextRange range, TypeOfText typeOfText) {
-    newHighlighting.highlight(ctx.textRange(range), typeOfText);
+    var textRange = ctx.textRange(range);
+    if (textRange != null) {
+      newHighlighting.highlight(textRange, typeOfText);
+    }
   }
 
 }

@@ -22,7 +22,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextPointer;
 import org.sonar.api.batch.fs.TextRange;
@@ -36,6 +39,8 @@ import org.sonar.go.visitors.TreeContext;
 
 public class InputFileContext extends TreeContext {
 
+  private static final Logger LOG = LoggerFactory.getLogger(InputFileContext.class);
+
   private static final String PARSING_ERROR_RULE_KEY = "S2260";
   private Map<String, Set<org.sonar.go.api.TextRange>> filteredRules = new HashMap<>();
 
@@ -48,12 +53,28 @@ public class InputFileContext extends TreeContext {
     this.inputFile = inputFile;
   }
 
-  public TextRange textRange(org.sonar.go.api.TextRange textRange) {
-    return inputFile.newRange(
-      textRange.start().line(),
-      textRange.start().lineOffset(),
-      textRange.end().line(),
-      textRange.end().lineOffset());
+  @CheckForNull
+  public TextRange textRange(@Nullable org.sonar.go.api.TextRange textRange) {
+    if (textRange == null) {
+      return null;
+    }
+    try {
+      return inputFile.newRange(
+        textRange.start().line(),
+        textRange.start().lineOffset(),
+        textRange.end().line(),
+        textRange.end().lineOffset());
+    } catch (IllegalArgumentException e) {
+      // When Go file contains comments like: /*line :6:1*/ then the TextRanges are taken from such comments and not from real location.
+      // It can be disabled in call: parser.ParseFile(fileSet, filename, fileContent, 0)
+      // (last argument equals zero instead of parser.ParseComments), but then the comments are missing in the AST.
+      // To avoid exceptions in visitors, there is extra validation if the TextRange is valid.
+      // If not, it is logged below and `null` is returned.
+      var numberOfLines = inputFile.lines();
+      var message = "Invalid %s, for file: %s, number of lines: %s".formatted(textRange, inputFile, numberOfLines);
+      LOG.debug(message, e);
+    }
+    return null;
   }
 
   public void reportIssue(RuleKey ruleKey,
@@ -72,9 +93,9 @@ public class InputFileContext extends TreeContext {
     NewIssueLocation issueLocation = issue.newLocation()
       .on(inputFile)
       .message(message);
-
-    if (textRange != null) {
-      issueLocation.at(textRange(textRange));
+    var location = textRange(textRange);
+    if (location != null) {
+      issueLocation.at(location);
     }
 
     issue
@@ -82,11 +103,16 @@ public class InputFileContext extends TreeContext {
       .at(issueLocation)
       .gap(gap);
 
-    secondaryLocations.forEach(secondary -> issue.addLocation(
-      issue.newLocation()
+    secondaryLocations.forEach(secondary -> {
+      var newIssueLocation = issue.newLocation()
         .on(inputFile)
-        .at(textRange(secondary.textRange))
-        .message(secondary.message == null ? "" : secondary.message)));
+        .message(secondary.message == null ? "" : secondary.message);
+      var secondaryLocation = textRange(secondary.textRange);
+      if (secondaryLocation != null) {
+        newIssueLocation.at(secondaryLocation);
+      }
+      issue.addLocation(newIssueLocation);
+    });
 
     issue.save();
   }
