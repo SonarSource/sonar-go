@@ -41,19 +41,19 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::9","type":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:10:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "8:1::22","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "8:8::22","value":"\"hello, world\"","content":"hello, world"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "8:1::4","type":"UNKNOWN","name":"msg"}
+            {"@type": "Identifier", "metaData": "8:1::4","type":"string","name":"msg"}
           ]},
           {"@type": "Native", "metaData": "9:1::17","nativeKind":"[1](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "9:1::17","memberSelect":
               {"@type": "MemberSelect", "metaData": "9:1::12","identifier":
                 {"@type": "Identifier", "metaData": "9:5::12","type":"UNKNOWN","name":"Println"},"expression":
                 {"@type": "Identifier", "metaData": "9:1::4","type":"UNKNOWN","name":"fmt"}},"arguments":[
-              {"@type": "Identifier", "metaData": "9:13::16","type":"UNKNOWN","name":"msg"}
+              {"@type": "Identifier", "metaData": "9:13::16","type":"string","name":"msg"}
             ]}
           ]}
         ]}}

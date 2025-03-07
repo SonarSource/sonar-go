@@ -31,17 +31,17 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "4:5::21","type":"UNKNOWN","name":"externalFunction"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "4:5::21","type":"func()","name":"externalFunction"},"formalParameters":[],"body":
         null},
       {"@type": "FunctionDeclaration", "metaData": "6:0:8:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "6:5::9","type":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "6:5::9","type":"func()","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "7:4::22","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "7:4::22","memberSelect":
-              {"@type": "Identifier", "metaData": "7:4::20","type":"UNKNOWN","name":"externalFunction"},"arguments":[]}
+              {"@type": "Identifier", "metaData": "7:4::20","type":"func()","name":"externalFunction"},"arguments":[]}
           ]}
         ]}}
     ]}

@@ -90,7 +90,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:23:1","statementOrExpressions":[
           {"@type": "If", "metaData": "6:1:8:2","thenBranch":
             {"@type": "Block", "metaData": "6:9:8:2","statementOrExpressions":[
@@ -157,13 +157,13 @@
               {"@type": "VariableDeclaration", "metaData": "20:4::11","type":null,"isVal":false,"initializers":[
                 {"@type": "IntegerLiteral", "metaData": "20:9::11","value":"42"}
               ],"identifiers":[
-                {"@type": "Identifier", "metaData": "20:4::5","type":"UNKNOWN","name":"x"}
+                {"@type": "Identifier", "metaData": "20:4::5","type":"int","name":"x"}
               ]},
               {"@type": "Native", "metaData": "20:11::12","nativeKind":"Semicolon"},
               {"@type": "BinaryExpression", "metaData": "20:13::26","rightOperand":
                 {"@type": "BinaryExpression", "metaData": "20:21::26","rightOperand":
                   {"@type": "IntegerLiteral", "metaData": "20:25::26","value":"0"},"operatorToken":"20:23::24","operator":"GREATER_THAN","leftOperand":
-                  {"@type": "Identifier", "metaData": "20:21::22","type":"UNKNOWN","name":"x"}},"operatorToken":"20:18::20","operator":"CONDITIONAL_AND","leftOperand":
+                  {"@type": "Identifier", "metaData": "20:21::22","type":"int","name":"x"}},"operatorToken":"20:18::20","operator":"CONDITIONAL_AND","leftOperand":
                 {"@type": "Literal", "metaData": "20:13::17","value":"true"}}
             ]}}
         ]}}

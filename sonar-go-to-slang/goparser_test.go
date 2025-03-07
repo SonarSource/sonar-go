@@ -24,7 +24,6 @@ import (
 	"github.com/stretchr/testify/assert"
 	"go/ast"
 	"go/token"
-	"go/types"
 	"os"
 	"path/filepath"
 	"strings"
@@ -32,9 +31,9 @@ import (
 )
 
 func slangFromString(source string) (*Node, []*Node, []*Token) {
-	fileSet, astNode := astFromString(source)
-	info := new(types.Info)
-	return toSlangTree(fileSet, astNode, source, info)
+	fileSet, astFile := astFromString(source)
+	info, _ := typeCheckAst("main.go", fileSet, astFile)
+	return toSlangTree(fileSet, astFile, source, info)
 }
 
 func astFromString(source string) (fileSet *token.FileSet, astFile *ast.File) {

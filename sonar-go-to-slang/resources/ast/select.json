@@ -266,12 +266,12 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::12","type":"UNKNOWN","name":"server1"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::12","type":"func(ch chan string)","name":"server1"},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:13::27","type":
           {"@type": "Native", "metaData": "10:21::27","nativeKind":"Type(ChanType)","children":[
-            {"@type": "Identifier", "metaData": "10:21::27","type":"UNKNOWN","name":"string"}
+            {"@type": "Identifier", "metaData": "10:21::27","type":"string","name":"string"}
           ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "10:13::15","type":"UNKNOWN","name":"ch"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "10:13::15","type":"chan string","name":"ch"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "10:29:13:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "11:1::28","nativeKind":"[0](ExprStmt)","children":[
@@ -287,7 +287,7 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "12:1::21","nativeKind":"[1](SendStmt)","children":[
-            {"@type": "Identifier", "metaData": "12:1::3","type":"UNKNOWN","name":"ch"},
+            {"@type": "Identifier", "metaData": "12:1::3","type":"chan string","name":"ch"},
             {"@type": "Native", "metaData": "12:4::6","nativeKind":"Arrow"},
             {"@type": "StringLiteral", "metaData": "12:7::21","value":"\"from server1\"","content":"from server1"}
           ]}
@@ -296,12 +296,12 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "14:5::12","type":"UNKNOWN","name":"server2"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "14:5::12","type":"func(ch chan string)","name":"server2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "14:13::27","type":
           {"@type": "Native", "metaData": "14:21::27","nativeKind":"Type(ChanType)","children":[
-            {"@type": "Identifier", "metaData": "14:21::27","type":"UNKNOWN","name":"string"}
+            {"@type": "Identifier", "metaData": "14:21::27","type":"string","name":"string"}
           ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "14:13::15","type":"UNKNOWN","name":"ch"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "14:13::15","type":"chan string","name":"ch"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "14:29:18:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "15:1::28","nativeKind":"[0](ExprStmt)","children":[
@@ -317,7 +317,7 @@
             ]}
           ]},
           {"@type": "Native", "metaData": "16:1::21","nativeKind":"[1](SendStmt)","children":[
-            {"@type": "Identifier", "metaData": "16:1::3","type":"UNKNOWN","name":"ch"},
+            {"@type": "Identifier", "metaData": "16:1::3","type":"chan string","name":"ch"},
             {"@type": "Native", "metaData": "16:4::6","nativeKind":"Arrow"},
             {"@type": "StringLiteral", "metaData": "16:7::21","value":"\"from server2\"","content":"from server2"}
           ]}
@@ -326,40 +326,40 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "19:5::9","type":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "19:5::9","type":"func()","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:12:31:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::29","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "20:12::29","memberSelect":
               {"@type": "Identifier", "metaData": "20:12::16","type":"UNKNOWN","name":"make"},"arguments":[
               {"@type": "Native", "metaData": "20:22::28","nativeKind":"[0](ChanType)","children":[
-                {"@type": "Identifier", "metaData": "20:22::28","type":"UNKNOWN","name":"string"}
+                {"@type": "Identifier", "metaData": "20:22::28","type":"string","name":"string"}
               ]}
             ]}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "20:1::8","type":"UNKNOWN","name":"output1"}
+            {"@type": "Identifier", "metaData": "20:1::8","type":"chan string","name":"output1"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "21:1::29","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "21:12::29","memberSelect":
               {"@type": "Identifier", "metaData": "21:12::16","type":"UNKNOWN","name":"make"},"arguments":[
               {"@type": "Native", "metaData": "21:22::28","nativeKind":"[0](ChanType)","children":[
-                {"@type": "Identifier", "metaData": "21:22::28","type":"UNKNOWN","name":"string"}
+                {"@type": "Identifier", "metaData": "21:22::28","type":"string","name":"string"}
               ]}
             ]}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "21:1::8","type":"UNKNOWN","name":"output2"}
+            {"@type": "Identifier", "metaData": "21:1::8","type":"chan string","name":"output2"}
           ]},
           {"@type": "Native", "metaData": "22:1::20","nativeKind":"[2](GoStmt)","children":[
             {"@type": "Native", "metaData": "22:1::3","nativeKind":"Go"},
             {"@type": "FunctionInvocation", "metaData": "22:4::20","memberSelect":
-              {"@type": "Identifier", "metaData": "22:4::11","type":"UNKNOWN","name":"server1"},"arguments":[
-              {"@type": "Identifier", "metaData": "22:12::19","type":"UNKNOWN","name":"output1"}
+              {"@type": "Identifier", "metaData": "22:4::11","type":"func(ch chan string)","name":"server1"},"arguments":[
+              {"@type": "Identifier", "metaData": "22:12::19","type":"chan string","name":"output1"}
             ]}
           ]},
           {"@type": "Native", "metaData": "23:1::20","nativeKind":"[3](GoStmt)","children":[
             {"@type": "Native", "metaData": "23:1::3","nativeKind":"Go"},
             {"@type": "FunctionInvocation", "metaData": "23:4::20","memberSelect":
-              {"@type": "Identifier", "metaData": "23:4::11","type":"UNKNOWN","name":"server2"},"arguments":[
-              {"@type": "Identifier", "metaData": "23:12::19","type":"UNKNOWN","name":"output2"}
+              {"@type": "Identifier", "metaData": "23:4::11","type":"func(ch chan string)","name":"server2"},"arguments":[
+              {"@type": "Identifier", "metaData": "23:12::19","type":"chan string","name":"output2"}
             ]}
           ]},
           {"@type": "Native", "metaData": "24:1:30:2","nativeKind":"[4](SelectStmt)","children":[
@@ -369,9 +369,9 @@
                 {"@type": "Native", "metaData": "25:1::5","nativeKind":"Case"},
                 {"@type": "VariableDeclaration", "metaData": "25:6::21","type":null,"isVal":false,"initializers":[
                   {"@type": "UnaryExpression", "metaData": "25:12::21","operator":"ARROW","operand":
-                    {"@type": "Identifier", "metaData": "25:14::21","type":"UNKNOWN","name":"output1"}}
+                    {"@type": "Identifier", "metaData": "25:14::21","type":"chan string","name":"output1"}}
                 ],"identifiers":[
-                  {"@type": "Identifier", "metaData": "25:6::8","type":"UNKNOWN","name":"s1"}
+                  {"@type": "Identifier", "metaData": "25:6::8","type":"string","name":"s1"}
                 ]},
                 {"@type": "Native", "metaData": "25:21::22","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "26:2:27:7","nativeKind":"Body([]Stmt)","children":[
@@ -380,7 +380,7 @@
                       {"@type": "MemberSelect", "metaData": "26:2::13","identifier":
                         {"@type": "Identifier", "metaData": "26:6::13","type":"UNKNOWN","name":"Println"},"expression":
                         {"@type": "Identifier", "metaData": "26:2::5","type":"UNKNOWN","name":"fmt"}},"arguments":[
-                      {"@type": "Identifier", "metaData": "26:14::16","type":"UNKNOWN","name":"s1"}
+                      {"@type": "Identifier", "metaData": "26:14::16","type":"string","name":"s1"}
                     ]}
                   ]},
                   {"@type": "Jump", "metaData": "27:2::7","label":
@@ -391,9 +391,9 @@
                 {"@type": "Native", "metaData": "28:1::5","nativeKind":"Case"},
                 {"@type": "VariableDeclaration", "metaData": "28:6::21","type":null,"isVal":false,"initializers":[
                   {"@type": "UnaryExpression", "metaData": "28:12::21","operator":"ARROW","operand":
-                    {"@type": "Identifier", "metaData": "28:14::21","type":"UNKNOWN","name":"output2"}}
+                    {"@type": "Identifier", "metaData": "28:14::21","type":"chan string","name":"output2"}}
                 ],"identifiers":[
-                  {"@type": "Identifier", "metaData": "28:6::8","type":"UNKNOWN","name":"s2"}
+                  {"@type": "Identifier", "metaData": "28:6::8","type":"string","name":"s2"}
                 ]},
                 {"@type": "Native", "metaData": "28:21::22","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "29:2::17","nativeKind":"Body([]Stmt)","children":[
@@ -402,7 +402,7 @@
                       {"@type": "MemberSelect", "metaData": "29:2::13","identifier":
                         {"@type": "Identifier", "metaData": "29:6::13","type":"UNKNOWN","name":"Println"},"expression":
                         {"@type": "Identifier", "metaData": "29:2::5","type":"UNKNOWN","name":"fmt"}},"arguments":[
-                      {"@type": "Identifier", "metaData": "29:14::16","type":"UNKNOWN","name":"s2"}
+                      {"@type": "Identifier", "metaData": "29:14::16","type":"string","name":"s2"}
                     ]}
                   ]}
                 ]}
@@ -414,27 +414,27 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "34:5::7","type":"UNKNOWN","name":"f2"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "34:5::7","type":"func()","name":"f2"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "34:10:65:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "35:4::15","type":
             {"@type": "ArrayType", "metaData": "35:10::15","length":null,"element":
-              {"@type": "Identifier", "metaData": "35:12::15","type":"UNKNOWN","name":"int"}},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "35:8::9","type":"UNKNOWN","name":"a"}
+              {"@type": "Identifier", "metaData": "35:12::15","type":"int","name":"int"}},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "35:8::9","type":"[]int","name":"a"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "36:4::34","type":
             {"@type": "Native", "metaData": "36:31::34","nativeKind":"Type(ChanType)","children":[
-              {"@type": "Identifier", "metaData": "36:31::34","type":"UNKNOWN","name":"int"}
+              {"@type": "Identifier", "metaData": "36:31::34","type":"int","name":"int"}
             ]},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "36:8::9","type":"UNKNOWN","name":"c"},
-            {"@type": "Identifier", "metaData": "36:11::13","type":"UNKNOWN","name":"c1"},
-            {"@type": "Identifier", "metaData": "36:15::17","type":"UNKNOWN","name":"c2"},
-            {"@type": "Identifier", "metaData": "36:19::21","type":"UNKNOWN","name":"c3"},
-            {"@type": "Identifier", "metaData": "36:23::25","type":"UNKNOWN","name":"c4"}
+            {"@type": "Identifier", "metaData": "36:8::9","type":"chan int","name":"c"},
+            {"@type": "Identifier", "metaData": "36:11::13","type":"chan int","name":"c1"},
+            {"@type": "Identifier", "metaData": "36:15::17","type":"chan int","name":"c2"},
+            {"@type": "Identifier", "metaData": "36:19::21","type":"chan int","name":"c3"},
+            {"@type": "Identifier", "metaData": "36:23::25","type":"chan int","name":"c4"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "37:4::18","type":
-            {"@type": "Identifier", "metaData": "37:15::18","type":"UNKNOWN","name":"int"},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "37:8::10","type":"UNKNOWN","name":"i1"},
-            {"@type": "Identifier", "metaData": "37:12::14","type":"UNKNOWN","name":"i2"}
+            {"@type": "Identifier", "metaData": "37:15::18","type":"int","name":"int"},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "37:8::10","type":"int","name":"i1"},
+            {"@type": "Identifier", "metaData": "37:12::14","type":"int","name":"i2"}
           ]},
           {"@type": "Native", "metaData": "38:4:55:5","nativeKind":"[3](SelectStmt)","children":[
             {"@type": "Native", "metaData": "38:4::10","nativeKind":"Select"},
@@ -443,15 +443,15 @@
                 {"@type": "Native", "metaData": "39:4::8","nativeKind":"Case"},
                 {"@type": "AssignmentExpression", "metaData": "39:9::18","statementOrExpression":
                   {"@type": "UnaryExpression", "metaData": "39:14::18","operator":"ARROW","operand":
-                    {"@type": "Identifier", "metaData": "39:16::18","type":"UNKNOWN","name":"c1"}},"operator":"EQUAL","leftHandSide":
-                  {"@type": "Identifier", "metaData": "39:9::11","type":"UNKNOWN","name":"i1"}},
+                    {"@type": "Identifier", "metaData": "39:16::18","type":"chan int","name":"c1"}},"operator":"EQUAL","leftHandSide":
+                  {"@type": "Identifier", "metaData": "39:9::11","type":"int","name":"i1"}},
                 {"@type": "Native", "metaData": "39:18::19","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "40:8::44","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "Native", "metaData": "40:8::44","nativeKind":"[0](ExprStmt)","children":[
                     {"@type": "FunctionInvocation", "metaData": "40:8::44","memberSelect":
                       {"@type": "Identifier", "metaData": "40:8::13","type":"UNKNOWN","name":"print"},"arguments":[
                       {"@type": "StringLiteral", "metaData": "40:14::25","value":"\"received \"","content":"received "},
-                      {"@type": "Identifier", "metaData": "40:27::29","type":"UNKNOWN","name":"i1"},
+                      {"@type": "Identifier", "metaData": "40:27::29","type":"int","name":"i1"},
                       {"@type": "StringLiteral", "metaData": "40:31::43","value":"\" from c1\\n\"","content":" from c1\\n"}
                     ]}
                   ]}
@@ -460,9 +460,9 @@
               {"@type": "Native", "metaData": "41:4:42:38","nativeKind":"[1](CommClause)","children":[
                 {"@type": "Native", "metaData": "41:4::8","nativeKind":"Case"},
                 {"@type": "Native", "metaData": "41:9::17","nativeKind":"Comm(SendStmt)","children":[
-                  {"@type": "Identifier", "metaData": "41:9::11","type":"UNKNOWN","name":"c2"},
+                  {"@type": "Identifier", "metaData": "41:9::11","type":"chan int","name":"c2"},
                   {"@type": "Native", "metaData": "41:12::14","nativeKind":"Arrow"},
-                  {"@type": "Identifier", "metaData": "41:15::17","type":"UNKNOWN","name":"i2"}
+                  {"@type": "Identifier", "metaData": "41:15::17","type":"int","name":"i2"}
                 ]},
                 {"@type": "Native", "metaData": "41:17::18","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "42:8::38","nativeKind":"Body([]Stmt)","children":[
@@ -470,7 +470,7 @@
                     {"@type": "FunctionInvocation", "metaData": "42:8::38","memberSelect":
                       {"@type": "Identifier", "metaData": "42:8::13","type":"UNKNOWN","name":"print"},"arguments":[
                       {"@type": "StringLiteral", "metaData": "42:14::21","value":"\"sent \"","content":"sent "},
-                      {"@type": "Identifier", "metaData": "42:23::25","type":"UNKNOWN","name":"i2"},
+                      {"@type": "Identifier", "metaData": "42:23::25","type":"int","name":"i2"},
                       {"@type": "StringLiteral", "metaData": "42:27::37","value":"\" to c2\\n\"","content":" to c2\\n"}
                     ]}
                   ]}
@@ -481,10 +481,10 @@
                 {"@type": "VariableDeclaration", "metaData": "43:9::25","type":null,"isVal":false,"initializers":[
                   {"@type": "ParenthesizedExpression", "metaData": "43:19::25","rightParenthesis":"43:24::25","leftParenthesis":"43:19::20","expression":
                     {"@type": "UnaryExpression", "metaData": "43:20::24","operator":"ARROW","operand":
-                      {"@type": "Identifier", "metaData": "43:22::24","type":"UNKNOWN","name":"c3"}}}
+                      {"@type": "Identifier", "metaData": "43:22::24","type":"chan int","name":"c3"}}}
                 ],"identifiers":[
-                  {"@type": "Identifier", "metaData": "43:9::11","type":"UNKNOWN","name":"i3"},
-                  {"@type": "Identifier", "metaData": "43:13::15","type":"UNKNOWN","name":"ok"}
+                  {"@type": "Identifier", "metaData": "43:9::11","type":"int","name":"i3"},
+                  {"@type": "Identifier", "metaData": "43:13::15","type":"bool","name":"ok"}
                 ]},
                 {"@type": "Native", "metaData": "43:25::26","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "44:8:48:9","nativeKind":"Body([]Stmt)","children":[
@@ -494,7 +494,7 @@
                         {"@type": "FunctionInvocation", "metaData": "45:12::48","memberSelect":
                           {"@type": "Identifier", "metaData": "45:12::17","type":"UNKNOWN","name":"print"},"arguments":[
                           {"@type": "StringLiteral", "metaData": "45:18::29","value":"\"received \"","content":"received "},
-                          {"@type": "Identifier", "metaData": "45:31::33","type":"UNKNOWN","name":"i3"},
+                          {"@type": "Identifier", "metaData": "45:31::33","type":"int","name":"i3"},
                           {"@type": "StringLiteral", "metaData": "45:35::47","value":"\" from c3\\n\"","content":" from c3\\n"}
                         ]}
                       ]}
@@ -507,16 +507,16 @@
                         ]}
                       ]}
                     ]},"condition":
-                    {"@type": "Identifier", "metaData": "44:11::13","type":"UNKNOWN","name":"ok"}}
+                    {"@type": "Identifier", "metaData": "44:11::13","type":"bool","name":"ok"}}
                 ]}
               ]},
               {"@type": "Native", "metaData": "49:4::23","nativeKind":"[3](CommClause)","children":[
                 {"@type": "Native", "metaData": "49:4::8","nativeKind":"Case"},
                 {"@type": "AssignmentExpression", "metaData": "49:9::22","statementOrExpression":
                   {"@type": "UnaryExpression", "metaData": "49:18::22","operator":"ARROW","operand":
-                    {"@type": "Identifier", "metaData": "49:20::22","type":"UNKNOWN","name":"c4"}},"operator":"EQUAL","leftHandSide":
+                    {"@type": "Identifier", "metaData": "49:20::22","type":"chan int","name":"c4"}},"operator":"EQUAL","leftHandSide":
                   {"@type": "Native", "metaData": "49:9::15","nativeKind":"[0](IndexExpr)","children":[
-                    {"@type": "Identifier", "metaData": "49:9::10","type":"UNKNOWN","name":"a"},
+                    {"@type": "Identifier", "metaData": "49:9::10","type":"[]int","name":"a"},
                     {"@type": "Native", "metaData": "49:10::11","nativeKind":"Lbrack"},
                     {"@type": "FunctionInvocation", "metaData": "49:11::14","memberSelect":
                       {"@type": "Identifier", "metaData": "49:11::12","type":"UNKNOWN","name":"f"},"arguments":[]},
@@ -547,7 +547,7 @@
                   {"@type": "Native", "metaData": "59:8::20","nativeKind":"[0](CommClause)","children":[
                     {"@type": "Native", "metaData": "59:8::12","nativeKind":"Case"},
                     {"@type": "Native", "metaData": "59:13::19","nativeKind":"Comm(SendStmt)","children":[
-                      {"@type": "Identifier", "metaData": "59:13::14","type":"UNKNOWN","name":"c"},
+                      {"@type": "Identifier", "metaData": "59:13::14","type":"chan int","name":"c"},
                       {"@type": "Native", "metaData": "59:15::17","nativeKind":"Arrow"},
                       {"@type": "IntegerLiteral", "metaData": "59:18::19","value":"0"}
                     ]},
@@ -556,7 +556,7 @@
                   {"@type": "Native", "metaData": "60:8::20","nativeKind":"[1](CommClause)","children":[
                     {"@type": "Native", "metaData": "60:8::12","nativeKind":"Case"},
                     {"@type": "Native", "metaData": "60:13::19","nativeKind":"Comm(SendStmt)","children":[
-                      {"@type": "Identifier", "metaData": "60:13::14","type":"UNKNOWN","name":"c"},
+                      {"@type": "Identifier", "metaData": "60:13::14","type":"chan int","name":"c"},
                       {"@type": "Native", "metaData": "60:15::17","nativeKind":"Arrow"},
                       {"@type": "IntegerLiteral", "metaData": "60:18::19","value":"1"}
                     ]},

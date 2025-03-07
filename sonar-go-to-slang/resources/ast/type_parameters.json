@@ -33,22 +33,22 @@
           {"@type": "Native", "metaData": "3:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "3:16::21","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "3:16::17","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "3:16::17","type":"UNKNOWN","name":"T"}
+              {"@type": "Identifier", "metaData": "3:16::17","type":"T","name":"T"}
             ]},
-            {"@type": "Identifier", "metaData": "3:18::21","type":"UNKNOWN","name":"any"}
+            {"@type": "Identifier", "metaData": "3:18::21","type":"any","name":"any"}
           ]},
           {"@type": "Native", "metaData": "3:21::22","nativeKind":"Closing"}
         ]},"returnType":
         {"@type": "Native", "metaData": "3:32::35","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "3:32::35","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "3:32::35","type":"UNKNOWN","name":"int"}
+            {"@type": "Identifier", "metaData": "3:32::35","type":"int","name":"int"}
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::15","type":"UNKNOWN","name":"MyFunction"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","name":"MyFunction"},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:23::30","type":
-          {"@type": "Identifier", "metaData": "3:29::30","type":"UNKNOWN","name":"T"},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "3:23::28","type":"UNKNOWN","name":"param"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "3:29::30","type":"T","name":"T"},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "3:23::28","type":"T","name":"param"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "3:36:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::10","keyword":"4:1::7","body":

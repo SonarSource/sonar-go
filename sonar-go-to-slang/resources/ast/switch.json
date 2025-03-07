@@ -249,16 +249,16 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:4::12","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "6:11::12","value":"1"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "6:4::7","type":"UNKNOWN","name":"tag"}
+            {"@type": "Identifier", "metaData": "6:4::7","type":"int","name":"tag"}
           ]},
           {"@type": "Match", "metaData": "7:4:11:5","keyword":"7:4::10","expression":
             {"@type": "Native", "metaData": "7:11::14","nativeKind":"InitAndTag","children":[
-              {"@type": "Identifier", "metaData": "7:11::14","type":"UNKNOWN","name":"tag"}
+              {"@type": "Identifier", "metaData": "7:11::14","type":"int","name":"tag"}
             ]},"cases":[
             {"@type": "MatchCase", "metaData": "8:8::39","expression":
               null,"body":
@@ -314,25 +314,25 @@
           {"@type": "VariableDeclaration", "metaData": "13:4::10","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "13:9::10","value":"4"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "13:4::5","type":"UNKNOWN","name":"x"}
+            {"@type": "Identifier", "metaData": "13:4::5","type":"int","name":"x"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "14:4::10","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "14:9::10","value":"2"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "14:4::5","type":"UNKNOWN","name":"y"}
+            {"@type": "Identifier", "metaData": "14:4::5","type":"int","name":"y"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "15:4::10","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "15:9::10","value":"3"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "15:4::5","type":"UNKNOWN","name":"z"}
+            {"@type": "Identifier", "metaData": "15:4::5","type":"int","name":"z"}
           ]},
           {"@type": "Match", "metaData": "17:4:21:5","keyword":"17:4::10","expression":
             null,"cases":[
             {"@type": "MatchCase", "metaData": "18:8::37","expression":
               {"@type": "Native", "metaData": "18:13::18","nativeKind":"CaseExprList","children":[
                 {"@type": "BinaryExpression", "metaData": "18:13::18","rightOperand":
-                  {"@type": "Identifier", "metaData": "18:17::18","type":"UNKNOWN","name":"y"},"operatorToken":"18:15::16","operator":"LESS_THAN","leftOperand":
-                  {"@type": "Identifier", "metaData": "18:13::14","type":"UNKNOWN","name":"x"}}
+                  {"@type": "Identifier", "metaData": "18:17::18","type":"int","name":"y"},"operatorToken":"18:15::16","operator":"LESS_THAN","leftOperand":
+                  {"@type": "Identifier", "metaData": "18:13::14","type":"int","name":"x"}}
               ]},"body":
               {"@type": "Block", "metaData": "18:20::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "18:20::37","nativeKind":"[0](ExprStmt)","children":[
@@ -347,8 +347,8 @@
             {"@type": "MatchCase", "metaData": "19:8::37","expression":
               {"@type": "Native", "metaData": "19:13::18","nativeKind":"CaseExprList","children":[
                 {"@type": "BinaryExpression", "metaData": "19:13::18","rightOperand":
-                  {"@type": "Identifier", "metaData": "19:17::18","type":"UNKNOWN","name":"z"},"operatorToken":"19:15::16","operator":"LESS_THAN","leftOperand":
-                  {"@type": "Identifier", "metaData": "19:13::14","type":"UNKNOWN","name":"x"}}
+                  {"@type": "Identifier", "metaData": "19:17::18","type":"int","name":"z"},"operatorToken":"19:15::16","operator":"LESS_THAN","leftOperand":
+                  {"@type": "Identifier", "metaData": "19:13::14","type":"int","name":"x"}}
               ]},"body":
               {"@type": "Block", "metaData": "19:20::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "19:20::37","nativeKind":"[0](ExprStmt)","children":[
@@ -364,7 +364,7 @@
               {"@type": "Native", "metaData": "20:13::19","nativeKind":"CaseExprList","children":[
                 {"@type": "BinaryExpression", "metaData": "20:13::19","rightOperand":
                   {"@type": "IntegerLiteral", "metaData": "20:18::19","value":"4"},"operatorToken":"20:15::17","operator":"EQUAL_TO","leftOperand":
-                  {"@type": "Identifier", "metaData": "20:13::14","type":"UNKNOWN","name":"x"}}
+                  {"@type": "Identifier", "metaData": "20:13::14","type":"int","name":"x"}}
               ]},"body":
               {"@type": "Block", "metaData": "20:21::37","statementOrExpressions":[
                 {"@type": "Native", "metaData": "20:21::37","nativeKind":"[0](ExprStmt)","children":[
@@ -381,16 +381,16 @@
             {"@type": "Native", "metaData": "23:11::19","nativeKind":"InitAndTag","children":[
               {"@type": "VariableDeclaration", "metaData": "23:11::19","type":null,"isVal":false,"initializers":[
                 {"@type": "FunctionInvocation", "metaData": "23:16::19","memberSelect":
-                  {"@type": "Identifier", "metaData": "23:16::17","type":"UNKNOWN","name":"f"},"arguments":[]}
+                  {"@type": "Identifier", "metaData": "23:16::17","type":"func() int","name":"f"},"arguments":[]}
               ],"identifiers":[
-                {"@type": "Identifier", "metaData": "23:11::12","type":"UNKNOWN","name":"x"}
+                {"@type": "Identifier", "metaData": "23:11::12","type":"int","name":"x"}
               ]}
             ]},"cases":[
             {"@type": "MatchCase", "metaData": "24:8::38","expression":
               {"@type": "Native", "metaData": "24:13::18","nativeKind":"CaseExprList","children":[
                 {"@type": "BinaryExpression", "metaData": "24:13::18","rightOperand":
                   {"@type": "IntegerLiteral", "metaData": "24:17::18","value":"0"},"operatorToken":"24:15::16","operator":"LESS_THAN","leftOperand":
-                  {"@type": "Identifier", "metaData": "24:13::14","type":"UNKNOWN","name":"x"}}
+                  {"@type": "Identifier", "metaData": "24:13::14","type":"int","name":"x"}}
               ]},"body":
               {"@type": "Block", "metaData": "24:20::38","statementOrExpressions":[
                 {"@type": "Native", "metaData": "24:20::38","nativeKind":"[0](ExprStmt)","children":[
@@ -425,13 +425,13 @@
             ]},"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "28:30::35","value":"\"abc\"","content":"abc"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "28:8::15","type":"UNKNOWN","name":"intType"}
+            {"@type": "Identifier", "metaData": "28:8::15","type":"interface{}","name":"intType"}
           ]},
           {"@type": "Match", "metaData": "30:4:44:5","keyword":"30:4::10","expression":
             {"@type": "Native", "metaData": "30:11::30","nativeKind":"InitAndAssign","children":[
               {"@type": "VariableDeclaration", "metaData": "30:11::30","type":null,"isVal":false,"initializers":[
                 {"@type": "Native", "metaData": "30:16::30","nativeKind":"[0](TypeAssertExpr)","children":[
-                  {"@type": "Identifier", "metaData": "30:16::23","type":"UNKNOWN","name":"intType"},
+                  {"@type": "Identifier", "metaData": "30:16::23","type":"interface{}","name":"intType"},
                   {"@type": "Native", "metaData": "30:23::24"},
                   {"@type": "Native", "metaData": "30:24::25","nativeKind":"Lparen"},
                   {"@type": "Native", "metaData": "30:25::29"},
@@ -459,9 +459,9 @@
               ]}},
             {"@type": "MatchCase", "metaData": "34:8:35:51","expression":
               {"@type": "Native", "metaData": "34:13::22","nativeKind":"CaseExprList","children":[
-                {"@type": "Identifier", "metaData": "34:13::16","type":"UNKNOWN","name":"int"},
+                {"@type": "Identifier", "metaData": "34:13::16","type":"int","name":"int"},
                 {"@type": "Native", "metaData": "34:16::17"},
-                {"@type": "Identifier", "metaData": "34:18::22","type":"UNKNOWN","name":"bool"}
+                {"@type": "Identifier", "metaData": "34:18::22","type":"bool","name":"bool"}
               ]},"body":
               {"@type": "Block", "metaData": "35:12::51","statementOrExpressions":[
                 {"@type": "Native", "metaData": "35:12::51","nativeKind":"[0](ExprStmt)","children":[
@@ -480,13 +480,13 @@
                   {"@type": "Native", "metaData": "36:17::22","nativeKind":"Params(FieldList)","children":[
                     {"@type": "Native", "metaData": "36:17::18","nativeKind":"Opening"},
                     {"@type": "Native", "metaData": "36:18::21","nativeKind":"[0](Field)","children":[
-                      {"@type": "Identifier", "metaData": "36:18::21","type":"UNKNOWN","name":"int"}
+                      {"@type": "Identifier", "metaData": "36:18::21","type":"int","name":"int"}
                     ]},
                     {"@type": "Native", "metaData": "36:21::22","nativeKind":"Closing"}
                   ]},
                   {"@type": "Native", "metaData": "36:23::30","nativeKind":"Results(FieldList)","children":[
                     {"@type": "Native", "metaData": "36:23::30","nativeKind":"[0](Field)","children":[
-                      {"@type": "Identifier", "metaData": "36:23::30","type":"UNKNOWN","name":"float64"}
+                      {"@type": "Identifier", "metaData": "36:23::30","type":"float64","name":"float64"}
                     ]}
                   ]}
                 ]}
@@ -506,7 +506,7 @@
               ]}},
             {"@type": "MatchCase", "metaData": "39:8:41:13","expression":
               {"@type": "Native", "metaData": "39:13::19","nativeKind":"CaseExprList","children":[
-                {"@type": "Identifier", "metaData": "39:13::19","type":"UNKNOWN","name":"string"}
+                {"@type": "Identifier", "metaData": "39:13::19","type":"string","name":"string"}
               ]},"body":
               {"@type": "Block", "metaData": "39:21:41:13","statementOrExpressions":[
                 {"@type": "Native", "metaData": "40:16::67","nativeKind":"[0](ExprStmt)","children":[
@@ -515,7 +515,7 @@
                       {"@type": "Identifier", "metaData": "40:20::27","type":"UNKNOWN","name":"Println"},"expression":
                       {"@type": "Identifier", "metaData": "40:16::19","type":"UNKNOWN","name":"fmt"}},"arguments":[
                     {"@type": "BinaryExpression", "metaData": "40:28::66","rightOperand":
-                      {"@type": "Identifier", "metaData": "40:65::66","type":"UNKNOWN","name":"i"},"operatorToken":"40:63::64","operator":"PLUS","leftOperand":
+                      {"@type": "Identifier", "metaData": "40:65::66","type":"string","name":"i"},"operatorToken":"40:63::64","operator":"PLUS","leftOperand":
                       {"@type": "StringLiteral", "metaData": "40:28::62","value":"\"type is string and the value is \"","content":"type is string and the value is "}}
                   ]}
                 ]}
@@ -538,8 +538,8 @@
             {"@type": "MatchCase", "metaData": "47:12:48:33","expression":
               {"@type": "Native", "metaData": "47:17::22","nativeKind":"CaseExprList","children":[
                 {"@type": "BinaryExpression", "metaData": "47:17::22","rightOperand":
-                  {"@type": "Identifier", "metaData": "47:21::22","type":"UNKNOWN","name":"y"},"operatorToken":"47:19::20","operator":"LESS_THAN","leftOperand":
-                  {"@type": "Identifier", "metaData": "47:17::18","type":"UNKNOWN","name":"x"}}
+                  {"@type": "Identifier", "metaData": "47:21::22","type":"int","name":"y"},"operatorToken":"47:19::20","operator":"LESS_THAN","leftOperand":
+                  {"@type": "Identifier", "metaData": "47:17::18","type":"int","name":"x"}}
               ]},"body":
               {"@type": "Block", "metaData": "48:16::33","statementOrExpressions":[
                 {"@type": "Native", "metaData": "48:16::33","nativeKind":"[0](ExprStmt)","children":[
@@ -557,11 +557,11 @@
         null,"returnType":
         {"@type": "Native", "metaData": "52:9::12","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "52:9::12","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "52:9::12","type":"UNKNOWN","name":"int"}
+            {"@type": "Identifier", "metaData": "52:9::12","type":"int","name":"int"}
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "52:5::6","type":"UNKNOWN","name":"f"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","name":"f"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","body":
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":
