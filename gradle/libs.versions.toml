@@ -3,6 +3,7 @@ analyzer-commons = "2.16.0.3141"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "11.1.0.2693"
+license-api = "3.4"
 sonarqube = "25.2.0.102705"
 orchestrator = "5.1.0.2254"
 sonarlint = "10.14.0.80189"
@@ -19,6 +20,7 @@ yguard = "4.1.1"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
+sonar-license-api = { module = "com.sonarsource.license:license-api", version.ref = "license-api" }
 sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-commons", version.ref = "analyzer-commons" }
 sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-test-commons", version.ref = "analyzer-commons" }
 sonar-xml-parsing = {group = "org.sonarsource.analyzer-commons", name = "sonar-xml-parsing", version.ref = "analyzer-commons" }
