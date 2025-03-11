@@ -61,7 +61,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher(code, "math/rand", matcher);
+    Tree methodCall = parse(code, "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -76,7 +76,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("other.Int63()", "math/rand", matcher);
+    Tree methodCall = parse("other.Int63()", "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -90,7 +90,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo()", "something/sonar", matcher);
+    Tree methodCall = parse("sonar.foo()", "something/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -104,7 +104,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("rand.Int63()", "math/rand", matcher);
+    Tree methodCall = parse("rand.Int63()", "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -119,7 +119,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("rand.Int63()", "math/rand", matcher);
+    Tree methodCall = parse("rand.Int63()", "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -134,7 +134,7 @@ class MethodMatchersTest {
       .withParameters(p -> p.size() == 1)
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("rand.Intn(\"bar\")", "math/rand", matcher);
+    Tree methodCall = parse("rand.Intn(\"bar\")", "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -150,7 +150,7 @@ class MethodMatchersTest {
       .withParameters(p -> true)
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("rand.Intn(\"bar\")", "math/rand", matcher);
+    Tree methodCall = parse("rand.Intn(\"bar\")", "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -165,7 +165,7 @@ class MethodMatchersTest {
       .withParameters(p -> p.size() == 7)
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parse("sonar.foo(\"bar\")", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -179,7 +179,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parse("sonar.foo(\"bar\")", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -193,7 +193,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/somethingElse", matcher);
+    Tree methodCall = parse("sonar.foo(\"bar\")", "com/somethingElse");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -207,7 +207,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("my.sonar.foo(\"bar\")", "com/somethingElse", matcher);
+    Tree methodCall = parse("my.sonar.foo(\"bar\")", "com/somethingElse");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -221,7 +221,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parse("sonar.foo(\"bar\")", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -235,7 +235,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo()", "com/sonar", matcher);
+    Tree methodCall = parse("sonar.foo()", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall.children().get(0));
     assertThat(matches).isEmpty();
@@ -261,7 +261,7 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("""
+    Tree methodCall = parse("""
       a.foo()
       b.foo()
       c.foo()
@@ -270,8 +270,7 @@ class MethodMatchersTest {
       a.b.c.d.foo()
       a.b.c.bar()
       """,
-      "com/sonar",
-      matcher);
+      "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -288,7 +287,7 @@ class MethodMatchersTest {
 
     matcher.setReceiverName("receiver");
 
-    Tree methodCall = parseAndFeedImportsToMatcher("receiver.a.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parse("receiver.a.foo(\"bar\")", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -318,7 +317,7 @@ class MethodMatchersTest {
 
     matcher.setReceiverName(receiver);
 
-    Tree methodCall = parseAndFeedImportsToMatcher(code, "com/sonar", matcher);
+    Tree methodCall = parse(code, "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
@@ -335,7 +334,7 @@ class MethodMatchersTest {
 
     matcher.setReceiverName("receiver");
 
-    Tree methodCall = parseAndFeedImportsToMatcher("receiver.foo()", "com/sonar", matcher);
+    Tree methodCall = parse("receiver.foo()", "com/sonar");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
@@ -357,11 +356,11 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+    var topLevelTree = parseFunction("""
        func main(x %s) {
          x.Query()
        }
-      """.formatted(type), "database/sql", matcher);
+      """.formatted(type), "database/sql");
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).hasSize(1);
@@ -384,12 +383,12 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+    var topLevelTree = parseFunction("""
        func main() {
          %s
          x.Query()
        }
-      """.formatted(type), "database/sql", matcher);
+      """.formatted(type), "database/sql");
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).hasSize(1);
@@ -407,11 +406,11 @@ class MethodMatchersTest {
       .withAnyParameters()
       .build();
 
-    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
+    var topLevelTree = parseFunction("""
        func main() {
          x.Query()
        }
-      """, "com/sonar", matcher);
+      """, "com/sonar");
 
     List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).isEmpty();
@@ -505,7 +504,7 @@ class MethodMatchersTest {
   }
 
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
-    Tree methodCall = parseAndFeedImportsToMatcher(code, "math/rand", matcher);
+    Tree methodCall = parse(code, "math/rand");
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     if (shouldMatch) {
@@ -515,7 +514,7 @@ class MethodMatchersTest {
     }
   }
 
-  public static TopLevelTree parseFunctionAndFeedImportsToMatcher(String functionCode, String importedType, MethodMatchers matcher) {
+  public static TopLevelTree parseFunction(String functionCode, String importedType) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
 
@@ -527,8 +526,8 @@ class MethodMatchersTest {
     return topLevelTree;
   }
 
-  public static Tree parseAndFeedImportsToMatcher(String code, String importedType, MethodMatchers matcher) {
-    return parseCodeAndFeedImportsToMatcher("""
+  public static Tree parse(String code, String importedType) {
+    return parseCode("""
       package main
 
       import("%s")
@@ -536,10 +535,10 @@ class MethodMatchersTest {
       func main() {
         %s
       }
-      """.formatted(importedType, code), matcher);
+      """.formatted(importedType, code));
   }
 
-  private static Tree parseCodeAndFeedImportsToMatcher(String wholeCode, MethodMatchers matcher) {
+  private static Tree parseCode(String wholeCode) {
     TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
     new SymbolVisitor<>().scan(mock(), topLevelTree);
     var mainFunc = topLevelTree.declarations().get(2);
