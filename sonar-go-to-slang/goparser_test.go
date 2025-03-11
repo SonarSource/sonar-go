@@ -32,7 +32,7 @@ import (
 
 func slangFromString(source string) (*Node, []*Node, []*Token) {
 	fileSet, astFile := astFromString(source)
-	info, _ := typeCheckAst("main.go", fileSet, astFile)
+	info, _ := typeCheckAst("main.go", fileSet, astFile, true)
 	return toSlangTree(fileSet, astFile, source, info)
 }
 

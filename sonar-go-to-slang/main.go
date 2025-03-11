@@ -23,8 +23,9 @@ import (
 )
 
 type Params struct {
-	dumpAst bool
-	path    string
+	dumpAst        bool
+	debugTypeCheck bool
+	path           string
 }
 
 func parseArgs() Params {
@@ -34,6 +35,7 @@ func parseArgs() Params {
 	}
 
 	dumpAstFlag := flag.Bool("d", false, "dump ast (instead of JSON)")
+	debugTypeCheckFlag := flag.Bool("debug_type_check", false, "print errors logs from type checking")
 	flag.Parse()
 	var path string
 	if len(flag.Args()) == 1 {
@@ -41,8 +43,9 @@ func parseArgs() Params {
 	}
 
 	return Params{
-		dumpAst: *dumpAstFlag,
-		path:    path,
+		dumpAst:        *dumpAstFlag,
+		debugTypeCheck: *debugTypeCheckFlag,
+		path:           path,
 	}
 }
 
@@ -52,7 +55,8 @@ func main() {
 	fileSet := token.NewFileSet()
 	astFile, fileContent, _ := readAstFile(fileSet, params.path)
 
-	info, _ := typeCheckAst(params.path, fileSet, astFile)
+	info, _ := typeCheckAst(params.path, fileSet, astFile, params.debugTypeCheck)
+	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpAst {
 		fmt.Println(render(astFile))

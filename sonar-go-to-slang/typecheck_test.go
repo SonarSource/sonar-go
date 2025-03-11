@@ -2,10 +2,11 @@ package main
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/assert"
 	"log"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_importExistingPackage_returnsPackage(t *testing.T) {
@@ -62,7 +63,7 @@ func Test_typeCheckAst(t *testing.T) {
 	}
 
 	fileSet, astFile := astFromString(string(source))
-	info, _ := typeCheckAst("my/path", fileSet, astFile)
+	info, _ := typeCheckAst("my/path", fileSet, astFile, true)
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -71,4 +72,17 @@ func Test_typeCheckAst(t *testing.T) {
 	assert.NotEmpty(t, info.Implicits)
 	assert.NotEmpty(t, info.Selections)
 	assert.NotEmpty(t, info.Scopes)
+}
+
+func Test_testOnlyFirstErrorIsReturned(t *testing.T) {
+	source, err := os.ReadFile("resources/file_with_many_errors.go.source")
+	if err != nil {
+		t.Fatalf("Failed to read source file: %v", err)
+	}
+
+	fileSet, astFile := astFromString(string(source))
+
+	info, err := typeCheckAst("my/path", fileSet, astFile, false)
+	assert.Equal(t, err.Error(), "main.go:4:5: declared and not used: a1")
+	assert.NotNil(t, info)
 }

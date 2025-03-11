@@ -48,7 +48,8 @@ public class GoConverter implements ASTConverter {
     this(new DefaultCommand(workDir));
   }
 
-  GoConverter(Command command) {
+  // Visible for testing
+  public GoConverter(Command command) {
     processBuilder = new ProcessBuilder(command.getCommand());
     errorConsumer = new ExternalProcessStreamConsumer();
   }
@@ -109,11 +110,11 @@ public class GoConverter implements ASTConverter {
     List<String> getCommand();
   }
 
-  static class DefaultCommand implements Command {
+  public static class DefaultCommand implements Command {
 
-    private final String command;
+    protected final String command;
 
-    DefaultCommand(File workDir) {
+    public DefaultCommand(File workDir) {
       try {
         command = extract(workDir);
       } catch (IOException e) {

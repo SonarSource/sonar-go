@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import org.sonar.go.api.ASTConverter;
 import org.sonar.go.api.HasTextRange;
 import org.sonar.go.api.TextPointer;
 import org.sonar.go.api.TextRange;
@@ -41,32 +40,25 @@ import org.sonar.go.visitors.TreeVisitor;
 import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.sonar.go.testing.TestGoConverter.GO_CONVERTER_DEBUG_TYPE_CHECK;
 
 public class GoVerifier {
   private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");
 
   public static void verify(String fileName, GoCheck check) {
-    verify(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
-  }
-
-  public static void verify(ASTConverter converter, Path path, GoCheck check) {
-    createVerifier(converter, path, check).assertOneOrMoreIssues();
+    createVerifier(BASE_DIR.resolve(fileName), check).assertOneOrMoreIssues();
   }
 
   public static void verifyNoIssue(String fileName, GoCheck check) {
-    verifyNoIssue(TestGoConverter.GO_CONVERTER, BASE_DIR.resolve(fileName), check);
+    createVerifier(BASE_DIR.resolve(fileName), check).assertNoIssues();
   }
 
-  public static void verifyNoIssue(ASTConverter converter, Path path, GoCheck check) {
-    createVerifier(converter, path, check).assertNoIssues();
-  }
-
-  private static SingleFileVerifier createVerifier(ASTConverter converter, Path path, GoCheck check) {
+  private static SingleFileVerifier createVerifier(Path path, GoCheck check) {
 
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
     String testFileContent = readFile(path);
-    Tree root = converter.parse(testFileContent, null);
+    Tree root = GO_CONVERTER_DEBUG_TYPE_CHECK.parse(testFileContent, null);
 
     ((TopLevelTree) root).allComments()
       .forEach(comment -> {

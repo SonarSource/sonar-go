@@ -18,6 +18,8 @@ package org.sonar.go.testing;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.List;
 import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -26,6 +28,7 @@ import org.sonar.go.converter.GoConverter;
 public class TestGoConverter {
   private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
   public static final GoConverter GO_CONVERTER = new GoConverter(CONVERTER_DIR);
+  public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
 
   public static Tree parse(String content) {
     return GO_CONVERTER.parse(content);
@@ -40,5 +43,16 @@ public class TestGoConverter {
       """.formatted(content));
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
+  }
+
+  private static class CommandWithDebugTypeCheck extends GoConverter.DefaultCommand {
+    public CommandWithDebugTypeCheck(File workDir) {
+      super(workDir);
+    }
+
+    @Override
+    public List<String> getCommand() {
+      return Arrays.asList(command, "-debug_type_check", "-");
+    }
   }
 }

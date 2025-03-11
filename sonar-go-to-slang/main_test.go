@@ -14,6 +14,7 @@ func TestParseNoArguments(t *testing.T) {
 	os.Args = []string{"cmd"}
 	params := parseArgs()
 	assert.False(t, params.dumpAst, "Expected dumpAst to be false when no arguments are provided")
+	assert.False(t, params.debugTypeCheck, "Expected debugTypeCheck to be false when no arguments are provided")
 	assert.Empty(t, params.path, "Expected path to be empty when no arguments are provided")
 }
 
@@ -29,6 +30,8 @@ func TestParseInvalidArguments(t *testing.T) {
 			assert.Contains(t, output, "flag provided but not defined: -undefined")
 			assert.Contains(t, output, "Usage of cmd:")
 			assert.Contains(t, output, "-d\tdump ast (instead of JSON)")
+			assert.Contains(t, output, "-debug_type_check")
+			assert.Contains(t, output, "print errors logs from type checking")
 		}
 	}()
 	parseArgs()

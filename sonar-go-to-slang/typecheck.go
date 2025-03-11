@@ -6,9 +6,10 @@ import (
 	"go/ast"
 	"go/token"
 	"go/types"
-	"golang.org/x/tools/go/gcexportdata"
 	"io/fs"
 	"os"
+
+	"golang.org/x/tools/go/gcexportdata"
 )
 
 // PackageExportDataDir is also hardcoded in the go:embed directive below.
@@ -107,12 +108,18 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File) (*types.Info, error) {
+func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugTypeCheck bool) (*types.Info, error) {
 	conf := types.Config{
 		Importer: &localImporter{},
 		Error: func(err error) {
-			// Ignore errors on type checking for now
-			// TODO Investigate errors SONARGO-368
+			if debugTypeCheck {
+				fmt.Fprintf(os.Stderr, "Warning while type checking '%s': %s\n", path, err)
+			}
+			// Our current logic type checks only the types that are used in the rules, and "ignores" the rest.
+			// It means that we expect many errors in the type checking process (missing types, undefined variables, etc).
+			// In theory, we would like to log only errors that are related to the types that we support, in order to spot potential issues.
+			// In practise, the message is often not enough to determine if the error is relevant or not.
+			// Therefore, we don't log any error at the moment.
 		},
 	}
 
