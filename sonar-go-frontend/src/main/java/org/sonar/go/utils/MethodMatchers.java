@@ -30,7 +30,6 @@ import javax.annotation.Nullable;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 
 import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
@@ -144,7 +143,6 @@ public class MethodMatchers {
 
   @Nullable
   private String methodReceiverName;
-  private boolean validateTypeInTree = false;
 
   private MethodMatchers(Collection<String> types, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
     Map<Integer, Predicate<Tree>> parametersTreePredicate, Predicate<String> variableTypePredicate) {
@@ -158,19 +156,6 @@ public class MethodMatchers {
 
   public static TypeBuilder create() {
     return new MethodMatchersBuilder();
-  }
-
-  /**
-   * Make sure the type provided to the Method Matcher is present in the (top level) tree the matcher will be used.
-   * This is typically expected to be called at runtime, at the beginning of the analysis of each file.
-   * If the type is not present, none of the following call to {@link #matches(Tree)} will match.
-   * If the type is present, no further validation will be done for the type.
-   * It can be called multiple times to update the validation status.
-   * This is obviously imprecise, as we are not testing the actual type of the given invocation.
-   * This is an approximation, as we don't have proper types resolution for now.
-   */
-  public void validateTypeInTree(TopLevelTree topLevelTree) {
-    this.validateTypeInTree = types.stream().anyMatch(topLevelTree::doesImportType);
   }
 
   /**
@@ -191,8 +176,7 @@ public class MethodMatchers {
   }
 
   public Optional<IdentifierTree> matches(@Nullable Tree tree) {
-    if (validateTypeInTree
-      && tree instanceof FunctionInvocationTree functionInvocation
+    if (tree instanceof FunctionInvocationTree functionInvocation
       && matchesFunctionInvocation(functionInvocation)
       && parametersTypePredicate.test(extractArgTypes(functionInvocation))
       && matchParametersTreePredicate(functionInvocation)) {

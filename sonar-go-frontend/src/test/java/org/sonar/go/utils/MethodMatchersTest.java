@@ -523,7 +523,6 @@ class MethodMatchersTest {
 
       %s
       """.formatted(importedType, functionCode));
-    matcher.validateTypeInTree(topLevelTree);
     new SymbolVisitor<>().scan(mock(), topLevelTree);
     return topLevelTree;
   }
@@ -542,7 +541,6 @@ class MethodMatchersTest {
 
   private static Tree parseCodeAndFeedImportsToMatcher(String wholeCode, MethodMatchers matcher) {
     TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
-    matcher.validateTypeInTree(topLevelTree);
     new SymbolVisitor<>().scan(mock(), topLevelTree);
     var mainFunc = topLevelTree.declarations().get(2);
     BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
