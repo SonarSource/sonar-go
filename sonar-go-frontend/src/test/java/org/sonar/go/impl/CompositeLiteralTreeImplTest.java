@@ -146,10 +146,11 @@ class CompositeLiteralTreeImplTest {
 
   @Test
   void shouldBePossibleToTestType() {
-    var compositeLiteral = parseCompositeLiteral("sonar.Composite{ }");
-    assertThat(compositeLiteral.hasType("sonar", "Composite")).isTrue();
-    assertThat(compositeLiteral.hasType("notSonar", "Composite")).isFalse();
-    assertThat(compositeLiteral.hasType("sonar", "notComposite")).isFalse();
+    var compositeLiteral = parseCompositeLiteral("http.Server{ }");
+    assertThat(compositeLiteral.hasType("net/http", "net/http.Server")).isTrue();
+    assertThat(compositeLiteral.hasType("net/http", "Server")).isFalse();
+    assertThat(compositeLiteral.hasType("http", "Server")).isFalse();
+    assertThat(compositeLiteral.hasType("", "net/http/Server")).isFalse();
   }
 
   @Test
@@ -164,11 +165,14 @@ class CompositeLiteralTreeImplTest {
   public static CompositeLiteralTree parseCompositeLiteral(String code) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
+
+      import "net/http"
+
       func main() {
       """ + code + """
       }
       """);
-    var mainFunc = topLevelTree.declarations().get(1);
+    var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
     var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
     return (CompositeLiteralTree) expressionStatement.children().get(0);

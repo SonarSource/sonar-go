@@ -37,7 +37,7 @@
     {"@type": "TopLevel", "metaData": "1:0:10:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","name":"main"}
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main"}
       ]},
       {"@type": "ImportDeclaration", "metaData": "2:0:5:1","children":[
         {"@type": "Native", "metaData": "2:0::6","nativeKind":"Tok"},
@@ -54,26 +54,26 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","name":"printCookie"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"UNKNOWN","name":"printCookie"},"formalParameters":[
         {"@type": "Parameter", "metaData": "6:17::23","type":
-          {"@type": "Identifier", "metaData": "6:20::23","type":"int","name":"int"},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "6:17::19","type":"int","name":"id"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "6:20::23","type":"int","package":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "6:17::19","type":"int","package":"UNKNOWN","name":"id"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "6:25:9:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "7:4::27","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "7:14::27","type":
               {"@type": "MemberSelect", "metaData": "7:14::25","identifier":
-                {"@type": "Identifier", "metaData": "7:19::25","type":"net/http.Cookie","name":"Cookie"},"expression":
-                {"@type": "Identifier", "metaData": "7:14::18","type":"UNKNOWN","name":"http"}},"elements":[]}
+                {"@type": "Identifier", "metaData": "7:19::25","type":"net/http.Cookie","package":"UNKNOWN","name":"Cookie"},"expression":
+                {"@type": "Identifier", "metaData": "7:14::18","type":"UNKNOWN","package":"net/http","name":"http"}},"elements":[]}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "7:4::10","type":"net/http.Cookie","name":"cookie"}
+            {"@type": "Identifier", "metaData": "7:4::10","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie"}
           ]},
           {"@type": "Native", "metaData": "8:4::23","nativeKind":"[1](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "8:4::23","memberSelect":
               {"@type": "MemberSelect", "metaData": "8:4::15","identifier":
-                {"@type": "Identifier", "metaData": "8:8::15","type":"UNKNOWN","name":"Println"},"expression":
-                {"@type": "Identifier", "metaData": "8:4::7","type":"UNKNOWN","name":"fmt"}},"arguments":[
-              {"@type": "Identifier", "metaData": "8:16::22","type":"net/http.Cookie","name":"cookie"}
+                {"@type": "Identifier", "metaData": "8:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println"},"expression":
+                {"@type": "Identifier", "metaData": "8:4::7","type":"UNKNOWN","package":"fmt","name":"fmt"}},"arguments":[
+              {"@type": "Identifier", "metaData": "8:16::22","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie"}
             ]}
           ]}
         ]}}

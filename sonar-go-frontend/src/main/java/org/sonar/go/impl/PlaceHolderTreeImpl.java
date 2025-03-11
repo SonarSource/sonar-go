@@ -27,7 +27,7 @@ public class PlaceHolderTreeImpl extends IdentifierTreeImpl implements PlaceHold
   private final Token placeHolderToken;
 
   public PlaceHolderTreeImpl(TreeMetaData metaData, Token placeHolderToken) {
-    super(metaData, "_", UNKNOWN_TYPE);
+    super(metaData, "_", UNKNOWN_TYPE, UNKNOWN_PACKAGE);
     this.placeHolderToken = placeHolderToken;
   }
 

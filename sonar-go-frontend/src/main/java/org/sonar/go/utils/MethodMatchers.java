@@ -23,7 +23,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -52,7 +51,6 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  *    <ul>
  *      <li> {@link NameBuilder#withNames(String...)} </li>
  *      <li> {@link NameBuilder#withNames(Collection)} </li>
- *      <li> {@link NameBuilder#withPrefixAndNames(String, String...)} </li>
  *    </ul>
  *  </li>
  *  <li> and parameters:
@@ -68,7 +66,6 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  * <ul>
  *   <li> {@link NameBuilder#withReceiver()} - by default no receiver is expected </li>
  *   <li> {@link VariableMatcherBuilder#withVariableTypeIn(String...)} - allow to specify the type of variable expected </li>
- *   <li> {@link VariableMatcherBuilder#withVariableResultFromMethodIn(String...)} - allow to specify the method call to look for in the symbol variable usage </li>
  * </ul>
  * <p>
  * Examples:
@@ -79,7 +76,7 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  *     {@code
  *     var randIntMatcher = MethodMatchers.create()
  *       .ofType("math/rand")
- *       .withName("rand.Int")
+ *       .withName("Int")
  *       .withAnyParameters()
  *       .build();
  *     TopLevelTree topLevelTree = ...
@@ -89,13 +86,13 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  *     }
  *   </pre>
  * <p>
- *   Example 2. Match method Int() or Int31() from "math/rand" package
+ *   Example 2. Match method rand.Int() or rand.Int31() from "math/rand" package
  * <p>
  *   <pre>
  *     {@code
  *     MethodMatchers.create()
  *       .ofType("math/rand")
- *       .withPrefixAndNames("rand", "Int", "Int31")
+ *       .withNames("Int", "Int31")
  *       .withAnyParameters()
  *       .build();
  *     }
@@ -120,13 +117,12 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  *   </pre>
  * <p>
  * <p>
- *   Example 4. Match method bar() called on object of type "example.foo" or result of method call "example.baz()" from "com/example" package
+ *   Example 4. Match method bar() called on object of type "example.foo" from "com/example" package
  *   <pre>
  *     {@code
  *     var fooBarMatcher = MethodMatchers.create()
  *       .ofType("com/example")
- *       .withVariableTypeIn("example.foo")
- *       .withVariableResultFromMethodIn("example.baz")
+ *       .withVariableTypeIn("foo")
  *       .withName("bar")
  *       .withAnyParameters()
  *       .build();
@@ -139,27 +135,25 @@ import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
  * <p>
  */
 public class MethodMatchers {
-  private final List<String> types;
+  private final Collection<String> types;
   private final boolean withReceiver;
   private final Predicate<String> namePredicate;
   private final Predicate<List<String>> parametersTypePredicate;
   private final Map<Integer, Predicate<Tree>> parametersTreePredicate;
   private final Predicate<String> variableTypePredicate;
-  private final Predicate<String> variableMethodResultPredicate;
 
   @Nullable
   private String methodReceiverName;
   private boolean validateTypeInTree = false;
 
-  private MethodMatchers(List<String> types, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
-    Map<Integer, Predicate<Tree>> parametersTreePredicate, Predicate<String> variableTypePredicate, Predicate<String> variableMethodResultPredicate) {
+  private MethodMatchers(Collection<String> types, boolean withReceiver, Predicate<String> namePredicate, Predicate<List<String>> parametersTypePredicate,
+    Map<Integer, Predicate<Tree>> parametersTreePredicate, Predicate<String> variableTypePredicate) {
     this.types = types;
     this.withReceiver = withReceiver;
     this.namePredicate = namePredicate;
     this.parametersTypePredicate = parametersTypePredicate;
     this.parametersTreePredicate = parametersTreePredicate;
     this.variableTypePredicate = variableTypePredicate;
-    this.variableMethodResultPredicate = variableMethodResultPredicate;
   }
 
   public static TypeBuilder create() {
@@ -234,17 +228,22 @@ public class MethodMatchers {
     Tree functionNameTree = functionInvocation.memberSelect();
 
     if (functionNameTree instanceof MemberSelectTree memberSelectTree) {
-      var firstIdentifier = retrieveFirstIdentifier(memberSelectTree);
-      if (firstIdentifier.isPresent()) {
+      var optFirstIdentifier = retrieveFirstIdentifier(memberSelectTree);
+      if (optFirstIdentifier.isPresent()) {
+        var firstIdentifier = optFirstIdentifier.get();
         if (withReceiver) {
-          return firstIdentifier.get().name().equals(methodReceiverName) && namePredicate.test(subMethodName(memberSelectTree));
-        } else if (matchVariable(firstIdentifier.get())) {
+          return firstIdentifier.name().equals(methodReceiverName) && namePredicate.test(subMethodName(memberSelectTree));
+        } else if (matchVariable(firstIdentifier)) {
+          return namePredicate.test(subMethodName(memberSelectTree));
+        }
+
+        if (types.contains(firstIdentifier.packageName())) {
           return namePredicate.test(subMethodName(memberSelectTree));
         }
       }
     }
 
-    return namePredicate.test(TreeUtils.treeToString(functionNameTree));
+    return false;
   }
 
   private static String subMethodName(MemberSelectTree memberSelectTree) {
@@ -259,9 +258,7 @@ public class MethodMatchers {
 
   private boolean matchVariable(IdentifierTree identifier) {
     var symbol = identifier.symbol();
-    return symbol != null && (variableTypePredicate.test(identifier.type()) ||
-      variableTypePredicate.test(symbol.getType()) ||
-      variableMethodResultPredicate.test(SymbolHelper.getLastAssignedMethodCall(symbol).orElse("")));
+    return symbol != null && variableTypePredicate.test(identifier.type());
   }
 
   private static List<String> extractArgTypes(FunctionInvocationTree functionInvocation) {
@@ -279,8 +276,6 @@ public class MethodMatchers {
     ParametersBuilder withNames(Collection<String> names);
 
     ParametersBuilder withNames(String... names);
-
-    ParametersBuilder withPrefixAndNames(String commonPrefix, String... names);
 
     ParametersBuilder withNamesMatching(Predicate<String> namePredicate);
 
@@ -305,8 +300,6 @@ public class MethodMatchers {
 
   public interface VariableMatcherBuilder {
     NameBuilder withVariableTypeIn(String... types);
-
-    NameBuilder withVariableResultFromMethodIn(String... methodNames);
   }
 
   public static class MethodMatchersBuilder implements TypeBuilder, NameBuilder, ParametersBuilder {
@@ -315,9 +308,7 @@ public class MethodMatchers {
     private boolean methodReceiver = false;
     private Predicate<List<String>> parametersTypesPredicate;
     private Map<Integer, Predicate<Tree>> parametersTreePredicate = new HashMap<>();
-    private boolean withVariable = false;
     private Predicate<String> variableTypePredicate = v -> false;
-    private Predicate<String> variableMethodResultPredicate = v -> false;
 
     @Override
     public NameBuilder ofType(String type) {
@@ -333,33 +324,13 @@ public class MethodMatchers {
 
     @Override
     public ParametersBuilder withNames(Collection<String> names) {
-      validateNames(names);
       this.namePredicate = names::contains;
       return this;
-    }
-
-    private void validateNames(Collection<String> names) {
-      if (!methodReceiver && !withVariable) {
-        var nameWithoutDot = names.stream()
-          .filter(s -> !s.contains("."))
-          .findAny();
-        if (nameWithoutDot.isPresent()) {
-          var message = "The method resolution \"%s\" doesn't contain a dot. Detection on local method is not supported yet.".formatted(nameWithoutDot.get());
-          throw new IllegalArgumentException(message);
-        }
-      }
     }
 
     @Override
     public ParametersBuilder withNames(String... names) {
       return withNames(Arrays.asList(names));
-    }
-
-    @Override
-    public ParametersBuilder withPrefixAndNames(String commonPrefix, String... names) {
-      var namesWithPrefix = Arrays.stream(names).map(name -> commonPrefix + "." + name).collect(Collectors.toSet());
-      this.namePredicate = namesWithPrefix::contains;
-      return this;
     }
 
     @Override
@@ -411,16 +382,8 @@ public class MethodMatchers {
      */
     @Override
     public NameBuilder withVariableTypeIn(String... types) {
-      withVariable = true;
       var typesWithStar = Arrays.stream(types).map(t -> "*" + t);
       variableTypePredicate = Stream.concat(Arrays.stream(types), typesWithStar).collect(Collectors.toSet())::contains;
-      return this;
-    }
-
-    @Override
-    public NameBuilder withVariableResultFromMethodIn(String... methodNames) {
-      withVariable = true;
-      variableMethodResultPredicate = Set.of(methodNames)::contains;
       return this;
     }
 
@@ -431,7 +394,7 @@ public class MethodMatchers {
         parametersTypesPredicate = p -> true;
       }
       return new MethodMatchers(types, methodReceiver, namePredicate, parametersTypesPredicate, parametersTreePredicate,
-        variableTypePredicate, variableMethodResultPredicate);
+        variableTypePredicate);
     }
   }
 }

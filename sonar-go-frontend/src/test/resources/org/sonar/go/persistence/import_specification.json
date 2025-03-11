@@ -9,7 +9,7 @@
   "tree": {
     "@type": "ImportSpecification",
     "metaData": "1:7::19",
-    "name": {"@type": "Identifier", "metaData": "1:7::11", "name": "name", "type":  "UNKNOWN"},
+    "name": {"@type": "Identifier", "metaData": "1:7::11", "name": "name", "type": "UNKNOWN", "package": "UNKNOWN"},
     "path": {"@type": "StringLiteral", "metaData": "1:13::19", "content": "path", "value": "\"path\""}
   }
 }

@@ -10,7 +10,7 @@
   "tree": {
     "@type": "CompositeLiteral",
     "metaData": "1:0::12",
-    "type": {"@type": "Identifier", "metaData": "1:0::6", "name": "MyType", "type": "UNKNOWN"},
+    "type": {"@type": "Identifier", "metaData": "1:0::6", "name": "MyType", "type": "UNKNOWN", "package": "UNKNOWN"},
     "elements": [
     ]
   }

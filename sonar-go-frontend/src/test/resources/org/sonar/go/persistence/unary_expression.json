@@ -10,6 +10,6 @@
     "@type": "UnaryExpression",
     "metaData": "1:0::2",
     "operator": "MINUS",
-    "operand": {"@type": "Identifier", "metaData": "1:1::2", "name": "x", "type": "UNKNOWN"}
+    "operand": {"@type": "Identifier", "metaData": "1:1::2", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"}
   }
 }

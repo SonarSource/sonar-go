@@ -10,7 +10,7 @@
     "@type": "PackageDeclaration",
     "metaData": "1:0::13",
     "children": [
-      {"@type": "Identifier", "metaData": "1:8::13", "name": "hello", "type": "UNKNOWN"}
+      {"@type": "Identifier", "metaData": "1:8::13", "name": "hello", "type": "UNKNOWN", "package": "UNKNOWN"}
     ]
   }
 }

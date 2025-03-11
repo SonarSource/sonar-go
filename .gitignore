@@ -42,3 +42,4 @@ Desktop.ini
 test-report.out
 
 *.cer
+private/go-package-data-exporter/packages/*.o

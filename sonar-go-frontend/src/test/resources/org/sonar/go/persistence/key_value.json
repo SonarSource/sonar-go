@@ -11,7 +11,7 @@
   "tree": {
     "@type": "KeyValue",
     "metaData": "1:0::14",
-    "key": {"@type": "Identifier", "metaData": "1:0::4", "name": "Name", "type": "UNKNOWN"},
+    "key": {"@type": "Identifier", "metaData": "1:0::4", "name": "Name", "type": "UNKNOWN", "package": "UNKNOWN"},
     "value": {"@type": "Literal", "metaData": "1:7::14", "value": "Example"}
   }
 }

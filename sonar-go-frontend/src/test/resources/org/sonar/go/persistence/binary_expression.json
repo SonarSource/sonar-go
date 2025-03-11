@@ -12,7 +12,7 @@
     "metaData": "1:0::5",
     "operator": "LESS_THAN",
     "operatorToken": "1:2::3",
-    "leftOperand": {"@type": "Identifier", "metaData": "1:0::1", "name": "x", "type": "UNKNOWN"},
-    "rightOperand": {"@type": "Identifier", "metaData": "1:4::5", "name": "y", "type": "UNKNOWN"}
+    "leftOperand": {"@type": "Identifier", "metaData": "1:0::1", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"},
+    "rightOperand": {"@type": "Identifier", "metaData": "1:4::5", "name": "y", "type": "UNKNOWN", "package": "UNKNOWN"}
   }
 }

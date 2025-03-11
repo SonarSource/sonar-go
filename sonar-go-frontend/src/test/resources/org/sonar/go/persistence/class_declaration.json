@@ -17,7 +17,7 @@
       "metaData": "1:6::11",
       "nativeKind": "CLASS",
       "children": [
-        {"@type": "Identifier", "metaData": "1:6::7", "name": "A", "type": "UNKNOWN"}
+        {"@type": "Identifier", "metaData": "1:6::7", "name": "A", "type": "UNKNOWN", "package": "UNKNOWN"}
       ]
     }
   }

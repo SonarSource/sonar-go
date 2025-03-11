@@ -56,6 +56,11 @@ type TextRange struct {
 	EndColumn   int
 }
 
+type IdentifierInfo struct {
+	Type    string
+	Package string
+}
+
 const keywordKind = "KEYWORD"
 const nativeSlangType = "Native"
 const nativeKind = "nativeKind"
@@ -580,20 +585,37 @@ func (t *SlangMapper) location(offset, endOffset int) string {
 	return out.String()
 }
 
-func (t *SlangMapper) getTypeOfIdent(ident *ast.Ident) string {
+func (t *SlangMapper) getIdentifierInfo(ident *ast.Ident) *IdentifierInfo {
 	if obj, ok := t.info.Defs[ident]; ok && obj != nil {
-		if strings.HasSuffix(obj.Type().String(), "invalid type") {
-			return t.getTypeFromAst(ident)
-		}
-		return obj.Type().String()
+		return t.extractIdentifierInfo(ident, &obj)
 	}
 	if obj, ok := t.info.Uses[ident]; ok && obj != nil {
-		if strings.HasSuffix(obj.Type().String(), "invalid type") {
-			return t.getTypeFromAst(ident)
-		}
-		return obj.Type().String()
+		return t.extractIdentifierInfo(ident, &obj)
 	}
-	return "UNKNOWN"
+	return &IdentifierInfo{
+		Type:    "UNKNOWN",
+		Package: "UNKNOWN",
+	}
+}
+
+func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object) *IdentifierInfo {
+	var typeName string
+	var packageName = "UNKNOWN"
+
+	if strings.HasSuffix((*obj).Type().String(), "invalid type") {
+		typeName = t.getTypeFromAst(ident)
+	} else {
+		typeName = (*obj).Type().String()
+	}
+
+	if pck, ok := (*obj).(*types.PkgName); ok && pck != nil {
+		packageName = pck.Imported().Path()
+	}
+
+	return &IdentifierInfo{
+		Type:    typeName,
+		Package: packageName,
+	}
 }
 
 // getTypeFromAst returns the type of the given identifier by looking at the AST

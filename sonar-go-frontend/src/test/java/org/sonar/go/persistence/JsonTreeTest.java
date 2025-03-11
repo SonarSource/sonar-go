@@ -421,21 +421,22 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(identifier.textRange()).isEqualTo(token.textRange());
 
     assertThat(methodNames(IdentifierTree.class))
-      .containsExactlyInAnyOrder(NAME, "identifier", "type", "symbol", "setSymbol");
+      .containsExactlyInAnyOrder(NAME, "identifier", "type", "packageName", "symbol", "setSymbol");
   }
 
   @Test
-  void identifier_type() throws IOException {
+  void identifier_type_and_package() throws IOException {
     Token token = otherToken(1, 0, "foo");
-    IdentifierTree initialIdentifier = TreeCreationUtils.identifier(metaData(token), token.text(), "bar");
-    IdentifierTree identifier = checkJsonSerializationDeserialization(initialIdentifier, "identifier_type.json");
+    IdentifierTree initialIdentifier = TreeCreationUtils.identifier(metaData(token), token.text(), "bar", "baz");
+    IdentifierTree identifier = checkJsonSerializationDeserialization(initialIdentifier, "identifier_type_and_package.json");
     assertThat(identifier.name()).isEqualTo("foo");
     assertThat(identifier.type()).isEqualTo("bar");
+    assertThat(identifier.packageName()).isEqualTo("baz");
     assertThat(identifier.identifier()).isEqualTo("foo");
     assertThat(identifier.textRange()).isEqualTo(token.textRange());
 
     assertThat(methodNames(IdentifierTree.class))
-      .containsExactlyInAnyOrder(NAME, "identifier", "type", "symbol", "setSymbol");
+      .containsExactlyInAnyOrder(NAME, "identifier", "type", "packageName", "symbol", "setSymbol");
   }
 
   @Test
@@ -751,7 +752,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(tree.placeHolderToken().text()).isEqualTo("_");
 
     assertThat(methodNames(PlaceHolderTree.class))
-      .containsExactlyInAnyOrder(PLACE_HOLDER_TOKEN, IDENTIFIER, NAME, "type", "symbol", "setSymbol");
+      .containsExactlyInAnyOrder(PLACE_HOLDER_TOKEN, IDENTIFIER, NAME, "type", "packageName", "symbol", "setSymbol");
   }
 
   @Test

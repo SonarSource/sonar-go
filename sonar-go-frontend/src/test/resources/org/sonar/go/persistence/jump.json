@@ -9,7 +9,7 @@
   "tree": {
     "@type": "Jump",
     "metaData": "1:0::10",
-    "label": {"@type": "Identifier", "metaData": "1:6::10", "name": "hard", "type": "UNKNOWN"},
+    "label": {"@type": "Identifier", "metaData": "1:6::10", "name": "hard", "type": "UNKNOWN", "package": "UNKNOWN"},
     "keyword": "1:0::5",
     "kind": "BREAK"
   }

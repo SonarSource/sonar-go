@@ -25,6 +25,8 @@ public interface IdentifierTree extends Tree, HasSymbol {
   @CheckForNull
   String type();
 
+  String packageName();
+
   // identifier is used for equivalence comparison
   default String identifier() {
     return name();

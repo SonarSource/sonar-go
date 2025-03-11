@@ -27,19 +27,20 @@ class IdentifierTreeImplTest {
 
   @Test
   void testCreateSimpleIdentifier() {
-    var identifier = new IdentifierTreeImpl(null, "name", "my_type");
+    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package");
     var symbol = new Symbol("type", Scope.PACKAGE);
     identifier.setSymbol(symbol);
 
     assertThat(identifier.name()).isEqualTo("name");
     assertThat(identifier.type()).isEqualTo("my_type");
+    assertThat(identifier.packageName()).isEqualTo("my_package");
     assertThat(identifier.children()).isEmpty();
     assertThat(identifier.symbol()).isSameAs(symbol);
   }
 
   @Test
   void shouldThrowExceptionWhenSettingSymbolTwice() {
-    var identifier = new IdentifierTreeImpl(null, "name", "my_type");
+    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package");
     var symbol = new Symbol("type", Scope.BLOCK);
     identifier.setSymbol(symbol);
 

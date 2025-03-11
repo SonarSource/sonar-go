@@ -9,7 +9,7 @@
   "tree": {
     "@type": "ExceptionHandling",
     "metaData": "1:0::11",
-    "tryBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "x", "type": "UNKNOWN"},
+    "tryBlock": {"@type": "Identifier", "metaData": "1:10::11", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"},
     "tryKeyword": "1:0::3",
     "catchBlocks": [],
     "finallyBlock": null

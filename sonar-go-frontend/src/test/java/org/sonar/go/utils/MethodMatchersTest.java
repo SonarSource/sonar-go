@@ -39,33 +39,47 @@ import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatIllegalArgumentException;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.mock;
 import static org.sonar.go.testing.TextRangeGoAssert.assertThat;
 
 class MethodMatchersTest {
 
-  @Test
-  void shouldMatchMethodCallWithPackageName() {
+  static Stream<Arguments> shouldMatchMethodCallWithPackageName() {
+    return Stream.of(
+      Arguments.of("rand.Intn()", "Intn", "Intn"),
+      Arguments.of("rand.Intn(\"bar\")", "Intn", "Intn"),
+      Arguments.of("rand.Intn.foo.bar(\"bar\")", "Intn.foo.bar", "bar"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldMatchMethodCallWithPackageName(String code, String methodLookingFor, String methodFound) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames(methodLookingFor)
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo()", "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher(code, "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
+    assertThat(matches.get().name()).isEqualTo(methodFound);
   }
 
   @Test
-  void shouldThrowExceptionWhenMethodCallWithoutPackageName() {
-    assertThatIllegalArgumentException().isThrownBy(() -> MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("foo"));
+  void shouldNotMatchForDifferentPackage() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withNames(Set.of("Intn", "Int63", "Int63n"))
+      .withAnyParameters()
+      .build();
+
+    Tree methodCall = parseAndFeedImportsToMatcher("other.Int63()", "math/rand", matcher);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
   }
 
   @Test
@@ -85,77 +99,62 @@ class MethodMatchersTest {
   @Test
   void shouldMatchWithMultipleMethodNamesCollection() {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames(Set.of("sonar.foo", "sonar.bar", "sonar.baz"))
+      .ofType("math/rand")
+      .withNames(Set.of("Intn", "Int63", "Int63n"))
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher("rand.Int63()", "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("bar");
+    assertThat(matches.get().name()).isEqualTo("Int63");
   }
 
   @Test
   void shouldMatchWithMultipleMethodNamesVararg() {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo", "sonar.bar", "sonar.baz")
+      .ofType("math/rand")
+      .withNames("Intn", "Int63", "Int63n")
       .withAnyParameters()
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher("rand.Int63()", "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("bar");
-  }
-
-  @Test
-  void shouldMatchWithMultipleMethodNamesWithPrefix() {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withPrefixAndNames("sonar", "foo", "bar", "baz")
-      .withAnyParameters()
-      .build();
-
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.bar()", "com/sonar", matcher);
-
-    Optional<IdentifierTree> matches = matcher.matches(methodCall);
-    assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("bar");
+    assertThat(matches.get().name()).isEqualTo("Int63");
   }
 
   @Test
   void shouldMatchWithParameterPredicate() {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames("Intn")
       .withParameters(p -> p.size() == 1)
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher("rand.Intn(\"bar\")", "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
+    assertThat(matches.get().name()).isEqualTo("Intn");
   }
 
   @Test
   void shouldMatchWithMultiplesParameterPredicateWithOr() {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames("Intn")
       .withParameters(p -> false)
       .withParameters(p -> true)
       .build();
 
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher("rand.Intn(\"bar\")", "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
+    assertThat(matches.get().name()).isEqualTo("Intn");
   }
 
   @Test
@@ -217,7 +216,7 @@ class MethodMatchersTest {
   @Test
   void shouldNotMatchWithWrongPackageName() {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("sonar/foo")
+      .ofType("org/sonar")
       .withNames("sonar.foo")
       .withAnyParameters()
       .build();
@@ -226,21 +225,6 @@ class MethodMatchersTest {
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isEmpty();
-  }
-
-  @Test
-  void shouldMatchSingleImport() {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("sonar")
-      .withNames("sonar.foo")
-      .withAnyParameters()
-      .build();
-
-    Tree methodCall = parseAndFeedImportsToMatcher("sonar.foo(\"bar\")", "sonar", matcher);
-
-    Optional<IdentifierTree> matches = matcher.matches(methodCall);
-    assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
   }
 
   @Test
@@ -267,21 +251,6 @@ class MethodMatchersTest {
 
     Optional<IdentifierTree> matches = matcher.matches(null);
     assertThat(matches).isEmpty();
-  }
-
-  @Test
-  void shouldMatchChainCall() {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("a.b.c.foo")
-      .withAnyParameters()
-      .build();
-
-    Tree methodCall = parseAndFeedImportsToMatcher("a.b.c.foo(\"bar\")", "com/sonar", matcher);
-
-    Optional<IdentifierTree> matches = matcher.matches(methodCall);
-    assertThat(matches).isPresent();
-    assertThat(matches.get().name()).isEqualTo("foo");
   }
 
   @Test
@@ -429,39 +398,11 @@ class MethodMatchersTest {
     assertThat(matchedIdentifier.textRange()).hasRange(7, 5, 7, 10);
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    "sonar.Open",
-    "sonar.OpenConnection"
-  })
-  void shouldMatchWithVariableResultFromMethod(String createMethod) {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withVariableResultFromMethodIn("sonar.Open", "sonar.OpenConnection")
-      .withNames("Query")
-      .withAnyParameters()
-      .build();
-
-    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
-       func main() {
-         var x = %s()
-         x.Query()
-       }
-      """.formatted(createMethod), "com/sonar", matcher);
-
-    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
-    assertThat(matches).hasSize(1);
-    var matchedIdentifier = matches.get(0);
-    assertThat(matchedIdentifier.identifier()).isEqualTo("Query");
-    assertThat(matchedIdentifier.textRange()).hasRange(7, 5, 7, 10);
-  }
-
   @Test
   void shouldNotMatchWithIdentifierWithoutSymbol() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
       .withVariableTypeIn("sonar.Connection")
-      .withVariableResultFromMethodIn("sonar.Open")
       .withNames("Query")
       .withAnyParameters()
       .build();
@@ -476,63 +417,22 @@ class MethodMatchersTest {
     assertThat(matches).isEmpty();
   }
 
-  @ParameterizedTest
-  @ValueSource(strings = {
-    "good()",
-    "good.Other()",
-    "good.Open()",
-    "good.Query.Launch()",
-    "good.QueryRow()",
-    "good.RowQuery()",
-    "sonar.Open()",
-    "sonar.Query()",
-    "Open()",
-    "Query()",
-    "bad_1.Query()",
-    "bad_1()",
-    "bad_2.Query()",
-    "bad_2()",
-    "bad_3.Query()",
-    "bad_3()",
-  })
-  void shouldNotMatchWithInvalidMethodCall(String methodCall) {
-    MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withVariableResultFromMethodIn("sonar.Open")
-      .withNames("Query")
-      .withAnyParameters()
-      .build();
-
-    var topLevelTree = parseFunctionAndFeedImportsToMatcher("""
-       func main() {
-         var good = sonar.Open()
-         var bad_1 = sonar.Other()
-         var bad_2 = other.Open()
-         var bad_3 = Open()
-         %s
-       }
-      """.formatted(methodCall), "com/sonar", matcher);
-
-    List<IdentifierTree> matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
-    assertThat(matches).isEmpty();
-  }
-
   static Stream<Arguments> testMatchWithParameterValuePredicate() {
     return Stream.of(
-      arguments("sonar.foo(\"bar\", 2)", true),
-      arguments("sonar.foo(\"bar\", 2, 3)", true),
-      arguments("sonar.foo(\"bar\")", false),
-      arguments("sonar.foo()", false),
-      arguments("sonar.foo(3, 3)", false),
-      arguments("sonar.foo(\"bar\", \"baz\")", false));
+      arguments("rand.Intn(\"bar\", 2)", true),
+      arguments("rand.Intn(\"bar\", 2, 3)", true),
+      arguments("rand.Intn(\"bar\")", false),
+      arguments("rand.Intn()", false),
+      arguments("rand.Intn(3, 3)", false),
+      arguments("rand.Intn(\"bar\", \"baz\")", false));
   }
 
   @ParameterizedTest
   @MethodSource
   void testMatchWithParameterValuePredicate(String code, boolean shouldMatch) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames("Intn")
       .withAnyParameters()
       .withParameterAtIndexMatching(0, StringLiteralTree.class::isInstance)
       .withParameterAtIndexMatching(1, IntegerLiteralTree.class::isInstance)
@@ -543,20 +443,20 @@ class MethodMatchersTest {
 
   static Stream<Arguments> testMatchNumberOfParameter() {
     return Stream.of(
-      arguments("sonar.foo(\"bar\", 2)", true),
-      arguments("sonar.foo(\"bar\", 2, 3)", false),
-      arguments("sonar.foo(\"bar\")", false),
-      arguments("sonar.foo()", false),
-      arguments("sonar.foo(3, 3)", true),
-      arguments("sonar.foo(\"bar\", \"baz\")", true));
+      arguments("rand.Intn(\"bar\", 2)", true),
+      arguments("rand.Intn(\"bar\", 2, 3)", false),
+      arguments("rand.Intn(\"bar\")", false),
+      arguments("rand.Intn()", false),
+      arguments("rand.Intn(3, 3)", true),
+      arguments("rand.Intn(\"bar\", \"baz\")", true));
   }
 
   @ParameterizedTest
   @MethodSource
   void testMatchNumberOfParameter(String code, boolean shouldMatch) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames("Intn")
       .withNumberOfParameters(2)
       .build();
 
@@ -566,20 +466,20 @@ class MethodMatchersTest {
   // Currently we fail all matches because we don't have yet the detection of types
   static Stream<Arguments> testMatchNumberOfParameterWithAdditionalTypePredicate() {
     return Stream.of(
-      arguments("sonar.foo(\"bar\", 2)", true),
-      arguments("sonar.foo(\"bar\", 2, 3)", false),
-      arguments("sonar.foo(\"bar\")", false),
-      arguments("sonar.foo()", false),
-      arguments("sonar.foo(3, 3)", true),
-      arguments("sonar.foo(\"bar\", \"baz\")", true));
+      arguments("rand.Intn(\"bar\", 2)", true),
+      arguments("rand.Intn(\"bar\", 2, 3)", false),
+      arguments("rand.Intn(\"bar\")", false),
+      arguments("rand.Intn()", false),
+      arguments("rand.Intn(3, 3)", true),
+      arguments("rand.Intn(\"bar\", \"baz\")", true));
   }
 
   @ParameterizedTest
   @MethodSource
   void testMatchNumberOfParameterWithAdditionalTypePredicate(String code, boolean shouldMatch) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNames("sonar.foo")
+      .ofType("math/rand")
+      .withNames("Intn")
       .withNumberOfParameters(2)
       .withParameters(listType -> listType.size() >= 2 && listType.get(0).equals("string") && listType.get(0).equals("int"))
       .build();
@@ -589,17 +489,15 @@ class MethodMatchersTest {
 
   @ParameterizedTest
   @CsvSource({
-    "sonar.foo(), true",
-    "sonar.barfoo(), true",
-    "sonar.foobar(), false",
-    "sonar.fooBar(), false",
-    "sonar.barFoo(), false",
-    "sonar.foofoo(), true"
+    "rand.Intn(), true",
+    "rand.Int63n(), true",
+    "rand.Read(), false",
+    "rand.Uint32(), false"
   })
   void testMatchNamesByPredicate(String code, boolean shouldMatch) {
     MethodMatchers matcher = MethodMatchers.create()
-      .ofType("com/sonar")
-      .withNamesMatching(functionName -> functionName.endsWith("foo"))
+      .ofType("math/rand")
+      .withNamesMatching(functionName -> functionName.startsWith("Int"))
       .withAnyParameters()
       .build();
 
@@ -607,7 +505,7 @@ class MethodMatchersTest {
   }
 
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
-    Tree methodCall = parseAndFeedImportsToMatcher(code, "com/sonar", matcher);
+    Tree methodCall = parseAndFeedImportsToMatcher(code, "math/rand", matcher);
 
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     if (shouldMatch) {

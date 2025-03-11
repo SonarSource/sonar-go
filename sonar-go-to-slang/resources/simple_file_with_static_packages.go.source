@@ -1,0 +1,8 @@
+package main
+import (
+  my_sql "database/sql"
+)
+
+func main() {
+  session, _ := my_sql.Open()
+}

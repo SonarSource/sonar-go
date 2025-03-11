@@ -11,7 +11,7 @@
     "@type": "Loop",
     "metaData": "1:0::12",
     "condition": {"@type": "Literal", "metaData": "1:6::10", "value": "true"},
-    "body": {"@type": "Identifier", "metaData": "1:11::12", "name": "x", "type": "UNKNOWN"},
+    "body": {"@type": "Identifier", "metaData": "1:11::12", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"},
     "kind": "WHILE",
     "keyword": "1:0::5"
   }

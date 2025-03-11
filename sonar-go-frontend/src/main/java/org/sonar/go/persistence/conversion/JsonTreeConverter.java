@@ -123,6 +123,7 @@ public final class JsonTreeConverter {
   public static final String OPERAND = "operand";
   public static final String OPERATOR = "operator";
   public static final String OPERATOR_TOKEN = "operatorToken";
+  public static final String PACKAGE = "package";
   public static final String PATH = "path";
   public static final String PLACE_HOLDER_TOKEN = "placeHolderToken";
   public static final String RANGE = "range";
@@ -331,12 +332,14 @@ public final class JsonTreeConverter {
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(NAME, tree.name())
-        .add(TYPE, tree.type()),
+        .add(TYPE, tree.type())
+        .add(PACKAGE, tree.packageName()),
 
       (ctx, json) -> new IdentifierTreeImpl(
         ctx.metaData(json),
         ctx.fieldToString(json, NAME),
-        ctx.fieldToString(json, TYPE)));
+        ctx.fieldToString(json, TYPE),
+        ctx.fieldToString(json, PACKAGE)));
 
     register(IfTreeImpl.class,
 

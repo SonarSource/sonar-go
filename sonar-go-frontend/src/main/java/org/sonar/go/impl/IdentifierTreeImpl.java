@@ -27,16 +27,18 @@ import org.sonar.go.symbols.Symbol;
 public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
 
   public static final String UNKNOWN_TYPE = "UNKNOWN";
+  public static final String UNKNOWN_PACKAGE = "UNKNOWN";
 
   private final String name;
+  private final String type;
+  private final String packageName;
   private Symbol symbol;
 
-  private final String type;
-
-  public IdentifierTreeImpl(TreeMetaData metaData, String name, String type) {
+  public IdentifierTreeImpl(TreeMetaData metaData, String name, String type, String packageName) {
     super(metaData);
     this.name = name;
     this.type = type;
+    this.packageName = packageName;
   }
 
   public String name() {
@@ -47,6 +49,11 @@ public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
   @Override
   public String type() {
     return type;
+  }
+
+  @Override
+  public String packageName() {
+    return packageName;
   }
 
   @Override

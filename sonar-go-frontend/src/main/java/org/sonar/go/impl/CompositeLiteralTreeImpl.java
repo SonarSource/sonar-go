@@ -70,8 +70,8 @@ public class CompositeLiteralTreeImpl extends BaseTreeImpl implements CompositeL
   @Override
   public boolean hasType(String packageName, String typeName) {
     return type instanceof MemberSelectTree memberSelectTree
-      && typeName.equals(memberSelectTree.identifier().name())
+      && typeName.equals(memberSelectTree.identifier().type())
       && memberSelectTree.expression() instanceof IdentifierTree identifierTree
-      && packageName.equals(identifierTree.name());
+      && packageName.equals(identifierTree.packageName());
   }
 }

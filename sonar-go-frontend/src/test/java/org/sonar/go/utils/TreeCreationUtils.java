@@ -66,6 +66,7 @@ import org.sonar.go.impl.VariableDeclarationTreeImpl;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.sonar.go.impl.IdentifierTreeImpl.UNKNOWN_PACKAGE;
 import static org.sonar.go.impl.IdentifierTreeImpl.UNKNOWN_TYPE;
 
 public class TreeCreationUtils {
@@ -106,23 +107,27 @@ public class TreeCreationUtils {
   }
 
   public static IdentifierTree identifier(String name) {
-    return new IdentifierTreeImpl(null, name, UNKNOWN_TYPE);
+    return new IdentifierTreeImpl(null, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
   }
 
   public static IdentifierTree identifier(String name, String type) {
-    return new IdentifierTreeImpl(null, name, type);
+    return new IdentifierTreeImpl(null, name, type, UNKNOWN_PACKAGE);
   }
 
   public static IdentifierTree identifier(String name, TextRange textRange, String... tokens) {
-    return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE);
+    return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
   }
 
   public static IdentifierTree identifier(TreeMetaData meta, String name) {
-    return new IdentifierTreeImpl(meta, name, UNKNOWN_TYPE);
+    return new IdentifierTreeImpl(meta, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
   }
 
   public static IdentifierTree identifier(TreeMetaData meta, String name, String type) {
-    return new IdentifierTreeImpl(meta, name, type);
+    return new IdentifierTreeImpl(meta, name, type, UNKNOWN_PACKAGE);
+  }
+
+  public static IdentifierTree identifier(TreeMetaData meta, String name, String type, String packageName) {
+    return new IdentifierTreeImpl(meta, name, type, packageName);
   }
 
   public static MemberSelectTree memberSelect(Tree expression, IdentifierTree identifier) {

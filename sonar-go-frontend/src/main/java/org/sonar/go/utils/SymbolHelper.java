@@ -79,7 +79,7 @@ public class SymbolHelper {
       return stringLiteralTree.content();
     } else if (tree instanceof IdentifierTree identifierTree) {
       var symbol = identifierTree.symbol();
-      if (symbol != null && symbol.getType().equals(GoNativeType.STRING)) {
+      if (symbol != null && GoNativeType.STRING.equals(symbol.getType())) {
         return resolveStringValue(symbol.getSafeValue());
       }
     }
