@@ -90,7 +90,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"if.go","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:23:1","statementOrExpressions":[
           {"@type": "If", "metaData": "6:1:8:2","thenBranch":
             {"@type": "Block", "metaData": "6:9:8:2","statementOrExpressions":[

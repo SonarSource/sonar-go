@@ -122,6 +122,20 @@ func TestMainWithStaticPackageResolution(t *testing.T) {
 	assert.Contains(t, output, "\"package\":\"database/sql\"")
 }
 
+func TestMainWithDotImport(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "resources/simple_file_with_dot_import.go.source"}
+
+	writeOut, oldStdOut, outChanel := captureStandardOutput()
+
+	main()
+
+	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+
+	// Validate the output
+	assert.Contains(t, output, "\"package\":\"math/rand\",\"name\":\"Intn\"")
+}
+
 func TestMainWithInvalidFile(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/invalid_file.go.source"}

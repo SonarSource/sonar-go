@@ -54,7 +54,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"UNKNOWN","name":"printCookie"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"cookie_example.go","name":"printCookie"},"formalParameters":[
         {"@type": "Parameter", "metaData": "6:17::23","type":
           {"@type": "Identifier", "metaData": "6:20::23","type":"int","package":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "6:17::19","type":"int","package":"UNKNOWN","name":"id"},"defaultValue":null}
@@ -63,7 +63,7 @@
           {"@type": "VariableDeclaration", "metaData": "7:4::27","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "7:14::27","type":
               {"@type": "MemberSelect", "metaData": "7:14::25","identifier":
-                {"@type": "Identifier", "metaData": "7:19::25","type":"net/http.Cookie","package":"UNKNOWN","name":"Cookie"},"expression":
+                {"@type": "Identifier", "metaData": "7:19::25","type":"net/http.Cookie","package":"net/http","name":"Cookie"},"expression":
                 {"@type": "Identifier", "metaData": "7:14::18","type":"UNKNOWN","package":"net/http","name":"http"}},"elements":[]}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "7:4::10","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie"}

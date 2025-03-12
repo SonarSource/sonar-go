@@ -102,7 +102,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::11","type":"func()","package":"UNKNOWN","name":"minMax"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::11","type":"func()","package":"min_max.go","name":"minMax"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:14:15:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "5:4::16","type":
             {"@type": "Identifier", "metaData": "5:13::16","type":"int","package":"UNKNOWN","name":"int"},"isVal":false,"initializers":[],"identifiers":[

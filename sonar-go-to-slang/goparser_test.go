@@ -30,15 +30,15 @@ import (
 	"testing"
 )
 
-func slangFromString(source string) (*Node, []*Node, []*Token) {
-	fileSet, astFile := astFromString(source)
-	info, _ := typeCheckAst("main.go", fileSet, astFile, true)
+func slangFromString(filename string, source string) (*Node, []*Node, []*Token) {
+	fileSet, astFile := astFromString(filename, source)
+	info, _ := typeCheckAst(filename, fileSet, astFile, true)
 	return toSlangTree(fileSet, astFile, source, info)
 }
 
-func astFromString(source string) (fileSet *token.FileSet, astFile *ast.File) {
+func astFromString(filename string, source string) (fileSet *token.FileSet, astFile *ast.File) {
 	fileSet = token.NewFileSet()
-	astFile, err := readAstString(fileSet, "main.go", source)
+	astFile, err := readAstString(fileSet, filename, source)
 	if err != nil {
 		panic(err)
 	}
@@ -53,7 +53,8 @@ func fix_all_go_files_test_automatically(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		node, comment, tokens := slangFromString(string(source))
+		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
+		node, comment, tokens := slangFromString(filename, string(source))
 		actual := toJsonSlang(node, comment, tokens, "  ")
 		d1 := []byte(actual)
 		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
@@ -69,7 +70,8 @@ func Test_all_go_files(t *testing.T) {
 		if err != nil {
 			panic(err)
 		}
-		node, comment, tokens := slangFromString(string(source))
+		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
+		node, comment, tokens := slangFromString(filename, string(source))
 		actual := toJsonSlang(node, comment, tokens, "  ")
 
 		var jsonActual interface{}

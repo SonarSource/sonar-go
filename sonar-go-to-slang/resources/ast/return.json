@@ -78,7 +78,7 @@
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::15","type":"func() bool","package":"UNKNOWN","name":"returnTrue"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::15","type":"func() bool","package":"return.go","name":"returnTrue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:23:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::12","keyword":"4:1::7","body":
             {"@type": "Literal", "metaData": "4:8::12","value":"true"}}
@@ -87,7 +87,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::16","type":"func()","package":"UNKNOWN","name":"emptyReturn"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::16","type":"func()","package":"return.go","name":"emptyReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:19:9:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "8:1::7","keyword":"8:1::7","body":null}
         ]}},
@@ -99,7 +99,7 @@
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::14","type":"func() string","package":"UNKNOWN","name":"twoReturn"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "11:5::14","type":"func() string","package":"return.go","name":"twoReturn"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "11:24:17:1","statementOrExpressions":[
           {"@type": "If", "metaData": "12:1:16:2","thenBranch":
             {"@type": "Block", "metaData": "12:9:14:2","statementOrExpressions":[
@@ -130,7 +130,7 @@
           {"@type": "Native", "metaData": "19:47::48","nativeKind":"Closing"}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "19:5::24","type":"func() (string, int, string)","package":"UNKNOWN","name":"multipleReturnValue"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "19:5::24","type":"func() (string, int, string)","package":"return.go","name":"multipleReturnValue"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "20:6::9","value":"\"b\"","content":"b"}

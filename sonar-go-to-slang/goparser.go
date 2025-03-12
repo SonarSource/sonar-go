@@ -600,7 +600,7 @@ func (t *SlangMapper) getIdentifierInfo(ident *ast.Ident) *IdentifierInfo {
 
 func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object) *IdentifierInfo {
 	var typeName string
-	var packageName = "UNKNOWN"
+	var packageName = t.extractPackageName(obj)
 
 	if strings.HasSuffix((*obj).Type().String(), "invalid type") {
 		typeName = t.getTypeFromAst(ident)
@@ -608,14 +608,31 @@ func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object)
 		typeName = (*obj).Type().String()
 	}
 
-	if pck, ok := (*obj).(*types.PkgName); ok && pck != nil {
-		packageName = pck.Imported().Path()
-	}
-
 	return &IdentifierInfo{
 		Type:    typeName,
 		Package: packageName,
 	}
+}
+
+func (t *SlangMapper) extractPackageName(obj *types.Object) string {
+	if pck, ok := (*obj).(*types.PkgName); ok && pck != nil {
+		return pck.Imported().Path()
+	}
+	if fun, ok := (*obj).(*types.Func); ok && fun != nil {
+		pkg := fun.Pkg()
+		if pkg != nil {
+			return fun.Pkg().Path()
+		} else {
+			return "UNKNOWN"
+		}
+	}
+	if typ, ok := (*obj).(*types.TypeName); ok && typ != nil {
+		pkg := typ.Pkg()
+		if pkg != nil {
+			return pkg.Path()
+		}
+	}
+	return "UNKNOWN"
 }
 
 // getTypeFromAst returns the type of the given identifier by looking at the AST

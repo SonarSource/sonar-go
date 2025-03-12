@@ -178,7 +178,7 @@
       {"@type": "ClassDeclaration", "metaData": "7:0:10:1","identifier":"7:5::11","classTree":
         {"@type": "Native", "metaData": "7:0:10:1","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "7:5::11","type":"main.go.Person","package":"UNKNOWN","name":"Person"},
+          {"@type": "Identifier", "metaData": "7:5::11","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},
           {"@type": "Native", "metaData": "7:12:10:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "7:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "7:19:10:1","nativeKind":"Fields(FieldList)","children":[
@@ -202,7 +202,7 @@
       {"@type": "VariableDeclaration", "metaData": "12:0::43","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "12:13::43","type":
-          {"@type": "Identifier", "metaData": "12:13::19","type":"main.go.Person","package":"UNKNOWN","name":"Person"},"elements":[
+          {"@type": "Identifier", "metaData": "12:13::19","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},"elements":[
           {"@type": "KeyValue", "metaData": "12:20::33","value":
             {"@type": "StringLiteral", "metaData": "12:26::33","value":"\"Alice\"","content":"Alice"},"key":
             {"@type": "Identifier", "metaData": "12:20::24","type":"string","package":"UNKNOWN","name":"Name"}},
@@ -211,14 +211,14 @@
             {"@type": "Identifier", "metaData": "12:35::38","type":"int","package":"UNKNOWN","name":"Age"}}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "12:4::10","type":"main.go.Person","package":"UNKNOWN","name":"person"}
+        {"@type": "Identifier", "metaData": "12:4::10","type":"composite_literal.go.Person","package":"UNKNOWN","name":"person"}
       ]},
       {"@type": "VariableDeclaration", "metaData": "13:0:16:1","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "13:14:16:1","type":
           {"@type": "ArrayType", "metaData": "13:14::23","length":
             {"@type": "IntegerLiteral", "metaData": "13:15::16","value":"2"},"element":
-            {"@type": "Identifier", "metaData": "13:17::23","type":"main.go.Person","package":"UNKNOWN","name":"Person"}},"elements":[
+            {"@type": "Identifier", "metaData": "13:17::23","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"}},"elements":[
           {"@type": "CompositeLiteral", "metaData": "14:4::28","type":
             null,"elements":[
             {"@type": "KeyValue", "metaData": "14:5::18","value":
@@ -239,7 +239,7 @@
           ]}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "13:4::11","type":"[2]main.go.Person","package":"UNKNOWN","name":"persons"}
+        {"@type": "Identifier", "metaData": "13:4::11","type":"[2]composite_literal.go.Person","package":"UNKNOWN","name":"persons"}
       ]},
       {"@type": "VariableDeclaration", "metaData": "18:0::42","type":
         null,"isVal":false,"initializers":[
@@ -297,12 +297,12 @@
       {"@type": "VariableDeclaration", "metaData": "25:0:28:1","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "25:29:28:1","type":
-          {"@type": "Identifier", "metaData": "25:29::35","type":"main.go.Person","package":"UNKNOWN","name":"Person"},"elements":[
+          {"@type": "Identifier", "metaData": "25:29::35","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},"elements":[
           {"@type": "StringLiteral", "metaData": "26:4::9","value":"\"Bob\"","content":"Bob"},
           {"@type": "IntegerLiteral", "metaData": "27:4::6","value":"31"}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "25:4::26","type":"main.go.Person","package":"UNKNOWN","name":"personValueInitializer"}
+        {"@type": "Identifier", "metaData": "25:4::26","type":"composite_literal.go.Person","package":"UNKNOWN","name":"personValueInitializer"}
       ]}
     ]}
 } 

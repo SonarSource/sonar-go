@@ -97,7 +97,7 @@
       {"@type": "ClassDeclaration", "metaData": "4:0::31","identifier":"4:5::11","classTree":
         {"@type": "Native", "metaData": "4:0::31","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "4:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "4:5::11","type":"main.go.class1","package":"UNKNOWN","name":"class1"},
+          {"@type": "Identifier", "metaData": "4:5::11","type":"lets.go.class1","package":"lets.go","name":"class1"},
           {"@type": "Native", "metaData": "4:12::31","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "4:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "4:19::31","nativeKind":"Fields(FieldList)","children":[
@@ -117,7 +117,7 @@
       {"@type": "ClassDeclaration", "metaData": "5:0::34","identifier":"5:5::11","classTree":
         {"@type": "Native", "metaData": "5:0::34","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "5:5::11","type":"main.go.class2","package":"UNKNOWN","name":"class2"},
+          {"@type": "Identifier", "metaData": "5:5::11","type":"lets.go.class2","package":"lets.go","name":"class2"},
           {"@type": "Native", "metaData": "5:12::34","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "5:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "5:19::34","nativeKind":"Fields(FieldList)","children":[
@@ -137,7 +137,7 @@
       {"@type": "ClassDeclaration", "metaData": "6:0::27","identifier":"6:5::14","classTree":
         {"@type": "Native", "metaData": "6:0::27","nativeKind":"[3](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "6:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "6:5::14","type":"main.go.anyObject","package":"UNKNOWN","name":"anyObject"},
+          {"@type": "Identifier", "metaData": "6:5::14","type":"lets.go.anyObject","package":"lets.go","name":"anyObject"},
           {"@type": "Native", "metaData": "6:15::27","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "6:15::24","nativeKind":"Interface"},
             {"@type": "Native", "metaData": "6:25::27","nativeKind":"Methods(FieldList)","children":[
@@ -150,7 +150,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"UNKNOWN","name":"fun1"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"lets.go","name":"fun1"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:9:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "8:2::28","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "8:2::28","memberSelect":
@@ -165,7 +165,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"UNKNOWN","name":"fun2"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"lets.go","name":"fun2"},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:10::15","type":
           {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i"},"defaultValue":null}
@@ -199,7 +199,7 @@
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"UNKNOWN","name":"fun3"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"lets.go","name":"fun3"},"formalParameters":[
         {"@type": "Parameter", "metaData": "18:10::23","type":
           {"@type": "Native", "metaData": "18:12::23","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "18:12::21","nativeKind":"Interface"},

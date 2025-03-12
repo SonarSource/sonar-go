@@ -299,7 +299,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "8:5::8","type":"func()","package":"UNKNOWN","name":"foo"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "8:5::8","type":"func()","package":"loops.go","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "8:11:67:1","statementOrExpressions":[
           {"@type": "Loop", "metaData": "9:1:10:2","kind":"FOR","keyword":"9:1::4","condition":
             {"@type": "Native", "metaData": "9:5::24","nativeKind":"ForHeader","children":[

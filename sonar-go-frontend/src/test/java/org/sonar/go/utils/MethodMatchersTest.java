@@ -503,6 +503,35 @@ class MethodMatchersTest {
     parseAndCheckMatch(matcher, code, shouldMatch);
   }
 
+  static Stream<Arguments> shouldMatchMethodWithDIfferentKindOfImport() {
+    return Stream.of(
+      arguments("math/rand", "import . \"math/rand\"", "Intn", "Intn()"),
+      arguments("crypto", "import . \"crypto\"", "Hash.New", "Hash.New()"),
+      arguments("crypto", "import \"crypto\"", "Hash.New", "crypto.Hash.New()"),
+      arguments("crypto", "import c \"crypto\"", "Hash.New", "c.Hash.New()"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldMatchMethodWithDIfferentKindOfImport(String type, String importInstruction, String methodName, String methodCallInstruction) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType(type)
+      .withNames(methodName)
+      .withAnyParameters()
+      .build();
+
+    var functionInvocation = parseCode("""
+      package main
+      %s
+      func main() {
+        %s
+      }
+      """.formatted(importInstruction, methodCallInstruction));
+
+    var result = matcher.matches(functionInvocation);
+    assertThat(result).isNotEmpty();
+  }
+
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
     Tree methodCall = parse(code, "math/rand");
 

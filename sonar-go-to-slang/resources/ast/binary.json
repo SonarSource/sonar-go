@@ -118,7 +118,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::8","type":"func()","package":"UNKNOWN","name":"foo"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "10:5::8","type":"func()","package":"binary.go","name":"foo"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "10:11:37:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "11:1:22:2","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:13:22:2","type":

@@ -181,10 +181,16 @@ public class MethodMatchers {
       && parametersTypePredicate.test(extractArgTypes(functionInvocation))
       && matchParametersTreePredicate(functionInvocation)) {
 
-      return Optional.of(functionInvocation.memberSelect())
-        .filter(MemberSelectTree.class::isInstance)
-        .map(MemberSelectTree.class::cast)
-        .map(MemberSelectTree::identifier);
+      return retrieveLastIdentifier(functionInvocation.memberSelect());
+    }
+    return Optional.empty();
+  }
+
+  private static Optional<IdentifierTree> retrieveLastIdentifier(Tree tree) {
+    if (tree instanceof MemberSelectTree memberSelectTree) {
+      return Optional.of(memberSelectTree.identifier());
+    } else if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.of(identifierTree);
     }
     return Optional.empty();
   }
@@ -215,16 +221,21 @@ public class MethodMatchers {
       var optFirstIdentifier = retrieveFirstIdentifier(memberSelectTree);
       if (optFirstIdentifier.isPresent()) {
         var firstIdentifier = optFirstIdentifier.get();
+        var subMethodName = subMethodName(memberSelectTree);
         if (withReceiver) {
-          return firstIdentifier.name().equals(methodReceiverName) && namePredicate.test(subMethodName(memberSelectTree));
+          return firstIdentifier.name().equals(methodReceiverName) && namePredicate.test(subMethodName);
         } else if (matchVariable(firstIdentifier)) {
-          return namePredicate.test(subMethodName(memberSelectTree));
+          return namePredicate.test(subMethodName);
         }
 
         if (types.contains(firstIdentifier.packageName())) {
-          return namePredicate.test(subMethodName(memberSelectTree));
+          // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the first
+          // identifier (package imported with a dot)
+          return namePredicate.test(subMethodName) || namePredicate.test(firstIdentifier.name() + "." + subMethodName);
         }
       }
+    } else if (functionNameTree instanceof IdentifierTree identifierTree && types.contains(identifierTree.packageName())) {
+      return namePredicate.test(identifierTree.name());
     }
 
     return false;

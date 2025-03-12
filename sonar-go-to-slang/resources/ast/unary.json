@@ -94,7 +94,7 @@
       {"@type": "ClassDeclaration", "metaData": "3:0:6:1","identifier":"3:5::11","classTree":
         {"@type": "Native", "metaData": "3:0:6:1","nativeKind":"[0](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "3:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "3:5::11","type":"main.go.Person","package":"UNKNOWN","name":"Person"},
+          {"@type": "Identifier", "metaData": "3:5::11","type":"unary.go.Person","package":"unary.go","name":"Person"},
           {"@type": "Native", "metaData": "3:12:6:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "3:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "3:19:6:1","nativeKind":"Fields(FieldList)","children":[
@@ -119,11 +119,11 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "12:5::8","type":"func(value *main.go.Person)","package":"UNKNOWN","name":"foo"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "12:5::8","type":"func(value *unary.go.Person)","package":"unary.go","name":"foo"},"formalParameters":[
         {"@type": "Parameter", "metaData": "12:9::22","type":
           {"@type": "StarExpression", "metaData": "12:15::22","expression":
-            {"@type": "Identifier", "metaData": "12:16::22","type":"main.go.Person","package":"UNKNOWN","name":"Person"}},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "12:9::14","type":"*main.go.Person","package":"UNKNOWN","name":"value"},"defaultValue":null}
+            {"@type": "Identifier", "metaData": "12:16::22","type":"unary.go.Person","package":"unary.go","name":"Person"}},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "12:9::14","type":"*unary.go.Person","package":"UNKNOWN","name":"value"},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "12:24:29:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "13:1::11","type":
@@ -193,16 +193,16 @@
           {"@type": "VariableDeclaration", "metaData": "27:1::15","type":
             null,"isVal":false,"initializers":[
             {"@type": "StarExpression", "metaData": "27:9::15","expression":
-              {"@type": "Identifier", "metaData": "27:10::15","type":"*main.go.Person","package":"UNKNOWN","name":"value"}}
+              {"@type": "Identifier", "metaData": "27:10::15","type":"*unary.go.Person","package":"UNKNOWN","name":"value"}}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "27:5::6","type":"main.go.Person","package":"UNKNOWN","name":"p"}
+            {"@type": "Identifier", "metaData": "27:5::6","type":"unary.go.Person","package":"UNKNOWN","name":"p"}
           ]},
           {"@type": "VariableDeclaration", "metaData": "28:1::15","type":
             null,"isVal":false,"initializers":[
             {"@type": "UnaryExpression", "metaData": "28:9::15","operator":"ADDRESS_OF","operand":
-              {"@type": "Identifier", "metaData": "28:10::15","type":"*main.go.Person","package":"UNKNOWN","name":"value"}}
+              {"@type": "Identifier", "metaData": "28:10::15","type":"*unary.go.Person","package":"UNKNOWN","name":"value"}}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "28:5::6","type":"**main.go.Person","package":"UNKNOWN","name":"a"}
+            {"@type": "Identifier", "metaData": "28:5::6","type":"**unary.go.Person","package":"UNKNOWN","name":"a"}
           ]}
         ]}}
     ]}

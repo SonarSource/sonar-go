@@ -51,7 +51,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"UNKNOWN","name":"allLiterals"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"literal.go","name":"allLiterals"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:19:13:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::28","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "4:14::28","value":"\"hello, world\"","content":"hello, world"}

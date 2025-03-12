@@ -249,7 +249,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"UNKNOWN","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"switch.go","name":"main"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "5:12:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:4::12","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "6:11::12","value":"1"}
@@ -381,7 +381,7 @@
             {"@type": "Native", "metaData": "23:11::19","nativeKind":"InitAndTag","children":[
               {"@type": "VariableDeclaration", "metaData": "23:11::19","type":null,"isVal":false,"initializers":[
                 {"@type": "FunctionInvocation", "metaData": "23:16::19","memberSelect":
-                  {"@type": "Identifier", "metaData": "23:16::17","type":"func() int","package":"UNKNOWN","name":"f"},"arguments":[]}
+                  {"@type": "Identifier", "metaData": "23:16::17","type":"func() int","package":"switch.go","name":"f"},"arguments":[]}
               ],"identifiers":[
                 {"@type": "Identifier", "metaData": "23:11::12","type":"int","package":"UNKNOWN","name":"x"}
               ]}
@@ -561,7 +561,7 @@
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","package":"UNKNOWN","name":"f"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","package":"switch.go","name":"f"},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","body":
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":
