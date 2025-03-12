@@ -76,6 +76,8 @@ var (
 		"golang.org/x/oauth2/jwt/v4":                    "x_oauth2_jwt_v4.o",
 		"golang.org/x/sys/unix":                         "x_sys_unix.o",
 		"gopkg.in/resty.v1":                             "resty_v1.o",
+		"gorm.io/gorm":                                  "gorm.o",
+		"gorm.io/gorm/logger":                           "gorm_logger.o",
 		"math/rand":                                     "math_rand.o",
 		"net":                                           "net.o",
 		"net/http":                                      "net_http.o",
