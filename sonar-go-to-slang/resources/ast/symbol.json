@@ -31,18 +31,18 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"symbol.go","name":"main","id":22},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"symbol.go","name":"main","id":20},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "3:12:6:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:4::10","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "4:9::10","value":"1"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "4:4::5","type":"int","package":"UNKNOWN","name":"x","id":36}
+            {"@type": "Identifier", "metaData": "4:4::5","type":"int","package":"UNKNOWN","name":"x","id":33}
           ]},
           {"@type": "AssignmentExpression", "metaData": "5:4::13","statementOrExpression":
             {"@type": "BinaryExpression", "metaData": "5:8::13","rightOperand":
               {"@type": "IntegerLiteral", "metaData": "5:12::13","value":"3"},"operatorToken":"5:10::11","operator":"PLUS","leftOperand":
-              {"@type": "Identifier", "metaData": "5:8::9","type":"int","package":"UNKNOWN","name":"x","id":36}},"operator":"EQUAL","leftHandSide":
-            {"@type": "Identifier", "metaData": "5:4::5","type":"int","package":"UNKNOWN","name":"x","id":36}}
+              {"@type": "Identifier", "metaData": "5:8::9","type":"int","package":"UNKNOWN","name":"x","id":33}},"operator":"EQUAL","leftHandSide":
+            {"@type": "Identifier", "metaData": "5:4::5","type":"int","package":"UNKNOWN","name":"x","id":33}}
         ]}}
     ]}
 } 

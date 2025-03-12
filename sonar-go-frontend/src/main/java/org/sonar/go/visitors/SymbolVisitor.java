@@ -48,9 +48,7 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.identifier(), null));
     register(AssignmentExpressionTree.class, this::processAssignment);
     register(IdentifierTreeImpl.class, this::processIdentifier);
-    registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> {
-      symbolTable.clear();
-    });
+    registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> symbolTable.clear());
   }
 
   private void addVariable(IdentifierTree identifier, @Nullable Tree value) {
