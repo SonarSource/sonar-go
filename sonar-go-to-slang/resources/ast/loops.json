@@ -327,15 +327,9 @@
               {"@type": "IntegerLiteral", "metaData": "14:9::10","value":"5"},"operatorToken":"14:7::8","operator":"LESS_THAN","leftOperand":
               {"@type": "Identifier", "metaData": "14:5::6","type":"int","package":"UNKNOWN","name":"n","id":128}},"body":
             {"@type": "Block", "metaData": "14:11:16:2","statementOrExpressions":[
-              {"@type": "Native", "metaData": "15:2::8","nativeKind":"[0](AssignStmt)","children":[
-                {"@type": "Native", "metaData": "15:2::3","nativeKind":"Lhs([]Expr)","children":[
-                  {"@type": "Identifier", "metaData": "15:2::3","type":"int","package":"UNKNOWN","name":"n","id":128}
-                ]},
-                {"@type": "Native", "metaData": "15:4::6","nativeKind":"Tok"},
-                {"@type": "Native", "metaData": "15:7::8","nativeKind":"Rhs([]Expr)","children":[
-                  {"@type": "IntegerLiteral", "metaData": "15:7::8","value":"2"}
-                ]}
-              ]}
+              {"@type": "AssignmentExpression", "metaData": "15:2::8","statementOrExpression":
+                {"@type": "IntegerLiteral", "metaData": "15:7::8","value":"2"},"operator":"TIMES_ASSIGN","leftHandSide":
+                {"@type": "Identifier", "metaData": "15:2::3","type":"int","package":"UNKNOWN","name":"n","id":128}}
             ]}},
           {"@type": "VariableDeclaration", "metaData": "19:1::9","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "19:8::9","value":"0"}
@@ -475,7 +469,7 @@
                     {"@type": "Identifier", "metaData": "48:27::28","type":"int","package":"UNKNOWN","name":"i","id":735}}}},
               {"@type": "Native", "metaData": "48:59::60","nativeKind":"Semicolon"},
               {"@type": "AssignmentExpression", "metaData": "48:61::86","statementOrExpression":
-                {"@type": "Native", "metaData": "48:71::86","nativeKind":"Rhs([]Expr)","children":[
+                {"@type": "LeftRightHandSide", "metaData": "48:71::86","children":[
                   {"@type": "BinaryExpression", "metaData": "48:71::74","rightOperand":
                     {"@type": "IntegerLiteral", "metaData": "48:73::74","value":"1"},"operatorToken":"48:72::73","operator":"PLUS","leftOperand":
                     {"@type": "Identifier", "metaData": "48:71::72","type":"int","package":"UNKNOWN","name":"i","id":735}},
@@ -488,7 +482,7 @@
                     {"@type": "StringLiteral", "metaData": "48:83::86","value":"\"a\"","content":"a"},"operatorToken":"48:82::83","operator":"PLUS","leftOperand":
                     {"@type": "Identifier", "metaData": "48:81::82","type":"string","package":"UNKNOWN","name":"s","id":741}}
                 ]},"operator":"EQUAL","leftHandSide":
-                {"@type": "Native", "metaData": "48:61::68","nativeKind":"Lhs([]Expr)","children":[
+                {"@type": "LeftRightHandSide", "metaData": "48:61::68","children":[
                   {"@type": "Identifier", "metaData": "48:61::62","type":"int","package":"UNKNOWN","name":"i","id":735},
                   {"@type": "Native", "metaData": "48:62::63"},
                   {"@type": "Identifier", "metaData": "48:64::65","type":"int","package":"UNKNOWN","name":"j","id":738},

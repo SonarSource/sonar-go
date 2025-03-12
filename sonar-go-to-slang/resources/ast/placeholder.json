@@ -115,7 +115,7 @@
           {"@type": "AssignmentExpression", "metaData": "9:5::17","statementOrExpression":
             {"@type": "FunctionInvocation", "metaData": "9:12::17","memberSelect":
               {"@type": "Identifier", "metaData": "9:12::15","type":"func() (int, string)","package":"placeholder.go","name":"foo","id":281},"arguments":[]},"operator":"EQUAL","leftHandSide":
-            {"@type": "Native", "metaData": "9:5::9","nativeKind":"Lhs([]Expr)","children":[
+            {"@type": "LeftRightHandSide", "metaData": "9:5::9","children":[
               {"@type": "PlaceHolder", "metaData": "9:5::6","placeHolderToken":"9:5::6"},
               {"@type": "Native", "metaData": "9:6::7"},
               {"@type": "PlaceHolder", "metaData": "9:8::9","placeHolderToken":"9:8::9"}

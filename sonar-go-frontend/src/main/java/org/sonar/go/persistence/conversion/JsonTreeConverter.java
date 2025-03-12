@@ -54,6 +54,7 @@ import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
+import org.sonar.go.impl.LeftRightHandSideImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
@@ -632,6 +633,14 @@ public final class JsonTreeConverter {
         ctx.fieldToObjectList(json, INITIALIZERS, Tree.class),
         json.getBoolean(IS_VAL, false)));
 
+    register(LeftRightHandSideImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(CHILDREN, ctx.toJsonArray(tree.children())),
+
+      (ctx, json) -> new LeftRightHandSideImpl(
+        ctx.metaData(json),
+        ctx.fieldToObjectList(json, CHILDREN, Tree.class)));
   }
 
   private JsonTreeConverter() {

@@ -41,12 +41,12 @@ public class SymbolHelper {
 
   /**
    * Provide the last assigned method call name to the variable.
-   * If there is none, then return null. E.g.:
+   * If there is none, then empty Optional, e.g.:
    * <pre>
    * {@code
    * a = foo()      -> foo
    * a = foo.bar()  -> foo.bar
-   * a = 5          -> null
+   * a = 5          -> Optional.empty()
    * }
    * </pre>
    */

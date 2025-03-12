@@ -16,27 +16,11 @@
  */
 package org.sonar.go.api;
 
-public interface AssignmentExpressionTree extends Tree {
+import java.util.List;
 
-  public enum Operator {
-    EQUAL, // =
-    PLUS_EQUAL, // +=
-    SUB_ASSIGN, // -=
-    TIMES_ASSIGN, // *=
-    DIVIDED_BY_ASSIGN, // /=
-    MODULO_ASSIGN, // %=
-    BITWISE_AND_ASSIGN, // &=
-    BITWISE_OR_ASSIGN, // |=
-    BITWISE_XOR_ASSIGN, // ^=
-    BITWISE_SHL_ASSIGN, // <<=
-    BITWISE_SHR_ASSIGN, // >>=
-    BITWISE_AND_NOT_ASSIGN // &^=
-  }
+public interface LeftRightHandSide {
 
-  Operator operator();
+  List<IdentifierTree> extractIdentifiers();
 
-  Tree leftHandSide();
-
-  Tree statementOrExpression();
-
+  List<Tree> getChildrenSkipEmptyNativeTrees();
 }

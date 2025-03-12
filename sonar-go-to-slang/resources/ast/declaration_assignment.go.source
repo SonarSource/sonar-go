@@ -13,11 +13,17 @@ func main() {
 	a = "42"
 
 	x = 4
-	x += 30 //Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)
+	x += 30
+	x -= 2
 	x *= 12
 	x /= 4
 	x %= 7
-	x -= 46
+	x &= 2
+	x |= 2
+	x ^= 2
+	x <<= 2
+	x >>= 2
+	x &^= 2
 
 	y = (32)
 

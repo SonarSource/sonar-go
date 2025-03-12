@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Nullable;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.LeftRightHandSide;
 import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -30,10 +31,7 @@ import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
-import org.sonar.go.utils.NativeKinds;
 import org.sonar.go.utils.VariableHelper;
-
-import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
 
 /**
  * Class used to visit a {@link Tree} and build {@link Symbol} and their {@link Usage} for variables.
@@ -66,9 +64,10 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   }
 
   private void processAssignment(C context, AssignmentExpressionTree assignmentExpression) {
-    var identifiers = extractIdentifiers(assignmentExpression.leftHandSide());
-    if (isRightHandSideArrayOfExpression(assignmentExpression.statementOrExpression())) {
-      var values = assignmentExpression.leftHandSide().children().stream().filter(IS_NOT_EMPTY_NATIVE_TREE).toList();
+    var leftHandSide = assignmentExpression.leftHandSide();
+    var identifiers = extractIdentifiers(leftHandSide);
+    if (isLeftOrRightHandSide(assignmentExpression.statementOrExpression()) && leftHandSide instanceof LeftRightHandSide left) {
+      var values = left.getChildrenSkipEmptyNativeTrees();
       for (int i = 0; i < identifiers.size(); i++) {
         addVariableUsage(identifiers.get(i), values.get(i), Usage.UsageType.ASSIGNMENT);
       }
@@ -82,21 +81,15 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   private static List<IdentifierTree> extractIdentifiers(Tree tree) {
     if (tree instanceof IdentifierTree identifier) {
       return List.of(identifier);
-    } else if (isLeftHandSideArrayOfExpression(tree)) {
-      return tree.children().stream()
-        .filter(IdentifierTree.class::isInstance)
-        .map(IdentifierTree.class::cast).toList();
+    } else if (tree instanceof LeftRightHandSide leftRightHandSide) {
+      return leftRightHandSide.extractIdentifiers();
     } else {
       return Collections.emptyList();
     }
   }
 
-  private static boolean isLeftHandSideArrayOfExpression(Tree tree) {
-    return NativeKinds.isStringNativeKindOfType(tree, "Lhs", "Expr");
-  }
-
-  private static boolean isRightHandSideArrayOfExpression(Tree tree) {
-    return NativeKinds.isStringNativeKindOfType(tree, "Rhs", "Expr");
+  private static boolean isLeftOrRightHandSide(Tree tree) {
+    return tree instanceof LeftRightHandSide;
   }
 
   private void addVariableUsage(IdentifierTree identifier, @Nullable Tree value, Usage.UsageType type) {

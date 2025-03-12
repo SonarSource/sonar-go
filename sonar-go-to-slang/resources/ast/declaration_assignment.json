@@ -1,18 +1,17 @@
 { 
   "treeMetaData": {
     "comments": [
-      {"text":"//Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "contentText":"Only += and = are mapped to assignment, other are mapped to native nodes (see AssignmentExpressionTree interface)", "range":"16:9::124", "contentRange": "16:11::124"},
-      {"text":"/*comment0*/", "contentText":"comment0", "range":"28:3::15", "contentRange": "28:5::13"},
-      {"text":"/*comment0*/", "contentText":"comment0", "range":"28:21::33", "contentRange": "28:23::31"},
-      {"text":"/*comment0*/", "contentText":"comment0", "range":"34:8::20", "contentRange": "34:10::18"},
-      {"text":"/*comment1*/", "contentText":"comment1", "range":"34:22::34", "contentRange": "34:24::32"},
-      {"text":"/*comment2*/", "contentText":"comment2", "range":"34:35::47", "contentRange": "34:37::45"},
-      {"text":"/*comment3*/", "contentText":"comment3", "range":"34:49::61", "contentRange": "34:51::59"},
-      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:20::32", "contentRange": "35:22::30"},
-      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:34::46", "contentRange": "35:36::44"},
-      {"text":"/*comment4*/", "contentText":"comment4", "range":"35:47::59", "contentRange": "35:49::57"},
-      {"text":"//Comment2", "contentText":"Comment2", "range":"35:61::71", "contentRange": "35:63::71"},
-      {"text":"//Comment01", "contentText":"Comment01", "range":"38:10::21", "contentRange": "38:12::21"}
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"34:3::15", "contentRange": "34:5::13"},
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"34:21::33", "contentRange": "34:23::31"},
+      {"text":"/*comment0*/", "contentText":"comment0", "range":"40:8::20", "contentRange": "40:10::18"},
+      {"text":"/*comment1*/", "contentText":"comment1", "range":"40:22::34", "contentRange": "40:24::32"},
+      {"text":"/*comment2*/", "contentText":"comment2", "range":"40:35::47", "contentRange": "40:37::45"},
+      {"text":"/*comment3*/", "contentText":"comment3", "range":"40:49::61", "contentRange": "40:51::59"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"41:20::32", "contentRange": "41:22::30"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"41:34::46", "contentRange": "41:36::44"},
+      {"text":"/*comment4*/", "contentText":"comment4", "range":"41:47::59", "contentRange": "41:49::57"},
+      {"text":"//Comment2", "contentText":"Comment2", "range":"41:61::71", "contentRange": "41:63::71"},
+      {"text":"//Comment01", "contentText":"Comment01", "range":"44:10::21", "contentRange": "44:12::21"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
@@ -55,124 +54,142 @@
       {"text":"+=","textRange":"16:3::5"},
       {"text":"30","textRange":"16:6::8"},
       {"text":"x","textRange":"17:1::2"},
-      {"text":"*=","textRange":"17:3::5"},
-      {"text":"12","textRange":"17:6::8"},
+      {"text":"-=","textRange":"17:3::5"},
+      {"text":"2","textRange":"17:6::7"},
       {"text":"x","textRange":"18:1::2"},
-      {"text":"/=","textRange":"18:3::5"},
-      {"text":"4","textRange":"18:6::7"},
+      {"text":"*=","textRange":"18:3::5"},
+      {"text":"12","textRange":"18:6::8"},
       {"text":"x","textRange":"19:1::2"},
-      {"text":"%=","textRange":"19:3::5"},
-      {"text":"7","textRange":"19:6::7"},
+      {"text":"/=","textRange":"19:3::5"},
+      {"text":"4","textRange":"19:6::7"},
       {"text":"x","textRange":"20:1::2"},
-      {"text":"-=","textRange":"20:3::5"},
-      {"text":"46","textRange":"20:6::8"},
-      {"text":"y","textRange":"22:1::2"},
-      {"text":"=","textRange":"22:3::4"},
-      {"text":"(","textRange":"22:5::6"},
-      {"text":"32","textRange":"22:6::8"},
-      {"text":")","textRange":"22:8::9"},
-      {"text":"cond1","textRange":"24:1::6"},
-      {"text":"cond2","textRange":"24:8::13"},
-      {"text":",","textRange":"24:6::7"},
-      {"text":"string1","textRange":"24:15::22"},
-      {"text":",","textRange":"24:13::14"},
-      {"text":":=","textRange":"24:22::24"},
-      {"text":"true","textRange":"24:25::29"},
-      {"text":"false","textRange":"24:31::36"},
-      {"text":",","textRange":"24:29::30"},
-      {"text":"\"no!\"","textRange":"24:38::43","type":"STRING_LITERAL"},
-      {"text":",","textRange":"24:36::37"},
-      {"text":"r1","textRange":"25:1::3"},
-      {"text":"r2","textRange":"25:5::7"},
-      {"text":",","textRange":"25:3::4"},
-      {"text":":=","textRange":"25:8::10"},
-      {"text":"foo","textRange":"25:11::14"},
-      {"text":"(","textRange":"25:14::15"},
-      {"text":")","textRange":"25:15::16"},
-      {"text":"var","textRange":"26:1::4","type":"KEYWORD"},
-      {"text":"i","textRange":"26:5::6"},
-      {"text":"j","textRange":"26:8::9"},
-      {"text":",","textRange":"26:6::7"},
-      {"text":"int","textRange":"26:10::13"},
-      {"text":"1","textRange":"26:16::17"},
-      {"text":"=","textRange":"26:14::15"},
-      {"text":"2","textRange":"26:19::20"},
-      {"text":",","textRange":"26:17::18"},
-      {"text":"i","textRange":"27:1::2"},
-      {"text":"j","textRange":"27:4::5"},
-      {"text":",","textRange":"27:2::3"},
-      {"text":"=","textRange":"27:6::7"},
-      {"text":"j","textRange":"27:8::9"},
-      {"text":"i","textRange":"27:11::12"},
-      {"text":",","textRange":"27:9::10"},
-      {"text":"i","textRange":"28:1::2"},
-      {"text":"j","textRange":"28:16::17"},
-      {"text":",","textRange":"28:2::3"},
-      {"text":"=","textRange":"28:18::19"},
-      {"text":"j","textRange":"28:20::21"},
-      {"text":"i","textRange":"28:35::36"},
-      {"text":",","textRange":"28:33::34"},
-      {"text":"const","textRange":"30:1::6","type":"KEYWORD"},
-      {"text":"Pi","textRange":"30:7::9"},
-      {"text":"3.14","textRange":"30:12::16"},
-      {"text":"=","textRange":"30:10::11"},
-      {"text":"const","textRange":"31:1::6","type":"KEYWORD"},
-      {"text":"g","textRange":"31:7::8"},
-      {"text":"float","textRange":"31:9::14"},
-      {"text":"9.81","textRange":"31:17::21"},
-      {"text":"=","textRange":"31:15::16"},
-      {"text":"var","textRange":"34:4::7","type":"KEYWORD"},
-      {"text":"ii","textRange":"34:20::22"},
-      {"text":"jj","textRange":"34:47::49"},
-      {"text":",","textRange":"34:34::35"},
-      {"text":"int","textRange":"34:61::64"},
-      {"text":"11","textRange":"34:67::69"},
-      {"text":"=","textRange":"34:65::66"},
-      {"text":"22","textRange":"34:71::73"},
-      {"text":",","textRange":"34:69::70"},
-      {"text":"var","textRange":"35:4::7","type":"KEYWORD"},
-      {"text":"ii","textRange":"35:8::10"},
-      {"text":"jj","textRange":"35:12::14"},
-      {"text":",","textRange":"35:10::11"},
-      {"text":"int","textRange":"35:15::18"},
-      {"text":"11","textRange":"35:32::34"},
-      {"text":"=","textRange":"35:19::20"},
-      {"text":"22","textRange":"35:59::61"},
-      {"text":",","textRange":"35:46::47"},
-      {"text":"var","textRange":"37:4::7","type":"KEYWORD"},
-      {"text":"(","textRange":"37:8::9"},
-      {"text":"abc","textRange":"37:9::12"},
-      {"text":"int","textRange":"37:13::16"},
-      {"text":")","textRange":"37:16::17"},
-      {"text":"var","textRange":"38:4::7","type":"KEYWORD"},
-      {"text":"(","textRange":"38:8::9"},
-      {"text":"aa","textRange":"39:8::10"},
-      {"text":"int","textRange":"39:11::14"},
-      {"text":"bb","textRange":"40:8::10"},
-      {"text":"string","textRange":"40:11::17"},
-      {"text":"cc","textRange":"41:8::10"},
-      {"text":"bool","textRange":"41:11::15"},
-      {"text":")","textRange":"42:4::5"},
-      {"text":"}","textRange":"43:0::1"},
-      {"text":"func","textRange":"45:0::4","type":"KEYWORD"},
-      {"text":"foo","textRange":"45:5::8"},
-      {"text":"(","textRange":"45:8::9"},
-      {"text":")","textRange":"45:9::10"},
-      {"text":"(","textRange":"45:11::12"},
-      {"text":"int","textRange":"45:12::15"},
-      {"text":"string","textRange":"45:17::23"},
-      {"text":",","textRange":"45:15::16"},
-      {"text":")","textRange":"45:23::24"},
-      {"text":"{","textRange":"45:25::26"},
-      {"text":"return","textRange":"46:1::7","type":"KEYWORD"},
-      {"text":"42","textRange":"46:8::10"},
-      {"text":"\"42\"","textRange":"46:12::16","type":"STRING_LITERAL"},
-      {"text":",","textRange":"46:10::11"},
-      {"text":"}","textRange":"47:0::1"}
+      {"text":"%=","textRange":"20:3::5"},
+      {"text":"7","textRange":"20:6::7"},
+      {"text":"x","textRange":"21:1::2"},
+      {"text":"\u0026=","textRange":"21:3::5"},
+      {"text":"2","textRange":"21:6::7"},
+      {"text":"x","textRange":"22:1::2"},
+      {"text":"|=","textRange":"22:3::5"},
+      {"text":"2","textRange":"22:6::7"},
+      {"text":"x","textRange":"23:1::2"},
+      {"text":"^=","textRange":"23:3::5"},
+      {"text":"2","textRange":"23:6::7"},
+      {"text":"x","textRange":"24:1::2"},
+      {"text":"\u003c\u003c=","textRange":"24:3::6"},
+      {"text":"2","textRange":"24:7::8"},
+      {"text":"x","textRange":"25:1::2"},
+      {"text":"\u003e\u003e=","textRange":"25:3::6"},
+      {"text":"2","textRange":"25:7::8"},
+      {"text":"x","textRange":"26:1::2"},
+      {"text":"\u0026^=","textRange":"26:3::6"},
+      {"text":"2","textRange":"26:7::8"},
+      {"text":"y","textRange":"28:1::2"},
+      {"text":"=","textRange":"28:3::4"},
+      {"text":"(","textRange":"28:5::6"},
+      {"text":"32","textRange":"28:6::8"},
+      {"text":")","textRange":"28:8::9"},
+      {"text":"cond1","textRange":"30:1::6"},
+      {"text":"cond2","textRange":"30:8::13"},
+      {"text":",","textRange":"30:6::7"},
+      {"text":"string1","textRange":"30:15::22"},
+      {"text":",","textRange":"30:13::14"},
+      {"text":":=","textRange":"30:22::24"},
+      {"text":"true","textRange":"30:25::29"},
+      {"text":"false","textRange":"30:31::36"},
+      {"text":",","textRange":"30:29::30"},
+      {"text":"\"no!\"","textRange":"30:38::43","type":"STRING_LITERAL"},
+      {"text":",","textRange":"30:36::37"},
+      {"text":"r1","textRange":"31:1::3"},
+      {"text":"r2","textRange":"31:5::7"},
+      {"text":",","textRange":"31:3::4"},
+      {"text":":=","textRange":"31:8::10"},
+      {"text":"foo","textRange":"31:11::14"},
+      {"text":"(","textRange":"31:14::15"},
+      {"text":")","textRange":"31:15::16"},
+      {"text":"var","textRange":"32:1::4","type":"KEYWORD"},
+      {"text":"i","textRange":"32:5::6"},
+      {"text":"j","textRange":"32:8::9"},
+      {"text":",","textRange":"32:6::7"},
+      {"text":"int","textRange":"32:10::13"},
+      {"text":"1","textRange":"32:16::17"},
+      {"text":"=","textRange":"32:14::15"},
+      {"text":"2","textRange":"32:19::20"},
+      {"text":",","textRange":"32:17::18"},
+      {"text":"i","textRange":"33:1::2"},
+      {"text":"j","textRange":"33:4::5"},
+      {"text":",","textRange":"33:2::3"},
+      {"text":"=","textRange":"33:6::7"},
+      {"text":"j","textRange":"33:8::9"},
+      {"text":"i","textRange":"33:11::12"},
+      {"text":",","textRange":"33:9::10"},
+      {"text":"i","textRange":"34:1::2"},
+      {"text":"j","textRange":"34:16::17"},
+      {"text":",","textRange":"34:2::3"},
+      {"text":"=","textRange":"34:18::19"},
+      {"text":"j","textRange":"34:20::21"},
+      {"text":"i","textRange":"34:35::36"},
+      {"text":",","textRange":"34:33::34"},
+      {"text":"const","textRange":"36:1::6","type":"KEYWORD"},
+      {"text":"Pi","textRange":"36:7::9"},
+      {"text":"3.14","textRange":"36:12::16"},
+      {"text":"=","textRange":"36:10::11"},
+      {"text":"const","textRange":"37:1::6","type":"KEYWORD"},
+      {"text":"g","textRange":"37:7::8"},
+      {"text":"float","textRange":"37:9::14"},
+      {"text":"9.81","textRange":"37:17::21"},
+      {"text":"=","textRange":"37:15::16"},
+      {"text":"var","textRange":"40:4::7","type":"KEYWORD"},
+      {"text":"ii","textRange":"40:20::22"},
+      {"text":"jj","textRange":"40:47::49"},
+      {"text":",","textRange":"40:34::35"},
+      {"text":"int","textRange":"40:61::64"},
+      {"text":"11","textRange":"40:67::69"},
+      {"text":"=","textRange":"40:65::66"},
+      {"text":"22","textRange":"40:71::73"},
+      {"text":",","textRange":"40:69::70"},
+      {"text":"var","textRange":"41:4::7","type":"KEYWORD"},
+      {"text":"ii","textRange":"41:8::10"},
+      {"text":"jj","textRange":"41:12::14"},
+      {"text":",","textRange":"41:10::11"},
+      {"text":"int","textRange":"41:15::18"},
+      {"text":"11","textRange":"41:32::34"},
+      {"text":"=","textRange":"41:19::20"},
+      {"text":"22","textRange":"41:59::61"},
+      {"text":",","textRange":"41:46::47"},
+      {"text":"var","textRange":"43:4::7","type":"KEYWORD"},
+      {"text":"(","textRange":"43:8::9"},
+      {"text":"abc","textRange":"43:9::12"},
+      {"text":"int","textRange":"43:13::16"},
+      {"text":")","textRange":"43:16::17"},
+      {"text":"var","textRange":"44:4::7","type":"KEYWORD"},
+      {"text":"(","textRange":"44:8::9"},
+      {"text":"aa","textRange":"45:8::10"},
+      {"text":"int","textRange":"45:11::14"},
+      {"text":"bb","textRange":"46:8::10"},
+      {"text":"string","textRange":"46:11::17"},
+      {"text":"cc","textRange":"47:8::10"},
+      {"text":"bool","textRange":"47:11::15"},
+      {"text":")","textRange":"48:4::5"},
+      {"text":"}","textRange":"49:0::1"},
+      {"text":"func","textRange":"51:0::4","type":"KEYWORD"},
+      {"text":"foo","textRange":"51:5::8"},
+      {"text":"(","textRange":"51:8::9"},
+      {"text":")","textRange":"51:9::10"},
+      {"text":"(","textRange":"51:11::12"},
+      {"text":"int","textRange":"51:12::15"},
+      {"text":"string","textRange":"51:17::23"},
+      {"text":",","textRange":"51:15::16"},
+      {"text":")","textRange":"51:23::24"},
+      {"text":"{","textRange":"51:25::26"},
+      {"text":"return","textRange":"52:1::7","type":"KEYWORD"},
+      {"text":"42","textRange":"52:8::10"},
+      {"text":"\"42\"","textRange":"52:12::16","type":"STRING_LITERAL"},
+      {"text":",","textRange":"52:10::11"},
+      {"text":"}","textRange":"53:0::1"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:47:1","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:54:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::11","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::11","type":"UNKNOWN","package":"UNKNOWN","name":"ast","id":0}
@@ -183,12 +200,12 @@
           {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
           null}
       ]},
-      {"@type": "FunctionDeclaration", "metaData": "5:0:43:1","typeParameters":
+      {"@type": "FunctionDeclaration", "metaData": "5:0:49:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
         {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"declaration_assignment.go","name":"main","id":33},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "5:12:43:1","statementOrExpressions":[
+        {"@type": "Block", "metaData": "5:12:49:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::10","type":
             {"@type": "Identifier", "metaData": "6:7::10","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[],"identifiers":[
             {"@type": "Identifier", "metaData": "6:5::6","type":"int","package":"UNKNOWN","name":"x","id":47}
@@ -228,171 +245,167 @@
           {"@type": "AssignmentExpression", "metaData": "16:1::8","statementOrExpression":
             {"@type": "IntegerLiteral", "metaData": "16:6::8","value":"30"},"operator":"PLUS_EQUAL","leftHandSide":
             {"@type": "Identifier", "metaData": "16:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
-          {"@type": "Native", "metaData": "17:1::8","nativeKind":"[9](AssignStmt)","children":[
-            {"@type": "Native", "metaData": "17:1::2","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "17:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}
-            ]},
-            {"@type": "Native", "metaData": "17:3::5","nativeKind":"Tok"},
-            {"@type": "Native", "metaData": "17:6::8","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "IntegerLiteral", "metaData": "17:6::8","value":"12"}
-            ]}
-          ]},
-          {"@type": "Native", "metaData": "18:1::7","nativeKind":"[10](AssignStmt)","children":[
-            {"@type": "Native", "metaData": "18:1::2","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "18:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}
-            ]},
-            {"@type": "Native", "metaData": "18:3::5","nativeKind":"Tok"},
-            {"@type": "Native", "metaData": "18:6::7","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "IntegerLiteral", "metaData": "18:6::7","value":"4"}
-            ]}
-          ]},
-          {"@type": "Native", "metaData": "19:1::7","nativeKind":"[11](AssignStmt)","children":[
-            {"@type": "Native", "metaData": "19:1::2","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "19:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}
-            ]},
-            {"@type": "Native", "metaData": "19:3::5","nativeKind":"Tok"},
-            {"@type": "Native", "metaData": "19:6::7","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "IntegerLiteral", "metaData": "19:6::7","value":"7"}
-            ]}
-          ]},
-          {"@type": "Native", "metaData": "20:1::8","nativeKind":"[12](AssignStmt)","children":[
-            {"@type": "Native", "metaData": "20:1::2","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "20:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}
-            ]},
-            {"@type": "Native", "metaData": "20:3::5","nativeKind":"Tok"},
-            {"@type": "Native", "metaData": "20:6::8","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "IntegerLiteral", "metaData": "20:6::8","value":"46"}
-            ]}
-          ]},
-          {"@type": "AssignmentExpression", "metaData": "22:1::9","statementOrExpression":
-            {"@type": "ParenthesizedExpression", "metaData": "22:5::9","rightParenthesis":"22:8::9","leftParenthesis":"22:5::6","expression":
-              {"@type": "IntegerLiteral", "metaData": "22:6::8","value":"32"}},"operator":"EQUAL","leftHandSide":
-            {"@type": "Identifier", "metaData": "22:1::2","type":"int","package":"UNKNOWN","name":"y","id":58}},
-          {"@type": "VariableDeclaration", "metaData": "24:1::43","type":null,"isVal":false,"initializers":[
-            {"@type": "Literal", "metaData": "24:25::29","value":"true"},
-            {"@type": "Literal", "metaData": "24:31::36","value":"false"},
-            {"@type": "StringLiteral", "metaData": "24:38::43","value":"\"no!\"","content":"no!"}
+          {"@type": "AssignmentExpression", "metaData": "17:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "17:6::7","value":"2"},"operator":"SUB_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "17:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "18:1::8","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "18:6::8","value":"12"},"operator":"TIMES_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "18:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "19:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "19:6::7","value":"4"},"operator":"DIVIDED_BY_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "19:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "20:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "20:6::7","value":"7"},"operator":"MODULO_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "20:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "21:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "21:6::7","value":"2"},"operator":"BITWISE_AND_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "21:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "22:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "22:6::7","value":"2"},"operator":"BITWISE_OR_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "22:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "23:1::7","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "23:6::7","value":"2"},"operator":"BITWISE_XOR_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "23:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "24:1::8","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "24:7::8","value":"2"},"operator":"BITWISE_SHL_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "24:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "25:1::8","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "25:7::8","value":"2"},"operator":"BITWISE_SHR_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "25:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "26:1::8","statementOrExpression":
+            {"@type": "IntegerLiteral", "metaData": "26:7::8","value":"2"},"operator":"BITWISE_AND_NOT_ASSIGN","leftHandSide":
+            {"@type": "Identifier", "metaData": "26:1::2","type":"int","package":"UNKNOWN","name":"x","id":47}},
+          {"@type": "AssignmentExpression", "metaData": "28:1::9","statementOrExpression":
+            {"@type": "ParenthesizedExpression", "metaData": "28:5::9","rightParenthesis":"28:8::9","leftParenthesis":"28:5::6","expression":
+              {"@type": "IntegerLiteral", "metaData": "28:6::8","value":"32"}},"operator":"EQUAL","leftHandSide":
+            {"@type": "Identifier", "metaData": "28:1::2","type":"int","package":"UNKNOWN","name":"y","id":58}},
+          {"@type": "VariableDeclaration", "metaData": "30:1::43","type":null,"isVal":false,"initializers":[
+            {"@type": "Literal", "metaData": "30:25::29","value":"true"},
+            {"@type": "Literal", "metaData": "30:31::36","value":"false"},
+            {"@type": "StringLiteral", "metaData": "30:38::43","value":"\"no!\"","content":"no!"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "24:1::6","type":"bool","package":"UNKNOWN","name":"cond1","id":306},
-            {"@type": "Identifier", "metaData": "24:8::13","type":"bool","package":"UNKNOWN","name":"cond2","id":313},
-            {"@type": "Identifier", "metaData": "24:15::22","type":"string","package":"UNKNOWN","name":"string1","id":320}
+            {"@type": "Identifier", "metaData": "30:1::6","type":"bool","package":"UNKNOWN","name":"cond1","id":240},
+            {"@type": "Identifier", "metaData": "30:8::13","type":"bool","package":"UNKNOWN","name":"cond2","id":247},
+            {"@type": "Identifier", "metaData": "30:15::22","type":"string","package":"UNKNOWN","name":"string1","id":254}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "25:1::16","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "25:11::16","memberSelect":
-              {"@type": "Identifier", "metaData": "25:11::14","type":"func() (int, string)","package":"declaration_assignment.go","name":"foo","id":729},"arguments":[]}
+          {"@type": "VariableDeclaration", "metaData": "31:1::16","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "31:11::16","memberSelect":
+              {"@type": "Identifier", "metaData": "31:11::14","type":"func() (int, string)","package":"declaration_assignment.go","name":"foo","id":663},"arguments":[]}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "25:1::3","type":"int","package":"UNKNOWN","name":"r1","id":350},
-            {"@type": "Identifier", "metaData": "25:5::7","type":"string","package":"UNKNOWN","name":"r2","id":354}
+            {"@type": "Identifier", "metaData": "31:1::3","type":"int","package":"UNKNOWN","name":"r1","id":284},
+            {"@type": "Identifier", "metaData": "31:5::7","type":"string","package":"UNKNOWN","name":"r2","id":288}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "26:1::20","type":
-            {"@type": "Identifier", "metaData": "26:10::13","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "26:16::17","value":"1"},
-            {"@type": "IntegerLiteral", "metaData": "26:19::20","value":"2"}
+          {"@type": "VariableDeclaration", "metaData": "32:1::20","type":
+            {"@type": "Identifier", "metaData": "32:10::13","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "32:16::17","value":"1"},
+            {"@type": "IntegerLiteral", "metaData": "32:19::20","value":"2"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "26:5::6","type":"int","package":"UNKNOWN","name":"i","id":371},
-            {"@type": "Identifier", "metaData": "26:8::9","type":"int","package":"UNKNOWN","name":"j","id":374}
+            {"@type": "Identifier", "metaData": "32:5::6","type":"int","package":"UNKNOWN","name":"i","id":305},
+            {"@type": "Identifier", "metaData": "32:8::9","type":"int","package":"UNKNOWN","name":"j","id":308}
           ]},
-          {"@type": "AssignmentExpression", "metaData": "27:1::12","statementOrExpression":
-            {"@type": "Native", "metaData": "27:8::12","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "27:8::9","type":"int","package":"UNKNOWN","name":"j","id":374},
-              {"@type": "Native", "metaData": "27:9::10"},
-              {"@type": "Identifier", "metaData": "27:11::12","type":"int","package":"UNKNOWN","name":"i","id":371}
+          {"@type": "AssignmentExpression", "metaData": "33:1::12","statementOrExpression":
+            {"@type": "LeftRightHandSide", "metaData": "33:8::12","children":[
+              {"@type": "Identifier", "metaData": "33:8::9","type":"int","package":"UNKNOWN","name":"j","id":308},
+              {"@type": "Native", "metaData": "33:9::10"},
+              {"@type": "Identifier", "metaData": "33:11::12","type":"int","package":"UNKNOWN","name":"i","id":305}
             ]},"operator":"EQUAL","leftHandSide":
-            {"@type": "Native", "metaData": "27:1::5","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "27:1::2","type":"int","package":"UNKNOWN","name":"i","id":371},
-              {"@type": "Native", "metaData": "27:2::3"},
-              {"@type": "Identifier", "metaData": "27:4::5","type":"int","package":"UNKNOWN","name":"j","id":374}
+            {"@type": "LeftRightHandSide", "metaData": "33:1::5","children":[
+              {"@type": "Identifier", "metaData": "33:1::2","type":"int","package":"UNKNOWN","name":"i","id":305},
+              {"@type": "Native", "metaData": "33:2::3"},
+              {"@type": "Identifier", "metaData": "33:4::5","type":"int","package":"UNKNOWN","name":"j","id":308}
             ]}},
-          {"@type": "AssignmentExpression", "metaData": "28:1::36","statementOrExpression":
-            {"@type": "Native", "metaData": "28:20::36","nativeKind":"Rhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "28:20::21","type":"int","package":"UNKNOWN","name":"j","id":374},
-              {"@type": "Native", "metaData": "28:33::34"},
-              {"@type": "Identifier", "metaData": "28:35::36","type":"int","package":"UNKNOWN","name":"i","id":371}
+          {"@type": "AssignmentExpression", "metaData": "34:1::36","statementOrExpression":
+            {"@type": "LeftRightHandSide", "metaData": "34:20::36","children":[
+              {"@type": "Identifier", "metaData": "34:20::21","type":"int","package":"UNKNOWN","name":"j","id":308},
+              {"@type": "Native", "metaData": "34:21::33"},
+              {"@type": "Native", "metaData": "34:33::34"},
+              {"@type": "Identifier", "metaData": "34:35::36","type":"int","package":"UNKNOWN","name":"i","id":305}
             ]},"operator":"EQUAL","leftHandSide":
-            {"@type": "Native", "metaData": "28:1::17","nativeKind":"Lhs([]Expr)","children":[
-              {"@type": "Identifier", "metaData": "28:1::2","type":"int","package":"UNKNOWN","name":"i","id":371},
-              {"@type": "Native", "metaData": "28:2::3"},
-              {"@type": "Identifier", "metaData": "28:16::17","type":"int","package":"UNKNOWN","name":"j","id":374}
+            {"@type": "LeftRightHandSide", "metaData": "34:1::17","children":[
+              {"@type": "Identifier", "metaData": "34:1::2","type":"int","package":"UNKNOWN","name":"i","id":305},
+              {"@type": "Native", "metaData": "34:2::3"},
+              {"@type": "Native", "metaData": "34:3::15"},
+              {"@type": "Identifier", "metaData": "34:16::17","type":"int","package":"UNKNOWN","name":"j","id":308}
             ]}},
-          {"@type": "VariableDeclaration", "metaData": "30:1::16","type":
+          {"@type": "VariableDeclaration", "metaData": "36:1::16","type":
             null,"isVal":true,"initializers":[
-            {"@type": "FloatLiteral", "metaData": "30:12::16","value":"3.14"}
+            {"@type": "FloatLiteral", "metaData": "36:12::16","value":"3.14"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "30:7::9","type":"untyped float","package":"UNKNOWN","name":"Pi","id":445}
+            {"@type": "Identifier", "metaData": "36:7::9","type":"untyped float","package":"UNKNOWN","name":"Pi","id":379}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "31:1::21","type":
-            {"@type": "Identifier", "metaData": "31:9::14","type":"UNKNOWN","package":"UNKNOWN","name":"float","id":0},"isVal":true,"initializers":[
-            {"@type": "FloatLiteral", "metaData": "31:17::21","value":"9.81"}
+          {"@type": "VariableDeclaration", "metaData": "37:1::21","type":
+            {"@type": "Identifier", "metaData": "37:9::14","type":"UNKNOWN","package":"UNKNOWN","name":"float","id":0},"isVal":true,"initializers":[
+            {"@type": "FloatLiteral", "metaData": "37:17::21","value":"9.81"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "31:7::8","type":"UNKNOWN","package":"UNKNOWN","name":"g","id":462}
+            {"@type": "Identifier", "metaData": "37:7::8","type":"UNKNOWN","package":"UNKNOWN","name":"g","id":396}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "34:4::73","type":
-            {"@type": "Identifier", "metaData": "34:61::64","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "34:67::69","value":"11"},
-            {"@type": "IntegerLiteral", "metaData": "34:71::73","value":"22"}
+          {"@type": "VariableDeclaration", "metaData": "40:4::73","type":
+            {"@type": "Identifier", "metaData": "40:61::64","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "40:67::69","value":"11"},
+            {"@type": "IntegerLiteral", "metaData": "40:71::73","value":"22"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "34:20::22","type":"int","package":"UNKNOWN","name":"ii","id":499},
-            {"@type": "Identifier", "metaData": "34:47::49","type":"int","package":"UNKNOWN","name":"jj","id":526}
+            {"@type": "Identifier", "metaData": "40:20::22","type":"int","package":"UNKNOWN","name":"ii","id":433},
+            {"@type": "Identifier", "metaData": "40:47::49","type":"int","package":"UNKNOWN","name":"jj","id":460}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "35:4::61","type":
-            {"@type": "Identifier", "metaData": "35:15::18","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
-            {"@type": "IntegerLiteral", "metaData": "35:32::34","value":"11"},
-            {"@type": "IntegerLiteral", "metaData": "35:59::61","value":"22"}
+          {"@type": "VariableDeclaration", "metaData": "41:4::61","type":
+            {"@type": "Identifier", "metaData": "41:15::18","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "41:32::34","value":"11"},
+            {"@type": "IntegerLiteral", "metaData": "41:59::61","value":"22"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "35:8::10","type":"UNKNOWN","package":"UNKNOWN","name":"ii","id":0},
-            {"@type": "Identifier", "metaData": "35:12::14","type":"UNKNOWN","package":"UNKNOWN","name":"jj","id":0}
+            {"@type": "Identifier", "metaData": "41:8::10","type":"UNKNOWN","package":"UNKNOWN","name":"ii","id":0},
+            {"@type": "Identifier", "metaData": "41:12::14","type":"UNKNOWN","package":"UNKNOWN","name":"jj","id":0}
           ]},
-          {"@type": "VariableDeclaration", "metaData": "37:4::17","type":
-            {"@type": "Identifier", "metaData": "37:13::16","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "37:9::12","type":"int","package":"UNKNOWN","name":"abc","id":635}
+          {"@type": "VariableDeclaration", "metaData": "43:4::17","type":
+            {"@type": "Identifier", "metaData": "43:13::16","type":"int","package":"UNKNOWN","name":"int","id":0},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "43:9::12","type":"int","package":"UNKNOWN","name":"abc","id":569}
           ]},
-          {"@type": "Native", "metaData": "38:4:42:5","nativeKind":"[24](GenDecl)","children":[
-            {"@type": "Native", "metaData": "38:4::7","nativeKind":"Tok"},
-            {"@type": "Native", "metaData": "38:8::9","nativeKind":"Lparen"},
-            {"@type": "Native", "metaData": "39:8:41:15","nativeKind":"Specs([]Spec)","children":[
-              {"@type": "Native", "metaData": "39:8::14","nativeKind":"[0](ValueSpec)","children":[
-                {"@type": "Native", "metaData": "39:8::10","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "39:8::10","type":"int","package":"UNKNOWN","name":"aa","id":674}
+          {"@type": "Native", "metaData": "44:4:48:5","nativeKind":"[30](GenDecl)","children":[
+            {"@type": "Native", "metaData": "44:4::7","nativeKind":"Tok"},
+            {"@type": "Native", "metaData": "44:8::9","nativeKind":"Lparen"},
+            {"@type": "Native", "metaData": "45:8:47:15","nativeKind":"Specs([]Spec)","children":[
+              {"@type": "Native", "metaData": "45:8::14","nativeKind":"[0](ValueSpec)","children":[
+                {"@type": "Native", "metaData": "45:8::10","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "45:8::10","type":"int","package":"UNKNOWN","name":"aa","id":608}
                 ]},
-                {"@type": "Identifier", "metaData": "39:11::14","type":"int","package":"UNKNOWN","name":"int","id":0}
+                {"@type": "Identifier", "metaData": "45:11::14","type":"int","package":"UNKNOWN","name":"int","id":0}
               ]},
-              {"@type": "Native", "metaData": "40:8::17","nativeKind":"[1](ValueSpec)","children":[
-                {"@type": "Native", "metaData": "40:8::10","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "40:8::10","type":"string","package":"UNKNOWN","name":"bb","id":689}
+              {"@type": "Native", "metaData": "46:8::17","nativeKind":"[1](ValueSpec)","children":[
+                {"@type": "Native", "metaData": "46:8::10","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "46:8::10","type":"string","package":"UNKNOWN","name":"bb","id":623}
                 ]},
-                {"@type": "Identifier", "metaData": "40:11::17","type":"string","package":"UNKNOWN","name":"string","id":0}
+                {"@type": "Identifier", "metaData": "46:11::17","type":"string","package":"UNKNOWN","name":"string","id":0}
               ]},
-              {"@type": "Native", "metaData": "41:8::15","nativeKind":"[2](ValueSpec)","children":[
-                {"@type": "Native", "metaData": "41:8::10","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "41:8::10","type":"bool","package":"UNKNOWN","name":"cc","id":707}
+              {"@type": "Native", "metaData": "47:8::15","nativeKind":"[2](ValueSpec)","children":[
+                {"@type": "Native", "metaData": "47:8::10","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "47:8::10","type":"bool","package":"UNKNOWN","name":"cc","id":641}
                 ]},
-                {"@type": "Identifier", "metaData": "41:11::15","type":"bool","package":"UNKNOWN","name":"bool","id":0}
+                {"@type": "Identifier", "metaData": "47:11::15","type":"bool","package":"UNKNOWN","name":"bool","id":0}
               ]}
             ]},
-            {"@type": "Native", "metaData": "42:4::5","nativeKind":"Rparen"}
+            {"@type": "Native", "metaData": "48:4::5","nativeKind":"Rparen"}
           ]}
         ]}},
-      {"@type": "FunctionDeclaration", "metaData": "45:0:47:1","typeParameters":
+      {"@type": "FunctionDeclaration", "metaData": "51:0:53:1","typeParameters":
         null,"returnType":
-        {"@type": "Native", "metaData": "45:11::24","nativeKind":"Results(FieldList)","children":[
-          {"@type": "Native", "metaData": "45:11::12","nativeKind":"Opening"},
-          {"@type": "Native", "metaData": "45:12::15","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "45:12::15","type":"int","package":"UNKNOWN","name":"int","id":0}
+        {"@type": "Native", "metaData": "51:11::24","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "51:11::12","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "51:12::15","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "51:12::15","type":"int","package":"UNKNOWN","name":"int","id":0}
           ]},
-          {"@type": "Native", "metaData": "45:15::16"},
-          {"@type": "Native", "metaData": "45:17::23","nativeKind":"[1](Field)","children":[
-            {"@type": "Identifier", "metaData": "45:17::23","type":"string","package":"UNKNOWN","name":"string","id":0}
+          {"@type": "Native", "metaData": "51:15::16"},
+          {"@type": "Native", "metaData": "51:17::23","nativeKind":"[1](Field)","children":[
+            {"@type": "Identifier", "metaData": "51:17::23","type":"string","package":"UNKNOWN","name":"string","id":0}
           ]},
-          {"@type": "Native", "metaData": "45:23::24","nativeKind":"Closing"}
+          {"@type": "Native", "metaData": "51:23::24","nativeKind":"Closing"}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "45:5::8","type":"func() (int, string)","package":"declaration_assignment.go","name":"foo","id":729},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "45:25:47:1","statementOrExpressions":[
-          {"@type": "Return", "metaData": "46:1::16","keyword":"46:1::7","body":
-            {"@type": "Native", "metaData": "46:8::16","nativeKind":"ReturnExprList","children":[
-              {"@type": "IntegerLiteral", "metaData": "46:8::10","value":"42"},
-              {"@type": "Native", "metaData": "46:10::11"},
-              {"@type": "StringLiteral", "metaData": "46:12::16","value":"\"42\"","content":"42"}
+        {"@type": "Identifier", "metaData": "51:5::8","type":"func() (int, string)","package":"declaration_assignment.go","name":"foo","id":663},"formalParameters":[],"body":
+        {"@type": "Block", "metaData": "51:25:53:1","statementOrExpressions":[
+          {"@type": "Return", "metaData": "52:1::16","keyword":"52:1::7","body":
+            {"@type": "Native", "metaData": "52:8::16","nativeKind":"ReturnExprList","children":[
+              {"@type": "IntegerLiteral", "metaData": "52:8::10","value":"42"},
+              {"@type": "Native", "metaData": "52:10::11"},
+              {"@type": "StringLiteral", "metaData": "52:12::16","value":"\"42\"","content":"42"}
             ]}}
         ]}}
     ]}

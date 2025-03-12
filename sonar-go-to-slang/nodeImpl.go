@@ -16,6 +16,7 @@
 package main
 
 import (
+	"fmt"
 	"go/ast"
 	"go/token"
 	"strconv"
@@ -434,49 +435,30 @@ func (t *SlangMapper) mapExprImpl(expr ast.Expr, fieldName string) *Node {
 
 func (t *SlangMapper) mapAssignStmtImpl(stmt *ast.AssignStmt, fieldName string) *Node {
 	if stmt.Lhs == nil || stmt.Rhs == nil {
+		// It is probably a dead code. Let's commit it and see in Peachee if it is a case
+		fmt.Errorf("SLang does not support null LHS or RHS for assignment for token %s at %d", stmt.Tok, stmt.Pos())
 		//SLang does not support null LHS or RHS for assignment
 		return nil
 	}
-
-	var operator string
-	switch stmt.Tok {
-	case token.ASSIGN:
-		operator = "EQUAL"
-	case token.ADD_ASSIGN:
-		operator = "PLUS_EQUAL"
-	case token.DEFINE:
+	if stmt.Tok == token.DEFINE {
 		return t.createVariableDeclaration(stmt, fieldName)
-	default:
-		// Slang only support = and +=, other compound assignments are ignored.
+	}
+
+	operator := t.getOperatorForAssignStmt(stmt)
+
+	if operator == nil {
+		fmt.Errorf("nil operator for operator %s", stmt.Tok.String())
 		return nil
 	}
 
-	var leftHandSide *Node
-	if len(stmt.Lhs) > 1 {
-		var nodeListLhs []*Node
-		for i := 0; i < len(stmt.Lhs); i++ {
-			nodeListLhs = t.appendNode(nodeListLhs, t.mapExpr(stmt.Lhs[i], "["+strconv.Itoa(i)+"]"))
-		}
-		leftHandSide = t.createNativeNodeWithChildren(nodeListLhs, "Lhs([]Expr)")
-	} else {
-		leftHandSide = t.mapExpr(stmt.Lhs[0], "[0]")
-	}
-
 	var children []*Node
+
+	leftHandSide := t.mapLeftRightHandSide(stmt.Lhs)
 	children = t.appendNode(children, leftHandSide)
 
 	children = t.appendNode(children, t.createTokenFromPosAstToken(stmt.TokPos, stmt.Tok, "Tok"))
 
-	var rightHandSide *Node
-	if len(stmt.Rhs) > 1 {
-		var nodeListRhs []*Node
-		for i := 0; i < len(stmt.Rhs); i++ {
-			nodeListRhs = t.appendNode(nodeListRhs, t.mapExpr(stmt.Rhs[i], "["+strconv.Itoa(i)+"]"))
-		}
-		rightHandSide = t.createNativeNodeWithChildren(nodeListRhs, "Rhs([]Expr)")
-	} else {
-		rightHandSide = t.mapExpr(stmt.Rhs[0], "[0]")
-	}
+	rightHandSide := t.mapLeftRightHandSide(stmt.Rhs)
 	children = t.appendNode(children, rightHandSide)
 
 	slangField := make(map[string]interface{})
@@ -484,6 +466,56 @@ func (t *SlangMapper) mapAssignStmtImpl(stmt *ast.AssignStmt, fieldName string) 
 	slangField["leftHandSide"] = leftHandSide
 	slangField["statementOrExpression"] = rightHandSide
 	return t.createNode(stmt, children, fieldName+"(AssignStmt)", "AssignmentExpression", slangField)
+}
+
+func (t *SlangMapper) getOperatorForAssignStmt(stmt *ast.AssignStmt) *string {
+	var operator string
+	switch stmt.Tok {
+	case token.ASSIGN:
+		operator = "EQUAL"
+	case token.ADD_ASSIGN:
+		operator = "PLUS_EQUAL"
+	case token.SUB_ASSIGN:
+		operator = "SUB_ASSIGN"
+	case token.MUL_ASSIGN:
+		operator = "TIMES_ASSIGN"
+	case token.QUO_ASSIGN:
+		operator = "DIVIDED_BY_ASSIGN"
+	case token.REM_ASSIGN:
+		operator = "MODULO_ASSIGN"
+	case token.AND_ASSIGN:
+		operator = "BITWISE_AND_ASSIGN"
+	case token.OR_ASSIGN:
+		operator = "BITWISE_OR_ASSIGN"
+	case token.XOR_ASSIGN:
+		operator = "BITWISE_XOR_ASSIGN"
+	case token.SHL_ASSIGN:
+		operator = "BITWISE_SHL_ASSIGN"
+	case token.SHR_ASSIGN:
+		operator = "BITWISE_SHR_ASSIGN"
+	case token.AND_NOT_ASSIGN:
+		operator = "BITWISE_AND_NOT_ASSIGN"
+	default:
+		return nil
+	}
+	return &operator
+}
+
+func (t *SlangMapper) mapLeftRightHandSide(exprs []ast.Expr) *Node {
+	var handSide []*Node
+	var handSideWrapper *Node
+	if len(exprs) > 1 {
+		for i := 0; i < len(exprs); i++ {
+			nodeListLhs := t.mapExpr(exprs[i], "["+strconv.Itoa(i)+"]")
+			handSide = t.appendNode(handSide, nodeListLhs)
+		}
+		slangField := make(map[string]interface{})
+		slangField["children"] = handSide
+		handSideWrapper = t.createNodeWithChildren(handSide, "LeftRightHandSide", slangField)
+	} else {
+		handSideWrapper = t.mapExpr(exprs[0], "[0]")
+	}
+	return handSideWrapper
 }
 
 func (t *SlangMapper) createVariableDeclaration(stmt *ast.AssignStmt, fieldName string) *Node {
