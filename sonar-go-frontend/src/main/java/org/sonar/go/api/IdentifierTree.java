@@ -27,6 +27,8 @@ public interface IdentifierTree extends Tree, HasSymbol {
 
   String packageName();
 
+  int id();
+
   // identifier is used for equivalence comparison
   default String identifier() {
     return name();

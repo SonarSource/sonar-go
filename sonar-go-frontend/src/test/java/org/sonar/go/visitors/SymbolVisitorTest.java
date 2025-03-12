@@ -29,9 +29,6 @@ import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.sonar.go.symbols.Scope.BLOCK;
-import static org.sonar.go.symbols.Scope.FUNCTION;
-import static org.sonar.go.symbols.Scope.PACKAGE;
 import static org.sonar.go.testing.TextRangeGoAssert.assertThat;
 
 class SymbolVisitorTest {
@@ -44,7 +41,6 @@ class SymbolVisitorTest {
       """);
     assertThat(symbols).hasSize(1);
     var x = symbols.get(0);
-    assertThat(x.getScope()).isSameAs(PACKAGE);
     assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type").containsExactly(Usage.UsageType.DECLARATION);
   }
@@ -63,7 +59,6 @@ class SymbolVisitorTest {
 
     var x = symbols.get(0);
     assertThat(x).isSameAs(symbols.get(1)).isSameAs(symbols.get(2));
-    assertThat(x.getScope()).isSameAs(FUNCTION);
     assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
@@ -99,14 +94,12 @@ class SymbolVisitorTest {
 
     var x = symbols.get(0);
     assertThat(x).isSameAs(symbols.get(2)).isSameAs(symbols.get(4));
-    assertThat(x.getScope()).isSameAs(FUNCTION);
     assertThat(x.getType()).isEqualTo(GoNativeType.INT);
     assertThat(x.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.ASSIGNMENT);
 
     var y = symbols.get(1);
     assertThat(y).isSameAs(symbols.get(3)).isSameAs(symbols.get(5));
-    assertThat(y.getScope()).isSameAs(FUNCTION);
     assertThat(y.getType()).isEqualTo(GoNativeType.INT);
     assertThat(y.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.ASSIGNMENT);
@@ -131,7 +124,6 @@ class SymbolVisitorTest {
 
     var xGlobal = symbols.get(0);
     assertThat(xGlobal).isSameAs(symbols.get(3)).isNotSameAs(symbols.get(1));
-    assertThat(xGlobal.getScope()).isSameAs(PACKAGE);
     assertThat(xGlobal.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
     assertThat(xGlobal.getUsages().get(0).identifier().textRange()).hasRange(2, 4, 2, 5);
@@ -139,7 +131,6 @@ class SymbolVisitorTest {
 
     var xLocal = symbols.get(1);
     assertThat(xLocal).isSameAs(symbols.get(2));
-    assertThat(xLocal.getScope()).isSameAs(FUNCTION);
     assertThat(xLocal.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
     assertThat(xLocal.getUsages().get(0).identifier().textRange()).hasRange(4, 6, 4, 7);
@@ -165,7 +156,6 @@ class SymbolVisitorTest {
 
     var xLocalFunc = symbols.get(0);
     assertThat(xLocalFunc).isSameAs(symbols.get(3)).isNotSameAs(symbols.get(1));
-    assertThat(xLocalFunc.getScope()).isSameAs(FUNCTION);
     assertThat(xLocalFunc.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
     assertThat(xLocalFunc.getUsages().get(0).identifier().textRange()).hasRange(3, 6, 3, 7);
@@ -173,7 +163,6 @@ class SymbolVisitorTest {
 
     var xLocalBranch = symbols.get(1);
     assertThat(xLocalBranch).isSameAs(symbols.get(2));
-    assertThat(xLocalBranch.getScope()).isSameAs(BLOCK);
     assertThat(xLocalBranch.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
     assertThat(xLocalBranch.getUsages().get(0).identifier().textRange()).hasRange(5, 8, 5, 9);
@@ -198,7 +187,6 @@ class SymbolVisitorTest {
 
     var iOutsideOfLoop = symbols.get(0);
     assertThat(iOutsideOfLoop).isSameAs(symbols.get(5));
-    assertThat(iOutsideOfLoop.getScope()).isSameAs(FUNCTION);
     assertThat(iOutsideOfLoop.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
     assertThat(iOutsideOfLoop.getUsages().get(0).identifier().textRange()).hasRange(3, 2, 3, 3);
@@ -206,7 +194,6 @@ class SymbolVisitorTest {
 
     var iInLoop = symbols.get(1);
     assertThat(iInLoop).isSameAs(symbols.get(2)).isSameAs(symbols.get(3)).isSameAs(symbols.get(4));
-    assertThat(iInLoop.getScope()).isSameAs(BLOCK);
     assertThat(iInLoop.getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE, Usage.UsageType.REFERENCE, Usage.UsageType.REFERENCE);
     assertThat(iInLoop.getUsages().get(0).identifier().textRange()).hasRange(4, 6, 4, 7);
@@ -606,6 +593,31 @@ class SymbolVisitorTest {
     assertThat(xSymbol).isPresent();
     // We do not track cross file symbols.
     assertThat(xSymbol.get().symbol()).isNull();
+  }
+
+  @Test
+  void symbolVisitorShouldCleanItsSymbolTableAfterEachFile() {
+    var ast1 = TestGoConverter.parse("package main\n const x = 1");
+    var ast2 = TestGoConverter.parse("package main\n const x = 2");
+    SymbolVisitor<TreeContext> visitor = new SymbolVisitor<>();
+    visitor.scan(mock(), ast1);
+    visitor.scan(mock(), ast2);
+
+    Optional<IdentifierTree> xSymbolAst1 = ast1.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(identifier -> identifier.name().equals("x"))
+      .findFirst();
+    Optional<IdentifierTree> xSymbolAst2 = ast2.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(identifier -> identifier.name().equals("x"))
+      .findFirst();
+
+    assertThat(xSymbolAst1).isPresent();
+    assertThat(xSymbolAst2).isPresent();
+    assertThat(xSymbolAst1.get().symbol().getUsages()).hasSize(1);
+    assertThat(xSymbolAst2.get().symbol().getUsages()).hasSize(1);
   }
 
   /**

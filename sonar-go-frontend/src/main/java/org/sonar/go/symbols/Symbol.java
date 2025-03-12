@@ -26,21 +26,15 @@ import org.sonar.go.impl.IdentifierTreeImpl;
 
 public class Symbol {
   private final String type;
-  private final Scope scope;
   private final List<Usage> usages;
 
-  public Symbol(@Nullable String type, Scope scope) {
+  public Symbol(@Nullable String type) {
     this.type = Objects.requireNonNullElse(type, IdentifierTreeImpl.UNKNOWN_TYPE);
-    this.scope = scope;
     this.usages = new ArrayList<>();
   }
 
   public String getType() {
     return type;
-  }
-
-  public Scope getScope() {
-    return scope;
   }
 
   public List<Usage> getUsages() {

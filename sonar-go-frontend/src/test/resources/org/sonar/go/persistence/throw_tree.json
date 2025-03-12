@@ -10,6 +10,6 @@
     "@type": "Throw",
     "metaData": "1:0::8",
     "keyword": "1:0::5",
-    "body": {"@type": "Identifier", "metaData": "1:6::8", "name": "ex", "type": "UNKNOWN", "package": "UNKNOWN"}
+    "body": {"@type": "Identifier", "metaData": "1:6::8", "name": "ex", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
   }
 }

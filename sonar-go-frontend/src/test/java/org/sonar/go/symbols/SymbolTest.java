@@ -27,23 +27,21 @@ class SymbolTest {
 
   @Test
   void testCreateSimpleSymbol() {
-    var symbol = new Symbol("my_type", Scope.PACKAGE);
+    var symbol = new Symbol("my_type");
     assertThat(symbol.getType()).isEqualTo("my_type");
-    assertThat(symbol.getScope()).isSameAs(Scope.PACKAGE);
     assertThat(symbol.getUsages()).isEmpty();
   }
 
   @Test
   void testCreateSymbolNullType() {
-    var symbol = new Symbol("UNKNOWN", Scope.FUNCTION);
+    var symbol = new Symbol("UNKNOWN");
     assertThat(symbol.getType()).isEqualTo("UNKNOWN");
-    assertThat(symbol.getScope()).isSameAs(Scope.FUNCTION);
     assertThat(symbol.getUsages()).isEmpty();
   }
 
   @Test
   void testCreateSymbolWithUsages() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var declaration = new Usage(mock(), null, Usage.UsageType.DECLARATION);
     var assignment = new Usage(mock(), null, Usage.UsageType.ASSIGNMENT);
     var reference = new Usage(mock(), null, Usage.UsageType.REFERENCE);
@@ -57,7 +55,7 @@ class SymbolTest {
 
   @Test
   void getSafeValueShouldReturnValueForSingleDeclaration() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var value = new IntegerLiteralTreeImpl(mock(), "42");
     var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
     symbol.getUsages().add(declaration);
@@ -66,7 +64,7 @@ class SymbolTest {
 
   @Test
   void getSafeValueShouldReturnValueWhenThereIsNoAssignment() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var value = new IntegerLiteralTreeImpl(mock(), "42");
     var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
     var reference = new Usage(mock(), null, Usage.UsageType.REFERENCE);
@@ -76,7 +74,7 @@ class SymbolTest {
 
   @Test
   void getSafeValueShouldReturnNullWhenThereIsAnAssignment() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var value = new IntegerLiteralTreeImpl(mock(), "42");
     var declaration = new Usage(mock(), value, Usage.UsageType.DECLARATION);
     var assignment = new Usage(mock(), null, Usage.UsageType.ASSIGNMENT);

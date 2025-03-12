@@ -166,4 +166,32 @@ class DeserializationContextTest extends JsonTestHelper {
     assertThat(e).hasMessage("Missing non-null value for field 'field2' at 'root' member: {\"field1\":\"1:2:3:4\"}");
   }
 
+  @Test
+  void field_to_int() {
+    JsonObject json = Json.object()
+      .add("field1", 123);
+    assertThat(context.fieldToInt(json, "field1")).isEqualTo(123);
+  }
+
+  @Test
+  void field_to_int_invalid_number() {
+    JsonObject json = Json.object()
+      .add("field1", "42");
+    context.pushPath("root");
+    IllegalStateException e = assertThrows(IllegalStateException.class,
+      () -> context.fieldToInt(json, "field1"));
+    assertThat(e).hasMessage("Expect Number instead of 'JsonString' for field 'field1' at 'root' member: {\"field1\":\"42\"}");
+  }
+
+  @Test
+  void field_to_null_int() {
+    JsonObject json = Json.object()
+      .add("field1", Json.NULL);
+    context.pushPath("TopLevel");
+    context.pushPath("AssignmentExpression");
+    IllegalStateException e = assertThrows(IllegalStateException.class,
+      () -> context.fieldToInt(json, "field1"));
+    assertThat(e).hasMessage("Missing non-null value for field 'field1' at 'TopLevel/AssignmentExpression' member: {\"field1\":null}");
+  }
+
 }

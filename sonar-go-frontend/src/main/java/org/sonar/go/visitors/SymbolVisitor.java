@@ -17,25 +17,17 @@
 package org.sonar.go.visitors;
 
 import java.util.Collections;
-import java.util.Deque;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
 import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
-import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.NativeKinds;
@@ -48,72 +40,29 @@ import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
  * Those Symbol/Usage can later be used in checks to report issues in the variable flow.
  */
 public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
-  private final Deque<Map<String, Symbol>> variablesPerScope = new LinkedList<>();
-  private final Deque<Scope> scopes = new LinkedList<>();
-  private int memberSelectMet = 0;
-  private boolean skipNextBlockScopeInsertion = false;
+  private final Map<Integer, Symbol> symbolTable = new HashMap<>();
 
   public SymbolVisitor() {
-    variablesPerScope.addLast(new HashMap<>());
-    scopes.addLast(Scope.PACKAGE);
-
-    register(FunctionDeclarationTree.class, (ctx, tree) -> {
-      enterScope(Scope.FUNCTION);
-      // we don't want to insert the function block as a new block scope
-      skipNextBlockScopeInsertion = true;
-    });
-    register(BlockTree.class, (ctx, tree) -> enterScope(Scope.BLOCK));
-    registerOnLeaveTree(BlockTree.class, this::leaveScope);
-    // We do it for loop/switch too, so that any variable declared in for loop header is not visible outside of it.
-    register(LoopTree.class, (ctx, tree) -> enterScope(Scope.BLOCK));
-    registerOnLeaveTree(LoopTree.class, this::leaveScope);
-    register(MatchTree.class, (ctx, tree) -> enterScope(Scope.BLOCK));
-    registerOnLeaveTree(MatchTree.class, this::leaveScope);
-
     register(VariableDeclarationTree.class, (ctx, variableDeclarationTree) -> VariableHelper.getVariables(variableDeclarationTree)
       .forEach(variable -> addVariable(variable.identifier(), variable.value())));
     register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.identifier(), null));
     register(AssignmentExpressionTree.class, this::processAssignment);
     register(IdentifierTreeImpl.class, this::processIdentifier);
-    register(MemberSelectTree.class, this::onMemberSelectEnter);
-    registerOnLeaveTree(MemberSelectTree.class, this::onMemberSelectLeave);
-
     registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> {
-      // Reset the state of the visitor for the next file.
-      variablesPerScope.clear();
-      variablesPerScope.addLast(new HashMap<>());
-      scopes.clear();
-      scopes.addLast(Scope.PACKAGE);
-      skipNextBlockScopeInsertion = false;
-      memberSelectMet = 0;
+      symbolTable.clear();
     });
   }
 
-  private void enterScope(Scope scope) {
-    var newScopeOfVariables = new HashMap<String, Symbol>();
-    variablesPerScope.addLast(newScopeOfVariables);
-    if (skipNextBlockScopeInsertion) {
-      skipNextBlockScopeInsertion = false;
-    } else {
-      scopes.addLast(scope);
+  private void addVariable(IdentifierTree identifier, @Nullable Tree value) {
+    if (identifier.id() != 0) {
+      symbolTable.computeIfAbsent(identifier.id(), id -> new Symbol(identifier.type()));
+      addVariableUsage(identifier, value, Usage.UsageType.DECLARATION);
     }
   }
 
-  private void leaveScope(C context, Tree tree) {
-    variablesPerScope.removeLast();
-    scopes.removeLast();
-  }
-
-  private void addVariable(IdentifierTree identifier, @Nullable Tree value) {
-    var symbol = new Symbol(identifier.type(), scopes.getLast());
-    variablesPerScope.getLast().put(identifier.name(), symbol);
-    addVariableUsage(identifier, value, Usage.UsageType.DECLARATION);
-  }
-
   private void processIdentifier(C context, IdentifierTreeImpl identifier) {
-    // We don't create a symbol reference if a symbol is already set (variable declaration, parameter or assignement) or if we are in a member
-    // select AST node.
-    if (identifier.symbol() == null && memberSelectMet == 0) {
+    // We don't create a symbol reference if a symbol is already set (variable declaration, parameter or assignment)
+    if (identifier.symbol() == null) {
       addVariableUsage(identifier, null, Usage.UsageType.REFERENCE);
     }
   }
@@ -152,28 +101,12 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     return NativeKinds.isStringNativeKindOfType(tree, "Rhs", "Expr");
   }
 
-  private void onMemberSelectLeave(C context, MemberSelectTree memberSelectTree) {
-    // We manually create a variable reference in member select if the expression is an identifier.
-    if (memberSelectTree.expression() instanceof IdentifierTree identifier) {
-      addVariableUsage(identifier, null, Usage.UsageType.REFERENCE);
-    }
-    memberSelectMet++;
-  }
-
-  private void onMemberSelectEnter(C context, MemberSelectTree memberSelectTree) {
-    memberSelectMet--;
-  }
-
   private void addVariableUsage(IdentifierTree identifier, @Nullable Tree value, Usage.UsageType type) {
-    // Look for symbol in all scope starting from the last one
-    var iterator = variablesPerScope.descendingIterator();
-    while (iterator.hasNext()) {
-      var variables = iterator.next();
-      var symbol = variables.get(identifier.name());
+    if (identifier.id() != 0) {
+      var symbol = symbolTable.get(identifier.id());
       if (symbol != null) {
         symbol.getUsages().add(new Usage(identifier, value, type));
         identifier.setSymbol(symbol);
-        return;
       }
     }
   }

@@ -26,29 +26,29 @@
     {"@type": "TopLevel", "metaData": "1:0:6:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main"}
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
       ]},
       {"@type": "FunctionDeclaration", "metaData": "3:0:5:1","typeParameters":
         {"@type": "Native", "metaData": "3:15::22","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "3:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "3:16::21","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "3:16::17","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "3:16::17","type":"T","package":"type_parameters.go","name":"T"}
+              {"@type": "Identifier", "metaData": "3:16::17","type":"T","package":"type_parameters.go","name":"T","id":31}
             ]},
-            {"@type": "Identifier", "metaData": "3:18::21","type":"any","package":"UNKNOWN","name":"any"}
+            {"@type": "Identifier", "metaData": "3:18::21","type":"any","package":"UNKNOWN","name":"any","id":0}
           ]},
           {"@type": "Native", "metaData": "3:21::22","nativeKind":"Closing"}
         ]},"returnType":
         {"@type": "Native", "metaData": "3:32::35","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "3:32::35","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "3:32::35","type":"int","package":"UNKNOWN","name":"int"}
+            {"@type": "Identifier", "metaData": "3:32::35","type":"int","package":"UNKNOWN","name":"int","id":0}
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","package":"type_parameters.go","name":"MyFunction"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","package":"type_parameters.go","name":"MyFunction","id":20},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:23::30","type":
-          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"type_parameters.go","name":"T"},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "3:23::28","type":"T","package":"UNKNOWN","name":"param"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"type_parameters.go","name":"T","id":31},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "3:23::28","type":"T","package":"UNKNOWN","name":"param","id":38},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "3:36:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::10","keyword":"4:1::7","body":

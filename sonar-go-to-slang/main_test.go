@@ -107,7 +107,7 @@ func TestMainWithPackageResolution(t *testing.T) {
 	assert.Contains(t, output, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
 }
 
-func TestMainWithStaticPackageResolution(t *testing.T) {
+func TestMainFillIdentifierWithInfo(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/simple_file_with_static_packages.go.source"}
 
@@ -118,6 +118,7 @@ func TestMainWithStaticPackageResolution(t *testing.T) {
 	output := getStandardOutput(writeOut, oldStdOut, outChanel)
 
 	// Validate the output
+	assert.Contains(t, output, "\"id\":66")
 	assert.Contains(t, output, "\"type\":\"*database/sql.DB\"")
 	assert.Contains(t, output, "\"package\":\"database/sql\"")
 }
@@ -132,7 +133,6 @@ func TestMainWithDotImport(t *testing.T) {
 
 	output := getStandardOutput(writeOut, oldStdOut, outChanel)
 
-	// Validate the output
 	assert.Contains(t, output, "\"package\":\"math/rand\",\"name\":\"Intn\"")
 }
 

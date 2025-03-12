@@ -103,10 +103,10 @@ public final class JsonTreeConverter {
   public static final String FINALLY_BLOCK = "finallyBlock";
   public static final String FIRST_CPD_TOKEN = "firstCpdToken";
   public static final String FORMAL_PARAMETERS = "formalParameters";
+  public static final String ID = "id";
   public static final String IDENTIFIER = "identifier";
   public static final String IDENTIFIERS = "identifiers";
   public static final String IF_KEYWORD = "ifKeyword";
-  public static final String INITIALIZER = "initializer";
   public static final String INITIALIZERS = "initializers";
   public static final String IS_VAL = "isVal";
   public static final String KEYWORD = "keyword";
@@ -333,13 +333,15 @@ public final class JsonTreeConverter {
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(NAME, tree.name())
         .add(TYPE, tree.type())
-        .add(PACKAGE, tree.packageName()),
+        .add(PACKAGE, tree.packageName())
+        .add(ID, tree.id()),
 
       (ctx, json) -> new IdentifierTreeImpl(
         ctx.metaData(json),
         ctx.fieldToString(json, NAME),
         ctx.fieldToString(json, TYPE),
-        ctx.fieldToString(json, PACKAGE)));
+        ctx.fieldToString(json, PACKAGE),
+        ctx.fieldToInt(json, ID)));
 
     register(IfTreeImpl.class,
 

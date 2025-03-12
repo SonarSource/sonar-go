@@ -57,6 +57,7 @@ type TextRange struct {
 }
 
 type IdentifierInfo struct {
+	Id      int
 	Type    string
 	Package string
 }
@@ -593,12 +594,16 @@ func (t *SlangMapper) getIdentifierInfo(ident *ast.Ident) *IdentifierInfo {
 		return t.extractIdentifierInfo(ident, &obj)
 	}
 	return &IdentifierInfo{
+		Id:      0,
 		Type:    "UNKNOWN",
 		Package: "UNKNOWN",
 	}
 }
 
 func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object) *IdentifierInfo {
+	// Use the Pos as the unique identifier for the object, as it is the position in the file of the original token, and so can be used
+	// to identify each identifier uniquely.
+	var id = int((*obj).Pos())
 	var typeName string
 	var packageName = t.extractPackageName(obj)
 
@@ -609,6 +614,7 @@ func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object)
 	}
 
 	return &IdentifierInfo{
+		Id:      id,
 		Type:    typeName,
 		Package: packageName,
 	}

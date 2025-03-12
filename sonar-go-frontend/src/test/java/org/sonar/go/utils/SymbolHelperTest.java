@@ -25,7 +25,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.api.Tree;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.symbols.GoNativeType;
-import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 
@@ -35,7 +34,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnDeclarationMethodName() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifier = TreeCreationUtils.identifier("my_func");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);
@@ -47,7 +46,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnNullWhenDeclarationHasNoValue() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var declaration = new Usage(usageIdentifier, null, Usage.UsageType.DECLARATION);
     symbol.getUsages().add(declaration);
@@ -58,7 +57,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnDeclarationMethodNameIgnoringReference() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifier = TreeCreationUtils.identifier("my_func");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);
@@ -72,7 +71,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnLastAssignmentMethodName() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifierDeclaration = TreeCreationUtils.identifier("my_func_declaration");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifierDeclaration), Usage.UsageType.DECLARATION);
@@ -87,7 +86,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnLastDeclarationAsAssignmentIsNotFunctionInvocation() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifierDeclaration = TreeCreationUtils.identifier("my_func_declaration");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifierDeclaration), Usage.UsageType.DECLARATION);
@@ -102,7 +101,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnLastAssignedValue() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifier = TreeCreationUtils.identifier("my_func");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);
@@ -117,7 +116,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnEmptyIfNoAssignedValue() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
 
     var lastAssignedValue = SymbolHelper.getLastAssignedValue(symbol);
 
@@ -134,7 +133,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldResolveStringValueFromSymbol() {
-    var symbol = new Symbol(GoNativeType.STRING, Scope.BLOCK);
+    var symbol = new Symbol(GoNativeType.STRING);
     var usageIdentifier = TreeCreationUtils.identifier("a");
     usageIdentifier.setSymbol(symbol);
     var stringLiteral = TreeCreationUtils.stringLiteral("\"my_string\"");
@@ -162,7 +161,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnCurrentIdentifierIfNoVlueIsAssigned() {
-    var symbol = new Symbol("int", Scope.FUNCTION);
+    var symbol = new Symbol("int");
     var identifier = TreeCreationUtils.identifier("a");
     symbol.getUsages().add(new Usage(identifier, null, Usage.UsageType.DECLARATION));
     identifier.setSymbol(symbol);
@@ -172,7 +171,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnAssignedValue() {
-    var symbol = new Symbol("int", Scope.FUNCTION);
+    var symbol = new Symbol("int");
     var value = TreeCreationUtils.integerLiteral("5");
     var identifier = TreeCreationUtils.identifier("a");
     symbol.getUsages().add(new Usage(identifier, value, Usage.UsageType.DECLARATION));
@@ -183,7 +182,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldUnpackSymbolToSafeValue() {
-    var symbol = new Symbol(GoNativeType.STRING, Scope.FUNCTION);
+    var symbol = new Symbol(GoNativeType.STRING);
     var identifier = TreeCreationUtils.identifier("myVar");
     var literalValueAssignment = TreeCreationUtils.literal("some_value");
     identifier.setSymbol(symbol);
@@ -198,7 +197,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldNotUnpackSymbolWhenSafeValueIsNull() {
-    var symbol = new Symbol(GoNativeType.STRING, Scope.FUNCTION);
+    var symbol = new Symbol(GoNativeType.STRING);
     var identifier = TreeCreationUtils.identifier("myVar");
     identifier.setSymbol(symbol);
     var literalValueAssignment = TreeCreationUtils.literal("some_value");
@@ -232,7 +231,7 @@ class SymbolHelperTest {
 
   @Test
   void shouldReturnSymbolsDeclaration() {
-    var symbol = new Symbol("my_type", Scope.BLOCK);
+    var symbol = new Symbol("my_type");
     var usageIdentifier = TreeCreationUtils.identifier("a");
     var functionIdentifier = TreeCreationUtils.identifier("my_func");
     var declaration = new Usage(usageIdentifier, TreeCreationUtils.simpleFunctionCall(functionIdentifier), Usage.UsageType.DECLARATION);

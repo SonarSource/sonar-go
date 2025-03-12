@@ -11,7 +11,7 @@
     "@type": "Block",
     "metaData": "1:0::5",
     "statementOrExpressions": [
-      {"@type": "Identifier", "metaData": "1:2::3", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"}
+      {"@type": "Identifier", "metaData": "1:2::3", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
     ]
   }
 }

@@ -17,7 +17,6 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -27,21 +26,22 @@ class IdentifierTreeImplTest {
 
   @Test
   void testCreateSimpleIdentifier() {
-    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package");
-    var symbol = new Symbol("type", Scope.PACKAGE);
+    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package", 1);
+    var symbol = new Symbol("type");
     identifier.setSymbol(symbol);
 
     assertThat(identifier.name()).isEqualTo("name");
     assertThat(identifier.type()).isEqualTo("my_type");
     assertThat(identifier.packageName()).isEqualTo("my_package");
+    assertThat(identifier.id()).isEqualTo(1);
     assertThat(identifier.children()).isEmpty();
     assertThat(identifier.symbol()).isSameAs(symbol);
   }
 
   @Test
   void shouldThrowExceptionWhenSettingSymbolTwice() {
-    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package");
-    var symbol = new Symbol("type", Scope.BLOCK);
+    var identifier = new IdentifierTreeImpl(null, "name", "my_type", "my_package", 1);
+    var symbol = new Symbol("type");
     identifier.setSymbol(symbol);
 
     assertThatThrownBy(() -> identifier.setSymbol(symbol))

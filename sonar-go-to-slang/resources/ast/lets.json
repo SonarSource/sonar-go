@@ -86,7 +86,7 @@
     {"@type": "TopLevel", "metaData": "1:0:20:1","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0:2:12","children":[
         {"@type": "Native", "metaData": "2:0::7"},
-        {"@type": "Identifier", "metaData": "2:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main"}
+        {"@type": "Identifier", "metaData": "2:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
       ]},
       {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
@@ -97,18 +97,18 @@
       {"@type": "ClassDeclaration", "metaData": "4:0::31","identifier":"4:5::11","classTree":
         {"@type": "Native", "metaData": "4:0::31","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "4:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "4:5::11","type":"lets.go.class1","package":"lets.go","name":"class1"},
+          {"@type": "Identifier", "metaData": "4:5::11","type":"lets.go.class1","package":"lets.go","name":"class1","id":62},
           {"@type": "Native", "metaData": "4:12::31","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "4:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "4:19::31","nativeKind":"Fields(FieldList)","children":[
               {"@type": "Native", "metaData": "4:19::20","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "4:21::29","nativeKind":"[0](Field)","children":[
                 {"@type": "Native", "metaData": "4:21::25","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "4:21::22","type":"int","package":"UNKNOWN","name":"x"},
+                  {"@type": "Identifier", "metaData": "4:21::22","type":"int","package":"UNKNOWN","name":"x","id":78},
                   {"@type": "Native", "metaData": "4:22::23"},
-                  {"@type": "Identifier", "metaData": "4:24::25","type":"int","package":"UNKNOWN","name":"y"}
+                  {"@type": "Identifier", "metaData": "4:24::25","type":"int","package":"UNKNOWN","name":"y","id":81}
                 ]},
-                {"@type": "Identifier", "metaData": "4:26::29","type":"int","package":"UNKNOWN","name":"int"}
+                {"@type": "Identifier", "metaData": "4:26::29","type":"int","package":"UNKNOWN","name":"int","id":0}
               ]},
               {"@type": "Native", "metaData": "4:30::31","nativeKind":"Closing"}
             ]}
@@ -117,18 +117,18 @@
       {"@type": "ClassDeclaration", "metaData": "5:0::34","identifier":"5:5::11","classTree":
         {"@type": "Native", "metaData": "5:0::34","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "5:5::11","type":"lets.go.class2","package":"lets.go","name":"class2"},
+          {"@type": "Identifier", "metaData": "5:5::11","type":"lets.go.class2","package":"lets.go","name":"class2","id":94},
           {"@type": "Native", "metaData": "5:12::34","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "5:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "5:19::34","nativeKind":"Fields(FieldList)","children":[
               {"@type": "Native", "metaData": "5:19::20","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "5:21::32","nativeKind":"[0](Field)","children":[
                 {"@type": "Native", "metaData": "5:21::25","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "5:21::22","type":"string","package":"UNKNOWN","name":"a"},
+                  {"@type": "Identifier", "metaData": "5:21::22","type":"string","package":"UNKNOWN","name":"a","id":110},
                   {"@type": "Native", "metaData": "5:22::23"},
-                  {"@type": "Identifier", "metaData": "5:24::25","type":"string","package":"UNKNOWN","name":"b"}
+                  {"@type": "Identifier", "metaData": "5:24::25","type":"string","package":"UNKNOWN","name":"b","id":113}
                 ]},
-                {"@type": "Identifier", "metaData": "5:26::32","type":"string","package":"UNKNOWN","name":"string"}
+                {"@type": "Identifier", "metaData": "5:26::32","type":"string","package":"UNKNOWN","name":"string","id":0}
               ]},
               {"@type": "Native", "metaData": "5:33::34","nativeKind":"Closing"}
             ]}
@@ -137,7 +137,7 @@
       {"@type": "ClassDeclaration", "metaData": "6:0::27","identifier":"6:5::14","classTree":
         {"@type": "Native", "metaData": "6:0::27","nativeKind":"[3](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "6:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "6:5::14","type":"lets.go.anyObject","package":"lets.go","name":"anyObject"},
+          {"@type": "Identifier", "metaData": "6:5::14","type":"lets.go.anyObject","package":"lets.go","name":"anyObject","id":129},
           {"@type": "Native", "metaData": "6:15::27","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "6:15::24","nativeKind":"Interface"},
             {"@type": "Native", "metaData": "6:25::27","nativeKind":"Methods(FieldList)","children":[
@@ -150,13 +150,13 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"lets.go","name":"fun1"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"lets.go","name":"fun1","id":157},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:9:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "8:2::28","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "8:2::28","memberSelect":
               {"@type": "MemberSelect", "metaData": "8:2::13","identifier":
-                {"@type": "Identifier", "metaData": "8:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println"},"expression":
-                {"@type": "Identifier", "metaData": "8:2::5","type":"UNKNOWN","package":"fmt","name":"fmt"}},"arguments":[
+                {"@type": "Identifier", "metaData": "8:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0},"expression":
+                {"@type": "Identifier", "metaData": "8:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":51}},"arguments":[
               {"@type": "StringLiteral", "metaData": "8:14::27","value":"\"Statement 1\"","content":"Statement 1"}
             ]}
           ]}
@@ -165,15 +165,15 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"lets.go","name":"fun2"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"lets.go","name":"fun2","id":202},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:10::15","type":
-          {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int"},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int","id":0},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i","id":207},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "10:17:17:1","statementOrExpressions":[
           {"@type": "Match", "metaData": "11:2:16:3","keyword":"11:2::8","expression":
             {"@type": "Native", "metaData": "11:9::10","nativeKind":"InitAndTag","children":[
-              {"@type": "Identifier", "metaData": "11:9::10","type":"int","package":"UNKNOWN","name":"i"}
+              {"@type": "Identifier", "metaData": "11:9::10","type":"int","package":"UNKNOWN","name":"i","id":207}
             ]},"cases":[
             {"@type": "MatchCase", "metaData": "12:2:15:5","expression":
               {"@type": "Native", "metaData": "12:7::8","nativeKind":"CaseExprList","children":[
@@ -183,8 +183,8 @@
                 {"@type": "Native", "metaData": "13:4:15:5","nativeKind":"[0](ExprStmt)","children":[
                   {"@type": "FunctionInvocation", "metaData": "13:4:15:5","memberSelect":
                     {"@type": "MemberSelect", "metaData": "13:4::15","identifier":
-                      {"@type": "Identifier", "metaData": "13:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println"},"expression":
-                      {"@type": "Identifier", "metaData": "13:4::7","type":"UNKNOWN","package":"fmt","name":"fmt"}},"arguments":[
+                      {"@type": "Identifier", "metaData": "13:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0},"expression":
+                      {"@type": "Identifier", "metaData": "13:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":51}},"arguments":[
                     {"@type": "StringLiteral", "metaData": "14:6::19","value":"\"Statement 3\"","content":"Statement 3"}
                   ]}
                 ]}
@@ -195,11 +195,11 @@
         null,"returnType":
         {"@type": "Native", "metaData": "18:25::28","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "18:25::28","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "18:25::28","type":"int","package":"UNKNOWN","name":"int"}
+            {"@type": "Identifier", "metaData": "18:25::28","type":"int","package":"UNKNOWN","name":"int","id":0}
           ]}
         ]},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"lets.go","name":"fun3"},"formalParameters":[
+        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"lets.go","name":"fun3","id":309},"formalParameters":[
         {"@type": "Parameter", "metaData": "18:10::23","type":
           {"@type": "Native", "metaData": "18:12::23","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "18:12::21","nativeKind":"Interface"},
@@ -208,7 +208,7 @@
               {"@type": "Native", "metaData": "18:22::23","nativeKind":"Closing"}
             ]}
           ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "18:10::11","type":"interface{}","package":"UNKNOWN","name":"x"},"defaultValue":null}
+          {"@type": "Identifier", "metaData": "18:10::11","type":"interface{}","package":"UNKNOWN","name":"x","id":314},"defaultValue":null}
       ],"body":
         {"@type": "Block", "metaData": "18:29:20:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "19:2::11","keyword":"19:2::8","body":

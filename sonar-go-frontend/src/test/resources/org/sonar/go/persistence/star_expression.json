@@ -9,6 +9,6 @@
   "tree": {
     "@type": "StarExpression",
     "metaData": "1:0::7",
-    "expression": {"@type": "Identifier", "metaData": "1:1::7", "name": "string", "type": "UNKNOWN", "package": "UNKNOWN"}
+    "expression": {"@type": "Identifier", "metaData": "1:1::7", "name": "string", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
   }
 }

@@ -32,13 +32,15 @@ public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
   private final String name;
   private final String type;
   private final String packageName;
+  private final int id;
   private Symbol symbol;
 
-  public IdentifierTreeImpl(TreeMetaData metaData, String name, String type, String packageName) {
+  public IdentifierTreeImpl(TreeMetaData metaData, String name, String type, String packageName, int id) {
     super(metaData);
     this.name = name;
     this.type = type;
     this.packageName = packageName;
+    this.id = id;
   }
 
   public String name() {
@@ -54,6 +56,11 @@ public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
   @Override
   public String packageName() {
     return packageName;
+  }
+
+  @Override
+  public int id() {
+    return id;
   }
 
   @Override

@@ -148,52 +148,52 @@
     {"@type": "TopLevel", "metaData": "1:0:28:1","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main"}
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
       ]},
       {"@type": "VariableDeclaration", "metaData": "3:0::25","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "3:10::25","type":
           {"@type": "ArrayType", "metaData": "3:10::16","length":
             {"@type": "IntegerLiteral", "metaData": "3:11::12","value":"3"},"element":
-            {"@type": "Identifier", "metaData": "3:13::16","type":"int","package":"UNKNOWN","name":"int"}},"elements":[
+            {"@type": "Identifier", "metaData": "3:13::16","type":"int","package":"UNKNOWN","name":"int","id":0}},"elements":[
           {"@type": "IntegerLiteral", "metaData": "3:17::18","value":"1"},
           {"@type": "IntegerLiteral", "metaData": "3:20::21","value":"2"},
           {"@type": "IntegerLiteral", "metaData": "3:23::24","value":"3"}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "3:4::7","type":"[3]int","package":"UNKNOWN","name":"arr"}
+        {"@type": "Identifier", "metaData": "3:4::7","type":"[3]int","package":"UNKNOWN","name":"arr","id":19}
       ]},
       {"@type": "VariableDeclaration", "metaData": "5:0::26","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "5:12::26","type":
           {"@type": "ArrayType", "metaData": "5:12::17","length":null,"element":
-            {"@type": "Identifier", "metaData": "5:14::17","type":"int","package":"UNKNOWN","name":"int"}},"elements":[
+            {"@type": "Identifier", "metaData": "5:14::17","type":"int","package":"UNKNOWN","name":"int","id":0}},"elements":[
           {"@type": "IntegerLiteral", "metaData": "5:18::19","value":"1"},
           {"@type": "IntegerLiteral", "metaData": "5:21::22","value":"2"},
           {"@type": "IntegerLiteral", "metaData": "5:24::25","value":"3"}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "5:4::9","type":"[]int","package":"UNKNOWN","name":"slice"}
+        {"@type": "Identifier", "metaData": "5:4::9","type":"[]int","package":"UNKNOWN","name":"slice","id":46}
       ]},
       {"@type": "ClassDeclaration", "metaData": "7:0:10:1","identifier":"7:5::11","classTree":
         {"@type": "Native", "metaData": "7:0:10:1","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "7:5::11","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},
+          {"@type": "Identifier", "metaData": "7:5::11","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person","id":75},
           {"@type": "Native", "metaData": "7:12:10:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "7:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "7:19:10:1","nativeKind":"Fields(FieldList)","children":[
               {"@type": "Native", "metaData": "7:19::20","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "8:4::15","nativeKind":"[0](Field)","children":[
                 {"@type": "Native", "metaData": "8:4::8","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "8:4::8","type":"string","package":"UNKNOWN","name":"Name"}
+                  {"@type": "Identifier", "metaData": "8:4::8","type":"string","package":"UNKNOWN","name":"Name","id":95}
                 ]},
-                {"@type": "Identifier", "metaData": "8:9::15","type":"string","package":"UNKNOWN","name":"string"}
+                {"@type": "Identifier", "metaData": "8:9::15","type":"string","package":"UNKNOWN","name":"string","id":0}
               ]},
               {"@type": "Native", "metaData": "9:4::12","nativeKind":"[1](Field)","children":[
                 {"@type": "Native", "metaData": "9:4::7","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "9:4::7","type":"int","package":"UNKNOWN","name":"Age"}
+                  {"@type": "Identifier", "metaData": "9:4::7","type":"int","package":"UNKNOWN","name":"Age","id":111}
                 ]},
-                {"@type": "Identifier", "metaData": "9:9::12","type":"int","package":"UNKNOWN","name":"int"}
+                {"@type": "Identifier", "metaData": "9:9::12","type":"int","package":"UNKNOWN","name":"int","id":0}
               ]},
               {"@type": "Native", "metaData": "10:0::1","nativeKind":"Closing"}
             ]}
@@ -202,44 +202,44 @@
       {"@type": "VariableDeclaration", "metaData": "12:0::43","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "12:13::43","type":
-          {"@type": "Identifier", "metaData": "12:13::19","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},"elements":[
+          {"@type": "Identifier", "metaData": "12:13::19","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person","id":75},"elements":[
           {"@type": "KeyValue", "metaData": "12:20::33","value":
             {"@type": "StringLiteral", "metaData": "12:26::33","value":"\"Alice\"","content":"Alice"},"key":
-            {"@type": "Identifier", "metaData": "12:20::24","type":"string","package":"UNKNOWN","name":"Name"}},
+            {"@type": "Identifier", "metaData": "12:20::24","type":"string","package":"UNKNOWN","name":"Name","id":95}},
           {"@type": "KeyValue", "metaData": "12:35::42","value":
             {"@type": "IntegerLiteral", "metaData": "12:40::42","value":"30"},"key":
-            {"@type": "Identifier", "metaData": "12:35::38","type":"int","package":"UNKNOWN","name":"Age"}}
+            {"@type": "Identifier", "metaData": "12:35::38","type":"int","package":"UNKNOWN","name":"Age","id":111}}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "12:4::10","type":"composite_literal.go.Person","package":"UNKNOWN","name":"person"}
+        {"@type": "Identifier", "metaData": "12:4::10","type":"composite_literal.go.Person","package":"UNKNOWN","name":"person","id":127}
       ]},
       {"@type": "VariableDeclaration", "metaData": "13:0:16:1","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "13:14:16:1","type":
           {"@type": "ArrayType", "metaData": "13:14::23","length":
             {"@type": "IntegerLiteral", "metaData": "13:15::16","value":"2"},"element":
-            {"@type": "Identifier", "metaData": "13:17::23","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"}},"elements":[
+            {"@type": "Identifier", "metaData": "13:17::23","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person","id":75}},"elements":[
           {"@type": "CompositeLiteral", "metaData": "14:4::28","type":
             null,"elements":[
             {"@type": "KeyValue", "metaData": "14:5::18","value":
               {"@type": "StringLiteral", "metaData": "14:11::18","value":"\"Alice\"","content":"Alice"},"key":
-              {"@type": "Identifier", "metaData": "14:5::9","type":"string","package":"UNKNOWN","name":"Name"}},
+              {"@type": "Identifier", "metaData": "14:5::9","type":"string","package":"UNKNOWN","name":"Name","id":95}},
             {"@type": "KeyValue", "metaData": "14:20::27","value":
               {"@type": "IntegerLiteral", "metaData": "14:25::27","value":"30"},"key":
-              {"@type": "Identifier", "metaData": "14:20::23","type":"int","package":"UNKNOWN","name":"Age"}}
+              {"@type": "Identifier", "metaData": "14:20::23","type":"int","package":"UNKNOWN","name":"Age","id":111}}
           ]},
           {"@type": "CompositeLiteral", "metaData": "15:4::26","type":
             null,"elements":[
             {"@type": "KeyValue", "metaData": "15:5::16","value":
               {"@type": "StringLiteral", "metaData": "15:11::16","value":"\"Bob\"","content":"Bob"},"key":
-              {"@type": "Identifier", "metaData": "15:5::9","type":"string","package":"UNKNOWN","name":"Name"}},
+              {"@type": "Identifier", "metaData": "15:5::9","type":"string","package":"UNKNOWN","name":"Name","id":95}},
             {"@type": "KeyValue", "metaData": "15:18::25","value":
               {"@type": "IntegerLiteral", "metaData": "15:23::25","value":"31"},"key":
-              {"@type": "Identifier", "metaData": "15:18::21","type":"int","package":"UNKNOWN","name":"Age"}}
+              {"@type": "Identifier", "metaData": "15:18::21","type":"int","package":"UNKNOWN","name":"Age","id":111}}
           ]}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "13:4::11","type":"[2]composite_literal.go.Person","package":"UNKNOWN","name":"persons"}
+        {"@type": "Identifier", "metaData": "13:4::11","type":"[2]composite_literal.go.Person","package":"UNKNOWN","name":"persons","id":171}
       ]},
       {"@type": "VariableDeclaration", "metaData": "18:0::42","type":
         null,"isVal":false,"initializers":[
@@ -247,9 +247,9 @@
           {"@type": "Native", "metaData": "18:8::22","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "18:8::11","nativeKind":"Map"},
             {"@type": "Native", "metaData": "18:11::12"},
-            {"@type": "Identifier", "metaData": "18:12::18","type":"string","package":"UNKNOWN","name":"string"},
+            {"@type": "Identifier", "metaData": "18:12::18","type":"string","package":"UNKNOWN","name":"string","id":0},
             {"@type": "Native", "metaData": "18:18::19"},
-            {"@type": "Identifier", "metaData": "18:19::22","type":"int","package":"UNKNOWN","name":"int"}
+            {"@type": "Identifier", "metaData": "18:19::22","type":"int","package":"UNKNOWN","name":"int","id":0}
           ]},"elements":[
           {"@type": "KeyValue", "metaData": "18:23::31","value":
             {"@type": "IntegerLiteral", "metaData": "18:30::31","value":"1"},"key":
@@ -259,7 +259,7 @@
             {"@type": "StringLiteral", "metaData": "18:33::38","value":"\"two\"","content":"two"}}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "18:4::5","type":"map[string]int","package":"UNKNOWN","name":"m"}
+        {"@type": "Identifier", "metaData": "18:4::5","type":"map[string]int","package":"UNKNOWN","name":"m","id":258}
       ]},
       {"@type": "VariableDeclaration", "metaData": "20:0:23:1","type":
         null,"isVal":false,"initializers":[
@@ -268,9 +268,9 @@
             {"@type": "Native", "metaData": "20:15::29","nativeKind":"Elt(MapType)","children":[
               {"@type": "Native", "metaData": "20:15::18","nativeKind":"Map"},
               {"@type": "Native", "metaData": "20:18::19"},
-              {"@type": "Identifier", "metaData": "20:19::25","type":"string","package":"UNKNOWN","name":"string"},
+              {"@type": "Identifier", "metaData": "20:19::25","type":"string","package":"UNKNOWN","name":"string","id":0},
               {"@type": "Native", "metaData": "20:25::26"},
-              {"@type": "Identifier", "metaData": "20:26::29","type":"int","package":"UNKNOWN","name":"int"}
+              {"@type": "Identifier", "metaData": "20:26::29","type":"int","package":"UNKNOWN","name":"int","id":0}
             ]}},"elements":[
           {"@type": "CompositeLiteral", "metaData": "21:4::24","type":
             null,"elements":[
@@ -292,17 +292,17 @@
           ]}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "20:4::10","type":"[]map[string]int","package":"UNKNOWN","name":"nested"}
+        {"@type": "Identifier", "metaData": "20:4::10","type":"[]map[string]int","package":"UNKNOWN","name":"nested","id":302}
       ]},
       {"@type": "VariableDeclaration", "metaData": "25:0:28:1","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "25:29:28:1","type":
-          {"@type": "Identifier", "metaData": "25:29::35","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person"},"elements":[
+          {"@type": "Identifier", "metaData": "25:29::35","type":"composite_literal.go.Person","package":"composite_literal.go","name":"Person","id":75},"elements":[
           {"@type": "StringLiteral", "metaData": "26:4::9","value":"\"Bob\"","content":"Bob"},
           {"@type": "IntegerLiteral", "metaData": "27:4::6","value":"31"}
         ]}
       ],"identifiers":[
-        {"@type": "Identifier", "metaData": "25:4::26","type":"composite_literal.go.Person","package":"UNKNOWN","name":"personValueInitializer"}
+        {"@type": "Identifier", "metaData": "25:4::26","type":"composite_literal.go.Person","package":"UNKNOWN","name":"personValueInitializer","id":391}
       ]}
     ]}
 } 

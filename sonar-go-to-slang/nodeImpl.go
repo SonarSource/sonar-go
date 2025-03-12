@@ -81,6 +81,7 @@ func (t *SlangMapper) mapIdentImpl(ident *ast.Ident, fieldName string) *Node {
 		slangField["name"] = ident.Name
 		if t.info != nil {
 			identifierInfo := t.getIdentifierInfo(ident)
+			slangField["id"] = identifierInfo.Id
 			slangField["type"] = identifierInfo.Type
 			slangField["package"] = identifierInfo.Package
 		}

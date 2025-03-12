@@ -29,7 +29,7 @@
     {"@type": "TopLevel", "metaData": "1:0:11:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0:3:12","children":[
         {"@type": "Native", "metaData": "3:0::7"},
-        {"@type": "Identifier", "metaData": "3:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main"}
+        {"@type": "Identifier", "metaData": "3:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
       ]},
       {"@type": "ImportDeclaration", "metaData": "5:0::12","children":[
         {"@type": "Native", "metaData": "5:0::6","nativeKind":"Tok"},
@@ -41,19 +41,19 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"hello_world.go","name":"main"},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"hello_world.go","name":"main","id":52},"formalParameters":[],"body":
         {"@type": "Block", "metaData": "7:12:10:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "8:1::22","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "8:8::22","value":"\"hello, world\"","content":"hello, world"}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "8:1::4","type":"string","package":"UNKNOWN","name":"msg"}
+            {"@type": "Identifier", "metaData": "8:1::4","type":"string","package":"UNKNOWN","name":"msg","id":62}
           ]},
           {"@type": "Native", "metaData": "9:1::17","nativeKind":"[1](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "9:1::17","memberSelect":
               {"@type": "MemberSelect", "metaData": "9:1::12","identifier":
-                {"@type": "Identifier", "metaData": "9:5::12","type":"UNKNOWN","package":"UNKNOWN","name":"Println"},"expression":
-                {"@type": "Identifier", "metaData": "9:1::4","type":"UNKNOWN","package":"fmt","name":"fmt"}},"arguments":[
-              {"@type": "Identifier", "metaData": "9:13::16","type":"string","package":"UNKNOWN","name":"msg"}
+                {"@type": "Identifier", "metaData": "9:5::12","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0},"expression":
+                {"@type": "Identifier", "metaData": "9:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":40}},"arguments":[
+              {"@type": "Identifier", "metaData": "9:13::16","type":"string","package":"UNKNOWN","name":"msg","id":62}
             ]}
           ]}
         ]}}

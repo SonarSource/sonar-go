@@ -11,9 +11,9 @@
     "@type": "VariableDeclaration",
     "metaData": "1:0::8",
     "identifiers": [
-      {"@type": "Identifier", "metaData": "1:4::5", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN"}
+      {"@type": "Identifier", "metaData": "1:4::5", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
     ],
-    "type": {"@type": "Identifier", "metaData": "1:0::3", "name": "int", "type": "UNKNOWN", "package": "UNKNOWN"},
+    "type": {"@type": "Identifier", "metaData": "1:0::3", "name": "int", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0},
     "initializers": [
       {"@type": "IntegerLiteral", "metaData": "1:6::8", "value": "42"}
     ],

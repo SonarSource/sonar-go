@@ -107,27 +107,31 @@ public class TreeCreationUtils {
   }
 
   public static IdentifierTree identifier(String name) {
-    return new IdentifierTreeImpl(null, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
+    return new IdentifierTreeImpl(null, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE, 0);
   }
 
   public static IdentifierTree identifier(String name, String type) {
-    return new IdentifierTreeImpl(null, name, type, UNKNOWN_PACKAGE);
+    return new IdentifierTreeImpl(null, name, type, UNKNOWN_PACKAGE, 0);
   }
 
   public static IdentifierTree identifier(String name, TextRange textRange, String... tokens) {
-    return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
+    return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE, UNKNOWN_PACKAGE, 0);
   }
 
   public static IdentifierTree identifier(TreeMetaData meta, String name) {
-    return new IdentifierTreeImpl(meta, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE);
+    return new IdentifierTreeImpl(meta, name, UNKNOWN_TYPE, UNKNOWN_PACKAGE, 0);
   }
 
   public static IdentifierTree identifier(TreeMetaData meta, String name, String type) {
-    return new IdentifierTreeImpl(meta, name, type, UNKNOWN_PACKAGE);
+    return new IdentifierTreeImpl(meta, name, type, UNKNOWN_PACKAGE, 0);
   }
 
   public static IdentifierTree identifier(TreeMetaData meta, String name, String type, String packageName) {
-    return new IdentifierTreeImpl(meta, name, type, packageName);
+    return new IdentifierTreeImpl(meta, name, type, packageName, 0);
+  }
+
+  public static IdentifierTree identifier(TreeMetaData meta, String name, String type, String packageName, int id) {
+    return new IdentifierTreeImpl(meta, name, type, packageName, id);
   }
 
   public static MemberSelectTree memberSelect(Tree expression, IdentifierTree identifier) {

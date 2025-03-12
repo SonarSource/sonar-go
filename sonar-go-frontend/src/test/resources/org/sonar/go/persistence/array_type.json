@@ -11,7 +11,7 @@
   "tree": {
     "@type": "ArrayType",
     "metaData": "1:0::7",
-    "element": {"@type": "Identifier", "metaData": "1:3::7", "name": "byte", "type": "UNKNOWN", "package": "UNKNOWN"},
+    "element": {"@type": "Identifier", "metaData": "1:3::7", "name": "byte", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0},
     "length": {"@type": "IntegerLiteral", "metaData": "1:1::2", "value": "1"}
   }
 }

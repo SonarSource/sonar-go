@@ -88,7 +88,7 @@ var (
 		"os/exec":                                       "os_exec.o",
 		"os/user":                                       "os_user.o",
 		"path":                                          "path.o",
-		"path/filepath":                                 "path_fielpath.o",
+		"path/filepath":                                 "path_filepath.o",
 		"runtime/debug":                                 "runtime_debug.o",
 		"runtime/pprof":                                 "runtime_pprof.o",
 	}

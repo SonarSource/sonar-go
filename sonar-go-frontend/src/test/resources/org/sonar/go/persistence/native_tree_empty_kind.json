@@ -9,7 +9,7 @@
     "@type": "Native",
     "metaData": "1:0::1",
     "children": [
-      {"@type": "Identifier", "metaData": "1:0::1", "name": "MyClass", "type": "UNKNOWN", "package": "UNKNOWN"}
+      {"@type": "Identifier", "metaData": "1:0::1", "name": "MyClass", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
     ]
   }
 }

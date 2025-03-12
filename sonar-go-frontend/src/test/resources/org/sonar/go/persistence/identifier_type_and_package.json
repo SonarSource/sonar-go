@@ -5,5 +5,5 @@
       {"textRange": "1:0::3", "text": "foo"}
     ]
   },
-  "tree": {"@type": "Identifier", "metaData": "1:0::3", "name": "foo", "type": "bar", "package": "baz"}
+  "tree": {"@type": "Identifier", "metaData": "1:0::3", "name": "foo", "type": "bar", "package": "baz", "id": 1}
 }

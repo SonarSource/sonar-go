@@ -28,7 +28,6 @@ import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.symbols.Scope;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 
@@ -90,7 +89,7 @@ class ConstantResolutionTest {
   @Test
   void effectivelyFinalIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
     assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo("Hello");
@@ -99,7 +98,7 @@ class ConstantResolutionTest {
   @Test
   void reAssignedIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.ASSIGNMENT));
     id.setSymbol(symbol);
@@ -109,7 +108,7 @@ class ConstantResolutionTest {
   @Test
   void noDeclarationIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.ASSIGNMENT));
     id.setSymbol(symbol);
     assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
@@ -118,7 +117,7 @@ class ConstantResolutionTest {
   @Test
   void noValueInDeclarationConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, null, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
     assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
@@ -127,7 +126,7 @@ class ConstantResolutionTest {
   @Test
   void multipleDeclarationsIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
@@ -148,12 +147,12 @@ class ConstantResolutionTest {
   @Test
   void aliasIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
 
     IdentifierTree idAlias = TreeCreationUtils.identifier("IDAlias");
-    Symbol symbolAlias = new Symbol("type", Scope.FUNCTION);
+    Symbol symbolAlias = new Symbol("type");
     symbolAlias.getUsages().add(new Usage(idAlias, id, Usage.UsageType.DECLARATION));
     idAlias.setSymbol(symbolAlias);
 
@@ -163,7 +162,7 @@ class ConstantResolutionTest {
   @Test
   void binaryInDeclarationConstantConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    Symbol symbol = new Symbol("type", Scope.FUNCTION);
+    Symbol symbol = new Symbol("type");
     BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, WORLD);
     symbol.getUsages().add(new Usage(id, binary, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);

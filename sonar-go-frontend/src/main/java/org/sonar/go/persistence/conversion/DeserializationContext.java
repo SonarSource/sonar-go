@@ -154,6 +154,18 @@ public class DeserializationContext {
     return json.getString(fieldName, defaultValue);
   }
 
+  public int fieldToInt(JsonObject json, String fieldName) {
+    JsonValue value = json.get(fieldName);
+    if (value == null || Json.NULL.equals(value)) {
+      throw newIllegalMemberException("Missing non-null value for field '" + fieldName + "'", json);
+    }
+    if (!value.isNumber()) {
+      throw newIllegalMemberException("Expect Number instead of '" + value.getClass().getSimpleName() +
+        "' for field '" + fieldName + "'", json);
+    }
+    return value.asInt();
+  }
+
   public TextRange fieldToRange(JsonObject json, String fieldName) {
     return RangeConverter.parse(fieldToString(json, fieldName));
   }

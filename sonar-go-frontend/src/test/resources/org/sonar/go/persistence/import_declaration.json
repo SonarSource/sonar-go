@@ -10,7 +10,7 @@
     "@type": "ImportDeclaration",
     "metaData": "1:0::10",
     "children": [
-      {"@type": "Identifier", "metaData": "1:7::10", "name": "lib", "type": "UNKNOWN", "package": "UNKNOWN"}
+      {"@type": "Identifier", "metaData": "1:7::10", "name": "lib", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
     ]
   }
 }
