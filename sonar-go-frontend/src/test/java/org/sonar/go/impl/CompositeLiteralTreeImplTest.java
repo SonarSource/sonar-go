@@ -19,7 +19,11 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
@@ -144,13 +148,35 @@ class CompositeLiteralTreeImplTest {
     assertThat(subElements2.get(1).value()).isInstanceOfSatisfying(IntegerLiteralTree.class, integer -> assertThat(integer.getIntegerValue()).isEqualTo(4));
   }
 
-  @Test
-  void shouldBePossibleToTestType() {
-    var compositeLiteral = parseCompositeLiteral("http.Server{ }");
+  static Stream<Arguments> shouldMatchType() {
+    return Stream.of(
+      Arguments.of("http.Server{ }", "import \"net/http\""),
+      Arguments.of("Server{ }", "import . \"net/http\""));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldMatchType(String code, String importInstruction) {
+
+    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+      package main
+
+      %s
+
+      func main() {
+      %s
+      }
+      """.formatted(importInstruction, code));
+    var mainFunc = topLevelTree.declarations().get(2);
+    var mainBlock = (BlockTree) mainFunc.children().get(1);
+    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
+    var compositeLiteral = (CompositeLiteralTree) expressionStatement.children().get(0);
+
     assertThat(compositeLiteral.hasType("net/http", "net/http.Server")).isTrue();
+    assertThat(compositeLiteral.hasType("http", "net/http.Server")).isFalse();
     assertThat(compositeLiteral.hasType("net/http", "Server")).isFalse();
     assertThat(compositeLiteral.hasType("http", "Server")).isFalse();
-    assertThat(compositeLiteral.hasType("", "net/http/Server")).isFalse();
+    assertThat(compositeLiteral.hasType("", "")).isFalse();
   }
 
   @Test
@@ -169,9 +195,9 @@ class CompositeLiteralTreeImplTest {
       import "net/http"
 
       func main() {
-      """ + code + """
+      %s
       }
-      """);
+      """.formatted(code));
     var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
     var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
