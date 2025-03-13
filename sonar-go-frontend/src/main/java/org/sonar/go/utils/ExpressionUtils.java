@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import org.sonar.go.api.ArrayTypeTree;
 import org.sonar.go.api.BinaryExpressionTree;
@@ -228,6 +229,20 @@ public class ExpressionUtils {
 
   public static boolean isByteArray(Tree tree) {
     return tree instanceof ArrayTypeTree arrayType && arrayType.element() instanceof IdentifierTree identifier && "byte".equals(identifier.name());
+  }
+
+  /**
+   * Detects casts to a pointer type: (*T)(x).
+   * According to <a href="https://tip.golang.org/ref/spec#Conversions">golang specification</a>
+   * , to avoid ambiguity, type will be parenthesized
+   * in case of pointer type cast.
+   */
+  public static boolean isPointerTypeCast(Tree tree, Predicate<Tree> typePredicate) {
+    return tree instanceof FunctionInvocationTree functionInvocation &&
+      functionInvocation.memberSelect() instanceof ParenthesizedExpressionTree parenthesizedExpression &&
+      parenthesizedExpression.expression() instanceof StarExpressionTree starExpressionTree &&
+      typePredicate.test(starExpressionTree.operand()) &&
+      functionInvocation.arguments().size() == 1;
   }
 
   /**

@@ -251,6 +251,34 @@ class ExpressionUtilsTest {
     assertThat(arg).isNull();
   }
 
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    (*T)(x), true
+    (T)(x), false
+    T(x), false
+    *T(x), false
+    x, false
+    (x), false
+    """)
+  void shouldDetectPointerTypeCasts(String code, boolean shouldMatch) {
+    var tree = parseExpression(code);
+
+    assertThat(ExpressionUtils.isPointerTypeCast(tree, type -> true)).isEqualTo(shouldMatch);
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    (*T)(x), true
+    (*T1)(x), false
+    (*R)(x), false
+    (*int)(x), false
+    """)
+  void shouldFilterOutPointerTypeCastsByPredicate(String code, boolean shouldMatch) {
+    var tree = parseExpression(code);
+
+    assertThat(ExpressionUtils.isPointerTypeCast(tree, type -> ((IdentifierTree) type).name().equals("T"))).isEqualTo(shouldMatch);
+  }
+
   private Tree parseExpression(String expression) {
     var code = """
       package test
