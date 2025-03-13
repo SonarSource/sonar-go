@@ -532,6 +532,29 @@ class MethodMatchersTest {
     assertThat(result).isNotEmpty();
   }
 
+  @Test
+  void shouldNotMatchWithReceiverWhenReceiverIsNotSetForWildcardImport() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withReceiver()
+      .withNames("Int")
+      .withAnyParameters()
+      .build();
+
+    var topLevelTree = parseCodeAndReturnTopLevelTree("""
+      package main
+      import (
+        . "math/rand"
+      )
+      func main() {
+        num := Int()
+      }
+      """);
+
+    var matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
+    assertThat(matches).isEmpty();
+  }
+
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
     Tree methodCall = parse(code, "math/rand");
 
@@ -568,11 +591,16 @@ class MethodMatchersTest {
   }
 
   private static Tree parseCode(String wholeCode) {
-    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
-    new SymbolVisitor<>().scan(mock(), topLevelTree);
+    var topLevelTree = parseCodeAndReturnTopLevelTree(wholeCode);
     var mainFunc = topLevelTree.declarations().get(2);
     BlockTree mainBlock = (BlockTree) mainFunc.children().get(1);
     return mainBlock.statementOrExpressions().get(0).children().get(0);
+  }
+
+  private static TopLevelTree parseCodeAndReturnTopLevelTree(String wholeCode) {
+    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
+    new SymbolVisitor<>().scan(mock(), topLevelTree);
+    return topLevelTree;
   }
 
   private static List<IdentifierTree> applyMatcherToAllFunctionInvocation(Tree tree, MethodMatchers matcher) {

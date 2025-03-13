@@ -221,23 +221,33 @@ public class MethodMatchers {
       var optFirstIdentifier = retrieveFirstIdentifier(memberSelectTree);
       if (optFirstIdentifier.isPresent()) {
         var firstIdentifier = optFirstIdentifier.get();
-        var subMethodName = subMethodName(memberSelectTree);
-        if (withReceiver) {
-          return firstIdentifier.name().equals(methodReceiverName) && namePredicate.test(subMethodName);
-        } else if (matchVariable(firstIdentifier)) {
-          return namePredicate.test(subMethodName);
-        }
-
-        if (types.contains(firstIdentifier.packageName())) {
-          // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the first
-          // identifier (package imported with a dot)
-          return namePredicate.test(subMethodName) || namePredicate.test(firstIdentifier.name() + "." + subMethodName);
-        }
+        return matchesFunctionMemberSelectTree(memberSelectTree, firstIdentifier);
       }
-    } else if (functionNameTree instanceof IdentifierTree identifierTree && types.contains(identifierTree.packageName())) {
+    } else if (functionNameTree instanceof IdentifierTree identifierTree
+      && types.contains(identifierTree.packageName())
+      && !withReceiver) {
+        // spotless:off
+      // spotless indent this line by 2 spaces what cause java:S1120
       return namePredicate.test(identifierTree.name());
+      // spotless:on
+      }
+
+    return false;
+  }
+
+  private boolean matchesFunctionMemberSelectTree(MemberSelectTree memberSelectTree, IdentifierTree firstIdentifier) {
+    var subMethodName = subMethodName(memberSelectTree);
+    if (withReceiver) {
+      return firstIdentifier.name().equals(methodReceiverName) && namePredicate.test(subMethodName);
+    } else if (matchVariable(firstIdentifier)) {
+      return namePredicate.test(subMethodName);
     }
 
+    if (types.contains(firstIdentifier.packageName())) {
+      // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the first
+      // identifier (package imported with a dot)
+      return namePredicate.test(subMethodName) || namePredicate.test(firstIdentifier.name() + "." + subMethodName);
+    }
     return false;
   }
 
@@ -274,6 +284,9 @@ public class MethodMatchers {
 
     ParametersBuilder withNamesMatching(Predicate<String> namePredicate);
 
+    /**
+     * This method can be replaced by {@link #withVariableTypeIn(String...)}} and the replacement should be preferred.
+     */
     NameBuilder withReceiver();
   }
 
