@@ -23,6 +23,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
+import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
@@ -277,6 +278,25 @@ class ExpressionUtilsTest {
     var tree = parseExpression(code);
 
     assertThat(ExpressionUtils.isPointerTypeCast(tree, type -> ((IdentifierTree) type).name().equals("T"))).isEqualTo(shouldMatch);
+  }
+
+  @Test
+  void testIsOfType() {
+    var code = """
+      package test
+      import "crypto/dsa"
+
+      func main() {
+        _ := dsa.L3072N256
+      }
+      """;
+
+    var memberSelect = TestGoConverter.parse(code)
+      .descendants()
+      .filter(MemberSelectTree.class::isInstance)
+      .map(MemberSelectTree.class::cast)
+      .findFirst().get();
+    assertThat(ExpressionUtils.isOfType(memberSelect, "crypto/dsa", "L3072N256")).isTrue();
   }
 
   private Tree parseExpression(String expression) {

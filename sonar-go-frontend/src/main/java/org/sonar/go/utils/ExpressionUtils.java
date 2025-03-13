@@ -144,6 +144,11 @@ public class ExpressionUtils {
     }
   }
 
+  public static boolean isOfType(MemberSelectTree memberSelectTree, String expectedPackageName, String expectedIdentifierName) {
+    return memberSelectTree.expression() instanceof IdentifierTree firstIdentifier && expectedPackageName.equals(firstIdentifier.packageName())
+      && expectedIdentifierName.equals(memberSelectTree.identifier().name());
+  }
+
   public static boolean isIdentifier(Tree tree, String name) {
     return tree instanceof IdentifierTree identifierTree && name.equals(identifierTree.name());
   }
