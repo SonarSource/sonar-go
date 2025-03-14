@@ -30,7 +30,10 @@
       "matchManagers": [
         "github-actions"
       ],
-      "matchUpdateTypes": ["pin", "rollback"],
+      "matchUpdateTypes": [
+        "pin",
+        "rollback"
+      ],
       "enabled": false
     },
     {
@@ -77,6 +80,21 @@
     },
     {
       "matchManagers": [
+        "gomod"
+      ],
+      "matchFileNames": [
+        "!sonar-go-to-slang/go.mod"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "additional Go dependencies",
+      "groupSlug": "additional-go-dependencies",
+      "prHeader": "*Don't forget to run the package data generator to align the generated files with the new dependencies.*"
+    },
+    {
+      "matchManagers": [
         "git-submodules"
       ],
       "matchDepNames": [
@@ -88,5 +106,7 @@
       "enabled": false
     }
   ],
-  "reviewers": ["team:security-cloud-squad"]
+  "reviewers": [
+    "team:security-cloud-squad"
+  ]
 }
