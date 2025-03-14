@@ -434,12 +434,6 @@ func (t *SlangMapper) mapExprImpl(expr ast.Expr, fieldName string) *Node {
 }
 
 func (t *SlangMapper) mapAssignStmtImpl(stmt *ast.AssignStmt, fieldName string) *Node {
-	if stmt.Lhs == nil || stmt.Rhs == nil {
-		// It is probably a dead code. Let's commit it and see in Peachee if it is a case
-		fmt.Errorf("SLang does not support null LHS or RHS for assignment for token %s at %d", stmt.Tok, stmt.Pos())
-		//SLang does not support null LHS or RHS for assignment
-		return nil
-	}
 	if stmt.Tok == token.DEFINE {
 		return t.createVariableDeclaration(stmt, fieldName)
 	}
