@@ -18,11 +18,15 @@ package org.sonar.go.utils;
 
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree;
+import org.sonar.go.api.FunctionDeclarationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.Token;
+import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
+import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -30,11 +34,14 @@ import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
+import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.visitors.SymbolVisitor;
+import org.sonar.go.visitors.TreeContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.PLUS;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.TIMES;
-import static org.sonar.go.utils.ConstantResolution.PLACEHOLDER;
+import static org.sonar.go.utils.ConstantResolution.resolveAsStringConstant;
 
 class ConstantResolutionTest {
   private static final Tree HELLO = new StringLiteralTreeImpl(null, "\"Hello\"");
@@ -42,7 +49,7 @@ class ConstantResolutionTest {
 
   @Test
   void simpleStringConstantResolution() {
-    assertThat(ConstantResolution.resolveAsStringConstant(HELLO)).isEqualTo("Hello");
+    assertThat(resolveAsStringConstant(HELLO)).isEqualTo("Hello");
   }
 
   @Test
@@ -50,19 +57,19 @@ class ConstantResolutionTest {
     Token leftParenthesis = new TokenImpl(new TextRangeImpl(1, 1, 1, 6), "(", Token.Type.OTHER);
     Token rightParenthesis = new TokenImpl(new TextRangeImpl(1, 1, 1, 6), ")", Token.Type.OTHER);
     Tree parenthesized = new ParenthesizedExpressionTreeImpl(null, HELLO, leftParenthesis, rightParenthesis);
-    assertThat(ConstantResolution.resolveAsStringConstant(parenthesized)).isEqualTo("Hello");
+    assertThat(resolveAsStringConstant(parenthesized)).isEqualTo("Hello");
   }
 
   @Test
   void binaryConstantResolution() {
     BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, WORLD);
-    assertThat(ConstantResolution.resolveAsStringConstant(binary)).isEqualTo("HelloWorld");
+    assertThat(resolveAsStringConstant(binary)).isEqualTo("HelloWorld");
   }
 
   @Test
   void binaryOtherOperatorConstantResolution() {
     BinaryExpressionTree binary = TreeCreationUtils.binary(TIMES, HELLO, WORLD);
-    assertThat(ConstantResolution.resolveAsStringConstant(binary)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(binary)).isNull();
   }
 
   @Test
@@ -70,20 +77,20 @@ class ConstantResolutionTest {
     Tree comma = new StringLiteralTreeImpl(null, "\", \"");
     BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, comma);
     BinaryExpressionTree binaryNested = TreeCreationUtils.binary(PLUS, binary, WORLD);
-    assertThat(ConstantResolution.resolveAsStringConstant(binaryNested)).isEqualTo("Hello, World");
+    assertThat(resolveAsStringConstant(binaryNested)).isEqualTo("Hello, World");
   }
 
   @Test
   void unresolvedConstantResolution() {
     NativeTree tree = TreeCreationUtils.simpleNative(new StringNativeKind("Kind"), Collections.emptyList());
-    assertThat(ConstantResolution.resolveAsStringConstant(tree)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(tree)).isNull();
   }
 
   @Test
   void binaryWithUnresolvedConstantConstantResolution() {
     NativeTree tree = TreeCreationUtils.simpleNative(new StringNativeKind("Kind"), Collections.emptyList());
     BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, tree);
-    assertThat(ConstantResolution.resolveAsStringConstant(binary)).isEqualTo("Hello" + PLACEHOLDER);
+    assertThat(resolveAsStringConstant(binary)).isNull();
   }
 
   @Test
@@ -92,7 +99,7 @@ class ConstantResolutionTest {
     Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo("Hello");
+    assertThat(resolveAsStringConstant(id)).isEqualTo("Hello");
   }
 
   @Test
@@ -102,16 +109,16 @@ class ConstantResolutionTest {
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.ASSIGNMENT));
     id.setSymbol(symbol);
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(id)).isNull();
   }
 
   @Test
-  void noDeclarationIdentifierConstantResolution() {
+  void noDeclarationAndSingleAssignmentIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
     Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.ASSIGNMENT));
     id.setSymbol(symbol);
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(id)).isEqualTo("World");
   }
 
   @Test
@@ -120,7 +127,7 @@ class ConstantResolutionTest {
     Symbol symbol = new Symbol("type");
     symbol.getUsages().add(new Usage(id, null, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(id)).isNull();
   }
 
   @Test
@@ -130,18 +137,18 @@ class ConstantResolutionTest {
     symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.DECLARATION));
     symbol.getUsages().add(new Usage(id, WORLD, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(id)).isNull();
   }
 
   @Test
   void identifierWithNoSymbolConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(id)).isNull();
   }
 
   @Test
   void nullConstantResolution() {
-    assertThat(ConstantResolution.resolveAsStringConstant(null)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(null)).isNull();
   }
 
   @Test
@@ -156,7 +163,7 @@ class ConstantResolutionTest {
     symbolAlias.getUsages().add(new Usage(idAlias, id, Usage.UsageType.DECLARATION));
     idAlias.setSymbol(symbolAlias);
 
-    assertThat(ConstantResolution.resolveAsStringConstant(idAlias)).isEqualTo(PLACEHOLDER);
+    assertThat(resolveAsStringConstant(idAlias)).isEqualTo("Hello");
   }
 
   @Test
@@ -167,7 +174,7 @@ class ConstantResolutionTest {
     symbol.getUsages().add(new Usage(id, binary, Usage.UsageType.DECLARATION));
     id.setSymbol(symbol);
 
-    assertThat(ConstantResolution.resolveAsStringConstant(id)).isEqualTo("HelloWorld");
+    assertThat(resolveAsStringConstant(id)).isEqualTo("HelloWorld");
   }
 
   @Test
@@ -194,5 +201,27 @@ class ConstantResolutionTest {
     NativeTree tree = TreeCreationUtils.simpleNative(new StringNativeKind("Kind"), Collections.emptyList());
     BinaryExpressionTree binary = TreeCreationUtils.binary(PLUS, HELLO, tree);
     assertThat(ConstantResolution.isConstantString(binary)).isFalse();
+  }
+
+  @Test
+  void shouldHandleRecursiveAssignments() {
+    var root = (TopLevelTree) TestGoConverter.parse("""
+      package main
+      func main() {
+        a := "a"
+        b := a
+        c := b
+        b = c
+      }
+      """);
+
+    TreeContext ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, root);
+
+    var main = ((FunctionDeclarationTree) root.declarations().get(1)).body();
+    assertThat(resolveAsStringConstant(((VariableDeclarationTree) main.statementOrExpressions().get(0)).identifiers().get(0))).isEqualTo("a");
+    assertThat(resolveAsStringConstant(((VariableDeclarationTree) main.statementOrExpressions().get(1)).identifiers().get(0))).isNull();
+    assertThat(resolveAsStringConstant(((VariableDeclarationTree) main.statementOrExpressions().get(2)).identifiers().get(0))).isNull();
+    assertThat(resolveAsStringConstant(((AssignmentExpressionTree) main.statementOrExpressions().get(3)).leftHandSide())).isNull();
   }
 }

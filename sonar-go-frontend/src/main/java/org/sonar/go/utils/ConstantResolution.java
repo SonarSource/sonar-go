@@ -17,6 +17,8 @@
 package org.sonar.go.utils;
 
 import java.util.Optional;
+import javax.annotation.CheckForNull;
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.sonar.go.api.BinaryExpressionTree;
 import org.sonar.go.api.IdentifierTree;
@@ -24,7 +26,6 @@ import org.sonar.go.api.ParenthesizedExpressionTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.symbols.Symbol;
-import org.sonar.go.symbols.Usage;
 
 public class ConstantResolution {
 
@@ -36,35 +37,42 @@ public class ConstantResolution {
 
   /**
    * Try to resolve the tree as a String constant.
-   * For any tree that cannot be resolved to a constant, a placeholder "_?_" will be introduced instead.
+   * For any tree that cannot be resolved to a constant, null is returned.
    */
+  @CheckForNull
   public static String resolveAsStringConstant(@Nullable Tree tree) {
-    return resolveAsStringConstant(tree, true);
+    var resolvedConstant = resolveAsPartialStringConstant(tree);
+    if (resolvedConstant.contains(PLACEHOLDER)) {
+      return null;
+    }
+    return resolvedConstant;
   }
 
   /**
    * @return true when the tree represents a static string constant, false otherwise.
    */
   public static boolean isConstantString(Tree tree) {
-    return !resolveAsStringConstant(tree).contains(PLACEHOLDER);
+    return !resolveAsPartialStringConstant(tree).contains(PLACEHOLDER);
   }
 
   /**
-   * In order to avoid any risk of infinite recursion, we only follow identifier value once, depending on "followIdentifier" argument.
-   * This approximation seems reasonable because we want to support the obvious cases (global constant, local variable used as constant),
-   * and not trying to build a complex constant folding logic.
+   * Try to resolve this tree as a string constant.
+   * If there are nodes that cannot be resolved, they are replaced by {@link #PLACEHOLDER}.
+   * This way, the result can still be used to detect certain patterns involving string concatenation, e.g.
+   * {@code "/tmp/" + fileName} will be resolved to {@code "/tmp/_?_"}, and will contain information that the string describes a temporary file.
    */
-  private static String resolveAsStringConstant(@Nullable Tree tree, boolean followIdentifier) {
+  @Nonnull
+  public static String resolveAsPartialStringConstant(@Nullable Tree tree) {
     if (tree == null) {
       return PLACEHOLDER;
     }
     if (tree instanceof StringLiteralTree stringLiteral) {
       return stringLiteral.content();
     } else if (tree instanceof BinaryExpressionTree binaryExpressionTree && binaryExpressionTree.operator() == BinaryExpressionTree.Operator.PLUS) {
-      return resolveAsStringConstant(binaryExpressionTree.leftOperand(), followIdentifier) + resolveAsStringConstant(binaryExpressionTree.rightOperand(), followIdentifier);
+      return resolveAsPartialStringConstant(binaryExpressionTree.leftOperand()) + resolveAsPartialStringConstant(binaryExpressionTree.rightOperand());
     } else if (tree instanceof ParenthesizedExpressionTree parenthesizedExpression) {
-      return resolveAsStringConstant(parenthesizedExpression.expression(), followIdentifier);
-    } else if (tree instanceof IdentifierTree identifier && followIdentifier) {
+      return resolveAsPartialStringConstant(parenthesizedExpression.expression());
+    } else if (tree instanceof IdentifierTree identifier) {
       return resolveIdentifierAsStringConstant(identifier);
     }
     return PLACEHOLDER;
@@ -75,28 +83,8 @@ public class ConstantResolution {
     if (symbol == null) {
       return PLACEHOLDER;
     }
-    return getEffectivelyFinalUsage(symbol)
-      .map(Usage::value)
-      .map(v -> resolveAsStringConstant(v, false))
+    return Optional.ofNullable(symbol.getSafeValue())
+      .map(ConstantResolution::resolveAsPartialStringConstant)
       .orElse(PLACEHOLDER);
-  }
-
-  /**
-   * An identifier is effectively final if it is never reassigned.
-   */
-  public static Optional<Usage> getEffectivelyFinalUsage(Symbol symbol) {
-    Usage effectivelyFinalUsage = null;
-    for (Usage usage : symbol.getUsages()) {
-      if (usage.type() == Usage.UsageType.DECLARATION) {
-        // An identifier with multiple declarations should never happen, but if it ever does, we don't consider it as effectively final.
-        if (effectivelyFinalUsage != null) {
-          return Optional.empty();
-        }
-        effectivelyFinalUsage = usage;
-      } else if (usage.type() == Usage.UsageType.ASSIGNMENT) {
-        return Optional.empty();
-      }
-    }
-    return Optional.ofNullable(effectivelyFinalUsage);
   }
 }

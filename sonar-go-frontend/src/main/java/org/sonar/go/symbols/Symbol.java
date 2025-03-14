@@ -43,16 +43,32 @@ public class Symbol {
 
   /**
    * Returns the value of the symbol if it is safe to do so.
-   * A value is considered safe if it is assigned in the declaration and not other value is assigned afterward.
+   * A value is considered safe if either
+   * <ol>
+   * <li>it is assigned in the declaration and not other value is assigned afterward.</li>
+   * <li>there is no assignment in the declaration and a single assignment is done afterward.</li>
+   * </ol>
    */
   @CheckForNull
   public Tree getSafeValue() {
-    var declarationAndAssignments = usages.stream()
-      .filter(usage -> usage.type() == Usage.UsageType.DECLARATION || usage.type() == Usage.UsageType.ASSIGNMENT)
-      .toList();
-    if (declarationAndAssignments.size() != 1) {
-      return null;
+    Usage effectivelyFinalUsage = null;
+    for (Usage usage : usages) {
+      if (usage.type() == Usage.UsageType.DECLARATION) {
+        if (effectivelyFinalUsage != null) {
+          // An identifier with multiple declarations should never happen, but if it ever does, we don't consider it as effectively final.
+          return null;
+        } else if (usage.value() != null) {
+          // Declaration with an assignment
+          effectivelyFinalUsage = usage;
+        }
+      } else if (usage.type() == Usage.UsageType.ASSIGNMENT && effectivelyFinalUsage == null) {
+        // Variable has declared without assignment, so we can consider the first assignment as effectively final
+        effectivelyFinalUsage = usage;
+      } else if (usage.type() == Usage.UsageType.ASSIGNMENT) {
+        // Variable is reassigned, so it is not effectively final
+        return null;
+      }
     }
-    return declarationAndAssignments.get(0).value();
+    return effectivelyFinalUsage != null ? effectivelyFinalUsage.value() : null;
   }
 }
