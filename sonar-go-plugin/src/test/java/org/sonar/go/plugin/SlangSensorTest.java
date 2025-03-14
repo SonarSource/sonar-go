@@ -30,8 +30,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.slf4j.event.Level;
-import org.sonar.api.SonarEdition;
-import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextPointer;
@@ -333,16 +331,6 @@ class SlangSensorTest extends AbstractSensorTest {
   }
 
   @Test
-  void test_sonarlint_descriptor() {
-    DefaultSensorDescriptor sensorDescriptor = new DefaultSensorDescriptor();
-    SlangSensor sensor = sensor(SonarRuntimeImpl.forSonarLint(Version.create(6, 5)), mock(CheckFactory.class));
-    sensor.describe(sensorDescriptor);
-    assertThat(sensorDescriptor.languages()).hasSize(1);
-    assertThat(sensorDescriptor.languages()).containsExactly("slang");
-    assertThat(sensorDescriptor.name()).isEqualTo("SLang Sensor");
-  }
-
-  @Test
   void test_cancellation() {
     InputFile inputFile = createInputFile("file1.slang",
       "fun main() {\nprint (1 == 1);}");
@@ -381,9 +369,7 @@ class SlangSensorTest extends AbstractSensorTest {
 
   @Test
   void test_sensor_descriptor_does_not_process_files_independently() {
-    final SlangSensor sensor = sensor(
-      SonarRuntimeImpl.forSonarQube(Version.create(9, 3), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER),
-      checkFactory());
+    final SlangSensor sensor = sensor(checkFactory());
     DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
     sensor.describe(descriptor);
     assertThat(descriptor.isProcessesFilesIndependently()).isFalse();
@@ -396,9 +382,7 @@ class SlangSensorTest extends AbstractSensorTest {
     sensorContext.setCanSkipUnchangedFiles(true);
     sensorContext.setCacheEnabled(true);
     // Execute sensor
-    SlangSensor sensor = sensor(
-      SonarRuntimeImpl.forSonarQube(Version.create(9, 3), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER),
-      checkFactory());
+    SlangSensor sensor = sensor(checkFactory());
     sensor.execute(sensorContext);
     assertThat(logTester.logs(Level.INFO)).contains(
       "The SLANG analyzer is running in a context where unchanged files can be skipped.");
@@ -668,11 +652,7 @@ class SlangSensorTest extends AbstractSensorTest {
   }
 
   private SlangSensor sensor(CheckFactory checkFactory) {
-    return sensor(SQ_LTS_RUNTIME, checkFactory);
-  }
-
-  private SlangSensor sensor(SonarRuntime sonarRuntime, CheckFactory checkFactory) {
-    return new SlangSensor(sonarRuntime, new DefaultNoSonarFilter(), fileLinesContextFactory, SlangLanguage.SLANG) {
+    return new SlangSensor(new DefaultNoSonarFilter(), fileLinesContextFactory, SlangLanguage.SLANG) {
       @Override
       protected ASTConverter astConverter(SensorContext sensorContext) {
         return TestGoConverter.GO_CONVERTER;

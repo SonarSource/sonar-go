@@ -32,6 +32,7 @@ import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.GoVersion;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.visitors.SymbolVisitor;
@@ -49,11 +50,23 @@ public class GoVerifier {
     createVerifier(BASE_DIR.resolve(fileName), check).assertOneOrMoreIssues();
   }
 
+  public static void verifyWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
+    createVerifier(BASE_DIR.resolve(fileName), check, goVersion).assertOneOrMoreIssues();
+  }
+
   public static void verifyNoIssue(String fileName, GoCheck check) {
     createVerifier(BASE_DIR.resolve(fileName), check).assertNoIssues();
   }
 
+  public static void verifyNoIssueWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
+    createVerifier(BASE_DIR.resolve(fileName), check, goVersion).assertNoIssues();
+  }
+
   private static SingleFileVerifier createVerifier(Path path, GoCheck check) {
+    return createVerifier(path, check, GoVersion.UNKNOWN_VERSION);
+  }
+
+  private static SingleFileVerifier createVerifier(Path path, GoCheck check, GoVersion goVersion) {
 
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
@@ -66,7 +79,7 @@ public class GoVerifier {
         verifier.addComment(start.line(), start.lineOffset() + 1, comment.text(), 2, 0);
       });
 
-    TestContext ctx = new TestContext(verifier, path.getFileName().toString(), testFileContent);
+    TestContext ctx = new TestContext(verifier, path.getFileName().toString(), testFileContent, goVersion);
     new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
@@ -86,13 +99,15 @@ public class GoVerifier {
 
     private final TreeVisitor<TestContext> visitor;
     private final SingleFileVerifier verifier;
+    private final GoVersion goVersion;
     private final String filename;
-    private String testFileContent;
+    private final String testFileContent;
     private Consumer<Tree> onLeave;
 
-    public TestContext(SingleFileVerifier verifier, String filename, String testFileContent) {
+    public TestContext(SingleFileVerifier verifier, String filename, String testFileContent, GoVersion goVersion) {
       this.verifier = verifier;
       this.filename = filename;
+      this.goVersion = goVersion;
       this.testFileContent = testFileContent;
       visitor = new TreeVisitor<>();
     }
@@ -132,6 +147,11 @@ public class GoVerifier {
     @Override
     public String fileContent() {
       return testFileContent;
+    }
+
+    @Override
+    public GoVersion goVersion() {
+      return goVersion;
     }
 
     @Override

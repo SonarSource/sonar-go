@@ -41,6 +41,8 @@ public interface CheckContext {
 
   String fileContent();
 
+  GoVersion goVersion();
+
   void reportIssue(TextRange textRange, String message);
 
   void reportIssue(HasTextRange toHighlight, String message);

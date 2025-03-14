@@ -64,25 +64,36 @@ class CheckContextTest {
       return null;
     }
 
+    public GoVersion goVersion() {
+      return null;
+    }
+
     public void reportIssue(TextRange textRange, String message) {
+      // do nothing, test method
     }
 
     public void reportIssue(HasTextRange toHighlight, String message) {
+      // do nothing, test method
     }
 
     public void reportIssue(HasTextRange toHighlight, String message, SecondaryLocation secondaryLocation) {
+      // do nothing, test method
     }
 
     public void reportIssue(HasTextRange toHighlight, String message, List<SecondaryLocation> secondaryLocations) {
+      // do nothing, test method
     }
 
     public void reportIssue(HasTextRange toHighlight, String message, List<SecondaryLocation> secondaryLocations, @Nullable Double gap) {
+      // do nothing, test method
     }
 
     public void reportFileIssue(String message) {
+      // do nothing, test method
     }
 
     public void reportFileIssue(String message, @Nullable Double gap) {
+      // do nothing, test method
     }
 
   }

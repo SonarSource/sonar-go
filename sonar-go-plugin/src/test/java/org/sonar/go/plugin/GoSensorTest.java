@@ -52,7 +52,10 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
+import org.sonar.check.Rule;
+import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
 
@@ -86,6 +89,7 @@ class GoSensorTest {
     sensorContext = SensorContextTester.create(workDir);
     sensorContext.fileSystem().setWorkDir(workDir);
     sensorContext.settings().setProperty("sonar.slang.converter.validation", "throw");
+    sensorContext.setRuntime(SQ_LTS_RUNTIME);
     fileLinesContext = new FileLinesContextTester();
     when(fileLinesContextFactory.createFor(any(InputFile.class))).thenReturn(fileLinesContext);
   }
@@ -163,27 +167,27 @@ class GoSensorTest {
 
   @Test
   void metrics() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      /* 01 */"// This is not a line of code\n" +
-      /* 02 */"package main\n" +
-      /* 03 */"import \"fmt\"\n" +
-      /* 04 */"type class1 struct { x, y int }\n" +
-      /* 05 */"type class2 struct { a, b string }\n" +
-      /* 06 */"type anyObject interface {}\n" +
-      /* 07 */"func fun1() {\n" +
-      /* 08 */"  fmt.Println(\"Statement 1\")\n" +
-      /* 09 */"}\n" +
-      /* 10 */"func fun2(i int) {\n" +
-      /* 11 */"  switch i { // Statement 2\n" +
-      /* 12 */"  case 2:\n" +
-      /* 13 */"    fmt.Println(\n" +
-      /* 14 */"      \"Not a Statement 3\",\n" +
-      /* 15 */"    )\n" +
-      /* 16 */"  }\n" +
-      /* 17 */"}\n" +
-      /* 18 */"func fun3(x interface{}) int {\n" +
-      /* 19 */"  return 42 // Statement 4\n" +
-      /* 20 */"}\n");
+    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN, """
+      // This is not a line of code
+      package main
+      import "fmt"
+      type class1 struct { x, y int }
+      type class2 struct { a, b string }
+      type anyObject interface {}
+      func fun1() {
+        fmt.Println("Statement 1")
+      }
+      func fun2(i int) {
+        switch i { // Statement 2
+        case 2:
+          fmt.Println(
+            "Not a Statement 3",
+          )
+        }
+      }
+      func fun3(x interface{}) int {
+        return 42 // Statement 4
+      }""");
     sensorContext.fileSystem().add(inputFile);
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
@@ -350,6 +354,97 @@ class GoSensorTest {
     assertThat(getSensor().repositoryKey()).isEqualTo("go");
   }
 
+  @Rule(key = "GoVersionCheck")
+  public static class GoVersionCheck implements GoCheck {
+    @Override
+    public void initialize(InitContext init) {
+      init.register(VariableDeclarationTree.class, (ctx, tree) -> {
+        if (!ctx.goVersion().isUnknownVersion()) {
+          ctx.reportIssue(tree, "issue");
+        }
+      });
+    }
+  }
+
+  @Test
+  void versionShouldBeDetected() {
+    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+      """
+        module myModule
+
+        go 1.23.4
+        """);
+
+    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main
+        var a int
+        """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).hasSize(1);
+  }
+
+  @Test
+  void versionShouldNotBeDetectedOnMissingVersion() {
+    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+      """
+        module myModule
+        """);
+
+    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main
+        var a int
+        """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).isEmpty();
+  }
+
+  @Test
+  void versionShouldNotBeDetectedOnMissingGoModFile() {
+    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main
+        var a int
+        """);
+
+    sensorContext.fileSystem().add(goFile);
+    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).isEmpty();
+  }
+
+  @Test
+  void versionShouldNotBeDetectedInSonarQubeIDEContext() {
+    sensorContext.setRuntime(SonarRuntimeImpl.forSonarLint(Version.create(10, 18)));
+    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+      """
+        module myModule
+
+        go 1.23.4
+        """);
+
+    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main
+        var a int
+        """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).isEmpty();
+  }
+
   private void assertHighlighting(String componentKey, int line, int columnFirst, int columnLast, @Nullable TypeOfText type) {
     for (int column = columnFirst; column <= columnLast; column++) {
       List<TypeOfText> typeOfTexts = sensorContext.highlightingTypeAt(componentKey, line, column - 1);
@@ -380,7 +475,25 @@ class GoSensorTest {
     CheckFactory checkFactory = new CheckFactory(activeRules);
     Checks<GoCheck> checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
     checks.addAnnotatedChecks(ruleClasses);
-    return new GoSensor(SQ_LTS_RUNTIME, checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
+    return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
+  }
+
+  private GoSensor getSensorWithCustomChecks(Set<Class<?>> checks) {
+    ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
+
+    for (Class<?> check : checks) {
+      RuleKey ruleKey = RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, ((Rule) check.getAnnotations()[0]).key());
+      NewActiveRule.Builder newActiveRuleBuilder = new NewActiveRule.Builder()
+        .setRuleKey(ruleKey);
+      rulesBuilder.addRule(newActiveRuleBuilder.build());
+    }
+
+    ActiveRules activeRules = rulesBuilder.build();
+    CheckFactory checkFactory = new CheckFactory(activeRules);
+    Checks<GoCheck> instantiatedChecks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
+    instantiatedChecks.addAnnotatedChecks(checks);
+    return new GoSensor(instantiatedChecks, fileLinesContextFactory, new DefaultNoSonarFilter(),
       new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
   }
 

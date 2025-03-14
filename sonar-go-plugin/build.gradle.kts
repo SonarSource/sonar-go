@@ -40,6 +40,7 @@ dependencies {
     testImplementation(libs.sonar.analyzer.test.commons)
     testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.sonar.plugin.api.impl)
     testImplementation(libs.sonar.plugin.api.test.fixtures)
     testImplementation(testFixtures(project(":sonar-go-commons")))
@@ -107,7 +108,7 @@ tasks.shadowJar {
         val (minSize, maxSize) = if (isCrossCompile) {
             10_500_000L to 11_000_000L
         } else {
-            3_500_000L to 4_000_000L
+            3_000_000L to 3_500_000L
         }
         enforceJarSize(pluginJar, minSize, maxSize)
         checkJarEntriesPathUniqueness(pluginJar)

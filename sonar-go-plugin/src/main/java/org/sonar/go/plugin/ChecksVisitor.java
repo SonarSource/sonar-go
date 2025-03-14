@@ -32,6 +32,7 @@ import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.CheckContext;
 import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.GoVersion;
 import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.visitors.TreeVisitor;
@@ -42,8 +43,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final DurationStatistics statistics;
 
-  public ChecksVisitor(Checks<GoCheck> checks, DurationStatistics statistics) {
+  private final GoVersion goVersion;
+
+  public ChecksVisitor(Checks<GoCheck> checks, DurationStatistics statistics, GoVersion goVersion) {
     this.statistics = statistics;
+    this.goVersion = goVersion;
     Collection<GoCheck> rulesActiveInSonarQube = checks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
       RuleKey ruleKey = checks.ruleKey(check);
@@ -66,6 +70,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     public ContextAdapter(RuleKey ruleKey) {
       this.ruleKey = ruleKey;
+    }
+
+    @Override
+    public GoVersion goVersion() {
+      return goVersion;
     }
 
     @Override

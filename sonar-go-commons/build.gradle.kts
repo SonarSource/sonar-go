@@ -22,6 +22,7 @@ plugins {
 
 dependencies {
     compileOnly(libs.slf4j.api)
+    compileOnly(libs.sonar.plugin.api)
 
     implementation(project(":sonar-go-frontend"))
     implementation(libs.sonar.analyzer.commons)

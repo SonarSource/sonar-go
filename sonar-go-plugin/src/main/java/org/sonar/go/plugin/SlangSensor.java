@@ -29,7 +29,6 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
-import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
@@ -50,6 +49,7 @@ import org.sonar.go.api.ParseException;
 import org.sonar.go.api.TextPointer;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.checks.GoCheck;
+import org.sonar.go.api.checks.GoVersion;
 import org.sonar.go.plugin.caching.HashCacheUtils;
 import org.sonar.go.plugin.converter.ASTConverterValidation;
 import org.sonar.go.visitors.SymbolVisitor;
@@ -66,13 +66,11 @@ public abstract class SlangSensor implements Sensor {
   private static final Logger LOG = LoggerFactory.getLogger(SlangSensor.class);
   private static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
 
-  protected final SonarRuntime sonarRuntime;
   private final NoSonarFilter noSonarFilter;
   private final Language language;
   private FileLinesContextFactory fileLinesContextFactory;
 
-  protected SlangSensor(SonarRuntime sonarRuntime, NoSonarFilter noSonarFilter, FileLinesContextFactory fileLinesContextFactory, Language language) {
-    this.sonarRuntime = sonarRuntime;
+  protected SlangSensor(NoSonarFilter noSonarFilter, FileLinesContextFactory fileLinesContextFactory, Language language) {
     this.noSonarFilter = noSonarFilter;
     this.fileLinesContextFactory = fileLinesContextFactory;
     this.language = language;
@@ -230,6 +228,7 @@ public abstract class SlangSensor implements Sensor {
     FilePredicate mainFilePredicate = fileSystem.predicates().and(
       fileSystem.predicates().hasLanguage(language.getKey()),
       fileSystem.predicates().hasType(InputFile.Type.MAIN));
+    var goVersion = new GoVersionAnalyzer(sensorContext).analyzeGoVersion();
     List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
       .toList();
     List<String> filenames = inputFiles.stream().map(InputFile::toString).toList();
@@ -238,7 +237,7 @@ public abstract class SlangSensor implements Sensor {
     boolean success = false;
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
     try {
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors(sensorContext, statistics), statistics);
+      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors(sensorContext, statistics, goVersion), statistics);
     } finally {
       if (success) {
         progressReport.stop();
@@ -250,23 +249,22 @@ public abstract class SlangSensor implements Sensor {
     statistics.log();
   }
 
-  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics) {
+  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoVersion goVersion) {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics));
+        new ChecksVisitor(checks(), statistics, goVersion));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics),
+        new ChecksVisitor(checks(), statistics, goVersion),
         new CpdVisitor(),
         new SyntaxHighlighter());
     }
   }
-
 }

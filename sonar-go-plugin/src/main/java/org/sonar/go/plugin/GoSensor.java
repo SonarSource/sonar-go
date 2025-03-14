@@ -17,7 +17,6 @@
 package org.sonar.go.plugin;
 
 import java.util.function.Predicate;
-import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -38,10 +37,17 @@ public class GoSensor extends SlangSensor {
 
   private ASTConverter goConverter = null;
 
-  public GoSensor(SonarRuntime sonarRuntime, CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
+  public GoSensor(CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
-    super(sonarRuntime, noSonarFilter, fileLinesContextFactory, language);
+    super(noSonarFilter, fileLinesContextFactory, language);
     checks = initializeChecks(checkFactory);
+    this.goConverter = goConverter;
+  }
+
+  GoSensor(Checks<GoCheck> checks, FileLinesContextFactory fileLinesContextFactory,
+    NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
+    super(noSonarFilter, fileLinesContextFactory, language);
+    this.checks = checks;
     this.goConverter = goConverter;
   }
 
