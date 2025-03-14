@@ -290,8 +290,8 @@ public class MethodMatchers {
      * <pre>
      *   {@code
      *   func (ctrl *MainController) sensitive_beego1() {
-     * 	   ctrl.Ctx.SetCookie("name1", "value1", 200, "/", "example.com", false, false)
-     * 	 }
+     *     ctrl.Ctx.SetCookie("name1", "value1", 200, "/", "example.com", false, false)
+     *   }
      *   }
      * </pre>
      * Here the {@code ctrl} may be defined in another file and types from {@link #withVariableTypeIn(String...)}
