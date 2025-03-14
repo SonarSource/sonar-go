@@ -285,7 +285,17 @@ public class MethodMatchers {
     ParametersBuilder withNamesMatching(Predicate<String> namePredicate);
 
     /**
-     * This method can be replaced by {@link #withVariableTypeIn(String...)}} and the replacement should be preferred.
+     * This method can be replaced by {@link #withVariableTypeIn(String...)} and the replacement should be preferred.
+     * There are cases where usage of {@link #withReceiver()} is necessary, e.g.:
+     * <pre>
+     *   {@code
+     *   func (ctrl *MainController) sensitive_beego1() {
+     * 	   ctrl.Ctx.SetCookie("name1", "value1", 200, "/", "example.com", false, false)
+     * 	 }
+     *   }
+     * </pre>
+     * Here the {@code ctrl} may be defined in another file and types from {@link #withVariableTypeIn(String...)}
+     * need match first identifier type.
      */
     NameBuilder withReceiver();
   }
