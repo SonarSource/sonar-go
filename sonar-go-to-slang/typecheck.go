@@ -33,6 +33,7 @@ var (
 		"crypto/rsa":                                    "crypto_rsa.o",
 		"crypto/sha1":                                   "crypto_sha1.o",
 		"crypto/sha256":                                 "crypto_sha256.o",
+		"crypto/sha512":                                 "crypto_sha512.o",
 		"crypto/x509":                                   "crypto_x509.o",
 		"crypto/internal/boring":                        "crypto_internal_boring.o",
 		"crypto/internal/mlkem768":                      "crypto_internal_mlkem768.o",
