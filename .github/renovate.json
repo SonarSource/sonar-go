@@ -80,7 +80,8 @@
         "gomod"
       ],
       "matchFileNames": [
-        "!sonar-go-to-slang/go.mod"
+        "!sonar-go-to-slang/go.mod",
+        "!private/its/**/go.mod"
       ],
       "matchUpdateTypes": [
         "minor",
