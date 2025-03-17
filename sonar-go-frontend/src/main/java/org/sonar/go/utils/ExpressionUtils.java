@@ -178,13 +178,16 @@ public class ExpressionUtils {
    * @param initializer a RHS of an assignment expression
    * @return a base type of the expression ({@code &} is removed if present)
    */
-  public static Optional<MemberSelectTree> getTypeOfStructOrPointerInitializer(@Nullable Tree initializer) {
+  public static Optional<String> getTypeOfStructOrPointerInitializer(@Nullable Tree initializer) {
+    if (initializer == null) {
+      return Optional.empty();
+    }
     if (initializer instanceof FunctionInvocationTree invocation
       && getMemberSelectOrIdentifierName(invocation.memberSelect()).filter("new"::equals).isPresent()) {
       return getTypeOfNewExpression(invocation);
     }
     if (getUnaryOperandOrTree(initializer) instanceof CompositeLiteralTree compositeLiteralTree) {
-      return getTypeOfCompositeLiteral(compositeLiteralTree);
+      return getTypeOfMemberSelectOrIdentifier(compositeLiteralTree.type());
     }
 
     return Optional.empty();
@@ -198,21 +201,21 @@ public class ExpressionUtils {
     return tree;
   }
 
-  private static Optional<MemberSelectTree> getTypeOfCompositeLiteral(CompositeLiteralTree compositeLiteralTree) {
-    return Optional.of(compositeLiteralTree)
-      .map(CompositeLiteralTree::type)
-      .filter(MemberSelectTree.class::isInstance)
-      .map(MemberSelectTree.class::cast);
-  }
-
-  private static Optional<MemberSelectTree> getTypeOfNewExpression(FunctionInvocationTree newInvocation) {
+  private static Optional<String> getTypeOfNewExpression(FunctionInvocationTree newInvocation) {
     List<Tree> arguments = newInvocation.arguments();
     if (arguments.isEmpty()) {
       return Optional.empty();
     }
-    return Optional.of(arguments.get(0))
-      .filter(MemberSelectTree.class::isInstance)
-      .map(MemberSelectTree.class::cast);
+    return getTypeOfMemberSelectOrIdentifier(arguments.get(0));
+  }
+
+  private static Optional<String> getTypeOfMemberSelectOrIdentifier(@Nullable Tree tree) {
+    if (tree instanceof MemberSelectTree memberSelectTree) {
+      return Optional.ofNullable(memberSelectTree.identifier().type());
+    } else if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.ofNullable(identifierTree.type());
+    }
+    return Optional.empty();
   }
 
   /**

@@ -36,7 +36,6 @@ import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.from;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
@@ -162,24 +161,63 @@ class ExpressionUtilsTest {
   }
 
   @ParameterizedTest
-  @CsvSource(textBlock = """
-    http.Cookie{},true
-    &http.Cookie{},true
-    new(http.Cookie),true
-    NewCookie(),false
-    Cookie{},false
-    &Cookie{},false
-    new(Cookie),false
-    """)
-  void shouldExtractTypeOfInitializer(String code, boolean shouldBePresent) {
+  @ValueSource(strings = {
+    "http.Cookie{}",
+    "&http.Cookie{}",
+    "new(http.Cookie)"
+  })
+  void shouldExtractTypeOfInitializer(String code) {
     code = """
       package test
+      import "net/http"
 
       func main() {
         _ := %s
       }
       """.formatted(code);
 
+    allDeclarationCreateHttpCookie(code);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "Cookie{}",
+    "&Cookie{}",
+    "new(Cookie)"
+  })
+  void shouldExtractTypeOfInitializerForDotImport(String code) {
+    code = """
+      package test
+      import . "net/http"
+
+      func main() {
+        _ := %s
+      }
+      """.formatted(code);
+
+    allDeclarationCreateHttpCookie(code);
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "aliasHttp.Cookie{}",
+    "&aliasHttp.Cookie{}",
+    "new(aliasHttp.Cookie)"
+  })
+  void shouldExtractTypeOfInitializerForAliasImport(String code) {
+    code = """
+      package test
+      import aliasHttp "net/http"
+
+      func main() {
+        _ := %s
+      }
+      """.formatted(code);
+
+    allDeclarationCreateHttpCookie(code);
+  }
+
+  private static void allDeclarationCreateHttpCookie(String code) {
     var type = TestGoConverter.parse(code)
       .descendants()
       .filter(VariableDeclarationTree.class::isInstance)
@@ -189,13 +227,32 @@ class ExpressionUtilsTest {
       .findFirst()
       .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
 
-    if (shouldBePresent) {
-      assertThat(type).get()
-        .returns("http", from(it -> ((IdentifierTree) it.expression()).name()))
-        .returns("Cookie", from(it -> it.identifier().name()));
-    } else {
-      assertThat(type).isEmpty();
-    }
+    assertThat(type).hasValue("net/http.Cookie");
+  }
+
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "newCookie()",
+    "a"
+  })
+  void shouldNotExtractTypeOfInitializerForUnrelatedCode(String code) {
+    code = """
+      package test
+
+      func main() {
+        _ := %s
+      }
+      """.formatted(code);
+    var type = TestGoConverter.parse(code)
+      .descendants()
+      .filter(VariableDeclarationTree.class::isInstance)
+      .map(VariableDeclarationTree.class::cast)
+      .map(VariableDeclarationTree::initializers)
+      .flatMap(List::stream)
+      .findFirst()
+      .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
+
+    assertThat(type).isEmpty();
   }
 
   @Test
