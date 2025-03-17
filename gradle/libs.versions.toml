@@ -3,17 +3,17 @@ analyzer-commons = "2.16.0.3141"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "11.1.0.2693"
-sonarqube = "25.2.0.102705"
-orchestrator = "5.1.0.2254"
-sonarlint = "10.14.0.80189"
+sonarqube = "25.3.0.104237"
+orchestrator = "5.3.0.2465"
+sonarlint = "10.17.0.80607"
 minimal-json = "0.9.5"
-mockito-core = "5.15.2"
+mockito-core = "5.16.1"
 assertj-core = "3.27.3"
-junit-jupiter = "5.11.4"
+junit-jupiter = "5.12.1"
 # slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api in integration tests
 slf4j-api = "1.7.36"
 xerces = "2.12.2"
-awaitility = "4.2.2"
+awaitility = "4.3.0"
 classgraph = "4.8.179"
 yguard = "4.1.1"
 
@@ -35,6 +35,8 @@ assertj-core = { group = "org.assertj", name = "assertj-core", version.ref = "as
 junit-jupiter-api = { group = "org.junit.jupiter", name = "junit-jupiter-api", version.ref = "junit-jupiter" }
 junit-jupiter-params = { group = "org.junit.jupiter", name = "junit-jupiter-params", version.ref = "junit-jupiter" }
 junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engine", version.ref = "junit-jupiter" }
+# version of Junit Platform is taken from junit BOM that is imported by junit-jupiter-api
+junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-api" }
 xerces = { group = "xerces", name = "xercesImpl", version.ref = "xerces" }
 awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility"}

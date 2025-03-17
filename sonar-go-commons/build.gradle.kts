@@ -34,6 +34,7 @@ dependencies {
     testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
 
     testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
 
     testFixturesImplementation(project(":sonar-go-frontend"))
     testFixturesImplementation(libs.assertj.core)

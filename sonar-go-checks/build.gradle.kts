@@ -37,4 +37,5 @@ dependencies {
     testImplementation(testFixtures(project(":sonar-go-commons")))
 
     testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.platform.launcher)
 }
