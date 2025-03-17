@@ -86,3 +86,24 @@ func Test_testOnlyFirstErrorIsReturned(t *testing.T) {
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", err.Error())
 	assert.NotNil(t, info)
 }
+
+// This test checks that all files from the mapping are present in the packages directory.
+// It ensures that the mapping is up-to-date.
+func TestAllFilesFromMappingShouldBePresent(t *testing.T) {
+	mapping := packageExportData
+	files, err := packages.ReadDir(PackageExportDataDir)
+	assert.NoError(t, err)
+
+	for _, fileName := range mapping {
+		found := false
+		for i, file := range files {
+			if file.Name() == fileName {
+				found = true
+				files = append(files[:i], files[i+1:]...)
+				break
+			}
+		}
+		assert.True(t, found, "File %s is missing in the `build/packages` directory", fileName)
+	}
+	assert.Empty(t, files, "There are files in the `build/packages` directory that are not present in the mapping")
+}

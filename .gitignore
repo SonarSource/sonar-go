@@ -42,4 +42,8 @@ Desktop.ini
 test-report.out
 
 *.cer
+
+# Go
+goparser_generated.go
+mapping_generated.go
 private/go-package-data-exporter/packages/*.o

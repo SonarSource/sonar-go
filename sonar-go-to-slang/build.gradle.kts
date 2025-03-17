@@ -52,7 +52,7 @@ if (isCi) {
                     "make.bat",
                     "make.sh"
                 )
-                exclude("build/**", "*_generated.go")
+                exclude("build/**")
             }
         )
 
@@ -199,7 +199,7 @@ if (!isCi) {
                     "make.sh",
                     "make.bat"
                 )
-                exclude("build/**", "*_generated.go")
+                exclude("build/**")
             }
         )
         outputs.file("goparser_generated.go")
