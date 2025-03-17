@@ -40,6 +40,7 @@ import static org.assertj.core.api.Assertions.from;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
+import static org.sonar.go.utils.ExpressionUtils.getTypeOfStructOrPointerInitializer;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
@@ -195,6 +196,12 @@ class ExpressionUtilsTest {
     } else {
       assertThat(type).isEmpty();
     }
+  }
+
+  @Test
+  void shouldReturnEmptyWhenArgumentNull() {
+    var typeOfStructOrPointerInitializer = getTypeOfStructOrPointerInitializer(null);
+    assertThat(typeOfStructOrPointerInitializer).isEmpty();
   }
 
   @ParameterizedTest

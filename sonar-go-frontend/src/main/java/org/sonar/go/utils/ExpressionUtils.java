@@ -178,7 +178,7 @@ public class ExpressionUtils {
    * @param initializer a RHS of an assignment expression
    * @return a base type of the expression ({@code &} is removed if present)
    */
-  public static Optional<MemberSelectTree> getTypeOfStructOrPointerInitializer(Tree initializer) {
+  public static Optional<MemberSelectTree> getTypeOfStructOrPointerInitializer(@Nullable Tree initializer) {
     if (initializer instanceof FunctionInvocationTree invocation
       && getMemberSelectOrIdentifierName(invocation.memberSelect()).filter("new"::equals).isPresent()) {
       return getTypeOfNewExpression(invocation);
