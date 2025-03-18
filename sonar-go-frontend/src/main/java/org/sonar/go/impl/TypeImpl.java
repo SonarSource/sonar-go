@@ -1,0 +1,60 @@
+/*
+ * SonarSource Go
+ * Copyright (C) 2018-2025 SonarSource SA
+ * mailto:info AT sonarsource DOT com
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the Sonar Source-Available License Version 1, as published by SonarSource SA.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ * See the Sonar Source-Available License for more details.
+ *
+ * You should have received a copy of the Sonar Source-Available License
+ * along with this program; if not, see https://sonarsource.com/license/ssal/
+ */
+package org.sonar.go.impl;
+
+import javax.annotation.CheckForNull;
+import javax.annotation.Nullable;
+import org.sonar.go.api.Type;
+
+public class TypeImpl implements Type {
+
+  @Nullable
+  private final String type;
+  private final String packageName;
+
+  public TypeImpl(@Nullable String type, String packageName) {
+    this.type = type;
+    this.packageName = packageName;
+  }
+
+  @CheckForNull
+  @Override
+  public String type() {
+    return type;
+  }
+
+  @Override
+  public String packageName() {
+    return packageName;
+  }
+
+  @Override
+  public boolean isTypeOf(String baseType) {
+    return baseType.equals(extractBaseType());
+  }
+
+  @CheckForNull
+  private String extractBaseType() {
+    if (type != null) {
+      if (type.startsWith("&") || type.startsWith("*")) {
+        return type.substring(1);
+      }
+      return type;
+    }
+    return null;
+  }
+}

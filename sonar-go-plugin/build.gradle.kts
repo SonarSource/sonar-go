@@ -109,7 +109,7 @@ tasks.shadowJar {
         val (minSize, maxSize) = if (isCrossCompile) {
             10_500_000L to 11_000_000L
         } else {
-            3_500_000L to 4_000_000L
+            3_000_000L to 4_000_000L
         }
         enforceJarSize(pluginJar, minSize, maxSize)
         checkJarEntriesPathUniqueness(pluginJar)

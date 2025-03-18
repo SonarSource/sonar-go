@@ -34,17 +34,17 @@ import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.ParenthesizedExpressionTree;
 import org.sonar.go.api.PlaceHolderTree;
 import org.sonar.go.api.StarExpressionTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
+import org.sonar.go.api.Type;
 import org.sonar.go.api.UnaryExpressionTree;
+import org.sonar.go.impl.TypeImpl;
 
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
-import static org.sonar.go.utils.TreeUtils.getIdentifierName;
 
 public class ExpressionUtils {
   private static final String NIL_LITERAL = "nil";
@@ -149,42 +149,28 @@ public class ExpressionUtils {
       && expectedIdentifierName.equals(memberSelectTree.identifier().name());
   }
 
-  public static boolean isIdentifier(Tree tree, String name) {
-    return tree instanceof IdentifierTree identifierTree && name.equals(identifierTree.name());
-  }
-
-  public static String getTypeOf(ParameterTree parameter) {
-    var type = parameter.type();
-    if (type == null) {
-      return "";
-    }
-    if (type instanceof StarExpressionTree starExpressionTree) {
-      type = starExpressionTree.operand();
-    }
-    return Optional.of(type)
-      .filter(IdentifierTree.class::isInstance)
-      .map(it -> ((IdentifierTree) it).name())
-      .orElse(getIdentifierName(type.children()));
-  }
-
   /**
    * Retrieves the type of an expression that creates a struct or a pointer. There are several possible cases:
    * <ul>
    *   <li>{@code CompositeLit{}}</li>
    *   <li>{@code &CompositeLit{}}</li>
    *   <li>{@code new(Type)}</li>
+   *   <li>{@code *new(Type)}</li>
    * </ul>
    *
    * @param initializer a RHS of an assignment expression
    * @return a base type of the expression ({@code &} is removed if present)
    */
-  public static Optional<String> getTypeOfStructOrPointerInitializer(@Nullable Tree initializer) {
+  public static Optional<Type> getTypeOfInitializer(@Nullable Tree initializer) {
     if (initializer == null) {
       return Optional.empty();
     }
     if (initializer instanceof FunctionInvocationTree invocation
       && getMemberSelectOrIdentifierName(invocation.memberSelect()).filter("new"::equals).isPresent()) {
       return getTypeOfNewExpression(invocation);
+    }
+    if (initializer instanceof StarExpressionTree starExpressionTree) {
+      return getTypeOfInitializer(starExpressionTree.operand());
     }
     if (getUnaryOperandOrTree(initializer) instanceof CompositeLiteralTree compositeLiteralTree) {
       return getTypeOfMemberSelectOrIdentifier(compositeLiteralTree.type());
@@ -201,7 +187,7 @@ public class ExpressionUtils {
     return tree;
   }
 
-  private static Optional<String> getTypeOfNewExpression(FunctionInvocationTree newInvocation) {
+  private static Optional<Type> getTypeOfNewExpression(FunctionInvocationTree newInvocation) {
     List<Tree> arguments = newInvocation.arguments();
     if (arguments.isEmpty()) {
       return Optional.empty();
@@ -209,11 +195,11 @@ public class ExpressionUtils {
     return getTypeOfMemberSelectOrIdentifier(arguments.get(0));
   }
 
-  private static Optional<String> getTypeOfMemberSelectOrIdentifier(@Nullable Tree tree) {
+  private static Optional<Type> getTypeOfMemberSelectOrIdentifier(@Nullable Tree tree) {
     if (tree instanceof MemberSelectTree memberSelectTree) {
-      return Optional.ofNullable(memberSelectTree.identifier().type());
+      return Optional.of(new TypeImpl(memberSelectTree.identifier().type(), memberSelectTree.identifier().packageName()));
     } else if (tree instanceof IdentifierTree identifierTree) {
-      return Optional.ofNullable(identifierTree.type());
+      return Optional.of(new TypeImpl(identifierTree.type(), identifierTree.packageName()));
     }
     return Optional.empty();
   }

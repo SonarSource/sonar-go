@@ -17,6 +17,7 @@
 package org.sonar.go.utils;
 
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -24,9 +25,9 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.ParameterTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.Tree;
+import org.sonar.go.api.Type;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
@@ -39,7 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
-import static org.sonar.go.utils.ExpressionUtils.getTypeOfStructOrPointerInitializer;
+import static org.sonar.go.utils.ExpressionUtils.getTypeOfInitializer;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
@@ -134,37 +135,11 @@ class ExpressionUtilsTest {
   }
 
   @ParameterizedTest
-  @CsvSource(textBlock = """
-    x int, int
-    c Ctx, Ctx
-    c *Ctx, Ctx
-    c gin.Context, gin.Context
-    c *gin.Context, gin.Context
-    """)
-  void shouldExtractTypeOfParameter(String parameter, String expectedType) {
-    var code = """
-      package test
-
-      func main(%s) {
-      }
-      """.formatted(parameter);
-    var parameterTree = TestGoConverter.parse(code)
-      .descendants()
-      .filter(ParameterTree.class::isInstance)
-      .map(ParameterTree.class::cast)
-      .findFirst()
-      .get();
-
-    var type = ExpressionUtils.getTypeOf(parameterTree);
-
-    assertThat(type).isEqualTo(expectedType);
-  }
-
-  @ParameterizedTest
   @ValueSource(strings = {
     "http.Cookie{}",
     "&http.Cookie{}",
-    "new(http.Cookie)"
+    "new(http.Cookie)",
+    "*new(http.Cookie)"
   })
   void shouldExtractTypeOfInitializer(String code) {
     code = """
@@ -176,14 +151,18 @@ class ExpressionUtilsTest {
       }
       """.formatted(code);
 
-    allDeclarationCreateHttpCookie(code);
+    var type = getTypeOfFirstDeclarationInitializer(code);
+
+    assertThat(type.get().type()).isEqualTo("net/http.Cookie");
+    assertThat(type.get().packageName()).isEqualTo("net/http");
   }
 
   @ParameterizedTest
   @ValueSource(strings = {
     "Cookie{}",
     "&Cookie{}",
-    "new(Cookie)"
+    "new(Cookie)",
+    "*new(Cookie)"
   })
   void shouldExtractTypeOfInitializerForDotImport(String code) {
     code = """
@@ -195,14 +174,18 @@ class ExpressionUtilsTest {
       }
       """.formatted(code);
 
-    allDeclarationCreateHttpCookie(code);
+    var type = getTypeOfFirstDeclarationInitializer(code);
+
+    assertThat(type.get().type()).isEqualTo("net/http.Cookie");
+    assertThat(type.get().packageName()).isEqualTo("net/http");
   }
 
   @ParameterizedTest
   @ValueSource(strings = {
     "aliasHttp.Cookie{}",
     "&aliasHttp.Cookie{}",
-    "new(aliasHttp.Cookie)"
+    "new(aliasHttp.Cookie)",
+    "*new(aliasHttp.Cookie)"
   })
   void shouldExtractTypeOfInitializerForAliasImport(String code) {
     code = """
@@ -214,20 +197,21 @@ class ExpressionUtilsTest {
       }
       """.formatted(code);
 
-    allDeclarationCreateHttpCookie(code);
+    var type = getTypeOfFirstDeclarationInitializer(code);
+
+    assertThat(type.get().type()).isEqualTo("net/http.Cookie");
+    assertThat(type.get().packageName()).isEqualTo("net/http");
   }
 
-  private static void allDeclarationCreateHttpCookie(String code) {
-    var type = TestGoConverter.parse(code)
+  private static Optional<Type> getTypeOfFirstDeclarationInitializer(String code) {
+    return TestGoConverter.parse(code)
       .descendants()
       .filter(VariableDeclarationTree.class::isInstance)
       .map(VariableDeclarationTree.class::cast)
       .map(VariableDeclarationTree::initializers)
       .flatMap(List::stream)
       .findFirst()
-      .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
-
-    assertThat(type).hasValue("net/http.Cookie");
+      .flatMap(ExpressionUtils::getTypeOfInitializer);
   }
 
   @ParameterizedTest
@@ -243,21 +227,14 @@ class ExpressionUtilsTest {
         _ := %s
       }
       """.formatted(code);
-    var type = TestGoConverter.parse(code)
-      .descendants()
-      .filter(VariableDeclarationTree.class::isInstance)
-      .map(VariableDeclarationTree.class::cast)
-      .map(VariableDeclarationTree::initializers)
-      .flatMap(List::stream)
-      .findFirst()
-      .flatMap(ExpressionUtils::getTypeOfStructOrPointerInitializer);
+    var type = getTypeOfFirstDeclarationInitializer(code);
 
     assertThat(type).isEmpty();
   }
 
   @Test
   void shouldReturnEmptyWhenArgumentNull() {
-    var typeOfStructOrPointerInitializer = getTypeOfStructOrPointerInitializer(null);
+    var typeOfStructOrPointerInitializer = getTypeOfInitializer(null);
     assertThat(typeOfStructOrPointerInitializer).isEmpty();
   }
 
