@@ -30,6 +30,7 @@ import org.sonar.go.api.ExceptionHandlingTree;
 import org.sonar.go.api.FunctionInvocationTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IfTree;
+import org.sonar.go.api.KeyValueTree;
 import org.sonar.go.api.LiteralTree;
 import org.sonar.go.api.LoopTree;
 import org.sonar.go.api.MatchCaseTree;
@@ -255,5 +256,12 @@ public class ExpressionUtils {
       return Optional.of(functionInvocation.arguments().get(1));
     }
     return Optional.empty();
+  }
+
+  public static Optional<Tree> getValueByKeyFromLiteral(CompositeLiteralTree literal, String keyName) {
+    return literal.getKeyValuesElements()
+      .filter(element -> element.key() instanceof IdentifierTree identifier && keyName.equals(identifier.name()))
+      .map(KeyValueTree::value)
+      .findFirst();
   }
 }

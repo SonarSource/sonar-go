@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.sonar.go.api.CompositeLiteralTree;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.MemberSelectTree;
@@ -37,11 +38,13 @@ import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.from;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
 import static org.sonar.go.utils.ExpressionUtils.getTypeOfInitializer;
 import static org.sonar.go.utils.ExpressionUtils.getUnaryOperandOrTree;
+import static org.sonar.go.utils.ExpressionUtils.getValueByKeyFromLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
@@ -344,6 +347,23 @@ class ExpressionUtilsTest {
       .map(MemberSelectTree.class::cast)
       .findFirst().get();
     assertThat(ExpressionUtils.isOfType(memberSelect, "crypto/dsa", "L3072N256")).isTrue();
+  }
+
+  @Test
+  void shouldGetKeyOfCompositeLiteral() {
+    var tree = (CompositeLiteralTree) TestGoConverter.parseStatement("""
+      http.Cookie{
+        Name: "name",
+        Value: "value",
+      }
+      """);
+
+    assertThat(getValueByKeyFromLiteral(tree, "Name"))
+      .isPresent()
+      .get()
+      .returns("name", from(it -> ((StringLiteralTree) it).content()));
+
+    assertThat(getValueByKeyFromLiteral(tree, "Secure")).isEmpty();
   }
 
   private Tree parseExpression(String expression) {
