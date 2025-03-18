@@ -22,6 +22,7 @@ import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
+import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.go.api.checks.GoVersion;
 
@@ -53,22 +54,24 @@ public class GoVersionAnalyzer {
     }
 
     // hasPath is not supported in SQ for IDE, see above for follow up ticket
-    var goModFilePredicate = sensorContext.fileSystem().predicates().hasPath("go.mod");
+    FilePredicates predicates = sensorContext.fileSystem().predicates();
+    var goModFilePredicate = predicates.or(predicates.hasPath("go.mod"), predicates.hasPath("src/go.mod"));
     var goModFiles = StreamSupport.stream(
       sensorContext.fileSystem().inputFiles(goModFilePredicate).spliterator(), false).toList();
 
     if (goModFiles.size() != 1) {
-      return GoVersion.UNKNOWN_VERSION;
+      LOG.debug("Expected exactly one go.mod file, but found {} files.", goModFiles.size());
+      return logDetectionFailureAndReturn();
     }
 
     var goModFile = goModFiles.get(0);
     try {
       var content = goModFile.contents();
-      return analyzeGoModFile(content);
+      return analyzeGoModFile(content, goModFile.toString());
     } catch (IOException e) {
       LOG.debug("Failed to read go.mod file: {}", goModFile, e);
     }
-    return GoVersion.UNKNOWN_VERSION;
+    return logDetectionFailureAndReturn();
   }
 
   /**
@@ -77,7 +80,7 @@ public class GoVersionAnalyzer {
    * Information about release candidate (rc) or beta versions are stripped, as we don't need this detail.
    * Also {@link GoVersion} does not support beta/rc versions.
    */
-  private static GoVersion analyzeGoModFile(String content) {
+  private static GoVersion analyzeGoModFile(String content, String loggableFilePath) {
     var lines = LINE_TERMINATOR.split(content);
     for (String line : lines) {
       var matcher = GO_VERSION_PATTERN.matcher(line);
@@ -91,9 +94,17 @@ public class GoVersionAnalyzer {
           versionToParse = versionToParse.concat(patch);
         }
 
-        return GoVersion.parse(versionToParse);
+        var version = GoVersion.parse(versionToParse);
+        LOG.debug("Detected go version in project: {}", version);
+        return version;
       }
     }
+    LOG.debug("Failed to detect a go version in the go.mod file: {}", loggableFilePath);
+    return logDetectionFailureAndReturn();
+  }
+
+  private static GoVersion logDetectionFailureAndReturn() {
+    LOG.debug("Could not detect the used go version of the project");
     return GoVersion.UNKNOWN_VERSION;
   }
 

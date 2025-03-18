@@ -74,6 +74,13 @@ class GoVersionAnalyzerTest {
     var goVersion = goVersionAnalyzer.analyzeGoVersion();
 
     assertThat(goVersion).isEqualTo(expectedVersion);
+    if (expectedVersion == GoVersion.UNKNOWN_VERSION) {
+      assertThat(logTester.logs()).contains(
+        "Could not detect the used go version of the project",
+        "Failed to detect a go version in the go.mod file: go.mod");
+    } else {
+      assertThat(logTester.logs()).contains("Detected go version in project: " + expectedVersion);
+    }
   }
 
   static Stream<Arguments> shouldAnalyzeGoVersionCorrectly() {
@@ -110,6 +117,9 @@ class GoVersionAnalyzerTest {
     var goVersion = goVersionAnalyzer.analyzeGoVersion();
 
     assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(logTester.logs()).contains(
+      "Could not detect the used go version of the project",
+      "Expected exactly one go.mod file, but found 0 files.");
   }
 
   @Test
@@ -126,7 +136,7 @@ class GoVersionAnalyzerTest {
     var goVersion = goVersionAnalyzer.analyzeGoVersion();
 
     assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
-    assertThat(logTester.logs()).containsExactly("Failed to read go.mod file: " + crashingInputFile);
+    assertThat(logTester.logs()).contains("Failed to read go.mod file: " + crashingInputFile, "Could not detect the used go version of the project");
   }
 
   @Test
@@ -142,6 +152,47 @@ class GoVersionAnalyzerTest {
     var goVersion = goVersionAnalyzer.analyzeGoVersion();
 
     assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    // As we don't support the feature yet, we don't need to log there
+    assertThat(logTester.logs()).isEmpty();
+  }
+
+  @Test
+  void shouldFindGoVersionInSrcFolder() {
+    InputFile goModFile = createInputFile("src/go.mod", """
+      module myModule
+
+      go 1.23.4
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+
+    assertThat(goVersion).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(logTester.logs()).contains("Detected go version in project: 1.23.4");
+  }
+
+  @Test
+  void shouldNotFindGoVersionWithTwoGoModFiles() {
+    InputFile goModFile = createInputFile("go.mod", """
+      module myModule
+
+      go 1.23.4
+      """);
+
+    InputFile goModFile2 = createInputFile("src/go.mod", """
+      module myModule
+
+      go 1.23.4
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goModFile2);
+    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+
+    assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(logTester.logs()).contains(
+      "Could not detect the used go version of the project",
+      "Expected exactly one go.mod file, but found 2 files.");
   }
 
   private InputFile createInputFile(String filename, String content) {

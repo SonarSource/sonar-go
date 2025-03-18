@@ -179,7 +179,7 @@ public class ExpressionUtils {
     return Optional.empty();
   }
 
-  public static Tree getUnaryOperandOrTree(Tree tree) {
+  public static Tree getUnaryOperandOrTree(@Nullable Tree tree) {
     if (tree instanceof UnaryExpressionTree unaryExpression
       && unaryExpression.operator() == UnaryExpressionTree.Operator.ADDRESS_OF) {
       return unaryExpression.operand();

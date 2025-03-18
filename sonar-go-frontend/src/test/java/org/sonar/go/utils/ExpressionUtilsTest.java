@@ -41,6 +41,7 @@ import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
 import static org.sonar.go.utils.ExpressionUtils.getTypeOfInitializer;
+import static org.sonar.go.utils.ExpressionUtils.getUnaryOperandOrTree;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
@@ -236,6 +237,11 @@ class ExpressionUtilsTest {
   void shouldReturnEmptyWhenArgumentNull() {
     var typeOfStructOrPointerInitializer = getTypeOfInitializer(null);
     assertThat(typeOfStructOrPointerInitializer).isEmpty();
+  }
+
+  @Test
+  void shouldReturnOriginalTreeWhenArgumentNull() {
+    assertThat(getUnaryOperandOrTree(null)).isNull();
   }
 
   @ParameterizedTest
