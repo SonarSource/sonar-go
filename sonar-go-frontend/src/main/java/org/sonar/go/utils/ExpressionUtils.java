@@ -264,4 +264,15 @@ public class ExpressionUtils {
       .map(KeyValueTree::value)
       .findFirst();
   }
+
+  public static boolean hasTypeIgnoringStar(IdentifierTree identifier, String type) {
+    var identifierType = identifier.type();
+    if (identifierType == null) {
+      return false;
+    }
+    if (identifierType.startsWith("*")) {
+      identifierType = identifierType.substring(1);
+    }
+    return identifierType.equals(type);
+  }
 }

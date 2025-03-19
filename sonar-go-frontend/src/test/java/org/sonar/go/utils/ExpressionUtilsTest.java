@@ -32,6 +32,7 @@ import org.sonar.go.api.Type;
 import org.sonar.go.api.UnaryExpressionTree;
 import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
+import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
@@ -364,6 +365,19 @@ class ExpressionUtilsTest {
       .returns("name", from(it -> ((StringLiteralTree) it).content()));
 
     assertThat(getValueByKeyFromLiteral(tree, "Secure")).isEmpty();
+  }
+
+  @ParameterizedTest
+  @CsvSource("""
+    example,true
+    *example,true
+    test/example,false
+    *test/example,false
+    """)
+  void shouldIdentifyType(String type, boolean shouldMatch) {
+    var identifier = new IdentifierTreeImpl(null, "test", type, "example", 1);
+
+    assertThat(ExpressionUtils.hasTypeIgnoringStar(identifier, "example")).isEqualTo(shouldMatch);
   }
 
   private Tree parseExpression(String expression) {
