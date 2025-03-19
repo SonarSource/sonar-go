@@ -188,6 +188,13 @@ public class ExpressionUtils {
     return tree;
   }
 
+  public static Tree getUnaryOperandOfDereferenceOrTree(@Nullable Tree tree) {
+    if (tree instanceof StarExpressionTree starExpression) {
+      return starExpression.operand();
+    }
+    return tree;
+  }
+
   private static Optional<Type> getTypeOfNewExpression(FunctionInvocationTree newInvocation) {
     List<Tree> arguments = newInvocation.arguments();
     if (arguments.isEmpty()) {
