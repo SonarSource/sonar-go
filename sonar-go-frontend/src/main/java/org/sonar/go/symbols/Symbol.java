@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.sonar.go.api.HasTextRange;
 import org.sonar.go.api.Tree;
 import org.sonar.go.impl.IdentifierTreeImpl;
 
@@ -39,6 +40,19 @@ public class Symbol {
 
   public List<Usage> getUsages() {
     return usages;
+  }
+
+  /**
+   * Return the list of usages that are before the given line.
+   */
+  public List<Usage> getUsagesBeforeLine(int line) {
+    return usages.stream()
+      .takeWhile(usage -> usage.identifier().textRange().start().line() < line)
+      .toList();
+  }
+
+  public List<Usage> getUsagesBefore(HasTextRange hasTextRange) {
+    return getUsagesBeforeLine(hasTextRange.textRange().start().line());
   }
 
   /**

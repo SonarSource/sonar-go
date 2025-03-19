@@ -18,7 +18,7 @@ package org.sonar.go.utils;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.IdentifierTree;
+import org.sonar.go.api.HasSymbol;
 import org.sonar.go.api.Tree;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
@@ -41,8 +41,8 @@ public class SymbolHelper {
   */
   @CheckForNull
   public static Tree unpackToSafeSymbolValueIfExisting(@Nullable Tree argument) {
-    if (argument instanceof IdentifierTree identifier && identifier.symbol() != null) {
-      var safeValue = identifier.symbol().getSafeValue();
+    if (argument instanceof HasSymbol hasSymbol && hasSymbol.symbol() != null) {
+      var safeValue = hasSymbol.symbol().getSafeValue();
       if (safeValue != null) {
         argument = safeValue;
       }
