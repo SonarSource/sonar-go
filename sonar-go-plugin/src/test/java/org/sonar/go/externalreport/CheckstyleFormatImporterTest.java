@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
@@ -82,6 +84,7 @@ class CheckstyleFormatImporterTest {
     assertThat(third.primaryLocation().textRange().start().line()).isEqualTo(3);
 
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
@@ -99,33 +102,22 @@ class CheckstyleFormatImporterTest {
     assertThat(first.primaryLocation().textRange().start().line()).isEqualTo(4);
 
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
-  @Test
-  void no_issues_with_invalid_report_path() throws IOException {
-    List<ExternalIssue> externalIssues = importIssues("invalid-path.txt");
+  @ParameterizedTest
+  @ValueSource(strings = {
+    "invalid-path.txt",
+    "not-checkstyle-file.xml",
+    "invalid-file.xml",
+  })
+  void noIssuesWithInvalidFiles(String fileName) throws IOException {
+    List<ExternalIssue> externalIssues = importIssues(fileName);
     assertThat(externalIssues).isEmpty();
-    assertThat(onlyOneLogElement(logTester.logs(Level.ERROR)))
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(onlyOneLogElement(logTester.logs(Level.WARN)))
       .startsWith("No issue information will be saved as the report file '")
-      .endsWith("invalid-path.txt' can't be read.");
-  }
-
-  @Test
-  void no_issues_with_invalid_checkstyle_file() throws IOException {
-    List<ExternalIssue> externalIssues = importIssues("not-checkstyle-file.xml");
-    assertThat(externalIssues).isEmpty();
-    assertThat(onlyOneLogElement(logTester.logs(Level.ERROR)))
-      .startsWith("No issue information will be saved as the report file '")
-      .endsWith("not-checkstyle-file.xml' can't be read.");
-  }
-
-  @Test
-  void no_issues_with_invalid_xml_report() throws IOException {
-    List<ExternalIssue> externalIssues = importIssues("invalid-file.xml");
-    assertThat(externalIssues).isEmpty();
-    assertThat(onlyOneLogElement(logTester.logs(Level.ERROR)))
-      .startsWith("No issue information will be saved as the report file '")
-      .endsWith("invalid-file.xml' can't be read.");
+      .endsWith(fileName + "' can't be read.");
   }
 
   @Test

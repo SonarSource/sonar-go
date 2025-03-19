@@ -96,7 +96,7 @@ public class CheckstyleFormatImporter {
         }
       }
     } catch (IOException | XMLStreamException | RuntimeException e) {
-      LOG.error("No issue information will be saved as the report file '{}' can't be read.", reportPath, e);
+      LOG.warn("No issue information will be saved as the report file '{}' can't be read.", reportPath, e);
     }
   }
 

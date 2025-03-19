@@ -30,7 +30,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
@@ -84,7 +83,7 @@ public class GoTestSensor implements Sensor {
       if (path.toFile().exists()) {
         result.add(path);
       } else {
-        LOG.error("Test report can't be loaded, file not found: '{}', ignoring this file.", path);
+        LOG.warn("Test report can't be loaded, file not found: '{}', ignoring this file.", path);
       }
     }
 
@@ -97,7 +96,7 @@ public class GoTestSensor implements Sensor {
         .filter(line -> line.startsWith("{"))
         .map(line -> getRelevantTestInfo(line, reportPath))
         .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+        .toList();
 
       for (TestInfo testInfo : testInfoList) {
         InputFile testFile = findTestFile(context.fileSystem(), testInfo);
@@ -111,7 +110,7 @@ public class GoTestSensor implements Sensor {
         }
       }
     } catch (IOException e) {
-      LOG.error("Failed to read unit test report file " + reportPath.toString(), e);
+      LOG.warn("Failed to read unit test report file " + reportPath, e);
     }
   }
 
@@ -123,7 +122,7 @@ public class GoTestSensor implements Sensor {
         return testInfo;
       }
     } catch (Exception e) {
-      LOG.error("Failed to parse unit test report line (file {}):\n {}", reportPath, line);
+      LOG.warn("Failed to parse unit test report line (file {}):\n {}", reportPath, line);
     }
 
     return null;
@@ -164,7 +163,7 @@ public class GoTestSensor implements Sensor {
       return stream
         .map(path -> fileSystem.inputFile(testFilePredicate(predicates, path)))
         .filter(Objects::nonNull)
-        .collect(Collectors.toList());
+        .toList();
 
     } catch (IOException e) {
       LOG.warn("Failed to read package directory " + packageDirectory, e);

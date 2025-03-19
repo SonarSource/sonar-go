@@ -116,6 +116,7 @@ class GoSensorTest {
     GoSensor goSensor = getSensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
@@ -153,7 +154,8 @@ class GoSensorTest {
     sensorContext.fileSystem().add(failingFile);
     GoSensor goSensor = getSensor("S1135");
     goSensor.execute(sensorContext);
-    assertThat(logTester.logs(Level.ERROR)).contains("Cannot read 'lets.go': The file is corrupted");
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).contains("Cannot read 'lets.go': The file is corrupted");
   }
 
   @Test
@@ -163,6 +165,7 @@ class GoSensorTest {
     GoSensor goSensor = getSensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
@@ -443,6 +446,40 @@ class GoSensorTest {
     GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
+  }
+
+  @Test
+  void shouldRaiseIssueOnConverterLogValidation() {
+    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main\s
+
+        func test() {
+         x := ((2 + 3))
+        }""");
+    sensorContext.fileSystem().add(inputFile);
+    sensorContext.settings().setProperty("sonar.slang.converter.validation", "log");
+    GoSensor goSensor = getSensor("S1110");
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).hasSize(1);
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldRaiseIssueOnWhenConverterPropertyIsInvalid() {
+    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main\s
+
+        func test() {
+         x := ((2 + 3))
+        }""");
+    sensorContext.fileSystem().add(inputFile);
+    sensorContext.settings().setProperty("sonar.slang.converter.validation", "invalid");
+    GoSensor goSensor = getSensor("S1110");
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).hasSize(1);
+    assertThat(logTester.logs(Level.WARN)).contains("Unsupported mode for converter validation: 'invalid', falling back to no validation");
   }
 
   private void assertHighlighting(String componentKey, int line, int columnFirst, int columnLast, @Nullable TypeOfText type) {

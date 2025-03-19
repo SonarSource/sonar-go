@@ -81,7 +81,7 @@ public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor
         }
       }
     } catch (IOException e) {
-      LOG.error("{}No issues information will be saved as the report file '{}' can't be read.",
+      LOG.warn("{}No issues information will be saved as the report file '{}' can't be read.",
         lazyArg(this::logPrefix), report.getPath(), e);
     }
   }

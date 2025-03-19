@@ -175,7 +175,7 @@ public abstract class SlangSensor implements Sensor {
         statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
-        LOG.error("Cannot analyse '" + inputFile + "': " + e.getMessage(), e);
+        LOG.warn("Cannot analyse '" + inputFile + "': " + e.getMessage(), e);
       }
     }
     writeHashToCache(inputFileContext);
@@ -217,8 +217,8 @@ public abstract class SlangSensor implements Sensor {
     if (position != null) {
       positionMessage = String.format("Parse error at position %s:%s", position.line(), position.lineOffset());
     }
-    LOG.error("Unable to parse file: {}. {}", inputFile.uri(), positionMessage);
-    LOG.error(e.getMessage());
+    LOG.warn("Unable to parse file: {}. {}", inputFile.uri(), positionMessage);
+    LOG.warn(e.getMessage());
   }
 
   @Override

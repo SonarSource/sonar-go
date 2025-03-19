@@ -38,6 +38,8 @@ import org.sonar.go.coverage.GoPathContext;
 import org.sonar.go.testreport.GoTestSensor.TestInfo;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class GoTestSensorTest {
 
@@ -154,8 +156,40 @@ class GoTestSensorTest {
     assertThat(context.measure(barTestFile.key(), CoreMetrics.TEST_FAILURES).value()).isZero();
     assertThat(context.measure(barTestFile.key(), CoreMetrics.TEST_ERRORS)).isNull();
     assertThat(context.measure(barTestFile.key(), CoreMetrics.TEST_EXECUTION_TIME).value()).isEqualTo(7 + 7);
-    assertThat(String.join("\n", logTester.logs(Level.ERROR)))
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(String.join("\n", logTester.logs(Level.WARN)))
       .contains("Test report can't be loaded, file not found");
+  }
+
+  @Test
+  void importReportShouldNotBreakWhenOneInputFileIsThrowingIOException() throws IOException {
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+    Path baseDir = goPath.resolve("src").resolve(packagePath);
+
+    SensorContextTester context = SensorContextTester.create(baseDir);
+    DefaultInputFile fooTestFile = getTestInputFile(context.fileSystem(), "something  \nfunc TestFoo1( \nfunc TestFoo2(  ", "foo_test.go");
+    DefaultInputFile brokenInputFile = spy(new TestInputFileBuilder("moduleKey", "bar_test.go")
+      .setLanguage("go")
+      .setType(Type.TEST)
+      .setContents("")
+      .build());
+    when(brokenInputFile.contents()).thenThrow(new IOException("BOOM"));
+    context.fileSystem().add(brokenInputFile);
+
+    MapSettings settings = new MapSettings();
+    String absoluteReportPath = baseDir.resolve("report1.out").toString();
+    settings.setProperty(GoTestSensor.REPORT_PATH_KEY, "report.out,invilid/report/path," + absoluteReportPath);
+    context.setSettings(settings);
+
+    goTestSensor.execute(context);
+
+    assertThat(context.measure(fooTestFile.key(), CoreMetrics.TESTS).value()).isEqualTo(3); // one test comes from report1.out
+    assertThat(context.measure(fooTestFile.key(), CoreMetrics.SKIPPED_TESTS).value()).isZero();
+    assertThat(context.measure(fooTestFile.key(), CoreMetrics.TEST_FAILURES).value()).isEqualTo(1);
+    assertThat(context.measure(fooTestFile.key(), CoreMetrics.TEST_ERRORS)).isNull();
+    assertThat(context.measure(fooTestFile.key(), CoreMetrics.TEST_EXECUTION_TIME).value()).isEqualTo(4);
+    assertThat(logTester.logs(Level.WARN)).anyMatch(log -> log.startsWith("Failed to parse unit test report line"));
   }
 
   private DefaultInputFile getTestInputFile(DefaultFileSystem fs, String content, String relativePath) {

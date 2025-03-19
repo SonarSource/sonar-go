@@ -45,7 +45,7 @@ class ExternalProcessStreamConsumer {
       try (BufferedReader errorReader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
         readErrors(errorReader, streamConsumer);
       } catch (IOException e) {
-        LOG.error("Error while reading stream", e);
+        LOG.warn("Failure while reading stream", e);
       }
     });
   }

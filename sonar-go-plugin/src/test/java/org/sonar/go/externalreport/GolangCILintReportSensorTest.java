@@ -82,6 +82,7 @@ class GolangCILintReportSensorTest {
     assertThat(second.primaryLocation().textRange().start().line()).isEqualTo(4);
 
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test

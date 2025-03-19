@@ -78,6 +78,7 @@ class GoLintReportSensorTest {
     assertThat(second.primaryLocation().message()).isEqualTo("exported type User should have comment or be unexported");
     assertThat(second.primaryLocation().textRange().start().line()).isEqualTo(2);
 
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
   }
 
@@ -87,6 +88,7 @@ class GoLintReportSensorTest {
     List<ExternalIssue> externalIssues = ExternalLinterSensorHelper.executeSensor(goLintReportSensor(), context);
     assertThat(externalIssues).isEmpty();
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test

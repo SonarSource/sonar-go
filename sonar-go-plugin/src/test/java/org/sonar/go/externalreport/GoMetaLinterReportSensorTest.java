@@ -86,6 +86,7 @@ class GoMetaLinterReportSensorTest {
     assertThat(third.primaryLocation().textRange().start().line()).isEqualTo(3);
 
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test

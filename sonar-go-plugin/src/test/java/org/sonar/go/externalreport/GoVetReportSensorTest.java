@@ -81,6 +81,7 @@ class GoVetReportSensorTest {
     assertThat(third.primaryLocation().textRange().start().line()).isEqualTo(2);
 
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
@@ -89,6 +90,7 @@ class GoVetReportSensorTest {
     List<ExternalIssue> externalIssues = ExternalLinterSensorHelper.executeSensor(goVetReportSensor(), context);
     assertThat(externalIssues).isEmpty();
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test

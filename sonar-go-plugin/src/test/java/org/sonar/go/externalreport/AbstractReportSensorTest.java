@@ -37,7 +37,8 @@ class AbstractReportSensorTest {
   void report_consumer_logs_io_exception() {
     AbstractReportSensor sensor = new TestReportSensor(mock(AnalysisWarnings.class));
     sensor.reportConsumer(mock(SensorContext.class)).accept(new File("invalid-file.txt"));
-    assertThat(logTester.logs(Level.ERROR)).containsExactly("TestReportSensor: No issues information will be saved as the report file 'invalid-file.txt' can't be read.");
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).containsExactly("TestReportSensor: No issues information will be saved as the report file 'invalid-file.txt' can't be read.");
   }
 
   static class TestReportSensor extends AbstractReportSensor {

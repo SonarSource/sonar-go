@@ -30,7 +30,6 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
@@ -80,11 +79,11 @@ public class GoCoverSensor implements Sensor {
         try {
           saveFileCoverage(context, filePath, coverageStats);
         } catch (Exception e) {
-          LOG.error("Error saving coverage info for file " + filePath, e);
+          LOG.warn("Failed saving coverage info for file: {}", filePath);
         }
       });
     } catch (Exception e) {
-      LOG.error("Coverage import failed: {}", e.getMessage(), e);
+      LOG.warn("Coverage import failed: {}", e.getMessage(), e);
     }
   }
 
@@ -146,7 +145,7 @@ public class GoCoverSensor implements Sensor {
       return Stream.of(path);
     }
 
-    LOG.error("Coverage report can't be loaded, report file not found, ignoring this file {}.", reportPath);
+    LOG.warn("Coverage report can't be loaded, report file not found, ignoring this file {}.", reportPath);
     return Stream.empty();
   }
 
@@ -159,7 +158,7 @@ public class GoCoverSensor implements Sensor {
       return findMatchingPaths(baseDir, reportPath, paths);
 
     } catch (IOException e) {
-      LOG.error("Error finding coverage files using pattern {}", reportPath);
+      LOG.warn("Failed finding coverage files using pattern {}", reportPath);
       return Stream.empty();
     }
   }
@@ -176,11 +175,10 @@ public class GoCoverSensor implements Sensor {
         Path normalizedPath = baseDir.toAbsolutePath().relativize(currentPath.toAbsolutePath());
         String pathToMatch = toUnixLikePath(normalizedPath.toString());
         return globPattern.match(pathToMatch);
-      })
-      .collect(Collectors.toList());
+      }).toList();
 
     if (matchingPaths.isEmpty()) {
-      LOG.error("Coverage report can't be loaded, file(s) not found for pattern: '{}', ignoring this file.", reportPath);
+      LOG.warn("Coverage report can't be loaded, file(s) not found for pattern: '{}', ignoring this file.", reportPath);
     }
 
     return matchingPaths.stream();
@@ -202,7 +200,7 @@ public class GoCoverSensor implements Sensor {
         lineNumber++;
       }
     } catch (IOException e) {
-      LOG.error("Error parsing coverage info for file {}: {}", reportPath, e.getMessage());
+      LOG.warn("Failed parsing coverage info for file {}: {}", reportPath, e.getMessage());
     }
   }
 

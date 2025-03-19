@@ -82,7 +82,8 @@ public class ASTConverterValidation implements ASTConverter {
     } else if (mode.equals("log")) {
       return new ASTConverterValidation(converter, ValidationMode.LOG_ERROR);
     } else {
-      throw new IllegalStateException("Unsupported mode: " + mode);
+      LOG.warn("Unsupported mode for converter validation: '{}', falling back to no validation", mode);
+      return converter;
     }
   }
 
@@ -105,13 +106,9 @@ public class ASTConverterValidation implements ASTConverter {
     List<String> errors = errors();
     if (!errors.isEmpty()) {
       String delimiter = "\n  [AST ERROR] ";
-      LOG.error("AST Converter Validation detected {} errors:{}{}", errors.size(), delimiter, lazyArg(() -> String.join(delimiter, errors)));
+      LOG.warn("AST Converter Validation detected {} errors:{}{}", errors.size(), delimiter, lazyArg(() -> String.join(delimiter, errors)));
     }
     wrapped.terminate();
-  }
-
-  ValidationMode mode() {
-    return mode;
   }
 
   List<String> errors() {
