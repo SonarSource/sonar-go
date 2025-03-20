@@ -41,7 +41,7 @@ def qa_plugin_env():
         "GRADLE_TASK": QA_PLUGIN_GRADLE_TASK,
         "KEEP_ORCHESTRATOR_RUNNING": "true",
         "matrix": [
-            # {"SQ_VERSION": QA_QUBE_LATEST_RELEASE},
+            {"SQ_VERSION": QA_QUBE_LATEST_RELEASE},
             {"SQ_VERSION": QA_QUBE_DEV},
         ],
         "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
@@ -67,7 +67,7 @@ def qa_ruling_env():
     return {
         "GRADLE_TASK": QA_RULING_GRADLE_TASK,
         "KEEP_ORCHESTRATOR_RUNNING": "true",
-        "SQ_VERSION": QA_QUBE_DEV,
+        "SQ_VERSION": QA_QUBE_LATEST_RELEASE,
         "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
     }
 
