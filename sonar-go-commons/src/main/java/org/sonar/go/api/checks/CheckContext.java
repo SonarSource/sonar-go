@@ -18,6 +18,7 @@ package org.sonar.go.api.checks;
 
 import java.util.Deque;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.go.api.HasTextRange;
@@ -35,6 +36,13 @@ public interface CheckContext {
     } else {
       return this.ancestors().peek();
     }
+  }
+
+  default <T extends Tree> Optional<T> firstAncestorOfKind(Class<T> type) {
+    return ancestors().stream()
+      .filter(type::isInstance)
+      .map(type::cast)
+      .findFirst();
   }
 
   String filename();

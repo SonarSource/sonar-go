@@ -33,6 +33,7 @@ import org.sonar.go.api.MemberSelectTree;
 import org.sonar.go.api.Tree;
 
 import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
+import static org.sonar.go.utils.TreeUtils.retrieveLastIdentifier;
 
 /**
  * Helps identify a method with given Type, Receiver, Name and Parameters.
@@ -182,15 +183,6 @@ public class MethodMatchers {
       && matchParametersTreePredicate(functionInvocation)) {
 
       return retrieveLastIdentifier(functionInvocation.memberSelect());
-    }
-    return Optional.empty();
-  }
-
-  private static Optional<IdentifierTree> retrieveLastIdentifier(Tree tree) {
-    if (tree instanceof MemberSelectTree memberSelectTree) {
-      return Optional.of(memberSelectTree.identifier());
-    } else if (tree instanceof IdentifierTree identifierTree) {
-      return Optional.of(identifierTree);
     }
     return Optional.empty();
   }

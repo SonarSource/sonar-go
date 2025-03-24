@@ -22,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.api.HasTextRange;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Tree;
+import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.visitors.TreeContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ import static org.mockito.Mockito.mock;
 class CheckContextTest {
 
   @Test
-  void parent_default_method() {
+  void testParent() {
     Tree a = mock(Tree.class);
     Tree b = mock(Tree.class);
     Tree c = mock(Tree.class);
@@ -52,6 +53,32 @@ class CheckContextTest {
 
     context.leave(b);
     assertThat(context.parent()).isNull();
+  }
+
+  @Test
+  void testFirstAncestorOfKind() {
+    A a1 = mock(A.class);
+    B b1 = mock(B.class);
+    A a2 = mock(A.class);
+    B b2 = mock(B.class);
+
+    CheckContextToTestDefaultMethod context = new CheckContextToTestDefaultMethod();
+    assertThat(context.firstAncestorOfKind(A.class)).isEmpty();
+
+    context.enter(a1);
+    assertThat(context.firstAncestorOfKind(A.class)).isEmpty();
+
+    context.enter(b1);
+    assertThat(context.firstAncestorOfKind(A.class)).contains(a1);
+
+    context.enter(a2);
+    assertThat(context.firstAncestorOfKind(A.class)).contains(a1);
+
+    context.enter(b2);
+    assertThat(context.firstAncestorOfKind(A.class)).contains(a2);
+
+    context.leave(b2);
+    assertThat(context.firstAncestorOfKind(A.class)).contains(a1);
   }
 
   private static class CheckContextToTestDefaultMethod extends TreeContext implements CheckContext {
@@ -98,4 +125,27 @@ class CheckContextTest {
 
   }
 
+  private static class A implements Tree {
+    @Override
+    public List<Tree> children() {
+      return List.of();
+    }
+
+    @Override
+    public TreeMetaData metaData() {
+      return null;
+    }
+  }
+
+  private static class B implements Tree {
+    @Override
+    public List<Tree> children() {
+      return List.of();
+    }
+
+    @Override
+    public TreeMetaData metaData() {
+      return null;
+    }
+  }
 }

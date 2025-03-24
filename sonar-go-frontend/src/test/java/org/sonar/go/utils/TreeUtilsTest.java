@@ -120,4 +120,38 @@ class TreeUtilsTest {
     var result = TreeUtils.retrieveFirstIdentifier(literal);
     assertThat(result).isEmpty();
   }
+
+  @Test
+  void shouldRetrieveLastIdentifierOfSimpleMemberSelect() {
+    var prefix = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var suffix = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
+    var memberSelect = TreeCreationUtils.memberSelect(prefix, suffix);
+    var result = TreeUtils.retrieveLastIdentifier(memberSelect);
+    assertThat(result).containsSame(suffix);
+  }
+
+  @Test
+  void shouldRetrieveLastIdentifierOfComposedMemberSelect() {
+    var identifier1 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var identifier2 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "bar");
+    var identifier3 = TreeCreationUtils.identifier(mock(TreeMetaData.class), "baz");
+    var innerMemberSelect = TreeCreationUtils.memberSelect(identifier1, identifier2);
+    var memberSelect = TreeCreationUtils.memberSelect(innerMemberSelect, identifier3);
+    var result = TreeUtils.retrieveLastIdentifier(memberSelect);
+    assertThat(result).containsSame(identifier3);
+  }
+
+  @Test
+  void shouldRetrieveIdentifierAsLastIdentifier() {
+    var identifier = TreeCreationUtils.identifier(mock(TreeMetaData.class), "foo");
+    var result = TreeUtils.retrieveLastIdentifier(identifier);
+    assertThat(result).containsSame(identifier);
+  }
+
+  @Test
+  void shouldRetrieveNothingForLastIdentifierWithOtherKindOfTree() {
+    var integerLiteral = TreeCreationUtils.integerLiteral("42");
+    var result = TreeUtils.retrieveLastIdentifier(integerLiteral);
+    assertThat(result).isEmpty();
+  }
 }

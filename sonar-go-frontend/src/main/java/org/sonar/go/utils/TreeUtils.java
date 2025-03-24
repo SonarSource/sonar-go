@@ -60,10 +60,6 @@ public class TreeUtils {
     return "";
   }
 
-  public static String methodFqn(FunctionInvocationTree tree) {
-    return treeToString(tree.memberSelect());
-  }
-
   /**
    * Used mainly for {@link MemberSelectTree}, to get the first identifier, ignoring others. E.g.:
    * <pre>
@@ -85,5 +81,14 @@ public class TreeUtils {
     } else {
       return Optional.empty();
     }
+  }
+
+  public static Optional<IdentifierTree> retrieveLastIdentifier(Tree tree) {
+    if (tree instanceof MemberSelectTree memberSelectTree) {
+      return Optional.of(memberSelectTree.identifier());
+    } else if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.of(identifierTree);
+    }
+    return Optional.empty();
   }
 }
