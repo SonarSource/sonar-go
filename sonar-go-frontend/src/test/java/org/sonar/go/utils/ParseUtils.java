@@ -26,7 +26,7 @@ public class ParseUtils {
   private ParseUtils() {
   }
 
-  public static Tree parse(String code) {
+  public static BlockTree parseStatements(String code) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
       func main() {
@@ -34,7 +34,11 @@ public class ParseUtils {
       }
       """.formatted(code));
     var mainFunc = topLevelTree.declarations().get(1);
-    var mainBlock = (BlockTree) mainFunc.children().get(1);
+    return (BlockTree) mainFunc.children().get(1);
+  }
+
+  public static Tree parse(String code) {
+    var mainBlock = parseStatements(code);
     var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
     return expressionStatement.children().get(0);
   }

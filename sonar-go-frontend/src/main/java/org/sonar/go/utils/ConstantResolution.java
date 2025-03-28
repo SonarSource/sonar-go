@@ -30,6 +30,7 @@ import org.sonar.go.symbols.Symbol;
 public class ConstantResolution {
 
   public static final String PLACEHOLDER = "_?_";
+  private static final int MAX_IDENTIFIER_RESOLUTION = 20;
 
   private ConstantResolution() {
     // Utility class
@@ -60,31 +61,41 @@ public class ConstantResolution {
    * If there are nodes that cannot be resolved, they are replaced by {@link #PLACEHOLDER}.
    * This way, the result can still be used to detect certain patterns involving string concatenation, e.g.
    * {@code "/tmp/" + fileName} will be resolved to {@code "/tmp/_?_"}, and will contain information that the string describes a temporary file.
+   * To avoid infinite recursion, we call the method {@link #resolveAsPartialStringConstant(Tree, int)} where the
+   * second parameter is a counter set initially to {@link #MAX_IDENTIFIER_RESOLUTION}. Everytime it resolve an identifier through
+   * {@link #resolveIdentifierAsStringConstant(IdentifierTree, int)}, the counter is decremented. If it reaches 0, it stop the resolution and
+   * return {@link #PLACEHOLDER}.
    */
   @Nonnull
   public static String resolveAsPartialStringConstant(@Nullable Tree tree) {
-    if (tree == null) {
+    return resolveAsPartialStringConstant(tree, MAX_IDENTIFIER_RESOLUTION);
+  }
+
+  @Nonnull
+  private static String resolveAsPartialStringConstant(@Nullable Tree tree, int remainingIdentifierResolution) {
+    if (tree == null || remainingIdentifierResolution == 0) {
       return PLACEHOLDER;
     }
     if (tree instanceof StringLiteralTree stringLiteral) {
       return stringLiteral.content();
     } else if (tree instanceof BinaryExpressionTree binaryExpressionTree && binaryExpressionTree.operator() == BinaryExpressionTree.Operator.PLUS) {
-      return resolveAsPartialStringConstant(binaryExpressionTree.leftOperand()) + resolveAsPartialStringConstant(binaryExpressionTree.rightOperand());
+      return resolveAsPartialStringConstant(binaryExpressionTree.leftOperand(), remainingIdentifierResolution)
+        + resolveAsPartialStringConstant(binaryExpressionTree.rightOperand(), remainingIdentifierResolution);
     } else if (tree instanceof ParenthesizedExpressionTree parenthesizedExpression) {
-      return resolveAsPartialStringConstant(parenthesizedExpression.expression());
+      return resolveAsPartialStringConstant(parenthesizedExpression.expression(), remainingIdentifierResolution);
     } else if (tree instanceof IdentifierTree identifier) {
-      return resolveIdentifierAsStringConstant(identifier);
+      return resolveIdentifierAsStringConstant(identifier, remainingIdentifierResolution);
     }
     return PLACEHOLDER;
   }
 
-  private static String resolveIdentifierAsStringConstant(IdentifierTree identifier) {
+  private static String resolveIdentifierAsStringConstant(IdentifierTree identifier, int remainingIdentifierResolution) {
     Symbol symbol = identifier.symbol();
     if (symbol == null) {
       return PLACEHOLDER;
     }
     return Optional.ofNullable(symbol.getSafeValue())
-      .map(ConstantResolution::resolveAsPartialStringConstant)
+      .map(value -> resolveAsPartialStringConstant(value, remainingIdentifierResolution - 1))
       .orElse(PLACEHOLDER);
   }
 }

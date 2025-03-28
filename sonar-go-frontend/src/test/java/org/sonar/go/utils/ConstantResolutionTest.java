@@ -39,9 +39,11 @@ import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.PLUS;
 import static org.sonar.go.api.BinaryExpressionTree.Operator.TIMES;
 import static org.sonar.go.utils.ConstantResolution.resolveAsStringConstant;
+import static org.sonar.go.utils.ParseUtils.parseStatements;
 
 class ConstantResolutionTest {
   private static final Tree HELLO = new StringLiteralTreeImpl(null, "\"Hello\"");
@@ -223,5 +225,63 @@ class ConstantResolutionTest {
     assertThat(resolveAsStringConstant(((VariableDeclarationTree) main.statementOrExpressions().get(1)).identifiers().get(0))).isNull();
     assertThat(resolveAsStringConstant(((VariableDeclarationTree) main.statementOrExpressions().get(2)).identifiers().get(0))).isNull();
     assertThat(resolveAsStringConstant(((AssignmentExpressionTree) main.statementOrExpressions().get(3)).leftHandSide())).isNull();
+  }
+
+  @Test
+  void shouldNotGoIntoInfiniteRecursionToResolveConstant() {
+    var root = (TopLevelTree) TestGoConverter.parse("""
+      package main
+      func main(a string) {
+        var b string
+        a = a + "t"
+        b = a
+      }
+      """);
+
+    TreeContext ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, root);
+
+    var functionMain = (FunctionDeclarationTree) root.declarations().get(1);
+    var body = functionMain.body();
+    var variableAssignmentB = (AssignmentExpressionTree) body.statementOrExpressions().get(2);
+    var refB = variableAssignmentB.leftHandSide();
+    assertThatNoException().isThrownBy(() -> {
+      var result = ConstantResolution.resolveAsStringConstant(refB);
+      assertThat(result).isNull();
+    });
+  }
+
+  @Test
+  void shouldResolveConstantValueWithLessThanTwentyLevelOfIdentifier() {
+    var body = parseStatements(buildConsecutiveIdentifierAssignment(15));
+
+    TreeContext ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, body);
+
+    var lastVariableDeclaration = (VariableDeclarationTree) body.statementOrExpressions().get(body.statementOrExpressions().size() - 1);
+    var lastIdentifier = lastVariableDeclaration.identifiers().get(0);
+    var value = ConstantResolution.resolveAsStringConstant(lastIdentifier);
+    assertThat(value).isEqualTo("bob");
+  }
+
+  @Test
+  void shouldNotResolveConstantValueWithMoreThanTwentyLevelOfIdentifier() {
+    var body = parseStatements(buildConsecutiveIdentifierAssignment(25));
+
+    TreeContext ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, body);
+
+    var lastVariableDeclaration = (VariableDeclarationTree) body.statementOrExpressions().get(body.statementOrExpressions().size() - 1);
+    var lastIdentifier = lastVariableDeclaration.identifiers().get(0);
+    var value = ConstantResolution.resolveAsStringConstant(lastIdentifier);
+    assertThat(value).isNull();
+  }
+
+  private static String buildConsecutiveIdentifierAssignment(int amountOfIdentifier) {
+    StringBuilder sb = new StringBuilder("var x0 = \"bob\"\n");
+    for (int i = 0; i < amountOfIdentifier; i++) {
+      sb.append(("var x%d = x%d\n").formatted(i + 1, i));
+    }
+    return sb.toString();
   }
 }
