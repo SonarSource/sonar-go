@@ -105,6 +105,15 @@ class ConstantResolutionTest {
   }
 
   @Test
+  void parameterIdentifierCannotBeResolved() {
+    IdentifierTree id = TreeCreationUtils.identifier("ID");
+    Symbol symbol = new Symbol("type");
+    symbol.getUsages().add(new Usage(id, HELLO, Usage.UsageType.PARAMETER));
+    id.setSymbol(symbol);
+    assertThat(resolveAsStringConstant(id)).isNull();
+  }
+
+  @Test
   void reAssignedIdentifierConstantResolution() {
     IdentifierTree id = TreeCreationUtils.identifier("ID");
     Symbol symbol = new Symbol("type");
@@ -283,5 +292,23 @@ class ConstantResolutionTest {
       sb.append(("var x%d = x%d\n").formatted(i + 1, i));
     }
     return sb.toString();
+  }
+
+  @Test
+  void functionParametersShouldNotBeConsideredEffectivelyFinalAndResolved() {
+    var topLevelTree = ParseUtils.parseFile("""
+      package main
+      func main(a string) {
+        a = "value"
+      }
+      """);
+
+    TreeContext ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, topLevelTree);
+
+    var mainFunc = (FunctionDeclarationTree) topLevelTree.declarations().get(1);
+    var assignementA = (AssignmentExpressionTree) mainFunc.body().statementOrExpressions().get(0);
+    var valueA = ConstantResolution.resolveAsStringConstant(assignementA.leftHandSide());
+    assertThat(valueA).isNull();
   }
 }

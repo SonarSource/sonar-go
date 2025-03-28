@@ -42,17 +42,17 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
 
   public SymbolVisitor() {
     register(VariableDeclarationTree.class, (ctx, variableDeclarationTree) -> VariableHelper.getVariables(variableDeclarationTree)
-      .forEach(variable -> addVariable(variable.identifier(), variable.value())));
-    register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.identifier(), null));
+      .forEach(variable -> addVariable(variable.identifier(), variable.value(), Usage.UsageType.DECLARATION)));
+    register(ParameterTree.class, (ctx, parameterTree) -> addVariable(parameterTree.identifier(), null, Usage.UsageType.PARAMETER));
     register(AssignmentExpressionTree.class, this::processAssignment);
     register(IdentifierTreeImpl.class, this::processIdentifier);
     registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> symbolTable.clear());
   }
 
-  private void addVariable(IdentifierTree identifier, @Nullable Tree value) {
+  private void addVariable(IdentifierTree identifier, @Nullable Tree value, Usage.UsageType type) {
     if (identifier.id() != 0) {
       symbolTable.computeIfAbsent(identifier.id(), id -> new Symbol(identifier.type()));
-      addVariableUsage(identifier, value, Usage.UsageType.DECLARATION);
+      addVariableUsage(identifier, value, type);
     }
   }
 

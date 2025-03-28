@@ -23,6 +23,7 @@ import org.sonar.go.api.Tree;
 public record Usage(IdentifierTree identifier, @Nullable Tree value, UsageType type) {
   public enum UsageType {
     DECLARATION,
+    PARAMETER,
     ASSIGNMENT,
     REFERENCE
   }

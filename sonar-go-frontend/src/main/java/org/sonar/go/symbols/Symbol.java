@@ -67,7 +67,10 @@ public class Symbol {
   public Tree getSafeValue() {
     Usage effectivelyFinalUsage = null;
     for (Usage usage : usages) {
-      if (usage.type() == Usage.UsageType.DECLARATION) {
+      if (usage.type() == Usage.UsageType.PARAMETER) {
+        // An identifier coming from method parameters cannot be resolved.
+        return null;
+      } else if (usage.type() == Usage.UsageType.DECLARATION) {
         if (effectivelyFinalUsage != null) {
           // An identifier with multiple declarations should never happen, but if it ever does, we don't consider it as effectively final.
           return null;

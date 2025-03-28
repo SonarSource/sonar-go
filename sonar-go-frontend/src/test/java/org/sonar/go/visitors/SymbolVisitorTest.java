@@ -108,6 +108,24 @@ class SymbolVisitorTest {
   }
 
   @Test
+  void shouldProperlyTrackParameterVariable() {
+    var symbols = parseAndGetSymbols("""
+      package main
+      func main(x int) {
+        x = 2
+        fmt.Println(x)
+      }
+      """);
+    assertThat(symbols).hasSize(3);
+
+    var x = symbols.get(0);
+    assertThat(x).isSameAs(symbols.get(1)).isSameAs(symbols.get(2));
+    assertThat(x.getType()).isEqualTo(GoNativeType.INT);
+    assertThat(x.getUsages()).extracting("type")
+      .containsExactly(Usage.UsageType.PARAMETER, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
+  }
+
+  @Test
   void shouldHandleVariableShadowingGlobalToLocal() {
     var symbols = parseAndGetSymbols("""
       package main

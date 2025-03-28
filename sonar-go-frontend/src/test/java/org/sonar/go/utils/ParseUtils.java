@@ -26,6 +26,10 @@ public class ParseUtils {
   private ParseUtils() {
   }
 
+  public static TopLevelTree parseFile(String code) {
+    return (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(code);
+  }
+
   public static BlockTree parseStatements(String code) {
     var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
       package main
