@@ -548,7 +548,7 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "32:4::10","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":21}
           ],"__cfgId":28},
-          {"@type": "Native", "metaData": "37:4:39:26","nativeKind":"[2](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "37:4:39:26","expression":
             {"@type": "FunctionInvocation", "metaData": "37:4:39:26","memberSelect":
               {"@type": "MemberSelect", "metaData": "37:4::14","identifier":
                 {"@type": "Identifier", "metaData": "37:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":30},"expression":
@@ -562,9 +562,8 @@
                 {"@type": "Identifier", "metaData": "39:8::17","type":"func(m map[string]float64) float64","package":"generics.go","name":"SumFloats","id":1272,"__cfgId":35},"arguments":[
                 {"@type": "Identifier", "metaData": "39:18::24","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":36}
               ],"__cfgId":37}
-            ],"__cfgId":38}
-          ],"__cfgId":39},
-          {"@type": "Native", "metaData": "41:4:43:49","nativeKind":"[3](ExprStmt)","children":[
+            ],"__cfgId":38},"__cfgId":39},
+          {"@type": "ExpressionStatement", "metaData": "41:4:43:49","expression":
             {"@type": "FunctionInvocation", "metaData": "41:4:43:49","memberSelect":
               {"@type": "MemberSelect", "metaData": "41:4::14","identifier":
                 {"@type": "Identifier", "metaData": "41:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":41},"expression":
@@ -592,9 +591,8 @@
                 ],"__cfgId":52},"arguments":[
                 {"@type": "Identifier", "metaData": "43:41::47","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":53}
               ],"__cfgId":54}
-            ],"__cfgId":55}
-          ],"__cfgId":56},
-          {"@type": "Native", "metaData": "45:4:47:32","nativeKind":"[4](ExprStmt)","children":[
+            ],"__cfgId":55},"__cfgId":56},
+          {"@type": "ExpressionStatement", "metaData": "45:4:47:32","expression":
             {"@type": "FunctionInvocation", "metaData": "45:4:47:32","memberSelect":
               {"@type": "MemberSelect", "metaData": "45:4::14","identifier":
                 {"@type": "Identifier", "metaData": "45:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":58},"expression":
@@ -608,9 +606,8 @@
                 {"@type": "Identifier", "metaData": "47:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":63},"arguments":[
                 {"@type": "Identifier", "metaData": "47:24::30","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":64}
               ],"__cfgId":65}
-            ],"__cfgId":66}
-          ],"__cfgId":67},
-          {"@type": "Native", "metaData": "49:4:51:27","nativeKind":"[5](ExprStmt)","children":[
+            ],"__cfgId":66},"__cfgId":67},
+          {"@type": "ExpressionStatement", "metaData": "49:4:51:27","expression":
             {"@type": "FunctionInvocation", "metaData": "49:4:51:27","memberSelect":
               {"@type": "MemberSelect", "metaData": "49:4::14","identifier":
                 {"@type": "Identifier", "metaData": "49:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":69},"expression":
@@ -624,8 +621,7 @@
                 {"@type": "Identifier", "metaData": "51:8::18","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740,"__cfgId":74},"arguments":[
                 {"@type": "Identifier", "metaData": "51:19::25","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":75}
               ],"__cfgId":76}
-            ],"__cfgId":77}
-          ],"__cfgId":78}
+            ],"__cfgId":77},"__cfgId":78}
         ],"__cfgId":79},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "55:0:61:1","typeParameters":
         null,"returnType":

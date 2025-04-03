@@ -26,10 +26,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CompositeLiteralTree;
+import org.sonar.go.api.ExpressionStatement;
 import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.api.KeyValueTree;
-import org.sonar.go.api.NativeTree;
 import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
@@ -169,8 +169,8 @@ class CompositeLiteralTreeImplTest {
       """.formatted(importInstruction, code));
     var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
-    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
-    var compositeLiteral = (CompositeLiteralTree) expressionStatement.children().get(0);
+    var expressionStatement = (ExpressionStatement) mainBlock.statementOrExpressions().get(0);
+    var compositeLiteral = (CompositeLiteralTree) expressionStatement.expression();
 
     assertThat(compositeLiteral.hasType("net/http", "net/http.Server")).isTrue();
     assertThat(compositeLiteral.hasType("http", "net/http.Server")).isFalse();
@@ -200,7 +200,7 @@ class CompositeLiteralTreeImplTest {
       """.formatted(code));
     var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
-    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
-    return (CompositeLiteralTree) expressionStatement.children().get(0);
+    var expressionStatement = (ExpressionStatement) mainBlock.statementOrExpressions().get(0);
+    return (CompositeLiteralTree) expressionStatement.expression();
   }
 }

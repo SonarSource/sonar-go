@@ -94,7 +94,7 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "6:5::12","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":7}
           ],"__cfgId":9},
-          {"@type": "Native", "metaData": "8:1:10:11","nativeKind":"[1](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "8:1:10:11","expression":
             {"@type": "FunctionInvocation", "metaData": "8:1:10:11","memberSelect":
               {"@type": "FunctionDeclaration", "metaData": "8:1:10:2","typeParameters":
                 null,"returnType":
@@ -104,7 +104,7 @@
                   {"@type": "Identifier", "metaData": "8:6::9","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":10},"defaultValue":null,"__cfgId":12}
               ],"body":
                 {"@type": "Block", "metaData": "8:18:10:2","statementOrExpressions":[
-                  {"@type": "Native", "metaData": "9:2::53","nativeKind":"[0](ExprStmt)","children":[
+                  {"@type": "ExpressionStatement", "metaData": "9:2::53","expression":
                     {"@type": "FunctionInvocation", "metaData": "9:2::53","memberSelect":
                       {"@type": "MemberSelect", "metaData": "9:2::13","identifier":
                         {"@type": "Identifier", "metaData": "9:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":16},"expression":
@@ -112,12 +112,10 @@
                       {"@type": "StringLiteral", "metaData": "9:14::18","value":"\"Hi\"","content":"Hi"},
                       {"@type": "Identifier", "metaData": "9:20::23","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":18},
                       {"@type": "StringLiteral", "metaData": "9:25::52","value":"\"I'm an anonymous function\"","content":"I'm an anonymous function"}
-                    ],"__cfgId":19}
-                  ],"__cfgId":20}
+                    ],"__cfgId":19},"__cfgId":20}
                 ],"__cfgId":21},"__cfgId":22},"arguments":[
               {"@type": "StringLiteral", "metaData": "10:3::10","value":"\"Ricky\"","content":"Ricky"}
-            ],"__cfgId":23}
-          ],"__cfgId":24},
+            ],"__cfgId":23},"__cfgId":24},
           {"@type": "VariableDeclaration", "metaData": "12:1:14:2","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionDeclaration", "metaData": "12:12:14:2","typeParameters":
               null,"returnType":
@@ -127,7 +125,7 @@
                 {"@type": "Identifier", "metaData": "12:17::20","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":26},"defaultValue":null,"__cfgId":28}
             ],"body":
               {"@type": "Block", "metaData": "12:29:14:2","statementOrExpressions":[
-                {"@type": "Native", "metaData": "13:2::77","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "13:2::77","expression":
                   {"@type": "FunctionInvocation", "metaData": "13:2::77","memberSelect":
                     {"@type": "MemberSelect", "metaData": "13:2::13","identifier":
                       {"@type": "Identifier", "metaData": "13:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":32},"expression":
@@ -135,13 +133,12 @@
                     {"@type": "StringLiteral", "metaData": "13:14::18","value":"\"Hi\"","content":"Hi"},
                     {"@type": "Identifier", "metaData": "13:20::23","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":34},
                     {"@type": "StringLiteral", "metaData": "13:25::76","value":"\"I'm an anonymous function assigned to a variable.\"","content":"I'm an anonymous function assigned to a variable."}
-                  ],"__cfgId":35}
-                ],"__cfgId":36}
+                  ],"__cfgId":35},"__cfgId":36}
               ],"__cfgId":37},"__cfgId":38}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "12:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":25}
           ],"__cfgId":39},
-          {"@type": "Native", "metaData": "16:1::37","nativeKind":"[3](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "16:1::37","expression":
             {"@type": "FunctionInvocation", "metaData": "16:1::37","memberSelect":
               {"@type": "Identifier", "metaData": "16:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":40},"arguments":[
               {"@type": "BinaryExpression", "metaData": "16:9::36","rightOperand":
@@ -152,8 +149,7 @@
                   {"@type": "Identifier", "metaData": "16:28::35","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":44}
                 ],"__cfgId":45},"operatorToken":"16:15::16","operator":"PLUS","leftOperand":
                 {"@type": "StringLiteral", "metaData": "16:9::14","value":"\"Bob\"","content":"Bob"},"__cfgId":46}
-            ],"__cfgId":47}
-          ],"__cfgId":48}
+            ],"__cfgId":47},"__cfgId":48}
         ],"__cfgId":49},"__cfgId":1}
     ],"__cfgId":2}
 } 

@@ -39,10 +39,9 @@
         null,"name":
         {"@type": "Identifier", "metaData": "6:5::9","type":"func()","package":"external_function.go","name":"main","id":59,"__cfgId":6},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
-          {"@type": "Native", "metaData": "7:4::22","nativeKind":"[0](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "7:4::22","expression":
             {"@type": "FunctionInvocation", "metaData": "7:4::22","memberSelect":
-              {"@type": "Identifier", "metaData": "7:4::20","type":"func()","package":"external_function.go","name":"externalFunction","id":34,"__cfgId":8},"arguments":[],"__cfgId":9}
-          ],"__cfgId":10}
+              {"@type": "Identifier", "metaData": "7:4::20","type":"func()","package":"external_function.go","name":"externalFunction","id":34,"__cfgId":8},"arguments":[],"__cfgId":9},"__cfgId":10}
         ],"__cfgId":11},"__cfgId":1}
     ],"__cfgId":2}
 } 

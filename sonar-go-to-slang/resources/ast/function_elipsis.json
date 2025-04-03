@@ -105,14 +105,13 @@
               {"@type": "Identifier", "metaData": "4:21::25","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":13}
             ]},"body":
             {"@type": "Block", "metaData": "4:26:6:2","statementOrExpressions":[
-              {"@type": "Native", "metaData": "5:2::18","nativeKind":"[0](ExprStmt)","children":[
+              {"@type": "ExpressionStatement", "metaData": "5:2::18","expression":
                 {"@type": "FunctionInvocation", "metaData": "5:2::18","memberSelect":
                   {"@type": "MemberSelect", "metaData": "5:2::13","identifier":
                     {"@type": "Identifier", "metaData": "5:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":15},"expression":
                     {"@type": "Identifier", "metaData": "5:2::5","type":"UNKNOWN","package":"UNKNOWN","name":"fmt","id":0,"__cfgId":14},"__cfgId":16},"arguments":[
                   {"@type": "Identifier", "metaData": "5:14::17","type":"interface{}","package":"UNKNOWN","name":"arg","id":74,"__cfgId":17}
-                ],"__cfgId":18}
-              ],"__cfgId":19}
+                ],"__cfgId":18},"__cfgId":19}
             ],"__cfgId":20},"__cfgId":21}
         ],"__cfgId":22},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "9:0:13:1","typeParameters":
@@ -121,15 +120,14 @@
         null,"name":
         {"@type": "Identifier", "metaData": "9:5::20","type":"func()","package":"function_elipsis.go","name":"callWithElipsis","id":124,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,14,18,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:23:13:1","statementOrExpressions":[
-          {"@type": "Native", "metaData": "10:1::49","nativeKind":"[0](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "10:1::49","expression":
             {"@type": "FunctionInvocation", "metaData": "10:1::49","memberSelect":
               {"@type": "Identifier", "metaData": "10:1::23","type":"func(args ...interface{})","package":"function_elipsis.go","name":"declarationWithElipsis","id":20,"__cfgId":4},"arguments":[
               {"@type": "IntegerLiteral", "metaData": "10:24::25","value":"1"},
               {"@type": "StringLiteral", "metaData": "10:27::36","value":"\"example\"","content":"example"},
               {"@type": "FloatLiteral", "metaData": "10:38::42","value":"3.14"},
               {"@type": "Literal", "metaData": "10:44::48","value":"true","__cfgId":5}
-            ],"__cfgId":6}
-          ],"__cfgId":7},
+            ],"__cfgId":6},"__cfgId":7},
           {"@type": "VariableDeclaration", "metaData": "11:1::48","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:11::48","type":
               {"@type": "ArrayType", "metaData": "11:11::24","length":null,"element":
@@ -148,12 +146,11 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "11:1::7","type":"[]interface{}","package":"UNKNOWN","name":"values","id":195,"__cfgId":8}
           ],"__cfgId":14},
-          {"@type": "Native", "metaData": "12:1::34","nativeKind":"[2](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "12:1::34","expression":
             {"@type": "FunctionInvocation", "metaData": "12:1::34","memberSelect":
               {"@type": "Identifier", "metaData": "12:1::23","type":"func(args ...interface{})","package":"function_elipsis.go","name":"declarationWithElipsis","id":20,"__cfgId":15},"arguments":[
               {"@type": "Identifier", "metaData": "12:24::30","type":"[]interface{}","package":"UNKNOWN","name":"values","id":195,"__cfgId":16}
-            ],"__cfgId":17}
-          ],"__cfgId":18}
+            ],"__cfgId":17},"__cfgId":18}
         ],"__cfgId":19},"__cfgId":1}
     ],"__cfgId":2}
 } 

@@ -263,14 +263,13 @@
             {"@type": "MatchCase", "metaData": "8:8::39","expression":
               null,"body":
               {"@type": "Block", "metaData": "8:17::39","statementOrExpressions":[
-                {"@type": "Native", "metaData": "8:17::39","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "8:17::39","expression":
                   {"@type": "FunctionInvocation", "metaData": "8:17::39","memberSelect":
                     {"@type": "MemberSelect", "metaData": "8:17::28","identifier":
                       {"@type": "Identifier", "metaData": "8:21::28","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":11},"expression":
                       {"@type": "Identifier", "metaData": "8:17::20","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":10},"__cfgId":12},"arguments":[
                     {"@type": "StringLiteral", "metaData": "8:29::38","value":"\"default\"","content":"default"}
-                  ],"__cfgId":13}
-                ],"__cfgId":14}
+                  ],"__cfgId":13},"__cfgId":14}
               ]},"__cfgId":15},
             {"@type": "MatchCase", "metaData": "9:8::40","expression":
               {"@type": "Native", "metaData": "9:13::20","nativeKind":"CaseExprList","children":[
@@ -281,14 +280,13 @@
                 {"@type": "IntegerLiteral", "metaData": "9:19::20","value":"2"}
               ]},"body":
               {"@type": "Block", "metaData": "9:22::40","statementOrExpressions":[
-                {"@type": "Native", "metaData": "9:22::40","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "9:22::40","expression":
                   {"@type": "FunctionInvocation", "metaData": "9:22::40","memberSelect":
                     {"@type": "MemberSelect", "metaData": "9:22::33","identifier":
                       {"@type": "Identifier", "metaData": "9:26::33","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":17},"expression":
                       {"@type": "Identifier", "metaData": "9:22::25","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":16},"__cfgId":18},"arguments":[
                     {"@type": "StringLiteral", "metaData": "9:34::39","value":"\"123\"","content":"123"}
-                  ],"__cfgId":19}
-                ],"__cfgId":20}
+                  ],"__cfgId":19},"__cfgId":20}
               ]},"__cfgId":21},
             {"@type": "MatchCase", "metaData": "10:8::44","expression":
               {"@type": "Native", "metaData": "10:13::23","nativeKind":"CaseExprList","children":[
@@ -301,14 +299,13 @@
                 {"@type": "IntegerLiteral", "metaData": "10:22::23","value":"7"}
               ]},"body":
               {"@type": "Block", "metaData": "10:25::44","statementOrExpressions":[
-                {"@type": "Native", "metaData": "10:25::44","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "10:25::44","expression":
                   {"@type": "FunctionInvocation", "metaData": "10:25::44","memberSelect":
                     {"@type": "MemberSelect", "metaData": "10:25::36","identifier":
                       {"@type": "Identifier", "metaData": "10:29::36","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":23},"expression":
                       {"@type": "Identifier", "metaData": "10:25::28","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":22},"__cfgId":24},"arguments":[
                     {"@type": "StringLiteral", "metaData": "10:37::43","value":"\"4567\"","content":"4567"}
-                  ],"__cfgId":25}
-                ],"__cfgId":26}
+                  ],"__cfgId":25},"__cfgId":26}
               ]},"__cfgId":27}
           ],"__cfgId":29},
           {"@type": "VariableDeclaration", "metaData": "13:4::10","type":null,"isVal":false,"initializers":[
@@ -335,14 +332,13 @@
                   {"@type": "Identifier", "metaData": "18:13::14","type":"int","package":"UNKNOWN","name":"x","id":210,"__cfgId":36},"__cfgId":38}
               ]},"body":
               {"@type": "Block", "metaData": "18:20::37","statementOrExpressions":[
-                {"@type": "Native", "metaData": "18:20::37","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "18:20::37","expression":
                   {"@type": "FunctionInvocation", "metaData": "18:20::37","memberSelect":
                     {"@type": "MemberSelect", "metaData": "18:20::31","identifier":
                       {"@type": "Identifier", "metaData": "18:24::31","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":40},"expression":
                       {"@type": "Identifier", "metaData": "18:20::23","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":39},"__cfgId":41},"arguments":[
                     {"@type": "StringLiteral", "metaData": "18:32::36","value":"\"xy\"","content":"xy"}
-                  ],"__cfgId":42}
-                ],"__cfgId":43}
+                  ],"__cfgId":42},"__cfgId":43}
               ]},"__cfgId":44},
             {"@type": "MatchCase", "metaData": "19:8::37","expression":
               {"@type": "Native", "metaData": "19:13::18","nativeKind":"CaseExprList","children":[
@@ -351,14 +347,13 @@
                   {"@type": "Identifier", "metaData": "19:13::14","type":"int","package":"UNKNOWN","name":"x","id":210,"__cfgId":45},"__cfgId":47}
               ]},"body":
               {"@type": "Block", "metaData": "19:20::37","statementOrExpressions":[
-                {"@type": "Native", "metaData": "19:20::37","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "19:20::37","expression":
                   {"@type": "FunctionInvocation", "metaData": "19:20::37","memberSelect":
                     {"@type": "MemberSelect", "metaData": "19:20::31","identifier":
                       {"@type": "Identifier", "metaData": "19:24::31","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":49},"expression":
                       {"@type": "Identifier", "metaData": "19:20::23","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":48},"__cfgId":50},"arguments":[
                     {"@type": "StringLiteral", "metaData": "19:32::36","value":"\"xz\"","content":"xz"}
-                  ],"__cfgId":51}
-                ],"__cfgId":52}
+                  ],"__cfgId":51},"__cfgId":52}
               ]},"__cfgId":53},
             {"@type": "MatchCase", "metaData": "20:8::37","expression":
               {"@type": "Native", "metaData": "20:13::19","nativeKind":"CaseExprList","children":[
@@ -367,14 +362,13 @@
                   {"@type": "Identifier", "metaData": "20:13::14","type":"int","package":"UNKNOWN","name":"x","id":210,"__cfgId":54},"__cfgId":55}
               ]},"body":
               {"@type": "Block", "metaData": "20:21::37","statementOrExpressions":[
-                {"@type": "Native", "metaData": "20:21::37","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "20:21::37","expression":
                   {"@type": "FunctionInvocation", "metaData": "20:21::37","memberSelect":
                     {"@type": "MemberSelect", "metaData": "20:21::32","identifier":
                       {"@type": "Identifier", "metaData": "20:25::32","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":57},"expression":
                       {"@type": "Identifier", "metaData": "20:21::24","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":56},"__cfgId":58},"arguments":[
                     {"@type": "StringLiteral", "metaData": "20:33::36","value":"\"x\"","content":"x"}
-                  ],"__cfgId":59}
-                ],"__cfgId":60}
+                  ],"__cfgId":59},"__cfgId":60}
               ]},"__cfgId":61}
           ],"__cfgId":63},
           {"@type": "Match", "metaData": "23:4:26:5","keyword":"23:4::10","expression":
@@ -393,26 +387,24 @@
                   {"@type": "Identifier", "metaData": "24:13::14","type":"int","package":"UNKNOWN","name":"x","id":427,"__cfgId":68},"__cfgId":69}
               ]},"body":
               {"@type": "Block", "metaData": "24:20::38","statementOrExpressions":[
-                {"@type": "Native", "metaData": "24:20::38","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "24:20::38","expression":
                   {"@type": "FunctionInvocation", "metaData": "24:20::38","memberSelect":
                     {"@type": "MemberSelect", "metaData": "24:20::31","identifier":
                       {"@type": "Identifier", "metaData": "24:24::31","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":71},"expression":
                       {"@type": "Identifier", "metaData": "24:20::23","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":70},"__cfgId":72},"arguments":[
                     {"@type": "StringLiteral", "metaData": "24:32::37","value":"\"x\u003c0\"","content":"x\u003c0"}
-                  ],"__cfgId":73}
-                ],"__cfgId":74}
+                  ],"__cfgId":73},"__cfgId":74}
               ]},"__cfgId":75},
             {"@type": "MatchCase", "metaData": "25:8::39","expression":
               null,"body":
               {"@type": "Block", "metaData": "25:17::39","statementOrExpressions":[
-                {"@type": "Native", "metaData": "25:17::39","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "25:17::39","expression":
                   {"@type": "FunctionInvocation", "metaData": "25:17::39","memberSelect":
                     {"@type": "MemberSelect", "metaData": "25:17::28","identifier":
                       {"@type": "Identifier", "metaData": "25:21::28","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":77},"expression":
                       {"@type": "Identifier", "metaData": "25:17::20","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":76},"__cfgId":78},"arguments":[
                     {"@type": "StringLiteral", "metaData": "25:29::38","value":"\"default\"","content":"default"}
-                  ],"__cfgId":79}
-                ],"__cfgId":80}
+                  ],"__cfgId":79},"__cfgId":80}
               ]},"__cfgId":81}
           ],"__cfgId":83},
           {"@type": "VariableDeclaration", "metaData": "28:4::35","type":
@@ -446,14 +438,13 @@
                 {"@type": "Literal", "metaData": "31:13::16","value":"nil","__cfgId":92}
               ]},"body":
               {"@type": "Block", "metaData": "32:12:33:17","statementOrExpressions":[
-                {"@type": "Native", "metaData": "32:12::63","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "32:12::63","expression":
                   {"@type": "FunctionInvocation", "metaData": "32:12::63","memberSelect":
                     {"@type": "MemberSelect", "metaData": "32:12::23","identifier":
                       {"@type": "Identifier", "metaData": "32:16::23","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":94},"expression":
                       {"@type": "Identifier", "metaData": "32:12::15","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":93},"__cfgId":95},"arguments":[
                     {"@type": "StringLiteral", "metaData": "32:24::62","value":"\"type of i is type of x (interface{})\"","content":"type of i is type of x (interface{})"}
-                  ],"__cfgId":96}
-                ],"__cfgId":97},
+                  ],"__cfgId":96},"__cfgId":97},
                 {"@type": "Jump", "metaData": "33:12::17","label":
                   null,"kind":"BREAK","keyword":"33:12::17","__cfgId":98}
               ]},"__cfgId":99},
@@ -464,14 +455,13 @@
                 {"@type": "Identifier", "metaData": "34:18::22","type":"bool","package":"UNKNOWN","name":"bool","id":0,"__cfgId":101}
               ]},"body":
               {"@type": "Block", "metaData": "35:12::51","statementOrExpressions":[
-                {"@type": "Native", "metaData": "35:12::51","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "35:12::51","expression":
                   {"@type": "FunctionInvocation", "metaData": "35:12::51","memberSelect":
                     {"@type": "MemberSelect", "metaData": "35:12::23","identifier":
                       {"@type": "Identifier", "metaData": "35:16::23","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":103},"expression":
                       {"@type": "Identifier", "metaData": "35:12::15","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":102},"__cfgId":104},"arguments":[
                     {"@type": "StringLiteral", "metaData": "35:24::50","value":"\"type of i is int or bool\"","content":"type of i is int or bool"}
-                  ],"__cfgId":105}
-                ],"__cfgId":106}
+                  ],"__cfgId":105},"__cfgId":106}
               ]},"__cfgId":107},
             {"@type": "MatchCase", "metaData": "36:8:38:23","expression":
               {"@type": "Native", "metaData": "36:13::30","nativeKind":"CaseExprList","children":[
@@ -492,14 +482,13 @@
                 ],"__cfgId":114}
               ]},"body":
               {"@type": "Block", "metaData": "37:12:38:23","statementOrExpressions":[
-                {"@type": "Native", "metaData": "37:12::49","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "37:12::49","expression":
                   {"@type": "FunctionInvocation", "metaData": "37:12::49","memberSelect":
                     {"@type": "MemberSelect", "metaData": "37:12::23","identifier":
                       {"@type": "Identifier", "metaData": "37:16::23","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":116},"expression":
                       {"@type": "Identifier", "metaData": "37:12::15","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":115},"__cfgId":117},"arguments":[
                     {"@type": "StringLiteral", "metaData": "37:24::48","value":"\"type of i is func(int)\"","content":"type of i is func(int)"}
-                  ],"__cfgId":118}
-                ],"__cfgId":119},
+                  ],"__cfgId":118},"__cfgId":119},
                 {"@type": "Native", "metaData": "38:12::23","nativeKind":"[1](BranchStmt)","children":[
                   {"@type": "Native", "metaData": "38:12::23","nativeKind":"Tok"}
                 ],"__cfgId":120}
@@ -509,7 +498,7 @@
                 {"@type": "Identifier", "metaData": "39:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":122}
               ]},"body":
               {"@type": "Block", "metaData": "39:21:41:13","statementOrExpressions":[
-                {"@type": "Native", "metaData": "40:16::67","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "40:16::67","expression":
                   {"@type": "FunctionInvocation", "metaData": "40:16::67","memberSelect":
                     {"@type": "MemberSelect", "metaData": "40:16::27","identifier":
                       {"@type": "Identifier", "metaData": "40:20::27","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":124},"expression":
@@ -517,20 +506,18 @@
                     {"@type": "BinaryExpression", "metaData": "40:28::66","rightOperand":
                       {"@type": "Identifier", "metaData": "40:65::66","type":"string","package":"UNKNOWN","name":"i","id":573,"__cfgId":126},"operatorToken":"40:63::64","operator":"PLUS","leftOperand":
                       {"@type": "StringLiteral", "metaData": "40:28::62","value":"\"type is string and the value is \"","content":"type is string and the value is "},"__cfgId":127}
-                  ],"__cfgId":128}
-                ],"__cfgId":129}
+                  ],"__cfgId":128},"__cfgId":129}
               ],"__cfgId":130},"__cfgId":131},
             {"@type": "MatchCase", "metaData": "42:8:43:46","expression":
               null,"body":
               {"@type": "Block", "metaData": "43:12::46","statementOrExpressions":[
-                {"@type": "Native", "metaData": "43:12::46","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "43:12::46","expression":
                   {"@type": "FunctionInvocation", "metaData": "43:12::46","memberSelect":
                     {"@type": "MemberSelect", "metaData": "43:12::23","identifier":
                       {"@type": "Identifier", "metaData": "43:16::23","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":133},"expression":
                       {"@type": "Identifier", "metaData": "43:12::15","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":132},"__cfgId":134},"arguments":[
                     {"@type": "StringLiteral", "metaData": "43:24::45","value":"\"don't know the type\"","content":"don't know the type"}
-                  ],"__cfgId":135}
-                ],"__cfgId":136}
+                  ],"__cfgId":135},"__cfgId":136}
               ]},"__cfgId":137}
           ],"__cfgId":139},
           {"@type": "Match", "metaData": "46:8:49:9","keyword":"46:8::14","expression":
@@ -542,14 +529,13 @@
                   {"@type": "Identifier", "metaData": "47:17::18","type":"int","package":"UNKNOWN","name":"x","id":210,"__cfgId":140},"__cfgId":142}
               ]},"body":
               {"@type": "Block", "metaData": "48:16::33","statementOrExpressions":[
-                {"@type": "Native", "metaData": "48:16::33","nativeKind":"[0](ExprStmt)","children":[
+                {"@type": "ExpressionStatement", "metaData": "48:16::33","expression":
                   {"@type": "FunctionInvocation", "metaData": "48:16::33","memberSelect":
                     {"@type": "MemberSelect", "metaData": "48:16::27","identifier":
                       {"@type": "Identifier", "metaData": "48:20::27","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":144},"expression":
                       {"@type": "Identifier", "metaData": "48:16::19","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":143},"__cfgId":145},"arguments":[
                     {"@type": "StringLiteral", "metaData": "48:28::32","value":"\"xy\"","content":"xy"}
-                  ],"__cfgId":146}
-                ],"__cfgId":147}
+                  ],"__cfgId":146},"__cfgId":147}
               ]},"__cfgId":148}
           ],"__cfgId":150}
         ],"__cfgId":151},"__cfgId":1},

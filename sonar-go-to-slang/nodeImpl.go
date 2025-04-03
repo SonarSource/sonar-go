@@ -634,7 +634,12 @@ func (t *SlangMapper) mapEmptyStmtImpl(stmt *ast.EmptyStmt, fieldName string) *N
 }
 
 func (t *SlangMapper) mapExprStmtImpl(stmt *ast.ExprStmt, fieldName string) *Node {
-	return nil
+	var children []*Node
+	expr := t.mapExpr(stmt.X, "X")
+	children = t.appendNode(children, expr)
+	slangField := make(map[string]interface{})
+	slangField["expression"] = expr
+	return t.createNode(stmt, children, fieldName+"(ExprStmt)", "ExpressionStatement", slangField)
 }
 
 func (t *SlangMapper) mapForStmtImpl(stmt *ast.ForStmt, fieldName string) *Node {

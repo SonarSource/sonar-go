@@ -98,7 +98,7 @@
         ],"__cfgId":16},"name":
         {"@type": "Identifier", "metaData": "10:18::28","type":"func()","package":"method_receiver.go","name":"PrintValue","id":119,"__cfgId":17},"formalParameters":[],"cfg":{"Blocks":[{"Node":[26,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "10:31:12:1","statementOrExpressions":[
-          {"@type": "Native", "metaData": "11:4::43","nativeKind":"[0](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "11:4::43","expression":
             {"@type": "FunctionInvocation", "metaData": "11:4::43","memberSelect":
               {"@type": "MemberSelect", "metaData": "11:4::15","identifier":
                 {"@type": "Identifier", "metaData": "11:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":20},"expression":
@@ -107,8 +107,7 @@
               {"@type": "MemberSelect", "metaData": "11:35::42","identifier":
                 {"@type": "Identifier", "metaData": "11:37::42","type":"int","package":"UNKNOWN","name":"value","id":56,"__cfgId":23},"expression":
                 {"@type": "Identifier", "metaData": "11:35::36","type":"method_receiver.go.MyStruct","package":"UNKNOWN","name":"m","id":107,"__cfgId":22},"__cfgId":24}
-            ],"__cfgId":25}
-          ],"__cfgId":26}
+            ],"__cfgId":25},"__cfgId":26}
         ],"__cfgId":27},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "15:0:17:1","typeParameters":
         null,"returnType":

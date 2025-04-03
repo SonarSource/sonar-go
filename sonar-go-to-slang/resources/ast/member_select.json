@@ -177,14 +177,13 @@
               {"@type": "Identifier", "metaData": "18:7::11","type":"string","package":"UNKNOWN","name":"name","id":77,"__cfgId":10},"expression":
               {"@type": "Identifier", "metaData": "18:1::6","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":9},"__cfgId":11},"__cfgId":12},
           {"@type": "Native", "metaData": "18:17::18","nativeKind":"Semicolon"},
-          {"@type": "Native", "metaData": "19:1::17","nativeKind":"[1](ExprStmt)","children":[
+          {"@type": "ExpressionStatement", "metaData": "19:1::17","expression":
             {"@type": "FunctionInvocation", "metaData": "19:1::17","memberSelect":
               {"@type": "Identifier", "metaData": "19:1::6","type":"UNKNOWN","package":"UNKNOWN","name":"panic","id":0,"__cfgId":13},"arguments":[
               {"@type": "MemberSelect", "metaData": "19:7::16","identifier":
                 {"@type": "Identifier", "metaData": "19:13::16","type":"int","package":"UNKNOWN","name":"age","id":90,"__cfgId":15},"expression":
                 {"@type": "Identifier", "metaData": "19:7::12","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":14},"__cfgId":16}
-            ],"__cfgId":17}
-          ],"__cfgId":18},
+            ],"__cfgId":17},"__cfgId":18},
           {"@type": "Native", "metaData": "19:17::18","nativeKind":"Semicolon"},
           {"@type": "AssignmentExpression", "metaData": "20:1::27","statementOrExpression":
             {"@type": "StringLiteral", "metaData": "20:24::27","value":"\"b\"","content":"b"},"operator":"EQUAL","leftHandSide":

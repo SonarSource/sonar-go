@@ -68,6 +68,7 @@ project(":sonar-go-to-slang") {
             property("sonar.go.tests.reportPaths", "build/test-report.json")
             property("sonar.go.coverage.reportPaths", "build/test-coverage.out")
             property("sonar.go.golangci-lint.reportPaths", "build/reports/golangci-lint-report.xml")
+            property("sonar.sca.excludedManifests", "private/its/sources/**")
         }
     }
 }
