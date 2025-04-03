@@ -14,43 +14,33 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.impl.cfg;
 
+import java.util.Collections;
 import java.util.List;
-import javax.annotation.CheckForNull;
-import org.sonar.go.api.cfg.ControlFlowGraph;
+import org.sonar.go.api.Tree;
+import org.sonar.go.api.cfg.Block;
 
-public interface FunctionDeclarationTree extends Tree {
+public class BlockImpl implements Block {
 
-  @CheckForNull
-  Tree returnType();
+  private final List<Tree> nodes;
+  private List<Block> successors = Collections.emptyList();
 
-  /**
-   * Can return null when the function is a function literal (closure).
-   */
-  @CheckForNull
-  IdentifierTree name();
+  public BlockImpl(List<Tree> nodes) {
+    this.nodes = Collections.unmodifiableList(nodes);
+  }
 
-  List<Tree> formalParameters();
+  @Override
+  public List<Tree> nodes() {
+    return nodes;
+  }
 
-  /**
-   * Can return null when the function is external (non-Go)
-   */
-  @CheckForNull
-  BlockTree body();
+  @Override
+  public List<Block> successors() {
+    return successors;
+  }
 
-  @CheckForNull
-  Tree receiver();
-
-  @CheckForNull
-  String receiverName();
-
-  @CheckForNull
-  Tree typeParameters();
-
-  TextRange rangeToHighlight();
-
-  @CheckForNull
-  ControlFlowGraph cfg();
-
+  public void setSuccessors(List<Block> successors) {
+    this.successors = Collections.unmodifiableList(successors);
+  }
 }

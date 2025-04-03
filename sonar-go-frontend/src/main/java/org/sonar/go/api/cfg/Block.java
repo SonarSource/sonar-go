@@ -14,43 +14,13 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.api.cfg;
 
 import java.util.List;
-import javax.annotation.CheckForNull;
-import org.sonar.go.api.cfg.ControlFlowGraph;
+import org.sonar.go.api.Tree;
 
-public interface FunctionDeclarationTree extends Tree {
+public interface Block {
+  List<Tree> nodes();
 
-  @CheckForNull
-  Tree returnType();
-
-  /**
-   * Can return null when the function is a function literal (closure).
-   */
-  @CheckForNull
-  IdentifierTree name();
-
-  List<Tree> formalParameters();
-
-  /**
-   * Can return null when the function is external (non-Go)
-   */
-  @CheckForNull
-  BlockTree body();
-
-  @CheckForNull
-  Tree receiver();
-
-  @CheckForNull
-  String receiverName();
-
-  @CheckForNull
-  Tree typeParameters();
-
-  TextRange rangeToHighlight();
-
-  @CheckForNull
-  ControlFlowGraph cfg();
-
+  List<Block> successors();
 }

@@ -1,0 +1,17 @@
+package main
+
+import "fmt"
+
+func main() {
+	var counter int = 1
+
+	func(str string) {
+		fmt.Println("Hi", str, "I'm an anonymous function")
+	}("Ricky")
+
+	funcVar := func(str string) {
+		fmt.Println("Hi", str, "I'm an anonymous function assigned to a variable.")
+	}
+
+	funcVar("Bob" + fmt.Sprint(counter))
+}

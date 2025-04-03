@@ -1,0 +1,159 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
+      {"text":"\"fmt\"","textRange":"3:7::12","type":"STRING_LITERAL"},
+      {"text":"func","textRange":"5:0::4","type":"KEYWORD"},
+      {"text":"main","textRange":"5:5::9"},
+      {"text":"(","textRange":"5:9::10"},
+      {"text":")","textRange":"5:10::11"},
+      {"text":"{","textRange":"5:12::13"},
+      {"text":"var","textRange":"6:1::4","type":"KEYWORD"},
+      {"text":"counter","textRange":"6:5::12"},
+      {"text":"int","textRange":"6:13::16"},
+      {"text":"1","textRange":"6:19::20"},
+      {"text":"=","textRange":"6:17::18"},
+      {"text":"func","textRange":"8:1::5","type":"KEYWORD"},
+      {"text":"(","textRange":"8:5::6"},
+      {"text":"str","textRange":"8:6::9"},
+      {"text":"string","textRange":"8:10::16"},
+      {"text":")","textRange":"8:16::17"},
+      {"text":"{","textRange":"8:18::19"},
+      {"text":"fmt","textRange":"9:2::5"},
+      {"text":"Println","textRange":"9:6::13"},
+      {"text":".","textRange":"9:5::6"},
+      {"text":"(","textRange":"9:13::14"},
+      {"text":"\"Hi\"","textRange":"9:14::18","type":"STRING_LITERAL"},
+      {"text":"str","textRange":"9:20::23"},
+      {"text":",","textRange":"9:18::19"},
+      {"text":"\"I'm an anonymous function\"","textRange":"9:25::52","type":"STRING_LITERAL"},
+      {"text":",","textRange":"9:23::24"},
+      {"text":")","textRange":"9:52::53"},
+      {"text":"}","textRange":"10:1::2"},
+      {"text":"(","textRange":"10:2::3"},
+      {"text":"\"Ricky\"","textRange":"10:3::10","type":"STRING_LITERAL"},
+      {"text":")","textRange":"10:10::11"},
+      {"text":"funcVar","textRange":"12:1::8"},
+      {"text":":=","textRange":"12:9::11"},
+      {"text":"func","textRange":"12:12::16","type":"KEYWORD"},
+      {"text":"(","textRange":"12:16::17"},
+      {"text":"str","textRange":"12:17::20"},
+      {"text":"string","textRange":"12:21::27"},
+      {"text":")","textRange":"12:27::28"},
+      {"text":"{","textRange":"12:29::30"},
+      {"text":"fmt","textRange":"13:2::5"},
+      {"text":"Println","textRange":"13:6::13"},
+      {"text":".","textRange":"13:5::6"},
+      {"text":"(","textRange":"13:13::14"},
+      {"text":"\"Hi\"","textRange":"13:14::18","type":"STRING_LITERAL"},
+      {"text":"str","textRange":"13:20::23"},
+      {"text":",","textRange":"13:18::19"},
+      {"text":"\"I'm an anonymous function assigned to a variable.\"","textRange":"13:25::76","type":"STRING_LITERAL"},
+      {"text":",","textRange":"13:23::24"},
+      {"text":")","textRange":"13:76::77"},
+      {"text":"}","textRange":"14:1::2"},
+      {"text":"funcVar","textRange":"16:1::8"},
+      {"text":"(","textRange":"16:8::9"},
+      {"text":"\"Bob\"","textRange":"16:9::14","type":"STRING_LITERAL"},
+      {"text":"+","textRange":"16:15::16"},
+      {"text":"fmt","textRange":"16:17::20"},
+      {"text":"Sprint","textRange":"16:21::27"},
+      {"text":".","textRange":"16:20::21"},
+      {"text":"(","textRange":"16:27::28"},
+      {"text":"counter","textRange":"16:28::35"},
+      {"text":")","textRange":"16:35::36"},
+      {"text":")","textRange":"16:36::37"},
+      {"text":"}","textRange":"17:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:18:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
+        {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "3:7::12","path":
+          {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
+          null,"__cfgId":3}
+      ],"__cfgId":4},
+      {"@type": "FunctionDeclaration", "metaData": "5:0:17:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"inner_function_declaration.go","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0,24,39,48,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "5:12:17:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "6:1::20","type":
+            {"@type": "Identifier", "metaData": "6:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"isVal":false,"initializers":[
+            {"@type": "IntegerLiteral", "metaData": "6:19::20","value":"1"}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "6:5::12","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":7}
+          ],"__cfgId":9},
+          {"@type": "Native", "metaData": "8:1:10:11","nativeKind":"[1](ExprStmt)","children":[
+            {"@type": "FunctionInvocation", "metaData": "8:1:10:11","memberSelect":
+              {"@type": "FunctionDeclaration", "metaData": "8:1:10:2","typeParameters":
+                null,"returnType":
+                null,"receiver":null,"formalParameters":[
+                {"@type": "Parameter", "metaData": "8:6::16","type":
+                  {"@type": "Identifier", "metaData": "8:10::16","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":11},"modifiers":null,"identifier":
+                  {"@type": "Identifier", "metaData": "8:6::9","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":10},"defaultValue":null,"__cfgId":12}
+              ],"body":
+                {"@type": "Block", "metaData": "8:18:10:2","statementOrExpressions":[
+                  {"@type": "Native", "metaData": "9:2::53","nativeKind":"[0](ExprStmt)","children":[
+                    {"@type": "FunctionInvocation", "metaData": "9:2::53","memberSelect":
+                      {"@type": "MemberSelect", "metaData": "9:2::13","identifier":
+                        {"@type": "Identifier", "metaData": "9:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":16},"expression":
+                        {"@type": "Identifier", "metaData": "9:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":15},"__cfgId":17},"arguments":[
+                      {"@type": "StringLiteral", "metaData": "9:14::18","value":"\"Hi\"","content":"Hi"},
+                      {"@type": "Identifier", "metaData": "9:20::23","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":18},
+                      {"@type": "StringLiteral", "metaData": "9:25::52","value":"\"I'm an anonymous function\"","content":"I'm an anonymous function"}
+                    ],"__cfgId":19}
+                  ],"__cfgId":20}
+                ],"__cfgId":21},"__cfgId":22},"arguments":[
+              {"@type": "StringLiteral", "metaData": "10:3::10","value":"\"Ricky\"","content":"Ricky"}
+            ],"__cfgId":23}
+          ],"__cfgId":24},
+          {"@type": "VariableDeclaration", "metaData": "12:1:14:2","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionDeclaration", "metaData": "12:12:14:2","typeParameters":
+              null,"returnType":
+              null,"receiver":null,"formalParameters":[
+              {"@type": "Parameter", "metaData": "12:17::27","type":
+                {"@type": "Identifier", "metaData": "12:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":27},"modifiers":null,"identifier":
+                {"@type": "Identifier", "metaData": "12:17::20","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":26},"defaultValue":null,"__cfgId":28}
+            ],"body":
+              {"@type": "Block", "metaData": "12:29:14:2","statementOrExpressions":[
+                {"@type": "Native", "metaData": "13:2::77","nativeKind":"[0](ExprStmt)","children":[
+                  {"@type": "FunctionInvocation", "metaData": "13:2::77","memberSelect":
+                    {"@type": "MemberSelect", "metaData": "13:2::13","identifier":
+                      {"@type": "Identifier", "metaData": "13:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":32},"expression":
+                      {"@type": "Identifier", "metaData": "13:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":31},"__cfgId":33},"arguments":[
+                    {"@type": "StringLiteral", "metaData": "13:14::18","value":"\"Hi\"","content":"Hi"},
+                    {"@type": "Identifier", "metaData": "13:20::23","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":34},
+                    {"@type": "StringLiteral", "metaData": "13:25::76","value":"\"I'm an anonymous function assigned to a variable.\"","content":"I'm an anonymous function assigned to a variable."}
+                  ],"__cfgId":35}
+                ],"__cfgId":36}
+              ],"__cfgId":37},"__cfgId":38}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "12:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":25}
+          ],"__cfgId":39},
+          {"@type": "Native", "metaData": "16:1::37","nativeKind":"[3](ExprStmt)","children":[
+            {"@type": "FunctionInvocation", "metaData": "16:1::37","memberSelect":
+              {"@type": "Identifier", "metaData": "16:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":40},"arguments":[
+              {"@type": "BinaryExpression", "metaData": "16:9::36","rightOperand":
+                {"@type": "FunctionInvocation", "metaData": "16:17::36","memberSelect":
+                  {"@type": "MemberSelect", "metaData": "16:17::27","identifier":
+                    {"@type": "Identifier", "metaData": "16:21::27","type":"UNKNOWN","package":"UNKNOWN","name":"Sprint","id":0,"__cfgId":42},"expression":
+                    {"@type": "Identifier", "metaData": "16:17::20","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":41},"__cfgId":43},"arguments":[
+                  {"@type": "Identifier", "metaData": "16:28::35","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":44}
+                ],"__cfgId":45},"operatorToken":"16:15::16","operator":"PLUS","leftOperand":
+                {"@type": "StringLiteral", "metaData": "16:9::14","value":"\"Bob\"","content":"Bob"},"__cfgId":46}
+            ],"__cfgId":47}
+          ],"__cfgId":48}
+        ],"__cfgId":49},"__cfgId":1}
+    ],"__cfgId":2}
+} 

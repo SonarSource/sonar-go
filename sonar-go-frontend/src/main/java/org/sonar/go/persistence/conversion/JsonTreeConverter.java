@@ -21,7 +21,6 @@ import com.eclipsesource.json.JsonObject;
 import java.util.List;
 import org.sonar.go.api.AssignmentExpressionTree;
 import org.sonar.go.api.BinaryExpressionTree.Operator;
-import org.sonar.go.api.BlockTree;
 import org.sonar.go.api.CatchTree;
 import org.sonar.go.api.Comment;
 import org.sonar.go.api.IdentifierTree;
@@ -309,14 +308,7 @@ public final class JsonTreeConverter {
         .add(TYPE_PARAMETERS, ctx.toJson(tree.typeParameters()))
         .add(BODY, ctx.toJson(tree.body())),
 
-      (ctx, json) -> new FunctionDeclarationTreeImpl(
-        ctx.metaData(json),
-        ctx.fieldToNullableObject(json, RETURN_TYPE, Tree.class),
-        ctx.fieldToNullableObject(json, RECEIVER, Tree.class),
-        ctx.fieldToNullableObject(json, NAME, IdentifierTree.class),
-        ctx.fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class),
-        ctx.fieldToNullableObject(json, TYPE_PARAMETERS, Tree.class),
-        ctx.fieldToNullableObject(json, BODY, BlockTree.class)));
+      DeserializationContext::functionDeclarationTree);
 
     register(FunctionInvocationTreeImpl.class,
 

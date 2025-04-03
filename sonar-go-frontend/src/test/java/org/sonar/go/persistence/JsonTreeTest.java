@@ -397,7 +397,7 @@ class JsonTreeTest extends JsonTestHelper {
     Token tokenClose = otherToken(1, 24, "}");
     BlockTree body = new BlockTreeImpl(metaData(tokenOpen, tokenClose), emptyList());
     TreeMetaData metaData = metaData(tokenR, tokenClose);
-    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeReceiver, name, parameters, nativeTypeParameters, body);
+    FunctionDeclarationTree initialFunction = new FunctionDeclarationTreeImpl(metaData, returnType, nativeReceiver, name, parameters, nativeTypeParameters, body, null);
     FunctionDeclarationTree function = checkJsonSerializationDeserialization(initialFunction, "function_declaration.json");
     assertThat(function.textRange()).isEqualTo(metaData.textRange());
     assertThat(function.returnType().textRange()).isEqualTo(tokenInt.textRange());
@@ -407,7 +407,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(function.body().textRange()).isEqualTo(body.textRange());
 
     assertThat(methodNames(FunctionDeclarationTree.class))
-      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, TYPE_PARAMETERS, BODY, "rangeToHighlight", "receiverName");
+      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, TYPE_PARAMETERS, BODY, "cfg", "rangeToHighlight", "receiverName");
   }
 
   @Test

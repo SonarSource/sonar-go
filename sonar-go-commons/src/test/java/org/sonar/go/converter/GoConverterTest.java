@@ -19,6 +19,7 @@ package org.sonar.go.converter;
 import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -47,6 +48,8 @@ import org.sonar.go.api.StringLiteralTree;
 import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.VariableDeclarationTree;
+import org.sonar.go.api.cfg.Block;
+import org.sonar.go.api.cfg.ControlFlowGraph;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
 
@@ -545,6 +548,168 @@ class GoConverterTest {
 
     assertThat(getIdentifierByName(functionDeclaration, "sublogger").type()).isEqualTo("UNKNOWN");
     assertThat(getIdentifierByName(functionDeclaration, "err").type()).isEqualTo("UNKNOWN");
+  }
+
+  @Test
+  void shouldParseFunctionDeclarationCfgWithIfStatements() {
+    Tree tree = TestGoConverter.parse("""
+       package main
+       import (
+         "fmt"
+       )
+
+       func main() {
+          a := 1
+          if a == 1 {
+            fmt.Println("a is 1")
+          } else {
+            fmt.Println("a is not 1")
+          }
+       }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+    ControlFlowGraph cfg = functionDeclaration.cfg();
+    assertThat(cfg).isNotNull();
+    assertThat(cfg.blocks()).hasSize(4);
+    Block entry = cfg.entryBlock();
+    assertThat(entry.nodes()).hasSize(2);
+    // a := 1
+    assertThat(entry.nodes().get(0)).isInstanceOf(VariableDeclarationTree.class);
+    // a == 1
+    assertThat(entry.nodes().get(1)).isInstanceOf(BinaryExpressionTree.class);
+    assertThat(entry.successors()).hasSize(2);
+    // fmt.Println("a is 1")
+    Block thenPart = entry.successors().get(0);
+    assertThat(thenPart.nodes()).hasSize(1);
+    assertThat(getStringDescendant(thenPart.nodes().get(0))).contains("a is 1");
+    assertThat(thenPart.successors()).hasSize(1);
+    // fmt.Println("a is not 1")
+    Block elsePart = entry.successors().get(1);
+    assertThat(elsePart.nodes()).hasSize(1);
+    assertThat(getStringDescendant(elsePart.nodes().get(0))).contains("a is not 1");
+    assertThat(elsePart.successors()).hasSize(1);
+
+    Block endBlock = thenPart.successors().get(0);
+    assertThat(endBlock).isSameAs(elsePart.successors().get(0));
+    assertThat(endBlock.successors()).isEmpty();
+    assertThat(endBlock.nodes()).isEmpty();
+  }
+
+  @Test
+  void shouldParseFunctionDeclarationCfgWithSwitchStatements() {
+    Tree tree = TestGoConverter.parse("""
+      package main
+      import (
+        "fmt"
+      )
+      func main() {
+        a := 1
+        switch a {
+        case 1:
+          fmt.Println("a is 1")
+        case 2:
+          fmt.Println("a is 2")
+        default:
+          fmt.Println("a is neither 1 nor 2")
+        }
+      }
+      """);
+    List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
+    assertThat(functionDeclarations).hasSize(1);
+    FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
+    ControlFlowGraph cfg = functionDeclaration.cfg();
+    assertThat(cfg).isNotNull();
+    assertThat(cfg.blocks()).hasSize(7);
+    Block entry = cfg.entryBlock();
+    assertThat(entry.nodes()).hasSize(2);
+    // a := 1
+    assertThat(entry.nodes().get(0)).isInstanceOf(VariableDeclarationTree.class);
+    // switch a
+    assertThat(entry.nodes().get(1)).isInstanceOf(IdentifierTree.class);
+    // CFG for switch is like a chain of if-else statements.
+    assertThat(entry.successors()).hasSize(2);
+    // fmt.Println("a is 1")
+    Block case1 = entry.successors().get(0);
+    assertThat(case1.nodes()).hasSize(1);
+    assertThat(getStringDescendant(case1.nodes().get(0))).contains("a is 1");
+    assertThat(case1.successors()).hasSize(1);
+    // Intermediate node for case 2
+    Block case2Intermediate = entry.successors().get(1);
+    assertThat(case2Intermediate.nodes()).isEmpty();
+    assertThat(case2Intermediate.successors()).hasSize(2);
+    // fmt.Println("a is 2")
+    Block case2 = case2Intermediate.successors().get(0);
+    assertThat(case2.nodes()).hasSize(1);
+    assertThat(getStringDescendant(case2.nodes().get(0))).contains("a is 2");
+    assertThat(case2.successors()).hasSize(1);
+    // Intermediate node for case default
+    Block caseDefaultIntermediate = case2Intermediate.successors().get(1);
+    assertThat(caseDefaultIntermediate.nodes()).isEmpty();
+    assertThat(caseDefaultIntermediate.successors()).hasSize(1);
+    // fmt.Println("a is neither 1 nor 2")
+    Block defaultCase = caseDefaultIntermediate.successors().get(0);
+    assertThat(defaultCase.nodes()).hasSize(1);
+    assertThat(getStringDescendant(defaultCase.nodes().get(0))).contains("a is neither 1 nor 2");
+    assertThat(defaultCase.successors()).hasSize(1);
+
+    // End block
+    Block endBlock = defaultCase.successors().get(0);
+    assertThat(endBlock)
+      .isSameAs(case2.successors().get(0))
+      .isSameAs(defaultCase.successors().get(0));
+    assertThat(endBlock.successors()).isEmpty();
+  }
+
+  @Test
+  void shouldParseFunctionDeclarationCfgWithInnerFunction() {
+    Tree tree = TestGoConverter.parse("""
+       package main
+       import (
+         "fmt"
+       )
+
+      func main() {
+          var counter int = 1
+
+          func(str string) {
+              fmt.Println("Hi", str, "I'm an anonymous function")
+          }("Ricky")
+
+          funcVar := func(str string) {
+              fmt.Println("Hi", str, "I'm an anonymous function assigned to a variable.")
+          }
+
+          funcVar("Bob")
+      }
+      """);
+    List<FunctionDeclarationTree> functionDeclarations = tree.descendants()
+      .filter(FunctionDeclarationTree.class::isInstance)
+      .map(FunctionDeclarationTree.class::cast)
+      .toList();
+    assertThat(functionDeclarations).hasSize(3);
+    // Supporting precisely this code will be the scope of SONARGO-472
+    assertThat(functionDeclarations.get(1).cfg()).isNull();
+    assertThat(functionDeclarations.get(2).cfg()).isNull();
+    FunctionDeclarationTree functionDeclaration = functionDeclarations.get(0);
+    ControlFlowGraph cfg = functionDeclaration.cfg();
+    assertThat(cfg).isNotNull();
+    assertThat(cfg.blocks()).hasSize(1);
+    Block entry = cfg.entryBlock();
+    // Missing variable declaration (see SONARGO-473)
+    assertThat(entry.nodes()).hasSize(3);
+    assertThat(entry.nodes().get(0).children().get(0)).isInstanceOf(FunctionInvocationTree.class);
+    assertThat(entry.nodes().get(1)).isInstanceOf(VariableDeclarationTree.class);
+    assertThat(getStringDescendant(entry.nodes().get(2))).contains("Bob");
+  }
+
+  private Optional<String> getStringDescendant(Tree tree) {
+    return tree.descendants()
+      .filter(StringLiteralTree.class::isInstance)
+      .map(StringLiteralTree.class::cast)
+      .map(StringLiteralTree::content)
+      .findFirst();
   }
 
   private static IdentifierTree getIdentifierByName(FunctionDeclarationTree functionDeclaration, String name) {

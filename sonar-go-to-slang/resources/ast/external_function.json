@@ -25,24 +25,24 @@
     {"@type": "TopLevel", "metaData": "1:0:9:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
-      ]},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
       {"@type": "FunctionDeclaration", "metaData": "4:0::23","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "4:5::21","type":"func()","package":"external_function.go","name":"externalFunction","id":34},"formalParameters":[],"body":
-        null},
+        {"@type": "Identifier", "metaData": "4:5::21","type":"func()","package":"external_function.go","name":"externalFunction","id":34,"__cfgId":3},"formalParameters":[],"cfg":null,"body":
+        null,"__cfgId":5},
       {"@type": "FunctionDeclaration", "metaData": "6:0:8:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "6:5::9","type":"func()","package":"external_function.go","name":"main","id":59},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "6:5::9","type":"func()","package":"external_function.go","name":"main","id":59,"__cfgId":6},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
           {"@type": "Native", "metaData": "7:4::22","nativeKind":"[0](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "7:4::22","memberSelect":
-              {"@type": "Identifier", "metaData": "7:4::20","type":"func()","package":"external_function.go","name":"externalFunction","id":34},"arguments":[]}
-          ]}
-        ]}}
-    ]}
+              {"@type": "Identifier", "metaData": "7:4::20","type":"func()","package":"external_function.go","name":"externalFunction","id":34,"__cfgId":8},"arguments":[],"__cfgId":9}
+          ],"__cfgId":10}
+        ],"__cfgId":11},"__cfgId":1}
+    ],"__cfgId":2}
 } 

@@ -22,25 +22,48 @@ import com.eclipsesource.json.JsonValue;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Deque;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.sonar.go.api.BlockTree;
+import org.sonar.go.api.IdentifierTree;
 import org.sonar.go.api.NativeKind;
 import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.api.cfg.Block;
+import org.sonar.go.api.cfg.ControlFlowGraph;
+import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.go.impl.cfg.BlockImpl;
+import org.sonar.go.impl.cfg.ControlFlowGraphImpl;
+
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.BODY;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.FORMAL_PARAMETERS;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.NAME;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.RECEIVER;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.RETURN_TYPE;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.TYPE_PARAMETERS;
 
 public class DeserializationContext {
+
+  private static final Logger LOG = LoggerFactory.getLogger(DeserializationContext.class);
 
   private static final int MAX_ILLEGAL_ELEMENT_TEXT_LENGTH = 80;
 
   private final PolymorphicConverter polymorphicConverter;
 
   private final Deque<String> jsonPath = new LinkedList<>();
+  private final Map<Integer, Tree> cfgIndexToTree = new HashMap<>();
 
   private TreeMetaDataProvider metaDataProvider = null;
 
@@ -179,7 +202,7 @@ public class DeserializationContext {
     return RangeConverter.resolveToken(metaDataProvider, fieldToNullableString(json, fieldName));
   }
 
-  private <T> T object(JsonValue json, String memberName, Class<T> expectedClass) {
+  private <T extends Tree> T object(JsonValue json, String memberName, Class<T> expectedClass) {
     pushPath(memberName);
     if (!json.isObject()) {
       throw newIllegalMemberException("Unexpected value for Tree", json);
@@ -188,6 +211,90 @@ public class DeserializationContext {
     String jsonType = fieldToString(jsonObject, SerializationContext.TYPE_ATTRIBUTE);
     T object = polymorphicConverter.fromJson(this, jsonType, jsonObject, memberName, expectedClass);
     popPath();
+    int cfgId = jsonObject.getInt("__cfgId", -1);
+    if (cfgId >= 0) {
+      cfgIndexToTree.put(cfgId, object);
+    }
     return object;
+  }
+
+  public FunctionDeclarationTreeImpl functionDeclarationTree(JsonObject json) {
+    Tree returnType = fieldToNullableObject(json, RETURN_TYPE, Tree.class);
+    Tree receiver = fieldToNullableObject(json, RECEIVER, Tree.class);
+    IdentifierTree name = fieldToNullableObject(json, NAME, IdentifierTree.class);
+    List<Tree> formalParameters = fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class);
+    Tree typeParameters = fieldToNullableObject(json, TYPE_PARAMETERS, Tree.class);
+    BlockTree body = fieldToNullableObject(json, BODY, BlockTree.class);
+    // We want to first build the underlying nodes (that will eventually be stored in the map "cfgIndexToTree")
+    // before building the CFG, as it requires the nodes. We don't want to inline the value in the constructor call as it would
+    // add an implicit contract for the parameters order.
+    ControlFlowGraph cfg = controlFlowGraph(json);
+    return new FunctionDeclarationTreeImpl(
+      metaData(json),
+      returnType,
+      receiver,
+      name,
+      formalParameters,
+      typeParameters,
+      body,
+      cfg);
+  }
+
+  @CheckForNull
+  public ControlFlowGraph controlFlowGraph(JsonObject json) {
+    try {
+      List<BlockImpl> mappedBlocks = new ArrayList<>();
+      JsonValue cfgValue = json.get("cfg");
+      if (cfgValue == null || !cfgValue.isObject()) {
+        return null;
+      }
+      JsonObject cfgObject = cfgValue.asObject();
+      JsonValue blocksValue = cfgObject.get("Blocks");
+      if (!blocksValue.isArray()) {
+        return null;
+      }
+      List<JsonObject> blocks = blocksValue.asArray().values().stream()
+        .filter(JsonValue::isObject)
+        .map(JsonValue::asObject)
+        .toList();
+
+      for (JsonObject block : blocks) {
+        JsonValue node = block.get("Node");
+        List<Tree> nodes = Collections.emptyList();
+        if (node.isArray()) {
+          nodes = node.asArray().values().stream()
+            .filter(JsonValue::isNumber)
+            .map(JsonValue::asInt)
+            .map(cfgIndexToTree::get)
+            .filter(Objects::nonNull)
+            .toList();
+        }
+        mappedBlocks.add(
+          new BlockImpl(nodes));
+      }
+
+      // Second pass to set successors
+      for (int i = 0; i < blocks.size(); i++) {
+        JsonObject currentBlock = blocks.get(i);
+        JsonValue successorValue = currentBlock.get("Successors");
+        if (!successorValue.isArray()) {
+          mappedBlocks.get(i).setSuccessors(Collections.emptyList());
+        } else {
+          List<BlockImpl> successors = successorValue.asArray().values().stream()
+            .filter(JsonValue::isNumber)
+            .map(JsonValue::asInt)
+            .map(mappedBlocks::get)
+            .filter(Objects::nonNull)
+            .toList();
+          mappedBlocks.get(i).setSuccessors((List<Block>) (List<? extends Block>) successors);
+        }
+      }
+
+      return new ControlFlowGraphImpl((List<Block>) (List<? extends Block>) mappedBlocks);
+    } catch (Exception e) {
+      // We want to catch any exception when building a CFG, as it is not critical to have one to perform the majority of the analysis.
+      LOG.warn("Error while transferring a CFG.", e);
+    }
+    return null;
   }
 }

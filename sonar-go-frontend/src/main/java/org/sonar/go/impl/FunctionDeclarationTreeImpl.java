@@ -30,6 +30,7 @@ import org.sonar.go.api.TextRange;
 import org.sonar.go.api.Token;
 import org.sonar.go.api.Tree;
 import org.sonar.go.api.TreeMetaData;
+import org.sonar.go.api.cfg.ControlFlowGraph;
 import org.sonar.go.utils.NativeKinds;
 
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
@@ -48,6 +49,8 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   private final List<Tree> children = new ArrayList<>();
   private String receiverName;
   private boolean isReceiverNameCalculated = false;
+  @Nullable
+  private final ControlFlowGraph cfg;
 
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
@@ -56,7 +59,8 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
     @Nullable IdentifierTree name,
     List<Tree> formalParameters,
     @Nullable Tree typeParameters,
-    @Nullable BlockTree body) {
+    @Nullable BlockTree body,
+    @Nullable ControlFlowGraph cfg) {
     super(metaData);
 
     this.returnType = returnType;
@@ -65,6 +69,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
     this.formalParameters = formalParameters;
     this.typeParameters = typeParameters;
     this.body = body;
+    this.cfg = cfg;
 
     if (returnType != null) {
       this.children.add(returnType);
@@ -156,6 +161,11 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
       return bodyRange;
     }
     return TextRanges.merge(tokenRangesBeforeBody);
+  }
+
+  @Override
+  public ControlFlowGraph cfg() {
+    return cfg;
   }
 
   @Override

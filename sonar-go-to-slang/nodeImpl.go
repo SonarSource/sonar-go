@@ -151,6 +151,8 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
+	slangField["cfg"] = t.extractCfg(decl)
+
 	return t.createNode(decl, children, fieldName+"(FuncDecl)", "FunctionDeclaration", slangField)
 }
 
@@ -505,7 +507,7 @@ func (t *SlangMapper) mapLeftRightHandSide(exprs []ast.Expr) *Node {
 		}
 		slangField := make(map[string]interface{})
 		slangField["children"] = handSide
-		handSideWrapper = t.createNodeWithChildren(handSide, "LeftRightHandSide", slangField)
+		handSideWrapper = t.createNodeWithChildren(nil, handSide, "LeftRightHandSide", slangField)
 	} else {
 		handSideWrapper = t.mapExpr(exprs[0], "[0]")
 	}

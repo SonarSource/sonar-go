@@ -47,7 +47,7 @@ class TreePrinterTest {
     Tree literal1 = new LiteralTreeImpl(null, "42");
     Tree binaryExp = new BinaryExpressionTreeImpl(null, BinaryExpressionTree.Operator.PLUS, null, var1, literal1);
     Tree assignExp = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, x1, binaryExp);
-    Tree function = new FunctionDeclarationTreeImpl(null, null, null, null, emptyList(), null, null);
+    Tree function = new FunctionDeclarationTreeImpl(null, null, null, null, emptyList(), null, null, null);
     assertThat(TreePrinter.tree2string(Arrays.asList(assignExp, function))).isEqualTo("""
       AssignmentExpressionTreeImpl EQUAL
         IdentifierTreeImpl x1

@@ -356,52 +356,52 @@
     {"@type": "TopLevel", "metaData": "1:0:91:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
-      ]},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
       {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "3:7::12","path":
           {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
-          null}
-      ]},
+          null,"__cfgId":3}
+      ],"__cfgId":4},
       {"@type": "ClassDeclaration", "metaData": "5:0::17","identifier":"5:5::6","classTree":
         {"@type": "Native", "metaData": "5:0::17","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "5:5::6","type":"generics.go.M[T any]","package":"generics.go","name":"M","id":34},
+          {"@type": "Identifier", "metaData": "5:5::6","type":"generics.go.M[T any]","package":"generics.go","name":"M","id":34,"__cfgId":5},
           {"@type": "Native", "metaData": "5:6::13","nativeKind":"TypeParams(FieldList)","children":[
             {"@type": "Native", "metaData": "5:6::7","nativeKind":"Opening"},
             {"@type": "Native", "metaData": "5:7::12","nativeKind":"[0](Field)","children":[
               {"@type": "Native", "metaData": "5:7::8","nativeKind":"Names([]*Ident)","children":[
-                {"@type": "Identifier", "metaData": "5:7::8","type":"T","package":"generics.go","name":"T","id":36}
+                {"@type": "Identifier", "metaData": "5:7::8","type":"T","package":"generics.go","name":"T","id":36,"__cfgId":6}
               ]},
-              {"@type": "Identifier", "metaData": "5:9::12","type":"any","package":"UNKNOWN","name":"any","id":0}
-            ]},
+              {"@type": "Identifier", "metaData": "5:9::12","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":7}
+            ],"__cfgId":8},
             {"@type": "Native", "metaData": "5:12::13","nativeKind":"Closing"}
-          ]},
+          ],"__cfgId":9},
           {"@type": "ArrayType", "metaData": "5:14::17","length":null,"element":
-            {"@type": "Identifier", "metaData": "5:16::17","type":"T","package":"generics.go","name":"T","id":36}}
-        ]}},
+            {"@type": "Identifier", "metaData": "5:16::17","type":"T","package":"generics.go","name":"T","id":36,"__cfgId":10},"__cfgId":11}
+        ],"__cfgId":12},"__cfgId":13},
       {"@type": "FunctionDeclaration", "metaData": "7:0:8:1","typeParameters":
         {"@type": "Native", "metaData": "7:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "7:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "7:8::13","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "7:8::9","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "7:8::9","type":"P","package":"generics.go","name":"P","id":56}
+              {"@type": "Identifier", "metaData": "7:8::9","type":"P","package":"generics.go","name":"P","id":56,"__cfgId":15}
             ]},
-            {"@type": "Identifier", "metaData": "7:10::13","type":"any","package":"UNKNOWN","name":"any","id":0}
-          ]},
+            {"@type": "Identifier", "metaData": "7:10::13","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":16}
+          ],"__cfgId":17},
           {"@type": "Native", "metaData": "7:13::14","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":18},"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::7","type":"func[P any]()","package":"generics.go","name":"f1","id":53},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "7:17:8:1","statementOrExpressions":[]}},
+        {"@type": "Identifier", "metaData": "7:5::7","type":"func[P any]()","package":"generics.go","name":"f1","id":53,"__cfgId":14},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "7:17:8:1","statementOrExpressions":[],"__cfgId":20},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "9:0:10:1","typeParameters":
         {"@type": "Native", "metaData": "9:7::38","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "9:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "9:8::37","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "9:8::9","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "9:8::9","type":"S","package":"generics.go","name":"S","id":77}
+              {"@type": "Identifier", "metaData": "9:8::9","type":"S","package":"generics.go","name":"S","id":77,"__cfgId":3}
             ]},
             {"@type": "Native", "metaData": "9:10::37","nativeKind":"Type(InterfaceType)","children":[
               {"@type": "Native", "metaData": "9:10::19","nativeKind":"Interface"},
@@ -409,421 +409,421 @@
                 {"@type": "Native", "metaData": "9:19::20","nativeKind":"Opening"},
                 {"@type": "Native", "metaData": "9:21::35","nativeKind":"[0](Field)","children":[
                   {"@type": "BinaryExpression", "metaData": "9:21::35","rightOperand":
-                    {"@type": "Identifier", "metaData": "9:29::35","type":"string","package":"UNKNOWN","name":"string","id":0},"operatorToken":"9:28::29","operator":"BITWISE_OR","leftOperand":
+                    {"@type": "Identifier", "metaData": "9:29::35","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7},"operatorToken":"9:28::29","operator":"BITWISE_OR","leftOperand":
                     {"@type": "Native", "metaData": "9:21::28","nativeKind":"operand(UnaryExpr)","children":[
                       {"@type": "Native", "metaData": "9:21::22","nativeKind":"Op"},
                       {"@type": "ArrayType", "metaData": "9:22::28","length":null,"element":
-                        {"@type": "Identifier", "metaData": "9:24::28","type":"byte","package":"UNKNOWN","name":"byte","id":0}}
-                    ]}}
-                ]},
+                        {"@type": "Identifier", "metaData": "9:24::28","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":4},"__cfgId":5}
+                    ],"__cfgId":6},"__cfgId":8}
+                ],"__cfgId":9},
                 {"@type": "Native", "metaData": "9:36::37","nativeKind":"Closing"}
-              ]}
-            ]}
-          ]},
+              ],"__cfgId":10}
+            ],"__cfgId":11}
+          ],"__cfgId":12},
           {"@type": "Native", "metaData": "9:37::38","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":13},"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::7","type":"func[S interface{~[]byte | string}]()","package":"generics.go","name":"f2","id":74},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "9:41:10:1","statementOrExpressions":[]}},
+        {"@type": "Identifier", "metaData": "9:5::7","type":"func[S interface{~[]byte | string}]()","package":"generics.go","name":"f2","id":74,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "9:41:10:1","statementOrExpressions":[],"__cfgId":15},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "11:0:12:1","typeParameters":
         {"@type": "Native", "metaData": "11:7::22","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "11:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "11:8::14","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "11:8::9","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "11:8::9","type":"S","package":"generics.go","name":"S","id":122}
+              {"@type": "Identifier", "metaData": "11:8::9","type":"S","package":"generics.go","name":"S","id":122,"__cfgId":3}
             ]},
             {"@type": "Native", "metaData": "11:10::14","nativeKind":"Type(UnaryExpr)","children":[
               {"@type": "Native", "metaData": "11:10::11","nativeKind":"Op"},
               {"@type": "ArrayType", "metaData": "11:11::14","length":null,"element":
-                {"@type": "Identifier", "metaData": "11:13::14","type":"E","package":"generics.go","name":"E","id":130}}
-            ]}
-          ]},
+                {"@type": "Identifier", "metaData": "11:13::14","type":"E","package":"generics.go","name":"E","id":130,"__cfgId":4},"__cfgId":5}
+            ],"__cfgId":6}
+          ],"__cfgId":7},
           {"@type": "Native", "metaData": "11:14::15"},
           {"@type": "Native", "metaData": "11:16::21","nativeKind":"[1](Field)","children":[
             {"@type": "Native", "metaData": "11:16::17","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "11:16::17","type":"E","package":"generics.go","name":"E","id":130}
+              {"@type": "Identifier", "metaData": "11:16::17","type":"E","package":"generics.go","name":"E","id":130,"__cfgId":8}
             ]},
-            {"@type": "Identifier", "metaData": "11:18::21","type":"any","package":"UNKNOWN","name":"any","id":0}
-          ]},
+            {"@type": "Identifier", "metaData": "11:18::21","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":9}
+          ],"__cfgId":10},
           {"@type": "Native", "metaData": "11:21::22","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":11},"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::7","type":"func[S ~[]E, E any]()","package":"generics.go","name":"f3","id":119},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "11:25:12:1","statementOrExpressions":[]}},
+        {"@type": "Identifier", "metaData": "11:5::7","type":"func[S ~[]E, E any]()","package":"generics.go","name":"f3","id":119,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "11:25:12:1","statementOrExpressions":[],"__cfgId":13},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "13:0:14:1","typeParameters":
         {"@type": "Native", "metaData": "13:7::17","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "13:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "13:8::16","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "13:8::9","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "13:8::9","type":"P","package":"generics.go","name":"P","id":151}
+              {"@type": "Identifier", "metaData": "13:8::9","type":"P","package":"generics.go","name":"P","id":151,"__cfgId":3}
             ]},
             {"@type": "Native", "metaData": "13:10::16","nativeKind":"Type(IndexExpr)","children":[
-              {"@type": "Identifier", "metaData": "13:10::11","type":"generics.go.M[T any]","package":"generics.go","name":"M","id":34},
+              {"@type": "Identifier", "metaData": "13:10::11","type":"generics.go.M[T any]","package":"generics.go","name":"M","id":34,"__cfgId":4},
               {"@type": "Native", "metaData": "13:11::12","nativeKind":"Lbrack"},
-              {"@type": "Identifier", "metaData": "13:12::15","type":"int","package":"UNKNOWN","name":"int","id":0},
+              {"@type": "Identifier", "metaData": "13:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":5},
               {"@type": "Native", "metaData": "13:15::16","nativeKind":"Rbrack"}
-            ]}
-          ]},
+            ],"__cfgId":6}
+          ],"__cfgId":7},
           {"@type": "Native", "metaData": "13:16::17","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":8},"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "13:5::7","type":"func[P generics.go.M[int]]()","package":"generics.go","name":"f4","id":148},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "13:20:14:1","statementOrExpressions":[]}},
+        {"@type": "Identifier", "metaData": "13:5::7","type":"func[P generics.go.M[int]]()","package":"generics.go","name":"f4","id":148,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "13:20:14:1","statementOrExpressions":[],"__cfgId":10},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "15:0:16:1","typeParameters":
         {"@type": "Native", "metaData": "15:7::14","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "15:7::8","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "15:8::13","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "15:8::9","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "PlaceHolder", "metaData": "15:8::9","placeHolderToken":"15:8::9"}
+              {"@type": "PlaceHolder", "metaData": "15:8::9","placeHolderToken":"15:8::9","__cfgId":3}
             ]},
-            {"@type": "Identifier", "metaData": "15:10::13","type":"any","package":"UNKNOWN","name":"any","id":0}
-          ]},
+            {"@type": "Identifier", "metaData": "15:10::13","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":4}
+          ],"__cfgId":5},
           {"@type": "Native", "metaData": "15:13::14","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":6},"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "15:5::7","type":"func[_ any]()","package":"generics.go","name":"f5","id":172},"formalParameters":[],"body":
-        {"@type": "Block", "metaData": "15:17:16:1","statementOrExpressions":[]}},
+        {"@type": "Identifier", "metaData": "15:5::7","type":"func[_ any]()","package":"generics.go","name":"f5","id":172,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "15:17:16:1","statementOrExpressions":[],"__cfgId":8},"__cfgId":1},
       {"@type": "ClassDeclaration", "metaData": "20:0:22:1","identifier":"20:5::11","classTree":
         {"@type": "Native", "metaData": "20:0:22:1","nativeKind":"[7](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "20:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "20:5::11","type":"generics.go.Number","package":"generics.go","name":"Number","id":251},
+          {"@type": "Identifier", "metaData": "20:5::11","type":"generics.go.Number","package":"generics.go","name":"Number","id":251,"__cfgId":2},
           {"@type": "Native", "metaData": "20:12:22:1","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "20:12::21","nativeKind":"Interface"},
             {"@type": "Native", "metaData": "20:22:22:1","nativeKind":"Methods(FieldList)","children":[
               {"@type": "Native", "metaData": "20:22::23","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "21:4::19","nativeKind":"[0](Field)","children":[
                 {"@type": "BinaryExpression", "metaData": "21:4::19","rightOperand":
-                  {"@type": "Identifier", "metaData": "21:12::19","type":"float64","package":"UNKNOWN","name":"float64","id":0},"operatorToken":"21:10::11","operator":"BITWISE_OR","leftOperand":
-                  {"@type": "Identifier", "metaData": "21:4::9","type":"int64","package":"UNKNOWN","name":"int64","id":0}}
-              ]},
+                  {"@type": "Identifier", "metaData": "21:12::19","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":4},"operatorToken":"21:10::11","operator":"BITWISE_OR","leftOperand":
+                  {"@type": "Identifier", "metaData": "21:4::9","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":3},"__cfgId":5}
+              ],"__cfgId":6},
               {"@type": "Native", "metaData": "22:0::1","nativeKind":"Closing"}
-            ]}
-          ]}
-        ]}},
+            ],"__cfgId":7}
+          ],"__cfgId":8}
+        ],"__cfgId":9},"__cfgId":10},
       {"@type": "FunctionDeclaration", "metaData": "24:0:52:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "24:5::9","type":"func()","package":"generics.go","name":"main","id":298},"formalParameters":[],"body":
+        {"@type": "Identifier", "metaData": "24:5::9","type":"func()","package":"generics.go","name":"main","id":298,"__cfgId":11},"formalParameters":[],"cfg":{"Blocks":[{"Node":[20,28,39,56,67,78,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "24:12:52:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:4:29:5","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "26:12:29:5","type":
               {"@type": "Native", "metaData": "26:12::28","nativeKind":"Type(MapType)","children":[
                 {"@type": "Native", "metaData": "26:12::15","nativeKind":"Map"},
                 {"@type": "Native", "metaData": "26:15::16"},
-                {"@type": "Identifier", "metaData": "26:16::22","type":"string","package":"UNKNOWN","name":"string","id":0},
+                {"@type": "Identifier", "metaData": "26:16::22","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":14},
                 {"@type": "Native", "metaData": "26:22::23"},
-                {"@type": "Identifier", "metaData": "26:23::28","type":"int64","package":"UNKNOWN","name":"int64","id":0}
-              ]},"elements":[
+                {"@type": "Identifier", "metaData": "26:23::28","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":15}
+              ],"__cfgId":16},"elements":[
               {"@type": "KeyValue", "metaData": "27:8::19","value":
                 {"@type": "IntegerLiteral", "metaData": "27:17::19","value":"34"},"key":
-                {"@type": "StringLiteral", "metaData": "27:8::15","value":"\"first\"","content":"first"}},
+                {"@type": "StringLiteral", "metaData": "27:8::15","value":"\"first\"","content":"first"},"__cfgId":17},
               {"@type": "KeyValue", "metaData": "28:8::20","value":
                 {"@type": "IntegerLiteral", "metaData": "28:18::20","value":"12"},"key":
-                {"@type": "StringLiteral", "metaData": "28:8::16","value":"\"second\"","content":"second"}}
-            ]}
+                {"@type": "StringLiteral", "metaData": "28:8::16","value":"\"second\"","content":"second"},"__cfgId":18}
+            ],"__cfgId":19}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "26:4::8","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358}
-          ]},
+            {"@type": "Identifier", "metaData": "26:4::8","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":13}
+          ],"__cfgId":20},
           {"@type": "VariableDeclaration", "metaData": "32:4:35:5","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "32:14:35:5","type":
               {"@type": "Native", "metaData": "32:14::32","nativeKind":"Type(MapType)","children":[
                 {"@type": "Native", "metaData": "32:14::17","nativeKind":"Map"},
                 {"@type": "Native", "metaData": "32:17::18"},
-                {"@type": "Identifier", "metaData": "32:18::24","type":"string","package":"UNKNOWN","name":"string","id":0},
+                {"@type": "Identifier", "metaData": "32:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":22},
                 {"@type": "Native", "metaData": "32:24::25"},
-                {"@type": "Identifier", "metaData": "32:25::32","type":"float64","package":"UNKNOWN","name":"float64","id":0}
-              ]},"elements":[
+                {"@type": "Identifier", "metaData": "32:25::32","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":23}
+              ],"__cfgId":24},"elements":[
               {"@type": "KeyValue", "metaData": "33:8::22","value":
                 {"@type": "FloatLiteral", "metaData": "33:17::22","value":"35.98"},"key":
-                {"@type": "StringLiteral", "metaData": "33:8::15","value":"\"first\"","content":"first"}},
+                {"@type": "StringLiteral", "metaData": "33:8::15","value":"\"first\"","content":"first"},"__cfgId":25},
               {"@type": "KeyValue", "metaData": "34:8::23","value":
                 {"@type": "FloatLiteral", "metaData": "34:18::23","value":"26.99"},"key":
-                {"@type": "StringLiteral", "metaData": "34:8::16","value":"\"second\"","content":"second"}}
-            ]}
+                {"@type": "StringLiteral", "metaData": "34:8::16","value":"\"second\"","content":"second"},"__cfgId":26}
+            ],"__cfgId":27}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "32:4::10","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483}
-          ]},
+            {"@type": "Identifier", "metaData": "32:4::10","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":21}
+          ],"__cfgId":28},
           {"@type": "Native", "metaData": "37:4:39:26","nativeKind":"[2](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "37:4:39:26","memberSelect":
               {"@type": "MemberSelect", "metaData": "37:4::14","identifier":
-                {"@type": "Identifier", "metaData": "37:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0},"expression":
-                {"@type": "Identifier", "metaData": "37:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22}},"arguments":[
+                {"@type": "Identifier", "metaData": "37:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":30},"expression":
+                {"@type": "Identifier", "metaData": "37:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":29},"__cfgId":31},"arguments":[
               {"@type": "StringLiteral", "metaData": "37:15::46","value":"\"Non-Generic Sums: %v and %v\\n\"","content":"Non-Generic Sums: %v and %v\\n"},
               {"@type": "FunctionInvocation", "metaData": "38:8::21","memberSelect":
-                {"@type": "Identifier", "metaData": "38:8::15","type":"func(m map[string]int64) int64","package":"generics.go","name":"SumInts","id":1108},"arguments":[
-                {"@type": "Identifier", "metaData": "38:16::20","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358}
-              ]},
+                {"@type": "Identifier", "metaData": "38:8::15","type":"func(m map[string]int64) int64","package":"generics.go","name":"SumInts","id":1108,"__cfgId":32},"arguments":[
+                {"@type": "Identifier", "metaData": "38:16::20","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":33}
+              ],"__cfgId":34},
               {"@type": "FunctionInvocation", "metaData": "39:8::25","memberSelect":
-                {"@type": "Identifier", "metaData": "39:8::17","type":"func(m map[string]float64) float64","package":"generics.go","name":"SumFloats","id":1272},"arguments":[
-                {"@type": "Identifier", "metaData": "39:18::24","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483}
-              ]}
-            ]}
-          ]},
+                {"@type": "Identifier", "metaData": "39:8::17","type":"func(m map[string]float64) float64","package":"generics.go","name":"SumFloats","id":1272,"__cfgId":35},"arguments":[
+                {"@type": "Identifier", "metaData": "39:18::24","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":36}
+              ],"__cfgId":37}
+            ],"__cfgId":38}
+          ],"__cfgId":39},
           {"@type": "Native", "metaData": "41:4:43:49","nativeKind":"[3](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "41:4:43:49","memberSelect":
               {"@type": "MemberSelect", "metaData": "41:4::14","identifier":
-                {"@type": "Identifier", "metaData": "41:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0},"expression":
-                {"@type": "Identifier", "metaData": "41:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22}},"arguments":[
+                {"@type": "Identifier", "metaData": "41:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":41},"expression":
+                {"@type": "Identifier", "metaData": "41:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":40},"__cfgId":42},"arguments":[
               {"@type": "StringLiteral", "metaData": "41:15::42","value":"\"Generic Sums: %v and %v\\n\"","content":"Generic Sums: %v and %v\\n"},
               {"@type": "FunctionInvocation", "metaData": "42:8::44","memberSelect":
                 {"@type": "Native", "metaData": "42:8::38","nativeKind":"Fun(IndexListExpr)","children":[
-                  {"@type": "Identifier", "metaData": "42:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500},
+                  {"@type": "Identifier", "metaData": "42:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":43},
                   {"@type": "Native", "metaData": "42:23::24","nativeKind":"Lbrack"},
-                  {"@type": "Identifier", "metaData": "42:24::30","type":"string","package":"UNKNOWN","name":"string","id":0},
+                  {"@type": "Identifier", "metaData": "42:24::30","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":44},
                   {"@type": "Native", "metaData": "42:30::31"},
-                  {"@type": "Identifier", "metaData": "42:32::37","type":"int64","package":"UNKNOWN","name":"int64","id":0},
+                  {"@type": "Identifier", "metaData": "42:32::37","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":45},
                   {"@type": "Native", "metaData": "42:37::38","nativeKind":"Rbrack"}
-                ]},"arguments":[
-                {"@type": "Identifier", "metaData": "42:39::43","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358}
-              ]},
+                ],"__cfgId":46},"arguments":[
+                {"@type": "Identifier", "metaData": "42:39::43","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":47}
+              ],"__cfgId":48},
               {"@type": "FunctionInvocation", "metaData": "43:8::48","memberSelect":
                 {"@type": "Native", "metaData": "43:8::40","nativeKind":"Fun(IndexListExpr)","children":[
-                  {"@type": "Identifier", "metaData": "43:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500},
+                  {"@type": "Identifier", "metaData": "43:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":49},
                   {"@type": "Native", "metaData": "43:23::24","nativeKind":"Lbrack"},
-                  {"@type": "Identifier", "metaData": "43:24::30","type":"string","package":"UNKNOWN","name":"string","id":0},
+                  {"@type": "Identifier", "metaData": "43:24::30","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":50},
                   {"@type": "Native", "metaData": "43:30::31"},
-                  {"@type": "Identifier", "metaData": "43:32::39","type":"float64","package":"UNKNOWN","name":"float64","id":0},
+                  {"@type": "Identifier", "metaData": "43:32::39","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":51},
                   {"@type": "Native", "metaData": "43:39::40","nativeKind":"Rbrack"}
-                ]},"arguments":[
-                {"@type": "Identifier", "metaData": "43:41::47","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483}
-              ]}
-            ]}
-          ]},
+                ],"__cfgId":52},"arguments":[
+                {"@type": "Identifier", "metaData": "43:41::47","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":53}
+              ],"__cfgId":54}
+            ],"__cfgId":55}
+          ],"__cfgId":56},
           {"@type": "Native", "metaData": "45:4:47:32","nativeKind":"[4](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "45:4:47:32","memberSelect":
               {"@type": "MemberSelect", "metaData": "45:4::14","identifier":
-                {"@type": "Identifier", "metaData": "45:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0},"expression":
-                {"@type": "Identifier", "metaData": "45:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22}},"arguments":[
+                {"@type": "Identifier", "metaData": "45:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":58},"expression":
+                {"@type": "Identifier", "metaData": "45:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":57},"__cfgId":59},"arguments":[
               {"@type": "StringLiteral", "metaData": "45:15::68","value":"\"Generic Sums, type parameters inferred: %v and %v\\n\"","content":"Generic Sums, type parameters inferred: %v and %v\\n"},
               {"@type": "FunctionInvocation", "metaData": "46:8::29","memberSelect":
-                {"@type": "Identifier", "metaData": "46:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500},"arguments":[
-                {"@type": "Identifier", "metaData": "46:24::28","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358}
-              ]},
+                {"@type": "Identifier", "metaData": "46:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":60},"arguments":[
+                {"@type": "Identifier", "metaData": "46:24::28","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":61}
+              ],"__cfgId":62},
               {"@type": "FunctionInvocation", "metaData": "47:8::31","memberSelect":
-                {"@type": "Identifier", "metaData": "47:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500},"arguments":[
-                {"@type": "Identifier", "metaData": "47:24::30","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483}
-              ]}
-            ]}
-          ]},
+                {"@type": "Identifier", "metaData": "47:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":63},"arguments":[
+                {"@type": "Identifier", "metaData": "47:24::30","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":64}
+              ],"__cfgId":65}
+            ],"__cfgId":66}
+          ],"__cfgId":67},
           {"@type": "Native", "metaData": "49:4:51:27","nativeKind":"[5](ExprStmt)","children":[
             {"@type": "FunctionInvocation", "metaData": "49:4:51:27","memberSelect":
               {"@type": "MemberSelect", "metaData": "49:4::14","identifier":
-                {"@type": "Identifier", "metaData": "49:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0},"expression":
-                {"@type": "Identifier", "metaData": "49:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22}},"arguments":[
+                {"@type": "Identifier", "metaData": "49:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":69},"expression":
+                {"@type": "Identifier", "metaData": "49:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":68},"__cfgId":70},"arguments":[
               {"@type": "StringLiteral", "metaData": "49:15::58","value":"\"Generic Sums with Constraint: %v and %v\\n\"","content":"Generic Sums with Constraint: %v and %v\\n"},
               {"@type": "FunctionInvocation", "metaData": "50:8::24","memberSelect":
-                {"@type": "Identifier", "metaData": "50:8::18","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740},"arguments":[
-                {"@type": "Identifier", "metaData": "50:19::23","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358}
-              ]},
+                {"@type": "Identifier", "metaData": "50:8::18","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740,"__cfgId":71},"arguments":[
+                {"@type": "Identifier", "metaData": "50:19::23","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":72}
+              ],"__cfgId":73},
               {"@type": "FunctionInvocation", "metaData": "51:8::26","memberSelect":
-                {"@type": "Identifier", "metaData": "51:8::18","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740},"arguments":[
-                {"@type": "Identifier", "metaData": "51:19::25","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483}
-              ]}
-            ]}
-          ]}
-        ]}},
+                {"@type": "Identifier", "metaData": "51:8::18","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740,"__cfgId":74},"arguments":[
+                {"@type": "Identifier", "metaData": "51:19::25","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":75}
+              ],"__cfgId":76}
+            ],"__cfgId":77}
+          ],"__cfgId":78}
+        ],"__cfgId":79},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "55:0:61:1","typeParameters":
         null,"returnType":
         {"@type": "Native", "metaData": "55:33::38","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "55:33::38","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "55:33::38","type":"int64","package":"UNKNOWN","name":"int64","id":0}
-          ]}
-        ]},"receiver":
+            {"@type": "Identifier", "metaData": "55:33::38","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":10}
+          ],"__cfgId":11}
+        ],"__cfgId":12},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "55:5::12","type":"func(m map[string]int64) int64","package":"generics.go","name":"SumInts","id":1108},"formalParameters":[
+        {"@type": "Identifier", "metaData": "55:5::12","type":"func(m map[string]int64) int64","package":"generics.go","name":"SumInts","id":1108,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "55:13::31","type":
           {"@type": "Native", "metaData": "55:15::31","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "55:15::18","nativeKind":"Map"},
             {"@type": "Native", "metaData": "55:18::19"},
-            {"@type": "Identifier", "metaData": "55:19::25","type":"string","package":"UNKNOWN","name":"string","id":0},
+            {"@type": "Identifier", "metaData": "55:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
             {"@type": "Native", "metaData": "55:25::26"},
-            {"@type": "Identifier", "metaData": "55:26::31","type":"int64","package":"UNKNOWN","name":"int64","id":0}
-          ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "55:13::14","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116},"defaultValue":null}
-      ],"body":
+            {"@type": "Identifier", "metaData": "55:26::31","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":5}
+          ],"__cfgId":6},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "55:13::14","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116,"__cfgId":3},"defaultValue":null,"__cfgId":7}
+      ],"cfg":{"Blocks":[{"Node":[0,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "55:39:61:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "56:4::15","type":
-            {"@type": "Identifier", "metaData": "56:10::15","type":"int64","package":"UNKNOWN","name":"int64","id":0},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "56:8::9","type":"int64","package":"UNKNOWN","name":"s","id":1152}
-          ]},
+            {"@type": "Identifier", "metaData": "56:10::15","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":14},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "56:8::9","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":13}
+          ],"__cfgId":15},
           {"@type": "Loop", "metaData": "57:4:59:5","kind":"FOR","keyword":"57:4::7","condition":
             {"@type": "Native", "metaData": "57:8::23","nativeKind":"RangeHeader","children":[
-              {"@type": "PlaceHolder", "metaData": "57:8::9","placeHolderToken":"57:8::9"},
+              {"@type": "PlaceHolder", "metaData": "57:8::9","placeHolderToken":"57:8::9","__cfgId":16},
               {"@type": "Native", "metaData": "57:9::10"},
-              {"@type": "Identifier", "metaData": "57:11::12","type":"int64","package":"UNKNOWN","name":"v","id":1171},
+              {"@type": "Identifier", "metaData": "57:11::12","type":"int64","package":"UNKNOWN","name":"v","id":1171,"__cfgId":17},
               {"@type": "Native", "metaData": "57:13::15","nativeKind":"Tok"},
               {"@type": "Native", "metaData": "57:16::21"},
-              {"@type": "Identifier", "metaData": "57:22::23","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116}
+              {"@type": "Identifier", "metaData": "57:22::23","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116,"__cfgId":18}
             ]},"body":
             {"@type": "Block", "metaData": "57:24:59:5","statementOrExpressions":[
               {"@type": "AssignmentExpression", "metaData": "58:8::14","statementOrExpression":
-                {"@type": "Identifier", "metaData": "58:13::14","type":"int64","package":"UNKNOWN","name":"v","id":1171},"operator":"PLUS_EQUAL","leftHandSide":
-                {"@type": "Identifier", "metaData": "58:8::9","type":"int64","package":"UNKNOWN","name":"s","id":1152}}
-            ]}},
+                {"@type": "Identifier", "metaData": "58:13::14","type":"int64","package":"UNKNOWN","name":"v","id":1171,"__cfgId":20},"operator":"PLUS_EQUAL","leftHandSide":
+                {"@type": "Identifier", "metaData": "58:8::9","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":19},"__cfgId":21}
+            ],"__cfgId":22},"__cfgId":23},
           {"@type": "Return", "metaData": "60:4::12","keyword":"60:4::10","body":
-            {"@type": "Identifier", "metaData": "60:11::12","type":"int64","package":"UNKNOWN","name":"s","id":1152}}
-        ]}},
+            {"@type": "Identifier", "metaData": "60:11::12","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":24},"__cfgId":25}
+        ],"__cfgId":26},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "64:0:70:1","typeParameters":
         null,"returnType":
         {"@type": "Native", "metaData": "64:37::44","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "64:37::44","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "64:37::44","type":"float64","package":"UNKNOWN","name":"float64","id":0}
-          ]}
-        ]},"receiver":
+            {"@type": "Identifier", "metaData": "64:37::44","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":10}
+          ],"__cfgId":11}
+        ],"__cfgId":12},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "64:5::14","type":"func(m map[string]float64) float64","package":"generics.go","name":"SumFloats","id":1272},"formalParameters":[
+        {"@type": "Identifier", "metaData": "64:5::14","type":"func(m map[string]float64) float64","package":"generics.go","name":"SumFloats","id":1272,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:15::35","type":
           {"@type": "Native", "metaData": "64:17::35","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "64:17::20","nativeKind":"Map"},
             {"@type": "Native", "metaData": "64:20::21"},
-            {"@type": "Identifier", "metaData": "64:21::27","type":"string","package":"UNKNOWN","name":"string","id":0},
+            {"@type": "Identifier", "metaData": "64:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
             {"@type": "Native", "metaData": "64:27::28"},
-            {"@type": "Identifier", "metaData": "64:28::35","type":"float64","package":"UNKNOWN","name":"float64","id":0}
-          ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "64:15::16","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282},"defaultValue":null}
-      ],"body":
+            {"@type": "Identifier", "metaData": "64:28::35","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":5}
+          ],"__cfgId":6},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "64:15::16","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282,"__cfgId":3},"defaultValue":null,"__cfgId":7}
+      ],"cfg":{"Blocks":[{"Node":[0,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "64:45:70:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "65:4::17","type":
-            {"@type": "Identifier", "metaData": "65:10::17","type":"float64","package":"UNKNOWN","name":"float64","id":0},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "65:8::9","type":"float64","package":"UNKNOWN","name":"s","id":1322}
-          ]},
+            {"@type": "Identifier", "metaData": "65:10::17","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":14},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "65:8::9","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":13}
+          ],"__cfgId":15},
           {"@type": "Loop", "metaData": "66:4:68:5","kind":"FOR","keyword":"66:4::7","condition":
             {"@type": "Native", "metaData": "66:8::23","nativeKind":"RangeHeader","children":[
-              {"@type": "PlaceHolder", "metaData": "66:8::9","placeHolderToken":"66:8::9"},
+              {"@type": "PlaceHolder", "metaData": "66:8::9","placeHolderToken":"66:8::9","__cfgId":16},
               {"@type": "Native", "metaData": "66:9::10"},
-              {"@type": "Identifier", "metaData": "66:11::12","type":"float64","package":"UNKNOWN","name":"v","id":1343},
+              {"@type": "Identifier", "metaData": "66:11::12","type":"float64","package":"UNKNOWN","name":"v","id":1343,"__cfgId":17},
               {"@type": "Native", "metaData": "66:13::15","nativeKind":"Tok"},
               {"@type": "Native", "metaData": "66:16::21"},
-              {"@type": "Identifier", "metaData": "66:22::23","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282}
+              {"@type": "Identifier", "metaData": "66:22::23","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282,"__cfgId":18}
             ]},"body":
             {"@type": "Block", "metaData": "66:24:68:5","statementOrExpressions":[
               {"@type": "AssignmentExpression", "metaData": "67:8::14","statementOrExpression":
-                {"@type": "Identifier", "metaData": "67:13::14","type":"float64","package":"UNKNOWN","name":"v","id":1343},"operator":"PLUS_EQUAL","leftHandSide":
-                {"@type": "Identifier", "metaData": "67:8::9","type":"float64","package":"UNKNOWN","name":"s","id":1322}}
-            ]}},
+                {"@type": "Identifier", "metaData": "67:13::14","type":"float64","package":"UNKNOWN","name":"v","id":1343,"__cfgId":20},"operator":"PLUS_EQUAL","leftHandSide":
+                {"@type": "Identifier", "metaData": "67:8::9","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":19},"__cfgId":21}
+            ],"__cfgId":22},"__cfgId":23},
           {"@type": "Return", "metaData": "69:4::12","keyword":"69:4::10","body":
-            {"@type": "Identifier", "metaData": "69:11::12","type":"float64","package":"UNKNOWN","name":"s","id":1322}}
-        ]}},
+            {"@type": "Identifier", "metaData": "69:11::12","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":24},"__cfgId":25}
+        ],"__cfgId":26},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "74:0:80:1","typeParameters":
         {"@type": "Native", "metaData": "74:20::53","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "74:20::21","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "74:21::33","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "74:21::22","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "74:21::22","type":"K","package":"generics.go","name":"K","id":1516}
+              {"@type": "Identifier", "metaData": "74:21::22","type":"K","package":"generics.go","name":"K","id":1516,"__cfgId":3}
             ]},
-            {"@type": "Identifier", "metaData": "74:23::33","type":"comparable","package":"UNKNOWN","name":"comparable","id":0}
-          ]},
+            {"@type": "Identifier", "metaData": "74:23::33","type":"comparable","package":"UNKNOWN","name":"comparable","id":0,"__cfgId":4}
+          ],"__cfgId":5},
           {"@type": "Native", "metaData": "74:33::34"},
           {"@type": "Native", "metaData": "74:35::52","nativeKind":"[1](Field)","children":[
             {"@type": "Native", "metaData": "74:35::36","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "74:35::36","type":"V","package":"generics.go","name":"V","id":1530}
+              {"@type": "Identifier", "metaData": "74:35::36","type":"V","package":"generics.go","name":"V","id":1530,"__cfgId":6}
             ]},
             {"@type": "BinaryExpression", "metaData": "74:37::52","rightOperand":
-              {"@type": "Identifier", "metaData": "74:45::52","type":"float64","package":"UNKNOWN","name":"float64","id":0},"operatorToken":"74:43::44","operator":"BITWISE_OR","leftOperand":
-              {"@type": "Identifier", "metaData": "74:37::42","type":"int64","package":"UNKNOWN","name":"int64","id":0}}
-          ]},
+              {"@type": "Identifier", "metaData": "74:45::52","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":8},"operatorToken":"74:43::44","operator":"BITWISE_OR","leftOperand":
+              {"@type": "Identifier", "metaData": "74:37::42","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":7},"__cfgId":9}
+          ],"__cfgId":10},
           {"@type": "Native", "metaData": "74:52::53","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":11},"returnType":
         {"@type": "Native", "metaData": "74:65::66","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "74:65::66","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "74:65::66","type":"V","package":"generics.go","name":"V","id":1530}
-          ]}
-        ]},"receiver":
+            {"@type": "Identifier", "metaData": "74:65::66","type":"V","package":"generics.go","name":"V","id":1530,"__cfgId":19}
+          ],"__cfgId":20}
+        ],"__cfgId":21},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "74:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500},"formalParameters":[
+        {"@type": "Identifier", "metaData": "74:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"generics.go","name":"SumIntsOrFloats","id":1500,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "74:54::63","type":
           {"@type": "Native", "metaData": "74:56::63","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "74:56::59","nativeKind":"Map"},
             {"@type": "Native", "metaData": "74:59::60"},
-            {"@type": "Identifier", "metaData": "74:60::61","type":"K","package":"generics.go","name":"K","id":1516},
+            {"@type": "Identifier", "metaData": "74:60::61","type":"K","package":"generics.go","name":"K","id":1516,"__cfgId":13},
             {"@type": "Native", "metaData": "74:61::62"},
-            {"@type": "Identifier", "metaData": "74:62::63","type":"V","package":"generics.go","name":"V","id":1530}
-          ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "74:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549},"defaultValue":null}
-      ],"body":
+            {"@type": "Identifier", "metaData": "74:62::63","type":"V","package":"generics.go","name":"V","id":1530,"__cfgId":14}
+          ],"__cfgId":15},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "74:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549,"__cfgId":12},"defaultValue":null,"__cfgId":16}
+      ],"cfg":{"Blocks":[{"Node":[0,27,25,26],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[30],"Successors":[1]},{"Node":[34],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "74:67:80:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "75:4::11","type":
-            {"@type": "Identifier", "metaData": "75:10::11","type":"V","package":"generics.go","name":"V","id":1530},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "75:8::9","type":"V","package":"UNKNOWN","name":"s","id":1572}
-          ]},
+            {"@type": "Identifier", "metaData": "75:10::11","type":"V","package":"generics.go","name":"V","id":1530,"__cfgId":23},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "75:8::9","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":22}
+          ],"__cfgId":24},
           {"@type": "Loop", "metaData": "76:4:78:5","kind":"FOR","keyword":"76:4::7","condition":
             {"@type": "Native", "metaData": "76:8::23","nativeKind":"RangeHeader","children":[
-              {"@type": "PlaceHolder", "metaData": "76:8::9","placeHolderToken":"76:8::9"},
+              {"@type": "PlaceHolder", "metaData": "76:8::9","placeHolderToken":"76:8::9","__cfgId":25},
               {"@type": "Native", "metaData": "76:9::10"},
-              {"@type": "Identifier", "metaData": "76:11::12","type":"V","package":"UNKNOWN","name":"v","id":1587},
+              {"@type": "Identifier", "metaData": "76:11::12","type":"V","package":"UNKNOWN","name":"v","id":1587,"__cfgId":26},
               {"@type": "Native", "metaData": "76:13::15","nativeKind":"Tok"},
               {"@type": "Native", "metaData": "76:16::21"},
-              {"@type": "Identifier", "metaData": "76:22::23","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549}
+              {"@type": "Identifier", "metaData": "76:22::23","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549,"__cfgId":27}
             ]},"body":
             {"@type": "Block", "metaData": "76:24:78:5","statementOrExpressions":[
               {"@type": "AssignmentExpression", "metaData": "77:8::14","statementOrExpression":
-                {"@type": "Identifier", "metaData": "77:13::14","type":"V","package":"UNKNOWN","name":"v","id":1587},"operator":"PLUS_EQUAL","leftHandSide":
-                {"@type": "Identifier", "metaData": "77:8::9","type":"V","package":"UNKNOWN","name":"s","id":1572}}
-            ]}},
+                {"@type": "Identifier", "metaData": "77:13::14","type":"V","package":"UNKNOWN","name":"v","id":1587,"__cfgId":29},"operator":"PLUS_EQUAL","leftHandSide":
+                {"@type": "Identifier", "metaData": "77:8::9","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":28},"__cfgId":30}
+            ],"__cfgId":31},"__cfgId":32},
           {"@type": "Return", "metaData": "79:4::12","keyword":"79:4::10","body":
-            {"@type": "Identifier", "metaData": "79:11::12","type":"V","package":"UNKNOWN","name":"s","id":1572}}
-        ]}},
+            {"@type": "Identifier", "metaData": "79:11::12","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":33},"__cfgId":34}
+        ],"__cfgId":35},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "84:0:90:1","typeParameters":
         {"@type": "Native", "metaData": "84:15::39","nativeKind":"TypeParams(FieldList)","children":[
           {"@type": "Native", "metaData": "84:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "84:16::28","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "84:16::17","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "84:16::17","type":"K","package":"generics.go","name":"K","id":1751}
+              {"@type": "Identifier", "metaData": "84:16::17","type":"K","package":"generics.go","name":"K","id":1751,"__cfgId":3}
             ]},
-            {"@type": "Identifier", "metaData": "84:18::28","type":"comparable","package":"UNKNOWN","name":"comparable","id":0}
-          ]},
+            {"@type": "Identifier", "metaData": "84:18::28","type":"comparable","package":"UNKNOWN","name":"comparable","id":0,"__cfgId":4}
+          ],"__cfgId":5},
           {"@type": "Native", "metaData": "84:28::29"},
           {"@type": "Native", "metaData": "84:30::38","nativeKind":"[1](Field)","children":[
             {"@type": "Native", "metaData": "84:30::31","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "84:30::31","type":"V","package":"generics.go","name":"V","id":1765}
+              {"@type": "Identifier", "metaData": "84:30::31","type":"V","package":"generics.go","name":"V","id":1765,"__cfgId":6}
             ]},
-            {"@type": "Identifier", "metaData": "84:32::38","type":"generics.go.Number","package":"generics.go","name":"Number","id":251}
-          ]},
+            {"@type": "Identifier", "metaData": "84:32::38","type":"generics.go.Number","package":"generics.go","name":"Number","id":251,"__cfgId":7}
+          ],"__cfgId":8},
           {"@type": "Native", "metaData": "84:38::39","nativeKind":"Closing"}
-        ]},"returnType":
+        ],"__cfgId":9},"returnType":
         {"@type": "Native", "metaData": "84:51::52","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "84:51::52","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "84:51::52","type":"V","package":"generics.go","name":"V","id":1765}
-          ]}
-        ]},"receiver":
+            {"@type": "Identifier", "metaData": "84:51::52","type":"V","package":"generics.go","name":"V","id":1765,"__cfgId":17}
+          ],"__cfgId":18}
+        ],"__cfgId":19},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "84:5::15","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740},"formalParameters":[
+        {"@type": "Identifier", "metaData": "84:5::15","type":"func[K comparable, V generics.go.Number](m map[K]V) V","package":"generics.go","name":"SumNumbers","id":1740,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "84:40::49","type":
           {"@type": "Native", "metaData": "84:42::49","nativeKind":"Type(MapType)","children":[
             {"@type": "Native", "metaData": "84:42::45","nativeKind":"Map"},
             {"@type": "Native", "metaData": "84:45::46"},
-            {"@type": "Identifier", "metaData": "84:46::47","type":"K","package":"generics.go","name":"K","id":1751},
+            {"@type": "Identifier", "metaData": "84:46::47","type":"K","package":"generics.go","name":"K","id":1751,"__cfgId":11},
             {"@type": "Native", "metaData": "84:47::48"},
-            {"@type": "Identifier", "metaData": "84:48::49","type":"V","package":"generics.go","name":"V","id":1765}
-          ]},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "84:40::41","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775},"defaultValue":null}
-      ],"body":
+            {"@type": "Identifier", "metaData": "84:48::49","type":"V","package":"generics.go","name":"V","id":1765,"__cfgId":12}
+          ],"__cfgId":13},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "84:40::41","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775,"__cfgId":10},"defaultValue":null,"__cfgId":14}
+      ],"cfg":{"Blocks":[{"Node":[0,25,23,24],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[28],"Successors":[1]},{"Node":[32],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "84:53:90:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "85:4::11","type":
-            {"@type": "Identifier", "metaData": "85:10::11","type":"V","package":"generics.go","name":"V","id":1765},"isVal":false,"initializers":[],"identifiers":[
-            {"@type": "Identifier", "metaData": "85:8::9","type":"V","package":"UNKNOWN","name":"s","id":1798}
-          ]},
+            {"@type": "Identifier", "metaData": "85:10::11","type":"V","package":"generics.go","name":"V","id":1765,"__cfgId":21},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "85:8::9","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":20}
+          ],"__cfgId":22},
           {"@type": "Loop", "metaData": "86:4:88:5","kind":"FOR","keyword":"86:4::7","condition":
             {"@type": "Native", "metaData": "86:8::23","nativeKind":"RangeHeader","children":[
-              {"@type": "PlaceHolder", "metaData": "86:8::9","placeHolderToken":"86:8::9"},
+              {"@type": "PlaceHolder", "metaData": "86:8::9","placeHolderToken":"86:8::9","__cfgId":23},
               {"@type": "Native", "metaData": "86:9::10"},
-              {"@type": "Identifier", "metaData": "86:11::12","type":"V","package":"UNKNOWN","name":"v","id":1813},
+              {"@type": "Identifier", "metaData": "86:11::12","type":"V","package":"UNKNOWN","name":"v","id":1813,"__cfgId":24},
               {"@type": "Native", "metaData": "86:13::15","nativeKind":"Tok"},
               {"@type": "Native", "metaData": "86:16::21"},
-              {"@type": "Identifier", "metaData": "86:22::23","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775}
+              {"@type": "Identifier", "metaData": "86:22::23","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775,"__cfgId":25}
             ]},"body":
             {"@type": "Block", "metaData": "86:24:88:5","statementOrExpressions":[
               {"@type": "AssignmentExpression", "metaData": "87:8::14","statementOrExpression":
-                {"@type": "Identifier", "metaData": "87:13::14","type":"V","package":"UNKNOWN","name":"v","id":1813},"operator":"PLUS_EQUAL","leftHandSide":
-                {"@type": "Identifier", "metaData": "87:8::9","type":"V","package":"UNKNOWN","name":"s","id":1798}}
-            ]}},
+                {"@type": "Identifier", "metaData": "87:13::14","type":"V","package":"UNKNOWN","name":"v","id":1813,"__cfgId":27},"operator":"PLUS_EQUAL","leftHandSide":
+                {"@type": "Identifier", "metaData": "87:8::9","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":26},"__cfgId":28}
+            ],"__cfgId":29},"__cfgId":30},
           {"@type": "Return", "metaData": "89:4::12","keyword":"89:4::10","body":
-            {"@type": "Identifier", "metaData": "89:11::12","type":"V","package":"UNKNOWN","name":"s","id":1798}}
-        ]}}
-    ]}
+            {"@type": "Identifier", "metaData": "89:11::12","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":31},"__cfgId":32}
+        ],"__cfgId":33},"__cfgId":1}
+    ],"__cfgId":2}
 } 

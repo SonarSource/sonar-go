@@ -33,42 +33,42 @@
     {"@type": "TopLevel", "metaData": "1:0:22:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0:3:12","children":[
         {"@type": "Native", "metaData": "3:0::7"},
-        {"@type": "Identifier", "metaData": "3:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0}
-      ]},
+        {"@type": "Identifier", "metaData": "3:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
       {"@type": "ImportDeclaration", "metaData": "6:0::13","children":[
         {"@type": "Native", "metaData": "6:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "6:7::13","path":
           {"@type": "StringLiteral", "metaData": "6:7::13","value":"\"math\"","content":"math"},"name":
-          null}
-      ]},
+          null,"__cfgId":3}
+      ],"__cfgId":4},
       {"@type": "ImportDeclaration", "metaData": "9:0::15","children":[
         {"@type": "Native", "metaData": "9:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "9:7::15","path":
           {"@type": "StringLiteral", "metaData": "9:9::15","value":"\"math\"","content":"math"},"name":
-          {"@type": "Identifier", "metaData": "9:7::8","type":"UNKNOWN","package":"math","name":"m","id":90}}
-      ]},
+          {"@type": "Identifier", "metaData": "9:7::8","type":"UNKNOWN","package":"math","name":"m","id":90,"__cfgId":5},"__cfgId":6}
+      ],"__cfgId":7},
       {"@type": "ImportDeclaration", "metaData": "12:0::14","children":[
         {"@type": "Native", "metaData": "12:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "12:7::14","path":
           {"@type": "StringLiteral", "metaData": "12:9::14","value":"\"fmt\"","content":"fmt"},"name":
-          {"@type": "Identifier", "metaData": "12:7::8","type":"UNKNOWN","package":"fmt","name":".","id":121}}
-      ]},
+          {"@type": "Identifier", "metaData": "12:7::8","type":"UNKNOWN","package":"fmt","name":".","id":121,"__cfgId":8},"__cfgId":9}
+      ],"__cfgId":10},
       {"@type": "ImportDeclaration", "metaData": "15:0::19","children":[
         {"@type": "Native", "metaData": "15:0::6","nativeKind":"Tok"},
         {"@type": "ImportSpecification", "metaData": "15:7::19","path":
           {"@type": "StringLiteral", "metaData": "15:9::19","value":"\"net/http\"","content":"net/http"},"name":
-          {"@type": "PlaceHolder", "metaData": "15:7::8","placeHolderToken":"15:7::8"}}
-      ]},
+          {"@type": "PlaceHolder", "metaData": "15:7::8","placeHolderToken":"15:7::8","__cfgId":11},"__cfgId":12}
+      ],"__cfgId":13},
       {"@type": "ImportDeclaration", "metaData": "18:0:21:1","children":[
         {"@type": "Native", "metaData": "18:0::6","nativeKind":"Tok"},
         {"@type": "Native", "metaData": "18:7::8","nativeKind":"Lparen"},
         {"@type": "ImportSpecification", "metaData": "19:1::5","path":
           {"@type": "StringLiteral", "metaData": "19:1::5","value":"\"io\"","content":"io"},"name":
-          null},
+          null,"__cfgId":14},
         {"@type": "ImportSpecification", "metaData": "20:1::6","path":
           {"@type": "StringLiteral", "metaData": "20:1::6","value":"\"log\"","content":"log"},"name":
-          null},
+          null,"__cfgId":15},
         {"@type": "Native", "metaData": "21:0::1","nativeKind":"Rparen"}
-      ]}
-    ]}
+      ],"__cfgId":16}
+    ],"__cfgId":17}
 } 

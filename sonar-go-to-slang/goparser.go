@@ -114,6 +114,8 @@ type SlangMapper struct {
 	tokens            []*Token
 	paranoiac         bool
 	info              *types.Info
+	currentCfgId      int32
+	nodeToCfgIds      map[ast.Node]int32
 }
 
 func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) *SlangMapper {
@@ -125,6 +127,7 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		tokens:            nil,
 		paranoiac:         true,
 		info:              info,
+		nodeToCfgIds:      make(map[ast.Node]int32),
 	}
 	t.comments = t.mapAllComments()
 	t.commentPos = 0
@@ -309,12 +312,12 @@ func (t *SlangMapper) filterOutComments(children []*Node) []*Node {
 
 func (t *SlangMapper) createNode(astNode ast.Node, children []*Node, nativeNode, slangType string, slangField map[string]interface{}) *Node {
 	if len(children) > 0 {
-		return t.createNodeWithChildren(children, slangType, slangField)
+		return t.createNodeWithChildren(astNode, children, slangType, slangField)
 	} else if slangField != nil && astNode != nil {
 		//We create a leaf node, that is not a Native node
 		offset := t.file.Offset(astNode.Pos())
 		endOffset := t.file.Offset(astNode.End())
-		return t.createLeafNode(offset, endOffset, nativeNode, slangType, other, slangField)
+		return t.createLeafNode(astNode, offset, endOffset, nativeNode, slangType, other, slangField)
 	} else if astNode != nil {
 		//We create a node that is a token, required since the original mapping to compute the range
 		//In meantime, this node will have slang Native type.
@@ -331,14 +334,17 @@ func (t *SlangMapper) createNativeNodeWithChildren(children []*Node, nativeNode 
 	slangField[childrenField] = t.filterOutComments(children)
 	slangField[nativeKind] = nativeNode
 
-	return t.createNodeWithChildren(children, nativeSlangType, slangField)
+	// At this point, we are creating an "artificial" node, to make the shape of the tree match the expected shape of the Java Tree.
+	// We therefore don't have an AST node to pass. This is not a problem, as this node will not appear in the CFG anyway.
+	// This is an artifact from Slang, we should eventually get rid of it.
+	return t.createNodeWithChildren(nil, children, nativeSlangType, slangField)
 }
 
-func (t *SlangMapper) createNodeWithChildren(children []*Node, slangType string, slangField map[string]interface{}) *Node {
+func (t *SlangMapper) createNodeWithChildren(originalNode ast.Node, children []*Node, slangType string, slangField map[string]interface{}) *Node {
 	if len(children) < 1 {
 		return nil
 	}
-	return &Node{
+	node := &Node{
 		Children:  children,
 		offset:    children[0].offset,
 		endOffset: children[len(children)-1].endOffset,
@@ -351,6 +357,11 @@ func (t *SlangMapper) createNodeWithChildren(children []*Node, slangType string,
 		},
 		SlangField: slangField,
 	}
+	if originalNode != nil {
+		index := t.addNodeInCfgIdMap(originalNode)
+		node.SlangField["__cfgId"] = index
+	}
+	return node
 }
 
 var missingTokens = map[byte]string{
@@ -458,7 +469,7 @@ func (t *SlangMapper) createExpectedNode(pos token.Pos, expectedValue, nativeNod
 	offset := t.file.Offset(pos)
 	var endOffset int
 	endOffset, expectedValue = t.computeEndOffsetSupportingMultiLineToken(offset, expectedValue)
-	node := t.createLeafNode(offset, endOffset, nativeNode, slangType, tokenType, slangField)
+	node := t.createLeafNode(nil, offset, endOffset, nativeNode, slangType, tokenType, slangField)
 	if node != nil && node.Token.Value != expectedValue {
 		if t.paranoiac {
 			location := t.location(offset, endOffset)
@@ -495,10 +506,10 @@ func (t *SlangMapper) createToken(offset, endOffset int, nativeNode, tokenType s
 	slangField := make(map[string]interface{})
 	slangField[nativeKind] = nativeNode
 
-	return t.createLeafNode(offset, endOffset, nativeNode, nativeSlangType, tokenType, slangField)
+	return t.createLeafNode(nil, offset, endOffset, nativeNode, nativeSlangType, tokenType, slangField)
 }
 
-func (t *SlangMapper) createLeafNode(offset, endOffset int, nativeNode, slangType, tokenType string, slangField map[string]interface{}) *Node {
+func (t *SlangMapper) createLeafNode(originalNode ast.Node, offset, endOffset int, nativeNode, slangType, tokenType string, slangField map[string]interface{}) *Node {
 	if offset < 0 || endOffset < offset || endOffset > len(t.fileContent) {
 		location := t.location(offset, endOffset)
 		panic("Invalid token" + location)
@@ -553,7 +564,7 @@ func (t *SlangMapper) createLeafNode(offset, endOffset int, nativeNode, slangTyp
 		t.tokens = append(t.tokens, slangToken)
 	}
 
-	return &Node{
+	node := &Node{
 		Token:     slangToken,
 		offset:    offset,
 		endOffset: endOffset,
@@ -566,6 +577,11 @@ func (t *SlangMapper) createLeafNode(offset, endOffset int, nativeNode, slangTyp
 		},
 		SlangField: slangField,
 	}
+	if originalNode != nil {
+		index := t.addNodeInCfgIdMap(originalNode)
+		node.SlangField["__cfgId"] = index
+	}
+	return node
 }
 
 func (t *SlangMapper) toPosition(offset int) token.Position {

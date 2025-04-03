@@ -14,43 +14,22 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.api;
+package org.sonar.go.impl.cfg;
 
 import java.util.List;
-import javax.annotation.CheckForNull;
+import org.junit.jupiter.api.Test;
+import org.sonar.go.api.cfg.Block;
 import org.sonar.go.api.cfg.ControlFlowGraph;
 
-public interface FunctionDeclarationTree extends Tree {
+import static org.assertj.core.api.Assertions.assertThat;
 
-  @CheckForNull
-  Tree returnType();
-
-  /**
-   * Can return null when the function is a function literal (closure).
-   */
-  @CheckForNull
-  IdentifierTree name();
-
-  List<Tree> formalParameters();
-
-  /**
-   * Can return null when the function is external (non-Go)
-   */
-  @CheckForNull
-  BlockTree body();
-
-  @CheckForNull
-  Tree receiver();
-
-  @CheckForNull
-  String receiverName();
-
-  @CheckForNull
-  Tree typeParameters();
-
-  TextRange rangeToHighlight();
-
-  @CheckForNull
-  ControlFlowGraph cfg();
-
+class ControlFlowGraphImplTest {
+  @Test
+  void firstNodeIsEntryBlock() {
+    BlockImpl firstBlock = new BlockImpl(List.of());
+    List<Block> blocks = List.of(firstBlock, new BlockImpl(List.of()));
+    ControlFlowGraph cfg = new ControlFlowGraphImpl(blocks);
+    assertThat(cfg.entryBlock()).isEqualTo(firstBlock);
+    assertThat(cfg.blocks()).containsExactlyElementsOf(blocks);
+  }
 }

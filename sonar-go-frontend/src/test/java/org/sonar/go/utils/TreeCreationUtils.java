@@ -175,11 +175,11 @@ public class TreeCreationUtils {
   }
 
   public static FunctionDeclarationTree anonymousFunction(BlockTree body) {
-    return new FunctionDeclarationTreeImpl(null, null, null, null, Collections.emptyList(), null, body);
+    return new FunctionDeclarationTreeImpl(null, null, null, null, Collections.emptyList(), null, body, null);
   }
 
   public static FunctionDeclarationTree simpleFunction(IdentifierTree name, BlockTree body) {
-    return new FunctionDeclarationTreeImpl(null, null, null, name, Collections.emptyList(), null, body);
+    return new FunctionDeclarationTreeImpl(null, null, null, name, Collections.emptyList(), null, body, null);
   }
 
   public static FunctionInvocationTree simpleFunctionCall(Tree memberSelect) {
