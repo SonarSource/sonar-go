@@ -21,13 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.NativeKind;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.NativeKind;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;

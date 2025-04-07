@@ -18,12 +18,12 @@ package org.sonar.go.impl;
 
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.MatchCaseTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.MatchCaseTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

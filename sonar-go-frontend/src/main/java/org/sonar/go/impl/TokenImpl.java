@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import java.util.Objects;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
 
 public class TokenImpl implements Token {
 

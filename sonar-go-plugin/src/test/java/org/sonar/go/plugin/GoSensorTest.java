@@ -53,11 +53,11 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
 import org.sonar.check.Rule;
-import org.sonar.go.api.VariableDeclarationTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;

@@ -23,10 +23,10 @@ import com.eclipsesource.json.JsonValue;
 import java.util.List;
 import java.util.function.BiFunction;
 import javax.annotation.Nullable;
-import org.sonar.go.api.NativeKind;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.NativeKind;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
 
 public class SerializationContext {
 

@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.Tree;
 
 public class TreeVisitor<C extends TreeContext> {
 

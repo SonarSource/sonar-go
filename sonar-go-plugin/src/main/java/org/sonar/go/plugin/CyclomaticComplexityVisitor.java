@@ -18,15 +18,15 @@ package org.sonar.go.plugin;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchCaseTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MatchCaseTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class CyclomaticComplexityVisitor extends TreeVisitor<TreeContext> {
 

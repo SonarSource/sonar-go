@@ -19,13 +19,13 @@ package org.sonar.go.checks;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.sonar.check.Rule;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 import org.sonarsource.analyzer.commons.TokenLocation;
 
 @Rule(key = "S1134")

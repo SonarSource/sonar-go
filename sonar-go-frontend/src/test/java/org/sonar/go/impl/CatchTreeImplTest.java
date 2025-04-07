@@ -17,12 +17,12 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.ParameterTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.ParameterTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.impl.TextRanges.range;

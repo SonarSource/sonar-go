@@ -21,17 +21,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Nullable;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.LeftRightHandSide;
-import org.sonar.go.api.ParameterTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.VariableHelper;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LeftRightHandSide;
+import org.sonar.plugins.go.api.ParameterTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 /**
  * Class used to visit a {@link Tree} and build {@link Symbol} and their {@link Usage} for variables.

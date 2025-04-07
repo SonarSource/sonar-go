@@ -17,10 +17,10 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonar.go.api.ParenthesizedExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1110")
 public class RedundantParenthesesCheck implements GoCheck {

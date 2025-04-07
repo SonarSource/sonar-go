@@ -19,15 +19,15 @@ package org.sonar.go.checks;
 import java.util.EnumSet;
 import java.util.Set;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
-import static org.sonar.go.api.BinaryExpressionTree.*;
 import static org.sonar.go.utils.ExpressionUtils.containsPlaceHolder;
 import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.*;
 
 @Rule(key = "S1764")
 public class IdenticalBinaryOperandCheck implements GoCheck {

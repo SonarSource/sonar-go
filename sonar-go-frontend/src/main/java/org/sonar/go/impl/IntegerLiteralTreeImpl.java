@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import java.math.BigInteger;
-import org.sonar.go.api.IntegerLiteralTree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 /**
  * Languages that can have integer literal with other bases, or who use a different syntax for binary/octal/decimal/hexadecimal

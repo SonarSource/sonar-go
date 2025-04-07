@@ -18,10 +18,10 @@ package org.sonar.go.plugin;
 
 import java.util.Set;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.TextRange;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.TextRange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

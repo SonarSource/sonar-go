@@ -18,8 +18,8 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
 
 @Rule(key = "S3923")
 public class AllBranchesIdenticalCheck extends AbstractBranchDuplicationCheck {

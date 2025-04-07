@@ -26,14 +26,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.sonar.go.api.Annotation;
-import org.sonar.go.api.ClassDeclarationTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.ParameterTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.Annotation;
+import org.sonar.plugins.go.api.ClassDeclarationTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.ParameterTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 public class IssueSuppressionVisitor extends TreeVisitor<InputFileContext> {
 

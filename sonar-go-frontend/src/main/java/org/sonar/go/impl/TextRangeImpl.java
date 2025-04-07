@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import java.util.Objects;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
 
 public class TextRangeImpl implements TextRange {
 

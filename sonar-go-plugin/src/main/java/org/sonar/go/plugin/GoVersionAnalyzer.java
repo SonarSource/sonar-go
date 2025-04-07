@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.sensor.SensorContext;
-import org.sonar.go.api.checks.GoVersion;
+import org.sonar.plugins.go.api.checks.GoVersion;
 
 /**
  * The purpose of this GoVersionAnalyzer is to retrieve the go version of the project from the go.mod file.

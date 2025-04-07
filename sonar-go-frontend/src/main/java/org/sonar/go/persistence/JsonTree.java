@@ -18,12 +18,12 @@ package org.sonar.go.persistence;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.TreeMetaDataProvider;
 import org.sonar.go.persistence.conversion.DeserializationContext;
 import org.sonar.go.persistence.conversion.JsonTreeConverter;
 import org.sonar.go.persistence.conversion.SerializationContext;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public final class JsonTree {
 

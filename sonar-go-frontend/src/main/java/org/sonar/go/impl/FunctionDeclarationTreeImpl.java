@@ -23,15 +23,15 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
-import org.sonar.go.api.cfg.ControlFlowGraph;
 import org.sonar.go.utils.NativeKinds;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
 

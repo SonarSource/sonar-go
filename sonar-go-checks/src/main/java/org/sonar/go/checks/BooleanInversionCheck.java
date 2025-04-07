@@ -19,14 +19,14 @@ package org.sonar.go.checks;
 import java.util.EnumMap;
 import java.util.Map;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.UnaryExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.UnaryExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
-import static org.sonar.go.api.BinaryExpressionTree.*;
 import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.*;
 
 @Rule(key = "S1940")
 public class BooleanInversionCheck implements GoCheck {

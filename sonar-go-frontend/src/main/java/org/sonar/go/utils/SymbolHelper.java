@@ -18,10 +18,10 @@ package org.sonar.go.utils;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.HasSymbol;
-import org.sonar.go.api.Tree;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
+import org.sonar.plugins.go.api.HasSymbol;
+import org.sonar.plugins.go.api.Tree;
 
 public class SymbolHelper {
 

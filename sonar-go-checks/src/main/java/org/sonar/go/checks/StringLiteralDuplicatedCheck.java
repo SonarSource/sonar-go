@@ -23,12 +23,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1192")
 public class StringLiteralDuplicatedCheck implements GoCheck {

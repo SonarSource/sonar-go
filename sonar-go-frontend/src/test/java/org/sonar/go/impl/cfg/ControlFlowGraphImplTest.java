@@ -18,8 +18,8 @@ package org.sonar.go.impl.cfg;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.cfg.Block;
-import org.sonar.go.api.cfg.ControlFlowGraph;
+import org.sonar.plugins.go.api.cfg.Block;
+import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

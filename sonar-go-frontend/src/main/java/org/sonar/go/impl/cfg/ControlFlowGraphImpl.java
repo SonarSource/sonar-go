@@ -18,8 +18,8 @@ package org.sonar.go.impl.cfg;
 
 import java.util.Collections;
 import java.util.List;
-import org.sonar.go.api.cfg.Block;
-import org.sonar.go.api.cfg.ControlFlowGraph;
+import org.sonar.plugins.go.api.cfg.Block;
+import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 public class ControlFlowGraphImpl implements ControlFlowGraph {
   private final Block entryBlock;

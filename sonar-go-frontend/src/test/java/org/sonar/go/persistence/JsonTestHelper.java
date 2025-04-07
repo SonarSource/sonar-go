@@ -30,18 +30,18 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TextRanges;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

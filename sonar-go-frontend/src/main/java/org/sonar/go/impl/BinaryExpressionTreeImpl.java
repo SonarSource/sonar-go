@@ -18,10 +18,10 @@ package org.sonar.go.impl;
 
 import java.util.Arrays;
 import java.util.List;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class BinaryExpressionTreeImpl extends BaseTreeImpl implements BinaryExpressionTree {
 

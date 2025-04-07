@@ -20,10 +20,10 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class TestGoConverter {
   private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();

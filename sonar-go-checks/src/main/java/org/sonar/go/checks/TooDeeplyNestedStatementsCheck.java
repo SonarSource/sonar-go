@@ -22,16 +22,16 @@ import java.util.LinkedList;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.api.ExceptionHandlingTree;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.plugins.go.api.ExceptionHandlingTree;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S134")
 public class TooDeeplyNestedStatementsCheck implements GoCheck {

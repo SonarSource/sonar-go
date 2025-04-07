@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TopLevelTree;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.TopLevelTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

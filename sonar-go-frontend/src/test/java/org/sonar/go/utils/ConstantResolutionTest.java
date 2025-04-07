@@ -18,15 +18,6 @@ package org.sonar.go.utils;
 
 import java.util.Collections;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -37,13 +28,22 @@ import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverter;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
-import static org.sonar.go.api.BinaryExpressionTree.Operator.PLUS;
-import static org.sonar.go.api.BinaryExpressionTree.Operator.TIMES;
 import static org.sonar.go.utils.ConstantResolution.resolveAsStringConstant;
 import static org.sonar.go.utils.ParseUtils.parseStatements;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.PLUS;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.TIMES;
 
 class ConstantResolutionTest {
   private static final Tree HELLO = new StringLiteralTreeImpl(null, "\"Hello\"");

@@ -17,7 +17,7 @@
 package org.sonar.go.persistence.conversion;
 
 import javax.annotation.Nullable;
-import org.sonar.go.api.NativeKind;
+import org.sonar.plugins.go.api.NativeKind;
 
 public class StringNativeKind implements NativeKind {
 

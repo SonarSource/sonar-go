@@ -16,8 +16,8 @@
  */
 package org.sonar.go.impl;
 
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.TextRange;
 
 public class CommentImpl implements Comment {
 

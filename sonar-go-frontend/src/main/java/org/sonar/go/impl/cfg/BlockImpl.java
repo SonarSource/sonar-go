@@ -18,8 +18,8 @@ package org.sonar.go.impl.cfg;
 
 import java.util.Collections;
 import java.util.List;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.cfg.Block;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.cfg.Block;
 
 public class BlockImpl implements Block {
 

@@ -18,7 +18,7 @@ package org.sonar.go.impl;
 
 import java.util.List;
 import java.util.function.Supplier;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.TextRange;
 
 import static java.util.Comparator.naturalOrder;
 

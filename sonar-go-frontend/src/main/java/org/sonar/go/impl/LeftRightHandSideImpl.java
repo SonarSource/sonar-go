@@ -17,10 +17,10 @@
 package org.sonar.go.impl;
 
 import java.util.List;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.LeftRightHandSide;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LeftRightHandSide;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
 

@@ -18,12 +18,12 @@ package org.sonar.go.utils;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

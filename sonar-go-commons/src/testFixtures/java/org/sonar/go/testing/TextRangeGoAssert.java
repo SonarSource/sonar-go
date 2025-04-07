@@ -19,7 +19,7 @@ package org.sonar.go.testing;
 import javax.annotation.Nullable;
 import org.assertj.core.api.AbstractAssert;
 import org.assertj.core.api.SoftAssertions;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.TextRange;
 
 public class TextRangeGoAssert extends AbstractAssert<TextRangeGoAssert, TextRange> {
 

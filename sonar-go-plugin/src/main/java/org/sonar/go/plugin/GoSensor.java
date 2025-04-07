@@ -23,13 +23,13 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.go.api.ASTConverter;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.VariableDeclarationTree;
-import org.sonar.go.api.checks.GoCheck;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.utils.NativeKinds;
+import org.sonar.plugins.go.api.ASTConverter;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
 
 public class GoSensor extends SlangSensor {
 

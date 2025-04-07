@@ -18,10 +18,10 @@ package org.sonar.go.impl;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class MemberSelectTreeImpl extends BaseTreeImpl implements MemberSelectTree {
 

@@ -17,7 +17,7 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextPointer;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

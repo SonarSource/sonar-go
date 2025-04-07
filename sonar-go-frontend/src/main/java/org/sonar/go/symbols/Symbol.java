@@ -21,9 +21,9 @@ import java.util.List;
 import java.util.Objects;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.Tree;
 import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.Tree;
 
 public class Symbol {
   private final String type;

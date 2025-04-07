@@ -17,7 +17,7 @@
 package org.sonar.go.impl;
 
 import java.util.Objects;
-import org.sonar.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextPointer;
 
 public class TextPointerImpl implements TextPointer {
 

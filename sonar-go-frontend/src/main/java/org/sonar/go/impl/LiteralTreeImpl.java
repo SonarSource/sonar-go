@@ -18,9 +18,9 @@ package org.sonar.go.impl;
 
 import java.util.Collections;
 import java.util.List;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class LiteralTreeImpl extends BaseTreeImpl implements LiteralTree {
 

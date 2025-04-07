@@ -21,13 +21,13 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.ImportDeclarationTree;
-import org.sonar.go.api.ImportSpecificationTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.ImportDeclarationTree;
+import org.sonar.plugins.go.api.ImportSpecificationTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class TopLevelTreeImpl extends BaseTreeImpl implements TopLevelTree {
 

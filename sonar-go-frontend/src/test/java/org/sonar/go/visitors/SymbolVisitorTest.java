@@ -20,12 +20,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.IntegerLiteralTree;
 import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;

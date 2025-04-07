@@ -20,17 +20,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.ModifierTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.ModifierTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
 
 public class TreePrinter {
 

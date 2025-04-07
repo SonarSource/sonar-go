@@ -19,13 +19,13 @@ package org.sonar.go.persistence.conversion;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public final class RangeConverter {
 

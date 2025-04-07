@@ -17,11 +17,11 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

@@ -17,8 +17,8 @@
 package org.sonar.go.testing;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
 
 class GoVerifierTest {
 

@@ -24,18 +24,18 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.IntStream;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.utils.TreeUtils;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 

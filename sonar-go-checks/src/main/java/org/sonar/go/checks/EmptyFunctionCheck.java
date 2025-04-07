@@ -17,11 +17,11 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.TreeMetaData;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S1186")
 public class EmptyFunctionCheck implements GoCheck {

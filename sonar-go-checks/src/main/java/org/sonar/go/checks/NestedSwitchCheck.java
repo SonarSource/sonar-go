@@ -18,10 +18,10 @@ package org.sonar.go.checks;
 
 import java.text.MessageFormat;
 import org.sonar.check.Rule;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S1821")
 public class NestedSwitchCheck implements GoCheck {

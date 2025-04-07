@@ -17,9 +17,9 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;

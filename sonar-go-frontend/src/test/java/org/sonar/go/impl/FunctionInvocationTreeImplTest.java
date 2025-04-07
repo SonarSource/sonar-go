@@ -19,11 +19,11 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.FunctionInvocationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

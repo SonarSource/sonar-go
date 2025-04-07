@@ -17,8 +17,8 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S2260")
 public class ParsingErrorCheck implements GoCheck {

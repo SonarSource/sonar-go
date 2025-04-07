@@ -24,13 +24,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.function.Predicate;
-import org.sonar.go.api.Annotation;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Annotation;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class TreeMetaDataProvider {
 

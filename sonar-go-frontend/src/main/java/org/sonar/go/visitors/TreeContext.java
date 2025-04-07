@@ -18,7 +18,7 @@ package org.sonar.go.visitors;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.Tree;
 
 public class TreeContext {
 

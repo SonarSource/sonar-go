@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

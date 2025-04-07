@@ -18,11 +18,11 @@ package org.sonar.go.impl;
 
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.JumpTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;

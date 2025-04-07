@@ -17,10 +17,10 @@
 package org.sonar.go.impl;
 
 import java.util.List;
-import org.sonar.go.api.NativeKind;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.NativeKind;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class NativeTreeImpl extends BaseTreeImpl implements NativeTree {
 

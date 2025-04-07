@@ -23,9 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
 import org.sonar.go.persistence.JsonTestHelper;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

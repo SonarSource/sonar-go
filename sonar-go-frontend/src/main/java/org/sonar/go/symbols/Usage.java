@@ -17,8 +17,8 @@
 package org.sonar.go.symbols;
 
 import javax.annotation.Nullable;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.Tree;
 
 public record Usage(IdentifierTree identifier, @Nullable Tree value, UsageType type) {
   public enum UsageType {

@@ -18,13 +18,13 @@ package org.sonar.go.plugin;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchCaseTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MatchCaseTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

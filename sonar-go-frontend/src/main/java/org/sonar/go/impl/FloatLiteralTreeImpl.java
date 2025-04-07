@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import java.math.BigDecimal;
-import org.sonar.go.api.FloatLiteralTree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.FloatLiteralTree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class FloatLiteralTreeImpl extends LiteralTreeImpl implements FloatLiteralTree {
 

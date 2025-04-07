@@ -18,13 +18,13 @@ package org.sonar.go.plugin;
 
 import org.sonar.api.batch.sensor.highlighting.NewHighlighting;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.sonar.api.batch.sensor.highlighting.TypeOfText.COMMENT;
 import static org.sonar.api.batch.sensor.highlighting.TypeOfText.CONSTANT;

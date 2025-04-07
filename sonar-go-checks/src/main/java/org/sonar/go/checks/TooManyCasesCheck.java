@@ -19,11 +19,11 @@ package org.sonar.go.checks;
 import java.util.List;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1479")
 public class TooManyCasesCheck implements GoCheck {

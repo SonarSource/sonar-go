@@ -20,12 +20,12 @@ import java.text.MessageFormat;
 import java.util.stream.IntStream;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.impl.TextRangeImpl;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S103")
 public class TooLongLineCheck implements GoCheck {

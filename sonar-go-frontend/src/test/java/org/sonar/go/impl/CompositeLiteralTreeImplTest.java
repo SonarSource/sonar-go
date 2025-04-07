@@ -24,18 +24,18 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.CompositeLiteralTree;
-import org.sonar.go.api.ExpressionStatement;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.IntegerLiteralTree;
-import org.sonar.go.api.KeyValueTree;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.testing.TestGoConverter;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.CompositeLiteralTree;
+import org.sonar.plugins.go.api.ExpressionStatement;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.KeyValueTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

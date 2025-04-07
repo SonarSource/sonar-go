@@ -20,19 +20,19 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.ModifierTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.UnaryExpressionTree;
-import org.sonar.go.api.VariableDeclarationTree;
 import org.sonar.go.visitors.TreePrinter;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.JumpTree;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.ModifierTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.UnaryExpressionTree;
+import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 public class SyntacticEquivalence {
 

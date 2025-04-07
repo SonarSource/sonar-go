@@ -18,9 +18,9 @@ package org.sonar.go.impl;
 
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ImportSpecificationTree;
-import org.sonar.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.ImportSpecificationTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
 
 import static org.sonar.go.utils.TreeCreationUtils.identifier;
 

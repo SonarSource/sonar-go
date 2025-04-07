@@ -20,12 +20,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.UnaryExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.utils.ExpressionUtils;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.UnaryExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S1125")
 public class BooleanLiteralCheck implements GoCheck {

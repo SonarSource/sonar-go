@@ -17,9 +17,9 @@
 package org.sonar.go.impl;
 
 import java.util.List;
-import org.sonar.go.api.ExpressionStatement;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.ExpressionStatement;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class ExpressionStatementImpl extends BaseTreeImpl implements ExpressionStatement {
   private final Tree expression;

@@ -20,20 +20,20 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionInvocationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.ReturnTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.utils.TreeUtils;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.JumpTree;
+import org.sonar.plugins.go.api.ReturnTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S126")
 public class ElseIfWithoutElseCheck implements GoCheck {

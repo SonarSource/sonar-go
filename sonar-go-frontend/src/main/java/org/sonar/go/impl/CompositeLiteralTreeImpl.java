@@ -21,12 +21,12 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.CompositeLiteralTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.KeyValueTree;
-import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.CompositeLiteralTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.KeyValueTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class CompositeLiteralTreeImpl extends BaseTreeImpl implements CompositeLiteralTree {
   @Nullable

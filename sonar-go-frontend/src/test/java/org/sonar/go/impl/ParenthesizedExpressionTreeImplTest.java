@@ -17,10 +17,10 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.ParenthesizedExpressionTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.impl.TextRanges.range;

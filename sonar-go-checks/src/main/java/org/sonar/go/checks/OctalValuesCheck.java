@@ -18,11 +18,11 @@ package org.sonar.go.checks;
 
 import java.math.BigInteger;
 import org.sonar.check.Rule;
-import org.sonar.go.api.IntegerLiteralTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
-import static org.sonar.go.api.IntegerLiteralTree.Base.OCTAL;
+import static org.sonar.plugins.go.api.IntegerLiteralTree.Base.OCTAL;
 
 @Rule(key = "S1314")
 public class OctalValuesCheck implements GoCheck {

@@ -18,7 +18,7 @@ package org.sonar.go.impl;
 
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.TextRange;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;

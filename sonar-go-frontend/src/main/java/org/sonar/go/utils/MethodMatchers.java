@@ -27,10 +27,10 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.sonar.go.api.FunctionInvocationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
 import static org.sonar.go.utils.TreeUtils.retrieveLastIdentifier;

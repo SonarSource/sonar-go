@@ -16,8 +16,8 @@
  */
 package org.sonar.go.impl;
 
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public abstract class BaseTreeImpl implements Tree {
 

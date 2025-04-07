@@ -18,23 +18,23 @@ package org.sonar.go.checks;
 
 import java.util.function.Predicate;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.utils.ExpressionUtils;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
-import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
-import static org.sonar.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isNegation;
 import static org.sonar.go.utils.ExpressionUtils.isTrueValueLiteral;
 import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
+import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
 @Rule(key = "S1145")
 public class IfConditionalAlwaysTrueOrFalseCheck implements GoCheck {

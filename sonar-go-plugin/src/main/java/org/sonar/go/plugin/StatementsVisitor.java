@@ -16,16 +16,16 @@
  */
 package org.sonar.go.plugin;
 
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.ClassDeclarationTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.ImportDeclarationTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.PackageDeclarationTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.ClassDeclarationTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.ImportDeclarationTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.PackageDeclarationTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class StatementsVisitor extends TreeVisitor<TreeContext> {
 

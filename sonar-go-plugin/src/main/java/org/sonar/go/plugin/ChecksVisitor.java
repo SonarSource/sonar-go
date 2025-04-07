@@ -27,15 +27,15 @@ import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.go.api.HasTextRange;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.GoVersion;
-import org.sonar.go.api.checks.InitContext;
-import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.HasTextRange;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.GoVersion;
+import org.sonar.plugins.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 

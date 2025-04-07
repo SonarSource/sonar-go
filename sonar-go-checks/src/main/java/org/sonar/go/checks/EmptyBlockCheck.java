@@ -18,15 +18,15 @@ package org.sonar.go.checks;
 
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S108")
 public class EmptyBlockCheck implements GoCheck {

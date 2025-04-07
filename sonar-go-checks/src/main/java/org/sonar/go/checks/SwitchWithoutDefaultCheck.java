@@ -17,9 +17,9 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 @Rule(key = "S131")
 public class SwitchWithoutDefaultCheck implements GoCheck {

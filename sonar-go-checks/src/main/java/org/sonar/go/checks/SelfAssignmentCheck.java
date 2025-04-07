@@ -17,12 +17,12 @@
 package org.sonar.go.checks;
 
 import org.sonar.check.Rule;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
-import static org.sonar.go.api.AssignmentExpressionTree.Operator.EQUAL;
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
+import static org.sonar.plugins.go.api.AssignmentExpressionTree.Operator.EQUAL;
 
 @Rule(key = "S1656")
 public class SelfAssignmentCheck implements GoCheck {

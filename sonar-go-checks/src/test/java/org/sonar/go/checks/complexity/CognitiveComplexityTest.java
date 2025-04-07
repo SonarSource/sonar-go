@@ -17,9 +17,9 @@
 package org.sonar.go.checks.complexity;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.Tree;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

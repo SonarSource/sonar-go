@@ -20,14 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.SecondaryLocation;
 import org.sonar.go.utils.SyntacticEquivalence;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 @Rule(key = "S1871")
 public class DuplicateBranchGoCheck extends AbstractBranchDuplicationCheck {

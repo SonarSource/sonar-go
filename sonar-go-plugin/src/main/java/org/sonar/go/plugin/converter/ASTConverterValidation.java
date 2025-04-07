@@ -30,19 +30,19 @@ import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.config.Configuration;
-import org.sonar.go.api.ASTConverter;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.TextPointer;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.TextPointerImpl;
+import org.sonar.plugins.go.api.ASTConverter;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.TextPointer;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.sonar.go.utils.LogArg.lazyArg;
 

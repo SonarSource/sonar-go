@@ -19,8 +19,8 @@ package org.sonar.go.plugin;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.TextRange;
 
 public class CommentAnalysisUtils {
   public static final String NOSONAR_PREFIX = "NOSONAR";

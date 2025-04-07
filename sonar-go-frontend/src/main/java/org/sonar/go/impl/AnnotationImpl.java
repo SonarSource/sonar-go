@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import java.util.List;
-import org.sonar.go.api.Annotation;
-import org.sonar.go.api.TextRange;
+import org.sonar.plugins.go.api.Annotation;
+import org.sonar.plugins.go.api.TextRange;
 
 public class AnnotationImpl implements Annotation {
 

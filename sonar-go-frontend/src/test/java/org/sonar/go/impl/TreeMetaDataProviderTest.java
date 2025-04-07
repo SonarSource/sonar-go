@@ -20,11 +20,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.Annotation;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Annotation;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;

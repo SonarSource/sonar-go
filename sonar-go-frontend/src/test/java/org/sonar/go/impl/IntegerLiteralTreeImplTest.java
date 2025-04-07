@@ -19,11 +19,11 @@ package org.sonar.go.impl;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.api.IntegerLiteralTree.Base.BINARY;
-import static org.sonar.go.api.IntegerLiteralTree.Base.DECIMAL;
-import static org.sonar.go.api.IntegerLiteralTree.Base.HEXADECIMAL;
-import static org.sonar.go.api.IntegerLiteralTree.Base.OCTAL;
 import static org.sonar.go.utils.TreeCreationUtils.integerLiteral;
+import static org.sonar.plugins.go.api.IntegerLiteralTree.Base.BINARY;
+import static org.sonar.plugins.go.api.IntegerLiteralTree.Base.DECIMAL;
+import static org.sonar.plugins.go.api.IntegerLiteralTree.Base.HEXADECIMAL;
+import static org.sonar.plugins.go.api.IntegerLiteralTree.Base.OCTAL;
 
 class IntegerLiteralTreeImplTest {
 

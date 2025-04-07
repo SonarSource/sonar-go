@@ -17,8 +17,8 @@
 package org.sonar.go.impl;
 
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.PlaceHolderTree;
-import org.sonar.go.api.Token;
+import org.sonar.plugins.go.api.PlaceHolderTree;
+import org.sonar.plugins.go.api.Token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

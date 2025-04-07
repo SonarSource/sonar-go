@@ -18,7 +18,7 @@ package org.sonar.go.impl;
 
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.Type;
+import org.sonar.plugins.go.api.Type;
 
 public class TypeImpl implements Type {
 

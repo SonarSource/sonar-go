@@ -18,17 +18,17 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
-import org.sonar.go.api.AssignmentExpressionTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.UnaryExpressionTree;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.impl.TextRanges;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.UnaryExpressionTree;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 import static java.util.Arrays.asList;
-import static org.sonar.go.api.AssignmentExpressionTree.Operator.EQUAL;
-import static org.sonar.go.api.UnaryExpressionTree.Operator;
+import static org.sonar.plugins.go.api.AssignmentExpressionTree.Operator.EQUAL;
+import static org.sonar.plugins.go.api.UnaryExpressionTree.Operator;
 
 @Rule(key = "S2757")
 public class WrongAssignmentOperatorCheck implements GoCheck {

@@ -18,16 +18,16 @@ package org.sonar.go.checks;
 
 import java.util.List;
 import org.sonar.check.Rule;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.HasKeyword;
-import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.ReturnTree;
-import org.sonar.go.api.ThrowTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
 import org.sonar.go.utils.NativeKinds;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.HasKeyword;
+import org.sonar.plugins.go.api.JumpTree;
+import org.sonar.plugins.go.api.ReturnTree;
+import org.sonar.plugins.go.api.ThrowTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 import static org.sonar.go.utils.NativeKinds.LABEL;
 import static org.sonar.go.utils.NativeKinds.SEMICOLON;

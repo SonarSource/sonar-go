@@ -20,17 +20,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.MatchCaseTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.MatchCaseTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.go.api.Token.*;
 import static org.sonar.go.impl.TextRanges.range;
+import static org.sonar.plugins.go.api.Token.*;
 
 class MatchCaseTreeImplTest {
 

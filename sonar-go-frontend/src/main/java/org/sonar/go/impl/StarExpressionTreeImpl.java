@@ -18,9 +18,9 @@ package org.sonar.go.impl;
 
 import java.util.Collections;
 import java.util.List;
-import org.sonar.go.api.StarExpressionTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.StarExpressionTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class StarExpressionTreeImpl extends BaseTreeImpl implements StarExpressionTree {
 

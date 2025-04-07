@@ -20,10 +20,10 @@ import java.util.Collections;
 import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.ClassDeclarationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.ClassDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class ClassDeclarationTreeImpl extends BaseTreeImpl implements ClassDeclarationTree {
 

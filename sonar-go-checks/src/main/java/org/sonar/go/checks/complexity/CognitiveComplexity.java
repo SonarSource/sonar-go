@@ -22,19 +22,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.CatchTree;
-import org.sonar.go.api.ClassDeclarationTree;
-import org.sonar.go.api.FunctionDeclarationTree;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.LoopTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.utils.ExpressionUtils;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.CatchTree;
+import org.sonar.plugins.go.api.ClassDeclarationTree;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
 

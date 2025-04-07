@@ -21,13 +21,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.JumpTree;
-import org.sonar.go.api.TextRange;
-import org.sonar.go.api.Token;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
 import org.sonar.go.impl.BaseTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -36,6 +29,13 @@ import org.sonar.go.impl.TreeMetaDataProvider;
 import org.sonar.go.persistence.JsonTestHelper;
 import org.sonar.go.persistence.JsonTree;
 import org.sonar.go.utils.TreeCreationUtils;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.JumpTree;
+import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -210,7 +210,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
       () -> JsonTree.fromJson(invalidJson));
     assertThat(e).hasMessage("Unexpected 'org.sonar.go.impl.IntegerLiteralTreeImpl'" +
       " type for member 'cases[]' instead of" +
-      " 'org.sonar.go.api.MatchCaseTree'" +
+      " 'org.sonar.plugins.go.api.MatchCaseTree'" +
       " at 'tree/Match/cases[]/IntegerLiteral'" +
       " member: {\"@type\":\"IntegerLiteral\",\"metaData\":\"1:17:1:19\",\"value\":\"42\"}");
   }

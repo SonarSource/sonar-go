@@ -19,9 +19,9 @@ package org.sonar.go.utils;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.Tree;
 
 /**
  * Util class to work with native kinds.

@@ -20,10 +20,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.sonar.api.issue.NoSonarFilter;
-import org.sonar.go.api.Comment;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.visitors.TreeVisitor;
+import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class SkipNoSonarLinesVisitor extends TreeVisitor<InputFileContext> {
 

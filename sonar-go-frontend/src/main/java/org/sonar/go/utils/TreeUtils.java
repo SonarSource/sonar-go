@@ -21,11 +21,11 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import org.sonar.go.api.FunctionInvocationTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.MemberSelectTree;
-import org.sonar.go.api.StarExpressionTree;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.StarExpressionTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class TreeUtils {
   private TreeUtils() {

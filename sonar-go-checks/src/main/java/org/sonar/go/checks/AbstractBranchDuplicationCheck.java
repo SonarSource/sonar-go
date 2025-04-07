@@ -18,13 +18,13 @@ package org.sonar.go.checks;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.sonar.go.api.IfTree;
-import org.sonar.go.api.MatchCaseTree;
-import org.sonar.go.api.MatchTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.checks.CheckContext;
-import org.sonar.go.api.checks.GoCheck;
-import org.sonar.go.api.checks.InitContext;
+import org.sonar.plugins.go.api.IfTree;
+import org.sonar.plugins.go.api.MatchCaseTree;
+import org.sonar.plugins.go.api.MatchTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.checks.CheckContext;
+import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.InitContext;
 
 import static org.sonar.go.utils.SyntacticEquivalence.areEquivalent;
 

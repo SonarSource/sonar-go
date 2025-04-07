@@ -16,11 +16,11 @@
  */
 package org.sonar.go.utils;
 
-import org.sonar.go.api.BlockTree;
-import org.sonar.go.api.NativeTree;
-import org.sonar.go.api.TopLevelTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.TopLevelTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class ParseUtils {
   private ParseUtils() {

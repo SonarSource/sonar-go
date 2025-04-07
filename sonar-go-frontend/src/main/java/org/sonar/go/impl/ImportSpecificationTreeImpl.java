@@ -19,11 +19,11 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ImportSpecificationTree;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.Tree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.ImportSpecificationTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class ImportSpecificationTreeImpl extends BaseTreeImpl implements ImportSpecificationTree {
 

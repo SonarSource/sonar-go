@@ -20,12 +20,12 @@ import java.util.Optional;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import org.sonar.go.api.BinaryExpressionTree;
-import org.sonar.go.api.IdentifierTree;
-import org.sonar.go.api.ParenthesizedExpressionTree;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.Tree;
 import org.sonar.go.symbols.Symbol;
+import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class ConstantResolution {
 

@@ -17,12 +17,12 @@
 package org.sonar.go.symbols;
 
 import java.util.Set;
-import org.sonar.go.api.FloatLiteralTree;
-import org.sonar.go.api.ImaginaryLiteralTree;
-import org.sonar.go.api.IntegerLiteralTree;
-import org.sonar.go.api.LiteralTree;
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.Tree;
+import org.sonar.plugins.go.api.FloatLiteralTree;
+import org.sonar.plugins.go.api.ImaginaryLiteralTree;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.Tree;
 
 public class GoNativeType {
   public static final String UNKNOWN = "UNKNOWN";

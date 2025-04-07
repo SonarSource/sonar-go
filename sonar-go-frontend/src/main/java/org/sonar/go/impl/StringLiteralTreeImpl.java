@@ -16,8 +16,8 @@
  */
 package org.sonar.go.impl;
 
-import org.sonar.go.api.StringLiteralTree;
-import org.sonar.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.StringLiteralTree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
 public class StringLiteralTreeImpl extends LiteralTreeImpl implements StringLiteralTree {
 
