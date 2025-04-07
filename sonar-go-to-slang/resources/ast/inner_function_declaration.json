@@ -102,7 +102,7 @@
                 {"@type": "Parameter", "metaData": "8:6::16","type":
                   {"@type": "Identifier", "metaData": "8:10::16","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":11},"modifiers":null,"identifier":
                   {"@type": "Identifier", "metaData": "8:6::9","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":10},"defaultValue":null,"__cfgId":12}
-              ],"body":
+              ],"cfg":{"Blocks":[{"Node":[20,0],"Successors":null}]},"body":
                 {"@type": "Block", "metaData": "8:18:10:2","statementOrExpressions":[
                   {"@type": "ExpressionStatement", "metaData": "9:2::53","expression":
                     {"@type": "FunctionInvocation", "metaData": "9:2::53","memberSelect":
@@ -123,7 +123,7 @@
               {"@type": "Parameter", "metaData": "12:17::27","type":
                 {"@type": "Identifier", "metaData": "12:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":27},"modifiers":null,"identifier":
                 {"@type": "Identifier", "metaData": "12:17::20","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":26},"defaultValue":null,"__cfgId":28}
-            ],"body":
+            ],"cfg":{"Blocks":[{"Node":[36,0],"Successors":null}]},"body":
               {"@type": "Block", "metaData": "12:29:14:2","statementOrExpressions":[
                 {"@type": "ExpressionStatement", "metaData": "13:2::77","expression":
                   {"@type": "FunctionInvocation", "metaData": "13:2::77","memberSelect":

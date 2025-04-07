@@ -151,7 +151,8 @@ func (t *SlangMapper) mapFuncDeclImpl(decl *ast.FuncDecl, fieldName string) *Nod
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
-	slangField["cfg"] = t.extractCfg(decl)
+	slangField["cfg"] = t.extractCfg(decl.Body)
+	t.reinitCfg()
 
 	return t.createNode(decl, children, fieldName+"(FuncDecl)", "FunctionDeclaration", slangField)
 }
@@ -180,6 +181,8 @@ func (t *SlangMapper) mapFuncLitImpl(lit *ast.FuncLit, fieldName string) *Node {
 
 	//FuncLit does not have a reciever
 	slangField["receiver"] = nil
+
+	slangField["cfg"] = t.extractCfg(lit.Body)
 
 	return t.createNode(lit, children, fieldName+"(FuncLit)", "FunctionDeclaration", slangField)
 }

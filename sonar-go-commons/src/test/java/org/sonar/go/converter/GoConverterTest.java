@@ -678,7 +678,7 @@ class GoConverterTest {
           }("Ricky")
 
           funcVar := func(str string) {
-              fmt.Println("Hi", str, "I'm an anonymous function assigned to a variable.")
+              x := 5
           }
 
           funcVar("Bob")
@@ -689,19 +689,33 @@ class GoConverterTest {
       .map(FunctionDeclarationTree.class::cast)
       .toList();
     assertThat(functionDeclarations).hasSize(3);
-    // Supporting precisely this code will be the scope of SONARGO-472
-    assertThat(functionDeclarations.get(1).cfg()).isNull();
-    assertThat(functionDeclarations.get(2).cfg()).isNull();
-    FunctionDeclarationTree functionDeclaration = functionDeclarations.get(0);
-    ControlFlowGraph cfg = functionDeclaration.cfg();
-    assertThat(cfg).isNotNull();
-    assertThat(cfg.blocks()).hasSize(1);
-    Block entry = cfg.entryBlock();
+
+    var funcMain = functionDeclarations.get(0);
+    var cfgMain = funcMain.cfg();
+    assertThat(cfgMain).isNotNull();
+    assertThat(cfgMain.blocks()).hasSize(1);
+    Block entry = cfgMain.entryBlock();
     // Missing variable declaration (see SONARGO-473)
     assertThat(entry.nodes()).hasSize(3);
     assertThat(entry.nodes().get(0).children().get(0)).isInstanceOf(FunctionInvocationTree.class);
     assertThat(entry.nodes().get(1)).isInstanceOf(VariableDeclarationTree.class);
     assertThat(getStringDescendant(entry.nodes().get(2))).contains("Bob");
+
+    var funcRicky = functionDeclarations.get(1);
+    var cfgRicky = funcRicky.cfg();
+    assertThat(cfgRicky).isNotNull();
+    assertThat(cfgRicky.blocks()).hasSize(1);
+    var entryRicky = cfgRicky.entryBlock();
+    assertThat(entryRicky.nodes()).hasSize(1);
+    assertThat(entryRicky.nodes().get(0).children().get(0)).isInstanceOf(FunctionInvocationTree.class);
+
+    var funcVar = functionDeclarations.get(2);
+    var cfgVar = funcVar.cfg();
+    assertThat(cfgVar).isNotNull();
+    assertThat(cfgVar.blocks()).hasSize(1);
+    var entryVar = cfgVar.entryBlock();
+    assertThat(entryVar.nodes()).hasSize(1);
+    assertThat(entryVar.nodes().get(0)).isInstanceOf(VariableDeclarationTree.class);
   }
 
   private Optional<String> getStringDescendant(Tree tree) {

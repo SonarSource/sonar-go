@@ -163,7 +163,7 @@
             {"@type": "FunctionInvocation", "metaData": "18:4::24","memberSelect":
               {"@type": "FunctionDeclaration", "metaData": "18:4::22","typeParameters":
                 null,"returnType":
-                null,"receiver":null,"formalParameters":[],"body":
+                null,"receiver":null,"formalParameters":[],"cfg":{"Blocks":[{"Node":[38,0],"Successors":null}]},"body":
                 {"@type": "Block", "metaData": "18:11::22","statementOrExpressions":[
                   {"@type": "Native", "metaData": "18:13::20","nativeKind":"[0](SendStmt)","children":[
                     {"@type": "Identifier", "metaData": "18:13::15","type":"chan int","package":"UNKNOWN","name":"ch","id":227,"__cfgId":37},

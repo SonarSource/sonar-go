@@ -414,14 +414,14 @@
           {"@type": "Parameter", "metaData": "34:14::19","type":
             {"@type": "Identifier", "metaData": "34:16::19","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"modifiers":null,"identifier":
             {"@type": "Identifier", "metaData": "34:14::15","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":3},"defaultValue":null,"__cfgId":5}
-        ],"body":
+        ],"cfg":{"Blocks":[{"Node":[17,19],"Successors":null},{"Node":null,"Successors":null}]},"body":
           {"@type": "Block", "metaData": "34:25:38:1","statementOrExpressions":[
             {"@type": "Native", "metaData": "36:4::22","nativeKind":"[0](GoStmt)","children":[
               {"@type": "Native", "metaData": "36:4::6","nativeKind":"Go"},
               {"@type": "FunctionInvocation", "metaData": "36:7::22","memberSelect":
                 {"@type": "FunctionDeclaration", "metaData": "36:7::20","typeParameters":
                   null,"returnType":
-                  null,"receiver":null,"formalParameters":[],"body":
+                  null,"receiver":null,"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,0],"Successors":null}]},"body":
                   {"@type": "Block", "metaData": "36:13::20","statementOrExpressions":[
                     {"@type": "UnaryExpression", "metaData": "36:15::18","operator":"INCREMENT","operand":
                       {"@type": "Identifier", "metaData": "36:15::16","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":12},"__cfgId":13}

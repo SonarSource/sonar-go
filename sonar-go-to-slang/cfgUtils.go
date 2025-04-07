@@ -36,11 +36,11 @@ func (t *SlangMapper) addNodeInCfgIdMap(node ast.Node) int32 {
 	return t.currentCfgId
 }
 
-func (t *SlangMapper) extractCfg(funDecl *ast.FuncDecl) *CfgToJava {
-	if funDecl.Body == nil {
+func (t *SlangMapper) extractCfg(body *ast.BlockStmt) *CfgToJava {
+	if body == nil {
 		return nil
 	}
-	cfgOfFunction := cfg.New(funDecl.Body, func(call *ast.CallExpr) bool { return true })
+	cfgOfFunction := cfg.New(body, func(call *ast.CallExpr) bool { return true })
 	cfgJavaBlocks := make([]CfgToJavaBlock, len(cfgOfFunction.Blocks))
 	// For all blocks in the cfg, map them to a CfgJavaBlock
 	for _, block := range cfgOfFunction.Blocks {
@@ -53,8 +53,12 @@ func (t *SlangMapper) extractCfg(funDecl *ast.FuncDecl) *CfgToJava {
 	cfgJava := &CfgToJava{
 		Blocks: cfgJavaBlocks,
 	}
-	t.currentCfgId = 0
 	return cfgJava
+}
+
+func (t *SlangMapper) reinitCfg() {
+	t.currentCfgId = 0
+	t.nodeToCfgIds = make(map[ast.Node]int32)
 }
 
 func (t *SlangMapper) getBlockNodesIndexes(block *cfg.Block) []int32 {
