@@ -309,7 +309,9 @@ class SlangSensorTest extends AbstractSensorTest {
       throw new IllegalStateException("BOUM");
     });
     when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(repositoryKey(), "failing"));
+    // The two following calls are called by "GoChecks".
     when(checkFactory.create(repositoryKey())).thenReturn(checks);
+    when(checks.addAnnotatedChecks(any(Iterable.class))).thenReturn(checks);
     when(checks.all()).thenReturn(Collections.singletonList(failingCheck));
     sensor(checkFactory).execute(context);
 
@@ -659,13 +661,13 @@ class SlangSensorTest extends AbstractSensorTest {
       }
 
       @Override
-      protected Checks<GoCheck> checks() {
-        Checks<GoCheck> checks = checkFactory.create(repositoryKey());
-        checks.addAnnotatedChecks(
+      protected GoChecks checks() {
+        GoChecks checks = new GoChecks(checkFactory);
+        checks.addChecks(repositoryKey(), List.of(
           StringLiteralDuplicatedCheck.class,
           // TODO SONARGO-100 Fix NOSONAR suppression
           // new CommentedCodeCheck(new SlangCodeVerifier()),
-          IdenticalBinaryOperandCheck.class);
+          IdenticalBinaryOperandCheck.class));
         return checks;
       }
 

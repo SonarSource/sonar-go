@@ -18,7 +18,6 @@ package org.sonar.go.plugin;
 
 import java.util.function.Predicate;
 import org.sonar.api.batch.rule.CheckFactory;
-import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.issue.NoSonarFilter;
@@ -29,22 +28,19 @@ import org.sonar.go.utils.NativeKinds;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
-import org.sonar.plugins.go.api.checks.GoCheck;
 
 public class GoSensor extends SlangSensor {
 
-  private final Checks<GoCheck> checks;
+  private final GoChecks checks;
 
-  private ASTConverter goConverter = null;
+  private final ASTConverter goConverter;
 
   public GoSensor(CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
-    super(noSonarFilter, fileLinesContextFactory, language);
-    checks = initializeChecks(checkFactory);
-    this.goConverter = goConverter;
+    this(initializeChecks(checkFactory), fileLinesContextFactory, noSonarFilter, language, goConverter);
   }
 
-  GoSensor(Checks<GoCheck> checks, FileLinesContextFactory fileLinesContextFactory,
+  public GoSensor(GoChecks checks, FileLinesContextFactory fileLinesContextFactory,
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
     super(noSonarFilter, fileLinesContextFactory, language);
     this.checks = checks;
@@ -62,14 +58,13 @@ public class GoSensor extends SlangSensor {
     return goConverter;
   }
 
-  protected Checks<GoCheck> initializeChecks(CheckFactory checkFactory) {
-    var goChecks = checkFactory.<GoCheck>create(GoRulesDefinition.REPOSITORY_KEY);
-    goChecks.addAnnotatedChecks(GoCheckList.checks());
-    return goChecks;
+  private static GoChecks initializeChecks(CheckFactory checkFactory) {
+    return new GoChecks(checkFactory)
+      .addChecks(GoRulesDefinition.REPOSITORY_KEY, GoCheckList.checks());
   }
 
   @Override
-  protected Checks<GoCheck> checks() {
+  public GoChecks checks() {
     return checks;
   }
 

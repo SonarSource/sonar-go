@@ -530,7 +530,7 @@ class GoSensorTest {
     CheckFactory checkFactory = new CheckFactory(activeRules);
     Checks<GoCheck> instantiatedChecks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
     instantiatedChecks.addAnnotatedChecks(checks);
-    return new GoSensor(instantiatedChecks, fileLinesContextFactory, new DefaultNoSonarFilter(),
+    return new GoSensor(new GoChecksTest(instantiatedChecks), fileLinesContextFactory, new DefaultNoSonarFilter(),
       new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
   }
 
@@ -542,6 +542,13 @@ class GoSensorTest {
       .setContents(content)
       .setType(type)
       .build();
+  }
+
+  private static class GoChecksTest extends GoChecks {
+    GoChecksTest(Checks<GoCheck> checks) {
+      super(null);
+      this.checksByRepository.add(checks);
+    }
   }
 
   private static class FileLinesContextTester implements FileLinesContext {

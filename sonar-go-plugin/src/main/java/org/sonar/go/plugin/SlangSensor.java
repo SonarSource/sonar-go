@@ -32,7 +32,6 @@ import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
@@ -52,7 +51,6 @@ import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
-import org.sonar.plugins.go.api.checks.GoCheck;
 import org.sonar.plugins.go.api.checks.GoVersion;
 import org.sonarsource.analyzer.commons.ProgressReport;
 
@@ -85,7 +83,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected abstract ASTConverter astConverter(SensorContext sensorContext);
 
-  protected abstract Checks<GoCheck> checks();
+  protected abstract GoChecks checks();
 
   protected abstract String repositoryKey();
 

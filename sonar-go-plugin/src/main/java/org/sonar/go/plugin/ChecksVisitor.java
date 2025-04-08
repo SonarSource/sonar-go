@@ -25,7 +25,6 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
-import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.HasTextRange;
@@ -45,12 +44,12 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final GoVersion goVersion;
 
-  public ChecksVisitor(Checks<GoCheck> checks, DurationStatistics statistics, GoVersion goVersion) {
+  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoVersion goVersion) {
     this.statistics = statistics;
     this.goVersion = goVersion;
-    Collection<GoCheck> rulesActiveInSonarQube = checks.all();
+    Collection<GoCheck> rulesActiveInSonarQube = goChecks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
-      RuleKey ruleKey = checks.ruleKey(check);
+      RuleKey ruleKey = goChecks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));
     }
