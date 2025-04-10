@@ -53,22 +53,6 @@ sonar {
         property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
         property("sonar.exclusions", "**/build/**/*")
-    }
-}
-
-project(":sonar-go-to-slang") {
-    sonar {
-        properties {
-            property("sonar.sources", ".")
-            property("sonar.inclusions", "**/*.go")
-            property("sonar.exclusions", "**/render.go,**/generate_source.go,**/*_generated.go,**/build/**,**/vendor/**,**/.gogradle/**")
-            property("sonar.tests", ".")
-            property("sonar.test.inclusions", "**/*_test.go")
-            property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
-            property("sonar.go.tests.reportPaths", "build/test-report.json")
-            property("sonar.go.coverage.reportPaths", "build/test-coverage.out")
-            property("sonar.go.golangci-lint.reportPaths", "build/reports/golangci-lint-report.xml")
-            property("sonar.sca.excludedManifests", "private/its/sources/**")
-        }
+        property("sonar.sca.excludedManifests", "private/its/sources/**")
     }
 }

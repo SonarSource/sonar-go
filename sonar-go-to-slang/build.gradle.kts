@@ -22,6 +22,7 @@ plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
     id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.go-binary-builder")
+    id("org.sonarqube")
 }
 
 val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
@@ -253,5 +254,19 @@ fun getArchitecture(): String {
     return when {
         arch.contains("aarch64") -> "arm64"
         else -> "amd64"
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.sources", ".")
+        property("sonar.inclusions", "**/*.go")
+        property("sonar.exclusions", "**/render.go,**/generate_source.go,**/*_generated.go,**/build/**,**/vendor/**,**/.gogradle/**")
+        property("sonar.tests", ".")
+        property("sonar.test.inclusions", "**/*_test.go")
+        property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
+        property("sonar.go.tests.reportPaths", "build/test-report.json")
+        property("sonar.go.coverage.reportPaths", "build/test-coverage.out")
+        property("sonar.go.golangci-lint.reportPaths", "build/reports/golangci-lint-report.xml")
     }
 }
