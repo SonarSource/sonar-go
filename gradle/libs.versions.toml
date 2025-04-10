@@ -1,13 +1,13 @@
 [versions]
-analyzer-commons = "2.16.0.3141"
+analyzer-commons = "2.17.0.3322"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "11.1.0.2693"
-sonarqube = "25.3.0.104237"
-orchestrator = "5.3.0.2465"
-sonarlint = "10.17.0.80607"
+sonarqube = "25.4.0.105899"
+orchestrator = "5.5.0.2535"
+sonarlint = "10.18.0.80725"
 minimal-json = "0.9.5"
-mockito-core = "5.16.1"
+mockito-core = "5.17.0"
 assertj-core = "3.27.3"
 junit-jupiter = "5.12.1"
 # slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api in integration tests
