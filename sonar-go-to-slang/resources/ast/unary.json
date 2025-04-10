@@ -124,7 +124,7 @@
           {"@type": "StarExpression", "metaData": "12:15::22","expression":
             {"@type": "Identifier", "metaData": "12:16::22","type":"unary.go.Person","package":"unary.go","name":"Person","id":20,"__cfgId":16},"__cfgId":17},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "12:9::14","type":"*unary.go.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":15},"defaultValue":null,"__cfgId":18}
-      ],"cfg":{"Blocks":[{"Node":[0,0,0,0,42,0,48,50,0,0,0,0],"Successors":null}]},"body":
+      ],"cfg":{"Blocks":[{"Node":[23,26,29,35,42,46,48,50,54,58,62,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "12:24:29:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "13:1::11","type":
             null,"isVal":false,"initializers":[

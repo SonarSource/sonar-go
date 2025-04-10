@@ -311,7 +311,7 @@
             ],"__cfgId":81}
           ],"__cfgId":82},"modifiers":null,"identifier":
           {"@type": "Identifier", "metaData": "25:9::18","type":"interface{bar()}","package":"UNKNOWN","name":"notClass3","id":400,"__cfgId":76},"defaultValue":null,"__cfgId":83}
-      ],"cfg":{"Blocks":[{"Node":[0,0],"Successors":null}]},"body":
+      ],"cfg":{"Blocks":[{"Node":[93,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "25:39:27:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:5::47","type":
             {"@type": "Identifier", "metaData": "26:19::25","type":"class.go.Class2","package":"class.go","name":"Class2","id":65,"__cfgId":87},"isVal":false,"initializers":[

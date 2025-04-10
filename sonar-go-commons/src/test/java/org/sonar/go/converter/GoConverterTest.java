@@ -695,11 +695,11 @@ class GoConverterTest {
     assertThat(cfgMain).isNotNull();
     assertThat(cfgMain.blocks()).hasSize(1);
     Block entry = cfgMain.entryBlock();
-    // Missing variable declaration (see SONARGO-473)
-    assertThat(entry.nodes()).hasSize(3);
-    assertThat(entry.nodes().get(0).children().get(0)).isInstanceOf(FunctionInvocationTree.class);
-    assertThat(entry.nodes().get(1)).isInstanceOf(VariableDeclarationTree.class);
-    assertThat(getStringDescendant(entry.nodes().get(2))).contains("Bob");
+    assertThat(entry.nodes()).hasSize(4);
+    assertThat(entry.nodes().get(0)).isInstanceOf(VariableDeclarationTree.class);
+    assertThat(entry.nodes().get(1).children().get(0)).isInstanceOf(FunctionInvocationTree.class);
+    assertThat(entry.nodes().get(2)).isInstanceOf(VariableDeclarationTree.class);
+    assertThat(getStringDescendant(entry.nodes().get(3))).contains("Bob");
 
     var funcRicky = functionDeclarations.get(1);
     var cfgRicky = funcRicky.cfg();

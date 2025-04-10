@@ -179,7 +179,7 @@ func (t *SlangMapper) mapFuncLitImpl(lit *ast.FuncLit, fieldName string) *Node {
 	children = t.appendNode(children, funcBody)
 	slangField["body"] = funcBody
 
-	//FuncLit does not have a reciever
+	//FuncLit does not have a receiver
 	slangField["receiver"] = nil
 
 	slangField["cfg"] = t.extractCfg(lit.Body)

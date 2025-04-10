@@ -32,8 +32,20 @@ type CfgToJavaBlock struct {
 
 func (t *SlangMapper) addNodeInCfgIdMap(node ast.Node) int32 {
 	t.currentCfgId++
-	t.nodeToCfgIds[node] = t.currentCfgId
+	t.objectToCfgIds[retrieveCfgObjectFromNode(node)] = t.currentCfgId
 	return t.currentCfgId
+}
+
+// Sometimes, AST nodes are not directly mapped to the CFG blocks.
+// This method is about retrieving the object that is actually used in the CFG.
+// It currently maps variable declaration, from the GenDecl object to the first Spec object.
+func retrieveCfgObjectFromNode(node ast.Node) any {
+	if genDecl, ok := node.(*ast.GenDecl); ok {
+		if len(genDecl.Specs) == 1 {
+			return genDecl.Specs[0]
+		}
+	}
+	return node
 }
 
 func (t *SlangMapper) extractCfg(body *ast.BlockStmt) *CfgToJava {
@@ -58,13 +70,13 @@ func (t *SlangMapper) extractCfg(body *ast.BlockStmt) *CfgToJava {
 
 func (t *SlangMapper) reinitCfg() {
 	t.currentCfgId = 0
-	t.nodeToCfgIds = make(map[ast.Node]int32)
+	t.objectToCfgIds = make(map[any]int32)
 }
 
 func (t *SlangMapper) getBlockNodesIndexes(block *cfg.Block) []int32 {
 	var nodesIndexes []int32
 	for _, node := range block.Nodes {
-		nodesIndexes = append(nodesIndexes, t.nodeToCfgIds[node])
+		nodesIndexes = append(nodesIndexes, t.objectToCfgIds[node])
 	}
 	return nodesIndexes
 }

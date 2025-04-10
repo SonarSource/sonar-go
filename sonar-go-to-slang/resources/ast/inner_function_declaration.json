@@ -86,7 +86,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"inner_function_declaration.go","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0,24,39,48,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"inner_function_declaration.go","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,24,39,48,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:12:17:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::20","type":
             {"@type": "Identifier", "metaData": "6:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"isVal":false,"initializers":[

@@ -115,7 +115,7 @@ type SlangMapper struct {
 	paranoiac         bool
 	info              *types.Info
 	currentCfgId      int32
-	nodeToCfgIds      map[ast.Node]int32
+	objectToCfgIds    map[any]int32
 }
 
 func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) *SlangMapper {
@@ -127,7 +127,7 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		tokens:            nil,
 		paranoiac:         true,
 		info:              info,
-		nodeToCfgIds:      make(map[ast.Node]int32),
+		objectToCfgIds:    make(map[any]int32),
 	}
 	t.comments = t.mapAllComments()
 	t.commentPos = 0

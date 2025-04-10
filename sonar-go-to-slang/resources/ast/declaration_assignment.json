@@ -204,7 +204,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"declaration_assignment.go","name":"main","id":33,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0,0,0,16,0,21,23,25,27,29,31,33,35,37,39,41,43,45,47,50,56,61,0,70,75,0,0,0,94,97,100,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"declaration_assignment.go","name":"main","id":33,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,12,14,16,19,21,23,25,27,29,31,33,35,37,39,41,43,45,47,50,56,61,65,70,75,84,88,91,94,97,100,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:12:49:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::10","type":
             {"@type": "Identifier", "metaData": "6:7::10","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"isVal":false,"initializers":[],"identifiers":[

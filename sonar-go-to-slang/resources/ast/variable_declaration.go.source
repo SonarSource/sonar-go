@@ -1,0 +1,11 @@
+package main
+
+func foo(value *Person) {
+	var x1 int
+	var x2 int = 1
+	var x3 = 1
+	x4 := 1
+	var x5, x6 int
+	var x7, x8 = 1, 2
+	var x9, x10 int = 1, 2
+}
