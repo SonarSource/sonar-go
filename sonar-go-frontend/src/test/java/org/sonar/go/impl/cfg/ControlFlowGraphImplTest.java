@@ -25,7 +25,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class ControlFlowGraphImplTest {
   @Test
-  void firstNodeIsEntryBlock() {
+  void firstNodeShouldBeEntryBlock() {
     BlockImpl firstBlock = new BlockImpl(List.of());
     List<Block> blocks = List.of(firstBlock, new BlockImpl(List.of()));
     ControlFlowGraph cfg = new ControlFlowGraphImpl(blocks);

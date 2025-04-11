@@ -49,7 +49,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     this.goVersion = goVersion;
     Collection<GoCheck> rulesActiveInSonarQube = goChecks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
-      RuleKey ruleKey = goChecks.ruleKey(check);
+      var ruleKey = goChecks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));
     }

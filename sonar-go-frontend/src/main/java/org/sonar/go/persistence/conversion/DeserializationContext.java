@@ -93,14 +93,14 @@ public class DeserializationContext {
   }
 
   public RuntimeException newIllegalMemberException(String message, @Nullable Object illegalElement) {
-    String elementText = String.valueOf(illegalElement);
+    var elementText = String.valueOf(illegalElement);
     elementText = elementText.substring(0, Math.min(elementText.length(), MAX_ILLEGAL_ELEMENT_TEXT_LENGTH));
     return new IllegalStateException(message + " at '" + path() + "' member: " + elementText);
   }
 
   @Nullable
   public <T extends Tree> T fieldToNullableObject(JsonObject parent, String fieldName, Class<T> expectedClass) {
-    JsonValue json = parent.get(fieldName);
+    var json = parent.get(fieldName);
     if (json == null || Json.NULL.equals(json)) {
       return null;
     }
@@ -108,7 +108,7 @@ public class DeserializationContext {
   }
 
   public <T extends Tree> T fieldToObject(JsonObject parent, String fieldName, Class<T> expectedClass) {
-    JsonValue json = parent.get(fieldName);
+    var json = parent.get(fieldName);
     if (json == null || Json.NULL.equals(json)) {
       throw newIllegalMemberException("Unexpected null value for field '" + fieldName + "'", json);
     }
@@ -146,7 +146,7 @@ public class DeserializationContext {
     if (!value.isArray()) {
       throw newIllegalMemberException("Expect Array instead of " + value.getClass().getSimpleName(), value);
     }
-    List<T> result = new ArrayList<>();
+    var result = new ArrayList<T>();
     for (JsonValue jsonValue : value.asArray()) {
       result.add(converter.apply(jsonValue.asObject()));
     }
@@ -154,7 +154,7 @@ public class DeserializationContext {
   }
 
   public String fieldToNullableString(JsonObject json, String fieldName) {
-    JsonValue value = json.get(fieldName);
+    var value = json.get(fieldName);
     if (value == null || Json.NULL.equals(value)) {
       return null;
     }
@@ -162,7 +162,7 @@ public class DeserializationContext {
   }
 
   public String fieldToString(JsonObject json, String fieldName) {
-    JsonValue value = json.get(fieldName);
+    var value = json.get(fieldName);
     if (value == null || Json.NULL.equals(value)) {
       throw newIllegalMemberException("Missing non-null value for field '" + fieldName + "'", json);
     }
@@ -178,7 +178,7 @@ public class DeserializationContext {
   }
 
   public int fieldToInt(JsonObject json, String fieldName) {
-    JsonValue value = json.get(fieldName);
+    var value = json.get(fieldName);
     if (value == null || Json.NULL.equals(value)) {
       throw newIllegalMemberException("Missing non-null value for field '" + fieldName + "'", json);
     }
@@ -207,11 +207,11 @@ public class DeserializationContext {
     if (!json.isObject()) {
       throw newIllegalMemberException("Unexpected value for Tree", json);
     }
-    JsonObject jsonObject = json.asObject();
-    String jsonType = fieldToString(jsonObject, SerializationContext.TYPE_ATTRIBUTE);
+    var jsonObject = json.asObject();
+    var jsonType = fieldToString(jsonObject, SerializationContext.TYPE_ATTRIBUTE);
     T object = polymorphicConverter.fromJson(this, jsonType, jsonObject, memberName, expectedClass);
     popPath();
-    int cfgId = jsonObject.getInt("__cfgId", -1);
+    var cfgId = jsonObject.getInt("__cfgId", -1);
     if (cfgId >= 0) {
       cfgIndexToTree.put(cfgId, object);
     }
@@ -219,16 +219,16 @@ public class DeserializationContext {
   }
 
   public FunctionDeclarationTreeImpl functionDeclarationTree(JsonObject json) {
-    Tree returnType = fieldToNullableObject(json, RETURN_TYPE, Tree.class);
-    Tree receiver = fieldToNullableObject(json, RECEIVER, Tree.class);
-    IdentifierTree name = fieldToNullableObject(json, NAME, IdentifierTree.class);
-    List<Tree> formalParameters = fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class);
-    Tree typeParameters = fieldToNullableObject(json, TYPE_PARAMETERS, Tree.class);
-    BlockTree body = fieldToNullableObject(json, BODY, BlockTree.class);
+    var returnType = fieldToNullableObject(json, RETURN_TYPE, Tree.class);
+    var receiver = fieldToNullableObject(json, RECEIVER, Tree.class);
+    var name = fieldToNullableObject(json, NAME, IdentifierTree.class);
+    var formalParameters = fieldToObjectList(json, FORMAL_PARAMETERS, Tree.class);
+    var typeParameters = fieldToNullableObject(json, TYPE_PARAMETERS, Tree.class);
+    var body = fieldToNullableObject(json, BODY, BlockTree.class);
     // We want to first build the underlying nodes (that will eventually be stored in the map "cfgIndexToTree")
     // before building the CFG, as it requires the nodes. We don't want to inline the value in the constructor call as it would
     // add an implicit contract for the parameters order.
-    ControlFlowGraph cfg = controlFlowGraph(json);
+    var cfg = controlFlowGraph(json);
     return new FunctionDeclarationTreeImpl(
       metaData(json),
       returnType,
@@ -243,23 +243,23 @@ public class DeserializationContext {
   @CheckForNull
   public ControlFlowGraph controlFlowGraph(JsonObject json) {
     try {
-      List<BlockImpl> mappedBlocks = new ArrayList<>();
-      JsonValue cfgValue = json.get("cfg");
+      var cfgValue = json.get("cfg");
       if (cfgValue == null || !cfgValue.isObject()) {
         return null;
       }
-      JsonObject cfgObject = cfgValue.asObject();
-      JsonValue blocksValue = cfgObject.get("Blocks");
+      var cfgObject = cfgValue.asObject();
+      var blocksValue = cfgObject.get("Blocks");
       if (!blocksValue.isArray()) {
         return null;
       }
-      List<JsonObject> blocks = blocksValue.asArray().values().stream()
+      var blocks = blocksValue.asArray().values().stream()
         .filter(JsonValue::isObject)
         .map(JsonValue::asObject)
         .toList();
 
-      for (JsonObject block : blocks) {
-        JsonValue node = block.get("Node");
+      var mappedBlocks = new ArrayList<BlockImpl>();
+      for (var block : blocks) {
+        var node = block.get("Node");
         List<Tree> nodes = Collections.emptyList();
         if (node.isArray()) {
           nodes = node.asArray().values().stream()
@@ -274,13 +274,13 @@ public class DeserializationContext {
       }
 
       // Second pass to set successors
-      for (int i = 0; i < blocks.size(); i++) {
-        JsonObject currentBlock = blocks.get(i);
-        JsonValue successorValue = currentBlock.get("Successors");
+      for (var i = 0; i < blocks.size(); i++) {
+        var currentBlock = blocks.get(i);
+        var successorValue = currentBlock.get("Successors");
         if (!successorValue.isArray()) {
           mappedBlocks.get(i).setSuccessors(Collections.emptyList());
         } else {
-          List<BlockImpl> successors = successorValue.asArray().values().stream()
+          var successors = successorValue.asArray().values().stream()
             .filter(JsonValue::isNumber)
             .map(JsonValue::asInt)
             .map(mappedBlocks::get)

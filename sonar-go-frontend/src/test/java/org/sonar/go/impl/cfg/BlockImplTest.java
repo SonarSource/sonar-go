@@ -25,21 +25,21 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class BlockImplTest {
   @Test
-  void blockIsCreatedWithEmptyListOfSuccessors() {
+  void blockShouldBeCreatedWithEmptyListOfSuccessors() {
     BlockImpl block = new BlockImpl(List.of());
     assertThat(block.successors()).isEmpty();
     assertThat(block.nodes()).isEmpty();
   }
 
   @Test
-  void blockKeepNodes() {
+  void blockShouldKeepNodes() {
     IdentifierTree identifier = TreeCreationUtils.identifier("name");
     BlockImpl block = new BlockImpl(List.of(identifier));
     assertThat(block.nodes()).containsExactly(identifier);
   }
 
   @Test
-  void blockImplCanSetSuccessors() {
+  void blockImplShouldSetSuccessors() {
     BlockImpl block = new BlockImpl(List.of());
     BlockImpl nextBlock = new BlockImpl(List.of());
     block.setSuccessors(List.of(nextBlock));
