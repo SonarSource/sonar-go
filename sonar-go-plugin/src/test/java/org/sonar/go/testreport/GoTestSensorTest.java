@@ -137,7 +137,7 @@ class GoTestSensorTest {
 
     MapSettings settings = new MapSettings();
     String absoluteReportPath = baseDir.resolve("report1.out").toString();
-    settings.setProperty(GoTestSensor.REPORT_PATH_KEY, "report.out,invilid/report/path," + absoluteReportPath);
+    settings.setProperty(GoTestSensor.REPORT_PATH_KEY, "report.out,invalid/report/path," + absoluteReportPath);
     context.setSettings(settings);
 
     goTestSensor.execute(context);
@@ -179,7 +179,7 @@ class GoTestSensorTest {
 
     MapSettings settings = new MapSettings();
     String absoluteReportPath = baseDir.resolve("report1.out").toString();
-    settings.setProperty(GoTestSensor.REPORT_PATH_KEY, "report.out,invilid/report/path," + absoluteReportPath);
+    settings.setProperty(GoTestSensor.REPORT_PATH_KEY, "report.out,invalid/report/path," + absoluteReportPath);
     context.setSettings(settings);
 
     goTestSensor.execute(context);

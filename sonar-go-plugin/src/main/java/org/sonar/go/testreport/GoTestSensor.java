@@ -140,8 +140,13 @@ public class GoTestSensor implements Sensor {
 
     Pattern pattern = Pattern.compile("^func\\s+" + testName + "\\s*\\(", Pattern.MULTILINE);
     for (InputFile testFile : testInputFilesInPackage) {
-      if (pattern.matcher(testFile.contents()).find()) {
-        return testFile;
+      try {
+        if (pattern.matcher(testFile.contents()).find()) {
+          return testFile;
+        }
+      } catch (IOException ioe) {
+        LOG.warn("Failed to read test file {}", testFile.uri());
+        LOG.debug("Stacktrace:", ioe);
       }
     }
 
