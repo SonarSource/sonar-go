@@ -53,6 +53,9 @@ sonar {
         property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
         property("sonar.exclusions", "**/build/**/*")
-        property("sonar.sca.excludedManifests", "private/its/sources/**")
+        property(
+            "sonar.sca.excludedManifests",
+            "private/its/**,go/**,private/go-custom-rules-plugin/**"
+        )
     }
 }
