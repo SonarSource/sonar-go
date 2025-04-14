@@ -9,7 +9,7 @@ sonarlint = "10.18.0.80725"
 minimal-json = "0.9.5"
 mockito-core = "5.17.0"
 assertj-core = "3.27.3"
-junit-jupiter = "5.12.1"
+junit-jupiter = "5.12.2"
 # slf4j is provided by SQ, SC or SL, should be aligned with sonar-plugin-api in integration tests
 slf4j-api = "1.7.36"
 xerces = "2.12.2"
