@@ -18,7 +18,10 @@ package org.sonar.go.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.CheckForNull;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
@@ -36,6 +39,46 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   @Override
   public List<Tree> arguments() {
     return arguments;
+  }
+
+  @Override
+  public String signature(String packageName) {
+    var sb = new StringBuilder();
+    if (memberSelect instanceof MemberSelectTree memberSelectTree) {
+      var expression = memberSelectTree.expression();
+      if (expression instanceof IdentifierTree expressionIdentifierTree) {
+        var idSignature = getPackage(expressionIdentifierTree, packageName);
+        if (idSignature != null) {
+          sb.append(idSignature);
+          sb.append(".");
+        }
+      }
+      sb.append(memberSelectTree.identifier().name());
+    } else if (memberSelect instanceof IdentifierTree identifierTree) {
+      // build-in functions like string(), int(), int16(), or local functions or alias import
+      var idSignature = getPackage(identifierTree, packageName);
+      sb.append(idSignature);
+      sb.append(".");
+      sb.append(identifierTree.name());
+    }
+    return sb.toString();
+  }
+
+  @CheckForNull
+  private static String getPackage(IdentifierTree identifierTree, String packageName) {
+    var idPackageName = identifierTree.packageName();
+    var result = idPackageName;
+    if ("UNKNOWN".equals(idPackageName)) {
+      var type = identifierTree.type();
+      if ("UNKNOWN".equals(type)) {
+        // function defined locally
+        result = packageName;
+      } else {
+        // build-in functions like string(), int(), int16()
+        result = type;
+      }
+    }
+    return result;
   }
 
   @Override

@@ -17,6 +17,7 @@
 package org.sonar.go.impl;
 
 import java.util.List;
+import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
@@ -35,4 +36,13 @@ public class PackageDeclarationTreeImpl extends BaseTreeImpl implements PackageD
     return children;
   }
 
+  @Override
+  public String packageName() {
+    return children.stream()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .findFirst()
+      .map(IdentifierTree::name)
+      .orElse("");
+  }
 }

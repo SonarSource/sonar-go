@@ -17,4 +17,9 @@
 package org.sonar.plugins.go.api;
 
 public interface PackageDeclarationTree extends Tree {
+  /**
+   * Returns package name, e.g. for declaration {@code package main} it returns {@code "main"}.
+   * @return package name
+   */
+  String packageName();
 }

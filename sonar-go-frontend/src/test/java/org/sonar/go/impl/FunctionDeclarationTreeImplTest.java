@@ -18,22 +18,30 @@ package org.sonar.go.impl;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.impl.cfg.BlockImpl;
 import org.sonar.go.impl.cfg.ControlFlowGraphImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.NativeKind;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.Token;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static java.util.Collections.emptyList;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.sonar.go.impl.TextRanges.range;
 import static org.sonar.go.utils.TreeCreationUtils.simpleNative;
 
@@ -64,7 +72,10 @@ class FunctionDeclarationTreeImplTest {
     assertThat(tree.body()).isEqualTo(body);
     assertThat(tree.receiver()).isSameAs(receiverWrapper);
     assertThat(tree.receiverName()).isEqualTo("r");
+    // second call of receiverName for coverage (lazy calculation)
+    assertThat(tree.receiverName()).isEqualTo("r");
     assertThat(tree.cfg()).isSameAs(cfg);
+    assertThat(tree.signature("main")).isEqualTo("main.foo");
 
     FunctionDeclarationTreeImpl lightweightConstructor = new FunctionDeclarationTreeImpl(meta, null, null, null, emptyList(), null, null, null);
 
@@ -116,6 +127,96 @@ class FunctionDeclarationTreeImplTest {
     TreeMetaData functionMetaData = metaDataProvider.metaData(range(5, 1, 5, 14));
     assertThat(new FunctionDeclarationTreeImpl(functionMetaData, null, null, null, emptyList(), null, null, null).rangeToHighlight())
       .isEqualTo(range(5, 1, 5, 14));
+  }
+
+  static Stream<Arguments> shouldVerifyFunctionDeclarationSignature() {
+    return Stream.of(
+      arguments("func foo() {}"),
+      arguments("func foo(a int) {}"),
+      arguments("func foo(a float32) {}"),
+      arguments("func foo(a float64) {}"),
+      arguments("func foo(text string) {}"),
+      arguments("func foo(a ...int) {}"),
+      arguments("func foo(a ...float64) {}"),
+      arguments("func foo(text ...string) {}"),
+      arguments("func foo(args ...interface{}) {}"),
+      arguments("func foo(a []int) {}"),
+      arguments("func foo(a [][]int) {}"),
+      arguments("func foo(a int16) {}"),
+      arguments("func foo(a int32) {}"),
+
+      arguments("func foo(a int, b string) {}"),
+      arguments("func foo(a int, b ...string) {}"),
+      arguments("func foo(a int, b []string) {}"),
+      arguments("func foo(a int, b any) {}"),
+
+      arguments("func foo(c *fiber.Ctx) {}"),
+      arguments("func foo(c fiber.Ctx) {}"),
+      arguments("func foo(cookie fiber.Cookie, ctx *fiber.Ctx) {}"),
+
+      // TODO SONARGO-486 function receiver
+      arguments("func (ctrl *MainController) foo()"),
+
+      arguments("func foo[P any]() {}"),
+      arguments("func foo[S interface{ ~[]byte|string }]() {}"),
+      arguments("func foo[S ~[]E, E any]() {}"),
+      // M type is undefined
+      arguments("func foo[P M[int]]() {}"),
+      arguments("func foo[_ any]() {}"),
+      arguments("func foo(m map[string]int64) int64 {\nreturn 0\n}"),
+      arguments("func foo(m map[string]float64) float64 {\nreturn 0\n}"),
+      arguments("func foo[K comparable, V int64 | float64](m map[K]V) V {\nreturn 0\n}"),
+      arguments("func foo[K comparable, V Number](m map[K]V) V {\nreturn 0\n}"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifyFunctionDeclarationSignature(String function) {
+    var code = """
+      package main
+      import (
+        "github.com/gofiber/fiber/v2"
+        "github.com/beego/beego/v2/server/web"
+      )
+      %s
+      type MainController struct {
+        web.Controller
+      }
+      """.formatted(function);
+    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = tree.declarations().stream()
+      .filter(FunctionDeclarationTreeImpl.class::isInstance)
+      .map(FunctionDeclarationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo("main.foo");
+  }
+
+  @Test
+  void shouldVerifyAnonymousFunction() {
+    var code = """
+      package main
+
+      import (
+          "database/sql"
+          "flag"
+          "fmt"
+          "github.com/go-sql-driver/mysql"
+          "log"
+          "os"
+      )
+
+      func a () {
+          func (a int) {
+              fmt.Println(a)
+          }(5)
+      }""";
+    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var funcList = tree.descendants()
+      .filter(FunctionDeclarationTreeImpl.class::isInstance)
+      .map(FunctionDeclarationTreeImpl.class::cast)
+      .toList();
+    assertThat(funcList.get(1).signature("main")).isEqualTo("main.$anonymous_at_line_13");
   }
 
 }

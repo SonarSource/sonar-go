@@ -1,0 +1,64 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
+      {"text":"(","textRange":"3:7::8"},
+      {"text":"\"crypto/md5\"","textRange":"4:1::13","type":"STRING_LITERAL"},
+      {"text":")","textRange":"5:0::1"},
+      {"text":"func","textRange":"7:0::4","type":"KEYWORD"},
+      {"text":"fc1","textRange":"7:5::8"},
+      {"text":"(","textRange":"7:8::9"},
+      {"text":"data","textRange":"7:9::13"},
+      {"text":"[","textRange":"7:14::15"},
+      {"text":"byte","textRange":"7:16::20"},
+      {"text":"]","textRange":"7:15::16"},
+      {"text":")","textRange":"7:20::21"},
+      {"text":"{","textRange":"7:22::23"},
+      {"text":"md5","textRange":"8:1::4"},
+      {"text":"Sum","textRange":"8:5::8"},
+      {"text":".","textRange":"8:4::5"},
+      {"text":"(","textRange":"8:8::9"},
+      {"text":"data","textRange":"8:9::13"},
+      {"text":")","textRange":"8:13::14"},
+      {"text":"}","textRange":"9:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:10:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "3:0:5:1","children":[
+        {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
+        {"@type": "Native", "metaData": "3:7::8","nativeKind":"Lparen"},
+        {"@type": "ImportSpecification", "metaData": "4:1::13","path":
+          {"@type": "StringLiteral", "metaData": "4:1::13","value":"\"crypto/md5\"","content":"crypto/md5"},"name":
+          null,"__cfgId":3},
+        {"@type": "Native", "metaData": "5:0::1","nativeKind":"Rparen"}
+      ],"__cfgId":4},
+      {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "7:5::8","type":"func(data []byte)","package":"function_calls.go","name":"fc1","id":46,"__cfgId":5},"formalParameters":[
+        {"@type": "Parameter", "metaData": "7:9::20","type":
+          {"@type": "ArrayType", "metaData": "7:14::20","length":null,"element":
+            {"@type": "Identifier", "metaData": "7:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},"modifiers":null,"identifier":
+          {"@type": "Identifier", "metaData": "7:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":6},"defaultValue":null,"__cfgId":9}
+      ],"cfg":{"Blocks":[{"Node":[17,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "7:22:9:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "8:1::14","expression":
+            {"@type": "FunctionInvocation", "metaData": "8:1::14","memberSelect":
+              {"@type": "MemberSelect", "metaData": "8:1::8","identifier":
+                {"@type": "Identifier", "metaData": "8:5::8","type":"func(data []byte) [16]byte","package":"crypto/md5","name":"Sum","id":0,"__cfgId":13},"expression":
+                {"@type": "Identifier", "metaData": "8:1::4","type":"UNKNOWN","package":"crypto/md5","name":"md5","id":25,"__cfgId":12},"__cfgId":14},"arguments":[
+              {"@type": "Identifier", "metaData": "8:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":15}
+            ],"__cfgId":16},"__cfgId":17}
+        ],"__cfgId":18},"__cfgId":1}
+    ],"__cfgId":2}
+} 

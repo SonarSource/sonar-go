@@ -1,0 +1,9 @@
+package main
+
+import (
+	"crypto/md5"
+)
+
+func fc1(data []byte) {
+	md5.Sum(data)
+}

@@ -25,6 +25,7 @@ import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.plugins.go.api.TreeMetaData;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
@@ -153,5 +154,13 @@ class TreeUtilsTest {
     var integerLiteral = TreeCreationUtils.integerLiteral("42");
     var result = TreeUtils.retrieveLastIdentifier(integerLiteral);
     assertThat(result).isEmpty();
+  }
+
+  @Test
+  void shouldRetrievePackageName() {
+    var pack = TreeCreationUtils.packageDeclaration("foo");
+    var topLevelTree = TreeCreationUtils.topLevel(List.of(pack));
+    var result = TreeUtils.retrievePackageName(topLevelTree);
+    assertThat(result).isEqualTo("foo");
   }
 }

@@ -34,6 +34,7 @@ import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.impl.ModifierTreeImpl;
 import org.sonar.go.impl.NativeTreeImpl;
+import org.sonar.go.impl.PackageDeclarationTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -55,6 +56,7 @@ import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.ModifierTree;
 import org.sonar.plugins.go.api.NativeKind;
 import org.sonar.plugins.go.api.NativeTree;
+import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.PlaceHolderTree;
 import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.TextRange;
@@ -208,6 +210,10 @@ public class TreeCreationUtils {
 
   public static TopLevelTree topLevel(List<Tree> declarations) {
     return new TopLevelTreeImpl(null, declarations, null);
+  }
+
+  public static PackageDeclarationTree packageDeclaration(String packageName) {
+    return new PackageDeclarationTreeImpl(null, List.of(identifier(packageName)));
   }
 
   private static TreeMetaData metaData(List<String> tokens) {

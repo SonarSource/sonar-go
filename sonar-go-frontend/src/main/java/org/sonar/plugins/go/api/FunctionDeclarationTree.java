@@ -53,4 +53,10 @@ public interface FunctionDeclarationTree extends Tree {
   @CheckForNull
   ControlFlowGraph cfg();
 
+  /**
+   * Return function declaration signature. This signature may be treated as unique id.
+   * @param packageName the packageName of the file where function is declared
+   * @return function declaration signature
+   */
+  String signature(String packageName);
 }

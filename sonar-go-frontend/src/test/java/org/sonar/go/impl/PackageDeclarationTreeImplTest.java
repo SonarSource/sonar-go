@@ -17,20 +17,18 @@
 package org.sonar.go.impl;
 
 import java.util.Collections;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.sonar.plugins.go.api.PackageDeclarationTree;
-import org.sonar.plugins.go.api.Tree;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.sonar.go.utils.TreeCreationUtils.identifier;
 
 class PackageDeclarationTreeImplTest {
 
   @Test
   void test() {
-    Tree identifier = identifier("x");
-    PackageDeclarationTree tree = new PackageDeclarationTreeImpl(null, Collections.singletonList(identifier));
-    Assertions.assertThat(tree.children()).containsExactly(identifier);
+    var identifier = identifier("x");
+    var tree = new PackageDeclarationTreeImpl(null, Collections.singletonList(identifier));
+    assertThat(tree.children()).containsExactly(identifier);
+    assertThat(tree.packageName()).isEqualTo("x");
   }
-
 }

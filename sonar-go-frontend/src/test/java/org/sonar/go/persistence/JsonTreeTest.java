@@ -407,7 +407,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(function.body().textRange()).isEqualTo(body.textRange());
 
     assertThat(methodNames(FunctionDeclarationTree.class))
-      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, TYPE_PARAMETERS, BODY, "cfg", "rangeToHighlight", "receiverName");
+      .containsExactlyInAnyOrder(RETURN_TYPE, RECEIVER, NAME, FORMAL_PARAMETERS, TYPE_PARAMETERS, BODY, "cfg", "rangeToHighlight", "receiverName", "signature");
   }
 
   @Test
@@ -696,7 +696,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(tokens(tree.children().get(0))).isEqualTo("1:8:1:13 - hello");
 
     assertThat(methodNames(PackageDeclarationTree.class))
-      .isEmpty();
+      .containsExactly("packageName");
   }
 
   @Test

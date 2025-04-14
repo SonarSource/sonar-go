@@ -20,11 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
-import org.sonar.plugins.go.api.StarExpressionTree;
+import org.sonar.plugins.go.api.PackageDeclarationTree;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
 public class TreeUtils {
@@ -47,17 +47,6 @@ public class TreeUtils {
       .map(IdentifierTree.class::cast)
       .map(IdentifierTree::name)
       .collect(Collectors.joining("."));
-  }
-
-  public static String treeToString(@Nullable Tree tree) {
-    if (tree instanceof IdentifierTree identifierTree) {
-      return identifierTree.name();
-    } else if (tree instanceof StarExpressionTree starExpressionTree) {
-      return treeToString(starExpressionTree.operand());
-    } else if (tree instanceof MemberSelectTree memberSelectTree) {
-      return treeToString(memberSelectTree.expression()) + "." + memberSelectTree.identifier().name();
-    }
-    return "";
   }
 
   /**
@@ -90,5 +79,14 @@ public class TreeUtils {
       return Optional.of(identifierTree);
     }
     return Optional.empty();
+  }
+
+  public static String retrievePackageName(TopLevelTree topLevelTree) {
+    return topLevelTree.descendants()
+      .filter(PackageDeclarationTree.class::isInstance)
+      .map(PackageDeclarationTree.class::cast)
+      .findFirst()
+      .map(PackageDeclarationTree::packageName)
+      .orElse("");
   }
 }

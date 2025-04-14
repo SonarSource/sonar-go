@@ -26,4 +26,11 @@ public interface FunctionInvocationTree extends Tree {
   Tree memberSelect();
 
   List<Tree> arguments();
+
+  /**
+   * Return function invocation signature. This signature may be treated as unique id.
+   * @param packageName the packageName of the file where function is invoked
+   * @return function invocation signature
+   */
+  String signature(String packageName);
 }

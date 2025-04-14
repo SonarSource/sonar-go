@@ -18,14 +18,21 @@ package org.sonar.go.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
+import org.sonar.go.testing.TestGoConverter;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class FunctionInvocationTreeImplTest {
 
@@ -72,5 +79,150 @@ class FunctionInvocationTreeImplTest {
     FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, memberSelect, args);
     assertThat(tree.children()).containsExactly(memberSelect);
     assertThat(tree.memberSelect()).isEqualTo(memberSelect);
+  }
+
+  static Stream<Arguments> shouldVerifyMethodSignature() {
+    return Stream.of(
+      // function arguments, function body, expectedSignature
+      // build-in functions
+      // arguments("", "string(\"abc\")", "string"),
+      // arguments("", "int16(42)", "int16"),
+      // arguments("", "float32(123.4)", "float32"),
+      // arguments("", "float64(123.4)", "float64"),
+
+      // standard library functions
+      arguments("array []byte", "bytes.Clone(array)", "bytes.Clone"),
+      arguments("array [][]byte", "bytes.Join(array, []byte(\", \"))", "bytes.Join"),
+      arguments("array [][]byte, a2 []byte", "bytes.Join(array, a2)", "bytes.Join"),
+      arguments("array []byte", "md5.Sum(array)", "crypto/md5.Sum"),
+
+      // functions from external libraries
+      arguments("w http.ResponseWriter, cookie http.Cookie", "http.SetCookie(w, &cookie)",
+        "net/http.SetCookie"),
+      arguments("cookie http.Cookie", "cookie.String()",
+        "net/http.Cookie.String"),
+      // methods from external libraries
+      arguments("s string", "http.ParseSetCookie(s)",
+        "net/http.ParseSetCookie"),
+      arguments("s string", "http.ParseCookie(s)",
+        "net/http.ParseCookie"),
+      // sql.DB as a pointer
+      arguments("db *sql.DB", "db.Query(fmt.Sprintf(\"SELECT * FROM user WHERE id = %s\", path))",
+        "*database/sql.DB.Query"),
+      // sql.DB as not a pointer
+      arguments("db sql.DB", "db.Query(fmt.Sprintf(\"SELECT * FROM user WHERE id = %s\", path))",
+        "database/sql.DB.Query"),
+      // *sql.DB.Query() called with other arguments
+      arguments("db *sql.DB, id int, name string", "db.Query(\"SELECT * FROM user WHERE id = $1 AND name = $2\", id, name)",
+        "*database/sql.DB.Query"),
+
+      // TODO SONARGO-486
+      // Expected syntax: https://github.com/beego/beego/blob/3000824ac5c77bee60afc4c3967f857517760571/server/web/context/context.go#L219
+      // Missing Method receiver
+      arguments("ctrl *MainController", "ctrl.Ctx.SetCookie(\"name1\", \"value1\", 200, \"/\", \"example.com\", false, false)",
+        "SetCookie"),
+      arguments("ctrl *MainController", "ctrl.Ctx.SetCookie(\"name1\", \"value1\")",
+        "SetCookie"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifyMethodSignature(String arguments, String body, String expectedSignature) {
+    var code = """
+      package main
+      import (
+        "bytes"
+        "crypto/md5"
+        "database/sql"
+        "fmt"
+        "github.com/beego/beego/v2/server/web"
+        "net/http"
+      )
+      func foo(%s) {
+        %s
+      }
+      // relevant for some cases
+      type MainController struct {
+        web.Controller
+      }
+      """.formatted(arguments, body);
+
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+  }
+
+  static Stream<Arguments> shouldVerifyMethodSignatureForCustomFunctions() {
+    return Stream.of(
+      arguments("", "foo()", "func foo() {}", "main.foo"),
+      arguments("text string", "foo(text)", "func foo(t string) {}", "main.foo"),
+      arguments("i int", "foo(i)", "func foo(number int) {}", "main.foo"),
+      arguments("f float32", "foo(f)", "func foo(number float32) {}", "main.foo"),
+      arguments("f float64", "foo(f)", "func foo(number float64) {}", "main.foo"),
+      arguments("array []byte", "foo(array)", "func foo(a []byte) {}", "main.foo"),
+      arguments("array [][]byte", "foo(array)", "func foo(a [][]byte) {}", "main.foo"),
+      arguments("text string, i ...int", "foo(text, i)", "func foo(t string, n ...int) {}", "main.foo"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifyMethodSignatureForCustomFunctions(String arguments, String body, String funcDefinition, String expectedSignature) {
+    var code = """
+      package main
+      func bar(%s) {
+        %s
+      }
+      """.formatted(arguments, body);
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+  }
+
+  @Test
+  void shouldVerifyAliasImport() {
+    var code = """
+      package main
+
+      import my_md5 "crypto/md5"
+
+      func main(array []byte) {
+        my_md5.Sum(array)
+      }
+      """;
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo("crypto/md5.Sum");
+  }
+
+  @Test
+  void shouldVerifyWildcardImport() {
+    var code = """
+      package main
+
+      import . "crypto/md5"
+
+      func main(array []byte) {
+        Sum(array)
+      }
+      """;
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo("crypto/md5.Sum");
   }
 }

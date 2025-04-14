@@ -169,6 +169,20 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   }
 
   @Override
+  public String signature(String packageName) {
+    var sb = new StringBuilder();
+    sb.append(packageName);
+    sb.append(".");
+    if (name != null) {
+      sb.append(name.name());
+    } else {
+      sb.append("$anonymous_at_line_");
+      sb.append(metaData().textRange().start().line());
+    }
+    return sb.toString();
+  }
+
+  @Override
   public List<Tree> children() {
     return children;
   }
