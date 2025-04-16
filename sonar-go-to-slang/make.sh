@@ -12,7 +12,7 @@ is_go_binary_the_expected_version() {
   fi
   local go_binary="${1}"
   local expected_version="${2}"
-  bash -c "${go_binary} version" | grep --quiet "${expected_version}"
+  bash -c "${go_binary} version" | grep -q "${expected_version}"
 }
 
 go_download_go() {
@@ -44,8 +44,8 @@ install_go() {
 
   local go_version="${1}"
   local go_binary
-
   local go_in_path
+
   go_in_path=$(command -v go)
   if [[ -n "${go_in_path}" ]]; then
     if is_go_binary_the_expected_version "${go_in_path}" "${go_version}"; then
@@ -126,7 +126,6 @@ generate_test_report() {
   local path_to_binary
   path_to_binary=$(install_go "${GO_VERSION}")
   # Test
-  # bash -c "${path_to_binary} test -json > test-report.out"
   CGO_ENABLED=0 bash -c "${path_to_binary} test -timeout 5s -coverprofile=build/test-coverage.out -json > build/test-report.json"
 }
 

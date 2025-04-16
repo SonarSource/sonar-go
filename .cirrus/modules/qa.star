@@ -1,5 +1,10 @@
 load("github.com/SonarSource/cirrus-modules/cloud-native/conditions.star@analysis/master", "is_branch_qa_eligible")
-load("github.com/SonarSource/cirrus-modules/cloud-native/platform.star@analysis/master", "base_image_container_builder")
+load("github.com/SonarSource/cirrus-modules/cloud-native/env.star@analysis/master","go_env")
+load("github.com/SonarSource/cirrus-modules/cloud-native/platform.star@analysis/master",
+     "base_image_container_builder",
+     "custom_image_container_builder",
+     "arm64_container_builder",
+     )
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/cache.star@analysis/master",
     "gradle_cache",
@@ -75,4 +80,41 @@ def qa_ruling_env():
 def qa_ruling_task():
     return {
         "qa_ruling_task": qa_task(qa_ruling_env(), qa_script())
+    }
+
+
+def qa_arm64_condition():
+    return "$CIRRUS_PR_LABELS =~ \".*qa-arm64.*\" || $CIRRUS_BRANCH == $CIRRUS_DEFAULT_BRANCH || $CIRRUS_BRANCH =~ \"branch-.*\""
+
+
+def qa_arm64_env():
+    return go_env() | {
+        "SQ_VERSION": QA_QUBE_LATEST_RELEASE,
+        "GO_CROSS_COMPILE": "0",
+        "GITHUB_TOKEN": "VAULT[development/github/token/licenses-ro token]",
+    }
+
+
+def qa_arm64_task():
+    return {
+        "qa_arm64_task": {
+            "depends_on": "build",
+            "only_if": qa_arm64_condition(),
+            "env": qa_arm64_env(),
+            "eks_container": arm64_container_builder(dockerfile="Dockerfile", cpu=4, memory="12G"),
+            # In case Gradle cache contains platform-specific files, don't mix them
+            "gradle_cache": gradle_cache(reupload_on_changes=False),
+            "gradle_wrapper_cache": gradle_wrapper_cache(),
+            "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
+            "set_orchestrator_home_script": set_orchestrator_home_script(),
+            "mkdir_orchestrator_home_script": mkdir_orchestrator_home_script(),
+            "orchestrator_cache": orchestrator_cache(),
+            "run_script": [
+                "git submodule update --init --depth 1",
+                "source cirrus-env QA",
+                "./gradlew test :private:its:ruling:integrationTest \"-Dsonar.runtimeVersion=${SQ_VERSION}\" --info --console plain --configuration-cache"
+            ],
+            "cleanup_gradle_script": cleanup_gradle_script(),
+            "on_failure": default_gradle_on_failure()
+        }
     }
