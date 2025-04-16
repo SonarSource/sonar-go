@@ -88,14 +88,21 @@ compile_binaries() {
   bash -c "${path_to_binary} run generate_source.go"
 
   mkdir -p build/executable
+  build_for_platform() {
+    local os="${1}"
+    local arch="${2}"
+    local extension="${3:-}"
+    CGO_ENABLED=0 GOOS="${os}" GOARCH="${arch}" ${path_to_binary} build -o build/executable/sonar-go-to-slang-"${os}"-"${arch}""${extension}" "${GO_FLAGS[@]}"
+  }
   # Note: -ldflags="-s -w" is used to strip debug information from the binary and reduce its size.
   GO_FLAGS=(-ldflags='-s -w' -buildmode=exe)
   if [ "${GO_CROSS_COMPILE:-}" != 0 ]; then
     echo "Building for all supported platforms"
-    CGO_ENABLED=0 GOOS=darwin GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-amd64 "${GO_FLAGS[@]}"
-    CGO_ENABLED=0 GOOS=darwin GOARCH=arm64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-darwin-arm64 "${GO_FLAGS[@]}"
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-linux-amd64 "${GO_FLAGS[@]}"
-    CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ${path_to_binary} build -o build/executable/sonar-go-to-slang-windows-amd64.exe "${GO_FLAGS[@]}"
+    build_for_platform "darwin" "amd64"
+    build_for_platform "darwin" "arm64"
+    build_for_platform "linux" "amd64"
+    build_for_platform "linux" "arm64"
+    build_for_platform "windows" "amd64" ".exe"
   else
     if [[ -n "$platform" && -n "$architecture" ]]; then
       GOOS=$platform
@@ -110,7 +117,7 @@ compile_binaries() {
       EXTENSION=""
     fi
     echo "Building for platform: ${GOOS}/${GOARCH}"
-    env CGO_ENABLED=0 GOOS="${GOOS}" GOARCH="${GOARCH}" "${path_to_binary}" build -o build/executable/sonar-go-to-slang-"$GOOS"-"$GOARCH""$EXTENSION" "${GO_FLAGS[@]}"
+    build_for_platform "${GOOS}" "${GOARCH}" "${EXTENSION}"
   fi
 }
 

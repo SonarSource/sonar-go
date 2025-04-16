@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
+import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.go.persistence.JsonTree;
@@ -41,22 +42,29 @@ public class GoConverter implements ASTConverter {
   private static final Logger LOG = LoggerFactory.getLogger(GoConverter.class);
   private static final long PROCESS_TIMEOUT_MS = 5_000;
 
+  @Nullable
   private final ProcessBuilder processBuilder;
   private final ExternalProcessStreamConsumer errorConsumer;
 
   public GoConverter(File workDir) {
-    this(new DefaultCommand(workDir));
+    this(DefaultCommand.createCommand(workDir));
   }
 
   // Visible for testing
-  public GoConverter(Command command) {
-    processBuilder = new ProcessBuilder(command.getCommand());
+  public GoConverter(@Nullable Command command) {
+    if (command != null) {
+      processBuilder = new ProcessBuilder(command.getCommand());
+    } else {
+      processBuilder = null;
+    }
     errorConsumer = new ExternalProcessStreamConsumer();
   }
 
   @Override
   public Tree parse(String content) {
-    if (content.length() > MAX_SUPPORTED_SOURCE_FILE_SIZE) {
+    if (processBuilder == null) {
+      throw new ParseException("Go converter is not initialized");
+    } else if (content.length() > MAX_SUPPORTED_SOURCE_FILE_SIZE) {
       throw new ParseException("The file size is too big and should be excluded," +
         " its size is " + content.length() + " (maximum allowed is " + MAX_SUPPORTED_SOURCE_FILE_SIZE + " bytes)");
     }
@@ -106,7 +114,7 @@ public class GoConverter implements ASTConverter {
     }
   }
 
-  interface Command {
+  public interface Command {
     List<String> getCommand();
   }
 
@@ -119,6 +127,15 @@ public class GoConverter implements ASTConverter {
         command = extract(workDir);
       } catch (IOException e) {
         throw new IllegalStateException(e.getMessage(), e);
+      }
+    }
+
+    static Command createCommand(File workDir) {
+      try {
+        return new DefaultCommand(workDir);
+      } catch (IllegalStateException e) {
+        // GoConverter cannot be fully initialized (e.g. because of unsupported platform), continue in a no-op mode
+        return null;
       }
     }
 
@@ -158,17 +175,34 @@ public class GoConverter implements ASTConverter {
     }
 
     static String getExecutableForCurrentOS(String osName, String arch) {
-      String os = osName.toLowerCase(Locale.ROOT);
+      var os = osName.toLowerCase(Locale.ROOT);
+      var extension = "";
+      var isPlatformSupported = true;
+      String suffix;
+
       if (os.contains("win")) {
-        return "sonar-go-to-slang-windows-amd64.exe";
+        suffix = "windows";
+        extension = ".exe";
       } else if (os.contains("mac")) {
-        if (arch.equals("aarch64")) {
-          return "sonar-go-to-slang-darwin-arm64";
-        } else {
-          return "sonar-go-to-slang-darwin-amd64";
-        }
+        suffix = "darwin";
       } else {
-        return "sonar-go-to-slang-linux-amd64";
+        suffix = "linux";
+      }
+
+      if ("aarch64".equals(arch) || "arm64".equals(arch) || "armv8".equals(arch)) {
+        suffix += "-arm64";
+      } else if ("x86_64".equals(arch) || "amd64".equals(arch) || "x64".equals(arch)) {
+        suffix += "-amd64";
+      } else {
+        isPlatformSupported = false;
+      }
+
+      if (isPlatformSupported) {
+        var binaryName = "sonar-go-to-slang-" + suffix + extension;
+        LOG.debug("Using Go converter binary: {}", binaryName);
+        return binaryName;
+      } else {
+        throw new IllegalStateException("Unsupported OS/architecture: " + osName + "/" + arch);
       }
     }
   }

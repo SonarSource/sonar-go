@@ -16,16 +16,17 @@
  */
 package org.sonar.go.converter;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
@@ -54,13 +55,19 @@ import org.sonar.plugins.go.api.cfg.Block;
 import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
+import static org.sonar.go.converter.GoConverter.DefaultCommand.createCommand;
 import static org.sonar.go.converter.GoConverter.DefaultCommand.getExecutableForCurrentOS;
 
 class GoConverterTest {
+  @TempDir
+  File tempDir;
 
   @Test
   void test_parse_return() {
@@ -89,17 +96,29 @@ class GoConverterTest {
 
   @Test
   void test_parse_embed_overlapping_interfaces() {
-    Tree tree = TestGoConverter.parse("package main\ntype A interface{\n     DoX() string\n}\ntype B interface{\n     DoX() \n}\ntype AB interface{\n    A\n    B\n}");
+    var tree = TestGoConverter.parse("""
+      package main
+      type A interface{
+           DoX() string
+      }
+      type B interface{
+           DoX()\s
+      }
+      type AB \
+      interface{
+          A
+          B
+      }""");
     List<Tree> classList = tree.descendants()
-      .filter(t -> t instanceof ClassDeclarationTree)
-      .collect(Collectors.toList());
+      .filter(ClassDeclarationTree.class::isInstance)
+      .toList();
     assertThat(classList).hasSize(3);
   }
 
   @Test
   void test_parse_infinite_for() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {for {}}");
-    List<Tree> returnList = tree.descendants().filter(t -> t instanceof LoopTree).collect(Collectors.toList());
+    List<Tree> returnList = tree.descendants().filter(LoopTree.class::isInstance).toList();
     assertThat(returnList).hasSize(1);
   }
 
@@ -109,7 +128,7 @@ class GoConverterTest {
     List<FunctionDeclarationTree> functions = tree.descendants()
       .filter(FunctionDeclarationTree.class::isInstance)
       .map(FunctionDeclarationTree.class::cast)
-      .collect(Collectors.toList());
+      .toList();
     assertThat(functions).hasSize(2);
 
     FunctionDeclarationTree functionDeclarationTree = functions.get(0);
@@ -133,7 +152,8 @@ class GoConverterTest {
     MemberSelectTree memberSelectTree = returnList.get(0);
     assertThat(memberSelectTree.identifier().name()).isEqualTo("Println");
     Tree expression = memberSelectTree.expression();
-    assertThat(expression).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("fmt"));
+    assertThat(expression).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo(
+      "fmt"));
   }
 
   @Test
@@ -142,7 +162,8 @@ class GoConverterTest {
     List<Tree> functionInvocations = tree.descendants().filter(FunctionInvocationTree.class::isInstance).toList();
     assertThat(functionInvocations).hasSize(1);
     FunctionInvocationTree functionInvocation = (FunctionInvocationTree) functionInvocations.get(0);
-    assertThat(functionInvocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("bar"));
+    assertThat(functionInvocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifier -> assertThat(identifier.name()).isEqualTo("bar"));
     assertThat(functionInvocation.arguments()).hasSize(2);
     assertThat(functionInvocation.arguments().get(0)).isInstanceOfSatisfying(StringLiteralTree.class,
       stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("arg"));
@@ -156,10 +177,12 @@ class GoConverterTest {
     List<CompositeLiteralTree> returnList = tree.descendants().filter(CompositeLiteralTree.class::isInstance).map(CompositeLiteralTree.class::cast).toList();
     assertThat(returnList).hasSize(1);
     CompositeLiteralTree compositeLiteralTree = returnList.get(0);
-    assertThat(compositeLiteralTree.type()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("Thing"));
+    assertThat(compositeLiteralTree.type()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierTree -> assertThat(identifierTree.name()).isEqualTo("Thing"));
     List<Tree> elements = compositeLiteralTree.elements();
     assertThat(elements).hasSize(1);
-    assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class, stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
+    assertThat(elements.get(0)).isInstanceOfSatisfying(StringLiteralTree.class,
+      stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
   }
 
   static Stream<Arguments> test_parse_binary_expression() {
@@ -188,19 +211,24 @@ class GoConverterTest {
   @MethodSource
   void test_parse_binary_expression(String code, BinaryExpressionTree.Operator operator) {
     var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement(code);
-    assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("a"));
+    assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierTree -> assertThat(identifierTree.name()).isEqualTo("a"));
     assertThat(binaryExpression.operator()).isSameAs(operator);
-    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("b"));
+    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierTree -> assertThat(identifierTree.name()).isEqualTo("b"));
   }
 
   @Test
   void shouldParseComplexBinaryExpression() {
     var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement("a + b + c");
     assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(BinaryExpressionTree.class, subBinaryExpression -> {
-      assertThat(subBinaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierA -> assertThat(identifierA.name()).isEqualTo("a"));
-      assertThat(subBinaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierB -> assertThat(identifierB.name()).isEqualTo("b"));
+      assertThat(subBinaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class,
+        identifierA -> assertThat(identifierA.name()).isEqualTo("a"));
+      assertThat(subBinaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class,
+        identifierB -> assertThat(identifierB.name()).isEqualTo("b"));
     });
-    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class, identifierC -> assertThat(identifierC.name()).isEqualTo("c"));
+    assertThat(binaryExpression.rightOperand()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierC -> assertThat(identifierC.name()).isEqualTo("c"));
   }
 
   @Test
@@ -209,7 +237,8 @@ class GoConverterTest {
     List<StarExpressionTree> starExpressionsList = tree.descendants().filter(StarExpressionTree.class::isInstance).map(StarExpressionTree.class::cast).toList();
     assertThat(starExpressionsList).hasSize(1);
     StarExpressionTree starExpressionTree = starExpressionsList.get(0);
-    assertThat(starExpressionTree.operand()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("string"));
+    assertThat(starExpressionTree.operand()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifierTree -> assertThat(identifierTree.name()).isEqualTo("string"));
   }
 
   @Test
@@ -223,7 +252,8 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().type()).isEqualTo("func(i int)");
     assertThat(functionDeclaration.typeParameters()).isNull();
     assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind())
-      .isInstanceOfSatisfying(StringNativeKind.class, stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
+      .isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
     assertThat(functionDeclaration.formalParameters()).hasSize(1);
     assertThat(functionDeclaration.formalParameters().get(0)).isInstanceOf(ParameterTree.class);
   }
@@ -274,7 +304,8 @@ class GoConverterTest {
 
   @ParameterizedTest
   @MethodSource
-  void test_parse_variable_declaration_detailed(String code, List<String> variableNames, List<Result> variableValues, @Nullable String type, boolean isVal) {
+  void test_parse_variable_declaration_detailed(String code, List<String> variableNames, List<Result> variableValues,
+    @Nullable String type, boolean isVal) {
     Tree tree = TestGoConverter.parse("""
       package main
       func foo() {
@@ -302,9 +333,11 @@ class GoConverterTest {
             integerLiteralTree -> assertThat(integerLiteralTree.getIntegerValue()).isEqualTo(2));
           break;
         case METHOD_FOO:
-          assertThat(variableDeclaration.initializers().get(i)).isInstanceOfSatisfying(FunctionInvocationTree.class, functionInvocationTree -> {
-            assertThat(functionInvocationTree.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("foo"));
-          });
+          assertThat(variableDeclaration.initializers().get(i)).isInstanceOfSatisfying(FunctionInvocationTree.class,
+            functionInvocationTree -> {
+              assertThat(functionInvocationTree.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class,
+                identifierTree -> assertThat(identifierTree.name()).isEqualTo("foo"));
+            });
       }
     }
 
@@ -313,7 +346,8 @@ class GoConverterTest {
     if (type == null) {
       assertThat(variableDeclaration.type()).isNull();
     } else {
-      assertThat(variableDeclaration.type()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo(type));
+      assertThat(variableDeclaration.type()).isInstanceOfSatisfying(IdentifierTree.class,
+        identifier -> assertThat(identifier.name()).isEqualTo(type));
     }
   }
 
@@ -385,10 +419,28 @@ class GoConverterTest {
   }
 
   @Test
+  void shouldReturnNullForUnsupportedPlatform() {
+    try (var mockedStatic = mockStatic(GoConverter.DefaultCommand.class)) {
+      mockedStatic.when(() -> GoConverter.DefaultCommand.getExecutableForCurrentOS(anyString(), anyString()))
+        .thenThrow(new IllegalStateException("Unsupported platform: test/test"));
+
+      var command = GoConverter.DefaultCommand.createCommand(tempDir);
+      assertThat(command).isNull();
+
+      var goConverter = new GoConverter(command);
+      assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}"))
+        .isInstanceOf(ParseException.class)
+        .hasMessage("Go converter is not initialized");
+    }
+  }
+
+  @Test
   void parse_accepted_big_file() {
-    String code = "package main\n" +
-      "func foo() {\n" +
-      "}\n";
+    var code = """
+      package main
+      func foo() {
+      }
+      """;
     String bigCode = code + new String(new char[700_000 - code.length()]).replace("\0", "\n");
     Tree tree = TestGoConverter.parse(bigCode);
     assertThat(tree).isInstanceOf(TopLevelTree.class);
@@ -396,9 +448,11 @@ class GoConverterTest {
 
   @Test
   void parse_rejected_big_file() {
-    String code = "package main\n" +
-      "func foo() {\n" +
-      "}\n";
+    var code = """
+      package main
+      func foo() {
+      }
+      """;
     String bigCode = code + new String(new char[1_500_000]).replace("\0", "\n");
     ParseException e = assertThrows(ParseException.class,
       () -> TestGoConverter.parse(bigCode));
@@ -406,23 +460,58 @@ class GoConverterTest {
   }
 
   @Test
-  void load_invalid_executable_path() throws IOException {
-    IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> GoConverter.DefaultCommand.getBytesFromResource("invalid-exe-path"));
-    assertThat(e).hasMessage("invalid-exe-path binary not found on class path");
+  void shouldThrowExceptionOnInvalidExecutablePath() {
+    assertThatThrownBy(() -> GoConverter.DefaultCommand.getBytesFromResource("invalid-exe-path"))
+      .isInstanceOf(IllegalStateException.class)
+      .hasMessage("invalid-exe-path binary not found on class path");
   }
 
   @Test
-  void executable_for_current_os() {
-    assertThat(getExecutableForCurrentOS("Linux", "x86_64")).isEqualTo("sonar-go-to-slang-linux-amd64");
-    assertThat(getExecutableForCurrentOS("Windows 10", "x86_64")).isEqualTo("sonar-go-to-slang-windows-amd64.exe");
-    assertThat(getExecutableForCurrentOS("Mac OS X", "x86_64")).isEqualTo("sonar-go-to-slang-darwin-amd64");
-    assertThat(getExecutableForCurrentOS("Mac OS X", "aarch64")).isEqualTo("sonar-go-to-slang-darwin-arm64");
+  void shouldThrowParseExceptionOnUInitializedCommand() {
+    var goConverter = new GoConverter((GoConverter.Command) null);
+
+    assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}"))
+      .isInstanceOf(ParseException.class)
+      .hasMessage("Go converter is not initialized");
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    Linux, x86_64, sonar-go-to-slang-linux-amd64
+    Linux, aarch64, sonar-go-to-slang-linux-arm64
+    Linux, arm64, sonar-go-to-slang-linux-arm64
+    Linux, armv8, sonar-go-to-slang-linux-arm64
+    Linux, amd64, sonar-go-to-slang-linux-amd64
+    Linux, x64, sonar-go-to-slang-linux-amd64
+    Windows 10, x86_64, sonar-go-to-slang-windows-amd64.exe
+    Mac OS X, x86_64, sonar-go-to-slang-darwin-amd64
+    Mac OS X, aarch64, sonar-go-to-slang-darwin-arm64
+    """)
+  void shouldReturnCorrectExecutableForCurrentOs(String osName, String arch, String expectedExecutable) {
+    assertThat(getExecutableForCurrentOS(osName, arch)).isEqualTo(expectedExecutable);
+  }
+
+  @Test
+  void shouldThrowForUnsupportedPlatform() {
+    assertThatThrownBy(() -> getExecutableForCurrentOS("linux", "ppc64"))
+      .isInstanceOf(IllegalStateException.class)
+      .hasMessage("Unsupported OS/architecture: linux/ppc64");
+  }
+
+  @Test
+  void shouldReturnNullForInvalidPlatform() {
+    var currentArch = System.getProperty("os.arch");
+    try {
+      System.setProperty("os.arch", "invalid-arch");
+      assertThat(createCommand(tempDir)).isNull();
+    } finally {
+      System.setProperty("os.arch", currentArch);
+    }
   }
 
   @Test
   void shouldParseFunctionWithTypeDetectionDatabaseSql() {
-    Tree tree = TestGoConverter.parse("""
+    var tree = TestGoConverter.parse("""
       package main
       import (
           "database/sql"
@@ -737,9 +826,9 @@ class GoConverterTest {
 
   private List<ReturnTree> getReturnsList(Tree tree) {
     return tree.descendants()
-      .filter(t -> t instanceof ReturnTree)
+      .filter(ReturnTree.class::isInstance)
       .map(ReturnTree.class::cast)
-      .collect(Collectors.toList());
+      .toList();
   }
 
   private void checkIntegerValue(ReturnTree returnTree, String s) {
