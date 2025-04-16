@@ -26,7 +26,7 @@ plugins {
 }
 
 val goVersion = providers.environmentVariable("GO_VERSION").getOrElse("1.23.4")
-val isCi: Boolean = System.getenv("CI")?.equals("true") ?: false
+val isCi: Boolean = System.getenv("CI")?.equals("true") == true
 
 // CI - run the build of go code with local make.sh/make.bat script
 if (isCi) {
@@ -75,13 +75,14 @@ if (isCi) {
                 exclude("*_generated.go")
             }
         )
+        inputs.property("goVersion", requireNotNull(System.getenv("GO_VERSION")) { "Go version is unset in the environment" })
         outputs.files(reportPath)
         outputs.cacheIf { true }
 
         commandLine(
             "golangci-lint",
             "run",
-            "--go=${requireNotNull(System.getenv("GO_VERSION")) { "Go version is unset in the environment" }}",
+            "--go=${inputs.properties["goVersion"]}",
             "--out-format=checkstyle:${reportPath.get().asFile}"
         )
         // golangci-lint returns non-zero exit code if there are issues, we don't want to fail the build in this case.
@@ -138,6 +139,8 @@ if (!isCi) {
         group = "build"
 
         inputs.file("$rootDir/Dockerfile")
+        inputs.file("$projectDir/go.mod")
+        inputs.file("$projectDir/go.sum")
         // Task outputs are not set, because it is too difficult to check if image is built;
         // We can ignore Gradle caches here, because Docker takes care of its own caches anyway.
         errorOutput = System.out
@@ -203,6 +206,7 @@ if (!isCi) {
                 exclude("build/**")
             }
         )
+        inputs.property("goCrossCompile", System.getenv("GO_CROSS_COMPILE") ?: "0")
         outputs.file("goparser_generated.go")
         outputs.dir("build/executable")
         outputs.cacheIf { true }
@@ -220,11 +224,11 @@ if (!isCi) {
             "--mount",
             "type=bind,source=${project.projectDir},target=/home/sonarsource/sonar-go-to-slang",
             "--env",
-            "GO_CROSS_COMPILE=${System.getenv("GO_CROSS_COMPILE") ?: "0"}",
+            "GO_CROSS_COMPILE=${inputs.properties["goCrossCompile"]}",
             "sonar-go-go-builder",
             "bash",
             "-c",
-            "cd /home/sonarsource/sonar-go-to-slang && ./make.sh clean && ./make.sh build $platform $arch && ./make.sh test"
+            "./make.sh clean && ./make.sh build $platform $arch && ./make.sh test"
         )
     }
 

@@ -80,3 +80,10 @@ RUN curl --proto "=https" -sSfL https://raw.githubusercontent.com/golangci/golan
 
 ENV PATH="/opt/go/bin:/opt/protoc/bin:/opt/musl/bin:/home/sonarsource/go/bin:${PATH}"
 ENV GO_CROSS_COMPILE=1
+
+WORKDIR "/home/sonarsource/sonar-go-to-slang"
+
+# It caches Go dependecies in Docker image
+# The "|| true" is needed because "go list" always return non zero exit code and suggest to run go mod tidy
+RUN --mount=type=bind,target=/home/sonarsource/sonar-go-to-slang \
+    go list -e $(go list -m all) || true
