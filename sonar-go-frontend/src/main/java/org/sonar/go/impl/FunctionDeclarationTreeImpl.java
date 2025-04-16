@@ -48,7 +48,9 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   private final BlockTree body;
   private final List<Tree> children = new ArrayList<>();
   private String receiverName;
-  private boolean isReceiverNameCalculated = false;
+  private String receiverType;
+  private boolean isReceiverNameCalculated;
+  private boolean isReceiverTypeCalculated;
   @Nullable
   private final ControlFlowGraph cfg;
 
@@ -137,11 +139,38 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
         .filter(IdentifierTree.class::isInstance)
         .map(IdentifierTree.class::cast)
         .map(IdentifierTree::name)
-        .findAny()
+        .findFirst()
         .orElse(null);
       isReceiverNameCalculated = true;
     }
     return receiverName;
+  }
+
+  @CheckForNull
+  @Override
+  public String receiverType(String packageName) {
+    if (!isReceiverTypeCalculated) {
+      receiverType = Stream.of(receiver)
+        .filter(Objects::nonNull)
+        .flatMap(Tree::descendants)
+        .filter(NativeKinds::isMethodReceiverTreeIdentifier)
+        .map(Tree::children)
+        .flatMap(Collection::stream)
+        .filter(IdentifierTree.class::isInstance)
+        .map(IdentifierTree.class::cast)
+        .map(IdentifierTree::type)
+        .filter(Objects::nonNull)
+        // For the receiver types defined in the source file, the type is often like: "*-.MyStruct".
+        // But such types don't exist in sonar-go-to-slang/resources/ast/*.json files.
+        // It is so because in production the Go file content is passed to sonar-go-to-slang executable via stdin
+        // and then the filename is set to dash "-" (it is also an argument for sonar-go-to-slang executable).
+        // The goparser_test.go read those files directly from filesystem, so the type is: "method_receiver.go.MyStruct"
+        .map(t -> t.replace("-", packageName))
+        .findFirst()
+        .orElse(null);
+      isReceiverTypeCalculated = true;
+    }
+    return receiverType;
   }
 
   @Override
@@ -171,7 +200,12 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public String signature(String packageName) {
     var sb = new StringBuilder();
-    sb.append(packageName);
+    var receiverTypeLocal = receiverType(packageName);
+    if (receiverTypeLocal != null) {
+      sb.append(receiverTypeLocal);
+    } else {
+      sb.append(packageName);
+    }
     sb.append(".");
     if (name != null) {
       sb.append(name.name());

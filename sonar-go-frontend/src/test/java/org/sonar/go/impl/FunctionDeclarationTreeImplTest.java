@@ -39,7 +39,7 @@ import org.sonar.plugins.go.api.TreeMetaData;
 import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static java.util.Collections.emptyList;
-import static org.assertj.core.api.Assertions.*;
+import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.sonar.go.impl.TextRanges.range;
@@ -54,7 +54,7 @@ class FunctionDeclarationTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree returnType = TreeCreationUtils.identifier("int");
-    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r")));
+    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r", "*-.MyReceiverType")));
     Tree receiverWrapper = simpleNative(SIMPLE_KIND, List.of(receiver));
     IdentifierTree name = TreeCreationUtils.identifier("foo");
     IdentifierTree paramName = TreeCreationUtils.identifier("p1");
@@ -74,8 +74,11 @@ class FunctionDeclarationTreeImplTest {
     assertThat(tree.receiverName()).isEqualTo("r");
     // second call of receiverName for coverage (lazy calculation)
     assertThat(tree.receiverName()).isEqualTo("r");
+    assertThat(tree.receiverType("main")).isEqualTo("*main.MyReceiverType");
+    // second call of receiverType for coverage (lazy calculation)
+    assertThat(tree.receiverType("main")).isEqualTo("*main.MyReceiverType");
     assertThat(tree.cfg()).isSameAs(cfg);
-    assertThat(tree.signature("main")).isEqualTo("main.foo");
+    assertThat(tree.signature("main")).isEqualTo("*main.MyReceiverType.foo");
 
     FunctionDeclarationTreeImpl lightweightConstructor = new FunctionDeclarationTreeImpl(meta, null, null, null, emptyList(), null, null, null);
 
@@ -130,7 +133,7 @@ class FunctionDeclarationTreeImplTest {
   }
 
   static Stream<Arguments> shouldVerifyFunctionDeclarationSignature() {
-    return Stream.of(
+    return of(
       arguments("func foo() {}"),
       arguments("func foo(a int) {}"),
       arguments("func foo(a float32) {}"),
@@ -154,9 +157,6 @@ class FunctionDeclarationTreeImplTest {
       arguments("func foo(c fiber.Ctx) {}"),
       arguments("func foo(cookie fiber.Cookie, ctx *fiber.Ctx) {}"),
 
-      // TODO SONARGO-486 function receiver
-      arguments("func (ctrl *MainController) foo()"),
-
       arguments("func foo[P any]() {}"),
       arguments("func foo[S interface{ ~[]byte|string }]() {}"),
       arguments("func foo[S ~[]E, E any]() {}"),
@@ -179,9 +179,6 @@ class FunctionDeclarationTreeImplTest {
         "github.com/beego/beego/v2/server/web"
       )
       %s
-      type MainController struct {
-        web.Controller
-      }
       """.formatted(function);
     var tree = (TopLevelTree) TestGoConverter.parse(code);
     var func = tree.declarations().stream()
@@ -193,7 +190,7 @@ class FunctionDeclarationTreeImplTest {
   }
 
   @Test
-  void shouldVerifyAnonymousFunction() {
+  void shouldVerifyAnonymousFunctionSignature() {
     var code = """
       package main
 
@@ -219,4 +216,42 @@ class FunctionDeclarationTreeImplTest {
     assertThat(funcList.get(1).signature("main")).isEqualTo("main.$anonymous_at_line_13");
   }
 
+  static Stream<Arguments> shouldVerifyMethodReceiverSignature() {
+    return of(
+      arguments("func (ctrl *MainController) foo() {}", "*main.MainController.foo"),
+      arguments("func (ctrl MainController) foo() {}", "main.MainController.foo"),
+      arguments("func (ctrl MainController) foo(a int) {}", "main.MainController.foo"),
+      arguments("func (ctrl MainController) foo(a int, b ...float) {}", "main.MainController.foo"),
+      arguments("func (r *MainController) foo(a int, b ...float) {}", "*main.MainController.foo"),
+      arguments("func (r MainController) foo(a int, b ...float) {}", "main.MainController.foo"),
+      arguments("func (s *Server) sqlSensitive(w http.ResponseWriter, r *http.Request) {}", "*main.Server.sqlSensitive"),
+      arguments("func (s Server) sqlSensitive(w http.ResponseWriter, r *http.Request) {}", "main.Server.sqlSensitive"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifyMethodReceiverSignature(String function, String expectedSignature) {
+    var code = """
+      package main
+      import (
+        "database/sql"
+        "github.com/beego/beego/v2/server/web"
+      )
+      %s
+
+      type MainController struct {
+        web.Controller
+      }
+      type Server struct {
+      	db *sql.DB
+      }
+      """.formatted(function);
+    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = tree.declarations().stream()
+      .filter(FunctionDeclarationTreeImpl.class::isInstance)
+      .map(FunctionDeclarationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+  }
 }

@@ -31,6 +31,7 @@ import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
+import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -82,13 +83,13 @@ class FunctionInvocationTreeImplTest {
   }
 
   static Stream<Arguments> shouldVerifyMethodSignature() {
-    return Stream.of(
+    return of(
       // function arguments, function body, expectedSignature
       // build-in functions
-      // arguments("", "string(\"abc\")", "string"),
-      // arguments("", "int16(42)", "int16"),
-      // arguments("", "float32(123.4)", "float32"),
-      // arguments("", "float64(123.4)", "float64"),
+      arguments("", "string(\"abc\")", "string"),
+      arguments("", "int16(42)", "int16"),
+      arguments("", "float32(123.4)", "float32"),
+      arguments("", "float64(123.4)", "float64"),
 
       // standard library functions
       arguments("array []byte", "bytes.Clone(array)", "bytes.Clone"),
@@ -114,15 +115,7 @@ class FunctionInvocationTreeImplTest {
         "database/sql.DB.Query"),
       // *sql.DB.Query() called with other arguments
       arguments("db *sql.DB, id int, name string", "db.Query(\"SELECT * FROM user WHERE id = $1 AND name = $2\", id, name)",
-        "*database/sql.DB.Query"),
-
-      // TODO SONARGO-486
-      // Expected syntax: https://github.com/beego/beego/blob/3000824ac5c77bee60afc4c3967f857517760571/server/web/context/context.go#L219
-      // Missing Method receiver
-      arguments("ctrl *MainController", "ctrl.Ctx.SetCookie(\"name1\", \"value1\", 200, \"/\", \"example.com\", false, false)",
-        "SetCookie"),
-      arguments("ctrl *MainController", "ctrl.Ctx.SetCookie(\"name1\", \"value1\")",
-        "SetCookie"));
+        "*database/sql.DB.Query"));
   }
 
   @ParameterizedTest
@@ -141,10 +134,6 @@ class FunctionInvocationTreeImplTest {
       func foo(%s) {
         %s
       }
-      // relevant for some cases
-      type MainController struct {
-        web.Controller
-      }
       """.formatted(arguments, body);
 
     var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
@@ -157,33 +146,36 @@ class FunctionInvocationTreeImplTest {
   }
 
   static Stream<Arguments> shouldVerifyMethodSignatureForCustomFunctions() {
-    return Stream.of(
-      arguments("", "foo()", "func foo() {}", "main.foo"),
-      arguments("text string", "foo(text)", "func foo(t string) {}", "main.foo"),
-      arguments("i int", "foo(i)", "func foo(number int) {}", "main.foo"),
-      arguments("f float32", "foo(f)", "func foo(number float32) {}", "main.foo"),
-      arguments("f float64", "foo(f)", "func foo(number float64) {}", "main.foo"),
-      arguments("array []byte", "foo(array)", "func foo(a []byte) {}", "main.foo"),
-      arguments("array [][]byte", "foo(array)", "func foo(a [][]byte) {}", "main.foo"),
-      arguments("text string, i ...int", "foo(text, i)", "func foo(t string, n ...int) {}", "main.foo"));
+    return of(
+      arguments("", "foo()", "func foo() {}"),
+      arguments("text string", "foo(text)", "func foo(t string) {}"),
+      arguments("i int", "foo(i)", "func foo(number int) {}"),
+      arguments("f float32", "foo(f)", "func foo(number float32) {}"),
+      arguments("f float64", "foo(f)", "func foo(number float64) {}"),
+      arguments("array []byte", "foo(array)", "func foo(a []byte) {}"),
+      arguments("array [][]byte", "foo(array)", "func foo(a [][]byte) {}"),
+      arguments("text string, i ...int", "foo(text, i)", "func foo(t string, n ...int) {}"),
+      // function is undefined
+      arguments("text string, i ...int", "foo(text, i)", ""));
   }
 
   @ParameterizedTest
   @MethodSource
-  void shouldVerifyMethodSignatureForCustomFunctions(String arguments, String body, String funcDefinition, String expectedSignature) {
+  void shouldVerifyMethodSignatureForCustomFunctions(String arguments, String body, String funcDefinition) {
     var code = """
       package main
       func bar(%s) {
         %s
       }
-      """.formatted(arguments, body);
+      %s
+      """.formatted(arguments, body, funcDefinition);
     var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
     var func = topLevelTree.descendants()
       .filter(FunctionInvocationTreeImpl.class::isInstance)
       .map(FunctionInvocationTreeImpl.class::cast)
       .findFirst()
       .get();
-    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+    assertThat(func.signature("main")).isEqualTo("main.foo");
   }
 
   @Test
@@ -224,5 +216,102 @@ class FunctionInvocationTreeImplTest {
       .findFirst()
       .get();
     assertThat(func.signature("main")).isEqualTo("crypto/md5.Sum");
+  }
+
+  static Stream<Arguments> shouldVerifySignatureMethodReceiver() {
+    return of(
+      arguments("""
+        func (ctrl *MainController) foo() {
+          ctrl.Ctx.SetCookie("name1", "value1", 200, "/", "example.com", false, false)
+        }""", "*github.com/beego/beego/v2/server/web/context.Context.SetCookie"),
+      arguments("""
+        func (ctrl *MainController) foo() {
+          ctrl.Ctx.SetCookie("name1", "value1")
+        }""",
+        "*github.com/beego/beego/v2/server/web/context.Context.SetCookie"),
+      arguments("""
+        func (ctrl MainController) foo() {
+          ctrl.Ctx.SetCookie("name1", "value1")
+        }""",
+        "*github.com/beego/beego/v2/server/web/context.Context.SetCookie"),
+      arguments("""
+        func (ctrl MainController) foo() {
+          ctrl.Ctx.SetCookie("name1", "value1",  200, "/")
+        }""",
+        "*github.com/beego/beego/v2/server/web/context.Context.SetCookie"),
+      arguments("""
+        func (s *Server) sqlSensitive() {
+          s.db.QueryRow("SELECT email FROM contacts WHERE contact_name='" + r.URL.Query().Get("name") + "'")
+        }""",
+        "*database/sql.DB.QueryRow"),
+      arguments("""
+        func (ctrl *MainController) foo() {
+          ctrl.method1()
+        }""",
+        "*main.MainController.method1"),
+      // TODO SONARGO-497 Fix method signature for invocation in unusual way
+      arguments("""
+        func (ctrl *MainController) foo() {
+          (*MainController).method1(ctrl)
+        }""",
+        "method1"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifySignatureMethodReceiver(String function, String expectedSignature) {
+    var code = """
+      package main
+      import (
+        "database/sql"
+        "github.com/beego/beego/v2/server/web"
+      )
+
+      %s
+
+      type MainController struct {
+        web.Controller
+      }
+      type Server struct {
+      	db *sql.DB
+      }
+      func (ctrl *MainController) method1() {
+      }
+      """.formatted(function);
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .findFirst()
+      .get();
+    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+  }
+
+  @Test
+  void shouldVerifyAnonymousSignatureMethodReceiver() {
+    var code = """
+      package main
+      import (
+        "database/sql"
+        "github.com/beego/beego/v2/server/web"
+        "fmt"
+      )
+
+      func (ctrl *MainController) foo() {
+        func (ctrl *MainController)(a int) {
+          fmt.Println(a)
+        }(42)
+      }
+
+      type MainController struct {
+        web.Controller
+      }
+      """;
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var func = topLevelTree.descendants()
+      .filter(FunctionInvocationTreeImpl.class::isInstance)
+      .map(FunctionInvocationTreeImpl.class::cast)
+      .toList();
+    assertThat(func.get(0).signature("main")).isEqualTo("main.$anonymous_at_line_9");
   }
 }

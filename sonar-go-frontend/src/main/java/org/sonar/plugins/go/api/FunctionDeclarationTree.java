@@ -42,8 +42,20 @@ public interface FunctionDeclarationTree extends Tree {
   @CheckForNull
   Tree receiver();
 
+  /**
+   * Return receiver name. It is lazy calculated and cached for next invocations.
+   * @return receiver name.
+   */
   @CheckForNull
   String receiverName();
+
+  /**
+   * Return receiver type. It is lazy calculated and cached for next invocations.
+   * @param packageName package name of the current file
+   * @return receiver type.
+   */
+  @CheckForNull
+  String receiverType(String packageName);
 
   @CheckForNull
   Tree typeParameters();

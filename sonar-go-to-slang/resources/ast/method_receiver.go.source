@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "github.com/beego/beego/v2/server/web"
+)
 
 type MyStruct struct {
     value int
@@ -14,4 +17,12 @@ func (m MyStruct) PrintValue() {
 // Method with a pointer receiver
 func (m *MyStruct) IncrementValue() {
     m.value++
+}
+
+type MainController struct {
+    web.Controller
+}
+
+func (ctrl *MainController) hello() {
+    fmt.Println("Hello")
 }
