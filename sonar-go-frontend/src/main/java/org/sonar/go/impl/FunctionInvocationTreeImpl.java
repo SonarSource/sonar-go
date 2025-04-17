@@ -72,13 +72,9 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
     var idPackageName = identifierTree.packageName().replace("-", packageName);
     var result = idPackageName;
     if (UNKNOWN.equals(idPackageName)) {
-      var type = identifierTree.type();
-      // functions from libraries, e.g.: net/http.Cookie.String()
-      // or method receiver
-      if (type != null) {
-        // methods defined locally contain "-" instead of package
-        result = type.replace("-", packageName);
-      }
+      // functions from libraries, e.g.: net/http.Cookie.String() or method receiver
+      // methods defined locally contain "-" instead of package
+      result = identifierTree.type().replace("-", packageName);
     }
     return result;
   }

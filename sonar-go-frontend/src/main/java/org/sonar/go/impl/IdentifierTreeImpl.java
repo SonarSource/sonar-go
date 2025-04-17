@@ -47,7 +47,6 @@ public class IdentifierTreeImpl extends BaseTreeImpl implements IdentifierTree {
     return name;
   }
 
-  @CheckForNull
   @Override
   public String type() {
     return type;

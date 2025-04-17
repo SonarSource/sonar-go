@@ -16,13 +16,10 @@
  */
 package org.sonar.plugins.go.api;
 
-import javax.annotation.CheckForNull;
-
 public interface IdentifierTree extends Tree, HasSymbol {
 
   String name();
 
-  @CheckForNull
   String type();
 
   String packageName();

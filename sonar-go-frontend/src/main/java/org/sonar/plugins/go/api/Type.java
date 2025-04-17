@@ -16,14 +16,11 @@
  */
 package org.sonar.plugins.go.api;
 
-import javax.annotation.CheckForNull;
-
 public interface Type {
 
   /**
    * @return text representation of the type, e.g.: {@code net/http.Cookie}
    */
-  @CheckForNull
   String type();
 
   /**

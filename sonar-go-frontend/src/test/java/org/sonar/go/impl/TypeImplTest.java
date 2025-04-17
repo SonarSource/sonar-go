@@ -30,13 +30,6 @@ class TypeImplTest {
   }
 
   @Test
-  void testNullType() {
-    TypeImpl type = new TypeImpl(null, "main");
-    assertThat(type.type()).isNull();
-    assertThat(type.packageName()).isEqualTo("main");
-  }
-
-  @Test
   void testIsTypeOfSimpleType() {
     TypeImpl type = new TypeImpl("MyType", "main");
     assertThat(type.isTypeOf("MyType")).isTrue();
@@ -60,11 +53,5 @@ class TypeImplTest {
     assertThat(type.isTypeOf("*MyType")).isFalse();
     assertThat(type.isTypeOf("int")).isFalse();
     assertThat(type.isTypeOf("AnotherType")).isFalse();
-  }
-
-  @Test
-  void testIsTypeOfNullType() {
-    TypeImpl type = new TypeImpl(null, "main");
-    assertThat(type.isTypeOf("MyType")).isFalse();
   }
 }

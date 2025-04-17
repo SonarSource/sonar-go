@@ -18,10 +18,7 @@ package org.sonar.go.symbols;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
-import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.Tree;
 
@@ -29,8 +26,8 @@ public class Symbol {
   private final String type;
   private final List<Usage> usages;
 
-  public Symbol(@Nullable String type) {
-    this.type = Objects.requireNonNullElse(type, IdentifierTreeImpl.UNKNOWN_TYPE);
+  public Symbol(String type) {
+    this.type = type;
     this.usages = new ArrayList<>();
   }
 

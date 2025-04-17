@@ -159,7 +159,6 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
         .filter(IdentifierTree.class::isInstance)
         .map(IdentifierTree.class::cast)
         .map(IdentifierTree::type)
-        .filter(Objects::nonNull)
         // For the receiver types defined in the source file, the type is often like: "*-.MyStruct".
         // But such types don't exist in sonar-go-to-slang/resources/ast/*.json files.
         // It is so because in production the Go file content is passed to sonar-go-to-slang executable via stdin

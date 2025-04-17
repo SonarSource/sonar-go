@@ -16,22 +16,18 @@
  */
 package org.sonar.go.impl;
 
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.Type;
 
 public class TypeImpl implements Type {
 
-  @Nullable
   private final String type;
   private final String packageName;
 
-  public TypeImpl(@Nullable String type, String packageName) {
+  public TypeImpl(String type, String packageName) {
     this.type = type;
     this.packageName = packageName;
   }
 
-  @CheckForNull
   @Override
   public String type() {
     return type;
@@ -47,14 +43,10 @@ public class TypeImpl implements Type {
     return baseType.equals(extractBaseType());
   }
 
-  @CheckForNull
   private String extractBaseType() {
-    if (type != null) {
-      if (type.startsWith("&") || type.startsWith("*")) {
-        return type.substring(1);
-      }
-      return type;
+    if (type.startsWith("&") || type.startsWith("*")) {
+      return type.substring(1);
     }
-    return null;
+    return type;
   }
 }
