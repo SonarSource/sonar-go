@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.TextRange;
 import org.sonar.plugins.go.api.Tree;
@@ -46,6 +47,12 @@ public interface CheckContext {
   }
 
   String filename();
+
+  /**
+   * Provide the {@link InputFile} being analyzed.
+   * @return the {@link InputFile} being analyzed
+   */
+  InputFile inputFile();
 
   String fileContent();
 

@@ -25,6 +25,7 @@ import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.HasTextRange;
@@ -97,6 +98,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     @Override
     public String filename() {
       return currentCtx.inputFile.filename();
+    }
+
+    @Override
+    public InputFile inputFile() {
+      return currentCtx.inputFile;
     }
 
     @Override

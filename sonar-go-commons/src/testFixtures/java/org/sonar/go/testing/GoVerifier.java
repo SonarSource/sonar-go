@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
@@ -41,6 +42,7 @@ import org.sonar.plugins.go.api.checks.SecondaryLocation;
 import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.mockito.Mockito.mock;
 import static org.sonar.go.testing.TestGoConverter.GO_CONVERTER_DEBUG_TYPE_CHECK;
 
 public class GoVerifier {
@@ -79,7 +81,7 @@ public class GoVerifier {
         verifier.addComment(start.line(), start.lineOffset() + 1, comment.text(), 2, 0);
       });
 
-    TestContext ctx = new TestContext(verifier, path.getFileName().toString(), testFileContent, goVersion);
+    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goVersion);
     new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
@@ -100,12 +102,14 @@ public class GoVerifier {
     private final TreeVisitor<TestContext> visitor;
     private final SingleFileVerifier verifier;
     private final GoVersion goVersion;
+    private final InputFile inputFile;
     private final String filename;
     private final String testFileContent;
     private Consumer<Tree> onLeave;
 
-    public TestContext(SingleFileVerifier verifier, String filename, String testFileContent, GoVersion goVersion) {
+    public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoVersion goVersion) {
       this.verifier = verifier;
+      this.inputFile = inputFile;
       this.filename = filename;
       this.goVersion = goVersion;
       this.testFileContent = testFileContent;
@@ -142,6 +146,11 @@ public class GoVerifier {
     @Override
     public String filename() {
       return filename;
+    }
+
+    @Override
+    public InputFile inputFile() {
+      return inputFile;
     }
 
     @Override

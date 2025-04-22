@@ -19,6 +19,7 @@ package org.sonar.plugins.go.api.checks;
 import java.util.List;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.TextRange;
@@ -84,6 +85,10 @@ class CheckContextTest {
   private static class CheckContextToTestDefaultMethod extends TreeContext implements CheckContext {
 
     public String filename() {
+      return null;
+    }
+
+    public InputFile inputFile() {
       return null;
     }
 
