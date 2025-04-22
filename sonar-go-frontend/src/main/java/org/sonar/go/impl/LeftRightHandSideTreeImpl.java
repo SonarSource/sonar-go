@@ -17,25 +17,38 @@
 package org.sonar.go.impl;
 
 import java.util.List;
-import org.sonar.plugins.go.api.ExpressionStatement;
+import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LeftRightHandSideTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
-public class ExpressionStatementImpl extends BaseTreeImpl implements ExpressionStatement {
-  private final Tree expression;
+import static org.sonar.go.utils.TreeUtils.IS_NOT_EMPTY_NATIVE_TREE;
 
-  public ExpressionStatementImpl(TreeMetaData treeMetaData, Tree expression) {
-    super(treeMetaData);
-    this.expression = expression;
-  }
+public class LeftRightHandSideTreeImpl extends BaseTreeImpl implements LeftRightHandSideTree {
+  private final List<Tree> children;
 
-  @Override
-  public Tree expression() {
-    return expression;
+  public LeftRightHandSideTreeImpl(TreeMetaData metaData, List<Tree> children) {
+    super(metaData);
+    this.children = children;
   }
 
   @Override
   public List<Tree> children() {
-    return List.of(expression);
+    return children;
+  }
+
+  @Override
+  public List<IdentifierTree> extractIdentifiers() {
+    return children.stream()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .toList();
+  }
+
+  @Override
+  public List<Tree> getChildrenSkipEmptyNativeTrees() {
+    return children.stream()
+      .filter(IS_NOT_EMPTY_NATIVE_TREE)
+      .toList();
   }
 }

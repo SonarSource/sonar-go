@@ -28,7 +28,7 @@ import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
-import org.sonar.go.impl.ExpressionStatementImpl;
+import org.sonar.go.impl.ExpressionStatementTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
@@ -40,7 +40,7 @@ import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
-import org.sonar.go.impl.LeftRightHandSideImpl;
+import org.sonar.go.impl.LeftRightHandSideTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
@@ -626,19 +626,19 @@ public final class JsonTreeConverter {
         ctx.fieldToObjectList(json, INITIALIZERS, Tree.class),
         json.getBoolean(IS_VAL, false)));
 
-    register(LeftRightHandSideImpl.class,
+    register(LeftRightHandSideTreeImpl.class,
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(CHILDREN, ctx.toJsonArray(tree.children())),
 
-      (ctx, json) -> new LeftRightHandSideImpl(
+      (ctx, json) -> new LeftRightHandSideTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObjectList(json, CHILDREN, Tree.class)));
 
-    register(ExpressionStatementImpl.class,
+    register(ExpressionStatementTreeImpl.class,
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(EXPRESSION, ctx.toJson(tree.expression())),
-      (ctx, json) -> new ExpressionStatementImpl(
+      (ctx, json) -> new ExpressionStatementTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObject(json, EXPRESSION, Tree.class)));
   }

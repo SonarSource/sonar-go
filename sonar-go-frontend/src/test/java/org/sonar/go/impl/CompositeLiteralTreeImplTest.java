@@ -28,7 +28,7 @@ import org.sonar.go.testing.TestGoConverter;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
-import org.sonar.plugins.go.api.ExpressionStatement;
+import org.sonar.plugins.go.api.ExpressionStatementTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
 import org.sonar.plugins.go.api.KeyValueTree;
@@ -169,7 +169,7 @@ class CompositeLiteralTreeImplTest {
       """.formatted(importInstruction, code));
     var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
-    var expressionStatement = (ExpressionStatement) mainBlock.statementOrExpressions().get(0);
+    var expressionStatement = (ExpressionStatementTree) mainBlock.statementOrExpressions().get(0);
     var compositeLiteral = (CompositeLiteralTree) expressionStatement.expression();
 
     assertThat(compositeLiteral.hasType("net/http", "net/http.Server")).isTrue();
@@ -200,7 +200,7 @@ class CompositeLiteralTreeImplTest {
       """.formatted(code));
     var mainFunc = topLevelTree.declarations().get(2);
     var mainBlock = (BlockTree) mainFunc.children().get(1);
-    var expressionStatement = (ExpressionStatement) mainBlock.statementOrExpressions().get(0);
+    var expressionStatement = (ExpressionStatementTree) mainBlock.statementOrExpressions().get(0);
     return (CompositeLiteralTree) expressionStatement.expression();
   }
 }

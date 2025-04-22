@@ -27,7 +27,7 @@ import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.VariableHelper;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.IdentifierTree;
-import org.sonar.plugins.go.api.LeftRightHandSide;
+import org.sonar.plugins.go.api.LeftRightHandSideTree;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
@@ -66,7 +66,7 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   private void processAssignment(C context, AssignmentExpressionTree assignmentExpression) {
     var leftHandSide = assignmentExpression.leftHandSide();
     var identifiers = extractIdentifiers(leftHandSide);
-    if (isLeftOrRightHandSide(assignmentExpression.statementOrExpression()) && leftHandSide instanceof LeftRightHandSide left) {
+    if (isLeftOrRightHandSide(assignmentExpression.statementOrExpression()) && leftHandSide instanceof LeftRightHandSideTree left) {
       var values = left.getChildrenSkipEmptyNativeTrees();
       for (int i = 0; i < identifiers.size(); i++) {
         addVariableUsage(identifiers.get(i), values.get(i), Usage.UsageType.ASSIGNMENT);
@@ -81,7 +81,7 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   private static List<IdentifierTree> extractIdentifiers(Tree tree) {
     if (tree instanceof IdentifierTree identifier) {
       return List.of(identifier);
-    } else if (tree instanceof LeftRightHandSide leftRightHandSide) {
+    } else if (tree instanceof LeftRightHandSideTree leftRightHandSide) {
       return leftRightHandSide.extractIdentifiers();
     } else {
       return Collections.emptyList();
@@ -89,7 +89,7 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   }
 
   private static boolean isLeftOrRightHandSide(Tree tree) {
-    return tree instanceof LeftRightHandSide;
+    return tree instanceof LeftRightHandSideTree;
   }
 
   private void addVariableUsage(IdentifierTree identifier, @Nullable Tree value, Usage.UsageType type) {

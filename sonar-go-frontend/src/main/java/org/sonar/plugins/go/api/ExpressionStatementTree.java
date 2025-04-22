@@ -16,11 +16,6 @@
  */
 package org.sonar.plugins.go.api;
 
-import java.util.List;
-
-public interface LeftRightHandSide {
-
-  List<IdentifierTree> extractIdentifiers();
-
-  List<Tree> getChildrenSkipEmptyNativeTrees();
+public interface ExpressionStatementTree extends Tree {
+  Tree expression();
 }
