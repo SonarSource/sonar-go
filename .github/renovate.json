@@ -93,6 +93,17 @@
       "prHeader": "*Don't forget to run the package data generator to align the generated files with the new dependencies.*"
     },
     {
+      "matchManagers": ["gomod"],
+      "matchDepTypes": ["indirect"],
+      "enabled": true
+    },
+    {
+      "matchManagers": ["gomod"],
+      "postUpdateOptions": [
+        "gomodTidy", "gomodUpdateImportPaths"
+      ]
+    },
+    {
       "matchManagers": [
         "git-submodules"
       ],
