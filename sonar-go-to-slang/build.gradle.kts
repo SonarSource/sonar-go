@@ -30,7 +30,9 @@ goBuild {
 }
 
 if (isCi) {
-    val goVersion = requireNotNull(System.getenv("GO_VERSION")) { "Environment variable GO_VERSION is required in CI" }
+    val goVersion = providers.environmentVariable("GO_VERSION")
+        .orElse(providers.gradleProperty("goVersion"))
+        .orNull ?: error("Either `GO_VERSION` env variable or `goVersion` Gradle property must be set")
     spotless {
         go {
             gofmt("go$goVersion")
