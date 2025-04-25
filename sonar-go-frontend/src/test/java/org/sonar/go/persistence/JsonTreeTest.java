@@ -846,7 +846,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(tree.firstCpdToken().text()).isEqualTo("true");
 
     assertThat(methodNames(TopLevelTree.class))
-      .containsExactlyInAnyOrder(DECLARATIONS, FIRST_CPD_TOKEN, "allComments", "doesImportType");
+      .containsExactlyInAnyOrder(DECLARATIONS, FIRST_CPD_TOKEN, "allComments", "doesImportType", "packageName");
   }
 
   @Test

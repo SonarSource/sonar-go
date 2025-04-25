@@ -29,8 +29,12 @@ public interface TopLevelTree extends Tree {
   Token firstCpdToken();
 
   /**
-   * @return whether the file imports the given type.
+   * @return whether the filet imports the given type.
    */
   boolean doesImportType(String type);
 
+  /**
+   * @return package name of the current file.
+   */
+  String packageName();
 }

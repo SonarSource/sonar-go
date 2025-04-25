@@ -155,12 +155,4 @@ class TreeUtilsTest {
     var result = TreeUtils.retrieveLastIdentifier(integerLiteral);
     assertThat(result).isEmpty();
   }
-
-  @Test
-  void shouldRetrievePackageName() {
-    var pack = TreeCreationUtils.packageDeclaration("foo");
-    var topLevelTree = TreeCreationUtils.topLevel(List.of(pack));
-    var result = TreeUtils.retrievePackageName(topLevelTree);
-    assertThat(result).isEqualTo("foo");
-  }
 }

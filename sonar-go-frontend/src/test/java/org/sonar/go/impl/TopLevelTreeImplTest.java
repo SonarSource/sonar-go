@@ -16,8 +16,10 @@
  */
 package org.sonar.go.impl;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.TopLevelTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -97,5 +99,13 @@ class TopLevelTreeImplTest {
     var tree = (TopLevelTree) TestGoConverter.parse(code);
 
     assertThat(tree.doesImportType("os")).isFalse();
+  }
+
+  @Test
+  void shouldRetrievePackageName() {
+    var pack = TreeCreationUtils.packageDeclaration("foo");
+    var topLevelTree = TreeCreationUtils.topLevel(List.of(pack));
+    var result = topLevelTree.packageName();
+    assertThat(result).isEqualTo("foo");
   }
 }

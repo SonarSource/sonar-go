@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.Comment;
 import org.sonar.plugins.go.api.ImportDeclarationTree;
 import org.sonar.plugins.go.api.ImportSpecificationTree;
+import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
@@ -72,6 +73,16 @@ public class TopLevelTreeImpl extends BaseTreeImpl implements TopLevelTree {
   @Override
   public boolean doesImportType(String type) {
     return importsAsStrings.contains(type);
+  }
+
+  @Override
+  public String packageName() {
+    return descendants()
+      .filter(PackageDeclarationTree.class::isInstance)
+      .map(PackageDeclarationTree.class::cast)
+      .findFirst()
+      .map(PackageDeclarationTree::packageName)
+      .orElse("");
   }
 
   private static Set<String> getImportsAsStrings(List<Tree> declarations) {

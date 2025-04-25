@@ -23,8 +23,6 @@ import java.util.stream.Collectors;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
-import org.sonar.plugins.go.api.PackageDeclarationTree;
-import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
 public class TreeUtils {
@@ -79,14 +77,5 @@ public class TreeUtils {
       return Optional.of(identifierTree);
     }
     return Optional.empty();
-  }
-
-  public static String retrievePackageName(TopLevelTree topLevelTree) {
-    return topLevelTree.descendants()
-      .filter(PackageDeclarationTree.class::isInstance)
-      .map(PackageDeclarationTree.class::cast)
-      .findFirst()
-      .map(PackageDeclarationTree::packageName)
-      .orElse("");
   }
 }
