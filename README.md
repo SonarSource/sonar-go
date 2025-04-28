@@ -54,12 +54,6 @@ and manually verify correctness of the added data.
 
 The file is regenerated on CI automatically, once it grows over specified number of lines.
 
-### Troubleshooting
-
-In case you can't run it on MacOs Sequoia 15.3.1 and have the issues like: `illegal instructions` or `reflect: /usr/local/go/pkg/tool/linux_amd64/asm: signal: segmentation fault` try flipping the Rosetta option in Docker Settings. 
-Disabling `Use Rosetta for x86_64/amd64 emulation on Apple Silicon` usually solve the problem. 
-Src: https://www.reddit.com/r/golang/comments/1eoe3on/docker_illegal_instructions_and_apple_silicon/
-
 ## License headers
 
 License headers are automatically updated by the spotless plugin.

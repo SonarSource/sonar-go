@@ -34,7 +34,7 @@ FROM dev_base AS dev_custom_cert_image
 ARG CA_CERT=Sonar-FGT-FW-TLS-Traffic-Inspection
 ARG CERT_LOCATION=/usr/local/share/ca-certificates
 
-ONBUILD COPY ${CA_CERT}.cer ${CERT_LOCATION}/${CA_CERT}.cer
+ONBUILD COPY --from=root ${CA_CERT}.cer ${CERT_LOCATION}/${CA_CERT}.cer
 ONBUILD WORKDIR ${CERT_LOCATION}
 ONBUILD RUN cp ${CA_CERT}.cer ${CA_CERT}.crt && update-ca-certificates
 
@@ -54,25 +54,7 @@ RUN curl --proto "=https" -sSfL https://dl.google.com/go/go${GO_VERSION}.linux-$
 FROM ${BUILD_ENV}_image
 
 ARG GO_VERSION
-ARG MUSL_VERSION=1.2.4
 ARG GOLANG_CI_LINT_VERSION=1.62.2
-
-USER root
-# Additionally install gcc and musl. static linking makes the Linux binary more portable, while almost not affecting its size.
-# In case the builder image is based on Alpine (like ARM64 CI image), we don't need to install musl.
-ADD https://www.musl-libc.org/releases/musl-${MUSL_VERSION}.tar.gz musl-${MUSL_VERSION}.tar.gz
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked <<EOF
-    if [ "$(cat /etc/os-release | grep -i alpine | wc -l)" -eq 0 ]; then
-      apt-get update
-      apt-get --no-install-recommends install -y ca-certificates gcc git make unzip
-      tar xf musl-${MUSL_VERSION}.tar.gz
-      cd musl-${MUSL_VERSION}
-      ./configure --prefix=/opt/musl --enable-gcc-wrapper=yes
-      make
-      make install
-    fi
-EOF
 
 USER sonarsource
 
