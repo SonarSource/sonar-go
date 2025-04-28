@@ -66,8 +66,8 @@
         {"@type": "Identifier", "metaData": "3:5::8","type":"func(value *invalid type)","package":"variable_declaration.go","name":"foo","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:9::22","type":
           {"@type": "StarExpression", "metaData": "3:15::22","expression":
-            {"@type": "Identifier", "metaData": "3:16::22","type":"UNKNOWN","package":"UNKNOWN","name":"Person","id":0,"__cfgId":5},"__cfgId":6},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "3:9::14","type":"*Person","package":"UNKNOWN","name":"value","id":24,"__cfgId":4},"defaultValue":null,"__cfgId":7}
+            {"@type": "Identifier", "metaData": "3:16::22","type":"UNKNOWN","package":"UNKNOWN","name":"Person","id":0,"__cfgId":5},"__cfgId":6},"identifier":
+          {"@type": "Identifier", "metaData": "3:9::14","type":"*Person","package":"UNKNOWN","name":"value","id":24,"__cfgId":4},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[12,15,17,19,23,26,30,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:24:11:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::11","type":

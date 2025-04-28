@@ -16,19 +16,26 @@
  */
 package org.sonar.plugins.go.api;
 
-import java.util.List;
-import javax.annotation.CheckForNull;
-
+/**
+ * A function or method parameter.
+ */
 public interface ParameterTree extends Tree {
 
+  /**
+   * The parameter name represented by {@link IdentifierTree}.
+   * @return identifier
+   */
   IdentifierTree identifier();
 
-  @CheckForNull
-  Tree type();
+  /**
+   * The parameter type represented by the {@link Type}
+   * @return type as {@link Type}
+   */
+  Type type();
 
-  @CheckForNull
-  Tree defaultValue();
-
-  List<Tree> modifiers();
-
+  /**
+   * The parameter type represented by the original {@link Tree}.
+   * @return type tree
+   */
+  Tree typeTree();
 }

@@ -22,12 +22,16 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
+import org.sonar.go.impl.PlaceHolderTreeImpl;
+import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
@@ -54,6 +58,7 @@ import static org.sonar.go.utils.ExpressionUtils.skipParentheses;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.EQUAL_TO;
+import static org.sonar.plugins.go.api.Token.Type.STRING_LITERAL;
 
 class ExpressionUtilsTest {
   private static final Tree NIL_LITERAL = new LiteralTreeImpl(null, "nil");
@@ -137,6 +142,22 @@ class ExpressionUtilsTest {
     assertThat(skipParentheses(parenthesizedExpression1)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(parenthesizedExpression2)).isEqualTo(TRUE_LITERAL);
     assertThat(skipParentheses(TRUE_LITERAL)).isEqualTo(TRUE_LITERAL);
+  }
+
+  @Test
+  void shouldContainsPlaceHolder() {
+    var left = new PlaceHolderTreeImpl(null, new TokenImpl(null, "_", STRING_LITERAL));
+    var tree = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, left, null);
+    var actual = ExpressionUtils.containsPlaceHolder(tree);
+    assertThat(actual).isTrue();
+  }
+
+  @Test
+  void shouldNotContainsPlaceHolder() {
+    var left = new IdentifierTreeImpl(null, "a", "int", "", 1);
+    var tree = new AssignmentExpressionTreeImpl(null, AssignmentExpressionTree.Operator.EQUAL, left, left);
+    var actual = ExpressionUtils.containsPlaceHolder(tree);
+    assertThat(actual).isFalse();
   }
 
   @ParameterizedTest
@@ -396,5 +417,4 @@ class ExpressionUtilsTest {
       .findFirst().get();
     return variableDeclaration.initializers().get(0);
   }
-
 }

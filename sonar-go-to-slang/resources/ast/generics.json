@@ -639,8 +639,8 @@
             {"@type": "Identifier", "metaData": "55:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
             {"@type": "Native", "metaData": "55:25::26"},
             {"@type": "Identifier", "metaData": "55:26::31","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":5}
-          ],"__cfgId":6},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "55:13::14","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116,"__cfgId":3},"defaultValue":null,"__cfgId":7}
+          ],"__cfgId":6},"identifier":
+          {"@type": "Identifier", "metaData": "55:13::14","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116,"__cfgId":3},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[15,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "55:39:61:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "56:4::15","type":
@@ -680,8 +680,8 @@
             {"@type": "Identifier", "metaData": "64:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
             {"@type": "Native", "metaData": "64:27::28"},
             {"@type": "Identifier", "metaData": "64:28::35","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":5}
-          ],"__cfgId":6},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "64:15::16","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282,"__cfgId":3},"defaultValue":null,"__cfgId":7}
+          ],"__cfgId":6},"identifier":
+          {"@type": "Identifier", "metaData": "64:15::16","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282,"__cfgId":3},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[15,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "64:45:70:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "65:4::17","type":
@@ -739,8 +739,8 @@
             {"@type": "Identifier", "metaData": "74:60::61","type":"K","package":"generics.go","name":"K","id":1516,"__cfgId":13},
             {"@type": "Native", "metaData": "74:61::62"},
             {"@type": "Identifier", "metaData": "74:62::63","type":"V","package":"generics.go","name":"V","id":1530,"__cfgId":14}
-          ],"__cfgId":15},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "74:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549,"__cfgId":12},"defaultValue":null,"__cfgId":16}
+          ],"__cfgId":15},"identifier":
+          {"@type": "Identifier", "metaData": "74:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549,"__cfgId":12},"__cfgId":16}
       ],"cfg":{"Blocks":[{"Node":[24,27,25,26],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[30],"Successors":[1]},{"Node":[34],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "74:67:80:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "75:4::11","type":
@@ -796,8 +796,8 @@
             {"@type": "Identifier", "metaData": "84:46::47","type":"K","package":"generics.go","name":"K","id":1751,"__cfgId":11},
             {"@type": "Native", "metaData": "84:47::48"},
             {"@type": "Identifier", "metaData": "84:48::49","type":"V","package":"generics.go","name":"V","id":1765,"__cfgId":12}
-          ],"__cfgId":13},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "84:40::41","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775,"__cfgId":10},"defaultValue":null,"__cfgId":14}
+          ],"__cfgId":13},"identifier":
+          {"@type": "Identifier", "metaData": "84:40::41","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775,"__cfgId":10},"__cfgId":14}
       ],"cfg":{"Blocks":[{"Node":[22,25,23,24],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[28],"Successors":[1]},{"Node":[32],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "84:53:90:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "85:4::11","type":

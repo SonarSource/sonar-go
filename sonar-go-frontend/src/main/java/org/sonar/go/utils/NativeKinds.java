@@ -51,7 +51,7 @@ public final class NativeKinds {
   }
 
   public static boolean isStringNativeKindOfType(Tree tree, String type, String subtype) {
-    return isStringNativeKind(tree, s -> s.startsWith(type + "([") && s.endsWith("]" + subtype + ")"));
+    return isStringNativeKind(tree, s -> s.startsWith(type + "(") && s.endsWith(subtype + ")"));
   }
 
   public static boolean isCompositeLit(Tree tree) {

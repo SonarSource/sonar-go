@@ -48,8 +48,8 @@
         {"@type": "Identifier", "metaData": "7:5::8","type":"func(data []byte)","package":"function_calls.go","name":"fc1","id":46,"__cfgId":5},"formalParameters":[
         {"@type": "Parameter", "metaData": "7:9::20","type":
           {"@type": "ArrayType", "metaData": "7:14::20","length":null,"element":
-            {"@type": "Identifier", "metaData": "7:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "7:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":6},"defaultValue":null,"__cfgId":9}
+            {"@type": "Identifier", "metaData": "7:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},"identifier":
+          {"@type": "Identifier", "metaData": "7:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":6},"__cfgId":9}
       ],"cfg":{"Blocks":[{"Node":[17,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "7:22:9:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "8:1::14","expression":

@@ -17,36 +17,27 @@
 package org.sonar.go.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.sonar.go.utils.NativeKinds;
 import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.ParameterTree;
+import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
 
 public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
 
   private final IdentifierTree identifier;
   private final Tree type;
-  private final Tree defaultValue;
-  private final List<Tree> modifiers;
 
-  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue, List<Tree> modifiers) {
+  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type) {
     super(metaData);
     this.identifier = identifier;
     this.type = type;
-    this.defaultValue = defaultValue;
-    this.modifiers = modifiers;
-  }
-
-  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type, @Nullable Tree defaultValue) {
-    this(metaData, identifier, type, defaultValue, Collections.emptyList());
-  }
-
-  public ParameterTreeImpl(TreeMetaData metaData, IdentifierTree identifier, @Nullable Tree type) {
-    this(metaData, identifier, type, null);
   }
 
   @Override
@@ -54,37 +45,42 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
     return identifier;
   }
 
-  @CheckForNull
   @Override
-  public Tree type() {
+  public Type type() {
+    return getTypeOfParameter("", type);
+  }
+
+  @Override
+  public Tree typeTree() {
     return type;
-  }
-
-  @CheckForNull
-  @Override
-  public Tree defaultValue() {
-    return defaultValue;
-  }
-
-  @Override
-  public List<Tree> modifiers() {
-    return modifiers;
   }
 
   @Override
   public List<Tree> children() {
     List<Tree> children = new ArrayList<>();
-    children.addAll(modifiers);
-    if (identifier != null) {
-      children.add(identifier);
-    }
+    children.add(identifier);
     if (type != null) {
       children.add(type);
-    }
-    if (defaultValue != null) {
-      children.add(defaultValue);
     }
     return children;
   }
 
+  private static Type getTypeOfParameter(String typePrefix, Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      return new TypeImpl(typePrefix + identifierTree.type(), identifierTree.packageName());
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return getTypeOfParameter(typePrefix, memberSelectTree.identifier());
+    } else if (tree instanceof StarExpressionTree starExpressionTree) {
+      return getTypeOfParameter(typePrefix + "*", starExpressionTree.operand());
+    } else if (tree instanceof NativeTree && NativeKinds.isStringNativeKindOfType(tree, "Type", "Ellipsis")) {
+      var id = tree.children().stream()
+        .filter(t -> t instanceof IdentifierTree || t instanceof MemberSelectTree || t instanceof StarExpressionTree)
+        .findFirst();
+      if (id.isPresent()) {
+        var identifierTree = id.get();
+        return getTypeOfParameter(typePrefix + "...", identifierTree);
+      }
+    }
+    return new TypeImpl("UNKNOWN", "UNKNOWN");
+  }
 }

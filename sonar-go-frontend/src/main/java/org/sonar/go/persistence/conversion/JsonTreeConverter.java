@@ -95,7 +95,6 @@ public final class JsonTreeConverter {
   public static final String CONTENT_RANGE = "contentRange";
   public static final String CONTENT_TEXT = "contentText";
   public static final String DECLARATIONS = "declarations";
-  public static final String DEFAULT_VALUE = "defaultValue";
   public static final String ELEMENT = "element";
   public static final String ELEMENTS = "elements";
   public static final String ELSE_BRANCH = "elseBranch";
@@ -118,7 +117,6 @@ public final class JsonTreeConverter {
   public static final String LEFT_PARENTHESIS = "leftParenthesis";
   public static final String LENGTH = "length";
   public static final String MEMBER_SELECT = "memberSelect";
-  public static final String MODIFIERS = "modifiers";
   public static final String NAME = "name";
   public static final String NATIVE_KIND = "nativeKind";
   public static final String OPERAND = "operand";
@@ -512,16 +510,12 @@ public final class JsonTreeConverter {
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(IDENTIFIER, ctx.toJson(tree.identifier()))
-        .add(TYPE, ctx.toJson(tree.type()))
-        .add(DEFAULT_VALUE, ctx.toJson(tree.defaultValue()))
-        .add(MODIFIERS, ctx.toJsonArray(tree.modifiers())),
+        .add(TYPE, ctx.toJson(tree.typeTree())),
 
       (ctx, json) -> new ParameterTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObject(json, IDENTIFIER, IdentifierTree.class),
-        ctx.fieldToNullableObject(json, TYPE, Tree.class),
-        ctx.fieldToNullableObject(json, DEFAULT_VALUE, Tree.class),
-        ctx.fieldToObjectList(json, MODIFIERS, Tree.class)));
+        ctx.fieldToNullableObject(json, TYPE, Tree.class)));
 
     register(ParenthesizedExpressionTreeImpl.class,
 

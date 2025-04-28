@@ -56,8 +56,8 @@
         null,"name":
         {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"cookie_example.go","name":"printCookie","id":55,"__cfgId":6},"formalParameters":[
         {"@type": "Parameter", "metaData": "6:17::23","type":
-          {"@type": "Identifier", "metaData": "6:20::23","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "6:17::19","type":"int","package":"UNKNOWN","name":"id","id":67,"__cfgId":7},"defaultValue":null,"__cfgId":9}
+          {"@type": "Identifier", "metaData": "6:20::23","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"identifier":
+          {"@type": "Identifier", "metaData": "6:17::19","type":"int","package":"UNKNOWN","name":"id","id":67,"__cfgId":7},"__cfgId":9}
       ],"cfg":{"Blocks":[{"Node":[17,23,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "6:25:9:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "7:4::27","type":null,"isVal":false,"initializers":[

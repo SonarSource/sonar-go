@@ -167,8 +167,8 @@
         {"@type": "Identifier", "metaData": "17:5::8","type":"func(value *member_select.go.Person)","package":"member_select.go","name":"foo","id":185,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "17:9::22","type":
           {"@type": "StarExpression", "metaData": "17:15::22","expression":
-            {"@type": "Identifier", "metaData": "17:16::22","type":"member_select.go.Person","package":"member_select.go","name":"Person","id":60,"__cfgId":4},"__cfgId":5},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "17:9::14","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":3},"defaultValue":null,"__cfgId":6}
+            {"@type": "Identifier", "metaData": "17:16::22","type":"member_select.go.Person","package":"member_select.go","name":"Person","id":60,"__cfgId":4},"__cfgId":5},"identifier":
+          {"@type": "Identifier", "metaData": "17:9::14","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":3},"__cfgId":6}
       ],"cfg":{"Blocks":[{"Node":[12,18,24,31,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "17:24:22:1","statementOrExpressions":[
           {"@type": "AssignmentExpression", "metaData": "18:1::17","statementOrExpression":

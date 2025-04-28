@@ -17,7 +17,6 @@
 package org.sonar.go.utils;
 
 import java.util.Arrays;
-import java.util.Deque;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -25,21 +24,15 @@ import javax.annotation.Nullable;
 import org.sonar.go.impl.TypeImpl;
 import org.sonar.plugins.go.api.ArrayTypeTree;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
-import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
-import org.sonar.plugins.go.api.ExceptionHandlingTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
-import org.sonar.plugins.go.api.IfTree;
 import org.sonar.plugins.go.api.KeyValueTree;
 import org.sonar.plugins.go.api.LiteralTree;
-import org.sonar.plugins.go.api.LoopTree;
-import org.sonar.plugins.go.api.MatchCaseTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
 import org.sonar.plugins.go.api.PlaceHolderTree;
 import org.sonar.plugins.go.api.StarExpressionTree;
-import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.Type;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
@@ -98,41 +91,6 @@ public class ExpressionUtils {
 
   public static boolean containsPlaceHolder(Tree tree) {
     return tree.descendants().anyMatch(PlaceHolderTree.class::isInstance);
-  }
-
-  public static boolean isTernaryOperator(Deque<Tree> ancestors, Tree tree) {
-    if (!isIfWithElse(tree)) {
-      return false;
-    }
-    Tree child = tree;
-    for (Tree ancestor : ancestors) {
-      if (ancestor instanceof BlockTree || ancestor instanceof ExceptionHandlingTree || ancestor instanceof TopLevelTree ||
-        isBranchOfLoopOrCaseOrIfWithoutElse(ancestor, child)) {
-        break;
-      }
-      if (!isBranchOfIf(ancestor, child)) {
-        return tree.descendants().noneMatch(BlockTree.class::isInstance);
-      }
-      child = ancestor;
-    }
-    return false;
-  }
-
-  private static boolean isIfWithElse(Tree tree) {
-    return tree instanceof IfTree ifTree && ifTree.elseBranch() != null;
-  }
-
-  private static boolean isBranchOfLoopOrCaseOrIfWithoutElse(Tree parent, Tree child) {
-    return (parent instanceof LoopTree loopTree && child == loopTree.body()) ||
-      (parent instanceof MatchCaseTree matchCaseTree && child == matchCaseTree.body()) ||
-      (isBranchOfIf(parent, child) && ((IfTree) parent).elseBranch() == null);
-  }
-
-  private static boolean isBranchOfIf(Tree parent, Tree child) {
-    if (parent instanceof IfTree ifTree) {
-      return child == ifTree.thenBranch() || child == ifTree.elseBranch();
-    }
-    return false;
   }
 
   public static Optional<String> getMemberSelectOrIdentifierName(Tree tree) {

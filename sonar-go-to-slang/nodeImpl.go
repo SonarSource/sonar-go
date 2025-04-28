@@ -23,7 +23,6 @@ import (
 )
 
 const keywordField = "keyword"
-const modifiersField = "modifiers"
 const identifierField = "identifier"
 const identifiersField = "identifiers"
 const operatorField = "operator"
@@ -401,8 +400,6 @@ func (t *SlangMapper) createParameter(ident *ast.Ident, parameterIdent, typ *Nod
 	}
 	slangField[identifierField] = parameterIdent
 	slangField["type"] = typ
-	slangField[modifiersField] = nil //No parameter modifier in Go
-	slangField["defaultValue"] = nil //No default value in Go
 	return t.createNode(ident, children, fieldName+"(Parameter)", "Parameter", slangField)
 }
 

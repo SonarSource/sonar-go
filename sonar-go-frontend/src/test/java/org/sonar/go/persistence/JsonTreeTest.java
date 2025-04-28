@@ -115,7 +115,6 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.CLASS_TREE;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONDITION;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONTENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.DECLARATIONS;
-import static org.sonar.go.persistence.conversion.JsonTreeConverter.DEFAULT_VALUE;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELEMENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_BRANCH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_KEYWORD;
@@ -135,7 +134,6 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_HAND_SI
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_PARENTHESIS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LENGTH;
-import static org.sonar.go.persistence.conversion.JsonTreeConverter.MODIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NAME;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_KIND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERAND;
@@ -702,28 +700,21 @@ class JsonTreeTest extends JsonTestHelper {
 
   @Test
   void parameter() throws IOException {
-    Token tokenMod = otherToken(1, 0, "@Nullable");
     Token tokenX = otherToken(2, 0, "x");
     Token tokenInt = otherToken(2, 2, "int");
-    Token tokenValue = otherToken(2, 6, "42");
 
-    IdentifierTree modifier = TreeCreationUtils.identifier(metaData(tokenMod), tokenMod.text());
     IdentifierTree identifier = TreeCreationUtils.identifier(metaData(tokenX), tokenX.text());
     Tree type = TreeCreationUtils.identifier(metaData(tokenInt), tokenInt.text());
-    Tree defaultValue = new IntegerLiteralTreeImpl(metaData(tokenValue), tokenValue.text());
 
-    TreeMetaData metaData = metaData(tokenMod, tokenValue);
-    ParameterTree initialTree = new ParameterTreeImpl(metaData, identifier, type, defaultValue, Collections.singletonList(modifier));
+    TreeMetaData metaData = metaData(tokenX, tokenInt);
+    ParameterTree initialTree = new ParameterTreeImpl(metaData, identifier, type);
     ParameterTree tree = checkJsonSerializationDeserialization(initialTree, "parameter.json");
-    assertThat(tokens(tree)).isEqualTo("1:0:2:8 - @Nullable x int 42");
+    assertThat(tokens(tree)).isEqualTo("2:0:2:5 - x int");
     assertThat(tokens(tree.identifier())).isEqualTo("2:0:2:1 - x");
-    assertThat(tokens(tree.type())).isEqualTo("2:2:2:5 - int");
-    assertThat(tokens(tree.defaultValue())).isEqualTo("2:6:2:8 - 42");
-    assertThat(tree.modifiers()).hasSize(1);
-    assertThat(tokens(tree.modifiers().get(0))).isEqualTo("1:0:1:9 - @Nullable");
+    assertThat(tokens(tree.typeTree())).isEqualTo("2:2:2:5 - int");
 
     assertThat(methodNames(ParameterTree.class))
-      .containsExactlyInAnyOrder(IDENTIFIER, TYPE, DEFAULT_VALUE, MODIFIERS);
+      .containsExactlyInAnyOrder(IDENTIFIER, TYPE, "typeTree");
   }
 
   @Test

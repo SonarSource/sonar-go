@@ -47,8 +47,8 @@
         null,"name":
         {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","package":"type_parameters.go","name":"MyFunction","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:23::30","type":
-          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"type_parameters.go","name":"T","id":31,"__cfgId":9},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "3:23::28","type":"T","package":"UNKNOWN","name":"param","id":38,"__cfgId":8},"defaultValue":null,"__cfgId":10}
+          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"type_parameters.go","name":"T","id":31,"__cfgId":9},"identifier":
+          {"@type": "Identifier", "metaData": "3:23::28","type":"T","package":"UNKNOWN","name":"param","id":38,"__cfgId":8},"__cfgId":10}
       ],"cfg":{"Blocks":[{"Node":[16],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:36:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::10","keyword":"4:1::7","body":

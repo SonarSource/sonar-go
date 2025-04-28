@@ -166,8 +166,8 @@
         null,"name":
         {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"lets.go","name":"fun2","id":202,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:10::15","type":
-          {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i","id":207,"__cfgId":3},"defaultValue":null,"__cfgId":5}
+          {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
+          {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i","id":207,"__cfgId":3},"__cfgId":5}
       ],"cfg":{"Blocks":[{"Node":[8,0],"Successors":[2,3]},{"Node":[0],"Successors":null},{"Node":[13],"Successors":[1]},{"Node":null,"Successors":[1]}]},"body":
         {"@type": "Block", "metaData": "10:17:17:1","statementOrExpressions":[
           {"@type": "Match", "metaData": "11:2:16:3","keyword":"11:2::8","expression":
@@ -205,8 +205,8 @@
               {"@type": "Native", "metaData": "18:21::22","nativeKind":"Opening"},
               {"@type": "Native", "metaData": "18:22::23","nativeKind":"Closing"}
             ],"__cfgId":4}
-          ],"__cfgId":5},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "18:10::11","type":"interface{}","package":"UNKNOWN","name":"x","id":314,"__cfgId":3},"defaultValue":null,"__cfgId":6}
+          ],"__cfgId":5},"identifier":
+          {"@type": "Identifier", "metaData": "18:10::11","type":"interface{}","package":"UNKNOWN","name":"x","id":314,"__cfgId":3},"__cfgId":6}
       ],"cfg":{"Blocks":[{"Node":[12],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "18:29:20:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "19:2::11","keyword":"19:2::8","body":

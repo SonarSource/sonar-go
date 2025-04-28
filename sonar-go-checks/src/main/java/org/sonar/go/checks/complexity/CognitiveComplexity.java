@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.Set;
 import javax.annotation.Nullable;
 import org.sonar.go.impl.JumpTreeImpl;
-import org.sonar.go.utils.ExpressionUtils;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
@@ -98,12 +97,11 @@ public class CognitiveComplexity {
       register(IfTree.class, (ctx, tree) -> {
         Tree parent = ctx.ancestors().peek();
         boolean isElseIf = parent instanceof IfTree ifTree && tree == ifTree.elseBranch();
-        boolean isTernary = ExpressionUtils.isTernaryOperator(ctx.ancestors(), tree);
-        if (!isElseIf || isTernary) {
+        if (!isElseIf) {
           incrementWithNesting(tree.ifKeyword(), ctx);
         }
         Token elseKeyword = tree.elseKeyword();
-        if (elseKeyword != null && !isTernary) {
+        if (elseKeyword != null) {
           incrementWithoutNesting(elseKeyword);
         }
       });

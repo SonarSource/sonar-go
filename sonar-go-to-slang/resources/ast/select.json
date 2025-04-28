@@ -270,8 +270,8 @@
         {"@type": "Parameter", "metaData": "10:13::27","type":
           {"@type": "Native", "metaData": "10:21::27","nativeKind":"Type(ChanType)","children":[
             {"@type": "Identifier", "metaData": "10:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":8}
-          ],"__cfgId":9},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "10:13::15","type":"chan string","package":"UNKNOWN","name":"ch","id":97,"__cfgId":7},"defaultValue":null,"__cfgId":10}
+          ],"__cfgId":9},"identifier":
+          {"@type": "Identifier", "metaData": "10:13::15","type":"chan string","package":"UNKNOWN","name":"ch","id":97,"__cfgId":7},"__cfgId":10}
       ],"cfg":{"Blocks":[{"Node":[21,23,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "10:29:13:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "11:1::28","expression":
@@ -299,8 +299,8 @@
         {"@type": "Parameter", "metaData": "14:13::27","type":
           {"@type": "Native", "metaData": "14:21::27","nativeKind":"Type(ChanType)","children":[
             {"@type": "Identifier", "metaData": "14:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4}
-          ],"__cfgId":5},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "14:13::15","type":"chan string","package":"UNKNOWN","name":"ch","id":181,"__cfgId":3},"defaultValue":null,"__cfgId":6}
+          ],"__cfgId":5},"identifier":
+          {"@type": "Identifier", "metaData": "14:13::15","type":"chan string","package":"UNKNOWN","name":"ch","id":181,"__cfgId":3},"__cfgId":6}
       ],"cfg":{"Blocks":[{"Node":[17,19,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "14:29:18:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "15:1::28","expression":

@@ -134,11 +134,11 @@
         null,"name":
         {"@type": "Identifier", "metaData": "13:6::10","type":"func(_ int, _ int) bool","package":"placeholder.go","name":"bar2","id":200,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "13:11::12","type":
-          null,"modifiers":null,"identifier":
-          {"@type": "PlaceHolder", "metaData": "13:11::12","placeHolderToken":"13:11::12","__cfgId":3},"defaultValue":null,"__cfgId":4},
+          null,"identifier":
+          {"@type": "PlaceHolder", "metaData": "13:11::12","placeHolderToken":"13:11::12","__cfgId":3},"__cfgId":4},
         {"@type": "Parameter", "metaData": "13:14::19","type":
-          {"@type": "Identifier", "metaData": "13:16::19","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6},"modifiers":null,"identifier":
-          {"@type": "PlaceHolder", "metaData": "13:14::15","placeHolderToken":"13:14::15","__cfgId":5},"defaultValue":null,"__cfgId":7}
+          {"@type": "Identifier", "metaData": "13:16::19","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6},"identifier":
+          {"@type": "PlaceHolder", "metaData": "13:14::15","placeHolderToken":"13:14::15","__cfgId":5},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[14],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "13:26:15:2","statementOrExpressions":[
           {"@type": "Return", "metaData": "14:4::16","keyword":"14:4::10","body":

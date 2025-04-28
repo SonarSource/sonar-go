@@ -91,8 +91,8 @@
                 {"@type": "Native", "metaData": "3:46::47","nativeKind":"Closing"}
               ],"__cfgId":5}
             ],"__cfgId":6}
-          ],"__cfgId":7},"modifiers":null,"identifier":
-          {"@type": "Identifier", "metaData": "3:28::32","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":4},"defaultValue":null,"__cfgId":8}
+          ],"__cfgId":7},"identifier":
+          {"@type": "Identifier", "metaData": "3:28::32","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":4},"__cfgId":8}
       ],"cfg":{"Blocks":[{"Node":[13,11,12],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[19],"Successors":[1]},{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:49:7:1","statementOrExpressions":[
           {"@type": "Loop", "metaData": "4:1:6:2","kind":"FOR","keyword":"4:1::4","condition":
