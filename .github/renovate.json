@@ -26,13 +26,14 @@
     {
       "customType": "regex",
       "fileMatch": [
-            "^gradle.properties$"
-        ],
-        "matchStrings": [
-          "goVersion\\s*=\\s*(?<currentValue>[^\\s#]+)"
-        ],
-        "depNameTemplate": "go",
-        "datasourceTemplate": "golang-version"
+        "^gradle.properties$"
+      ],
+      "matchStrings": [
+        "goVersion\\s*=\\s*(?<currentValue>[^\\s#]+)"
+      ],
+      "depNameTemplate": "go",
+      "datasourceTemplate": "golang-version",
+      "versioningTemplate": "go-mod-directive"
     }
   ],
   "packageRules": [
@@ -83,10 +84,8 @@
       "matchManagers": [
         "gomod"
       ],
-      "matchPackageNames": [
-        "!go",
-        "!private/its/**/go.mod",
-        "!private/go-package-data-exporter/**/go.mod"
+      "matchFileNames": [
+        "sonar-go-to-slang/**/go.mod"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -97,13 +96,15 @@
       "groupSlug": "all-go-minor-patch"
     },
     {
-      "matchManagers": ["gomod"],
-      "matchPackageNames": [
-        "!go",
-        "!private/its/**/go.mod",
-        "!private/go-package-data-exporter/**/go.mod"
+      "matchManagers": [
+        "gomod"
       ],
-      "matchDepTypes": ["indirect"],
+      "matchFileNames": [
+        "sonar-go-to-slang/**/go.mod"
+      ],
+      "matchDepTypes": [
+        "indirect"
+      ],
       "enabled": true
     },
     {
@@ -123,9 +124,12 @@
       "prHeader": "**Don't forget to run the package data generator to align the generated files with the new dependencies.**"
     },
     {
-      "matchManagers": ["gomod"],
+      "matchManagers": [
+        "gomod"
+      ],
       "postUpdateOptions": [
-        "gomodTidy", "gomodUpdateImportPaths"
+        "gomodTidy",
+        "gomodUpdateImportPaths"
       ]
     },
     {
@@ -144,10 +148,8 @@
       "matchDatasources": [
         "golang-version"
       ],
-      "groupName": "Go version",
-      "groupSlug": "go-version",
-      "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"
-    }
+      "rangeStrategy": "bump",
+      "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"}
   ],
   "reviewers": [
     "team:security-cloud-squad"
