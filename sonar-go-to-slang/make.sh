@@ -1,7 +1,11 @@
 #! /usr/bin/env bash
 set -euox pipefail
 
-readonly GO_VERSION="${GO_VERSION:-1.23.4}"
+if [[ -f "../gradle.properties" ]]; then
+  default_go_version=$(grep -E "^goVersion=" ../gradle.properties | cut -d'=' -f2)
+fi
+
+readonly GO_VERSION="${GO_VERSION:-$default_go_version}"
 readonly DEFAULT_GO_BINARY_DIRECTORY="${GOPATH:=${HOME}/go}/bin"
 readonly DEFAULT_GO_BINARY="${DEFAULT_GO_BINARY_DIRECTORY}/go"
 

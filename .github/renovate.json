@@ -16,11 +16,25 @@
     "gradle-wrapper",
     "github-actions",
     "gomod",
-    "git-submodules"
+    "git-submodules",
+    "regex"
   ],
   "git-submodules": {
     "enabled": true
   },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": [
+            "^gradle.properties$"
+        ],
+        "matchStrings": [
+          "goVersion\\s*=\\s*(?<currentValue>[^\\s#]+)"
+        ],
+        "depNameTemplate": "go",
+        "datasourceTemplate": "golang-version"
+    }
+  ],
   "packageRules": [
     {
       "matchManagers": [
@@ -71,7 +85,8 @@
       ],
       "matchPackageNames": [
         "!go",
-        "!private/its/**/go.mod"
+        "!private/its/**/go.mod",
+        "!private/go-package-data-exporter/**/go.mod"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -82,12 +97,21 @@
       "groupSlug": "all-go-minor-patch"
     },
     {
+      "matchManagers": ["gomod"],
+      "matchPackageNames": [
+        "!go",
+        "!private/its/**/go.mod",
+        "!private/go-package-data-exporter/**/go.mod"
+      ],
+      "matchDepTypes": ["indirect"],
+      "enabled": true
+    },
+    {
       "matchManagers": [
         "gomod"
       ],
       "matchFileNames": [
-        "!sonar-go-to-slang/go.mod",
-        "!private/its/**/go.mod"
+        "private/go-package-data-exporter/**/go.mod"
       ],
       "matchUpdateTypes": [
         "minor",
@@ -96,12 +120,7 @@
       ],
       "groupName": "additional Go dependencies",
       "groupSlug": "additional-go-dependencies",
-      "prHeader": "*Don't forget to run the package data generator to align the generated files with the new dependencies.*"
-    },
-    {
-      "matchManagers": ["gomod"],
-      "matchDepTypes": ["indirect"],
-      "enabled": true
+      "prHeader": "**Don't forget to run the package data generator to align the generated files with the new dependencies.**"
     },
     {
       "matchManagers": ["gomod"],
@@ -120,6 +139,14 @@
         "private/its/sources/kubernetes-client-go"
       ],
       "enabled": false
+    },
+    {
+      "matchDatasources": [
+        "golang-version"
+      ],
+      "groupName": "Go version",
+      "groupSlug": "go-version",
+      "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"
     }
   ],
   "reviewers": [

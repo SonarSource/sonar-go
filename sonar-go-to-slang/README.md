@@ -30,8 +30,14 @@ Otherwise, place the `.crt` file into the project root directory.
 
 ### What happens under the hood
 
-The entire build process can be done with the `make.sh` script. The following command will
-download Go of the required version and build the project:
+The entire build process can be done with the `make.sh` script.
+
+First, determine Go version used in the project:
+```shell
+export GO_VERSION=$(grep -E '^goVersion=' ../gradle.properties | cut -d'=' -f2)
+```
+
+The following command will download Go of the required version and build the project:
 
 ```shell
 ./make.sh build

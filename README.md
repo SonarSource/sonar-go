@@ -48,9 +48,15 @@ with a message like `Dependency verification failed for configuration ...`.
 In this case, you can update the file `gradle/verification-metadata.xml` with the command:
 
 ```shell
-./gradlew --write-verification-metadata <your gradle task>
+./gradlew --write-verification-metadata sha256 <your gradle task>
 ```
 and manually verify correctness of the added data.
+
+In most cases, the `help` task will resolve most of the dependencies without executing anything:
+
+```shell
+./gradlew --write-verification-metadata sha256 help
+```
 
 The file is regenerated on CI automatically, once it grows over specified number of lines.
 
