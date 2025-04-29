@@ -34,6 +34,7 @@ dependencies {
     implementation(libs.sonar.xml.parsing)
     implementation(libs.minimal.json)
     implementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
+    implementation(libs.commons.codec)
 
     testImplementation(libs.assertj.core)
     testImplementation(libs.mockito.core)
@@ -107,7 +108,7 @@ tasks.shadowJar {
     val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
     doLast {
         val (minSize, maxSize) = if (isCrossCompile) {
-            12_500_000L to 13_500_000L
+            13_000_000L to 14_000_000L
         } else {
             3_000_000L to 4_000_000L
         }

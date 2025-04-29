@@ -17,7 +17,11 @@
 package org.sonar.go.plugin.caching;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -30,6 +34,8 @@ import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.plugin.InputFileContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
 class HashCacheUtilsTest {
   private static final String CONTENTS = "// Hello, world!";
@@ -44,10 +50,11 @@ class HashCacheUtilsTest {
   private SensorContextTester sensorContext;
   private DummyReadCache previousCache;
   private DummyWriteCache nextCache;
+  private InputFile inputFile;
   private InputFileContext inputFileContext;
 
   @BeforeEach
-  void setup(@TempDir File tmpBaseDir) {
+  void setup(@TempDir File tmpBaseDir) throws DecoderException {
     sensorContext = SensorContextTester.create(tmpBaseDir);
     previousCache = new DummyReadCache();
     nextCache = new DummyWriteCache();
@@ -57,14 +64,15 @@ class HashCacheUtilsTest {
     sensorContext.setPreviousCache(previousCache);
     sensorContext.setNextCache(nextCache);
 
-    InputFile inputFile = new TestInputFileBuilder(MODULE_KEY, FILENAME)
+    inputFile = new TestInputFileBuilder(MODULE_KEY, FILENAME)
       .setModuleBaseDir(tmpBaseDir.toPath())
       .setType(InputFile.Type.MAIN)
       .setLanguage("slang")
       .setCharset(StandardCharsets.UTF_8)
       .setContents(CONTENTS)
+      .setStatus(InputFile.Status.SAME)
       .build();
-    previousCache.persisted.put(CACHE_KEY, EXPECTED_HASH.getBytes(StandardCharsets.UTF_8));
+    previousCache.persisted.put(CACHE_KEY, Hex.decodeHex(EXPECTED_HASH));
 
     sensorContext.fileSystem().add(inputFile);
     inputFileContext = new InputFileContext(sensorContext, inputFile);
@@ -113,15 +121,93 @@ class HashCacheUtilsTest {
   }
 
   @Test
+  void shouldDetectSameHashCachedWhenInputFileHashAndCachedHashMatch() {
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isTrue();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered unchanged.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenInputFileStatusIsAdded() {
+    inputFile = spy(inputFile);
+    when(inputFile.status()).thenReturn(InputFile.Status.ADDED);
+    inputFileContext = new InputFileContext(sensorContext, inputFile);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: file status is ADDED.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenInputFileStatusIsChanged() {
+    inputFile = spy(inputFile);
+    when(inputFile.status()).thenReturn(InputFile.Status.CHANGED);
+    inputFileContext = new InputFileContext(sensorContext, inputFile);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: file status is CHANGED.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenCacheDisabled() {
+    sensorContext.setCacheEnabled(false);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: hash cache is disabled.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenHashIsMissingInPreviousCache() {
+    previousCache = new DummyReadCache();
+    sensorContext.setPreviousCache(previousCache);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: hash could not be found in the cache.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenHashCannotBeReadFromPreviousCache() {
+    previousCache = spy(previousCache);
+    when(previousCache.read(CACHE_KEY)).thenReturn(new InputStream() {
+      @Override
+      public int read() throws IOException {
+        throw new IOException("This is expected!");
+      }
+    });
+    sensorContext.setPreviousCache(previousCache);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly(
+      "Error reading hash from the cache: This is expected!",
+      "File moduleKey:file1.slang is considered changed: failed to read hash from the cache.");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void shouldDetectDifferentHashCachedWhenHashFromPreviousCacheDoesntMatch() {
+    previousCache = new DummyReadCache();
+    previousCache.persisted.put(CACHE_KEY, "0xDEADBEEF".getBytes(StandardCharsets.UTF_8));
+    sensorContext.setPreviousCache(previousCache);
+
+    assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
+    assertThat(logTester.logs(Level.DEBUG)).containsOnly(
+      "File moduleKey:file1.slang is considered changed: input file hash does not match cached hash (180dd7ee70f338197b90e0635cad1131 vs 30784445414442454546).");
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
   void writeHashForNextAnalysis_writes_the_md5_sum_of_the_file_to_the_cache() {
     assertThat(HashCacheUtils.writeHashForNextAnalysis(inputFileContext)).isTrue();
 
     assertThat(nextCache.persisted).containsOnlyKeys("slang:hash:moduleKey:file1.slang");
-    byte[] written = nextCache.persisted.get("slang:hash:moduleKey:file1.slang");
+    var written = nextCache.persisted.get("slang:hash:moduleKey:file1.slang");
     assertThat(written)
       .as("Hash should be written in hexadecimal form.")
-      .hasSize(32);
-    String actual = new String(written, StandardCharsets.UTF_8);
+      .hasSize(16);
+    var actual = Hex.encodeHexString(written);
     assertThat(actual).isEqualTo(EXPECTED_HASH);
   }
 
@@ -145,5 +231,19 @@ class HashCacheUtilsTest {
 
     assertThat(HashCacheUtils.writeHashForNextAnalysis(inputFileContext)).isFalse();
     assertThat(nextCache.persisted).isEmpty();
+  }
+
+  @Test
+  void shouldFailWhenInputFileHashIsNotValid() {
+    var inputFileWithFaultyHash = spy(inputFileContext.inputFile);
+    // return something that is not a hexadecimal string
+    when(inputFileWithFaultyHash.md5Hash()).thenReturn("gggggggggggggggggggggggggggggggg");
+    when(inputFileWithFaultyHash.status()).thenReturn(InputFile.Status.SAME);
+    inputFileContext = new InputFileContext(sensorContext, inputFileWithFaultyHash);
+
+    assertThat(HashCacheUtils.writeHashForNextAnalysis(inputFileContext)).isFalse();
+    assertThat(nextCache.persisted).isEmpty();
+    assertThat(logTester.logs(Level.WARN))
+      .contains("Failed to convert hash from hexadecimal string to bytes for moduleKey:file1.slang.");
   }
 }

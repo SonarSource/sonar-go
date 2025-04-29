@@ -17,6 +17,7 @@ xerces = "2.12.2"
 awaitility = "4.3.0"
 classgraph = "4.8.179"
 yguard = "4.1.1"
+commons-codec = "1.18.0"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -44,3 +45,4 @@ xerces = { group = "xerces", name = "xercesImpl", version.ref = "xerces" }
 awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility"}
 classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classgraph"}
 yguard = { module = "com.yworks:yguard", version.ref = "yguard"}
+commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }

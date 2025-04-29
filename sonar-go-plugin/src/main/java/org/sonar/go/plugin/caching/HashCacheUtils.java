@@ -18,9 +18,8 @@ package org.sonar.go.plugin.caching;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
-import java.util.Locale;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.fs.InputFile;
@@ -34,14 +33,13 @@ import org.sonar.go.plugin.InputFileContext;
  */
 public class HashCacheUtils {
   private static final Logger LOG = LoggerFactory.getLogger(HashCacheUtils.class);
-  private static final String BYTES_TO_HEX_FORMAT = "%032X";
 
   private HashCacheUtils() {
     /* Instances of this utility class should not be created. */
   }
 
   /**
-   * Checks that a file that matches it previous hash in the cache.
+   * Checks that a file matches its previous hash in the cache.
    *
    * @param inputFileContext The context joining both SensorContext and InputFile
    * @return True if the file has its status set to InputFile.Status.SAME and matches its MD5 hash in the cache.
@@ -69,12 +67,19 @@ public class HashCacheUtils {
     try (InputStream in = previousCache.read(hashKey)) {
       expectedHashAsBytes = in.readAllBytes();
     } catch (IOException e) {
+      LOG.debug("Error reading hash from the cache: {}", e.getMessage());
       LOG.debug("File {} is considered changed: failed to read hash from the cache.", fileKey);
       return false;
     }
-    String expected = md5sumBytesToHex(expectedHashAsBytes);
-    String actual = inputFile.md5Hash();
-    return expected.equals(actual);
+    var expected = Hex.encodeHexString(expectedHashAsBytes);
+    var actual = inputFile.md5Hash();
+    boolean matchesWithCache = expected.equals(actual);
+    if (matchesWithCache) {
+      LOG.debug("File {} is considered unchanged.", fileKey);
+    } else {
+      LOG.debug("File {} is considered changed: input file hash does not match cached hash ({} vs {}).", fileKey, actual, expected);
+    }
+    return matchesWithCache;
   }
 
   /**
@@ -107,9 +112,12 @@ public class HashCacheUtils {
     InputFile inputFile = inputFileContext.inputFile;
     WriteCache nextCache = inputFileContext.sensorContext.nextCache();
     try {
-      nextCache.write(computeKey(inputFileContext.inputFile), inputFile.md5Hash().getBytes(StandardCharsets.UTF_8));
+      nextCache.write(computeKey(inputFileContext.inputFile), Hex.decodeHex(inputFile.md5Hash()));
     } catch (IllegalArgumentException ignored) {
       LOG.warn("Failed to write hash for {} to cache.", inputFile.key());
+      return false;
+    } catch (DecoderException ignored) {
+      LOG.warn("Failed to convert hash from hexadecimal string to bytes for {}.", inputFile.key());
       return false;
     }
     return true;
@@ -117,10 +125,5 @@ public class HashCacheUtils {
 
   private static String computeKey(InputFile inputFile) {
     return "slang:hash:" + inputFile.key();
-  }
-
-  private static String md5sumBytesToHex(byte[] bytes) {
-    BigInteger bi = new BigInteger(1, bytes);
-    return BYTES_TO_HEX_FORMAT.formatted(bi).toLowerCase(Locale.getDefault());
   }
 }
