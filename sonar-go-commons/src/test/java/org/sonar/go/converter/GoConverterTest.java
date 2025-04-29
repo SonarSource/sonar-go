@@ -70,7 +70,7 @@ class GoConverterTest {
   File tempDir;
 
   @Test
-  void test_parse_return() {
+  void testParseReturn() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 42}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
@@ -79,7 +79,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_binary_notation() {
+  void testParseBinaryNotation() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 0b_0010_1010}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
@@ -88,14 +88,14 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_imaginary_literals() {
+  void testParseImaginaryLiterals() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 6.67428e-11i}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
   }
 
   @Test
-  void test_parse_embed_overlapping_interfaces() {
+  void testParseEmbedOverlappingInterfaces() {
     var tree = TestGoConverter.parse("""
       package main
       type A interface{
@@ -116,14 +116,14 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_infinite_for() {
+  void testParseInfiniteFor() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {for {}}");
     List<Tree> returnList = tree.descendants().filter(LoopTree.class::isInstance).toList();
     assertThat(returnList).hasSize(1);
   }
 
   @Test
-  void test_parse_generics() {
+  void testParseGenerics() {
     Tree tree = TestGoConverter.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
     List<FunctionDeclarationTree> functions = tree.descendants()
       .filter(FunctionDeclarationTree.class::isInstance)
@@ -145,7 +145,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_member_select() {
+  void testParseMemberSelect() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {fmt.Println()}");
     List<MemberSelectTree> returnList = tree.descendants().filter(MemberSelectTree.class::isInstance).map(MemberSelectTree.class::cast).toList();
     assertThat(returnList).hasSize(1);
@@ -157,7 +157,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_function_invocation() {
+  void testParseFunctionInvocation() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {bar(\"arg\", 42)}");
     List<Tree> functionInvocations = tree.descendants().filter(FunctionInvocationTree.class::isInstance).toList();
     assertThat(functionInvocations).hasSize(1);
@@ -172,7 +172,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_composite_literal() {
+  void testParseCompositeLiteral() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {thing := Thing{\"value\"}}");
     List<CompositeLiteralTree> returnList = tree.descendants().filter(CompositeLiteralTree.class::isInstance).map(CompositeLiteralTree.class::cast).toList();
     assertThat(returnList).hasSize(1);
@@ -185,7 +185,7 @@ class GoConverterTest {
       stringLiteralTree -> assertThat(stringLiteralTree.content()).isEqualTo("value"));
   }
 
-  static Stream<Arguments> test_parse_binary_expression() {
+  static Stream<Arguments> testParseBinaryExpression() {
     return Stream.of(
       arguments("a + b", BinaryExpressionTree.Operator.PLUS),
       arguments("a - b", BinaryExpressionTree.Operator.MINUS),
@@ -209,7 +209,7 @@ class GoConverterTest {
 
   @ParameterizedTest
   @MethodSource
-  void test_parse_binary_expression(String code, BinaryExpressionTree.Operator operator) {
+  void testParseBinaryExpression(String code, BinaryExpressionTree.Operator operator) {
     var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement(code);
     assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class,
       identifierTree -> assertThat(identifierTree.name()).isEqualTo("a"));
@@ -232,7 +232,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_star_expression() {
+  void testParseStarExpression() {
     Tree tree = TestGoConverter.parse("package main\nfunc foo() {*string}");
     List<StarExpressionTree> starExpressionsList = tree.descendants().filter(StarExpressionTree.class::isInstance).map(StarExpressionTree.class::cast).toList();
     assertThat(starExpressionsList).hasSize(1);
@@ -242,7 +242,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_function_declaration_with_receiver() {
+  void testParseFunctionDeclarationWithReceiver() {
     Tree tree = TestGoConverter.parse("package main\nfunc (m MyType) foo(i int) {}");
     List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
     assertThat(functionDeclarations).hasSize(1);
@@ -259,7 +259,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_external_function_declaration() {
+  void testParseExternalFunctionDeclaration() {
     Tree tree = TestGoConverter.parse("""
       package main
       //go:noescape
@@ -281,7 +281,7 @@ class GoConverterTest {
     METHOD_FOO
   }
 
-  static Stream<Arguments> test_parse_variable_declaration_detailed() {
+  static Stream<Arguments> testParseVariableDeclarationDetailed() {
     return Stream.of(
       arguments("var a = 1             ", List.of("a"), List.of(Result.LITERAL_ONE), null, false),
       arguments("var a int             ", List.of("a"), List.of(), "int", false),
@@ -304,7 +304,7 @@ class GoConverterTest {
 
   @ParameterizedTest
   @MethodSource
-  void test_parse_variable_declaration_detailed(String code, List<String> variableNames, List<Result> variableValues,
+  void testParseVariableDeclarationDetailed(String code, List<String> variableNames, List<Result> variableValues,
     @Nullable String type, boolean isVal) {
     Tree tree = TestGoConverter.parse("""
       package main
@@ -352,7 +352,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_function_declaration_with_type_parameter() {
+  void testParseFunctionDeclarationWithTypeParameter() {
     Tree tree = TestGoConverter.parse("""
       package main
       func funWithTypeParameter[T any]() {}
@@ -370,7 +370,7 @@ class GoConverterTest {
   }
 
   @Test
-  void test_parse_imports() {
+  void testParseImports() {
     Tree tree = TestGoConverter.parse("""
       package main
       import (
@@ -402,14 +402,14 @@ class GoConverterTest {
   }
 
   @Test
-  void parse_error() {
+  void shouldFailWithParseError() {
     ParseException e = assertThrows(ParseException.class,
       () -> TestGoConverter.parse("$!#@"));
     assertThat(e).hasMessage("Go parser external process returned non-zero exit value: 2");
   }
 
   @Test
-  void invalid_command() {
+  void shouldFailOnInvalidCommand() {
     GoConverter.Command command = mock(GoConverter.Command.class);
     when(command.getCommand()).thenReturn(Collections.singletonList("invalid-command"));
     GoConverter converter = new GoConverter(command);
@@ -435,7 +435,7 @@ class GoConverterTest {
   }
 
   @Test
-  void parse_accepted_big_file() {
+  void shouldParseAcceptedBigFile() {
     var code = """
       package main
       func foo() {
@@ -447,7 +447,7 @@ class GoConverterTest {
   }
 
   @Test
-  void parse_rejected_big_file() {
+  void bigFileShouldBeRejectedInParse() {
     var code = """
       package main
       func foo() {
@@ -613,7 +613,7 @@ class GoConverterTest {
     assertThat(functionDeclarations).hasSize(1);
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
-    assertThat(getIdentifierByName(functionDeclaration, "person").type()).isEqualTo("-.Person");
+    assertThat(getIdentifierByName(functionDeclaration, "person").type()).isEqualTo("main.Person");
   }
 
   @Test

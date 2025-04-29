@@ -30,7 +30,7 @@
       {"@type": "ClassDeclaration", "metaData": "3:0:7:1","identifier":"3:5::18","classTree":
         {"@type": "Native", "metaData": "3:0:7:1","nativeKind":"[0](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "3:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "3:5::18","type":"struct.go.AccessRequest","package":"struct.go","name":"AccessRequest","id":20,"__cfgId":3},
+          {"@type": "Identifier", "metaData": "3:5::18","type":"main.AccessRequest","package":"main","name":"AccessRequest","id":20,"__cfgId":3},
           {"@type": "Native", "metaData": "3:19:7:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "3:19::25","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "3:26:7:1","nativeKind":"Fields(FieldList)","children":[

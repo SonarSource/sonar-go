@@ -82,7 +82,9 @@ func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugT
 		FileVersions: make(map[*ast.File]string),
 	}
 
-	_, err := conf.Check(path, fileSet, []*ast.File{astFile}, info)
+	// We pass the file name which correspond to the name of the package, in order to have local type/package
+	// named after this package names.
+	_, err := conf.Check(astFile.Name.Name, fileSet, []*ast.File{astFile}, info)
 
 	return info, err
 }

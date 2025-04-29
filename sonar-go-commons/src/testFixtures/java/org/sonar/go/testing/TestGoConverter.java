@@ -34,6 +34,18 @@ public class TestGoConverter {
     return GO_CONVERTER.parse(content);
   }
 
+  public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {
+    return retrieve(clazz, parse(content));
+  }
+
+  private static <T extends Tree> T retrieve(Class<T> clazz, Tree tree) {
+    return tree.descendants()
+      .filter(clazz::isInstance)
+      .map(clazz::cast)
+      .findFirst()
+      .get();
+  }
+
   public static Tree parseStatement(String content) {
     var root = (TopLevelTree) GO_CONVERTER.parse("""
       package main

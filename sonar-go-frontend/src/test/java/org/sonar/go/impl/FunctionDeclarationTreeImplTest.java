@@ -43,6 +43,7 @@ import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.sonar.go.impl.TextRanges.range;
+import static org.sonar.go.symbols.GoNativeType.UNKNOWN;
 import static org.sonar.go.utils.TreeCreationUtils.simpleNative;
 
 class FunctionDeclarationTreeImplTest {
@@ -54,9 +55,9 @@ class FunctionDeclarationTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     Tree returnType = TreeCreationUtils.identifier("int");
-    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r", "*-.MyReceiverType")));
+    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r", "*main.MyReceiverType", "receiverPackage")));
     Tree receiverWrapper = simpleNative(SIMPLE_KIND, List.of(receiver));
-    IdentifierTree name = TreeCreationUtils.identifier("foo");
+    IdentifierTree name = TreeCreationUtils.identifier("foo", UNKNOWN, "fooPackage");
     IdentifierTree paramName = TreeCreationUtils.identifier("p1");
     ParameterTree param = new ParameterTreeImpl(meta, paramName, null);
     List<Tree> params = List.of(param);
@@ -74,11 +75,11 @@ class FunctionDeclarationTreeImplTest {
     assertThat(tree.receiverName()).isEqualTo("r");
     // second call of receiverName for coverage (lazy calculation)
     assertThat(tree.receiverName()).isEqualTo("r");
-    assertThat(tree.receiverType("main")).isEqualTo("*main.MyReceiverType");
+    assertThat(tree.receiverType()).isEqualTo("*main.MyReceiverType");
     // second call of receiverType for coverage (lazy calculation)
-    assertThat(tree.receiverType("main")).isEqualTo("*main.MyReceiverType");
+    assertThat(tree.receiverType()).isEqualTo("*main.MyReceiverType");
     assertThat(tree.cfg()).isSameAs(cfg);
-    assertThat(tree.signature("main")).isEqualTo("*main.MyReceiverType.foo");
+    assertThat(tree.signature()).isEqualTo("*main.MyReceiverType.foo");
 
     FunctionDeclarationTreeImpl lightweightConstructor = new FunctionDeclarationTreeImpl(meta, null, null, null, emptyList(), null, null, null);
 
@@ -180,13 +181,8 @@ class FunctionDeclarationTreeImplTest {
       )
       %s
       """.formatted(function);
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = tree.declarations().stream()
-      .filter(FunctionDeclarationTreeImpl.class::isInstance)
-      .map(FunctionDeclarationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo("main.foo");
+    var func = TestGoConverter.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo("main.foo");
   }
 
   @Test
@@ -213,7 +209,7 @@ class FunctionDeclarationTreeImplTest {
       .filter(FunctionDeclarationTreeImpl.class::isInstance)
       .map(FunctionDeclarationTreeImpl.class::cast)
       .toList();
-    assertThat(funcList.get(1).signature("main")).isEqualTo("main.$anonymous_at_line_13");
+    assertThat(funcList.get(1).signature()).isEqualTo("$anonymous_at_line_13");
   }
 
   static Stream<Arguments> shouldVerifyMethodReceiverSignature() {
@@ -246,12 +242,7 @@ class FunctionDeclarationTreeImplTest {
       	db *sql.DB
       }
       """.formatted(function);
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = tree.declarations().stream()
-      .filter(FunctionDeclarationTreeImpl.class::isInstance)
-      .map(FunctionDeclarationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+    var func = TestGoConverter.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 }

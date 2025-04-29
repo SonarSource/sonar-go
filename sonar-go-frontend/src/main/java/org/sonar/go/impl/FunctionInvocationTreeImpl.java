@@ -45,17 +45,17 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   }
 
   @Override
-  public String signature(String packageName) {
+  public String signature() {
     var sb = new StringBuilder();
     if (memberSelect instanceof MemberSelectTree memberSelectTree) {
       var expression = memberSelectTree.expression();
       retrieveLastIdentifier(expression)
-        .map(identifier -> getPackageForMemberSelectExpression(identifier, packageName))
+        .map(FunctionInvocationTreeImpl::getPackageForMemberSelectExpression)
         .ifPresent(idSignature -> sb.append(idSignature).append("."));
       sb.append(memberSelectTree.identifier().name());
     } else if (memberSelect instanceof IdentifierTree identifierTree) {
       // build-in functions like string(), int(), int16(), or local functions or alias import
-      var idSignature = getPackageForIdentifierTreeOnly(identifierTree, packageName);
+      var idSignature = getPackageForIdentifierTreeOnly(identifierTree);
       if (!idSignature.isBlank()) {
         sb.append(idSignature);
         sb.append(".");
@@ -63,36 +63,26 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
       sb.append(identifierTree.name());
     } else if (memberSelect instanceof FunctionDeclarationTree functionDeclarationTree) {
       // anonymous function
-      sb.append(functionDeclarationTree.signature(packageName));
+      sb.append(functionDeclarationTree.signature());
     }
     return sb.toString();
   }
 
-  private static String getPackageForMemberSelectExpression(IdentifierTree identifierTree, String packageName) {
-    var idPackageName = identifierTree.packageName().replace("-", packageName);
-    var result = idPackageName;
-    if (UNKNOWN.equals(idPackageName)) {
+  private static String getPackageForMemberSelectExpression(IdentifierTree identifierTree) {
+    var result = identifierTree.packageName();
+    if (UNKNOWN.equals(result)) {
       // functions from libraries, e.g.: net/http.Cookie.String() or method receiver
-      // methods defined locally contain "-" instead of package
-      result = identifierTree.type().replace("-", packageName);
+      result = identifierTree.type();
     }
     return result;
   }
 
-  private static String getPackageForIdentifierTreeOnly(IdentifierTree identifierTree, String packageName) {
-    var idPackageName = identifierTree.packageName().replace("-", packageName);
-    var result = idPackageName;
-    if (UNKNOWN.equals(idPackageName)) {
-      var type = identifierTree.type();
-      if (UNKNOWN.equals(type)) {
-        // function is undefined
-        result = packageName;
-      } else {
-        // build-in functions like string(), int(), int16()
-        result = "";
-      }
+  private static String getPackageForIdentifierTreeOnly(IdentifierTree identifierTree) {
+    var packageName = identifierTree.packageName();
+    if (!UNKNOWN.equals(packageName)) {
+      return packageName;
     }
-    return result;
+    return "";
   }
 
   @Override

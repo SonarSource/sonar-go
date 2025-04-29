@@ -198,7 +198,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"array_slice.go","name":"allLiterals","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,16,23,29,35,43,52,60,68,72,78,86,94,100,108,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"ast","name":"allLiterals","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,16,23,29,35,43,52,60,68,72,78,86,94,100,108,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:19:23:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::24","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "4:6::24","memberSelect":

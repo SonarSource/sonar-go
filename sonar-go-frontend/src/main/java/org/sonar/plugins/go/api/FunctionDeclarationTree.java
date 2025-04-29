@@ -51,11 +51,10 @@ public interface FunctionDeclarationTree extends Tree {
 
   /**
    * Return receiver type. It is lazy calculated and cached for next invocations.
-   * @param packageName package name of the current file
    * @return receiver type.
    */
   @CheckForNull
-  String receiverType(String packageName);
+  String receiverType();
 
   @CheckForNull
   Tree typeParameters();
@@ -67,8 +66,7 @@ public interface FunctionDeclarationTree extends Tree {
 
   /**
    * Return function declaration signature. This signature may be treated as unique id.
-   * @param packageName the packageName of the file where function is declared
    * @return function declaration signature
    */
-  String signature(String packageName);
+  String signature();
 }

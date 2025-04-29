@@ -68,12 +68,7 @@ func TestParseArgsWithDumpAstFlagAndFilePath(t *testing.T) {
 func TestMainWithDumpAstFlag(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "-d", "resources/simple_file.go.source"}
-
-	writeOut, oldStdOut, outChanel := captureStandardOutput()
-
-	main()
-
-	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+	output := callProcessToAstUsingArgs(t)
 
 	// Validate the output
 	assert.Contains(t, output, "Package: token.Pos(1)")
@@ -82,12 +77,7 @@ func TestMainWithDumpAstFlag(t *testing.T) {
 func TestMainWithFilePath(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/simple_file.go.source"}
-
-	writeOut, oldStdOut, outChanel := captureStandardOutput()
-
-	main()
-
-	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+	output := callProcessToAstUsingArgs(t)
 
 	// Validate the output
 	assert.Contains(t, output, "\"@type\": \"PackageDeclaration\", \"metaData\": \"1:0::17\"")
@@ -96,12 +86,7 @@ func TestMainWithFilePath(t *testing.T) {
 func TestMainWithPackageResolution(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/simple_file_with_packages.go.source"}
-
-	writeOut, oldStdOut, outChanel := captureStandardOutput()
-
-	main()
-
-	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+	output := callProcessToAstUsingArgs(t)
 
 	// Validate the output
 	assert.Contains(t, output, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
@@ -110,12 +95,7 @@ func TestMainWithPackageResolution(t *testing.T) {
 func TestMainFillIdentifierWithInfo(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/simple_file_with_static_packages.go.source"}
-
-	writeOut, oldStdOut, outChanel := captureStandardOutput()
-
-	main()
-
-	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+	output := callProcessToAstUsingArgs(t)
 
 	// Validate the output
 	assert.Contains(t, output, "\"id\":66")
@@ -126,12 +106,7 @@ func TestMainFillIdentifierWithInfo(t *testing.T) {
 func TestMainWithDotImport(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "resources/simple_file_with_dot_import.go.source"}
-
-	writeOut, oldStdOut, outChanel := captureStandardOutput()
-
-	main()
-
-	output := getStandardOutput(writeOut, oldStdOut, outChanel)
+	output := callProcessToAstUsingArgs(t)
 
 	assert.Contains(t, output, "\"package\":\"math/rand\",\"name\":\"Intn\"")
 }
@@ -202,4 +177,10 @@ func captureStandardError() (*os.File, *os.File, chan string) {
 
 func resetCommandLineFlagsToDefault() {
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.PanicOnError)
+}
+
+func callProcessToAstUsingArgs(t *testing.T) string {
+	writeOut, oldStdOut, outChanel := captureStandardOutput()
+	main()
+	return getStandardOutput(writeOut, oldStdOut, outChanel)
 }

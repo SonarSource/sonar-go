@@ -102,7 +102,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::11","type":"func()","package":"min_max.go","name":"minMax","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,19,25,29,36,40,45,49,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::11","type":"func()","package":"ast","name":"minMax","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,19,25,29,36,40,45,49,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:14:15:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "5:4::16","type":
             {"@type": "Identifier", "metaData": "5:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":7},"isVal":false,"initializers":[],"identifiers":[

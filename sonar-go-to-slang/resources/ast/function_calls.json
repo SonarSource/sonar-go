@@ -45,7 +45,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::8","type":"func(data []byte)","package":"function_calls.go","name":"fc1","id":46,"__cfgId":5},"formalParameters":[
+        {"@type": "Identifier", "metaData": "7:5::8","type":"func(data []byte)","package":"main","name":"fc1","id":46,"__cfgId":5},"formalParameters":[
         {"@type": "Parameter", "metaData": "7:9::20","type":
           {"@type": "ArrayType", "metaData": "7:14::20","length":null,"element":
             {"@type": "Identifier", "metaData": "7:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},"identifier":

@@ -80,7 +80,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::27","type":"func(args ...interface{})","package":"function_elipsis.go","name":"declarationWithElipsis","id":20,"__cfgId":3},"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:5::27","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:28::47","type":
           {"@type": "Native", "metaData": "3:33::47","nativeKind":"Type(Ellipsis)","children":[
             {"@type": "Native", "metaData": "3:33::36","nativeKind":"Ellipsis"},
@@ -118,11 +118,11 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::20","type":"func()","package":"function_elipsis.go","name":"callWithElipsis","id":124,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,14,18,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "9:5::20","type":"func()","package":"main","name":"callWithElipsis","id":124,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,14,18,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:23:13:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "10:1::49","expression":
             {"@type": "FunctionInvocation", "metaData": "10:1::49","memberSelect":
-              {"@type": "Identifier", "metaData": "10:1::23","type":"func(args ...interface{})","package":"function_elipsis.go","name":"declarationWithElipsis","id":20,"__cfgId":4},"arguments":[
+              {"@type": "Identifier", "metaData": "10:1::23","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":4},"arguments":[
               {"@type": "IntegerLiteral", "metaData": "10:24::25","value":"1"},
               {"@type": "StringLiteral", "metaData": "10:27::36","value":"\"example\"","content":"example"},
               {"@type": "FloatLiteral", "metaData": "10:38::42","value":"3.14"},
@@ -148,7 +148,7 @@
           ],"__cfgId":14},
           {"@type": "ExpressionStatement", "metaData": "12:1::34","expression":
             {"@type": "FunctionInvocation", "metaData": "12:1::34","memberSelect":
-              {"@type": "Identifier", "metaData": "12:1::23","type":"func(args ...interface{})","package":"function_elipsis.go","name":"declarationWithElipsis","id":20,"__cfgId":15},"arguments":[
+              {"@type": "Identifier", "metaData": "12:1::23","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":15},"arguments":[
               {"@type": "Identifier", "metaData": "12:24::30","type":"[]interface{}","package":"UNKNOWN","name":"values","id":195,"__cfgId":16}
             ],"__cfgId":17},"__cfgId":18}
         ],"__cfgId":19},"__cfgId":1}

@@ -31,7 +31,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"symbol.go","name":"main","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,10,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"main","name":"main","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,10,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:12:6:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:4::10","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "4:9::10","value":"1"}

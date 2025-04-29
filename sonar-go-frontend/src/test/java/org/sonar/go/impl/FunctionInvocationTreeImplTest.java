@@ -136,13 +136,8 @@ class FunctionInvocationTreeImplTest {
       }
       """.formatted(arguments, body);
 
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = topLevelTree.descendants()
-      .filter(FunctionInvocationTreeImpl.class::isInstance)
-      .map(FunctionInvocationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 
   static Stream<Arguments> shouldVerifyMethodSignatureForCustomFunctions() {
@@ -154,9 +149,7 @@ class FunctionInvocationTreeImplTest {
       arguments("f float64", "foo(f)", "func foo(number float64) {}"),
       arguments("array []byte", "foo(array)", "func foo(a []byte) {}"),
       arguments("array [][]byte", "foo(array)", "func foo(a [][]byte) {}"),
-      arguments("text string, i ...int", "foo(text, i)", "func foo(t string, n ...int) {}"),
-      // function is undefined
-      arguments("text string, i ...int", "foo(text, i)", ""));
+      arguments("text string, i ...int", "foo(text, i)", "func foo(t string, n ...int) {}"));
   }
 
   @ParameterizedTest
@@ -169,13 +162,19 @@ class FunctionInvocationTreeImplTest {
       }
       %s
       """.formatted(arguments, body, funcDefinition);
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = topLevelTree.descendants()
-      .filter(FunctionInvocationTreeImpl.class::isInstance)
-      .map(FunctionInvocationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo("main.foo");
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo("main.foo");
+  }
+
+  @Test
+  void shouldHaveSignatureWithoutPackageNameForUnknownFunction() {
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTree.class, """
+      package main
+      func bar(text string, i ...int) {
+        foo(text, i)
+      }
+      """);
+    assertThat(func.signature()).isEqualTo("foo");
   }
 
   @Test
@@ -189,13 +188,8 @@ class FunctionInvocationTreeImplTest {
         my_md5.Sum(array)
       }
       """;
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = topLevelTree.descendants()
-      .filter(FunctionInvocationTreeImpl.class::isInstance)
-      .map(FunctionInvocationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo("crypto/md5.Sum");
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo("crypto/md5.Sum");
   }
 
   @Test
@@ -209,13 +203,8 @@ class FunctionInvocationTreeImplTest {
         Sum(array)
       }
       """;
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = topLevelTree.descendants()
-      .filter(FunctionInvocationTreeImpl.class::isInstance)
-      .map(FunctionInvocationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo("crypto/md5.Sum");
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo("crypto/md5.Sum");
   }
 
   static Stream<Arguments> shouldVerifySignatureMethodReceiver() {
@@ -278,13 +267,8 @@ class FunctionInvocationTreeImplTest {
       func (ctrl *MainController) method1() {
       }
       """.formatted(function);
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
-    var func = topLevelTree.descendants()
-      .filter(FunctionInvocationTreeImpl.class::isInstance)
-      .map(FunctionInvocationTreeImpl.class::cast)
-      .findFirst()
-      .get();
-    assertThat(func.signature("main")).isEqualTo(expectedSignature);
+    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 
   @Test
@@ -312,6 +296,6 @@ class FunctionInvocationTreeImplTest {
       .filter(FunctionInvocationTreeImpl.class::isInstance)
       .map(FunctionInvocationTreeImpl.class::cast)
       .toList();
-    assertThat(func.get(0).signature("main")).isEqualTo("main.$anonymous_at_line_9");
+    assertThat(func.get(0).signature()).isEqualTo("$anonymous_at_line_9");
   }
 }

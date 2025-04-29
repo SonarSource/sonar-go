@@ -148,7 +148,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   @CheckForNull
   @Override
-  public String receiverType(String packageName) {
+  public String receiverType() {
     if (!isReceiverTypeCalculated) {
       receiverType = Stream.of(receiver)
         .filter(Objects::nonNull)
@@ -159,12 +159,6 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
         .filter(IdentifierTree.class::isInstance)
         .map(IdentifierTree.class::cast)
         .map(IdentifierTree::type)
-        // For the receiver types defined in the source file, the type is often like: "*-.MyStruct".
-        // But such types don't exist in sonar-go-to-slang/resources/ast/*.json files.
-        // It is so because in production the Go file content is passed to sonar-go-to-slang executable via stdin
-        // and then the filename is set to dash "-" (it is also an argument for sonar-go-to-slang executable).
-        // The goparser_test.go read those files directly from filesystem, so the type is: "method_receiver.go.MyStruct"
-        .map(t -> t.replace("-", packageName))
         .findFirst()
         .orElse(null);
       isReceiverTypeCalculated = true;
@@ -197,15 +191,17 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   }
 
   @Override
-  public String signature(String packageName) {
+  public String signature() {
     var sb = new StringBuilder();
-    var receiverTypeLocal = receiverType(packageName);
+    var receiverTypeLocal = receiverType();
     if (receiverTypeLocal != null) {
       sb.append(receiverTypeLocal);
-    } else {
-      sb.append(packageName);
+      sb.append(".");
+    } else if (name != null) {
+      sb.append(name.packageName());
+      sb.append(".");
     }
-    sb.append(".");
+
     if (name != null) {
       sb.append(name.name());
     } else {

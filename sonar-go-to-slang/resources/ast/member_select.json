@@ -90,7 +90,7 @@
       {"@type": "ClassDeclaration", "metaData": "3:0:5:1","identifier":"3:5::12","classTree":
         {"@type": "Native", "metaData": "3:0:5:1","nativeKind":"[0](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "3:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "3:5::12","type":"member_select.go.Address","package":"member_select.go","name":"Address","id":20,"__cfgId":3},
+          {"@type": "Identifier", "metaData": "3:5::12","type":"main.Address","package":"main","name":"Address","id":20,"__cfgId":3},
           {"@type": "Native", "metaData": "3:13:5:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "3:13::19","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "3:20:5:1","nativeKind":"Fields(FieldList)","children":[
@@ -108,7 +108,7 @@
       {"@type": "ClassDeclaration", "metaData": "7:0:11:1","identifier":"7:5::11","classTree":
         {"@type": "Native", "metaData": "7:0:11:1","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "7:5::11","type":"member_select.go.Person","package":"member_select.go","name":"Person","id":60,"__cfgId":11},
+          {"@type": "Identifier", "metaData": "7:5::11","type":"main.Person","package":"main","name":"Person","id":60,"__cfgId":11},
           {"@type": "Native", "metaData": "7:12:11:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "7:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "7:19:11:1","nativeKind":"Fields(FieldList)","children":[
@@ -127,9 +127,9 @@
               ],"__cfgId":17},
               {"@type": "Native", "metaData": "10:1::16","nativeKind":"[2](Field)","children":[
                 {"@type": "Native", "metaData": "10:1::8","nativeKind":"Names([]*Ident)","children":[
-                  {"@type": "Identifier", "metaData": "10:1::8","type":"member_select.go.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":18}
+                  {"@type": "Identifier", "metaData": "10:1::8","type":"main.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":18}
                 ]},
-                {"@type": "Identifier", "metaData": "10:9::16","type":"member_select.go.Address","package":"member_select.go","name":"Address","id":20,"__cfgId":19}
+                {"@type": "Identifier", "metaData": "10:9::16","type":"main.Address","package":"main","name":"Address","id":20,"__cfgId":19}
               ],"__cfgId":20},
               {"@type": "Native", "metaData": "11:0::1","nativeKind":"Closing"}
             ],"__cfgId":21}
@@ -139,50 +139,50 @@
         null,"returnType":
         {"@type": "Native", "metaData": "13:30::37","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "13:30::37","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "13:30::37","type":"member_select.go.Address","package":"member_select.go","name":"Address","id":20,"__cfgId":32}
+            {"@type": "Identifier", "metaData": "13:30::37","type":"main.Address","package":"main","name":"Address","id":20,"__cfgId":32}
           ],"__cfgId":33}
         ],"__cfgId":34},"receiver":
         {"@type": "Native", "metaData": "13:5::16","nativeKind":"Recv(FieldList)","children":[
           {"@type": "Native", "metaData": "13:5::6","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "13:6::15","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "13:6::7","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "13:6::7","type":"*member_select.go.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":25}
+              {"@type": "Identifier", "metaData": "13:6::7","type":"*main.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":25}
             ]},
             {"@type": "StarExpression", "metaData": "13:8::15","expression":
-              {"@type": "Identifier", "metaData": "13:9::15","type":"member_select.go.Person","package":"member_select.go","name":"Person","id":60,"__cfgId":26},"__cfgId":27}
+              {"@type": "Identifier", "metaData": "13:9::15","type":"main.Person","package":"main","name":"Person","id":60,"__cfgId":26},"__cfgId":27}
           ],"__cfgId":28},
           {"@type": "Native", "metaData": "13:15::16","nativeKind":"Closing"}
         ],"__cfgId":29},"name":
-        {"@type": "Identifier", "metaData": "13:17::27","type":"func() member_select.go.Address","package":"member_select.go","name":"getAddress","id":136,"__cfgId":30},"formalParameters":[],"cfg":{"Blocks":[{"Node":[38],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "13:17::27","type":"func() main.Address","package":"main","name":"getAddress","id":136,"__cfgId":30},"formalParameters":[],"cfg":{"Blocks":[{"Node":[38],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "13:38:15:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "14:1::17","keyword":"14:1::7","body":
             {"@type": "MemberSelect", "metaData": "14:8::17","identifier":
-              {"@type": "Identifier", "metaData": "14:10::17","type":"member_select.go.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":36},"expression":
-              {"@type": "Identifier", "metaData": "14:8::9","type":"*member_select.go.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":35},"__cfgId":37},"__cfgId":38}
+              {"@type": "Identifier", "metaData": "14:10::17","type":"main.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":36},"expression":
+              {"@type": "Identifier", "metaData": "14:8::9","type":"*main.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":35},"__cfgId":37},"__cfgId":38}
         ],"__cfgId":39},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "17:0:22:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "17:5::8","type":"func(value *member_select.go.Person)","package":"member_select.go","name":"foo","id":185,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "17:5::8","type":"func(value *main.Person)","package":"main","name":"foo","id":185,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "17:9::22","type":
           {"@type": "StarExpression", "metaData": "17:15::22","expression":
-            {"@type": "Identifier", "metaData": "17:16::22","type":"member_select.go.Person","package":"member_select.go","name":"Person","id":60,"__cfgId":4},"__cfgId":5},"identifier":
-          {"@type": "Identifier", "metaData": "17:9::14","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":3},"__cfgId":6}
+            {"@type": "Identifier", "metaData": "17:16::22","type":"main.Person","package":"main","name":"Person","id":60,"__cfgId":4},"__cfgId":5},"identifier":
+          {"@type": "Identifier", "metaData": "17:9::14","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":3},"__cfgId":6}
       ],"cfg":{"Blocks":[{"Node":[12,18,24,31,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "17:24:22:1","statementOrExpressions":[
           {"@type": "AssignmentExpression", "metaData": "18:1::17","statementOrExpression":
             {"@type": "StringLiteral", "metaData": "18:14::17","value":"\"a\"","content":"a"},"operator":"EQUAL","leftHandSide":
             {"@type": "MemberSelect", "metaData": "18:1::11","identifier":
               {"@type": "Identifier", "metaData": "18:7::11","type":"string","package":"UNKNOWN","name":"name","id":77,"__cfgId":10},"expression":
-              {"@type": "Identifier", "metaData": "18:1::6","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":9},"__cfgId":11},"__cfgId":12},
+              {"@type": "Identifier", "metaData": "18:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":9},"__cfgId":11},"__cfgId":12},
           {"@type": "Native", "metaData": "18:17::18","nativeKind":"Semicolon"},
           {"@type": "ExpressionStatement", "metaData": "19:1::17","expression":
             {"@type": "FunctionInvocation", "metaData": "19:1::17","memberSelect":
               {"@type": "Identifier", "metaData": "19:1::6","type":"UNKNOWN","package":"UNKNOWN","name":"panic","id":0,"__cfgId":13},"arguments":[
               {"@type": "MemberSelect", "metaData": "19:7::16","identifier":
                 {"@type": "Identifier", "metaData": "19:13::16","type":"int","package":"UNKNOWN","name":"age","id":90,"__cfgId":15},"expression":
-                {"@type": "Identifier", "metaData": "19:7::12","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":14},"__cfgId":16}
+                {"@type": "Identifier", "metaData": "19:7::12","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":14},"__cfgId":16}
             ],"__cfgId":17},"__cfgId":18},
           {"@type": "Native", "metaData": "19:17::18","nativeKind":"Semicolon"},
           {"@type": "AssignmentExpression", "metaData": "20:1::27","statementOrExpression":
@@ -190,8 +190,8 @@
             {"@type": "MemberSelect", "metaData": "20:1::21","identifier":
               {"@type": "Identifier", "metaData": "20:15::21","type":"string","package":"UNKNOWN","name":"street","id":38,"__cfgId":22},"expression":
               {"@type": "MemberSelect", "metaData": "20:1::14","identifier":
-                {"@type": "Identifier", "metaData": "20:7::14","type":"member_select.go.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":20},"expression":
-                {"@type": "Identifier", "metaData": "20:1::6","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":19},"__cfgId":21},"__cfgId":23},"__cfgId":24},
+                {"@type": "Identifier", "metaData": "20:7::14","type":"main.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":20},"expression":
+                {"@type": "Identifier", "metaData": "20:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":19},"__cfgId":21},"__cfgId":23},"__cfgId":24},
           {"@type": "Native", "metaData": "20:27::28","nativeKind":"Semicolon"},
           {"@type": "AssignmentExpression", "metaData": "21:1::32","statementOrExpression":
             {"@type": "StringLiteral", "metaData": "21:29::32","value":"\"b\"","content":"b"},"operator":"EQUAL","leftHandSide":
@@ -199,8 +199,8 @@
               {"@type": "Identifier", "metaData": "21:20::26","type":"string","package":"UNKNOWN","name":"street","id":38,"__cfgId":29},"expression":
               {"@type": "FunctionInvocation", "metaData": "21:1::19","memberSelect":
                 {"@type": "MemberSelect", "metaData": "21:1::17","identifier":
-                  {"@type": "Identifier", "metaData": "21:7::17","type":"func() member_select.go.Address","package":"member_select.go","name":"getAddress","id":136,"__cfgId":26},"expression":
-                  {"@type": "Identifier", "metaData": "21:1::6","type":"*member_select.go.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":25},"__cfgId":27},"arguments":[],"__cfgId":28},"__cfgId":30},"__cfgId":31},
+                  {"@type": "Identifier", "metaData": "21:7::17","type":"func() main.Address","package":"main","name":"getAddress","id":136,"__cfgId":26},"expression":
+                  {"@type": "Identifier", "metaData": "21:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":25},"__cfgId":27},"arguments":[],"__cfgId":28},"__cfgId":30},"__cfgId":31},
           {"@type": "Native", "metaData": "21:32::33","nativeKind":"Semicolon"}
         ],"__cfgId":32},"__cfgId":1}
     ],"__cfgId":2}

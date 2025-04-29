@@ -116,6 +116,10 @@ public class TreeCreationUtils {
     return new IdentifierTreeImpl(null, name, type, UNKNOWN_PACKAGE, 0);
   }
 
+  public static IdentifierTree identifier(String name, String type, String packageName) {
+    return new IdentifierTreeImpl(null, name, type, packageName, 0);
+  }
+
   public static IdentifierTree identifier(String name, TextRange textRange, String... tokens) {
     return new IdentifierTreeImpl(metaData(textRange, tokens), name, UNKNOWN_TYPE, UNKNOWN_PACKAGE, 0);
   }

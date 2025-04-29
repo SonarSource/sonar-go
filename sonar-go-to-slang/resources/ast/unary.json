@@ -94,7 +94,7 @@
       {"@type": "ClassDeclaration", "metaData": "3:0:6:1","identifier":"3:5::11","classTree":
         {"@type": "Native", "metaData": "3:0:6:1","nativeKind":"[0](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "3:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "3:5::11","type":"unary.go.Person","package":"unary.go","name":"Person","id":20,"__cfgId":3},
+          {"@type": "Identifier", "metaData": "3:5::11","type":"main.Person","package":"main","name":"Person","id":20,"__cfgId":3},
           {"@type": "Native", "metaData": "3:12:6:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "3:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "3:19:6:1","nativeKind":"Fields(FieldList)","children":[
@@ -119,11 +119,11 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "12:5::8","type":"func(value *unary.go.Person)","package":"unary.go","name":"foo","id":164,"__cfgId":14},"formalParameters":[
+        {"@type": "Identifier", "metaData": "12:5::8","type":"func(value *main.Person)","package":"main","name":"foo","id":164,"__cfgId":14},"formalParameters":[
         {"@type": "Parameter", "metaData": "12:9::22","type":
           {"@type": "StarExpression", "metaData": "12:15::22","expression":
-            {"@type": "Identifier", "metaData": "12:16::22","type":"unary.go.Person","package":"unary.go","name":"Person","id":20,"__cfgId":16},"__cfgId":17},"identifier":
-          {"@type": "Identifier", "metaData": "12:9::14","type":"*unary.go.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":15},"__cfgId":18}
+            {"@type": "Identifier", "metaData": "12:16::22","type":"main.Person","package":"main","name":"Person","id":20,"__cfgId":16},"__cfgId":17},"identifier":
+          {"@type": "Identifier", "metaData": "12:9::14","type":"*main.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":15},"__cfgId":18}
       ],"cfg":{"Blocks":[{"Node":[23,26,29,35,42,46,48,50,54,58,62,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "12:24:29:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "13:1::11","type":
@@ -193,16 +193,16 @@
           {"@type": "VariableDeclaration", "metaData": "27:1::15","type":
             null,"isVal":false,"initializers":[
             {"@type": "StarExpression", "metaData": "27:9::15","expression":
-              {"@type": "Identifier", "metaData": "27:10::15","type":"*unary.go.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":56},"__cfgId":57}
+              {"@type": "Identifier", "metaData": "27:10::15","type":"*main.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":56},"__cfgId":57}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "27:5::6","type":"unary.go.Person","package":"UNKNOWN","name":"p","id":381,"__cfgId":55}
+            {"@type": "Identifier", "metaData": "27:5::6","type":"main.Person","package":"UNKNOWN","name":"p","id":381,"__cfgId":55}
           ],"__cfgId":58},
           {"@type": "VariableDeclaration", "metaData": "28:1::15","type":
             null,"isVal":false,"initializers":[
             {"@type": "UnaryExpression", "metaData": "28:9::15","operator":"ADDRESS_OF","operand":
-              {"@type": "Identifier", "metaData": "28:10::15","type":"*unary.go.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":60},"__cfgId":61}
+              {"@type": "Identifier", "metaData": "28:10::15","type":"*main.Person","package":"UNKNOWN","name":"value","id":168,"__cfgId":60},"__cfgId":61}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "28:5::6","type":"**unary.go.Person","package":"UNKNOWN","name":"a","id":397,"__cfgId":59}
+            {"@type": "Identifier", "metaData": "28:5::6","type":"**main.Person","package":"UNKNOWN","name":"a","id":397,"__cfgId":59}
           ],"__cfgId":62}
         ],"__cfgId":63},"__cfgId":1}
     ],"__cfgId":2}
