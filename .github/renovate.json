@@ -32,6 +32,8 @@
         "goVersion\\s*=\\s*(?<currentValue>[^\\s#]+)"
       ],
       "depNameTemplate": "go",
+      "packageNameTemplate": "go",
+      "depTypeTemplate": "golang",
       "datasourceTemplate": "golang-version",
       "versioningTemplate": "go-mod-directive"
     }
@@ -87,6 +89,9 @@
       "matchFileNames": [
         "sonar-go-to-slang/**/go.mod"
       ],
+      "matchPackageNames": [
+        "!go"
+      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -114,6 +119,9 @@
       "matchFileNames": [
         "private/go-package-data-exporter/**/go.mod"
       ],
+      "matchPackageNames": [
+        "!go"
+      ],
       "matchUpdateTypes": [
         "minor",
         "patch",
@@ -122,6 +130,15 @@
       "groupName": "additional Go dependencies",
       "groupSlug": "additional-go-dependencies",
       "prHeader": "**Don't forget to run the package data generator to align the generated files with the new dependencies.**"
+    },
+    {
+      "matchManagers": [
+        "gomod"
+      ],
+      "matchFileNames": [
+        "private/its/**"
+      ],
+      "enabled": false
     },
     {
       "matchManagers": [
