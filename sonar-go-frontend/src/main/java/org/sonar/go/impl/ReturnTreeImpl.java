@@ -16,29 +16,25 @@
  */
 package org.sonar.go.impl;
 
-import java.util.Collections;
 import java.util.List;
-import javax.annotation.CheckForNull;
-import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.ReturnTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
 public class ReturnTreeImpl extends BaseTreeImpl implements ReturnTree {
-  private final Tree body;
+  private final List<Tree> expressions;
   private final Token keyword;
 
-  public ReturnTreeImpl(TreeMetaData metaData, Token keyword, @Nullable Tree body) {
+  public ReturnTreeImpl(TreeMetaData metaData, Token keyword, List<Tree> expressions) {
     super(metaData);
-    this.body = body;
+    this.expressions = expressions;
     this.keyword = keyword;
   }
 
-  @CheckForNull
   @Override
-  public Tree body() {
-    return body;
+  public List<Tree> expressions() {
+    return expressions;
   }
 
   @Override
@@ -48,6 +44,6 @@ public class ReturnTreeImpl extends BaseTreeImpl implements ReturnTree {
 
   @Override
   public List<Tree> children() {
-    return body == null ? Collections.emptyList() : Collections.singletonList(body);
+    return expressions;
   }
 }

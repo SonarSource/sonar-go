@@ -141,8 +141,9 @@
           {"@type": "PlaceHolder", "metaData": "13:14::15","placeHolderToken":"13:14::15","__cfgId":5},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[14],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "13:26:15:2","statementOrExpressions":[
-          {"@type": "Return", "metaData": "14:4::16","keyword":"14:4::10","body":
-            {"@type": "Literal", "metaData": "14:11::16","value":"false","__cfgId":13},"__cfgId":14}
+          {"@type": "Return", "metaData": "14:4::16","keyword":"14:4::10","expressions":[
+            {"@type": "Literal", "metaData": "14:11::16","value":"false","__cfgId":13}
+          ],"__cfgId":14}
         ],"__cfgId":15},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "17:1:19:2","typeParameters":
         null,"returnType":
@@ -160,12 +161,10 @@
         null,"name":
         {"@type": "Identifier", "metaData": "17:6::9","type":"func() (int, string)","package":"ast","name":"foo","id":281,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "17:26:19:2","statementOrExpressions":[
-          {"@type": "Return", "metaData": "18:5::20","keyword":"18:5::11","body":
-            {"@type": "Native", "metaData": "18:12::20","nativeKind":"ReturnExprList","children":[
-              {"@type": "IntegerLiteral", "metaData": "18:12::14","value":"42"},
-              {"@type": "Native", "metaData": "18:14::15"},
-              {"@type": "StringLiteral", "metaData": "18:16::20","value":"\"42\"","content":"42"}
-            ]},"__cfgId":9}
+          {"@type": "Return", "metaData": "18:5::20","keyword":"18:5::11","expressions":[
+            {"@type": "IntegerLiteral", "metaData": "18:12::14","value":"42"},
+            {"@type": "StringLiteral", "metaData": "18:16::20","value":"\"42\"","content":"42"}
+          ],"__cfgId":9}
         ],"__cfgId":10},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "21:1:23:2","typeParameters":
         null,"returnType":

@@ -29,6 +29,7 @@ const operatorField = "operator"
 const operandField = "operand"
 const conditionField = "condition"
 const expressionField = "expression"
+const expressionsField = "expressions"
 const lParentKind = "Lparen"
 const rParentKind = "Rparen"
 const lBraceKind = "Lbrace"
@@ -42,22 +43,13 @@ func (t *SlangMapper) mapReturnStmtImpl(stmt *ast.ReturnStmt, fieldName string) 
 	slangField[keywordField] = returnToken.Token.TextRange
 	children = t.appendNode(children, returnToken)
 
-	if len(stmt.Results) == 0 {
-		slangField["body"] = nil
-	} else if len(stmt.Results) == 1 {
-		body := t.mapExpr(stmt.Results[0], "["+strconv.Itoa(0)+"]")
-		slangField["body"] = body
-		children = t.appendNode(children, body)
-	} else {
-		//Slang does not support return with multiple expressions, we wrap it in a native node
-		var returnBodyList []*Node
-		for i := 0; i < len(stmt.Results); i++ {
-			returnBodyList = t.appendNode(returnBodyList, t.mapExpr(stmt.Results[i], "["+strconv.Itoa(i)+"]"))
-		}
-		returnExpressions := t.createNativeNodeWithChildren(returnBodyList, "ReturnExprList")
-		slangField["body"] = returnExpressions
-		children = t.appendNode(children, returnExpressions)
+	var returnBodyList []*Node
+	for i := 0; i < len(stmt.Results); i++ {
+		expr := t.mapExpr(stmt.Results[i], "["+strconv.Itoa(i)+"]")
+		returnBodyList = append(returnBodyList, expr)
+		children = t.appendNode(children, expr)
 	}
+	slangField[expressionsField] = returnBodyList
 
 	return t.createNode(stmt, children, fieldName+"(ReturnStmt)", "Return", slangField)
 }

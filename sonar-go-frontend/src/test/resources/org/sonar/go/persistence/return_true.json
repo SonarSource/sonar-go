@@ -10,7 +10,9 @@
   "tree": {
     "@type": "Return",
     "metaData": "1:0::12",
-    "body": {"@type": "Literal", "metaData": "1:7::11", "value": "true"},
+    "expressions": [
+      {"@type": "Literal", "metaData": "1:7::11", "value": "true"}
+    ],
     "keyword": "1:0::6"
   }
 }

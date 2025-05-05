@@ -16,11 +16,17 @@
  */
 package org.sonar.plugins.go.api;
 
-import javax.annotation.CheckForNull;
+import java.util.List;
 
 public interface ReturnTree extends Tree, HasKeyword {
-  @CheckForNull
-  Tree body();
+  /**
+   * Provide the list of expressions returned by the statement.
+   * In case of empty or named return, the list is empty (not null). E.g. {@code return} will return {@code []}.
+   * In case of a single expression, the list contains one element. E.g. {@code return 42} will return {@code [42]}.
+   * In case of multiple expression, the list contains the elements without the comma. E.g. {@code return 42, "bob"} will return {@code [42, "bob"]}.
+   * @return The list of expressions without separators.
+   */
+  List<Tree> expressions();
 
   Token keyword();
 }

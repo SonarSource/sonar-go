@@ -100,6 +100,7 @@ public final class JsonTreeConverter {
   public static final String ELSE_BRANCH = "elseBranch";
   public static final String ELSE_KEYWORD = "elseKeyword";
   public static final String EXPRESSION = "expression";
+  public static final String EXPRESSIONS = "expressions";
   public static final String FINALLY_BLOCK = "finallyBlock";
   public static final String FIRST_CPD_TOKEN = "firstCpdToken";
   public static final String FORMAL_PARAMETERS = "formalParameters";
@@ -542,13 +543,13 @@ public final class JsonTreeConverter {
     register(ReturnTreeImpl.class,
 
       (ctx, tree) -> ctx.newTypedObject(tree)
-        .add(BODY, ctx.toJson(tree.body()))
+        .add(EXPRESSIONS, ctx.toJsonArray(tree.expressions()))
         .add(KEYWORD, ctx.toJson(tree.keyword())),
 
       (ctx, json) -> new ReturnTreeImpl(
         ctx.metaData(json),
         ctx.fieldToToken(json, KEYWORD),
-        ctx.fieldToNullableObject(json, BODY, Tree.class)));
+        ctx.fieldToObjectList(json, EXPRESSIONS, Tree.class)));
 
     register(StarExpressionTreeImpl.class,
 

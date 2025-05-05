@@ -832,7 +832,7 @@ class GoConverterTest {
   }
 
   private void checkIntegerValue(ReturnTree returnTree, String s) {
-    IntegerLiteralTree integerLiteralTree = (IntegerLiteralTree) returnTree.body();
+    IntegerLiteralTree integerLiteralTree = (IntegerLiteralTree) returnTree.expressions().get(0);
     assertThat(integerLiteralTree.getNumericPart()).isEqualTo(s);
   }
 }

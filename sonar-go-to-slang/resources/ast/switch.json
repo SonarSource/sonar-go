@@ -549,9 +549,10 @@
         null,"name":
         {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","package":"main","name":"f","id":1338,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
-          {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","body":
+          {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","expressions":[
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":
-              {"@type": "IntegerLiteral", "metaData": "53:9::11","value":"42"},"__cfgId":7},"__cfgId":8}
+              {"@type": "IntegerLiteral", "metaData": "53:9::11","value":"42"},"__cfgId":7}
+          ],"__cfgId":8}
         ],"__cfgId":9},"__cfgId":1}
     ],"__cfgId":2}
 } 

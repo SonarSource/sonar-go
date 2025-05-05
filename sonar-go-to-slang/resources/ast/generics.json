@@ -661,8 +661,9 @@
                 {"@type": "Identifier", "metaData": "58:13::14","type":"int64","package":"UNKNOWN","name":"v","id":1171,"__cfgId":20},"operator":"PLUS_EQUAL","leftHandSide":
                 {"@type": "Identifier", "metaData": "58:8::9","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":19},"__cfgId":21}
             ],"__cfgId":22},"__cfgId":23},
-          {"@type": "Return", "metaData": "60:4::12","keyword":"60:4::10","body":
-            {"@type": "Identifier", "metaData": "60:11::12","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":24},"__cfgId":25}
+          {"@type": "Return", "metaData": "60:4::12","keyword":"60:4::10","expressions":[
+            {"@type": "Identifier", "metaData": "60:11::12","type":"int64","package":"UNKNOWN","name":"s","id":1152,"__cfgId":24}
+          ],"__cfgId":25}
         ],"__cfgId":26},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "64:0:70:1","typeParameters":
         null,"returnType":
@@ -702,8 +703,9 @@
                 {"@type": "Identifier", "metaData": "67:13::14","type":"float64","package":"UNKNOWN","name":"v","id":1343,"__cfgId":20},"operator":"PLUS_EQUAL","leftHandSide":
                 {"@type": "Identifier", "metaData": "67:8::9","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":19},"__cfgId":21}
             ],"__cfgId":22},"__cfgId":23},
-          {"@type": "Return", "metaData": "69:4::12","keyword":"69:4::10","body":
-            {"@type": "Identifier", "metaData": "69:11::12","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":24},"__cfgId":25}
+          {"@type": "Return", "metaData": "69:4::12","keyword":"69:4::10","expressions":[
+            {"@type": "Identifier", "metaData": "69:11::12","type":"float64","package":"UNKNOWN","name":"s","id":1322,"__cfgId":24}
+          ],"__cfgId":25}
         ],"__cfgId":26},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "74:0:80:1","typeParameters":
         {"@type": "Native", "metaData": "74:20::53","nativeKind":"TypeParams(FieldList)","children":[
@@ -761,8 +763,9 @@
                 {"@type": "Identifier", "metaData": "77:13::14","type":"V","package":"UNKNOWN","name":"v","id":1587,"__cfgId":29},"operator":"PLUS_EQUAL","leftHandSide":
                 {"@type": "Identifier", "metaData": "77:8::9","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":28},"__cfgId":30}
             ],"__cfgId":31},"__cfgId":32},
-          {"@type": "Return", "metaData": "79:4::12","keyword":"79:4::10","body":
-            {"@type": "Identifier", "metaData": "79:11::12","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":33},"__cfgId":34}
+          {"@type": "Return", "metaData": "79:4::12","keyword":"79:4::10","expressions":[
+            {"@type": "Identifier", "metaData": "79:11::12","type":"V","package":"UNKNOWN","name":"s","id":1572,"__cfgId":33}
+          ],"__cfgId":34}
         ],"__cfgId":35},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "84:0:90:1","typeParameters":
         {"@type": "Native", "metaData": "84:15::39","nativeKind":"TypeParams(FieldList)","children":[
@@ -818,8 +821,9 @@
                 {"@type": "Identifier", "metaData": "87:13::14","type":"V","package":"UNKNOWN","name":"v","id":1813,"__cfgId":27},"operator":"PLUS_EQUAL","leftHandSide":
                 {"@type": "Identifier", "metaData": "87:8::9","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":26},"__cfgId":28}
             ],"__cfgId":29},"__cfgId":30},
-          {"@type": "Return", "metaData": "89:4::12","keyword":"89:4::10","body":
-            {"@type": "Identifier", "metaData": "89:11::12","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":31},"__cfgId":32}
+          {"@type": "Return", "metaData": "89:4::12","keyword":"89:4::10","expressions":[
+            {"@type": "Identifier", "metaData": "89:11::12","type":"V","package":"UNKNOWN","name":"s","id":1798,"__cfgId":31}
+          ],"__cfgId":32}
         ],"__cfgId":33},"__cfgId":1}
     ],"__cfgId":2}
 } 

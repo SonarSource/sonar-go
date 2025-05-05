@@ -16,8 +16,13 @@
  */
 package org.sonar.go.impl;
 
+import java.util.Collections;
+import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.go.testing.TestGoConverter;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.ReturnTree;
+import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TreeMetaData;
 
@@ -29,19 +34,78 @@ class ReturnTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     TokenImpl returnKeyword = new TokenImpl(new TextRangeImpl(1, 0, 1, 6), "return", Token.Type.KEYWORD);
-    ReturnTreeImpl returnWithoutValue = new ReturnTreeImpl(meta, returnKeyword, null);
+    ReturnTreeImpl returnWithoutValue = new ReturnTreeImpl(meta, returnKeyword, Collections.emptyList());
 
     assertThat(returnWithoutValue.children()).isEmpty();
     assertThat(returnWithoutValue.keyword().text()).isEqualTo("return");
-    assertThat(returnWithoutValue.body()).isNull();
+    assertThat(returnWithoutValue.expressions()).isEmpty();
 
-    ReturnTreeImpl returnWithValue = new ReturnTreeImpl(meta, returnKeyword, new LiteralTreeImpl(meta, "foo"));
+    ReturnTreeImpl returnWithValue = new ReturnTreeImpl(meta, returnKeyword, List.of(new LiteralTreeImpl(meta, "foo")));
     assertThat(returnWithValue.children()).hasSize(1);
     assertThat(returnWithValue.keyword().text()).isEqualTo("return");
-    assertThat(returnWithValue.body()).isInstanceOf(LiteralTree.class);
+    assertThat(returnWithValue.expressions()).hasSize(1);
+    assertThat(returnWithValue.expressions().get(0)).isInstanceOf(LiteralTreeImpl.class);
 
-    assertThat(areEquivalent(returnWithoutValue, new ReturnTreeImpl(meta, returnKeyword, null))).isTrue();
+    assertThat(areEquivalent(returnWithoutValue, new ReturnTreeImpl(meta, returnKeyword, Collections.emptyList()))).isTrue();
     assertThat(areEquivalent(returnWithoutValue, returnWithValue)).isFalse();
+  }
 
+  @Test
+  void testSimpleEmptyReturn() {
+    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+      package main
+
+      func foo() {
+        return
+      }
+      """);
+    assertThat(returnTree).isNotNull();
+    assertThat(returnTree.expressions()).isEmpty();
+  }
+
+  @Test
+  void testNamedReturn() {
+    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+      package main
+
+      func foo() (name string) {
+        name := "foo"
+        return
+      }
+      """);
+    assertThat(returnTree).isNotNull();
+    assertThat(returnTree.expressions()).isEmpty();
+  }
+
+  @Test
+  void testSimpleReturnValue() {
+    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+      package main
+
+      func foo() {
+        return "foo"
+      }
+      """);
+    assertThat(returnTree).isNotNull();
+    assertThat(returnTree.expressions()).hasSize(1);
+    assertThat(returnTree.expressions().get(0))
+      .isInstanceOfSatisfying(StringLiteralTree.class, str -> assertThat(str.content()).isEqualTo("foo"));
+  }
+
+  @Test
+  void testMultipleReturnValue() {
+    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+      package main
+
+      func foo() {
+        return "foo", 42
+      }
+      """);
+    assertThat(returnTree).isNotNull();
+    assertThat(returnTree.expressions()).hasSize(2);
+    assertThat(returnTree.expressions().get(0))
+      .isInstanceOfSatisfying(StringLiteralTree.class, str -> assertThat(str.content()).isEqualTo("foo"));
+    assertThat(returnTree.expressions().get(1))
+      .isInstanceOfSatisfying(IntegerLiteralTree.class, number -> assertThat(number.getIntegerValue()).isEqualTo(42));
   }
 }

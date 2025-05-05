@@ -119,6 +119,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELEMENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_BRANCH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.EXPRESSION;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.EXPRESSIONS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FINALLY_BLOCK;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FIRST_CPD_TOKEN;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FORMAL_PARAMETERS;
@@ -754,10 +755,11 @@ class JsonTreeTest extends JsonTestHelper {
     Token trueToken = otherToken(1, 7, "true");
     Token semicolonToken = otherToken(1, 11, ";");
     Tree trueLiteral = new LiteralTreeImpl(metaData(trueToken), trueToken.text());
-    ReturnTree initialReturnTree = new ReturnTreeImpl(metaData(returnToken, semicolonToken), returnToken, trueLiteral);
+    ReturnTree initialReturnTree = new ReturnTreeImpl(metaData(returnToken, semicolonToken), returnToken, List.of(trueLiteral));
     ReturnTree returnTree = checkJsonSerializationDeserialization(initialReturnTree, "return_true.json");
     assertThat(returnTree.keyword().text()).isEqualTo("return");
-    assertThat(returnTree.body()).isInstanceOf(LiteralTree.class);
+    assertThat(returnTree.expressions()).hasSize(1);
+    assertThat(returnTree.expressions().get(0)).isInstanceOf(LiteralTree.class);
     TreeMetaData metaData = returnTree.metaData();
     assertThat(metaData.textRange()).isEqualTo(new TextRangeImpl(1, 0, 1, 12));
     assertThat(metaData.linesOfCode()).containsExactly(1);
@@ -765,7 +767,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(metaData.tokens()).hasSize(3);
 
     assertThat(methodNames(ReturnTree.class))
-      .containsExactlyInAnyOrder(BODY, KEYWORD);
+      .containsExactlyInAnyOrder(KEYWORD, EXPRESSIONS);
   }
 
   @Test

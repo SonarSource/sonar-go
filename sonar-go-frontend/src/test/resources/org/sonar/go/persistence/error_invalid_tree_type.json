@@ -10,7 +10,9 @@
   "tree": {
     "@type": "Return",
     "metaData": "1:0:1:12",
-    "body": {"@type": "UnsupportedType", "metaData": "1:7:1:11"},
+    "expressions": [
+      {"@type": "UnsupportedType", "metaData": "1:7:1:11"}
+    ],
     "keyword": "1:0:1:6"
   }
 }
