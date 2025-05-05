@@ -54,7 +54,7 @@ sonar {
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
         property("sonar.exclusions", "**/build/**/*")
         property(
-            "sonar.sca.excludedManifests",
+            "sonar.sca.exclusions",
             "private/its/**,go/**,private/go-custom-rules-plugin/**"
         )
     }
