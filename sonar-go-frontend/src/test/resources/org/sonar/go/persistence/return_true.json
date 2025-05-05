@@ -13,6 +13,7 @@
     "expressions": [
       {"@type": "Literal", "metaData": "1:7::11", "value": "true"}
     ],
+    "body": {"@type": "Literal", "metaData": "1:7::11", "value": "true"},
     "keyword": "1:0::6"
   }
 }

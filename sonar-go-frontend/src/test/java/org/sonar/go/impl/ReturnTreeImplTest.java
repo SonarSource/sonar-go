@@ -34,19 +34,21 @@ class ReturnTreeImplTest {
   void test() {
     TreeMetaData meta = null;
     TokenImpl returnKeyword = new TokenImpl(new TextRangeImpl(1, 0, 1, 6), "return", Token.Type.KEYWORD);
-    ReturnTreeImpl returnWithoutValue = new ReturnTreeImpl(meta, returnKeyword, Collections.emptyList());
+    ReturnTreeImpl returnWithoutValue = new ReturnTreeImpl(meta, returnKeyword, null, Collections.emptyList());
 
     assertThat(returnWithoutValue.children()).isEmpty();
     assertThat(returnWithoutValue.keyword().text()).isEqualTo("return");
+    assertThat(returnWithoutValue.body()).isNull();
     assertThat(returnWithoutValue.expressions()).isEmpty();
 
-    ReturnTreeImpl returnWithValue = new ReturnTreeImpl(meta, returnKeyword, List.of(new LiteralTreeImpl(meta, "foo")));
+    var literal = new LiteralTreeImpl(meta, "foo");
+    ReturnTreeImpl returnWithValue = new ReturnTreeImpl(meta, returnKeyword, literal, List.of(literal));
     assertThat(returnWithValue.children()).hasSize(1);
     assertThat(returnWithValue.keyword().text()).isEqualTo("return");
-    assertThat(returnWithValue.expressions()).hasSize(1);
-    assertThat(returnWithValue.expressions().get(0)).isInstanceOf(LiteralTreeImpl.class);
+    assertThat(returnWithValue.body()).isSameAs(literal);
+    assertThat(returnWithValue.expressions()).containsExactly(literal);
 
-    assertThat(areEquivalent(returnWithoutValue, new ReturnTreeImpl(meta, returnKeyword, Collections.emptyList()))).isTrue();
+    assertThat(areEquivalent(returnWithoutValue, new ReturnTreeImpl(meta, returnKeyword, null, Collections.emptyList()))).isTrue();
     assertThat(areEquivalent(returnWithoutValue, returnWithValue)).isFalse();
   }
 

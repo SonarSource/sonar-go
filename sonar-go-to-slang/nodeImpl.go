@@ -51,6 +51,17 @@ func (t *SlangMapper) mapReturnStmtImpl(stmt *ast.ReturnStmt, fieldName string) 
 	}
 	slangField[expressionsField] = returnBodyList
 
+	if len(stmt.Results) == 0 {
+		slangField["body"] = nil
+	} else if len(stmt.Results) == 1 {
+		slangField["body"] = returnBodyList[0]
+	} else {
+		//Slang does not support return with multiple expressions, we wrap it in a native node
+		returnExpressions := t.createNativeNodeWithChildren(returnBodyList, "ReturnExprList")
+		slangField["body"] = returnExpressions
+		//slangField["body"] = returnBodyList
+	}
+
 	return t.createNode(stmt, children, fieldName+"(ReturnStmt)", "Return", slangField)
 }
 

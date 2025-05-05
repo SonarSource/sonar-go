@@ -552,7 +552,9 @@
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","expressions":[
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":
               {"@type": "IntegerLiteral", "metaData": "53:9::11","value":"42"},"__cfgId":7}
-          ],"__cfgId":8}
+          ],"body":
+            {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":
+              {"@type": "IntegerLiteral", "metaData": "53:9::11","value":"42"},"__cfgId":7},"__cfgId":8}
         ],"__cfgId":9},"__cfgId":1}
     ],"__cfgId":2}
 } 

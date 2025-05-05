@@ -159,7 +159,10 @@
             {"@type": "MemberSelect", "metaData": "14:8::17","identifier":
               {"@type": "Identifier", "metaData": "14:10::17","type":"main.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":36},"expression":
               {"@type": "Identifier", "metaData": "14:8::9","type":"*main.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":35},"__cfgId":37}
-          ],"__cfgId":38}
+          ],"body":
+            {"@type": "MemberSelect", "metaData": "14:8::17","identifier":
+              {"@type": "Identifier", "metaData": "14:10::17","type":"main.Address","package":"UNKNOWN","name":"address","id":100,"__cfgId":36},"expression":
+              {"@type": "Identifier", "metaData": "14:8::9","type":"*main.Person","package":"UNKNOWN","name":"p","id":125,"__cfgId":35},"__cfgId":37},"__cfgId":38}
         ],"__cfgId":39},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "17:0:22:1","typeParameters":
         null,"returnType":
