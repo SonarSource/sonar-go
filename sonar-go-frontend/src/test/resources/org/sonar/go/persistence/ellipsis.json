@@ -1,0 +1,15 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:0::3", "text": "..."},
+      {"textRange": "1:4::10", "text": "string"}
+    ]
+  },
+  "tree": {
+    "@type": "Ellipsis",
+    "metaData": "1:0::10",
+    "ellipsis": "1:0::3",
+    "element": {"@type": "Identifier", "metaData": "1:4::10", "name": "string", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
+  }
+}

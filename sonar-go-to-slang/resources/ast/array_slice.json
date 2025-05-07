@@ -185,21 +185,38 @@
       {"text":"(","textRange":"22:20::21"},
       {"text":"u","textRange":"22:21::22"},
       {"text":")","textRange":"22:22::23"},
-      {"text":"}","textRange":"23:0::1"}
+      {"text":"numbers","textRange":"24:4::11"},
+      {"text":":=","textRange":"24:12::14"},
+      {"text":"[","textRange":"24:15::16"},
+      {"text":"...","textRange":"24:16::19"},
+      {"text":"int","textRange":"24:20::23"},
+      {"text":"]","textRange":"24:19::20"},
+      {"text":"{","textRange":"24:23::24"},
+      {"text":"1","textRange":"24:24::25"},
+      {"text":"2","textRange":"24:27::28"},
+      {"text":",","textRange":"24:25::26"},
+      {"text":"3","textRange":"24:30::31"},
+      {"text":",","textRange":"24:28::29"},
+      {"text":"4","textRange":"24:33::34"},
+      {"text":",","textRange":"24:31::32"},
+      {"text":"5","textRange":"24:36::37"},
+      {"text":",","textRange":"24:34::35"},
+      {"text":"}","textRange":"24:37::38"},
+      {"text":"}","textRange":"25:0::1"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:24:0","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:26:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::11","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::11","type":"UNKNOWN","package":"UNKNOWN","name":"ast","id":0,"__cfgId":1}
       ],"__cfgId":2},
-      {"@type": "FunctionDeclaration", "metaData": "3:0:23:1","typeParameters":
+      {"@type": "FunctionDeclaration", "metaData": "3:0:25:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"ast","name":"allLiterals","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,16,23,29,35,43,52,60,68,72,78,86,94,100,108,0],"Successors":null}]},"body":
-        {"@type": "Block", "metaData": "3:19:23:1","statementOrExpressions":[
+        {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"ast","name":"allLiterals","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,16,23,29,35,43,52,60,68,72,78,86,94,100,108,114,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "3:19:25:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::24","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "4:6::24","memberSelect":
               {"@type": "Identifier", "metaData": "4:6::10","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":6},"arguments":[
@@ -371,7 +388,22 @@
             ],"__cfgId":107}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "22:4::6","type":"*[0]byte","package":"UNKNOWN","name":"u0","id":644,"__cfgId":101}
-          ],"__cfgId":108}
-        ],"__cfgId":109},"__cfgId":1}
+          ],"__cfgId":108},
+          {"@type": "VariableDeclaration", "metaData": "24:4::38","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "24:15::38","type":
+              {"@type": "ArrayType", "metaData": "24:15::23","length":
+                {"@type": "Ellipsis", "metaData": "24:16::19","ellipsis":"24:16::19","element":
+                  null,"__cfgId":110},"element":
+                {"@type": "Identifier", "metaData": "24:20::23","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":111},"__cfgId":112},"elements":[
+              {"@type": "IntegerLiteral", "metaData": "24:24::25","value":"1"},
+              {"@type": "IntegerLiteral", "metaData": "24:27::28","value":"2"},
+              {"@type": "IntegerLiteral", "metaData": "24:30::31","value":"3"},
+              {"@type": "IntegerLiteral", "metaData": "24:33::34","value":"4"},
+              {"@type": "IntegerLiteral", "metaData": "24:36::37","value":"5"}
+            ],"__cfgId":113}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "24:4::11","type":"[5]int","package":"UNKNOWN","name":"numbers","id":687,"__cfgId":109}
+          ],"__cfgId":114}
+        ],"__cfgId":115},"__cfgId":1}
     ],"__cfgId":2}
 } 

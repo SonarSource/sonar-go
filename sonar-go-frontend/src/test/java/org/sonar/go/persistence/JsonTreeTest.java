@@ -30,6 +30,7 @@ import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CompositeLiteralTreeImpl;
+import org.sonar.go.impl.EllipsisTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
@@ -70,6 +71,7 @@ import org.sonar.plugins.go.api.CatchTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
 import org.sonar.plugins.go.api.Comment;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
+import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.ExceptionHandlingTree;
 import org.sonar.plugins.go.api.FloatLiteralTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
@@ -116,6 +118,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONDITION;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.CONTENT;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.DECLARATIONS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELEMENT;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELLIPSIS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_BRANCH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.ELSE_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.EXPRESSION;
@@ -931,5 +934,23 @@ class JsonTreeTest extends JsonTestHelper {
       identifier -> assertThat(identifier.name()).isEqualTo("bar"));
     assertThat(invocation.arguments()).hasSize(1);
     assertThat(((StringLiteralTree) invocation.arguments().get(0)).value()).isEqualTo("\"arg\"");
+  }
+
+  @Test
+  void testEllipsis() throws IOException {
+    Token ellipsis = otherToken(1, 0, "...");
+    Token typeToken = otherToken(1, 4, "string");
+    Tree element = TreeCreationUtils.identifier(metaData(typeToken), typeToken.text());
+    TreeMetaData metaData = metaData(ellipsis, typeToken);
+
+    EllipsisTreeImpl ellipsisTree = new EllipsisTreeImpl(metaData, ellipsis, element);
+
+    var tree = checkJsonSerializationDeserialization(ellipsisTree, "ellipsis.json");
+
+    assertThat(tokens(tree)).isEqualTo("1:0:1:10 - ... string");
+    assertThat(tree.ellipsis().text()).isEqualTo("...");
+    assertThat(tree.element()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("string"));
+
+    assertThat(methodNames(EllipsisTree.class)).containsExactlyInAnyOrder(ELEMENT, ELLIPSIS);
   }
 }

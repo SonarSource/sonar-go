@@ -82,16 +82,14 @@
         null,"name":
         {"@type": "Identifier", "metaData": "3:5::27","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:28::47","type":
-          {"@type": "Native", "metaData": "3:33::47","nativeKind":"Type(Ellipsis)","children":[
-            {"@type": "Native", "metaData": "3:33::36","nativeKind":"Ellipsis"},
+          {"@type": "Ellipsis", "metaData": "3:33::47","ellipsis":"3:33::36","element":
             {"@type": "Native", "metaData": "3:36::47","nativeKind":"Elt(InterfaceType)","children":[
               {"@type": "Native", "metaData": "3:36::45","nativeKind":"Interface"},
               {"@type": "Native", "metaData": "3:45::47","nativeKind":"Methods(FieldList)","children":[
                 {"@type": "Native", "metaData": "3:45::46","nativeKind":"Opening"},
                 {"@type": "Native", "metaData": "3:46::47","nativeKind":"Closing"}
               ],"__cfgId":5}
-            ],"__cfgId":6}
-          ],"__cfgId":7},"identifier":
+            ],"__cfgId":6},"__cfgId":7},"identifier":
           {"@type": "Identifier", "metaData": "3:28::32","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":4},"__cfgId":8}
       ],"cfg":{"Blocks":[{"Node":[13,11,12],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[19],"Successors":[1]},{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:49:7:1","statementOrExpressions":[

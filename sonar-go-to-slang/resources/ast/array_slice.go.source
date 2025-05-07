@@ -20,4 +20,6 @@ func allLiterals() {
 
     u := make([]byte, 0)
     u0 := (*[0]byte)(u)      // u0 != nil
+
+    numbers := [...]int{1, 2, 3, 4, 5}
 }

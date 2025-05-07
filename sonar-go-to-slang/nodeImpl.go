@@ -989,7 +989,18 @@ func (t *SlangMapper) mapCompositeLitImpl(lit *ast.CompositeLit, fieldName strin
 }
 
 func (t *SlangMapper) mapEllipsisImpl(ellipsis *ast.Ellipsis, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	elipsisToken := t.createTokenFromPosAstToken(ellipsis.Ellipsis, token.ELLIPSIS, "Ellipsis")
+	children = t.appendNode(children, elipsisToken)
+	slangField["ellipsis"] = elipsisToken.TextRange
+
+	nestedExpr := t.mapExpr(ellipsis.Elt, "Elt")
+	children = t.appendNode(children, nestedExpr)
+	slangField["element"] = nestedExpr
+
+	return t.createNode(ellipsis, children, fieldName+"(Ellipsis)", "Ellipsis", slangField)
 }
 
 func (t *SlangMapper) mapIndexExprImpl(expr *ast.IndexExpr, fieldName string) *Node {

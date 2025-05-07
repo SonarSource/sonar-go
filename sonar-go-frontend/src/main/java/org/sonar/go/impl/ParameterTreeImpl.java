@@ -19,10 +19,9 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.sonar.go.utils.NativeKinds;
+import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
-import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.Tree;
@@ -72,7 +71,7 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
       return getTypeOfParameter(typePrefix, memberSelectTree.identifier());
     } else if (tree instanceof StarExpressionTree starExpressionTree) {
       return getTypeOfParameter(typePrefix + "*", starExpressionTree.operand());
-    } else if (tree instanceof NativeTree && NativeKinds.isStringNativeKindOfType(tree, "Type", "Ellipsis")) {
+    } else if (tree instanceof EllipsisTree) {
       var id = tree.children().stream()
         .filter(t -> t instanceof IdentifierTree || t instanceof MemberSelectTree || t instanceof StarExpressionTree)
         .findFirst();

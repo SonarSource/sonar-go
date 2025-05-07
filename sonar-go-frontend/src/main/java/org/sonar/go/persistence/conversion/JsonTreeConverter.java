@@ -27,6 +27,7 @@ import org.sonar.go.impl.CatchTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
 import org.sonar.go.impl.CommentImpl;
 import org.sonar.go.impl.CompositeLiteralTreeImpl;
+import org.sonar.go.impl.EllipsisTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.ExpressionStatementTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
@@ -97,6 +98,7 @@ public final class JsonTreeConverter {
   public static final String DECLARATIONS = "declarations";
   public static final String ELEMENT = "element";
   public static final String ELEMENTS = "elements";
+  public static final String ELLIPSIS = "ellipsis";
   public static final String ELSE_BRANCH = "elseBranch";
   public static final String ELSE_KEYWORD = "elseKeyword";
   public static final String EXPRESSION = "expression";
@@ -282,6 +284,17 @@ public final class JsonTreeConverter {
         ctx.metaData(json),
         ctx.fieldToObject(json, KEY, Tree.class),
         ctx.fieldToObject(json, VALUE, Tree.class)));
+
+    register(EllipsisTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(ELLIPSIS, ctx.toJson(tree.ellipsis()))
+        .add(ELEMENT, ctx.toJson(tree.element())),
+
+      (ctx, json) -> new EllipsisTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToToken(json, ELLIPSIS),
+        ctx.fieldToNullableObject(json, ELEMENT, Tree.class)));
 
     register(ExceptionHandlingTreeImpl.class,
 
