@@ -137,12 +137,12 @@ class GoLintReportSensorTest {
     String line = "./vendor/github.com/foo/go-bar/hello_world.go:550:12: redundant or: n == 2 || n == 2";
     org.sonar.go.externalreport.ExternalIssue issue = goLintReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("golint");
-    assertThat(issue.type).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(issue.ruleKey).isEqualTo(GENERIC_ISSUE_KEY);
-    assertThat(issue.filename).isEqualTo("./vendor/github.com/foo/go-bar/hello_world.go");
-    assertThat(issue.lineNumber).isEqualTo(550);
-    assertThat(issue.message).isEqualTo("redundant or: n == 2 || n == 2");
+    assertThat(issue.linter()).isEqualTo("golint");
+    assertThat(issue.type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(issue.ruleKey()).isEqualTo(GENERIC_ISSUE_KEY);
+    assertThat(issue.filename()).isEqualTo("./vendor/github.com/foo/go-bar/hello_world.go");
+    assertThat(issue.lineNumber()).isEqualTo(550);
+    assertThat(issue.message()).isEqualTo("redundant or: n == 2 || n == 2");
   }
 
   @Test

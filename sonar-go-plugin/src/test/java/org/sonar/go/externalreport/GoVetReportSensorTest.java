@@ -128,12 +128,12 @@ class GoVetReportSensorTest {
     String line = "./vendor/github.com/foo/go-bar/hello_world.go:550: redundant or: n == 2 || n == 2";
     org.sonar.go.externalreport.ExternalIssue issue = goVetReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("govet");
-    assertThat(issue.type).isEqualTo(RuleType.BUG);
-    assertThat(issue.ruleKey).isEqualTo("bool");
-    assertThat(issue.filename).isEqualTo("./vendor/github.com/foo/go-bar/hello_world.go");
-    assertThat(issue.lineNumber).isEqualTo(550);
-    assertThat(issue.message).isEqualTo("redundant or: n == 2 || n == 2");
+    assertThat(issue.linter()).isEqualTo("govet");
+    assertThat(issue.type()).isEqualTo(RuleType.BUG);
+    assertThat(issue.ruleKey()).isEqualTo("bool");
+    assertThat(issue.filename()).isEqualTo("./vendor/github.com/foo/go-bar/hello_world.go");
+    assertThat(issue.lineNumber()).isEqualTo(550);
+    assertThat(issue.message()).isEqualTo("redundant or: n == 2 || n == 2");
   }
 
   @Test

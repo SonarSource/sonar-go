@@ -17,8 +17,6 @@
 package org.sonar.go.externalreport;
 
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import com.eclipsesource.json.JsonValue;
 import java.io.File;
 import java.io.IOException;
@@ -30,17 +28,12 @@ import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.SensorContext;
-import org.sonar.api.batch.sensor.issue.NewExternalIssue;
-import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.notifications.AnalysisWarnings;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.rule.RulesDefinition.Context;
-import org.sonar.api.server.rule.RulesDefinition.NewRepository;
-import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.go.plugin.GoLanguage;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -86,22 +79,10 @@ public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor
     }
   }
 
-  /**
-    * Returns a java.io.File for the given path.
-    * If path is not absolute, returns a File with module base directory as parent path.
-    */
-  static File getIOFile(File baseDir, String path) {
-    File file = new File(path);
-    if (!file.isAbsolute()) {
-      file = new File(baseDir, path);
-    }
-    return file;
-  }
-
   @CheckForNull
   InputFile getInputFile(SensorContext context, String filePath) {
-    FilePredicates predicates = context.fileSystem().predicates();
-    InputFile inputFile = context.fileSystem().inputFile(predicates.or(predicates.hasRelativePath(filePath), predicates.hasAbsolutePath(filePath)));
+    var predicates = context.fileSystem().predicates();
+    var inputFile = context.fileSystem().inputFile(predicates.or(predicates.hasRelativePath(filePath), predicates.hasAbsolutePath(filePath)));
     if (inputFile == null) {
       LOG.warn("{}No input file found for {}. No {} issues will be imported on this file.", lazyArg(this::logPrefix), filePath, propertyName());
     }
@@ -109,19 +90,19 @@ public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor
   }
 
   void addLineIssue(SensorContext context, ExternalIssue issue) {
-    InputFile inputFile = getInputFile(context, issue.filename);
+    var inputFile = getInputFile(context, issue.filename());
     if (inputFile != null) {
-      NewExternalIssue newExternalIssue = context.newExternalIssue();
-      NewIssueLocation primaryLocation = newExternalIssue.newLocation()
-        .message(issue.message)
+      var newExternalIssue = context.newExternalIssue();
+      var primaryLocation = newExternalIssue.newLocation()
+        .message(issue.message())
         .on(inputFile)
-        .at(inputFile.selectLine(issue.lineNumber));
+        .at(inputFile.selectLine(issue.lineNumber()));
 
       newExternalIssue
         .at(primaryLocation)
-        .ruleId(issue.ruleKey)
-        .engineId(issue.linter)
-        .type(issue.type)
+        .ruleId(issue.ruleKey())
+        .engineId(issue.linter())
+        .type(issue.type())
         .severity(DEFAULT_SEVERITY)
         .remediationEffortMinutes(DEFAULT_REMEDIATION_COST)
         .save();
@@ -129,14 +110,14 @@ public abstract class AbstractReportSensor extends AbstractPropertyHandlerSensor
   }
 
   public static void createExternalRuleRepository(Context context, String linterId, String linterName) {
-    NewRepository externalRepo = context.createExternalRepository(linterId, GoLanguage.KEY).setName(linterName);
-    String pathToRulesMeta = "org/sonar/l10n/go/rules/" + linterId + "/rules.json";
+    var externalRepo = context.createExternalRepository(linterId, GoLanguage.KEY).setName(linterName);
+    var pathToRulesMeta = AbstractExternalRulesDefinition.RULES_JSON_PATH_TEMPLATE.formatted(linterId);
 
     try (InputStreamReader inputStreamReader = new InputStreamReader(AbstractReportSensor.class.getClassLoader().getResourceAsStream(pathToRulesMeta), StandardCharsets.UTF_8)) {
-      JsonArray jsonArray = Json.parse(inputStreamReader).asArray();
+      var jsonArray = Json.parse(inputStreamReader).asArray();
       for (JsonValue jsonValue : jsonArray) {
-        JsonObject rule = jsonValue.asObject();
-        NewRule newRule = externalRepo.createRule(rule.getString("key", null))
+        var rule = jsonValue.asObject();
+        var newRule = externalRepo.createRule(rule.getString("key", null))
           .setName(rule.getString("name", null))
           .setHtmlDescription(rule.getString("description", null));
         newRule.setDebtRemediationFunction(newRule.debtRemediationFunctions().constantPerIssue(DEFAULT_REMEDIATION_COST + "min"));

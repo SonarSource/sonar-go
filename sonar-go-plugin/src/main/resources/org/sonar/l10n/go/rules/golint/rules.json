@@ -2,91 +2,217 @@
   {
     "key": "PackageComment",
     "name": "Checks package comments",
-    "description": "This rule complains if there is no package comment, or if it is not of the right form.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#package-comments\">Package Comments</a></li></ul>"
+    "description": "This rule complains if there is no package comment, or if it is not of the right form.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#package-comments\">Package Comments</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "BlankImports",
     "name": "Check blank imports",
-    "description": "This rule complains if a non-main package has blank imports that are not documented."
+    "description": "This rule complains if a non-main package has blank imports that are not documented.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Imports",
     "name": "Examines import blocks",
-    "description": "This rule Examines usage of dot import.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#import-dot\">Import Dot</a></li></ul>"
+    "description": "This rule Examines usage of dot import.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#import-dot\">Import Dot</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Exported",
     "name": "Examines exported names",
-    "description": "This rule complains if any required doc comments are missing, or if they are not of the right form. It also complains if the names stutter when combined with the package name.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#doc-comments\">Doc Comments</a></li><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#package-names\">Package Names</a></li></ul>"
+    "description": "This rule complains if any required doc comments are missing, or if they are not of the right form. It also complains if the names stutter when combined with the package name.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#doc-comments\">Doc Comments</a></li><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#package-names\">Package Names</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Names",
     "name": "Examines all names in the file",
-    "description": "This rule complains if any use underscores or incorrect known initialisms.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#mixed-caps\">Mixed Caps</a></li><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#initialisms\">Initialisms</a></li><li>Effective Go: <a href=\"http://golang.org/doc/effective_go.html#mixed-caps\">MixedCaps</a></li><li>Effective Go: <a href=\"http://golang.org/doc/effective_go.html#package-names\">Package names</a></li></ul>"
+    "description": "This rule complains if any use underscores or incorrect known initialisms.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#mixed-caps\">Mixed Caps</a></li><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#initialisms\">Initialisms</a></li><li>Effective Go: <a href=\"http://golang.org/doc/effective_go.html#mixed-caps\">MixedCaps</a></li><li>Effective Go: <a href=\"http://golang.org/doc/effective_go.html#package-names\">Package names</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "VarDecls",
     "name": "Examines variable declarations",
-    "description": "This rule complains about declarations with redundant LHS types that can be inferred from the RHS."
+    "description": "This rule complains about declarations with redundant LHS types that can be inferred from the RHS.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Elses",
     "name": "Examines else blocks",
-    "description": "This rule complains about any else block whose if block ends in a return.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#indent-error-flow\">Indent Error Flow</a></li></ul>"
+    "description": "This rule complains about any else block whose if block ends in a return.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#indent-error-flow\">Indent Error Flow</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Ranges",
     "name": "Examines range clauses",
-    "description": "This rule complains about redundant constructions."
+    "description": "This rule complains about redundant constructions.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Errorf",
     "name": "Examines errors.New and testing.Error calls",
-    "description": "This rule complains if its only argument is an fmt.Sprintf invocation."
+    "description": "This rule complains if its only argument is an fmt.Sprintf invocation.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "Errors",
     "name": "Examines global error vars.",
-    "description": "This rule complains if they aren't named in the standard way.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://github.com/golang/go/wiki/CodeReviewComments#error-strings\">Error Strings</a></li></ul>"
+    "description": "This rule complains if they aren't named in the standard way.<h2>See</h2><ul><li>Go Code Review Comments: <a href=\"https://go.dev/wiki/CodeReviewComments#error-strings\">Error Strings</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "ErrorStrings",
     "name": "Examines error strings",
-    "description": "This rule  complains if they are capitalized or end in punctuation or a newline."
+    "description": "This rule complains if they are capitalized or end in punctuation or a newline.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "ReceiverNames",
     "name": "Examines receiver names",
-    "description": "This rule complains about inconsistent names used for the same type and names such as \"this\"."
+    "description": "This rule complains about inconsistent names used for the same type and names such as \"this\".",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "IncDec",
     "name": "Examines statements that increment or decrement a variable",
-    "description": "This rule complains if they don't use x++ or x--."
+    "description": "This rule complains if they don't use x++ or x--.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "ErrorReturn",
     "name": "Examines function declarations that return an error",
-    "description": "This rule complains if the error isn't the last parameter."
+    "description": "This rule complains if the error isn't the last parameter.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "UnexportedReturn",
     "name": "Examines exported function declarations",
-    "description": "This rule complains if any return an unexported type."
+    "description": "This rule complains if any return an unexported type.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "TimeNames",
     "name": "Check times names",
-    "description": "Look for time.Duration suffix"
+    "description": "Look for time.Duration suffix",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "ContextKeyTypes",
     "name": "Checks for call expressions to context.WithValue with basic type",
-    "description": "This rule checks for call expressions to context.WithValue with basic types used for the key argument.<h2>See</h2><ul><li>cmd/vet issues: <a href=\"https://github.com/golang/go/issues/17293\">#17293</a></li></ul>"
+    "description": "This rule checks for call expressions to context.WithValue with basic types used for the key argument.<h2>See</h2><ul><li>cmd/vet issues: <a href=\"https://github.com/golang/go/issues/17293\">#17293</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "ContextArgs",
     "name": "Examines function declarations that contain an argument with a type of context.Context",
-    "description": "This rule complains if that argument isn't the first parameter.<h2>See</h2><ul><li>The Go Programming Language: <a href=\"https://golang.org/pkg/context/\">Package context</a></li></ul>"
+    "description": "This rule complains if that argument isn't the first parameter.<h2>See</h2><ul><li>The Go Programming Language: <a href=\"https://golang.org/pkg/context/\">Package context</a></li></ul>",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   }
 ]

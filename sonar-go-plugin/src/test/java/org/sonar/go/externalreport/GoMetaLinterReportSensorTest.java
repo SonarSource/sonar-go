@@ -105,12 +105,12 @@ class GoMetaLinterReportSensorTest {
     String line = "SelfAssignement.go:4:6:warning: exported type User should have comment or be unexported (golint)";
     org.sonar.go.externalreport.ExternalIssue issue = goMetaLinterReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("golint");
-    assertThat(issue.type).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(issue.ruleKey).isEqualTo("Exported");
-    assertThat(issue.filename).isEqualTo("SelfAssignement.go");
-    assertThat(issue.lineNumber).isEqualTo(4);
-    assertThat(issue.message).isEqualTo("exported type User should have comment or be unexported");
+    assertThat(issue.linter()).isEqualTo("golint");
+    assertThat(issue.type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(issue.ruleKey()).isEqualTo("Exported");
+    assertThat(issue.filename()).isEqualTo("SelfAssignement.go");
+    assertThat(issue.lineNumber()).isEqualTo(4);
+    assertThat(issue.message()).isEqualTo("exported type User should have comment or be unexported");
   }
 
   @Test
@@ -118,12 +118,12 @@ class GoMetaLinterReportSensorTest {
     String line = "duplication/pivot.go:14:5:error: ascii_allowed redeclared in this block (gotype)";
     org.sonar.go.externalreport.ExternalIssue issue = goMetaLinterReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("gotype");
-    assertThat(issue.type).isEqualTo(RuleType.BUG);
-    assertThat(issue.ruleKey).isEqualTo(GENERIC_ISSUE_KEY);
-    assertThat(issue.filename).isEqualTo("duplication/pivot.go");
-    assertThat(issue.lineNumber).isEqualTo(14);
-    assertThat(issue.message).isEqualTo("ascii_allowed redeclared in this block");
+    assertThat(issue.linter()).isEqualTo("gotype");
+    assertThat(issue.type()).isEqualTo(RuleType.BUG);
+    assertThat(issue.ruleKey()).isEqualTo(GENERIC_ISSUE_KEY);
+    assertThat(issue.filename()).isEqualTo("duplication/pivot.go");
+    assertThat(issue.lineNumber()).isEqualTo(14);
+    assertThat(issue.message()).isEqualTo("ascii_allowed redeclared in this block");
   }
 
   @Test
@@ -131,12 +131,12 @@ class GoMetaLinterReportSensorTest {
     String line = "SelfAssignement.go:6:19:warning: func (*User).rename is unused (U1000) (megacheck)";
     org.sonar.go.externalreport.ExternalIssue issue = goMetaLinterReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("megacheck");
-    assertThat(issue.type).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(issue.ruleKey).isEqualTo("U1000");
-    assertThat(issue.filename).isEqualTo("SelfAssignement.go");
-    assertThat(issue.lineNumber).isEqualTo(6);
-    assertThat(issue.message).isEqualTo("func (*User).rename is unused");
+    assertThat(issue.linter()).isEqualTo("megacheck");
+    assertThat(issue.type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(issue.ruleKey()).isEqualTo("U1000");
+    assertThat(issue.filename()).isEqualTo("SelfAssignement.go");
+    assertThat(issue.lineNumber()).isEqualTo(6);
+    assertThat(issue.message()).isEqualTo("func (*User).rename is unused");
   }
 
   @Test
@@ -144,12 +144,12 @@ class GoMetaLinterReportSensorTest {
     String line = "SelfAssignement.go:6:19:warning: func (*User).rename is unused (Not a rule key) (megacheck)";
     org.sonar.go.externalreport.ExternalIssue issue = goMetaLinterReportSensor().parse(line);
     assertThat(issue).isNotNull();
-    assertThat(issue.linter).isEqualTo("megacheck");
-    assertThat(issue.type).isEqualTo(RuleType.CODE_SMELL);
-    assertThat(issue.ruleKey).isEqualTo(GENERIC_ISSUE_KEY);
-    assertThat(issue.filename).isEqualTo("SelfAssignement.go");
-    assertThat(issue.lineNumber).isEqualTo(6);
-    assertThat(issue.message).isEqualTo("func (*User).rename is unused (Not a rule key)");
+    assertThat(issue.linter()).isEqualTo("megacheck");
+    assertThat(issue.type()).isEqualTo(RuleType.CODE_SMELL);
+    assertThat(issue.ruleKey()).isEqualTo(GENERIC_ISSUE_KEY);
+    assertThat(issue.filename()).isEqualTo("SelfAssignement.go");
+    assertThat(issue.lineNumber()).isEqualTo(6);
+    assertThat(issue.message()).isEqualTo("func (*User).rename is unused (Not a rule key)");
   }
 
   private GoMetaLinterReportSensor goMetaLinterReportSensor() {

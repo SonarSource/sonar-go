@@ -23,6 +23,7 @@ import org.sonar.api.config.PropertyDefinition;
 import org.sonar.api.resources.Qualifiers;
 import org.sonar.go.coverage.GoCoverSensor;
 import org.sonar.go.externalreport.GoLintReportSensor;
+import org.sonar.go.externalreport.GoLintRulesDefinition;
 import org.sonar.go.externalreport.GoMetaLinterReportSensor;
 import org.sonar.go.externalreport.GoVetReportSensor;
 import org.sonar.go.externalreport.GolangCILintReportSensor;
@@ -96,6 +97,7 @@ public class GoPlugin implements Plugin {
       GoCoverSensor.class,
       GoVetReportSensor.class,
       GoLintReportSensor.class,
+      GoLintRulesDefinition.class,
       GoMetaLinterReportSensor.class,
       GolangCILintReportSensor.class,
       PropertyDefinition.builder(GoTestSensor.REPORT_PATH_KEY)

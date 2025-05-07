@@ -21,14 +21,7 @@ import org.sonar.api.rules.RuleType;
 
 import static org.sonar.go.externalreport.AbstractReportSensor.GENERIC_ISSUE_KEY;
 
-class ExternalIssue {
-
-  final String linter;
-  final RuleType type;
-  final String ruleKey;
-  final String filename;
-  final int lineNumber;
-  final String message;
+record ExternalIssue(String linter, RuleType type, String ruleKey, String filename, int lineNumber, String message) {
 
   ExternalIssue(String linter, RuleType type, @Nullable String ruleKey, String filename, int lineNumber, String message) {
     this.linter = linter;
