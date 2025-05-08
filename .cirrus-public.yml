@@ -10,6 +10,7 @@ build_task:
     docker_arguments:
       CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       BUILD_ENV: "ci"
+      GO_VERSION: "1.23.4"
     builder_role: cirrus-builder
     builder_image: "docker-builder-v*"
     builder_instance_type: t3.small
