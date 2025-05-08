@@ -557,13 +557,11 @@ public final class JsonTreeConverter {
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(EXPRESSIONS, ctx.toJsonArray(tree.expressions()))
-        .add(BODY, ctx.toJson(tree.body()))
         .add(KEYWORD, ctx.toJson(tree.keyword())),
 
       (ctx, json) -> new ReturnTreeImpl(
         ctx.metaData(json),
         ctx.fieldToToken(json, KEYWORD),
-        ctx.fieldToNullableObject(json, BODY, Tree.class),
         ctx.fieldToObjectList(json, EXPRESSIONS, Tree.class)));
 
     register(StarExpressionTreeImpl.class,

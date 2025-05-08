@@ -53,8 +53,7 @@
         {"@type": "Block", "metaData": "3:36:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::10","keyword":"4:1::7","expressions":[
             {"@type": "IntegerLiteral", "metaData": "4:8::10","value":"42"}
-          ],"body":
-            {"@type": "IntegerLiteral", "metaData": "4:8::10","value":"42"},"__cfgId":16}
+          ],"__cfgId":16}
         ],"__cfgId":17},"__cfgId":1}
     ],"__cfgId":2}
 } 

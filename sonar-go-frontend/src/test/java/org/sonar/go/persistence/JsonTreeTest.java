@@ -758,10 +758,9 @@ class JsonTreeTest extends JsonTestHelper {
     Token trueToken = otherToken(1, 7, "true");
     Token semicolonToken = otherToken(1, 11, ";");
     Tree trueLiteral = new LiteralTreeImpl(metaData(trueToken), trueToken.text());
-    ReturnTree initialReturnTree = new ReturnTreeImpl(metaData(returnToken, semicolonToken), returnToken, trueLiteral, List.of(trueLiteral));
+    ReturnTree initialReturnTree = new ReturnTreeImpl(metaData(returnToken, semicolonToken), returnToken, List.of(trueLiteral));
     ReturnTree returnTree = checkJsonSerializationDeserialization(initialReturnTree, "return_true.json");
     assertThat(returnTree.keyword().text()).isEqualTo("return");
-    assertThat(returnTree.body()).isInstanceOf(LiteralTree.class);
     assertThat(returnTree.expressions()).hasSize(1);
     assertThat(returnTree.expressions().get(0)).isInstanceOf(LiteralTree.class);
     TreeMetaData metaData = returnTree.metaData();
@@ -771,7 +770,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(metaData.tokens()).hasSize(3);
 
     assertThat(methodNames(ReturnTree.class))
-      .containsExactlyInAnyOrder(KEYWORD, BODY, EXPRESSIONS);
+      .containsExactlyInAnyOrder(KEYWORD, EXPRESSIONS);
   }
 
   @Test

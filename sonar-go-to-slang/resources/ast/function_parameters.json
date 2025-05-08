@@ -301,8 +301,7 @@
         {"@type": "Block", "metaData": "17:19:19:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "18:4::12","keyword":"18:4::10","expressions":[
             {"@type": "IntegerLiteral", "metaData": "18:11::12","value":"1"}
-          ],"body":
-            {"@type": "IntegerLiteral", "metaData": "18:11::12","value":"1"},"__cfgId":11}
+          ],"__cfgId":11}
         ],"__cfgId":12},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "21:0:23:1","typeParameters":
         null,"returnType":
@@ -327,11 +326,7 @@
           {"@type": "Return", "metaData": "22:4::19","keyword":"22:4::10","expressions":[
             {"@type": "IntegerLiteral", "metaData": "22:11::12","value":"1"},
             {"@type": "StringLiteral", "metaData": "22:14::19","value":"\"one\"","content":"one"}
-          ],"body":
-            {"@type": "Native", "metaData": "22:11::19","nativeKind":"ReturnExprList","children":[
-              {"@type": "IntegerLiteral", "metaData": "22:11::12","value":"1"},
-              {"@type": "StringLiteral", "metaData": "22:14::19","value":"\"one\"","content":"one"}
-            ]},"__cfgId":13}
+          ],"__cfgId":13}
         ],"__cfgId":14},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "25:0::31","typeParameters":
         null,"returnType":
@@ -433,8 +428,7 @@
             ],"__cfgId":17},
             {"@type": "Return", "metaData": "37:4::12","keyword":"37:4::10","expressions":[
               {"@type": "Identifier", "metaData": "37:11::12","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":18}
-            ],"body":
-              {"@type": "Identifier", "metaData": "37:11::12","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":18},"__cfgId":19}
+            ],"__cfgId":19}
           ],"__cfgId":20},"__cfgId":21}
       ],"identifiers":[
         {"@type": "Identifier", "metaData": "34:4::6","type":"func(a int) int","package":"UNKNOWN","name":"g4","id":493,"__cfgId":2}

@@ -17,16 +17,8 @@
 package org.sonar.plugins.go.api;
 
 import java.util.List;
-import javax.annotation.CheckForNull;
 
 public interface ReturnTree extends Tree, HasKeyword {
-  /**
-   * @deprecated
-   */
-  @Deprecated(since = "2.3")
-  @CheckForNull
-  Tree body();
-
   /**
    * Provide the list of expressions returned by the statement.
    * In case of empty or named return, the list is empty (not null). E.g. {@code return} will return {@code []}.

@@ -211,8 +211,7 @@
         {"@type": "Block", "metaData": "18:29:20:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "19:2::11","keyword":"19:2::8","expressions":[
             {"@type": "IntegerLiteral", "metaData": "19:9::11","value":"42"}
-          ],"body":
-            {"@type": "IntegerLiteral", "metaData": "19:9::11","value":"42"},"__cfgId":12}
+          ],"__cfgId":12}
         ],"__cfgId":13},"__cfgId":1}
     ],"__cfgId":2}
 } 

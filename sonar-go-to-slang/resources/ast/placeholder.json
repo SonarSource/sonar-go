@@ -143,8 +143,7 @@
         {"@type": "Block", "metaData": "13:26:15:2","statementOrExpressions":[
           {"@type": "Return", "metaData": "14:4::16","keyword":"14:4::10","expressions":[
             {"@type": "Literal", "metaData": "14:11::16","value":"false","__cfgId":13}
-          ],"body":
-            {"@type": "Literal", "metaData": "14:11::16","value":"false","__cfgId":13},"__cfgId":14}
+          ],"__cfgId":14}
         ],"__cfgId":15},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "17:1:19:2","typeParameters":
         null,"returnType":
@@ -165,11 +164,7 @@
           {"@type": "Return", "metaData": "18:5::20","keyword":"18:5::11","expressions":[
             {"@type": "IntegerLiteral", "metaData": "18:12::14","value":"42"},
             {"@type": "StringLiteral", "metaData": "18:16::20","value":"\"42\"","content":"42"}
-          ],"body":
-            {"@type": "Native", "metaData": "18:12::20","nativeKind":"ReturnExprList","children":[
-              {"@type": "IntegerLiteral", "metaData": "18:12::14","value":"42"},
-              {"@type": "StringLiteral", "metaData": "18:16::20","value":"\"42\"","content":"42"}
-            ]},"__cfgId":9}
+          ],"__cfgId":9}
         ],"__cfgId":10},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "21:1:23:2","typeParameters":
         null,"returnType":

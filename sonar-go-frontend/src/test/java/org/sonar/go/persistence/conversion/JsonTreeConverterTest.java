@@ -153,7 +153,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
     String invalidJson = indentedJsonFromFile("error_missing_type.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
       () -> JsonTree.fromJson(invalidJson));
-    assertThat(e).hasMessage("Missing non-null value for field '@type' at 'tree/Return/body'" +
+    assertThat(e).hasMessage("Missing non-null value for field '@type' at 'tree/Return/expressions[]'" +
       " member: {\"invalid_type\":\"Literal\",\"metaData\":\"1:7:1:11\",\"value\":\"true\"}");
   }
 
@@ -162,7 +162,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
     String invalidJson = indentedJsonFromFile("error_invalid_json_tree.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
       () -> JsonTree.fromJson(invalidJson));
-    assertThat(e).hasMessage("Unexpected value for Tree at 'tree/Return/body' member: 1234");
+    assertThat(e).hasMessage("Expect Array instead of JsonNumber at 'tree/Return' member: 1234");
   }
 
   @Test
@@ -170,7 +170,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
     String invalidJson = indentedJsonFromFile("error_invalid_tree_type.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
       () -> JsonTree.fromJson(invalidJson));
-    assertThat(e).hasMessage("Invalid '@type' value at 'tree/Return/body/UnsupportedType' member: UnsupportedType");
+    assertThat(e).hasMessage("Invalid '@type' value at 'tree/Return/expressions[]/UnsupportedType' member: UnsupportedType");
   }
 
   @Test

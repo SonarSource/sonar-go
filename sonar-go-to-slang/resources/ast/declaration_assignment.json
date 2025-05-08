@@ -404,11 +404,7 @@
           {"@type": "Return", "metaData": "52:1::16","keyword":"52:1::7","expressions":[
             {"@type": "IntegerLiteral", "metaData": "52:8::10","value":"42"},
             {"@type": "StringLiteral", "metaData": "52:12::16","value":"\"42\"","content":"42"}
-          ],"body":
-            {"@type": "Native", "metaData": "52:8::16","nativeKind":"ReturnExprList","children":[
-              {"@type": "IntegerLiteral", "metaData": "52:8::10","value":"42"},
-              {"@type": "StringLiteral", "metaData": "52:12::16","value":"\"42\"","content":"42"}
-            ]},"__cfgId":9}
+          ],"__cfgId":9}
         ],"__cfgId":10},"__cfgId":1}
     ],"__cfgId":2}
 } 
