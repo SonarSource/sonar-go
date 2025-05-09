@@ -195,12 +195,7 @@
                       {"@type": "BinaryExpression", "metaData": "19:9::20","rightOperand":
                         {"@type": "Identifier", "metaData": "19:17::20","type":"string","package":"UNKNOWN","name":"str","id":317,"__cfgId":58},"operatorToken":"19:15::16","operator":"PLUS","leftOperand":
                         {"@type": "StringLiteral", "metaData": "19:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":59},"__cfgId":60}
-                  ],"body":
-                    {"@type": "BinaryExpression", "metaData": "19:9::71","rightOperand":
-                      {"@type": "StringLiteral", "metaData": "19:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"19:21::22","operator":"PLUS","leftOperand":
-                      {"@type": "BinaryExpression", "metaData": "19:9::20","rightOperand":
-                        {"@type": "Identifier", "metaData": "19:17::20","type":"string","package":"UNKNOWN","name":"str","id":317,"__cfgId":58},"operatorToken":"19:15::16","operator":"PLUS","leftOperand":
-                        {"@type": "StringLiteral", "metaData": "19:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":59},"__cfgId":60},"__cfgId":61}
+                  ],"__cfgId":61}
                 ],"__cfgId":62},"__cfgId":63},"arguments":[
               {"@type": "StringLiteral", "metaData": "20:3::10","value":"\"Ricky\"","content":"Ricky"}
             ],"__cfgId":64}

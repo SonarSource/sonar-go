@@ -346,8 +346,7 @@
           ],"__cfgId":16},
           {"@type": "Return", "metaData": "21:1::10","keyword":"21:1::7","expressions":[
             {"@type": "Identifier", "metaData": "21:8::10","type":"*database/sql.DB","package":"UNKNOWN","name":"db","id":201,"__cfgId":17}
-          ],"body":
-            {"@type": "Identifier", "metaData": "21:8::10","type":"*database/sql.DB","package":"UNKNOWN","name":"db","id":201,"__cfgId":17},"__cfgId":18}
+          ],"__cfgId":18}
         ],"__cfgId":19},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "24:0:45:1","typeParameters":
         null,"returnType":
@@ -466,12 +465,7 @@
                       {"@type": "BinaryExpression", "metaData": "41:9::20","rightOperand":
                         {"@type": "Identifier", "metaData": "41:17::20","type":"string","package":"UNKNOWN","name":"str","id":613,"__cfgId":67},"operatorToken":"41:15::16","operator":"PLUS","leftOperand":
                         {"@type": "StringLiteral", "metaData": "41:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":68},"__cfgId":69}
-                  ],"body":
-                    {"@type": "BinaryExpression", "metaData": "41:9::71","rightOperand":
-                      {"@type": "StringLiteral", "metaData": "41:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"41:21::22","operator":"PLUS","leftOperand":
-                      {"@type": "BinaryExpression", "metaData": "41:9::20","rightOperand":
-                        {"@type": "Identifier", "metaData": "41:17::20","type":"string","package":"UNKNOWN","name":"str","id":613,"__cfgId":67},"operatorToken":"41:15::16","operator":"PLUS","leftOperand":
-                        {"@type": "StringLiteral", "metaData": "41:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":68},"__cfgId":69},"__cfgId":70}
+                  ],"__cfgId":70}
                 ],"__cfgId":71},"__cfgId":72},"arguments":[
               {"@type": "StringLiteral", "metaData": "42:3::10","value":"\"Ricky\"","content":"Ricky"}
             ],"__cfgId":73}
@@ -480,8 +474,7 @@
           ],"__cfgId":74},
           {"@type": "Return", "metaData": "44:1::9","keyword":"44:1::7","expressions":[
             {"@type": "Identifier", "metaData": "44:8::9","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":75}
-          ],"body":
-            {"@type": "Identifier", "metaData": "44:8::9","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":75},"__cfgId":76}
+          ],"__cfgId":76}
         ],"__cfgId":77},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "47:0:50:1","typeParameters":
         null,"returnType":
@@ -570,8 +563,7 @@
             ],"__cfgId":31},"__cfgId":32},
           {"@type": "Return", "metaData": "57:1::9","keyword":"57:1::7","expressions":[
             {"@type": "Identifier", "metaData": "57:8::9","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":33}
-          ],"body":
-            {"@type": "Identifier", "metaData": "57:8::9","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":33},"__cfgId":34}
+          ],"__cfgId":34}
         ],"__cfgId":35},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "60:0:62:1","typeParameters":
         null,"returnType":
@@ -603,10 +595,7 @@
             {"@type": "BinaryExpression", "metaData": "65:8::25","rightOperand":
               {"@type": "Identifier", "metaData": "65:21::25","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":11},"operatorToken":"65:19::20","operator":"PLUS","leftOperand":
               {"@type": "StringLiteral", "metaData": "65:8::18","value":"\"Println \"","content":"Println "},"__cfgId":12}
-          ],"body":
-            {"@type": "BinaryExpression", "metaData": "65:8::25","rightOperand":
-              {"@type": "Identifier", "metaData": "65:21::25","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":11},"operatorToken":"65:19::20","operator":"PLUS","leftOperand":
-              {"@type": "StringLiteral", "metaData": "65:8::18","value":"\"Println \"","content":"Println "},"__cfgId":12},"__cfgId":13}
+          ],"__cfgId":13}
         ],"__cfgId":14},"__cfgId":1}
     ],"__cfgId":2}
 } 
