@@ -23,6 +23,11 @@ public class TypeImpl implements Type {
   private final String type;
   private final String packageName;
 
+  public TypeImpl(String type, String packageName) {
+    this.type = type;
+    this.packageName = packageName;
+  }
+
   public static TypeImpl createFromType(String text) {
     var index = text.lastIndexOf(".");
     var packageName = "";
@@ -33,11 +38,6 @@ public class TypeImpl implements Type {
       packageName = packageName.substring(1);
     }
     return new TypeImpl(text, packageName);
-  }
-
-  public TypeImpl(String type, String packageName) {
-    this.type = type;
-    this.packageName = packageName;
   }
 
   @Override
