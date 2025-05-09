@@ -1,107 +1,398 @@
 [
   {
+    "key": "appends",
+    "name": "Missing values after append",
+    "description": "Check for missing values after append.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
     "key": "asmdecl",
-    "name": "Check assembly against Go declarations",
-    "description": "Mismatches between assembly files and Go function declarations."
+    "name": "Assembly mismatch against Go declarations",
+    "description": "Mismatches between assembly files and Go declarations.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "assign",
     "name": "Useless assignments",
-    "description": "Check for useless assignments."
+    "description": "Check for useless assignments.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CLEAR",
+      "impacts": {
+        "MAINTAINABILITY": "LOW"
+      }
+    }
   },
   {
     "key": "atomic",
-    "name": "Atomic mistakes",
-    "description": "Common mistaken usages of the sync/atomic package."
+    "name": "Common mistakes using the sync/atomic package",
+    "description": "Check for common mistakes using the sync/atomic package.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
-    "key": "bool",
-    "name": "Boolean conditions",
-    "description": "Mistakes involving boolean operators."
+    "key": "bools",
+    "name": "Common mistakes involving boolean operators",
+    "description": "Check for common mistakes involving boolean operators.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
-    "key": "buildtags",
-    "name": "check that +build tags are valid",
-    "description": "Badly formed or misplaced +build tags."
+    "key": "buildtag",
+    "name": "Check //go:build and // +build directives",
+    "description": "Check //go:build and // +build directives.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "cgocall",
     "name": "Invalid uses of cgo",
-    "description": "Detect some violations of the cgo pointer passing rules."
+    "description": "Detect some violations of the cgo pointer passing rules.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "HIGH"
+      }
+    }
   },
   {
     "key": "composites",
     "name": "Unkeyed composite literals",
-    "description": "Composite struct literals that do not use the field-keyed syntax."
+    "description": "Check for composite literals that do not use the field-keyed syntax.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "LOW"
+      }
+    }
   },
   {
     "key": "copylocks",
-    "name": "Copying locks",
-    "description": "Locks that are erroneously passed by value."
+    "name": "Locks erroneously passed by value",
+    "description": "Check for locks erroneously passed by value.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "HIGH"
+      }
+    }
+  },
+  {
+    "key": "defers",
+    "name": "Common mistakes in defer statements",
+    "description": "Report common mistakes in defer statements.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "directive",
+    "name": "Misuse of Go toolchain directives such as //go:debug",
+    "description": "Check Go toolchain directives such as //go:debug.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CLEAR",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "errorsas",
+    "name": "Non-pointer or non-error values passed to errors.As",
+    "description": "Report passing non-pointer or non-error values to errors.As.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "framepointer",
+    "name": "Assembly clobbers the frame pointer before saving it",
+    "description": "Report assembly that clobbers the frame pointer before saving it.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "httpresponse",
-    "name": "HTTP responses used incorrectly",
-    "description": "Mistakes deferring a function call on an HTTP response before checking whether the error returned with the response was nil."
+    "name": "Mistakes using HTTP responses",
+    "description": "Check for mistakes using HTTP responses.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "HIGH"
+      }
+    }
+  },
+  {
+    "key": "ifaceassert",
+    "name": "Impossible interface-to-interface type assertions",
+    "description": "Detect impossible interface-to-interface type assertions.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "HIGH"
+      }
+    }
+  },
+  {
+    "key": "loopclosure",
+    "name": "References to loop variables from within nested functions",
+    "description": "Check references to loop variables from within nested functions (in go<=1.21).",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "lostcancel",
-    "name": "Failure to call the cancelation function returned by WithCancel",
-    "description": "The cancelation function returned by context.WithCancel, WithTimeout, and WithDeadline must be called or the new context will remain live until its parent context is cancelled. (The background context is never cancelled.)"
-  },
-  {
-    "key": "methods",
-    "name": "Check that canonically named methods are canonically defined",
-    "description": "Non-standard signatures for methods with familiar names, including: Format GobEncode GobDecode MarshalJSON MarshalXML Peek ReadByte ReadFrom ReadRune Scan Seek UnmarshalJSON UnreadByte UnreadRune WriteByte WriteTo"
+    "name": "Cancel func returned by context.WithCancel should be called",
+    "description": "Check cancel func returned by context.WithCancel is called.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "nilfunc",
-    "name": "Nil function comparison",
-    "description": "Comparisons between functions and nil."
+    "name": "Useless comparisons between functions and nil",
+    "description": "Check for useless comparisons between functions and nil.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "printf",
-    "name": "Check printf-like invocations",
-    "description": "Suspicious calls to functions in the Printf family, including any functions with these names, disregarding case: Print Printf Println Fprint Fprintf Fprintln Sprint Sprintf Sprintln Error Errorf Fatal Fatalf Log Logf Panic Panicf Panicln. The -printfuncs flag can be used to redefine this list. If the function name ends with an 'f', the function is assumed to take a format descriptor string in the manner of fmt.Printf. If not, vet complains about arguments that look like format descriptor strings. It also checks for errors such as using a Writer as the first argument of Printf."
-  },
-  {
-    "key": "rangeloops",
-    "name": "Range loop variables",
-    "description": "Incorrect uses of range loop variables in closures."
-  },
-  {
-    "key": "shadow",
-    "name": "Shadowed variables",
-    "description": "Variables that may have been unintentionally shadowed."
+    "name": "Consistency between Printf format strings and arguments",
+    "description": "Check consistency of Printf format strings and arguments.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CLEAR",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "shift",
-    "name": "Check for useless shifts",
-    "description": "Shifts equal to or longer than the variable's length."
+    "name": "Shift is equal or exceeds the width of the integer",
+    "description": "Check for shifts that equal or exceed the width of the integer.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
-    "key": "structtags",
-    "name": "Check that struct field tags have canonical format and apply to exported fields as needed",
-    "description": "Struct tags that do not follow the format understood by reflect.StructTag.Get. Well-known encoding struct tags (json, xml) used with unexported fields."
+    "key": "sigchanyzer",
+    "name": "Unbuffered channel of os.Signal",
+    "description": "Check for unbuffered channel of os.Signal.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "slog",
+    "name": "Invalid structured logging call",
+    "description": "Check for invalid structured logging calls.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CLEAR",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "stdmethods",
+    "name": "Incorrect signature of a method of well-known interfaces",
+    "description": "Check signature of methods of well-known interfaces.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "stdversion",
+    "name": "Usages of too-new standard library symbols",
+    "description": "Report uses of too-new standard library symbols.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "stringintconv",
+    "name": "Potentially undesirable string(int) conversions",
+    "description": "Check for string(int) conversions.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CONVENTIONAL",
+      "impacts": {
+        "MAINTAINABILITY": "LOW"
+      }
+    }
+  },
+  {
+    "key": "structtag",
+    "name": "Validity of struct field tags",
+    "description": "Check that struct field tags conform to reflect.StructTag.Get.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "testinggoroutine",
+    "name": "Call to (*testing.T).Fatal from goroutines started by a test",
+    "description": "Report calls to (*testing.T).Fatal from goroutines started by a test.",
+    "type": "BUG",
+    "code": {
+      "attribute": "TESTED",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "tests",
-    "name": "Check for common mistaken usages of tests/documentation examples",
-    "description": "Mistakes involving tests including functions with incorrect names or signatures and example tests that document identifiers not in the package."
+    "name": "Common mistaken usages of tests and examples",
+    "description": "Check for common mistaken usages of tests and examples.",
+    "type": "BUG",
+    "code": {
+      "attribute": "TESTED",
+      "impacts": {
+        "MAINTAINABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "timeformat",
+    "name": "Call of (time.Time).Format or time.Parse with yyyy-dd-mm",
+    "description": "Check for calls of (time.Time).Format or time.Parse with yyyy-dd-mm.",
+    "type": "CODE_SMELL",
+    "code": {
+      "attribute": "CLEAR",
+      "impacts": {
+        "RELIABILITY": "LOW"
+      }
+    }
+  },
+  {
+    "key": "unmarshal",
+    "name": "Passing non-pointer or non-interface values to unmarshal",
+    "description": "Report passing non-pointer or non-interface values to unmarshal.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "unreachable",
-    "name": "Check for unreachable code",
-    "description": "Check for unreachable code."
+    "name": "Unreachable code",
+    "description": "Check for unreachable code.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "unsafeptr",
-    "name": "Misuse of unsafe Pointers",
-    "description": "Likely incorrect uses of unsafe.Pointer to convert integers to pointers. A conversion from uintptr to unsafe.Pointer is invalid if it implies that there is a uintptr-typed word in memory that holds a pointer value, because that word will be invisible to stack copying and to the garbage collector."
+    "name": "Invalid conversions of uintptr to unsafe.Pointer",
+    "description": "Check for invalid conversions of uintptr to unsafe.Pointer.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   },
   {
     "key": "unusedresult",
-    "name": "Unused result of certain function calls",
-    "description": "Calls to well-known functions and methods that return a value that is discarded.  By default, this includes functions like fmt.Errorf and fmt.Sprintf and methods like String and Error. The flags -unusedfuncs and -unusedstringmethods control the set."
+    "name": "Unused results of calls to some functions",
+    "description": "Check for unused results of calls to some functions.",
+    "type": "BUG",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
   }
 ]

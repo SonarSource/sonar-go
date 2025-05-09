@@ -19,7 +19,6 @@ package org.sonar.go.externalreport;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -130,7 +129,7 @@ class GoVetReportSensorTest {
     assertThat(issue).isNotNull();
     assertThat(issue.linter()).isEqualTo("govet");
     assertThat(issue.type()).isEqualTo(RuleType.BUG);
-    assertThat(issue.ruleKey()).isEqualTo("bool");
+    assertThat(issue.ruleKey()).isEqualTo("bools");
     assertThat(issue.filename()).isEqualTo("./vendor/github.com/foo/go-bar/hello_world.go");
     assertThat(issue.lineNumber()).isEqualTo(550);
     assertThat(issue.message()).isEqualTo("redundant or: n == 2 || n == 2");
@@ -138,12 +137,12 @@ class GoVetReportSensorTest {
 
   @Test
   void should_match_govet_all_keys() throws IOException {
-    SensorContextTester context = ExternalLinterSensorHelper.createContext();
+    var context = ExternalLinterSensorHelper.createContext();
     context.settings().setProperty("sonar.go.govet.reportPaths", REPORT_BASE_PATH.resolve("all-govet-report.txt").toString());
-    List<ExternalIssue> externalIssues = ExternalLinterSensorHelper.executeSensor(goVetReportSensor(), context);
-    assertThat(externalIssues).hasSize(263);
+    var externalIssues = ExternalLinterSensorHelper.executeSensor(goVetReportSensor(), context);
+    assertThat(externalIssues).hasSize(265);
 
-    Stream<String> uniqueKeys = externalIssues.stream().map(externalIssue -> externalIssue.ruleKey().rule()).distinct();
+    var uniqueKeys = externalIssues.stream().map(externalIssue -> externalIssue.ruleKey().rule()).distinct();
     assertThat(uniqueKeys).hasSize(19);
     // all messages are associated to a rule key
     assertThat(externalIssues).filteredOn(i -> i.ruleKey().rule().equals(GENERIC_ISSUE_KEY)).isEmpty();

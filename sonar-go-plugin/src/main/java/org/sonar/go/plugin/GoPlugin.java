@@ -26,6 +26,7 @@ import org.sonar.go.externalreport.GoLintReportSensor;
 import org.sonar.go.externalreport.GoLintRulesDefinition;
 import org.sonar.go.externalreport.GoMetaLinterReportSensor;
 import org.sonar.go.externalreport.GoVetReportSensor;
+import org.sonar.go.externalreport.GoVetRulesDefinition;
 import org.sonar.go.externalreport.GolangCILintReportSensor;
 import org.sonar.go.testreport.GoTestSensor;
 
@@ -96,6 +97,7 @@ public class GoPlugin implements Plugin {
       GoTestSensor.class,
       GoCoverSensor.class,
       GoVetReportSensor.class,
+      GoVetRulesDefinition.class,
       GoLintReportSensor.class,
       GoLintRulesDefinition.class,
       GoMetaLinterReportSensor.class,

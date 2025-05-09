@@ -32,7 +32,7 @@ public class GoVetReportSensor extends AbstractReportSensor {
 
   public static final String PROPERTY_KEY = "sonar.go.govet.reportPaths";
 
-  private static final Pattern GO_VET_LINE_REGEX = Pattern.compile("(?<file>[^:]+):(?<line>\\d+):(?<message>.*)");
+  private static final Pattern GO_VET_LINE_REGEX = Pattern.compile("(?<file>[^:]+):(?<line>\\d+):(?<column>\\d+:)?(?<message>.*)");
 
   public static final String LINTER_ID = "govet";
   public static final String LINTER_NAME = "go vet";
@@ -50,7 +50,8 @@ public class GoVetReportSensor extends AbstractReportSensor {
       int lineNumber = Integer.parseInt(matcher.group("line").trim());
       String message = matcher.group("message").trim();
       return new ExternalIssue(LINTER_ID, RuleType.BUG, null, filename, lineNumber, message);
-    } else if (!line.startsWith("exit status")) {
+    } else if (!line.startsWith("exit status") && !line.startsWith("# ")) {
+      // go vet in go>=1.12 outputs "# <package name>" before the report, and go<1.12 outputs "exit status <N>" after the report
       LOG.debug("{}Unexpected line: {}", lazyArg(this::logPrefix), line);
     }
     return null;

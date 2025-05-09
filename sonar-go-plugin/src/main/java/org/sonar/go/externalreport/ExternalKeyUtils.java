@@ -16,44 +16,67 @@
  */
 package org.sonar.go.externalreport;
 
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
 public class ExternalKeyUtils {
 
-  private ExternalKeyUtils() {
-    // utility class, forbidden constructor
-  }
-
-  public static final List<ExternalKey> GO_VET_KEYS = Collections.unmodifiableList(Arrays.asList(
-    new ExternalKey("asmdecl", msg -> msg.contains("(FP)") || msg.contains("wrong argument size") || msg.endsWith("points beyond argument frame")),
+  /**
+   * Messages for individual checks can be looked up in the Go source, e.g., for the `appends` checker at
+   * <a href="https://cs.opensource.google/go/x/tools/+/refs/tags/v0.33.0:go/analysis/passes/appends/appends.go">appends.go</a>.
+   * <p>
+   * Versions of x/tools used in Go distributions:
+   * <ul>
+   *   <li>1.20.0     -> 0.3.1</li>
+   *   <li>1.21.0     -> 0.11.1</li>
+   *   <li>1.22.0     -> 0.16.2</li>
+   *   <li>1.23.0     -> 0.22.1</li>
+   *   <li>1.24.0     -> 0.28.1</li>
+   * </ul>
+   */
+  public static final List<ExternalKey> GO_VET_KEYS = List.of(
+    new ExternalKey("appends", msg -> msg.contains("append with no values")),
+    new ExternalKey("asmdecl", msg -> msg.contains("(FP)") ||
+      msg.contains("wrong argument size") ||
+      msg.endsWith("points beyond argument frame")),
     new ExternalKey("assign", msg -> msg.startsWith("self-assignment of")),
-    new ExternalKey("atomic", msg -> msg.equals("direct assignment to atomic value")),
-    new ExternalKey("bool", msg -> msg.startsWith("redundant") || msg.startsWith("suspect")),
-    new ExternalKey("buildtags", msg -> msg.contains("build comment")),
-    new ExternalKey("cgocall", msg -> msg.equals("possibly passing Go type with embedded pointer to C")),
+    new ExternalKey("atomic", "direct assignment to atomic value"::equals),
+    new ExternalKey("bools", msg -> msg.startsWith("redundant") || msg.startsWith("suspect")),
+    new ExternalKey("buildtag", msg -> msg.contains("//go:build") || msg.contains("build comment") || msg.contains("build constraint")),
+    new ExternalKey("cgocall", "possibly passing Go type with embedded pointer to C"::equals),
     new ExternalKey("composites", msg -> msg.endsWith("composite literal uses unkeyed fields")),
     new ExternalKey("copylocks", msg -> msg.contains("passes lock by value:") || msg.contains("copies lock")),
+    new ExternalKey("defers", msg -> msg.contains("call to time.Since is not deferred")),
+    new ExternalKey("directive", msg -> msg.contains("//go:debug")),
+    new ExternalKey("errorsas", msg -> msg.contains("second argument to errors.As")),
+    new ExternalKey("framepointer", msg -> msg.contains("frame pointer")),
     new ExternalKey("httpresponse", msg -> msg.endsWith("before checking for errors")),
+    new ExternalKey("ifaceassert", msg -> msg.contains("impossible type assertion")),
+    new ExternalKey("loopclosure", msg -> msg.contains("loop variable")),
     new ExternalKey("lostcancel", msg -> msg.matches("the cancel\\d? function .*") || msg.contains("without using the cancel")),
-    new ExternalKey("methods", msg -> msg.contains("should have signature")),
     new ExternalKey("nilfunc", msg -> msg.contains("comparison of function")),
     new ExternalKey("printf", msg -> msg.matches("(Printf|Println|Sprintf|Sprintln|Logf|Log) .*") || msg.contains("formatting directive")),
-    new ExternalKey("rangeloops", msg -> msg.startsWith("loop variable")),
-    new ExternalKey("shadow", msg -> msg.contains("shadows declaration at")),
     new ExternalKey("shift", msg -> msg.contains("too small for shift")),
-    new ExternalKey("structtags", msg -> msg.contains("struct field") && msg.contains("tag")),
+    new ExternalKey("sigchanyzer", msg -> msg.contains("misuse of unbuffered os.Signal")),
+    new ExternalKey("slog", msg -> msg.contains("or a slog.Attr") ||
+      msg.contains("missing a final value") ||
+      msg.contains("has a missing or misplaced value")),
+    new ExternalKey("stdmethods", msg -> msg.contains("should have signature")),
+    new ExternalKey("stdversion", msg -> msg.contains("requires go1.")),
+    new ExternalKey("stringintconv", msg -> msg.contains("yields a string of one rune")),
+    new ExternalKey("structtag", msg -> msg.contains("struct field") && msg.contains("tag")),
+    new ExternalKey("testinggoroutine", msg -> msg.contains("from a non-test goroutine") || msg.contains("defined outside of the subtest")),
     new ExternalKey("tests", msg -> msg.contains("has malformed") ||
       msg.contains("refers to unknown") ||
       msg.endsWith("should return nothing") ||
       msg.endsWith("should be niladic")),
-    new ExternalKey("unreachable", msg -> msg.equals("unreachable code")),
-    new ExternalKey("unusedresult", msg -> msg.endsWith("call not used")),
-    new ExternalKey("unsafeptr", msg -> msg.equals("possible misuse of unsafe.Pointer"))));
+    new ExternalKey("timeformat", msg -> msg.contains(" should be ")),
+    new ExternalKey("unmarshal", msg -> msg.contains("passes non-pointer")),
+    new ExternalKey("unreachable", "unreachable code"::equals),
+    new ExternalKey("unsafeptr", "possible misuse of unsafe.Pointer"::equals),
+    new ExternalKey("unusedresult", msg -> msg.endsWith("call not used")));
 
-  public static final List<ExternalKey> GO_LINT_KEYS = Collections.unmodifiableList(Arrays.asList(
+  public static final List<ExternalKey> GO_LINT_KEYS = List.of(
     new ExternalKey("PackageComment", msg -> msg.startsWith("package comment should be of the form") ||
       msg.startsWith("package comment should not have leading space") ||
       msg.equals("package comment is detached; there should be no blank lines between it and the package statement") ||
@@ -84,27 +107,24 @@ public class ExternalKeyUtils {
       msg.startsWith("don't use leading k in Go names;") ||
       msg.startsWith("don't use underscores in Go names;") ||
       msg.matches("(range var|struct field|[\\w]+) [\\w_]+ should be [\\w_]+") ||
-      msg.startsWith("don't use MixedCaps in package name;"))));
+      msg.startsWith("don't use MixedCaps in package name;")));
+
+  private ExternalKeyUtils() {
+    // utility class, forbidden constructor
+  }
 
   public static String lookup(String message, String linter) {
     if (linter.equals(GoVetReportSensor.LINTER_ID) || linter.equals(GoLintReportSensor.LINTER_ID)) {
       List<ExternalKey> keys = linter.equals(GoVetReportSensor.LINTER_ID) ? GO_VET_KEYS : GO_LINT_KEYS;
       return keys.stream()
         .filter(externalKey -> externalKey.matches.test(message))
-        .map(externalKey -> externalKey.key)
+        .map(ExternalKey::key)
         .findFirst()
         .orElse(null);
     }
     return null;
   }
 
-  public static class ExternalKey {
-    public final String key;
-    public final Predicate<String> matches;
-
-    ExternalKey(String key, Predicate<String> matches) {
-      this.key = key;
-      this.matches = matches;
-    }
+  public record ExternalKey(String key, Predicate<String> matches) {
   }
 }

@@ -1,5 +1,7 @@
 main.go:1: (i8 + 1) (8 bits) too small for shift of 8
 main.go:1: +build comment must appear before package clause and be followed by a blank line
+main.go:1: malformed //go:build line (space between // and go:build)
+main.go:1: invalid go version "go20" in build constraint
 main.go:1: Bad passes lock by value: testdata.CustomLock
 main.go:1: Bad passes lock by value: testdata.L0 contains testdata.L1 contains testdata.L2
 main.go:1: Bad passes lock by value: testdata.LocalOnce contains sync.Mutex
@@ -134,9 +136,6 @@ main.go:1: comparison of function F != nil is always true
 main.go:1: comparison of function F == nil is always false
 main.go:1: comparison of function M != nil is always true
 main.go:1: comparison of function M == nil is always false
-main.go:1: declaration of "err" shadows declaration at testdata/shadow.go:13
-main.go:1: declaration of "x" shadows declaration at testdata/atomic.go:16
-main.go:1: declaration of "x" shadows declaration at testdata/shadow.go:14
 main.go:1: direct assignment to atomic value
 main.go:1: flag.Flag composite literal uses unkeyed fields
 main.go:1: func passes lock by value: sync.Map contains sync.Mutex
@@ -261,3 +260,8 @@ main.go:1: variable declaration copies lock value to poolYY: sync.Pool contains 
 main.go:1: variable declaration copies lock value to rwmuYY: sync.RWMutex
 main.go:1: variable declaration copies lock value to wgYY: sync.WaitGroup contains sync.noCopy
 main.go:1: variable declaration copies lock value to z: testdata.Tlock contains sync.Once contains sync.Mutex
+main.go:1: slog.Info arg "1" should be a string or a slog.Attr
+main.go:1: call to slog.Debug missing a final value
+main.go:1: call to slog.Info has a missing or misplaced value
+test.go:1: call to (*testing.T).Fatalf from a non-test goroutine
+
