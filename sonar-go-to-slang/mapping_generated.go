@@ -75,6 +75,7 @@ var packageExportData = map[string]string{
 	"gopkg.in/resty.v1": "resty.v1.o",
 	"gorm.io/gorm": "gorm.o",
 	"gorm.io/gorm/logger": "gorm_logger.o",
+	"log": "log.o",
 	"maps": "maps.o",
 	"math/rand": "math_rand.o",
 	"net": "net.o",
