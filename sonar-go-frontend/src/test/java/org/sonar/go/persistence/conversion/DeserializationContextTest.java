@@ -17,15 +17,10 @@
 package org.sonar.go.persistence.conversion;
 
 import com.eclipsesource.json.Json;
-import com.eclipsesource.json.JsonArray;
-import com.eclipsesource.json.JsonObject;
 import java.util.Arrays;
-import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.persistence.JsonTestHelper;
-import org.sonar.plugins.go.api.TextRange;
-import org.sonar.plugins.go.api.Token;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -36,9 +31,9 @@ class DeserializationContextTest extends JsonTestHelper {
     .withMetaDataProvider(metaDataProvider);
 
   @Test
-  void resolve_token() {
-    Token token = otherToken(1, 0, "foo");
-    JsonObject json = Json.object()
+  void shouldResolveToken() {
+    var token = otherToken(1, 0, "foo");
+    var json = Json.object()
       .add("tokenReference", "1:0:1:3");
 
     assertThat(context.fieldToToken(json, "tokenReference")).isSameAs(token);
@@ -47,20 +42,20 @@ class DeserializationContextTest extends JsonTestHelper {
   }
 
   @Test
-  void resolve_token_not_found() {
+  void shouldThrowExceptionWhenTokenNotFound() {
     otherToken(1, 0, "foo");
-    JsonObject json = Json.object()
+    var json = Json.object()
       .add("tokenReference", "7:13:7:20");
 
-    NoSuchElementException e = assertThrows(NoSuchElementException.class,
+    var e = assertThrows(NoSuchElementException.class,
       () -> context.fieldToToken(json, "tokenReference"));
     assertThat(e).hasMessage("Token not found: 7:13:7:20");
   }
 
   @Test
-  void resolve_metadata() {
-    Token token = otherToken(1, 0, "foo");
-    JsonObject json = Json.object()
+  void shouldResolveMetaData() {
+    var token = otherToken(1, 0, "foo");
+    var json = Json.object()
       .add("metaData", "1:0:1:3");
 
     assertThat(context.metaData(json)).isNotNull();
@@ -68,22 +63,22 @@ class DeserializationContextTest extends JsonTestHelper {
   }
 
   @Test
-  void resolve_metadata_not_found() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionForMetaDataWhenNotFound() {
+    var json = Json.object()
       .add("field1", "42");
 
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.metaData(json));
     assertThat(e).hasMessage("Missing non-null value for field 'metaData' at '' member: {\"field1\":\"42\"}");
   }
 
   @Test
-  void object_list() {
-    List<String> nodes = Arrays.asList("A", "B", "C");
-    JsonArray array = Json.array();
+  void shouldReturnListForObjectList() {
+    var nodes = Arrays.asList("A", "B", "C");
+    var array = Json.array();
     nodes.stream().map(value -> Json.object().add("value", value)).forEach(array::add);
 
-    List<String> actual = context.objectList(array, (ctx, object) -> object.getString("value", null));
+    var actual = context.objectList(array, (ctx, object) -> object.getString("value", null));
     assertThat(actual).containsExactly("A", "B", "C");
 
     assertThat(context.objectList(null, (ctx, object) -> object)).isEmpty();
@@ -91,65 +86,66 @@ class DeserializationContextTest extends JsonTestHelper {
   }
 
   @Test
-  void invalid_object_list() {
+  void shouldThrowExceptionForInvalidObjectList() {
     context.pushPath("root");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> context.objectList(Json.value(42), (ctx, object) -> object));
+    var jsonValue = Json.value(42);
+    var e = assertThrows(IllegalStateException.class,
+      () -> context.objectList(jsonValue, (ctx, object) -> object));
     assertThat(e).hasMessage("Expect Array instead of JsonNumber at 'root' member: 42");
   }
 
   @Test
-  void field_to_nullable_string() {
-    JsonObject json = Json.object()
+  void shouldReturnStringForFieldToNullableString() {
+    var json = Json.object()
       .add("field1", "abc");
     assertThat(context.fieldToNullableString(json, "field1")).isEqualTo("abc");
     assertThat(context.fieldToNullableString(json, "field2")).isNull();
   }
 
   @Test
-  void field_to_nullable_invalid_string() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToNullableStringForNotString() {
+    var json = Json.object()
       .add("field1", 42);
     context.pushPath("root");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToNullableString(json, "field1"));
     assertThat(e).hasMessage("Expect String instead of 'JsonNumber' for field 'field1' at 'root' member: {\"field1\":42}");
   }
 
   @Test
-  void field_to_string() {
-    JsonObject json = Json.object()
+  void shouldReturnStringForFieldToString() {
+    var json = Json.object()
       .add("field1", "abc");
     assertThat(context.fieldToString(json, "field1")).isEqualTo("abc");
   }
 
   @Test
-  void field_to_missing_string() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToStringForMissingString() {
+    var json = Json.object()
       .add("field1", "abc");
     context.pushPath("TopLevel");
     context.pushPath("AssignmentExpression");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToString(json, "field2"));
     assertThat(e).hasMessage("Missing non-null value for field 'field2' at 'TopLevel/AssignmentExpression' member: {\"field1\":\"abc\"}");
   }
 
   @Test
-  void field_to_null_string() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToStringForNullString() {
+    var json = Json.object()
       .add("field1", Json.NULL);
     context.pushPath("TopLevel");
     context.pushPath("AssignmentExpression");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToString(json, "field1"));
     assertThat(e).hasMessage("Missing non-null value for field 'field1' at 'TopLevel/AssignmentExpression' member: {\"field1\":null}");
   }
 
   @Test
-  void field_to_range() {
-    JsonObject json = Json.object()
+  void shouldReturnRangeForFieldToRange() {
+    var json = Json.object()
       .add("field1", "1:2:3:4");
-    TextRange range = context.fieldToRange(json, "field1");
+    var range = context.fieldToRange(json, "field1");
     assertThat(range.start().line()).isEqualTo(1);
     assertThat(range.start().lineOffset()).isEqualTo(2);
     assertThat(range.end().line()).isEqualTo(3);
@@ -157,41 +153,67 @@ class DeserializationContextTest extends JsonTestHelper {
   }
 
   @Test
-  void field_to_range_missing() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToRangeWhenFieldIsMissing() {
+    var json = Json.object()
       .add("field1", "1:2:3:4");
     context.pushPath("root");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToRange(json, "field2"));
     assertThat(e).hasMessage("Missing non-null value for field 'field2' at 'root' member: {\"field1\":\"1:2:3:4\"}");
   }
 
   @Test
-  void field_to_int() {
-    JsonObject json = Json.object()
+  void shouldReturnInWhenFieldToTnt() {
+    var json = Json.object()
       .add("field1", 123);
     assertThat(context.fieldToInt(json, "field1")).isEqualTo(123);
   }
 
   @Test
-  void field_to_int_invalid_number() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToIntForInvalidNumber() {
+    var json = Json.object()
       .add("field1", "42");
     context.pushPath("root");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToInt(json, "field1"));
     assertThat(e).hasMessage("Expect Number instead of 'JsonString' for field 'field1' at 'root' member: {\"field1\":\"42\"}");
   }
 
   @Test
-  void field_to_null_int() {
-    JsonObject json = Json.object()
+  void shouldThrowExceptionFieldToIntForJsonNull() {
+    var json = Json.object()
       .add("field1", Json.NULL);
     context.pushPath("TopLevel");
     context.pushPath("AssignmentExpression");
-    IllegalStateException e = assertThrows(IllegalStateException.class,
+    var e = assertThrows(IllegalStateException.class,
       () -> context.fieldToInt(json, "field1"));
     assertThat(e).hasMessage("Missing non-null value for field 'field1' at 'TopLevel/AssignmentExpression' member: {\"field1\":null}");
   }
 
+  @Test
+  void shouldReturnListForStringArray() {
+    var jsonString = Json.array("foo", "bar", "baz");
+    var actual = context.stringList(jsonString, (ctx, value) -> value);
+    assertThat(actual).containsExactly("foo", "bar", "baz");
+  }
+
+  @Test
+  void shouldReturnEmptyListForNull() {
+    var actual = context.stringList(null, (ctx, value) -> value);
+    assertThat(actual).isEmpty();
+  }
+
+  @Test
+  void shouldReturnEmptyListForJsonNull() {
+    var actual = context.stringList(Json.NULL, (ctx, value) -> value);
+    assertThat(actual).isEmpty();
+  }
+
+  @Test
+  void shouldThrowExceptionForStringListWhenNotArray() {
+    var jsonObject = Json.object().add("foo", "bar");
+    var e = assertThrows(IllegalStateException.class,
+      () -> context.stringList(jsonObject, (ctx, value) -> value));
+    assertThat(e).hasMessage("Expect Array instead of JsonObject at '' member: {\"foo\":\"bar\"}");
+  }
 }

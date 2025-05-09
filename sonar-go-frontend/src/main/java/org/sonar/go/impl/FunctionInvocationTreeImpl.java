@@ -24,6 +24,7 @@ import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
 
 import static org.sonar.go.utils.TreeUtils.retrieveLastIdentifier;
 
@@ -32,11 +33,13 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   private static final String UNKNOWN = "UNKNOWN";
   private final Tree memberSelect;
   private final List<Tree> arguments;
+  private final List<Type> returnTypes;
 
-  public FunctionInvocationTreeImpl(TreeMetaData metaData, Tree memberSelect, List<Tree> arguments) {
+  public FunctionInvocationTreeImpl(TreeMetaData metaData, Tree memberSelect, List<Tree> arguments, List<Type> returnTypes) {
     super(metaData);
     this.memberSelect = memberSelect;
     this.arguments = arguments;
+    this.returnTypes = returnTypes;
   }
 
   @Override
@@ -66,6 +69,11 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
       sb.append(functionDeclarationTree.signature());
     }
     return sb.toString();
+  }
+
+  @Override
+  public List<Type> returnTypes() {
+    return returnTypes;
   }
 
   private static String getPackageForMemberSelectExpression(IdentifierTree identifierTree) {

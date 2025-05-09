@@ -5,16 +5,18 @@
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
       {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"2:0::6","type":"KEYWORD"},
+      {"text":"\"fmt\"","textRange":"2:7::12","type":"STRING_LITERAL"},
       {"text":"func","textRange":"3:0::4","type":"KEYWORD"},
-      {"text":"declarationWithElipsis","textRange":"3:5::27"},
-      {"text":"(","textRange":"3:27::28"},
-      {"text":"args","textRange":"3:28::32"},
-      {"text":"...","textRange":"3:33::36"},
-      {"text":"interface","textRange":"3:36::45","type":"KEYWORD"},
-      {"text":"{","textRange":"3:45::46"},
-      {"text":"}","textRange":"3:46::47"},
-      {"text":")","textRange":"3:47::48"},
-      {"text":"{","textRange":"3:49::50"},
+      {"text":"declarationWithEllipsis","textRange":"3:5::28"},
+      {"text":"(","textRange":"3:28::29"},
+      {"text":"args","textRange":"3:29::33"},
+      {"text":"...","textRange":"3:34::37"},
+      {"text":"interface","textRange":"3:37::46","type":"KEYWORD"},
+      {"text":"{","textRange":"3:46::47"},
+      {"text":"}","textRange":"3:47::48"},
+      {"text":")","textRange":"3:48::49"},
+      {"text":"{","textRange":"3:50::51"},
       {"text":"for","textRange":"4:1::4","type":"KEYWORD"},
       {"text":"_","textRange":"4:5::6","type":"KEYWORD"},
       {"text":"arg","textRange":"4:8::11"},
@@ -36,16 +38,16 @@
       {"text":"(","textRange":"9:20::21"},
       {"text":")","textRange":"9:21::22"},
       {"text":"{","textRange":"9:23::24"},
-      {"text":"declarationWithElipsis","textRange":"10:1::23"},
-      {"text":"(","textRange":"10:23::24"},
-      {"text":"1","textRange":"10:24::25"},
-      {"text":"\"example\"","textRange":"10:27::36","type":"STRING_LITERAL"},
-      {"text":",","textRange":"10:25::26"},
-      {"text":"3.14","textRange":"10:38::42"},
-      {"text":",","textRange":"10:36::37"},
-      {"text":"true","textRange":"10:44::48"},
-      {"text":",","textRange":"10:42::43"},
-      {"text":")","textRange":"10:48::49"},
+      {"text":"declarationWithEllipsis","textRange":"10:1::24"},
+      {"text":"(","textRange":"10:24::25"},
+      {"text":"1","textRange":"10:25::26"},
+      {"text":"\"example\"","textRange":"10:28::37","type":"STRING_LITERAL"},
+      {"text":",","textRange":"10:26::27"},
+      {"text":"3.14","textRange":"10:39::43"},
+      {"text":",","textRange":"10:37::38"},
+      {"text":"true","textRange":"10:45::49"},
+      {"text":",","textRange":"10:43::44"},
+      {"text":")","textRange":"10:49::50"},
       {"text":"values","textRange":"11:1::7"},
       {"text":":=","textRange":"11:8::10"},
       {"text":"[","textRange":"11:11::12"},
@@ -62,11 +64,11 @@
       {"text":"false","textRange":"11:42::47"},
       {"text":",","textRange":"11:40::41"},
       {"text":"}","textRange":"11:47::48"},
-      {"text":"declarationWithElipsis","textRange":"12:1::23"},
-      {"text":"(","textRange":"12:23::24"},
-      {"text":"values","textRange":"12:24::30"},
-      {"text":"...","textRange":"12:30::33"},
-      {"text":")","textRange":"12:33::34"},
+      {"text":"declarationWithEllipsis","textRange":"12:1::24"},
+      {"text":"(","textRange":"12:24::25"},
+      {"text":"values","textRange":"12:25::31"},
+      {"text":"...","textRange":"12:31::34"},
+      {"text":")","textRange":"12:34::35"},
       {"text":"}","textRange":"13:0::1"}
     ]
   },
@@ -76,55 +78,61 @@
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
       ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "2:0::12","children":[
+        {"@type": "Native", "metaData": "2:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "2:7::12","path":
+          {"@type": "StringLiteral", "metaData": "2:7::12","value":"\"fmt\"","content":"fmt"},"name":
+          null,"__cfgId":3}
+      ],"__cfgId":4},
       {"@type": "FunctionDeclaration", "metaData": "3:0:7:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::27","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":3},"formalParameters":[
-        {"@type": "Parameter", "metaData": "3:28::47","type":
-          {"@type": "Ellipsis", "metaData": "3:33::47","ellipsis":"3:33::36","element":
-            {"@type": "Native", "metaData": "3:36::47","nativeKind":"Elt(InterfaceType)","children":[
-              {"@type": "Native", "metaData": "3:36::45","nativeKind":"Interface"},
-              {"@type": "Native", "metaData": "3:45::47","nativeKind":"Methods(FieldList)","children":[
-                {"@type": "Native", "metaData": "3:45::46","nativeKind":"Opening"},
-                {"@type": "Native", "metaData": "3:46::47","nativeKind":"Closing"}
-              ],"__cfgId":5}
-            ],"__cfgId":6},"__cfgId":7},"identifier":
-          {"@type": "Identifier", "metaData": "3:28::32","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":4},"__cfgId":8}
-      ],"cfg":{"Blocks":[{"Node":[13,11,12],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[19],"Successors":[1]},{"Node":[0],"Successors":null}]},"body":
-        {"@type": "Block", "metaData": "3:49:7:1","statementOrExpressions":[
+        {"@type": "Identifier", "metaData": "3:5::28","type":"func(args ...interface{})","package":"main","name":"declarationWithEllipsis","id":32,"__cfgId":5},"formalParameters":[
+        {"@type": "Parameter", "metaData": "3:29::48","type":
+          {"@type": "Ellipsis", "metaData": "3:34::48","ellipsis":"3:34::37","element":
+            {"@type": "Native", "metaData": "3:37::48","nativeKind":"Elt(InterfaceType)","children":[
+              {"@type": "Native", "metaData": "3:37::46","nativeKind":"Interface"},
+              {"@type": "Native", "metaData": "3:46::48","nativeKind":"Methods(FieldList)","children":[
+                {"@type": "Native", "metaData": "3:46::47","nativeKind":"Opening"},
+                {"@type": "Native", "metaData": "3:47::48","nativeKind":"Closing"}
+              ],"__cfgId":7}
+            ],"__cfgId":8},"__cfgId":9},"identifier":
+          {"@type": "Identifier", "metaData": "3:29::33","type":"[]interface{}","package":"UNKNOWN","name":"args","id":56,"__cfgId":6},"__cfgId":10}
+      ],"cfg":{"Blocks":[{"Node":[15,13,14],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "3:50:7:1","statementOrExpressions":[
           {"@type": "Loop", "metaData": "4:1:6:2","kind":"FOR","keyword":"4:1::4","condition":
             {"@type": "Native", "metaData": "4:5::25","nativeKind":"RangeHeader","children":[
-              {"@type": "PlaceHolder", "metaData": "4:5::6","placeHolderToken":"4:5::6","__cfgId":11},
+              {"@type": "PlaceHolder", "metaData": "4:5::6","placeHolderToken":"4:5::6","__cfgId":13},
               {"@type": "Native", "metaData": "4:6::7"},
-              {"@type": "Identifier", "metaData": "4:8::11","type":"interface{}","package":"UNKNOWN","name":"arg","id":74,"__cfgId":12},
+              {"@type": "Identifier", "metaData": "4:8::11","type":"interface{}","package":"UNKNOWN","name":"arg","id":87,"__cfgId":14},
               {"@type": "Native", "metaData": "4:12::14","nativeKind":"Tok"},
               {"@type": "Native", "metaData": "4:15::20"},
-              {"@type": "Identifier", "metaData": "4:21::25","type":"[]interface{}","package":"UNKNOWN","name":"args","id":43,"__cfgId":13}
+              {"@type": "Identifier", "metaData": "4:21::25","type":"[]interface{}","package":"UNKNOWN","name":"args","id":56,"__cfgId":15}
             ]},"body":
             {"@type": "Block", "metaData": "4:26:6:2","statementOrExpressions":[
               {"@type": "ExpressionStatement", "metaData": "5:2::18","expression":
-                {"@type": "FunctionInvocation", "metaData": "5:2::18","memberSelect":
+                {"@type": "FunctionInvocation", "metaData": "5:2::18","returnType":["int","error"],"memberSelect":
                   {"@type": "MemberSelect", "metaData": "5:2::13","identifier":
-                    {"@type": "Identifier", "metaData": "5:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":15},"expression":
-                    {"@type": "Identifier", "metaData": "5:2::5","type":"UNKNOWN","package":"UNKNOWN","name":"fmt","id":0,"__cfgId":14},"__cfgId":16},"arguments":[
-                  {"@type": "Identifier", "metaData": "5:14::17","type":"interface{}","package":"UNKNOWN","name":"arg","id":74,"__cfgId":17}
-                ],"__cfgId":18},"__cfgId":19}
-            ],"__cfgId":20},"__cfgId":21}
-        ],"__cfgId":22},"__cfgId":1},
+                    {"@type": "Identifier", "metaData": "5:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":17},"expression":
+                    {"@type": "Identifier", "metaData": "5:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":21,"__cfgId":16},"__cfgId":18},"arguments":[
+                  {"@type": "Identifier", "metaData": "5:14::17","type":"interface{}","package":"UNKNOWN","name":"arg","id":87,"__cfgId":19}
+                ],"__cfgId":20},"__cfgId":21}
+            ],"__cfgId":22},"__cfgId":23}
+        ],"__cfgId":24},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "9:0:13:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::20","type":"func()","package":"main","name":"callWithElipsis","id":124,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,14,18,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "9:5::20","type":"func()","package":"main","name":"callWithElipsis","id":137,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,14,18,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:23:13:1","statementOrExpressions":[
-          {"@type": "ExpressionStatement", "metaData": "10:1::49","expression":
-            {"@type": "FunctionInvocation", "metaData": "10:1::49","memberSelect":
-              {"@type": "Identifier", "metaData": "10:1::23","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":4},"arguments":[
-              {"@type": "IntegerLiteral", "metaData": "10:24::25","value":"1"},
-              {"@type": "StringLiteral", "metaData": "10:27::36","value":"\"example\"","content":"example"},
-              {"@type": "FloatLiteral", "metaData": "10:38::42","value":"3.14"},
-              {"@type": "Literal", "metaData": "10:44::48","value":"true","__cfgId":5}
+          {"@type": "ExpressionStatement", "metaData": "10:1::50","expression":
+            {"@type": "FunctionInvocation", "metaData": "10:1::50","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "10:1::24","type":"func(args ...interface{})","package":"main","name":"declarationWithEllipsis","id":32,"__cfgId":4},"arguments":[
+              {"@type": "IntegerLiteral", "metaData": "10:25::26","value":"1"},
+              {"@type": "StringLiteral", "metaData": "10:28::37","value":"\"example\"","content":"example"},
+              {"@type": "FloatLiteral", "metaData": "10:39::43","value":"3.14"},
+              {"@type": "Literal", "metaData": "10:45::49","value":"true","__cfgId":5}
             ],"__cfgId":6},"__cfgId":7},
           {"@type": "VariableDeclaration", "metaData": "11:1::48","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:11::48","type":
@@ -142,12 +150,12 @@
               {"@type": "Literal", "metaData": "11:42::47","value":"false","__cfgId":12}
             ],"__cfgId":13}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "11:1::7","type":"[]interface{}","package":"UNKNOWN","name":"values","id":195,"__cfgId":8}
+            {"@type": "Identifier", "metaData": "11:1::7","type":"[]interface{}","package":"UNKNOWN","name":"values","id":209,"__cfgId":8}
           ],"__cfgId":14},
-          {"@type": "ExpressionStatement", "metaData": "12:1::34","expression":
-            {"@type": "FunctionInvocation", "metaData": "12:1::34","memberSelect":
-              {"@type": "Identifier", "metaData": "12:1::23","type":"func(args ...interface{})","package":"main","name":"declarationWithElipsis","id":20,"__cfgId":15},"arguments":[
-              {"@type": "Identifier", "metaData": "12:24::30","type":"[]interface{}","package":"UNKNOWN","name":"values","id":195,"__cfgId":16}
+          {"@type": "ExpressionStatement", "metaData": "12:1::35","expression":
+            {"@type": "FunctionInvocation", "metaData": "12:1::35","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "12:1::24","type":"func(args ...interface{})","package":"main","name":"declarationWithEllipsis","id":32,"__cfgId":15},"arguments":[
+              {"@type": "Identifier", "metaData": "12:25::31","type":"[]interface{}","package":"UNKNOWN","name":"values","id":209,"__cfgId":16}
             ],"__cfgId":17},"__cfgId":18}
         ],"__cfgId":19},"__cfgId":1}
     ],"__cfgId":2}

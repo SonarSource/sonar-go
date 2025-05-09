@@ -179,7 +179,7 @@
               {"@type": "Identifier", "metaData": "18:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":9},"__cfgId":11},"__cfgId":12},
           {"@type": "Native", "metaData": "18:17::18","nativeKind":"Semicolon"},
           {"@type": "ExpressionStatement", "metaData": "19:1::17","expression":
-            {"@type": "FunctionInvocation", "metaData": "19:1::17","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "19:1::17","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "19:1::6","type":"UNKNOWN","package":"UNKNOWN","name":"panic","id":0,"__cfgId":13},"arguments":[
               {"@type": "MemberSelect", "metaData": "19:7::16","identifier":
                 {"@type": "Identifier", "metaData": "19:13::16","type":"int","package":"UNKNOWN","name":"age","id":90,"__cfgId":15},"expression":
@@ -198,7 +198,7 @@
             {"@type": "StringLiteral", "metaData": "21:29::32","value":"\"b\"","content":"b"},"operator":"EQUAL","leftHandSide":
             {"@type": "MemberSelect", "metaData": "21:1::26","identifier":
               {"@type": "Identifier", "metaData": "21:20::26","type":"string","package":"UNKNOWN","name":"street","id":38,"__cfgId":29},"expression":
-              {"@type": "FunctionInvocation", "metaData": "21:1::19","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "21:1::19","returnType":["main.Address"],"memberSelect":
                 {"@type": "MemberSelect", "metaData": "21:1::17","identifier":
                   {"@type": "Identifier", "metaData": "21:7::17","type":"func() main.Address","package":"main","name":"getAddress","id":136,"__cfgId":26},"expression":
                   {"@type": "Identifier", "metaData": "21:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":25},"__cfgId":27},"arguments":[],"__cfgId":28},"__cfgId":30},"__cfgId":31},

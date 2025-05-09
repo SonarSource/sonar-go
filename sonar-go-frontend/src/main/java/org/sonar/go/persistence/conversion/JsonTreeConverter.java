@@ -19,6 +19,7 @@ package org.sonar.go.persistence.conversion;
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
 import java.util.List;
+import java.util.function.BiFunction;
 import org.sonar.go.impl.ArrayTypeTreeImpl;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
@@ -60,6 +61,7 @@ import org.sonar.go.impl.ThrowTreeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.go.impl.TypeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.PolymorphicConverter.Deserialize;
@@ -78,6 +80,7 @@ import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
 
 public final class JsonTreeConverter {
@@ -183,6 +186,10 @@ public final class JsonTreeConverter {
   public static final Deserialize<TreeMetaDataProvider> TREE_METADATA_PROVIDER_FROM_JSON = (ctx, json) -> new TreeMetaDataProvider(
     ctx.objectList(json.get(COMMENTS), COMMENT_FROM_JSON),
     ctx.objectList(json.get(TOKENS), TOKEN_FROM_JSON));
+
+  public static final Serialize<Type> TYPE_TO_JSON = (ctx, type) -> Json.value(type.type());
+
+  public static final BiFunction<DeserializationContext, String, Type> TYPE_FROM_JSON = (deserializationContext, text) -> TypeImpl.createFromType(text);
 
   static {
 
@@ -327,12 +334,14 @@ public final class JsonTreeConverter {
 
       (ctx, tree) -> ctx.newTypedObject(tree)
         .add(MEMBER_SELECT, ctx.toJson(tree.memberSelect()))
-        .add(ARGUMENTS, ctx.toJsonArray(tree.arguments())),
+        .add(ARGUMENTS, ctx.toJsonArray(tree.arguments()))
+        .add(RETURN_TYPE, ctx.toJsonArray(tree.returnTypes(), TYPE_TO_JSON)),
 
       (ctx, json) -> new FunctionInvocationTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObject(json, MEMBER_SELECT, Tree.class),
-        ctx.fieldToObjectList(json, ARGUMENTS, Tree.class)));
+        ctx.fieldToObjectList(json, ARGUMENTS, Tree.class),
+        ctx.stringList(json.get(RETURN_TYPE), TYPE_FROM_JSON)));
 
     register(IdentifierTreeImpl.class,
 
@@ -658,5 +667,4 @@ public final class JsonTreeConverter {
     String jsonType = treeClass.getSimpleName().replaceFirst("(TreeImpl|Impl)$", "");
     POLYMORPHIC_CONVERTER.register(treeClass, jsonType, treeToJson, jsonToTree);
   }
-
 }

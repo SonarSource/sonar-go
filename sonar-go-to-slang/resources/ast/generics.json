@@ -549,27 +549,27 @@
             {"@type": "Identifier", "metaData": "32:4::10","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":21}
           ],"__cfgId":28},
           {"@type": "ExpressionStatement", "metaData": "37:4:39:26","expression":
-            {"@type": "FunctionInvocation", "metaData": "37:4:39:26","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "37:4:39:26","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "37:4::14","identifier":
-                {"@type": "Identifier", "metaData": "37:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":30},"expression":
+                {"@type": "Identifier", "metaData": "37:8::14","type":"func(format string, a ...any) (n int, err error)","package":"fmt","name":"Printf","id":0,"__cfgId":30},"expression":
                 {"@type": "Identifier", "metaData": "37:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":29},"__cfgId":31},"arguments":[
               {"@type": "StringLiteral", "metaData": "37:15::46","value":"\"Non-Generic Sums: %v and %v\\n\"","content":"Non-Generic Sums: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "38:8::21","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "38:8::21","returnType":["int64"],"memberSelect":
                 {"@type": "Identifier", "metaData": "38:8::15","type":"func(m map[string]int64) int64","package":"main","name":"SumInts","id":1108,"__cfgId":32},"arguments":[
                 {"@type": "Identifier", "metaData": "38:16::20","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":33}
               ],"__cfgId":34},
-              {"@type": "FunctionInvocation", "metaData": "39:8::25","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "39:8::25","returnType":["float64"],"memberSelect":
                 {"@type": "Identifier", "metaData": "39:8::17","type":"func(m map[string]float64) float64","package":"main","name":"SumFloats","id":1272,"__cfgId":35},"arguments":[
                 {"@type": "Identifier", "metaData": "39:18::24","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":36}
               ],"__cfgId":37}
             ],"__cfgId":38},"__cfgId":39},
           {"@type": "ExpressionStatement", "metaData": "41:4:43:49","expression":
-            {"@type": "FunctionInvocation", "metaData": "41:4:43:49","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "41:4:43:49","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "41:4::14","identifier":
-                {"@type": "Identifier", "metaData": "41:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":41},"expression":
+                {"@type": "Identifier", "metaData": "41:8::14","type":"func(format string, a ...any) (n int, err error)","package":"fmt","name":"Printf","id":0,"__cfgId":41},"expression":
                 {"@type": "Identifier", "metaData": "41:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":40},"__cfgId":42},"arguments":[
               {"@type": "StringLiteral", "metaData": "41:15::42","value":"\"Generic Sums: %v and %v\\n\"","content":"Generic Sums: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "42:8::44","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "42:8::44","returnType":[],"memberSelect":
                 {"@type": "Native", "metaData": "42:8::38","nativeKind":"Fun(IndexListExpr)","children":[
                   {"@type": "Identifier", "metaData": "42:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":1500,"__cfgId":43},
                   {"@type": "Native", "metaData": "42:23::24","nativeKind":"Lbrack"},
@@ -580,7 +580,7 @@
                 ],"__cfgId":46},"arguments":[
                 {"@type": "Identifier", "metaData": "42:39::43","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":47}
               ],"__cfgId":48},
-              {"@type": "FunctionInvocation", "metaData": "43:8::48","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "43:8::48","returnType":[],"memberSelect":
                 {"@type": "Native", "metaData": "43:8::40","nativeKind":"Fun(IndexListExpr)","children":[
                   {"@type": "Identifier", "metaData": "43:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":1500,"__cfgId":49},
                   {"@type": "Native", "metaData": "43:23::24","nativeKind":"Lbrack"},
@@ -593,31 +593,31 @@
               ],"__cfgId":54}
             ],"__cfgId":55},"__cfgId":56},
           {"@type": "ExpressionStatement", "metaData": "45:4:47:32","expression":
-            {"@type": "FunctionInvocation", "metaData": "45:4:47:32","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "45:4:47:32","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "45:4::14","identifier":
-                {"@type": "Identifier", "metaData": "45:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":58},"expression":
+                {"@type": "Identifier", "metaData": "45:8::14","type":"func(format string, a ...any) (n int, err error)","package":"fmt","name":"Printf","id":0,"__cfgId":58},"expression":
                 {"@type": "Identifier", "metaData": "45:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":57},"__cfgId":59},"arguments":[
               {"@type": "StringLiteral", "metaData": "45:15::68","value":"\"Generic Sums, type parameters inferred: %v and %v\\n\"","content":"Generic Sums, type parameters inferred: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "46:8::29","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "46:8::29","returnType":["V"],"memberSelect":
                 {"@type": "Identifier", "metaData": "46:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":1500,"__cfgId":60},"arguments":[
                 {"@type": "Identifier", "metaData": "46:24::28","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":61}
               ],"__cfgId":62},
-              {"@type": "FunctionInvocation", "metaData": "47:8::31","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "47:8::31","returnType":["V"],"memberSelect":
                 {"@type": "Identifier", "metaData": "47:8::23","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":1500,"__cfgId":63},"arguments":[
                 {"@type": "Identifier", "metaData": "47:24::30","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":64}
               ],"__cfgId":65}
             ],"__cfgId":66},"__cfgId":67},
           {"@type": "ExpressionStatement", "metaData": "49:4:51:27","expression":
-            {"@type": "FunctionInvocation", "metaData": "49:4:51:27","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "49:4:51:27","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "49:4::14","identifier":
-                {"@type": "Identifier", "metaData": "49:8::14","type":"UNKNOWN","package":"UNKNOWN","name":"Printf","id":0,"__cfgId":69},"expression":
+                {"@type": "Identifier", "metaData": "49:8::14","type":"func(format string, a ...any) (n int, err error)","package":"fmt","name":"Printf","id":0,"__cfgId":69},"expression":
                 {"@type": "Identifier", "metaData": "49:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":68},"__cfgId":70},"arguments":[
               {"@type": "StringLiteral", "metaData": "49:15::58","value":"\"Generic Sums with Constraint: %v and %v\\n\"","content":"Generic Sums with Constraint: %v and %v\\n"},
-              {"@type": "FunctionInvocation", "metaData": "50:8::24","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "50:8::24","returnType":["V"],"memberSelect":
                 {"@type": "Identifier", "metaData": "50:8::18","type":"func[K comparable, V main.Number](m map[K]V) V","package":"main","name":"SumNumbers","id":1740,"__cfgId":71},"arguments":[
                 {"@type": "Identifier", "metaData": "50:19::23","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":358,"__cfgId":72}
               ],"__cfgId":73},
-              {"@type": "FunctionInvocation", "metaData": "51:8::26","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "51:8::26","returnType":["V"],"memberSelect":
                 {"@type": "Identifier", "metaData": "51:8::18","type":"func[K comparable, V main.Number](m map[K]V) V","package":"main","name":"SumNumbers","id":1740,"__cfgId":74},"arguments":[
                 {"@type": "Identifier", "metaData": "51:19::25","type":"map[string]float64","package":"UNKNOWN","name":"floats","id":483,"__cfgId":75}
               ],"__cfgId":76}

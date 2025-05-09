@@ -1,6 +1,7 @@
 { 
   "treeMetaData": {
     "comments": [
+      {"text":"// the returned type for such expressions is not detected", "contentText":" the returned type for such expressions is not detected", "range":"25:1::58", "contentRange": "25:3::58"}
     ],
     "tokens": [
       {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
@@ -8,57 +9,604 @@
       {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
       {"text":"(","textRange":"3:7::8"},
       {"text":"\"crypto/md5\"","textRange":"4:1::13","type":"STRING_LITERAL"},
-      {"text":")","textRange":"5:0::1"},
-      {"text":"func","textRange":"7:0::4","type":"KEYWORD"},
-      {"text":"fc1","textRange":"7:5::8"},
-      {"text":"(","textRange":"7:8::9"},
-      {"text":"data","textRange":"7:9::13"},
-      {"text":"[","textRange":"7:14::15"},
-      {"text":"byte","textRange":"7:16::20"},
-      {"text":"]","textRange":"7:15::16"},
-      {"text":")","textRange":"7:20::21"},
-      {"text":"{","textRange":"7:22::23"},
-      {"text":"md5","textRange":"8:1::4"},
-      {"text":"Sum","textRange":"8:5::8"},
-      {"text":".","textRange":"8:4::5"},
-      {"text":"(","textRange":"8:8::9"},
-      {"text":"data","textRange":"8:9::13"},
-      {"text":")","textRange":"8:13::14"},
-      {"text":"}","textRange":"9:0::1"}
+      {"text":"\"database/sql\"","textRange":"5:1::15","type":"STRING_LITERAL"},
+      {"text":"\"fmt\"","textRange":"6:1::6","type":"STRING_LITERAL"},
+      {"text":"\"math/rand\"","textRange":"7:1::12","type":"STRING_LITERAL"},
+      {"text":"\"os\"","textRange":"8:1::5","type":"STRING_LITERAL"},
+      {"text":")","textRange":"9:0::1"},
+      {"text":"func","textRange":"11:0::4","type":"KEYWORD"},
+      {"text":"fc1","textRange":"11:5::8"},
+      {"text":"(","textRange":"11:8::9"},
+      {"text":"data","textRange":"11:9::13"},
+      {"text":"[","textRange":"11:14::15"},
+      {"text":"byte","textRange":"11:16::20"},
+      {"text":"]","textRange":"11:15::16"},
+      {"text":")","textRange":"11:20::21"},
+      {"text":"{","textRange":"11:22::23"},
+      {"text":"md5","textRange":"12:1::4"},
+      {"text":"Sum","textRange":"12:5::8"},
+      {"text":".","textRange":"12:4::5"},
+      {"text":"(","textRange":"12:8::9"},
+      {"text":"data","textRange":"12:9::13"},
+      {"text":")","textRange":"12:13::14"},
+      {"text":"}","textRange":"13:0::1"},
+      {"text":"func","textRange":"15:0::4","type":"KEYWORD"},
+      {"text":"fc2","textRange":"15:5::8"},
+      {"text":"(","textRange":"15:8::9"},
+      {"text":")","textRange":"15:9::10"},
+      {"text":"{","textRange":"15:11::12"},
+      {"text":"fc3","textRange":"16:1::4"},
+      {"text":"(","textRange":"16:4::5"},
+      {"text":")","textRange":"16:5::6"},
+      {"text":"Query","textRange":"16:7::12"},
+      {"text":".","textRange":"16:6::7"},
+      {"text":"(","textRange":"16:12::13"},
+      {"text":"\"select * from foo\"","textRange":"16:13::32","type":"STRING_LITERAL"},
+      {"text":")","textRange":"16:32::33"},
+      {"text":"}","textRange":"17:0::1"},
+      {"text":"func","textRange":"19:0::4","type":"KEYWORD"},
+      {"text":"fc3","textRange":"19:5::8"},
+      {"text":"(","textRange":"19:8::9"},
+      {"text":")","textRange":"19:9::10"},
+      {"text":"*","textRange":"19:11::12"},
+      {"text":"sql","textRange":"19:12::15"},
+      {"text":"DB","textRange":"19:16::18"},
+      {"text":".","textRange":"19:15::16"},
+      {"text":"{","textRange":"19:19::20"},
+      {"text":"var","textRange":"20:1::4","type":"KEYWORD"},
+      {"text":"db","textRange":"20:5::7"},
+      {"text":"*","textRange":"20:8::9"},
+      {"text":"sql","textRange":"20:9::12"},
+      {"text":"DB","textRange":"20:13::15"},
+      {"text":".","textRange":"20:12::13"},
+      {"text":"nil","textRange":"20:18::21"},
+      {"text":"=","textRange":"20:16::17"},
+      {"text":"return","textRange":"21:1::7","type":"KEYWORD"},
+      {"text":"db","textRange":"21:8::10"},
+      {"text":"}","textRange":"22:0::1"},
+      {"text":"func","textRange":"24:0::4","type":"KEYWORD"},
+      {"text":"fc4","textRange":"24:5::8"},
+      {"text":"(","textRange":"24:8::9"},
+      {"text":")","textRange":"24:9::10"},
+      {"text":"[","textRange":"24:11::12"},
+      {"text":"byte","textRange":"24:13::17"},
+      {"text":"]","textRange":"24:12::13"},
+      {"text":"{","textRange":"24:18::19"},
+      {"text":"s","textRange":"26:1::2"},
+      {"text":":=","textRange":"26:3::5"},
+      {"text":"make","textRange":"26:6::10"},
+      {"text":"(","textRange":"26:10::11"},
+      {"text":"[","textRange":"26:11::12"},
+      {"text":"byte","textRange":"26:13::17"},
+      {"text":"]","textRange":"26:12::13"},
+      {"text":"2","textRange":"26:19::20"},
+      {"text":",","textRange":"26:17::18"},
+      {"text":"4","textRange":"26:22::23"},
+      {"text":",","textRange":"26:20::21"},
+      {"text":")","textRange":"26:23::24"},
+      {"text":"a0","textRange":"27:1::3"},
+      {"text":":=","textRange":"27:4::6"},
+      {"text":"[","textRange":"27:7::8"},
+      {"text":"0","textRange":"27:8::9"},
+      {"text":"byte","textRange":"27:10::14"},
+      {"text":"]","textRange":"27:9::10"},
+      {"text":"(","textRange":"27:14::15"},
+      {"text":"s","textRange":"27:15::16"},
+      {"text":")","textRange":"27:16::17"},
+      {"text":"ints","textRange":"28:1::5"},
+      {"text":":=","textRange":"28:6::8"},
+      {"text":"map","textRange":"28:9::12","type":"KEYWORD"},
+      {"text":"string","textRange":"28:13::19"},
+      {"text":"[","textRange":"28:12::13"},
+      {"text":"int64","textRange":"28:20::25"},
+      {"text":"]","textRange":"28:19::20"},
+      {"text":"{","textRange":"28:25::26"},
+      {"text":"\"first\"","textRange":"29:2::9","type":"STRING_LITERAL"},
+      {"text":":","textRange":"29:9::10"},
+      {"text":"34","textRange":"29:11::13"},
+      {"text":"\"second\"","textRange":"30:2::10","type":"STRING_LITERAL"},
+      {"text":":","textRange":"30:10::11"},
+      {"text":"12","textRange":"30:12::14"},
+      {"text":",","textRange":"29:13::14"},
+      {"text":"}","textRange":"31:1::2"},
+      {"text":",","textRange":"30:14::15"},
+      {"text":"SumIntsOrFloats","textRange":"32:1::16"},
+      {"text":"[","textRange":"32:16::17"},
+      {"text":"string","textRange":"32:17::23"},
+      {"text":"int64","textRange":"32:25::30"},
+      {"text":",","textRange":"32:23::24"},
+      {"text":"]","textRange":"32:30::31"},
+      {"text":"(","textRange":"32:31::32"},
+      {"text":"ints","textRange":"32:32::36"},
+      {"text":")","textRange":"32:36::37"},
+      {"text":"funcVar","textRange":"34:1::8"},
+      {"text":":=","textRange":"34:9::11"},
+      {"text":"func","textRange":"34:12::16","type":"KEYWORD"},
+      {"text":"(","textRange":"34:16::17"},
+      {"text":"str","textRange":"34:17::20"},
+      {"text":"string","textRange":"34:21::27"},
+      {"text":")","textRange":"34:27::28"},
+      {"text":"{","textRange":"34:29::30"},
+      {"text":"fmt","textRange":"35:2::5"},
+      {"text":"Println","textRange":"35:6::13"},
+      {"text":".","textRange":"35:5::6"},
+      {"text":"(","textRange":"35:13::14"},
+      {"text":"\"Hi\"","textRange":"35:14::18","type":"STRING_LITERAL"},
+      {"text":"str","textRange":"35:20::23"},
+      {"text":",","textRange":"35:18::19"},
+      {"text":"\"I'm an anonymous function assigned to a variable.\"","textRange":"35:25::76","type":"STRING_LITERAL"},
+      {"text":",","textRange":"35:23::24"},
+      {"text":")","textRange":"35:76::77"},
+      {"text":"}","textRange":"36:1::2"},
+      {"text":"funcVar","textRange":"38:1::8"},
+      {"text":"(","textRange":"38:8::9"},
+      {"text":"\"Bob\"","textRange":"38:9::14","type":"STRING_LITERAL"},
+      {"text":"+","textRange":"38:15::16"},
+      {"text":"fmt","textRange":"38:17::20"},
+      {"text":"Sprint","textRange":"38:21::27"},
+      {"text":".","textRange":"38:20::21"},
+      {"text":"(","textRange":"38:27::28"},
+      {"text":"1","textRange":"38:28::29"},
+      {"text":")","textRange":"38:29::30"},
+      {"text":")","textRange":"38:30::31"},
+      {"text":"msg","textRange":"40:1::4"},
+      {"text":":=","textRange":"40:5::7"},
+      {"text":"func","textRange":"40:8::12","type":"KEYWORD"},
+      {"text":"(","textRange":"40:12::13"},
+      {"text":"str","textRange":"40:13::16"},
+      {"text":"string","textRange":"40:17::23"},
+      {"text":")","textRange":"40:23::24"},
+      {"text":"string","textRange":"40:25::31"},
+      {"text":"{","textRange":"40:32::33"},
+      {"text":"return","textRange":"41:2::8","type":"KEYWORD"},
+      {"text":"\"Hi \"","textRange":"41:9::14","type":"STRING_LITERAL"},
+      {"text":"+","textRange":"41:15::16"},
+      {"text":"str","textRange":"41:17::20"},
+      {"text":"+","textRange":"41:21::22"},
+      {"text":"\" I'm an anonymous function returning a string.\"","textRange":"41:23::71","type":"STRING_LITERAL"},
+      {"text":"}","textRange":"42:1::2"},
+      {"text":"(","textRange":"42:2::3"},
+      {"text":"\"Ricky\"","textRange":"42:3::10","type":"STRING_LITERAL"},
+      {"text":")","textRange":"42:10::11"},
+      {"text":"return","textRange":"44:1::7","type":"KEYWORD"},
+      {"text":"s","textRange":"44:8::9"},
+      {"text":"}","textRange":"45:0::1"},
+      {"text":"func","textRange":"47:0::4","type":"KEYWORD"},
+      {"text":"fc5","textRange":"47:5::8"},
+      {"text":"(","textRange":"47:8::9"},
+      {"text":")","textRange":"47:9::10"},
+      {"text":"{","textRange":"47:11::12"},
+      {"text":"n","textRange":"48:1::2"},
+      {"text":"err","textRange":"48:4::7"},
+      {"text":",","textRange":"48:2::3"},
+      {"text":":=","textRange":"48:8::10"},
+      {"text":"fmt","textRange":"48:11::14"},
+      {"text":"Fprintf","textRange":"48:15::22"},
+      {"text":".","textRange":"48:14::15"},
+      {"text":"(","textRange":"48:22::23"},
+      {"text":"os","textRange":"48:23::25"},
+      {"text":"Stderr","textRange":"48:26::32"},
+      {"text":".","textRange":"48:25::26"},
+      {"text":"\"foo\"","textRange":"48:34::39","type":"STRING_LITERAL"},
+      {"text":",","textRange":"48:32::33"},
+      {"text":")","textRange":"48:39::40"},
+      {"text":"x","textRange":"49:1::2"},
+      {"text":":=","textRange":"49:3::5"},
+      {"text":"rand","textRange":"49:6::10"},
+      {"text":"Int","textRange":"49:11::14"},
+      {"text":".","textRange":"49:10::11"},
+      {"text":"(","textRange":"49:14::15"},
+      {"text":")","textRange":"49:15::16"},
+      {"text":"}","textRange":"50:0::1"},
+      {"text":"func","textRange":"52:0::4","type":"KEYWORD"},
+      {"text":"SumIntsOrFloats","textRange":"52:5::20"},
+      {"text":"[","textRange":"52:20::21"},
+      {"text":"K","textRange":"52:21::22"},
+      {"text":"comparable","textRange":"52:23::33"},
+      {"text":"V","textRange":"52:35::36"},
+      {"text":"int64","textRange":"52:37::42"},
+      {"text":"|","textRange":"52:43::44"},
+      {"text":"float64","textRange":"52:45::52"},
+      {"text":",","textRange":"52:33::34"},
+      {"text":"]","textRange":"52:52::53"},
+      {"text":"(","textRange":"52:53::54"},
+      {"text":"m","textRange":"52:54::55"},
+      {"text":"map","textRange":"52:56::59","type":"KEYWORD"},
+      {"text":"K","textRange":"52:60::61"},
+      {"text":"[","textRange":"52:59::60"},
+      {"text":"V","textRange":"52:62::63"},
+      {"text":"]","textRange":"52:61::62"},
+      {"text":")","textRange":"52:63::64"},
+      {"text":"V","textRange":"52:65::66"},
+      {"text":"{","textRange":"52:67::68"},
+      {"text":"var","textRange":"53:1::4","type":"KEYWORD"},
+      {"text":"s","textRange":"53:5::6"},
+      {"text":"V","textRange":"53:7::8"},
+      {"text":"for","textRange":"54:1::4","type":"KEYWORD"},
+      {"text":"_","textRange":"54:5::6","type":"KEYWORD"},
+      {"text":"v","textRange":"54:8::9"},
+      {"text":",","textRange":"54:6::7"},
+      {"text":":=","textRange":"54:10::12"},
+      {"text":"m","textRange":"54:19::20"},
+      {"text":"range","textRange":"54:13::18","type":"KEYWORD"},
+      {"text":"{","textRange":"54:21::22"},
+      {"text":"s","textRange":"55:2::3"},
+      {"text":"+=","textRange":"55:4::6"},
+      {"text":"v","textRange":"55:7::8"},
+      {"text":"}","textRange":"56:1::2"},
+      {"text":"return","textRange":"57:1::7","type":"KEYWORD"},
+      {"text":"s","textRange":"57:8::9"},
+      {"text":"}","textRange":"58:0::1"},
+      {"text":"func","textRange":"60:0::4","type":"KEYWORD"},
+      {"text":"fc6","textRange":"60:5::8"},
+      {"text":"(","textRange":"60:8::9"},
+      {"text":")","textRange":"60:9::10"},
+      {"text":"{","textRange":"60:11::12"},
+      {"text":"Println","textRange":"61:1::8"},
+      {"text":"(","textRange":"61:8::9"},
+      {"text":"\"Hello\"","textRange":"61:9::16","type":"STRING_LITERAL"},
+      {"text":")","textRange":"61:16::17"},
+      {"text":"}","textRange":"62:0::1"},
+      {"text":"func","textRange":"64:0::4","type":"KEYWORD"},
+      {"text":"Println","textRange":"64:5::12"},
+      {"text":"(","textRange":"64:12::13"},
+      {"text":"text","textRange":"64:13::17"},
+      {"text":"string","textRange":"64:18::24"},
+      {"text":")","textRange":"64:24::25"},
+      {"text":"string","textRange":"64:26::32"},
+      {"text":"{","textRange":"64:33::34"},
+      {"text":"return","textRange":"65:1::7","type":"KEYWORD"},
+      {"text":"\"Println \"","textRange":"65:8::18","type":"STRING_LITERAL"},
+      {"text":"+","textRange":"65:19::20"},
+      {"text":"text","textRange":"65:21::25"},
+      {"text":"}","textRange":"66:0::1"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:10:0","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:67:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
       ],"__cfgId":2},
-      {"@type": "ImportDeclaration", "metaData": "3:0:5:1","children":[
+      {"@type": "ImportDeclaration", "metaData": "3:0:9:1","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
         {"@type": "Native", "metaData": "3:7::8","nativeKind":"Lparen"},
         {"@type": "ImportSpecification", "metaData": "4:1::13","path":
           {"@type": "StringLiteral", "metaData": "4:1::13","value":"\"crypto/md5\"","content":"crypto/md5"},"name":
           null,"__cfgId":3},
-        {"@type": "Native", "metaData": "5:0::1","nativeKind":"Rparen"}
-      ],"__cfgId":4},
-      {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","typeParameters":
+        {"@type": "ImportSpecification", "metaData": "5:1::15","path":
+          {"@type": "StringLiteral", "metaData": "5:1::15","value":"\"database/sql\"","content":"database/sql"},"name":
+          null,"__cfgId":4},
+        {"@type": "ImportSpecification", "metaData": "6:1::6","path":
+          {"@type": "StringLiteral", "metaData": "6:1::6","value":"\"fmt\"","content":"fmt"},"name":
+          null,"__cfgId":5},
+        {"@type": "ImportSpecification", "metaData": "7:1::12","path":
+          {"@type": "StringLiteral", "metaData": "7:1::12","value":"\"math/rand\"","content":"math/rand"},"name":
+          null,"__cfgId":6},
+        {"@type": "ImportSpecification", "metaData": "8:1::5","path":
+          {"@type": "StringLiteral", "metaData": "8:1::5","value":"\"os\"","content":"os"},"name":
+          null,"__cfgId":7},
+        {"@type": "Native", "metaData": "9:0::1","nativeKind":"Rparen"}
+      ],"__cfgId":8},
+      {"@type": "FunctionDeclaration", "metaData": "11:0:13:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::8","type":"func(data []byte)","package":"main","name":"fc1","id":46,"__cfgId":5},"formalParameters":[
-        {"@type": "Parameter", "metaData": "7:9::20","type":
-          {"@type": "ArrayType", "metaData": "7:14::20","length":null,"element":
-            {"@type": "Identifier", "metaData": "7:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},"identifier":
-          {"@type": "Identifier", "metaData": "7:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":6},"__cfgId":9}
-      ],"cfg":{"Blocks":[{"Node":[17,0],"Successors":null}]},"body":
-        {"@type": "Block", "metaData": "7:22:9:1","statementOrExpressions":[
-          {"@type": "ExpressionStatement", "metaData": "8:1::14","expression":
-            {"@type": "FunctionInvocation", "metaData": "8:1::14","memberSelect":
-              {"@type": "MemberSelect", "metaData": "8:1::8","identifier":
-                {"@type": "Identifier", "metaData": "8:5::8","type":"func(data []byte) [16]byte","package":"crypto/md5","name":"Sum","id":0,"__cfgId":13},"expression":
-                {"@type": "Identifier", "metaData": "8:1::4","type":"UNKNOWN","package":"crypto/md5","name":"md5","id":25,"__cfgId":12},"__cfgId":14},"arguments":[
-              {"@type": "Identifier", "metaData": "8:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":50,"__cfgId":15}
-            ],"__cfgId":16},"__cfgId":17}
-        ],"__cfgId":18},"__cfgId":1}
+        {"@type": "Identifier", "metaData": "11:5::8","type":"func(data []byte)","package":"main","name":"fc1","id":88,"__cfgId":9},"formalParameters":[
+        {"@type": "Parameter", "metaData": "11:9::20","type":
+          {"@type": "ArrayType", "metaData": "11:14::20","length":null,"element":
+            {"@type": "Identifier", "metaData": "11:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":11},"__cfgId":12},"identifier":
+          {"@type": "Identifier", "metaData": "11:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":92,"__cfgId":10},"__cfgId":13}
+      ],"cfg":{"Blocks":[{"Node":[21,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "11:22:13:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "12:1::14","expression":
+            {"@type": "FunctionInvocation", "metaData": "12:1::14","returnType":["[16]byte"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "12:1::8","identifier":
+                {"@type": "Identifier", "metaData": "12:5::8","type":"func(data []byte) [16]byte","package":"crypto/md5","name":"Sum","id":0,"__cfgId":17},"expression":
+                {"@type": "Identifier", "metaData": "12:1::4","type":"UNKNOWN","package":"crypto/md5","name":"md5","id":25,"__cfgId":16},"__cfgId":18},"arguments":[
+              {"@type": "Identifier", "metaData": "12:9::13","type":"[]byte","package":"UNKNOWN","name":"data","id":92,"__cfgId":19}
+            ],"__cfgId":20},"__cfgId":21}
+        ],"__cfgId":22},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "15:0:17:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "15:5::8","type":"func()","package":"main","name":"fc2","id":130,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "15:11:17:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "16:1::33","expression":
+            {"@type": "FunctionInvocation", "metaData": "16:1::33","returnType":["*database/sql.Rows","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "16:1::12","identifier":
+                {"@type": "Identifier", "metaData": "16:7::12","type":"func(query string, args ...any) (*database/sql.Rows, error)","package":"database/sql","name":"Query","id":0,"__cfgId":6},"expression":
+                {"@type": "FunctionInvocation", "metaData": "16:1::6","returnType":["*database/sql.DB"],"memberSelect":
+                  {"@type": "Identifier", "metaData": "16:1::4","type":"func() *database/sql.DB","package":"main","name":"fc3","id":180,"__cfgId":4},"arguments":[],"__cfgId":5},"__cfgId":7},"arguments":[
+              {"@type": "StringLiteral", "metaData": "16:13::32","value":"\"select * from foo\"","content":"select * from foo"}
+            ],"__cfgId":8},"__cfgId":9}
+        ],"__cfgId":10},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "19:0:22:1","typeParameters":
+        null,"returnType":
+        {"@type": "Native", "metaData": "19:11::18","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "19:11::18","nativeKind":"[0](Field)","children":[
+            {"@type": "StarExpression", "metaData": "19:11::18","expression":
+              {"@type": "MemberSelect", "metaData": "19:12::18","identifier":
+                {"@type": "Identifier", "metaData": "19:16::18","type":"database/sql.DB","package":"database/sql","name":"DB","id":0,"__cfgId":5},"expression":
+                {"@type": "Identifier", "metaData": "19:12::15","type":"UNKNOWN","package":"database/sql","name":"sql","id":39,"__cfgId":4},"__cfgId":6},"__cfgId":7}
+          ],"__cfgId":8}
+        ],"__cfgId":9},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "19:5::8","type":"func() *database/sql.DB","package":"main","name":"fc3","id":180,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[16,18],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "19:19:22:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "20:1::21","type":
+            {"@type": "StarExpression", "metaData": "20:8::15","expression":
+              {"@type": "MemberSelect", "metaData": "20:9::15","identifier":
+                {"@type": "Identifier", "metaData": "20:13::15","type":"database/sql.DB","package":"database/sql","name":"DB","id":0,"__cfgId":12},"expression":
+                {"@type": "Identifier", "metaData": "20:9::12","type":"UNKNOWN","package":"database/sql","name":"sql","id":39,"__cfgId":11},"__cfgId":13},"__cfgId":14},"isVal":false,"initializers":[
+            {"@type": "Literal", "metaData": "20:18::21","value":"nil","__cfgId":15}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "20:5::7","type":"*database/sql.DB","package":"UNKNOWN","name":"db","id":201,"__cfgId":10}
+          ],"__cfgId":16},
+          {"@type": "Return", "metaData": "21:1::10","keyword":"21:1::7","expressions":[
+            {"@type": "Identifier", "metaData": "21:8::10","type":"*database/sql.DB","package":"UNKNOWN","name":"db","id":201,"__cfgId":17}
+          ],"body":
+            {"@type": "Identifier", "metaData": "21:8::10","type":"*database/sql.DB","package":"UNKNOWN","name":"db","id":201,"__cfgId":17},"__cfgId":18}
+        ],"__cfgId":19},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "24:0:45:1","typeParameters":
+        null,"returnType":
+        {"@type": "Native", "metaData": "24:11::17","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "24:11::17","nativeKind":"[0](Field)","children":[
+            {"@type": "ArrayType", "metaData": "24:11::17","length":null,"element":
+              {"@type": "Identifier", "metaData": "24:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":4},"__cfgId":5}
+          ],"__cfgId":6}
+        ],"__cfgId":7},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "24:5::8","type":"func() []byte","package":"main","name":"fc4","id":237,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,27,34,49,57,74,76],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "24:18:45:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "26:1::24","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "26:6::24","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "26:6::10","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":9},"arguments":[
+              {"@type": "ArrayType", "metaData": "26:11::17","length":null,"element":
+                {"@type": "Identifier", "metaData": "26:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":10},"__cfgId":11},
+              {"@type": "IntegerLiteral", "metaData": "26:19::20","value":"2"},
+              {"@type": "IntegerLiteral", "metaData": "26:22::23","value":"4"}
+            ],"__cfgId":12}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "26:1::2","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":8}
+          ],"__cfgId":13},
+          {"@type": "VariableDeclaration", "metaData": "27:1::17","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "27:7::17","returnType":[],"memberSelect":
+              {"@type": "ArrayType", "metaData": "27:7::14","length":
+                {"@type": "IntegerLiteral", "metaData": "27:8::9","value":"0"},"element":
+                {"@type": "Identifier", "metaData": "27:10::14","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":15},"__cfgId":16},"arguments":[
+              {"@type": "Identifier", "metaData": "27:15::16","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":17}
+            ],"__cfgId":18}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "27:1::3","type":"[0]byte","package":"UNKNOWN","name":"a0","id":337,"__cfgId":14}
+          ],"__cfgId":19},
+          {"@type": "VariableDeclaration", "metaData": "28:1:31:2","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "28:9:31:2","type":
+              {"@type": "Native", "metaData": "28:9::25","nativeKind":"Type(MapType)","children":[
+                {"@type": "Native", "metaData": "28:9::12","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "28:12::13"},
+                {"@type": "Identifier", "metaData": "28:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":21},
+                {"@type": "Native", "metaData": "28:19::20"},
+                {"@type": "Identifier", "metaData": "28:20::25","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":22}
+              ],"__cfgId":23},"elements":[
+              {"@type": "KeyValue", "metaData": "29:2::13","value":
+                {"@type": "IntegerLiteral", "metaData": "29:11::13","value":"34"},"key":
+                {"@type": "StringLiteral", "metaData": "29:2::9","value":"\"first\"","content":"first"},"__cfgId":24},
+              {"@type": "KeyValue", "metaData": "30:2::14","value":
+                {"@type": "IntegerLiteral", "metaData": "30:12::14","value":"12"},"key":
+                {"@type": "StringLiteral", "metaData": "30:2::10","value":"\"second\"","content":"second"},"__cfgId":25}
+            ],"__cfgId":26}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "28:1::5","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":355,"__cfgId":20}
+          ],"__cfgId":27},
+          {"@type": "ExpressionStatement", "metaData": "32:1::37","expression":
+            {"@type": "FunctionInvocation", "metaData": "32:1::37","returnType":[],"memberSelect":
+              {"@type": "Native", "metaData": "32:1::31","nativeKind":"Fun(IndexListExpr)","children":[
+                {"@type": "Identifier", "metaData": "32:1::16","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":28},
+                {"@type": "Native", "metaData": "32:16::17","nativeKind":"Lbrack"},
+                {"@type": "Identifier", "metaData": "32:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":29},
+                {"@type": "Native", "metaData": "32:23::24"},
+                {"@type": "Identifier", "metaData": "32:25::30","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":30},
+                {"@type": "Native", "metaData": "32:30::31","nativeKind":"Rbrack"}
+              ],"__cfgId":31},"arguments":[
+              {"@type": "Identifier", "metaData": "32:32::36","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":355,"__cfgId":32}
+            ],"__cfgId":33},"__cfgId":34},
+          {"@type": "VariableDeclaration", "metaData": "34:1:36:2","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionDeclaration", "metaData": "34:12:36:2","typeParameters":
+              null,"returnType":
+              null,"receiver":null,"formalParameters":[
+              {"@type": "Parameter", "metaData": "34:17::27","type":
+                {"@type": "Identifier", "metaData": "34:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":37},"identifier":
+                {"@type": "Identifier", "metaData": "34:17::20","type":"string","package":"UNKNOWN","name":"str","id":471,"__cfgId":36},"__cfgId":38}
+            ],"cfg":{"Blocks":[{"Node":[46,0],"Successors":null}]},"body":
+              {"@type": "Block", "metaData": "34:29:36:2","statementOrExpressions":[
+                {"@type": "ExpressionStatement", "metaData": "35:2::77","expression":
+                  {"@type": "FunctionInvocation", "metaData": "35:2::77","returnType":["int","error"],"memberSelect":
+                    {"@type": "MemberSelect", "metaData": "35:2::13","identifier":
+                      {"@type": "Identifier", "metaData": "35:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":42},"expression":
+                      {"@type": "Identifier", "metaData": "35:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":55,"__cfgId":41},"__cfgId":43},"arguments":[
+                    {"@type": "StringLiteral", "metaData": "35:14::18","value":"\"Hi\"","content":"Hi"},
+                    {"@type": "Identifier", "metaData": "35:20::23","type":"string","package":"UNKNOWN","name":"str","id":471,"__cfgId":44},
+                    {"@type": "StringLiteral", "metaData": "35:25::76","value":"\"I'm an anonymous function assigned to a variable.\"","content":"I'm an anonymous function assigned to a variable."}
+                  ],"__cfgId":45},"__cfgId":46}
+              ],"__cfgId":47},"__cfgId":48}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "34:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":455,"__cfgId":35}
+          ],"__cfgId":49},
+          {"@type": "ExpressionStatement", "metaData": "38:1::31","expression":
+            {"@type": "FunctionInvocation", "metaData": "38:1::31","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "38:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":455,"__cfgId":50},"arguments":[
+              {"@type": "BinaryExpression", "metaData": "38:9::30","rightOperand":
+                {"@type": "FunctionInvocation", "metaData": "38:17::30","returnType":["string"],"memberSelect":
+                  {"@type": "MemberSelect", "metaData": "38:17::27","identifier":
+                    {"@type": "Identifier", "metaData": "38:21::27","type":"func(a ...any) string","package":"fmt","name":"Sprint","id":0,"__cfgId":52},"expression":
+                    {"@type": "Identifier", "metaData": "38:17::20","type":"UNKNOWN","package":"fmt","name":"fmt","id":55,"__cfgId":51},"__cfgId":53},"arguments":[
+                  {"@type": "IntegerLiteral", "metaData": "38:28::29","value":"1"}
+                ],"__cfgId":54},"operatorToken":"38:15::16","operator":"PLUS","leftOperand":
+                {"@type": "StringLiteral", "metaData": "38:9::14","value":"\"Bob\"","content":"Bob"},"__cfgId":55}
+            ],"__cfgId":56},"__cfgId":57},
+          {"@type": "VariableDeclaration", "metaData": "40:1:42:11","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "40:8:42:11","returnType":[],"memberSelect":
+              {"@type": "FunctionDeclaration", "metaData": "40:8:42:2","typeParameters":
+                null,"returnType":
+                {"@type": "Native", "metaData": "40:25::31","nativeKind":"Results(FieldList)","children":[
+                  {"@type": "Native", "metaData": "40:25::31","nativeKind":"[0](Field)","children":[
+                    {"@type": "Identifier", "metaData": "40:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":64}
+                  ],"__cfgId":65}
+                ],"__cfgId":66},"receiver":null,"formalParameters":[
+                {"@type": "Parameter", "metaData": "40:13::23","type":
+                  {"@type": "Identifier", "metaData": "40:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":60},"identifier":
+                  {"@type": "Identifier", "metaData": "40:13::16","type":"string","package":"UNKNOWN","name":"str","id":613,"__cfgId":59},"__cfgId":61}
+              ],"cfg":{"Blocks":[{"Node":[70],"Successors":null},{"Node":null,"Successors":null}]},"body":
+                {"@type": "Block", "metaData": "40:32:42:2","statementOrExpressions":[
+                  {"@type": "Return", "metaData": "41:2::71","keyword":"41:2::8","expressions":[
+                    {"@type": "BinaryExpression", "metaData": "41:9::71","rightOperand":
+                      {"@type": "StringLiteral", "metaData": "41:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"41:21::22","operator":"PLUS","leftOperand":
+                      {"@type": "BinaryExpression", "metaData": "41:9::20","rightOperand":
+                        {"@type": "Identifier", "metaData": "41:17::20","type":"string","package":"UNKNOWN","name":"str","id":613,"__cfgId":67},"operatorToken":"41:15::16","operator":"PLUS","leftOperand":
+                        {"@type": "StringLiteral", "metaData": "41:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":68},"__cfgId":69}
+                  ],"body":
+                    {"@type": "BinaryExpression", "metaData": "41:9::71","rightOperand":
+                      {"@type": "StringLiteral", "metaData": "41:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"41:21::22","operator":"PLUS","leftOperand":
+                      {"@type": "BinaryExpression", "metaData": "41:9::20","rightOperand":
+                        {"@type": "Identifier", "metaData": "41:17::20","type":"string","package":"UNKNOWN","name":"str","id":613,"__cfgId":67},"operatorToken":"41:15::16","operator":"PLUS","leftOperand":
+                        {"@type": "StringLiteral", "metaData": "41:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":68},"__cfgId":69},"__cfgId":70}
+                ],"__cfgId":71},"__cfgId":72},"arguments":[
+              {"@type": "StringLiteral", "metaData": "42:3::10","value":"\"Ricky\"","content":"Ricky"}
+            ],"__cfgId":73}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "40:1::4","type":"string","package":"UNKNOWN","name":"msg","id":601,"__cfgId":58}
+          ],"__cfgId":74},
+          {"@type": "Return", "metaData": "44:1::9","keyword":"44:1::7","expressions":[
+            {"@type": "Identifier", "metaData": "44:8::9","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":75}
+          ],"body":
+            {"@type": "Identifier", "metaData": "44:8::9","type":"[]byte","package":"UNKNOWN","name":"s","id":312,"__cfgId":75},"__cfgId":76}
+        ],"__cfgId":77},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "47:0:50:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "47:5::8","type":"func()","package":"main","name":"fc5","id":737,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "47:11:50:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "48:1::40","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "48:11::40","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "48:11::22","identifier":
+                {"@type": "Identifier", "metaData": "48:15::22","type":"func(w io.Writer, format string, a ...any) (n int, err error)","package":"fmt","name":"Fprintf","id":0,"__cfgId":7},"expression":
+                {"@type": "Identifier", "metaData": "48:11::14","type":"UNKNOWN","package":"fmt","name":"fmt","id":55,"__cfgId":6},"__cfgId":8},"arguments":[
+              {"@type": "MemberSelect", "metaData": "48:23::32","identifier":
+                {"@type": "Identifier", "metaData": "48:26::32","type":"*os.File","package":"UNKNOWN","name":"Stderr","id":0,"__cfgId":10},"expression":
+                {"@type": "Identifier", "metaData": "48:23::25","type":"UNKNOWN","package":"os","name":"os","id":75,"__cfgId":9},"__cfgId":11},
+              {"@type": "StringLiteral", "metaData": "48:34::39","value":"\"foo\"","content":"foo"}
+            ],"__cfgId":12}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "48:1::2","type":"int","package":"UNKNOWN","name":"n","id":746,"__cfgId":4},
+            {"@type": "Identifier", "metaData": "48:4::7","type":"error","package":"UNKNOWN","name":"err","id":749,"__cfgId":5}
+          ],"__cfgId":13},
+          {"@type": "VariableDeclaration", "metaData": "49:1::16","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "49:6::16","returnType":["int"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "49:6::14","identifier":
+                {"@type": "Identifier", "metaData": "49:11::14","type":"func() int","package":"math/rand","name":"Int","id":0,"__cfgId":16},"expression":
+                {"@type": "Identifier", "metaData": "49:6::10","type":"UNKNOWN","package":"math/rand","name":"rand","id":62,"__cfgId":15},"__cfgId":17},"arguments":[],"__cfgId":18}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "49:1::2","type":"int","package":"UNKNOWN","name":"x","id":787,"__cfgId":14}
+          ],"__cfgId":19}
+        ],"__cfgId":20},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "52:0:58:1","typeParameters":
+        {"@type": "Native", "metaData": "52:20::53","nativeKind":"TypeParams(FieldList)","children":[
+          {"@type": "Native", "metaData": "52:20::21","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "52:21::33","nativeKind":"[0](Field)","children":[
+            {"@type": "Native", "metaData": "52:21::22","nativeKind":"Names([]*Ident)","children":[
+              {"@type": "Identifier", "metaData": "52:21::22","type":"K","package":"main","name":"K","id":827,"__cfgId":3}
+            ]},
+            {"@type": "Identifier", "metaData": "52:23::33","type":"comparable","package":"UNKNOWN","name":"comparable","id":0,"__cfgId":4}
+          ],"__cfgId":5},
+          {"@type": "Native", "metaData": "52:33::34"},
+          {"@type": "Native", "metaData": "52:35::52","nativeKind":"[1](Field)","children":[
+            {"@type": "Native", "metaData": "52:35::36","nativeKind":"Names([]*Ident)","children":[
+              {"@type": "Identifier", "metaData": "52:35::36","type":"V","package":"main","name":"V","id":841,"__cfgId":6}
+            ]},
+            {"@type": "BinaryExpression", "metaData": "52:37::52","rightOperand":
+              {"@type": "Identifier", "metaData": "52:45::52","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":8},"operatorToken":"52:43::44","operator":"BITWISE_OR","leftOperand":
+              {"@type": "Identifier", "metaData": "52:37::42","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":7},"__cfgId":9}
+          ],"__cfgId":10},
+          {"@type": "Native", "metaData": "52:52::53","nativeKind":"Closing"}
+        ],"__cfgId":11},"returnType":
+        {"@type": "Native", "metaData": "52:65::66","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "52:65::66","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "52:65::66","type":"V","package":"main","name":"V","id":841,"__cfgId":19}
+          ],"__cfgId":20}
+        ],"__cfgId":21},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "52:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":2},"formalParameters":[
+        {"@type": "Parameter", "metaData": "52:54::63","type":
+          {"@type": "Native", "metaData": "52:56::63","nativeKind":"Type(MapType)","children":[
+            {"@type": "Native", "metaData": "52:56::59","nativeKind":"Map"},
+            {"@type": "Native", "metaData": "52:59::60"},
+            {"@type": "Identifier", "metaData": "52:60::61","type":"K","package":"main","name":"K","id":827,"__cfgId":13},
+            {"@type": "Native", "metaData": "52:61::62"},
+            {"@type": "Identifier", "metaData": "52:62::63","type":"V","package":"main","name":"V","id":841,"__cfgId":14}
+          ],"__cfgId":15},"identifier":
+          {"@type": "Identifier", "metaData": "52:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":860,"__cfgId":12},"__cfgId":16}
+      ],"cfg":{"Blocks":[{"Node":[24,27,25,26],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[30],"Successors":[1]},{"Node":[34],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "52:67:58:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "53:1::8","type":
+            {"@type": "Identifier", "metaData": "53:7::8","type":"V","package":"main","name":"V","id":841,"__cfgId":23},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "53:5::6","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":22}
+          ],"__cfgId":24},
+          {"@type": "Loop", "metaData": "54:1:56:2","kind":"FOR","keyword":"54:1::4","condition":
+            {"@type": "Native", "metaData": "54:5::20","nativeKind":"RangeHeader","children":[
+              {"@type": "PlaceHolder", "metaData": "54:5::6","placeHolderToken":"54:5::6","__cfgId":25},
+              {"@type": "Native", "metaData": "54:6::7"},
+              {"@type": "Identifier", "metaData": "54:8::9","type":"V","package":"UNKNOWN","name":"v","id":892,"__cfgId":26},
+              {"@type": "Native", "metaData": "54:10::12","nativeKind":"Tok"},
+              {"@type": "Native", "metaData": "54:13::18"},
+              {"@type": "Identifier", "metaData": "54:19::20","type":"map[K]V","package":"UNKNOWN","name":"m","id":860,"__cfgId":27}
+            ]},"body":
+            {"@type": "Block", "metaData": "54:21:56:2","statementOrExpressions":[
+              {"@type": "AssignmentExpression", "metaData": "55:2::8","statementOrExpression":
+                {"@type": "Identifier", "metaData": "55:7::8","type":"V","package":"UNKNOWN","name":"v","id":892,"__cfgId":29},"operator":"PLUS_EQUAL","leftHandSide":
+                {"@type": "Identifier", "metaData": "55:2::3","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":28},"__cfgId":30}
+            ],"__cfgId":31},"__cfgId":32},
+          {"@type": "Return", "metaData": "57:1::9","keyword":"57:1::7","expressions":[
+            {"@type": "Identifier", "metaData": "57:8::9","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":33}
+          ],"body":
+            {"@type": "Identifier", "metaData": "57:8::9","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":33},"__cfgId":34}
+        ],"__cfgId":35},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "60:0:62:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "60:5::8","type":"func()","package":"main","name":"fc6","id":937,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "60:11:62:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "61:1::17","expression":
+            {"@type": "FunctionInvocation", "metaData": "61:1::17","returnType":["string"],"memberSelect":
+              {"@type": "Identifier", "metaData": "61:1::8","type":"func(text string) string","package":"main","name":"Println","id":971,"__cfgId":4},"arguments":[
+              {"@type": "StringLiteral", "metaData": "61:9::16","value":"\"Hello\"","content":"Hello"}
+            ],"__cfgId":5},"__cfgId":6}
+        ],"__cfgId":7},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "64:0:66:1","typeParameters":
+        null,"returnType":
+        {"@type": "Native", "metaData": "64:26::32","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "64:26::32","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "64:26::32","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":8}
+          ],"__cfgId":9}
+        ],"__cfgId":10},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "64:5::12","type":"func(text string) string","package":"main","name":"Println","id":971,"__cfgId":2},"formalParameters":[
+        {"@type": "Parameter", "metaData": "64:13::24","type":
+          {"@type": "Identifier", "metaData": "64:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"identifier":
+          {"@type": "Identifier", "metaData": "64:13::17","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":3},"__cfgId":5}
+      ],"cfg":{"Blocks":[{"Node":[13],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "64:33:66:1","statementOrExpressions":[
+          {"@type": "Return", "metaData": "65:1::25","keyword":"65:1::7","expressions":[
+            {"@type": "BinaryExpression", "metaData": "65:8::25","rightOperand":
+              {"@type": "Identifier", "metaData": "65:21::25","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":11},"operatorToken":"65:19::20","operator":"PLUS","leftOperand":
+              {"@type": "StringLiteral", "metaData": "65:8::18","value":"\"Println \"","content":"Println "},"__cfgId":12}
+          ],"body":
+            {"@type": "BinaryExpression", "metaData": "65:8::25","rightOperand":
+              {"@type": "Identifier", "metaData": "65:21::25","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":11},"operatorToken":"65:19::20","operator":"PLUS","leftOperand":
+              {"@type": "StringLiteral", "metaData": "65:8::18","value":"\"Println \"","content":"Println "},"__cfgId":12},"__cfgId":13}
+        ],"__cfgId":14},"__cfgId":1}
     ],"__cfgId":2}
 } 

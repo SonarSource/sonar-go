@@ -2,8 +2,65 @@ package main
 
 import (
 	"crypto/md5"
+	"database/sql"
+	"fmt"
+	"math/rand"
+	"os"
 )
 
 func fc1(data []byte) {
 	md5.Sum(data)
+}
+
+func fc2() {
+	fc3().Query("select * from foo")
+}
+
+func fc3() *sql.DB {
+	var db *sql.DB = nil
+	return db
+}
+
+func fc4() []byte {
+	// the returned type for such expressions is not detected
+	s := make([]byte, 2, 4)
+	a0 := [0]byte(s)
+	ints := map[string]int64{
+		"first": 34,
+		"second": 12,
+	}
+	SumIntsOrFloats[string, int64](ints)
+
+	funcVar := func(str string) {
+		fmt.Println("Hi", str, "I'm an anonymous function assigned to a variable.")
+	}
+
+	funcVar("Bob" + fmt.Sprint(1))
+
+	msg := func(str string) string {
+		return "Hi " + str + " I'm an anonymous function returning a string."
+	}("Ricky")
+
+	return s
+}
+
+func fc5() {
+	n, err := fmt.Fprintf(os.Stderr, "foo")
+	x := rand.Int()
+}
+
+func SumIntsOrFloats[K comparable, V int64 | float64](m map[K]V) V {
+	var s V
+	for _, v := range m {
+		s += v
+	}
+	return s
+}
+
+func fc6() {
+	Println("Hello")
+}
+
+func Println(text string) string {
+	return "Println " + text
 }

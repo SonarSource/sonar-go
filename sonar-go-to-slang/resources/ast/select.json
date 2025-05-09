@@ -275,7 +275,7 @@
       ],"cfg":{"Blocks":[{"Node":[21,23,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "10:29:13:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "11:1::28","expression":
-            {"@type": "FunctionInvocation", "metaData": "11:1::28","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "11:1::28","returnType":[],"memberSelect":
               {"@type": "MemberSelect", "metaData": "11:1::11","identifier":
                 {"@type": "Identifier", "metaData": "11:6::11","type":"UNKNOWN","package":"UNKNOWN","name":"Sleep","id":0,"__cfgId":14},"expression":
                 {"@type": "Identifier", "metaData": "11:1::5","type":"UNKNOWN","package":"time","name":"time","id":74,"__cfgId":13},"__cfgId":15},"arguments":[
@@ -304,7 +304,7 @@
       ],"cfg":{"Blocks":[{"Node":[17,19,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "14:29:18:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "15:1::28","expression":
-            {"@type": "FunctionInvocation", "metaData": "15:1::28","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "15:1::28","returnType":[],"memberSelect":
               {"@type": "MemberSelect", "metaData": "15:1::11","identifier":
                 {"@type": "Identifier", "metaData": "15:6::11","type":"UNKNOWN","package":"UNKNOWN","name":"Sleep","id":0,"__cfgId":10},"expression":
                 {"@type": "Identifier", "metaData": "15:1::5","type":"UNKNOWN","package":"time","name":"time","id":74,"__cfgId":9},"__cfgId":11},"arguments":[
@@ -327,7 +327,7 @@
         {"@type": "Identifier", "metaData": "19:5::9","type":"func()","package":"main","name":"main","id":258,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,15,19,23,27,39],"Successors":[2,3]},{"Node":[0],"Successors":null},{"Node":[24,33],"Successors":[1]},{"Node":null,"Successors":[5,6]},{"Node":null,"Successors":[1]},{"Node":[36,45],"Successors":[1]},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "19:12:31:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::29","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "20:12::29","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "20:12::29","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "20:12::16","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":5},"arguments":[
               {"@type": "Native", "metaData": "20:22::28","nativeKind":"[0](ChanType)","children":[
                 {"@type": "Identifier", "metaData": "20:22::28","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6}
@@ -337,7 +337,7 @@
             {"@type": "Identifier", "metaData": "20:1::8","type":"chan string","package":"UNKNOWN","name":"output1","id":268,"__cfgId":4}
           ],"__cfgId":9},
           {"@type": "VariableDeclaration", "metaData": "21:1::29","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "21:12::29","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "21:12::29","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "21:12::16","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":11},"arguments":[
               {"@type": "Native", "metaData": "21:22::28","nativeKind":"[0](ChanType)","children":[
                 {"@type": "Identifier", "metaData": "21:22::28","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":12}
@@ -348,14 +348,14 @@
           ],"__cfgId":15},
           {"@type": "Native", "metaData": "22:1::20","nativeKind":"[2](GoStmt)","children":[
             {"@type": "Native", "metaData": "22:1::3","nativeKind":"Go"},
-            {"@type": "FunctionInvocation", "metaData": "22:4::20","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "22:4::20","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "22:4::11","type":"func(ch chan string)","package":"main","name":"server1","id":89,"__cfgId":16},"arguments":[
               {"@type": "Identifier", "metaData": "22:12::19","type":"chan string","package":"UNKNOWN","name":"output1","id":268,"__cfgId":17}
             ],"__cfgId":18}
           ],"__cfgId":19},
           {"@type": "Native", "metaData": "23:1::20","nativeKind":"[3](GoStmt)","children":[
             {"@type": "Native", "metaData": "23:1::3","nativeKind":"Go"},
-            {"@type": "FunctionInvocation", "metaData": "23:4::20","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "23:4::20","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "23:4::11","type":"func(ch chan string)","package":"main","name":"server2","id":173,"__cfgId":20},"arguments":[
               {"@type": "Identifier", "metaData": "23:12::19","type":"chan string","package":"UNKNOWN","name":"output2","id":298,"__cfgId":21}
             ],"__cfgId":22}
@@ -374,9 +374,9 @@
                 {"@type": "Native", "metaData": "25:21::22","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "26:2:27:7","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "ExpressionStatement", "metaData": "26:2::17","expression":
-                    {"@type": "FunctionInvocation", "metaData": "26:2::17","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "26:2::17","returnType":["int","error"],"memberSelect":
                       {"@type": "MemberSelect", "metaData": "26:2::13","identifier":
-                        {"@type": "Identifier", "metaData": "26:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":29},"expression":
+                        {"@type": "Identifier", "metaData": "26:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":29},"expression":
                         {"@type": "Identifier", "metaData": "26:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":67,"__cfgId":28},"__cfgId":30},"arguments":[
                       {"@type": "Identifier", "metaData": "26:14::16","type":"string","package":"UNKNOWN","name":"s1","id":385,"__cfgId":31}
                     ],"__cfgId":32},"__cfgId":33},
@@ -395,9 +395,9 @@
                 {"@type": "Native", "metaData": "28:21::22","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "29:2::17","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "ExpressionStatement", "metaData": "29:2::17","expression":
-                    {"@type": "FunctionInvocation", "metaData": "29:2::17","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "29:2::17","returnType":["int","error"],"memberSelect":
                       {"@type": "MemberSelect", "metaData": "29:2::13","identifier":
-                        {"@type": "Identifier", "metaData": "29:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":41},"expression":
+                        {"@type": "Identifier", "metaData": "29:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":41},"expression":
                         {"@type": "Identifier", "metaData": "29:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":67,"__cfgId":40},"__cfgId":42},"arguments":[
                       {"@type": "Identifier", "metaData": "29:14::16","type":"string","package":"UNKNOWN","name":"s2","id":434,"__cfgId":43}
                     ],"__cfgId":44},"__cfgId":45}
@@ -444,7 +444,7 @@
                 {"@type": "Native", "metaData": "39:18::19","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "40:8::44","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "ExpressionStatement", "metaData": "40:8::44","expression":
-                    {"@type": "FunctionInvocation", "metaData": "40:8::44","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "40:8::44","returnType":[],"memberSelect":
                       {"@type": "Identifier", "metaData": "40:8::13","type":"UNKNOWN","package":"UNKNOWN","name":"print","id":0,"__cfgId":24},"arguments":[
                       {"@type": "StringLiteral", "metaData": "40:14::25","value":"\"received \"","content":"received "},
                       {"@type": "Identifier", "metaData": "40:27::29","type":"int","package":"UNKNOWN","name":"i1","id":547,"__cfgId":25},
@@ -462,7 +462,7 @@
                 {"@type": "Native", "metaData": "41:17::18","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "42:8::38","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "ExpressionStatement", "metaData": "42:8::38","expression":
-                    {"@type": "FunctionInvocation", "metaData": "42:8::38","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "42:8::38","returnType":[],"memberSelect":
                       {"@type": "Identifier", "metaData": "42:8::13","type":"UNKNOWN","package":"UNKNOWN","name":"print","id":0,"__cfgId":32},"arguments":[
                       {"@type": "StringLiteral", "metaData": "42:14::21","value":"\"sent \"","content":"sent "},
                       {"@type": "Identifier", "metaData": "42:23::25","type":"int","package":"UNKNOWN","name":"i2","id":551,"__cfgId":33},
@@ -485,7 +485,7 @@
                   {"@type": "If", "metaData": "44:8:48:9","thenBranch":
                     {"@type": "Block", "metaData": "44:14:46:9","statementOrExpressions":[
                       {"@type": "ExpressionStatement", "metaData": "45:12::48","expression":
-                        {"@type": "FunctionInvocation", "metaData": "45:12::48","memberSelect":
+                        {"@type": "FunctionInvocation", "metaData": "45:12::48","returnType":[],"memberSelect":
                           {"@type": "Identifier", "metaData": "45:12::17","type":"UNKNOWN","package":"UNKNOWN","name":"print","id":0,"__cfgId":44},"arguments":[
                           {"@type": "StringLiteral", "metaData": "45:18::29","value":"\"received \"","content":"received "},
                           {"@type": "Identifier", "metaData": "45:31::33","type":"int","package":"UNKNOWN","name":"i3","id":703,"__cfgId":45},
@@ -494,7 +494,7 @@
                     ],"__cfgId":48},"ifKeyword":"44:8::10","elseKeyword":"46:10::14","elseBranch":
                     {"@type": "Block", "metaData": "46:15:48:9","statementOrExpressions":[
                       {"@type": "ExpressionStatement", "metaData": "47:12::35","expression":
-                        {"@type": "FunctionInvocation", "metaData": "47:12::35","memberSelect":
+                        {"@type": "FunctionInvocation", "metaData": "47:12::35","returnType":[],"memberSelect":
                           {"@type": "Identifier", "metaData": "47:12::17","type":"UNKNOWN","package":"UNKNOWN","name":"print","id":0,"__cfgId":49},"arguments":[
                           {"@type": "StringLiteral", "metaData": "47:18::34","value":"\"c3 is closed\\n\"","content":"c3 is closed\\n"}
                         ],"__cfgId":50},"__cfgId":51}
@@ -510,7 +510,7 @@
                   {"@type": "Native", "metaData": "49:9::15","nativeKind":"[0](IndexExpr)","children":[
                     {"@type": "Identifier", "metaData": "49:9::10","type":"[]int","package":"UNKNOWN","name":"a","id":496,"__cfgId":55},
                     {"@type": "Native", "metaData": "49:10::11","nativeKind":"Lbrack"},
-                    {"@type": "FunctionInvocation", "metaData": "49:11::14","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "49:11::14","returnType":[],"memberSelect":
                       {"@type": "Identifier", "metaData": "49:11::12","type":"UNKNOWN","package":"UNKNOWN","name":"f","id":0,"__cfgId":56},"arguments":[],"__cfgId":57},
                     {"@type": "Native", "metaData": "49:14::15","nativeKind":"Rbrack"}
                   ],"__cfgId":58},"__cfgId":61},
@@ -521,7 +521,7 @@
                 {"@type": "Native", "metaData": "53:11::12","nativeKind":"Colon"},
                 {"@type": "Native", "metaData": "54:8::35","nativeKind":"Body([]Stmt)","children":[
                   {"@type": "ExpressionStatement", "metaData": "54:8::35","expression":
-                    {"@type": "FunctionInvocation", "metaData": "54:8::35","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "54:8::35","returnType":[],"memberSelect":
                       {"@type": "Identifier", "metaData": "54:8::13","type":"UNKNOWN","package":"UNKNOWN","name":"print","id":0,"__cfgId":63},"arguments":[
                       {"@type": "StringLiteral", "metaData": "54:14::34","value":"\"no communication\\n\"","content":"no communication\\n"}
                     ],"__cfgId":64},"__cfgId":65}

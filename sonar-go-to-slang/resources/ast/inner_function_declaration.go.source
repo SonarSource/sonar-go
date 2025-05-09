@@ -14,4 +14,9 @@ func main() {
 	}
 
 	funcVar("Bob" + fmt.Sprint(counter))
+
+	msg := func(str string) string {
+		return "Hi " + str + " I'm an anonymous function returning a string."
+	}("Ricky")
+	fmt.Println(msg)
 }

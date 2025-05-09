@@ -99,21 +99,21 @@
         {"@type": "Identifier", "metaData": "5:6::9","type":"func()","package":"ast","name":"bar","id":73,"__cfgId":6},"formalParameters":[],"cfg":{"Blocks":[{"Node":[12,17,22,24,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:12:11:2","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:5::18","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "6:13::18","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "6:13::18","returnType":["int","string"],"memberSelect":
               {"@type": "Identifier", "metaData": "6:13::16","type":"func() (int, string)","package":"ast","name":"foo","id":281,"__cfgId":10},"arguments":[],"__cfgId":11}
           ],"identifiers":[
             {"@type": "PlaceHolder", "metaData": "6:5::6","placeHolderToken":"6:5::6","__cfgId":8},
             {"@type": "Identifier", "metaData": "6:8::9","type":"string","package":"UNKNOWN","name":"s","id":89,"__cfgId":9}
           ],"__cfgId":12},
           {"@type": "VariableDeclaration", "metaData": "7:5::18","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "7:13::18","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "7:13::18","returnType":["int","string"],"memberSelect":
               {"@type": "Identifier", "metaData": "7:13::16","type":"func() (int, string)","package":"ast","name":"foo","id":281,"__cfgId":15},"arguments":[],"__cfgId":16}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "7:5::6","type":"int","package":"UNKNOWN","name":"i","id":105,"__cfgId":13},
             {"@type": "PlaceHolder", "metaData": "7:8::9","placeHolderToken":"7:8::9","__cfgId":14}
           ],"__cfgId":17},
           {"@type": "AssignmentExpression", "metaData": "9:5::17","statementOrExpression":
-            {"@type": "FunctionInvocation", "metaData": "9:12::17","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "9:12::17","returnType":["int","string"],"memberSelect":
               {"@type": "Identifier", "metaData": "9:12::15","type":"func() (int, string)","package":"ast","name":"foo","id":281,"__cfgId":20},"arguments":[],"__cfgId":21},"operator":"EQUAL","leftHandSide":
             {"@type": "LeftRightHandSide", "metaData": "9:5::9","children":[
               {"@type": "PlaceHolder", "metaData": "9:5::6","placeHolderToken":"9:5::6","__cfgId":18},

@@ -49,9 +49,9 @@
             {"@type": "Identifier", "metaData": "8:1::4","type":"string","package":"UNKNOWN","name":"msg","id":62,"__cfgId":7}
           ],"__cfgId":8},
           {"@type": "ExpressionStatement", "metaData": "9:1::17","expression":
-            {"@type": "FunctionInvocation", "metaData": "9:1::17","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "9:1::17","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "9:1::12","identifier":
-                {"@type": "Identifier", "metaData": "9:5::12","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":10},"expression":
+                {"@type": "Identifier", "metaData": "9:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":10},"expression":
                 {"@type": "Identifier", "metaData": "9:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":40,"__cfgId":9},"__cfgId":11},"arguments":[
               {"@type": "Identifier", "metaData": "9:13::16","type":"string","package":"UNKNOWN","name":"msg","id":62,"__cfgId":12}
             ],"__cfgId":13},"__cfgId":14}

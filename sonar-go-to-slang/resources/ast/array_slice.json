@@ -218,7 +218,7 @@
         {"@type": "Identifier", "metaData": "3:5::16","type":"func()","package":"ast","name":"allLiterals","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,16,23,29,35,43,52,60,68,72,78,86,94,100,108,114,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:19:25:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:1::24","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "4:6::24","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "4:6::24","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "4:6::10","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":6},"arguments":[
               {"@type": "ArrayType", "metaData": "4:11::17","length":null,"element":
                 {"@type": "Identifier", "metaData": "4:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":7},"__cfgId":8},
@@ -229,7 +229,7 @@
             {"@type": "Identifier", "metaData": "4:1::2","type":"[]byte","package":"UNKNOWN","name":"s","id":36,"__cfgId":5}
           ],"__cfgId":10},
           {"@type": "VariableDeclaration", "metaData": "6:4::20","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "6:10::20","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "6:10::20","returnType":[],"memberSelect":
               {"@type": "ArrayType", "metaData": "6:10::17","length":
                 {"@type": "IntegerLiteral", "metaData": "6:11::12","value":"0"},"element":
                 {"@type": "Identifier", "metaData": "6:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":12},"__cfgId":13},"arguments":[
@@ -239,7 +239,7 @@
             {"@type": "Identifier", "metaData": "6:4::6","type":"[0]byte","package":"UNKNOWN","name":"a0","id":65,"__cfgId":11}
           ],"__cfgId":16},
           {"@type": "VariableDeclaration", "metaData": "7:4::24","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "7:10::24","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "7:10::24","returnType":[],"memberSelect":
               {"@type": "ArrayType", "metaData": "7:10::17","length":
                 {"@type": "IntegerLiteral", "metaData": "7:11::12","value":"1"},"element":
                 {"@type": "Identifier", "metaData": "7:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":18},"__cfgId":19},"arguments":[
@@ -255,7 +255,7 @@
             {"@type": "Identifier", "metaData": "7:4::6","type":"[1]byte","package":"UNKNOWN","name":"a1","id":86,"__cfgId":17}
           ],"__cfgId":23},
           {"@type": "VariableDeclaration", "metaData": "8:4::20","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "8:10::20","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "8:10::20","returnType":[],"memberSelect":
               {"@type": "ArrayType", "metaData": "8:10::17","length":
                 {"@type": "IntegerLiteral", "metaData": "8:11::12","value":"2"},"element":
                 {"@type": "Identifier", "metaData": "8:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":25},"__cfgId":26},"arguments":[
@@ -265,7 +265,7 @@
             {"@type": "Identifier", "metaData": "8:4::6","type":"[2]byte","package":"UNKNOWN","name":"a2","id":132,"__cfgId":24}
           ],"__cfgId":29},
           {"@type": "VariableDeclaration", "metaData": "9:4::20","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "9:10::20","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "9:10::20","returnType":[],"memberSelect":
               {"@type": "ArrayType", "metaData": "9:10::17","length":
                 {"@type": "IntegerLiteral", "metaData": "9:11::12","value":"4"},"element":
                 {"@type": "Identifier", "metaData": "9:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":31},"__cfgId":32},"arguments":[
@@ -275,7 +275,7 @@
             {"@type": "Identifier", "metaData": "9:4::6","type":"[4]byte","package":"UNKNOWN","name":"a4","id":178,"__cfgId":30}
           ],"__cfgId":35},
           {"@type": "VariableDeclaration", "metaData": "11:4::23","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "11:10::23","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "11:10::23","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "11:10::20","rightParenthesis":"11:19::20","leftParenthesis":"11:10::11","expression":
                 {"@type": "StarExpression", "metaData": "11:11::19","expression":
                   {"@type": "ArrayType", "metaData": "11:12::19","length":
@@ -287,7 +287,7 @@
             {"@type": "Identifier", "metaData": "11:4::6","type":"*[0]byte","package":"UNKNOWN","name":"s0","id":241,"__cfgId":36}
           ],"__cfgId":43},
           {"@type": "VariableDeclaration", "metaData": "12:4::27","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "12:10::27","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "12:10::27","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "12:10::20","rightParenthesis":"12:19::20","leftParenthesis":"12:10::11","expression":
                 {"@type": "StarExpression", "metaData": "12:11::19","expression":
                   {"@type": "ArrayType", "metaData": "12:12::19","length":
@@ -305,7 +305,7 @@
             {"@type": "Identifier", "metaData": "12:4::6","type":"*[1]byte","package":"UNKNOWN","name":"s1","id":283,"__cfgId":44}
           ],"__cfgId":52},
           {"@type": "VariableDeclaration", "metaData": "13:4::23","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "13:10::23","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "13:10::23","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "13:10::20","rightParenthesis":"13:19::20","leftParenthesis":"13:10::11","expression":
                 {"@type": "StarExpression", "metaData": "13:11::19","expression":
                   {"@type": "ArrayType", "metaData": "13:12::19","length":
@@ -317,7 +317,7 @@
             {"@type": "Identifier", "metaData": "13:4::6","type":"*[2]byte","package":"UNKNOWN","name":"s2","id":331,"__cfgId":53}
           ],"__cfgId":60},
           {"@type": "VariableDeclaration", "metaData": "14:4::23","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "14:10::23","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "14:10::23","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "14:10::20","rightParenthesis":"14:19::20","leftParenthesis":"14:10::11","expression":
                 {"@type": "StarExpression", "metaData": "14:11::19","expression":
                   {"@type": "ArrayType", "metaData": "14:12::19","length":
@@ -334,7 +334,7 @@
             {"@type": "Identifier", "metaData": "16:8::9","type":"[]string","package":"UNKNOWN","name":"t","id":446,"__cfgId":69}
           ],"__cfgId":72},
           {"@type": "VariableDeclaration", "metaData": "17:4::22","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "17:10::22","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "17:10::22","returnType":[],"memberSelect":
               {"@type": "ArrayType", "metaData": "17:10::19","length":
                 {"@type": "IntegerLiteral", "metaData": "17:11::12","value":"0"},"element":
                 {"@type": "Identifier", "metaData": "17:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":74},"__cfgId":75},"arguments":[
@@ -344,7 +344,7 @@
             {"@type": "Identifier", "metaData": "17:4::6","type":"[0]string","package":"UNKNOWN","name":"t0","id":461,"__cfgId":73}
           ],"__cfgId":78},
           {"@type": "VariableDeclaration", "metaData": "18:4::25","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "18:10::25","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "18:10::25","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "18:10::22","rightParenthesis":"18:21::22","leftParenthesis":"18:10::11","expression":
                 {"@type": "StarExpression", "metaData": "18:11::21","expression":
                   {"@type": "ArrayType", "metaData": "18:12::21","length":
@@ -356,7 +356,7 @@
             {"@type": "Identifier", "metaData": "18:4::6","type":"*[0]string","package":"UNKNOWN","name":"t1","id":512,"__cfgId":79}
           ],"__cfgId":86},
           {"@type": "VariableDeclaration", "metaData": "19:4::25","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "19:10::25","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "19:10::25","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "19:10::22","rightParenthesis":"19:21::22","leftParenthesis":"19:10::11","expression":
                 {"@type": "StarExpression", "metaData": "19:11::21","expression":
                   {"@type": "ArrayType", "metaData": "19:12::21","length":
@@ -368,7 +368,7 @@
             {"@type": "Identifier", "metaData": "19:4::6","type":"*[1]string","package":"UNKNOWN","name":"t2","id":554,"__cfgId":87}
           ],"__cfgId":94},
           {"@type": "VariableDeclaration", "metaData": "21:4::24","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "21:9::24","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "21:9::24","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "21:9::13","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":96},"arguments":[
               {"@type": "ArrayType", "metaData": "21:14::20","length":null,"element":
                 {"@type": "Identifier", "metaData": "21:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":97},"__cfgId":98},
@@ -378,7 +378,7 @@
             {"@type": "Identifier", "metaData": "21:4::5","type":"[]byte","package":"UNKNOWN","name":"u","id":619,"__cfgId":95}
           ],"__cfgId":100},
           {"@type": "VariableDeclaration", "metaData": "22:4::23","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "22:10::23","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "22:10::23","returnType":[],"memberSelect":
               {"@type": "ParenthesizedExpression", "metaData": "22:10::20","rightParenthesis":"22:19::20","leftParenthesis":"22:10::11","expression":
                 {"@type": "StarExpression", "metaData": "22:11::19","expression":
                   {"@type": "ArrayType", "metaData": "22:12::19","length":

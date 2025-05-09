@@ -19,6 +19,7 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -30,6 +31,7 @@ import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
 
 import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,7 +45,7 @@ class FunctionInvocationTreeImplTest {
     Tree identifierTree = TreeCreationUtils.identifier("x");
     List<Tree> args = new ArrayList<>();
 
-    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, identifierTree, args);
+    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, identifierTree, args, List.of());
     assertThat(tree.children()).containsExactly(identifierTree);
     assertThat(tree.arguments()).isNotNull();
     assertThat(tree.arguments()).isEmpty();
@@ -60,7 +62,7 @@ class FunctionInvocationTreeImplTest {
     args.add(arg1);
     args.add(arg2);
 
-    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, identifierTree, args);
+    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, identifierTree, args, List.of());
     assertThat(tree.children()).containsExactly(identifierTree, arg1, arg2);
     assertThat(tree.arguments()).isNotNull();
     assertThat(tree.arguments()).hasSize(2);
@@ -77,7 +79,7 @@ class FunctionInvocationTreeImplTest {
     Tree memberSelect = new MemberSelectTreeImpl(meta, member, identifierTree);
     List<Tree> args = new ArrayList<>();
 
-    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, memberSelect, args);
+    FunctionInvocationTree tree = new FunctionInvocationTreeImpl(meta, memberSelect, args, List.of());
     assertThat(tree.children()).containsExactly(memberSelect);
     assertThat(tree.memberSelect()).isEqualTo(memberSelect);
   }
@@ -297,5 +299,84 @@ class FunctionInvocationTreeImplTest {
       .map(FunctionInvocationTreeImpl.class::cast)
       .toList();
     assertThat(func.get(0).signature()).isEqualTo("$anonymous_at_line_9");
+  }
+
+  static Stream<Arguments> shouldVerifyReturnType() {
+    return of(
+      arguments("""
+        func foo() int {
+          return 0
+        }""", List.of(new TypeImpl("int", ""))),
+      arguments("""
+        func foo() string {
+          return ""
+        }""", List.of(new TypeImpl("string", ""))),
+      arguments("""
+        func foo() *sql.DB {
+          return db
+        }""", List.of(new TypeImpl("*database/sql.DB", "database/sql"))),
+      arguments("""
+        func foo() sql.DB {
+          return &db
+        }""", List.of(new TypeImpl("database/sql.DB", "database/sql"))),
+      arguments("""
+        func foo() *MyType {
+          return new(MyType)
+        }""", List.of(new TypeImpl("*main.MyType", "main"))),
+      arguments("""
+        func foo() MyType {
+          return &new(MyType)
+        }""", List.of(new TypeImpl("main.MyType", "main"))),
+      arguments("""
+        func foo() (string, string) {
+          return "bob", "alice"
+        }""", List.of(TypeImpl.createFromType("string"),
+        TypeImpl.createFromType("string"))),
+      arguments("""
+        func foo() (s1, s2 string) {
+          s1, s2 = "bob", "alice"
+          return
+        }""", List.of(TypeImpl.createFromType("string"),
+        TypeImpl.createFromType("string"))),
+      arguments("""
+        func foo() (s1 string, s2 string) {
+          s1, s2 = "bob", "alice"
+          return
+        }""", List.of(TypeImpl.createFromType("string"),
+        TypeImpl.createFromType("string"))),
+      arguments("""
+        func foo() (string, int) {
+          return "bob", 5
+        }""", List.of(TypeImpl.createFromType("string"),
+        TypeImpl.createFromType("int"))));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldVerifyReturnType(String function, List<Type> expectedReturnType) {
+    var code = """
+      package main
+
+      import (
+      	"database/sql"
+      )
+
+      var db *sql.DB
+      type MyType struct {
+      }
+      func call() {
+      	foo()
+      }
+
+      %s""".formatted(function);
+
+    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    SoftAssertions.assertSoftly(softly -> {
+      for (int i = 0; i < expectedReturnType.size(); i++) {
+        var returnType = functionInvocationTree.returnTypes().get(i);
+        softly.assertThat(returnType.type()).isEqualTo(expectedReturnType.get(i).type());
+        softly.assertThat(returnType.packageName()).isEqualTo(expectedReturnType.get(i).packageName());
+      }
+    });
   }
 }

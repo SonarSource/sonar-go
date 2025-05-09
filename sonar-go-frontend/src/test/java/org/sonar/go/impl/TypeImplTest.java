@@ -16,9 +16,15 @@
  */
 package org.sonar.go.impl;
 
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 class TypeImplTest {
 
@@ -53,5 +59,26 @@ class TypeImplTest {
     assertThat(type.isTypeOf("*MyType")).isFalse();
     assertThat(type.isTypeOf("int")).isFalse();
     assertThat(type.isTypeOf("AnotherType")).isFalse();
+  }
+
+  static Stream<Arguments> testCreateFromType() {
+    return of(
+      arguments("int", "int", ""),
+      arguments("string", "string", ""),
+      arguments("MyType", "MyType", ""),
+      arguments("foo.MyType", "foo.MyType", "foo"),
+      arguments("*foo.MyType", "*foo.MyType", "foo"),
+      arguments("&foo.MyType", "&foo.MyType", "foo"),
+      arguments("example.com/foo/bar.MyType", "example.com/foo/bar.MyType", "example.com/foo/bar"),
+      arguments("&example.com/foo/bar.MyType", "&example.com/foo/bar.MyType", "example.com/foo/bar"),
+      arguments("*example.com/foo/bar.MyType", "*example.com/foo/bar.MyType", "example.com/foo/bar"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void testCreateFromType(String text, String expectedType, String expectedPackageName) {
+    var actual = TypeImpl.createFromType(text);
+    assertThat(actual.type()).isEqualTo(expectedType);
+    assertThat(actual.packageName()).isEqualTo(expectedPackageName);
   }
 }

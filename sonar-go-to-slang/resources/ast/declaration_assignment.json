@@ -289,7 +289,7 @@
             {"@type": "Identifier", "metaData": "30:15::22","type":"string","package":"UNKNOWN","name":"string1","id":254,"__cfgId":53}
           ],"__cfgId":56},
           {"@type": "VariableDeclaration", "metaData": "31:1::16","type":null,"isVal":false,"initializers":[
-            {"@type": "FunctionInvocation", "metaData": "31:11::16","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "31:11::16","returnType":["int","string"],"memberSelect":
               {"@type": "Identifier", "metaData": "31:11::14","type":"func() (int, string)","package":"ast","name":"foo","id":663,"__cfgId":59},"arguments":[],"__cfgId":60}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "31:1::3","type":"int","package":"UNKNOWN","name":"r1","id":284,"__cfgId":57},

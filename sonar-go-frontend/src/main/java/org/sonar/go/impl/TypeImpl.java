@@ -23,6 +23,18 @@ public class TypeImpl implements Type {
   private final String type;
   private final String packageName;
 
+  public static TypeImpl createFromType(String text) {
+    var index = text.lastIndexOf(".");
+    var packageName = "";
+    if (index != -1) {
+      packageName = text.substring(0, index);
+    }
+    if (packageName.startsWith("&") || packageName.startsWith("*")) {
+      packageName = packageName.substring(1);
+    }
+    return new TypeImpl(text, packageName);
+  }
+
   public TypeImpl(String type, String packageName) {
     this.type = type;
     this.packageName = packageName;

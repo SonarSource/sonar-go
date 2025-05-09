@@ -59,6 +59,7 @@ import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.ThrowTreeImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
+import org.sonar.go.impl.TypeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
@@ -927,7 +928,7 @@ class JsonTreeTest extends JsonTestHelper {
     Tree argument = new StringLiteralTreeImpl(metaData(tokenArg), tokenArg.text());
     TreeMetaData metaData = metaData(tokenBar, tokenArg);
     FunctionInvocationTree initialInvocation = new FunctionInvocationTreeImpl(metaData, TreeCreationUtils.identifier(metaData(tokenBar),
-      tokenBar.text()), singletonList(argument));
+      tokenBar.text()), singletonList(argument), List.of(TypeImpl.createFromType("string")));
     FunctionInvocationTree invocation = checkJsonSerializationDeserialization(initialInvocation, "function_invocation.json");
     assertThat(invocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class,
       identifier -> assertThat(identifier.name()).isEqualTo("bar"));

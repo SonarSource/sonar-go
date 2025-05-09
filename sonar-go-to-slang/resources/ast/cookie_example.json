@@ -69,9 +69,9 @@
             {"@type": "Identifier", "metaData": "7:4::10","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie","id":81,"__cfgId":12}
           ],"__cfgId":17},
           {"@type": "ExpressionStatement", "metaData": "8:4::23","expression":
-            {"@type": "FunctionInvocation", "metaData": "8:4::23","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "8:4::23","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "8:4::15","identifier":
-                {"@type": "Identifier", "metaData": "8:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":19},"expression":
+                {"@type": "Identifier", "metaData": "8:8::15","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":19},"expression":
                 {"@type": "Identifier", "metaData": "8:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":27,"__cfgId":18},"__cfgId":20},"arguments":[
               {"@type": "Identifier", "metaData": "8:16::22","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie","id":81,"__cfgId":21}
             ],"__cfgId":22},"__cfgId":23}

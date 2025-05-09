@@ -189,7 +189,7 @@ public class TreeCreationUtils {
   }
 
   public static FunctionInvocationTree simpleFunctionCall(Tree memberSelect) {
-    return new FunctionInvocationTreeImpl(null, memberSelect, Collections.emptyList());
+    return new FunctionInvocationTreeImpl(null, memberSelect, Collections.emptyList(), List.of());
   }
 
   public static AssignmentExpressionTree assignment(AssignmentExpressionTree.Operator operator, Tree leftOperand, Tree rightOperand) {

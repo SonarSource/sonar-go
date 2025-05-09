@@ -417,7 +417,7 @@
           {"@type": "Block", "metaData": "34:25:38:1","statementOrExpressions":[
             {"@type": "Native", "metaData": "36:4::22","nativeKind":"[0](GoStmt)","children":[
               {"@type": "Native", "metaData": "36:4::6","nativeKind":"Go"},
-              {"@type": "FunctionInvocation", "metaData": "36:7::22","memberSelect":
+              {"@type": "FunctionInvocation", "metaData": "36:7::22","returnType":[],"memberSelect":
                 {"@type": "FunctionDeclaration", "metaData": "36:7::20","typeParameters":
                   null,"returnType":
                   null,"receiver":null,"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,0],"Successors":null}]},"body":

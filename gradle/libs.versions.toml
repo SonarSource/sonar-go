@@ -18,6 +18,7 @@ awaitility = "4.3.0"
 classgraph = "4.8.179"
 yguard = "4.1.1"
 commons-codec = "1.18.0"
+jsr305 = "3.0.2"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -46,3 +47,4 @@ awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awa
 classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classgraph"}
 yguard = { module = "com.yworks:yguard", version.ref = "yguard"}
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
+jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }

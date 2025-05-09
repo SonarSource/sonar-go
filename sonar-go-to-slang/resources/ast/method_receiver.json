@@ -132,9 +132,9 @@
         {"@type": "Identifier", "metaData": "13:18::28","type":"func()","package":"main","name":"PrintValue","id":170,"__cfgId":18},"formalParameters":[],"cfg":{"Blocks":[{"Node":[27,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "13:31:15:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "14:4::43","expression":
-            {"@type": "FunctionInvocation", "metaData": "14:4::43","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "14:4::43","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "14:4::15","identifier":
-                {"@type": "Identifier", "metaData": "14:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":21},"expression":
+                {"@type": "Identifier", "metaData": "14:8::15","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":21},"expression":
                 {"@type": "Identifier", "metaData": "14:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":28,"__cfgId":20},"__cfgId":22},"arguments":[
               {"@type": "StringLiteral", "metaData": "14:16::33","value":"\"Value receiver:\"","content":"Value receiver:"},
               {"@type": "MemberSelect", "metaData": "14:35::42","identifier":
@@ -197,9 +197,9 @@
         {"@type": "Identifier", "metaData": "26:28::33","type":"func()","package":"main","name":"hello","id":400,"__cfgId":16},"formalParameters":[],"cfg":{"Blocks":[{"Node":[22,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "26:36:28:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "27:4::24","expression":
-            {"@type": "FunctionInvocation", "metaData": "27:4::24","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "27:4::24","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "27:4::15","identifier":
-                {"@type": "Identifier", "metaData": "27:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":19},"expression":
+                {"@type": "Identifier", "metaData": "27:8::15","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":19},"expression":
                 {"@type": "Identifier", "metaData": "27:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":28,"__cfgId":18},"__cfgId":20},"arguments":[
               {"@type": "StringLiteral", "metaData": "27:16::23","value":"\"Hello\"","content":"Hello"}
             ],"__cfgId":21},"__cfgId":22}

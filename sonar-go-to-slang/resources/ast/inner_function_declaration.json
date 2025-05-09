@@ -67,11 +67,36 @@
       {"text":"counter","textRange":"16:28::35"},
       {"text":")","textRange":"16:35::36"},
       {"text":")","textRange":"16:36::37"},
-      {"text":"}","textRange":"17:0::1"}
+      {"text":"msg","textRange":"18:1::4"},
+      {"text":":=","textRange":"18:5::7"},
+      {"text":"func","textRange":"18:8::12","type":"KEYWORD"},
+      {"text":"(","textRange":"18:12::13"},
+      {"text":"str","textRange":"18:13::16"},
+      {"text":"string","textRange":"18:17::23"},
+      {"text":")","textRange":"18:23::24"},
+      {"text":"string","textRange":"18:25::31"},
+      {"text":"{","textRange":"18:32::33"},
+      {"text":"return","textRange":"19:2::8","type":"KEYWORD"},
+      {"text":"\"Hi \"","textRange":"19:9::14","type":"STRING_LITERAL"},
+      {"text":"+","textRange":"19:15::16"},
+      {"text":"str","textRange":"19:17::20"},
+      {"text":"+","textRange":"19:21::22"},
+      {"text":"\" I'm an anonymous function returning a string.\"","textRange":"19:23::71","type":"STRING_LITERAL"},
+      {"text":"}","textRange":"20:1::2"},
+      {"text":"(","textRange":"20:2::3"},
+      {"text":"\"Ricky\"","textRange":"20:3::10","type":"STRING_LITERAL"},
+      {"text":")","textRange":"20:10::11"},
+      {"text":"fmt","textRange":"21:1::4"},
+      {"text":"Println","textRange":"21:5::12"},
+      {"text":".","textRange":"21:4::5"},
+      {"text":"(","textRange":"21:12::13"},
+      {"text":"msg","textRange":"21:13::16"},
+      {"text":")","textRange":"21:16::17"},
+      {"text":"}","textRange":"22:0::1"}
     ]
   },
   "tree":
-    {"@type": "TopLevel", "metaData": "1:0:18:0","firstCpdToken":null,"declarations":[
+    {"@type": "TopLevel", "metaData": "1:0:23:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
         {"@type": "Native", "metaData": "1:0::7"},
         {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
@@ -82,12 +107,12 @@
           {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
           null,"__cfgId":3}
       ],"__cfgId":4},
-      {"@type": "FunctionDeclaration", "metaData": "5:0:17:1","typeParameters":
+      {"@type": "FunctionDeclaration", "metaData": "5:0:22:1","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,24,39,48,0],"Successors":null}]},"body":
-        {"@type": "Block", "metaData": "5:12:17:1","statementOrExpressions":[
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,24,39,48,65,71,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "5:12:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::20","type":
             {"@type": "Identifier", "metaData": "6:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "6:19::20","value":"1"}
@@ -95,7 +120,7 @@
             {"@type": "Identifier", "metaData": "6:5::12","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":7}
           ],"__cfgId":9},
           {"@type": "ExpressionStatement", "metaData": "8:1:10:11","expression":
-            {"@type": "FunctionInvocation", "metaData": "8:1:10:11","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "8:1:10:11","returnType":[],"memberSelect":
               {"@type": "FunctionDeclaration", "metaData": "8:1:10:2","typeParameters":
                 null,"returnType":
                 null,"receiver":null,"formalParameters":[
@@ -105,9 +130,9 @@
               ],"cfg":{"Blocks":[{"Node":[20,0],"Successors":null}]},"body":
                 {"@type": "Block", "metaData": "8:18:10:2","statementOrExpressions":[
                   {"@type": "ExpressionStatement", "metaData": "9:2::53","expression":
-                    {"@type": "FunctionInvocation", "metaData": "9:2::53","memberSelect":
+                    {"@type": "FunctionInvocation", "metaData": "9:2::53","returnType":["int","error"],"memberSelect":
                       {"@type": "MemberSelect", "metaData": "9:2::13","identifier":
-                        {"@type": "Identifier", "metaData": "9:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":16},"expression":
+                        {"@type": "Identifier", "metaData": "9:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":16},"expression":
                         {"@type": "Identifier", "metaData": "9:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":15},"__cfgId":17},"arguments":[
                       {"@type": "StringLiteral", "metaData": "9:14::18","value":"\"Hi\"","content":"Hi"},
                       {"@type": "Identifier", "metaData": "9:20::23","type":"string","package":"UNKNOWN","name":"str","id":71,"__cfgId":18},
@@ -126,9 +151,9 @@
             ],"cfg":{"Blocks":[{"Node":[36,0],"Successors":null}]},"body":
               {"@type": "Block", "metaData": "12:29:14:2","statementOrExpressions":[
                 {"@type": "ExpressionStatement", "metaData": "13:2::77","expression":
-                  {"@type": "FunctionInvocation", "metaData": "13:2::77","memberSelect":
+                  {"@type": "FunctionInvocation", "metaData": "13:2::77","returnType":["int","error"],"memberSelect":
                     {"@type": "MemberSelect", "metaData": "13:2::13","identifier":
-                      {"@type": "Identifier", "metaData": "13:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":32},"expression":
+                      {"@type": "Identifier", "metaData": "13:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":32},"expression":
                       {"@type": "Identifier", "metaData": "13:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":31},"__cfgId":33},"arguments":[
                     {"@type": "StringLiteral", "metaData": "13:14::18","value":"\"Hi\"","content":"Hi"},
                     {"@type": "Identifier", "metaData": "13:20::23","type":"string","package":"UNKNOWN","name":"str","id":169,"__cfgId":34},
@@ -139,17 +164,56 @@
             {"@type": "Identifier", "metaData": "12:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":25}
           ],"__cfgId":39},
           {"@type": "ExpressionStatement", "metaData": "16:1::37","expression":
-            {"@type": "FunctionInvocation", "metaData": "16:1::37","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "16:1::37","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "16:1::8","type":"func(str string)","package":"UNKNOWN","name":"funcVar","id":153,"__cfgId":40},"arguments":[
               {"@type": "BinaryExpression", "metaData": "16:9::36","rightOperand":
-                {"@type": "FunctionInvocation", "metaData": "16:17::36","memberSelect":
+                {"@type": "FunctionInvocation", "metaData": "16:17::36","returnType":["string"],"memberSelect":
                   {"@type": "MemberSelect", "metaData": "16:17::27","identifier":
-                    {"@type": "Identifier", "metaData": "16:21::27","type":"UNKNOWN","package":"UNKNOWN","name":"Sprint","id":0,"__cfgId":42},"expression":
+                    {"@type": "Identifier", "metaData": "16:21::27","type":"func(a ...any) string","package":"fmt","name":"Sprint","id":0,"__cfgId":42},"expression":
                     {"@type": "Identifier", "metaData": "16:17::20","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":41},"__cfgId":43},"arguments":[
                   {"@type": "Identifier", "metaData": "16:28::35","type":"int","package":"UNKNOWN","name":"counter","id":48,"__cfgId":44}
                 ],"__cfgId":45},"operatorToken":"16:15::16","operator":"PLUS","leftOperand":
                 {"@type": "StringLiteral", "metaData": "16:9::14","value":"\"Bob\"","content":"Bob"},"__cfgId":46}
-            ],"__cfgId":47},"__cfgId":48}
-        ],"__cfgId":49},"__cfgId":1}
+            ],"__cfgId":47},"__cfgId":48},
+          {"@type": "VariableDeclaration", "metaData": "18:1:20:11","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "18:8:20:11","returnType":[],"memberSelect":
+              {"@type": "FunctionDeclaration", "metaData": "18:8:20:2","typeParameters":
+                null,"returnType":
+                {"@type": "Native", "metaData": "18:25::31","nativeKind":"Results(FieldList)","children":[
+                  {"@type": "Native", "metaData": "18:25::31","nativeKind":"[0](Field)","children":[
+                    {"@type": "Identifier", "metaData": "18:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":55}
+                  ],"__cfgId":56}
+                ],"__cfgId":57},"receiver":null,"formalParameters":[
+                {"@type": "Parameter", "metaData": "18:13::23","type":
+                  {"@type": "Identifier", "metaData": "18:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":51},"identifier":
+                  {"@type": "Identifier", "metaData": "18:13::16","type":"string","package":"UNKNOWN","name":"str","id":317,"__cfgId":50},"__cfgId":52}
+              ],"cfg":{"Blocks":[{"Node":[61],"Successors":null},{"Node":null,"Successors":null}]},"body":
+                {"@type": "Block", "metaData": "18:32:20:2","statementOrExpressions":[
+                  {"@type": "Return", "metaData": "19:2::71","keyword":"19:2::8","expressions":[
+                    {"@type": "BinaryExpression", "metaData": "19:9::71","rightOperand":
+                      {"@type": "StringLiteral", "metaData": "19:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"19:21::22","operator":"PLUS","leftOperand":
+                      {"@type": "BinaryExpression", "metaData": "19:9::20","rightOperand":
+                        {"@type": "Identifier", "metaData": "19:17::20","type":"string","package":"UNKNOWN","name":"str","id":317,"__cfgId":58},"operatorToken":"19:15::16","operator":"PLUS","leftOperand":
+                        {"@type": "StringLiteral", "metaData": "19:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":59},"__cfgId":60}
+                  ],"body":
+                    {"@type": "BinaryExpression", "metaData": "19:9::71","rightOperand":
+                      {"@type": "StringLiteral", "metaData": "19:23::71","value":"\" I'm an anonymous function returning a string.\"","content":" I'm an anonymous function returning a string."},"operatorToken":"19:21::22","operator":"PLUS","leftOperand":
+                      {"@type": "BinaryExpression", "metaData": "19:9::20","rightOperand":
+                        {"@type": "Identifier", "metaData": "19:17::20","type":"string","package":"UNKNOWN","name":"str","id":317,"__cfgId":58},"operatorToken":"19:15::16","operator":"PLUS","leftOperand":
+                        {"@type": "StringLiteral", "metaData": "19:9::14","value":"\"Hi \"","content":"Hi "},"__cfgId":59},"__cfgId":60},"__cfgId":61}
+                ],"__cfgId":62},"__cfgId":63},"arguments":[
+              {"@type": "StringLiteral", "metaData": "20:3::10","value":"\"Ricky\"","content":"Ricky"}
+            ],"__cfgId":64}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "18:1::4","type":"string","package":"UNKNOWN","name":"msg","id":305,"__cfgId":49}
+          ],"__cfgId":65},
+          {"@type": "ExpressionStatement", "metaData": "21:1::17","expression":
+            {"@type": "FunctionInvocation", "metaData": "21:1::17","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "21:1::12","identifier":
+                {"@type": "Identifier", "metaData": "21:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":67},"expression":
+                {"@type": "Identifier", "metaData": "21:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":66},"__cfgId":68},"arguments":[
+              {"@type": "Identifier", "metaData": "21:13::16","type":"string","package":"UNKNOWN","name":"msg","id":305,"__cfgId":69}
+            ],"__cfgId":70},"__cfgId":71}
+        ],"__cfgId":72},"__cfgId":1}
     ],"__cfgId":2}
 } 

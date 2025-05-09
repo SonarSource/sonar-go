@@ -153,6 +153,24 @@ public class DeserializationContext {
     return result;
   }
 
+  public <T> List<T> stringList(@Nullable JsonValue value, BiFunction<DeserializationContext, String, T> converter) {
+    return stringList(value, jsonChild -> converter.apply(this, jsonChild));
+  }
+
+  private <T> List<T> stringList(@Nullable JsonValue value, Function<String, T> converter) {
+    if (value == null || value.isNull()) {
+      return Collections.emptyList();
+    }
+    if (!value.isArray()) {
+      throw newIllegalMemberException("Expect Array instead of " + value.getClass().getSimpleName(), value);
+    }
+    var result = new ArrayList<T>();
+    for (JsonValue jsonValue : value.asArray()) {
+      result.add(converter.apply(jsonValue.asString()));
+    }
+    return result;
+  }
+
   public String fieldToNullableString(JsonObject json, String fieldName) {
     var value = json.get(fieldName);
     if (value == null || Json.NULL.equals(value)) {

@@ -3,6 +3,7 @@
 package main
 
 var packageExportData = map[string]string{
+	"builtin": "builtin.o",
 	"crypto": "crypto.o",
 	"crypto/aes": "crypto_aes.o",
 	"crypto/cipher": "crypto_cipher.o",
@@ -21,6 +22,7 @@ var packageExportData = map[string]string{
 	"crypto/x509": "crypto_x509.o",
 	"database/sql": "database_sql.o",
 	"encoding/hex": "encoding_hex.o",
+	"fmt": "fmt.o",
 	"github.com/beego/beego/v2/server/web": "beego_beego_v2_server_web.o",
 	"github.com/emersion/go-smtp": "emersion_go-smtp.o",
 	"github.com/gin-gonic/gin": "gin-gonic_gin.o",
@@ -73,6 +75,7 @@ var packageExportData = map[string]string{
 	"gopkg.in/resty.v1": "resty.v1.o",
 	"gorm.io/gorm": "gorm.o",
 	"gorm.io/gorm/logger": "gorm_logger.o",
+	"maps": "maps.o",
 	"math/rand": "math_rand.o",
 	"net": "net.o",
 	"net/http": "net_http.o",
@@ -87,4 +90,5 @@ var packageExportData = map[string]string{
 	"regexp": "regexp.o",
 	"runtime/debug": "runtime_debug.o",
 	"runtime/pprof": "runtime_pprof.o",
+	"slices": "slices.o",
 }

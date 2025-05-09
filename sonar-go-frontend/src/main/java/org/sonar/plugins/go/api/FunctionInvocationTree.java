@@ -32,4 +32,10 @@ public interface FunctionInvocationTree extends Tree {
    * @return function invocation signature
    */
   String signature();
+
+  /**
+   * Return the return types of the function invocation.
+   * @return return types
+   */
+  List<Type> returnTypes();
 }

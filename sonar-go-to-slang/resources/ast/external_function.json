@@ -40,7 +40,7 @@
         {"@type": "Identifier", "metaData": "6:5::9","type":"func()","package":"main","name":"main","id":59,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "6:12:8:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "7:4::22","expression":
-            {"@type": "FunctionInvocation", "metaData": "7:4::22","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "7:4::22","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "7:4::20","type":"func()","package":"main","name":"externalFunction","id":34,"__cfgId":4},"arguments":[],"__cfgId":5},"__cfgId":6}
         ],"__cfgId":7},"__cfgId":1}
     ],"__cfgId":2}

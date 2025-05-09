@@ -153,9 +153,9 @@
         {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"main","name":"fun1","id":157,"__cfgId":28},"formalParameters":[],"cfg":{"Blocks":[{"Node":[34,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "7:12:9:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "8:2::28","expression":
-            {"@type": "FunctionInvocation", "metaData": "8:2::28","memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "8:2::28","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "8:2::13","identifier":
-                {"@type": "Identifier", "metaData": "8:6::13","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":31},"expression":
+                {"@type": "Identifier", "metaData": "8:6::13","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":31},"expression":
                 {"@type": "Identifier", "metaData": "8:2::5","type":"UNKNOWN","package":"fmt","name":"fmt","id":51,"__cfgId":30},"__cfgId":32},"arguments":[
               {"@type": "StringLiteral", "metaData": "8:14::27","value":"\"Statement 1\"","content":"Statement 1"}
             ],"__cfgId":33},"__cfgId":34}
@@ -180,9 +180,9 @@
               ]},"body":
               {"@type": "Block", "metaData": "13:4:15:5","statementOrExpressions":[
                 {"@type": "ExpressionStatement", "metaData": "13:4:15:5","expression":
-                  {"@type": "FunctionInvocation", "metaData": "13:4:15:5","memberSelect":
+                  {"@type": "FunctionInvocation", "metaData": "13:4:15:5","returnType":["int","error"],"memberSelect":
                     {"@type": "MemberSelect", "metaData": "13:4::15","identifier":
-                      {"@type": "Identifier", "metaData": "13:8::15","type":"UNKNOWN","package":"UNKNOWN","name":"Println","id":0,"__cfgId":10},"expression":
+                      {"@type": "Identifier", "metaData": "13:8::15","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":10},"expression":
                       {"@type": "Identifier", "metaData": "13:4::7","type":"UNKNOWN","package":"fmt","name":"fmt","id":51,"__cfgId":9},"__cfgId":11},"arguments":[
                     {"@type": "StringLiteral", "metaData": "14:6::19","value":"\"Statement 3\"","content":"Statement 3"}
                   ],"__cfgId":12},"__cfgId":13}
