@@ -18,6 +18,7 @@ package org.sonar.go.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.annotation.CheckForNull;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -25,8 +26,6 @@ import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 import org.sonar.plugins.go.api.Type;
-
-import static org.sonar.go.utils.TreeUtils.retrieveLastIdentifier;
 
 public class FunctionInvocationTreeImpl extends BaseTreeImpl implements FunctionInvocationTree {
 
@@ -51,10 +50,10 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   public String signature() {
     var sb = new StringBuilder();
     if (memberSelect instanceof MemberSelectTree memberSelectTree) {
-      var expression = memberSelectTree.expression();
-      retrieveLastIdentifier(expression)
-        .map(FunctionInvocationTreeImpl::getPackageForMemberSelectExpression)
-        .ifPresent(idSignature -> sb.append(idSignature).append("."));
+      var prefix = retrieveSignaturePrefix(memberSelectTree);
+      if (prefix != null) {
+        sb.append(prefix).append('.');
+      }
       sb.append(memberSelectTree.identifier().name());
     } else if (memberSelect instanceof IdentifierTree identifierTree) {
       // build-in functions like string(), int(), int16(), or local functions or alias import
@@ -74,6 +73,26 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   @Override
   public List<Type> returnTypes() {
     return returnTypes;
+  }
+
+  @CheckForNull
+  private static String retrieveSignaturePrefix(MemberSelectTree memberSelectTree) {
+    String result = null;
+    var tree = memberSelectTree.expression();
+    if (tree instanceof MemberSelectTree memberSelectTree2) {
+      result = getPackageForMemberSelectExpression(memberSelectTree2.identifier());
+    } else if (tree instanceof IdentifierTree identifierTree) {
+      result = getPackageForMemberSelectExpression(identifierTree);
+    } else if (tree instanceof FunctionInvocationTree functionInvocationTree) {
+      var returnedTypes = functionInvocationTree.returnTypes();
+      if (returnedTypes.size() == 1) {
+        // there is no way in Go syntax to call any method directly of multiple returned values
+        // nor on a function that returns no values,
+        // so only a case where there is only one returned type is possible.
+        result = returnedTypes.get(0).type();
+      }
+    }
+    return result;
   }
 
   private static String getPackageForMemberSelectExpression(IdentifierTree identifierTree) {

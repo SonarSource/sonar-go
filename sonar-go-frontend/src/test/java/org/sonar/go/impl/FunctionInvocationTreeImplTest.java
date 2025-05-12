@@ -379,4 +379,60 @@ class FunctionInvocationTreeImplTest {
       }
     });
   }
+
+  @Test
+  void shouldVerifySignatureForChainedCall() {
+    var code = """
+      package main
+
+      import (
+      	"database/sql"
+      )
+
+      var db *sql.DB
+
+      func chained_call() {
+      	getDb().Query(getQueryAsString())
+      }
+
+      func getDb() *sql.DB {
+      	return db
+      }
+
+      func getQueryAsString() string {
+      	return "select * from USER"
+      }""";
+
+    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(functionInvocationTree.signature()).isEqualTo("*database/sql.DB.Query");
+  }
+
+  @Test
+  void shouldVerifySignatureForMultipleChainedCall() {
+    var code = """
+      package main
+
+      func chainCall() {
+        a().b().c()
+      }
+
+      type A struct {}
+      type B struct {}
+      type C struct {}
+
+      func a() A {
+        return A{}
+      }
+
+      func (a A) b() B {
+        return B{}
+      }
+
+      func (b B) c() C {
+        return C{}
+      }""";
+
+    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    assertThat(functionInvocationTree.signature()).isEqualTo("main.B.c");
+  }
 }
