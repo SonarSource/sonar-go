@@ -33,13 +33,11 @@ import org.sonar.api.batch.rule.Severity;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.batch.sensor.issue.ExternalIssue;
-import org.sonar.api.issue.impact.SoftwareQuality;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.entry;
 
 class CheckstyleFormatImporterTest {
 
@@ -51,7 +49,7 @@ class CheckstyleFormatImporterTest {
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @Test
-  void import_detekt_issues() throws IOException {
+  void shouldImportDetektIssues() throws IOException {
     List<ExternalIssue> externalIssues = importIssues("detekt-checkstyle.xml");
     assertThat(externalIssues).hasSize(3);
 
@@ -88,8 +86,8 @@ class CheckstyleFormatImporterTest {
   }
 
   @Test
-  void import_golandci_lint_issues() throws IOException {
-    List<ExternalIssue> externalIssues = importIssuesTestImporter("golandci-lint-report.xml");
+  void shouldImportGolangCILintIssues() throws IOException {
+    List<ExternalIssue> externalIssues = importIssuesTestImporter("golangci-lint-report.xml");
     assertThat(externalIssues).hasSize(1);
 
     ExternalIssue first = externalIssues.get(0);
@@ -97,7 +95,6 @@ class CheckstyleFormatImporterTest {
     assertThat(first.ruleKey().rule()).isEqualTo("deadcode");
     assertThat(first.type()).isEqualTo(RuleType.BUG);
     assertThat(first.severity()).isEqualTo(Severity.MAJOR);
-    assertThat(first.impacts()).contains(entry(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     assertThat(first.primaryLocation().message()).isEqualTo("`three` is unused");
     assertThat(first.primaryLocation().textRange().start().line()).isEqualTo(4);
 
@@ -111,7 +108,7 @@ class CheckstyleFormatImporterTest {
     "not-checkstyle-file.xml",
     "invalid-file.xml",
   })
-  void noIssuesWithInvalidFiles(String fileName) throws IOException {
+  void shouldNotImportIssuesWhenReportDoesNotExist(String fileName) throws IOException {
     List<ExternalIssue> externalIssues = importIssues(fileName);
     assertThat(externalIssues).isEmpty();
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
@@ -121,7 +118,7 @@ class CheckstyleFormatImporterTest {
   }
 
   @Test
-  void issues_when_xml_file_has_errors() throws IOException {
+  void shouldImportIssuesWhenReportHasErrors() throws IOException {
     List<ExternalIssue> externalIssues = importIssues("detekt-checkstyle-with-errors.xml");
     assertThat(externalIssues).hasSize(2);
 
@@ -186,11 +183,6 @@ class CheckstyleFormatImporterTest {
 
     public TestImporter(SensorContext context, String linterKey) {
       super(context, linterKey);
-    }
-
-    @Override
-    protected List<Impact> impacts(String severity, String source) {
-      return List.of(new Impact(SoftwareQuality.SECURITY, org.sonar.api.issue.impact.Severity.MEDIUM));
     }
   }
 }

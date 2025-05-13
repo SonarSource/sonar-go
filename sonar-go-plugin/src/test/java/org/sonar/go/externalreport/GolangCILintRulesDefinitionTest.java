@@ -28,22 +28,22 @@ import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.utils.Version;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.sonar.api.rules.CleanCodeAttribute.CONVENTIONAL;
+import static org.sonar.api.rules.CleanCodeAttribute.TRUSTWORTHY;
 
-class GoLintRulesDefinitionTest {
+class GolangCILintRulesDefinitionTest {
 
   private static final SonarRuntime SONARQUBE_10_6_CCT_SUPPORT_MINIMAL_VERSION = SonarRuntimeImpl.forSonarQube(Version.create(10, 6), SonarQubeSide.SERVER, SonarEdition.COMMUNITY);
 
   @Test
   void shouldDefineRulesWithCorrectAttributeAndImpact() {
     var context = new RulesDefinition.Context();
-    var rulesDefinition = new GoLintRulesDefinition(SONARQUBE_10_6_CCT_SUPPORT_MINIMAL_VERSION);
+    var rulesDefinition = new GolangCILintRulesDefinition(SONARQUBE_10_6_CCT_SUPPORT_MINIMAL_VERSION);
     rulesDefinition.define(context);
-    var repository = context.repository("external_" + GoLintReportSensor.LINTER_ID);
+    var repository = context.repository("external_" + GolangCILintReportSensor.LINTER_ID);
 
-    var codeSmell = repository.rule("PackageComment");
-    assertThat(codeSmell.name()).isEqualTo("Checks package comments");
-    assertThat(codeSmell.cleanCodeAttribute()).isEqualTo(CONVENTIONAL);
-    assertThat(codeSmell.defaultImpacts()).containsOnly(Map.entry(SoftwareQuality.MAINTAINABILITY, Severity.MEDIUM));
+    var gosecRule = repository.rule("gosec");
+    assertThat(gosecRule.name()).isEqualTo("Issue raised by gosec"); // Placeholder, overridden at issue-level
+    assertThat(gosecRule.cleanCodeAttribute()).isEqualTo(TRUSTWORTHY);
+    assertThat(gosecRule.defaultImpacts()).containsOnly(Map.entry(SoftwareQuality.SECURITY, Severity.HIGH));
   }
 }

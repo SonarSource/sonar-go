@@ -1,0 +1,12 @@
+[
+  {
+    "key": "gosec",
+    "name": "Issue raised by gosec",
+    "code": {
+      "attribute": "TRUSTWORTHY",
+      "impacts": {
+        "SECURITY": "HIGH"
+      }
+    }
+  }
+]

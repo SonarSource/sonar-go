@@ -46,7 +46,7 @@ class GolangCILintReportSensorTest {
   }
 
   @Test
-  void test_descriptor() {
+  void shouldDefineDescriptor() {
     DefaultSensorDescriptor sensorDescriptor = new DefaultSensorDescriptor();
     golangCILintReportSensor().describe(sensorDescriptor);
     assertThat(sensorDescriptor.name()).isEqualTo("Import of GolangCI-Lint issues");
@@ -58,13 +58,13 @@ class GolangCILintReportSensorTest {
   }
 
   @Test
-  void issues_with_sonarqube() throws IOException {
-    SensorContextTester context = ExternalLinterSensorHelper.createContext();
-    context.settings().setProperty("sonar.go.golangci-lint.reportPaths", REPORT_BASE_PATH.resolve("golandci-lint-report.xml").toString());
-    List<ExternalIssue> externalIssues = ExternalLinterSensorHelper.executeSensor(golangCILintReportSensor(), context);
-    assertThat(externalIssues).hasSize(2);
+  void shouldImportIssuesWithSonarQube() throws IOException {
+    var context = ExternalLinterSensorHelper.createContext();
+    context.settings().setProperty("sonar.go.golangci-lint.reportPaths", REPORT_BASE_PATH.resolve("golangci-lint-report.xml").toString());
+    var externalIssues = ExternalLinterSensorHelper.executeSensor(golangCILintReportSensor(), context);
+    assertThat(externalIssues).hasSize(4);
 
-    org.sonar.api.batch.sensor.issue.ExternalIssue first = externalIssues.get(0);
+    var first = externalIssues.get(0);
     assertThat(first.type()).isEqualTo(RuleType.BUG);
     assertThat(first.severity()).isEqualTo(Severity.MAJOR);
     assertThat(first.ruleKey().repository()).isEqualTo("external_golangci-lint");
@@ -72,7 +72,7 @@ class GolangCILintReportSensorTest {
     assertThat(first.primaryLocation().message()).isEqualTo("`three` is unused");
     assertThat(first.primaryLocation().textRange().start().line()).isEqualTo(3);
 
-    ExternalIssue second = externalIssues.get(1);
+    var second = externalIssues.get(1);
     assertThat(second.type()).isEqualTo(RuleType.VULNERABILITY);
     assertThat(second.severity()).isEqualTo(Severity.MAJOR);
     assertThat(second.ruleKey().repository()).isEqualTo("external_golangci-lint");
@@ -81,12 +81,28 @@ class GolangCILintReportSensorTest {
     assertThat(second.primaryLocation().inputComponent().key()).isEqualTo("module:main.go");
     assertThat(second.primaryLocation().textRange().start().line()).isEqualTo(4);
 
+    var third = externalIssues.get(2);
+    assertThat(third.type()).isEqualTo(RuleType.BUG);
+    assertThat(third.severity()).isEqualTo(Severity.MAJOR);
+    assertThat(third.ruleKey().repository()).isEqualTo("external_govet");
+    assertThat(third.ruleKey().rule()).isEqualTo("assign");
+    assertThat(third.primaryLocation().message()).isEqualTo("assign: self-assignment of name to name");
+    assertThat(third.primaryLocation().textRange().start().line()).isEqualTo(5);
+
+    var fourth = externalIssues.get(3);
+    assertThat(fourth.type()).isEqualTo(RuleType.BUG);
+    assertThat(fourth.severity()).isEqualTo(Severity.MAJOR);
+    assertThat(fourth.ruleKey().repository()).isEqualTo("external_golangci-lint");
+    assertThat(fourth.ruleKey().rule()).isEqualTo("govet.bug.major");
+    assertThat(fourth.primaryLocation().message()).isEqualTo("Non-conventional message format");
+    assertThat(fourth.primaryLocation().textRange().start().line()).isEqualTo(6);
+
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
     assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
-  void import_check_style_report_same_source_different_key() throws IOException {
+  void shouldImportIssuesWithDifferentKeysFromTheSameSource() throws IOException {
     // Check that rules have different key based on the severity
     SensorContextTester context = ExternalLinterSensorHelper.createContext();
     context.settings().setProperty("sonar.go.golangci-lint.reportPaths", REPORT_BASE_PATH.resolve("checkstyle-different-severity.xml").toString());
@@ -100,5 +116,4 @@ class GolangCILintReportSensorTest {
     assertThat(externalIssues.get(4).ruleKey().rule()).isEqualTo("source2.bug.major");
     assertThat(externalIssues.get(5).ruleKey().rule()).isEqualTo("source2.code_smell.major");
   }
-
 }

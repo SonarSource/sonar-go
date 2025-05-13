@@ -33,7 +33,6 @@ import static org.sonar.api.rules.CleanCodeAttribute.LOGICAL;
 class GoVetRulesDefinitionTest {
 
   private static final SonarRuntime SONARQUBE_10_6_CCT_SUPPORT_MINIMAL_VERSION = SonarRuntimeImpl.forSonarQube(Version.create(10, 6), SonarQubeSide.SERVER, SonarEdition.COMMUNITY);
-  private static final SonarRuntime SONARLINT_RUNTIME_9_9 = SonarRuntimeImpl.forSonarLint(Version.create(9, 2));
 
   @Test
   void shouldDefineRulesWithCorrectAttributeAndImpact() {
@@ -47,13 +46,4 @@ class GoVetRulesDefinitionTest {
     assertThat(codeSmell.cleanCodeAttribute()).isEqualTo(LOGICAL);
     assertThat(codeSmell.defaultImpacts()).containsOnly(Map.entry(SoftwareQuality.RELIABILITY, Severity.MEDIUM));
   }
-
-  @Test
-  void shouldNotDefineRulesWithSonarLintRuntime() {
-    var context = new RulesDefinition.Context();
-    var rulesDefinition = new GoVetRulesDefinition(SONARLINT_RUNTIME_9_9);
-    rulesDefinition.define(context);
-    assertThat(context.repositories()).isEmpty();
-  }
-
 }

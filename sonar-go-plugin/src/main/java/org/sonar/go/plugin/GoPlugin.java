@@ -28,6 +28,7 @@ import org.sonar.go.externalreport.GoMetaLinterReportSensor;
 import org.sonar.go.externalreport.GoVetReportSensor;
 import org.sonar.go.externalreport.GoVetRulesDefinition;
 import org.sonar.go.externalreport.GolangCILintReportSensor;
+import org.sonar.go.externalreport.GolangCILintRulesDefinition;
 import org.sonar.go.testreport.GoTestSensor;
 
 public class GoPlugin implements Plugin {
@@ -102,6 +103,7 @@ public class GoPlugin implements Plugin {
       GoLintRulesDefinition.class,
       GoMetaLinterReportSensor.class,
       GolangCILintReportSensor.class,
+      GolangCILintRulesDefinition.class,
       PropertyDefinition.builder(GoTestSensor.REPORT_PATH_KEY)
         .index(19)
         .name("Path to test execution report(s)")
