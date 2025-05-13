@@ -22,6 +22,7 @@ import org.sonarsource.cloudnative.gradle.enforceJarSize
 
 plugins {
     id("org.sonarsource.cloud-native.sonar-plugin")
+    id("org.sonarsource.go.golangci-lint-rules-generator")
 }
 
 dependencies {

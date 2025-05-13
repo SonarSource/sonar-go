@@ -1,5 +1,1225 @@
 [
   {
+    "key": "asasalint.bug.major",
+    "name": "Issue raised by asasalint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "asciicheck.bug.major",
+    "name": "Issue raised by asciicheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "bidichk.bug.major",
+    "name": "Issue raised by bidichk",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "bodyclose.bug.major",
+    "name": "Issue raised by bodyclose",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "canonicalheader.bug.major",
+    "name": "Issue raised by canonicalheader",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "containedctx.bug.major",
+    "name": "Issue raised by containedctx",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "contextcheck.bug.major",
+    "name": "Issue raised by contextcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "copyloopvar.bug.major",
+    "name": "Issue raised by copyloopvar",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "cyclop.bug.major",
+    "name": "Issue raised by cyclop",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "decorder.bug.major",
+    "name": "Issue raised by decorder",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "depguard.bug.major",
+    "name": "Issue raised by depguard",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "dogsled.bug.major",
+    "name": "Issue raised by dogsled",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "dupl.bug.major",
+    "name": "Issue raised by dupl",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "dupword.bug.major",
+    "name": "Issue raised by dupword",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "durationcheck.bug.major",
+    "name": "Issue raised by durationcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "errcheck.bug.major",
+    "name": "Issue raised by errcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "errchkjson.bug.major",
+    "name": "Issue raised by errchkjson",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "errname.bug.major",
+    "name": "Issue raised by errname",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "errorlint.bug.major",
+    "name": "Issue raised by errorlint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "exhaustive.bug.major",
+    "name": "Issue raised by exhaustive",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "exhaustruct.bug.major",
+    "name": "Issue raised by exhaustruct",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "exptostd.bug.major",
+    "name": "Issue raised by exptostd",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "forbidigo.bug.major",
+    "name": "Issue raised by forbidigo",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "forcetypeassert.bug.major",
+    "name": "Issue raised by forcetypeassert",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "funcorder.bug.major",
+    "name": "Issue raised by funcorder",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "fatcontext.bug.major",
+    "name": "Issue raised by fatcontext",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "funlen.bug.major",
+    "name": "Issue raised by funlen",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "ginkgolinter.bug.major",
+    "name": "Issue raised by ginkgolinter",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gocheckcompilerdirectives.bug.major",
+    "name": "Issue raised by gocheckcompilerdirectives",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gochecknoglobals.bug.major",
+    "name": "Issue raised by gochecknoglobals",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gochecknoinits.bug.major",
+    "name": "Issue raised by gochecknoinits",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gochecksumtype.bug.major",
+    "name": "Issue raised by gochecksumtype",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gocognit.bug.major",
+    "name": "Issue raised by gocognit",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "goconst.bug.major",
+    "name": "Issue raised by goconst",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gocritic.bug.major",
+    "name": "Issue raised by gocritic",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gocyclo.bug.major",
+    "name": "Issue raised by gocyclo",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "godot.bug.major",
+    "name": "Issue raised by godot",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "godox.bug.major",
+    "name": "Issue raised by godox",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "err113.bug.major",
+    "name": "Issue raised by err113",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "goheader.bug.major",
+    "name": "Issue raised by goheader",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "mnd.bug.major",
+    "name": "Issue raised by mnd",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gomoddirectives.bug.major",
+    "name": "Issue raised by gomoddirectives",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gomodguard.bug.major",
+    "name": "Issue raised by gomodguard",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "goprintffuncname.bug.major",
+    "name": "Issue raised by goprintffuncname",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gosec.bug.major",
+    "name": "Issue raised by gosec",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gosmopolitan.bug.major",
+    "name": "Issue raised by gosmopolitan",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "govet.bug.major",
+    "name": "Issue raised by govet",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "grouper.bug.major",
+    "name": "Issue raised by grouper",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "iface.bug.major",
+    "name": "Issue raised by iface",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "importas.bug.major",
+    "name": "Issue raised by importas",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "inamedparam.bug.major",
+    "name": "Issue raised by inamedparam",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "ineffassign.bug.major",
+    "name": "Issue raised by ineffassign",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "interfacebloat.bug.major",
+    "name": "Issue raised by interfacebloat",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "intrange.bug.major",
+    "name": "Issue raised by intrange",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "ireturn.bug.major",
+    "name": "Issue raised by ireturn",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "lll.bug.major",
+    "name": "Issue raised by lll",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "loggercheck.bug.major",
+    "name": "Issue raised by loggercheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "maintidx.bug.major",
+    "name": "Issue raised by maintidx",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "makezero.bug.major",
+    "name": "Issue raised by makezero",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "mirror.bug.major",
+    "name": "Issue raised by mirror",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "misspell.bug.major",
+    "name": "Issue raised by misspell",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "musttag.bug.major",
+    "name": "Issue raised by musttag",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nakedret.bug.major",
+    "name": "Issue raised by nakedret",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nestif.bug.major",
+    "name": "Issue raised by nestif",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nilerr.bug.major",
+    "name": "Issue raised by nilerr",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nilnesserr.bug.major",
+    "name": "Issue raised by nilnesserr",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nilnil.bug.major",
+    "name": "Issue raised by nilnil",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nlreturn.bug.major",
+    "name": "Issue raised by nlreturn",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "noctx.bug.major",
+    "name": "Issue raised by noctx",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nonamedreturns.bug.major",
+    "name": "Issue raised by nonamedreturns",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nosprintfhostport.bug.major",
+    "name": "Issue raised by nosprintfhostport",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "paralleltest.bug.major",
+    "name": "Issue raised by paralleltest",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "perfsprint.bug.major",
+    "name": "Issue raised by perfsprint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "prealloc.bug.major",
+    "name": "Issue raised by prealloc",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "predeclared.bug.major",
+    "name": "Issue raised by predeclared",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "promlinter.bug.major",
+    "name": "Issue raised by promlinter",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "protogetter.bug.major",
+    "name": "Issue raised by protogetter",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "reassign.bug.major",
+    "name": "Issue raised by reassign",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "recvcheck.bug.major",
+    "name": "Issue raised by recvcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "revive.bug.major",
+    "name": "Issue raised by revive",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "rowserrcheck.bug.major",
+    "name": "Issue raised by rowserrcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "sloglint.bug.major",
+    "name": "Issue raised by sloglint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "sqlclosecheck.bug.major",
+    "name": "Issue raised by sqlclosecheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "spancheck.bug.major",
+    "name": "Issue raised by spancheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "staticcheck.bug.major",
+    "name": "Issue raised by staticcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "tagalign.bug.major",
+    "name": "Issue raised by tagalign",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "tagliatelle.bug.major",
+    "name": "Issue raised by tagliatelle",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "testableexamples.bug.major",
+    "name": "Issue raised by testableexamples",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "testifylint.bug.major",
+    "name": "Issue raised by testifylint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "testpackage.bug.major",
+    "name": "Issue raised by testpackage",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "thelper.bug.major",
+    "name": "Issue raised by thelper",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "tparallel.bug.major",
+    "name": "Issue raised by tparallel",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "typecheck.bug.major",
+    "name": "Issue raised by typecheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "unconvert.bug.major",
+    "name": "Issue raised by unconvert",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "unparam.bug.major",
+    "name": "Issue raised by unparam",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "unused.bug.major",
+    "name": "Issue raised by unused",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "usestdlibvars.bug.major",
+    "name": "Issue raised by usestdlibvars",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "usetesting.bug.major",
+    "name": "Issue raised by usetesting",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "varnamelen.bug.major",
+    "name": "Issue raised by varnamelen",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "wastedassign.bug.major",
+    "name": "Issue raised by wastedassign",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "whitespace.bug.major",
+    "name": "Issue raised by whitespace",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "wrapcheck.bug.major",
+    "name": "Issue raised by wrapcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "wsl.bug.major",
+    "name": "Issue raised by wsl",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "zerologlint.bug.major",
+    "name": "Issue raised by zerologlint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nolintlint.bug.major",
+    "name": "Issue raised by nolintlint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "deadcode.bug.major",
+    "name": "Issue raised by deadcode",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "execinquery.bug.major",
+    "name": "Issue raised by execinquery",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "exhaustivestruct.bug.major",
+    "name": "Issue raised by exhaustivestruct",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "exportloopref.bug.major",
+    "name": "Issue raised by exportloopref",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "golint.bug.major",
+    "name": "Issue raised by golint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gomnd.bug.major",
+    "name": "Issue raised by gomnd",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "gosimple.bug.major",
+    "name": "Issue raised by gosimple",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "ifshort.bug.major",
+    "name": "Issue raised by ifshort",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "interfacer.bug.major",
+    "name": "Issue raised by interfacer",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "maligned.bug.major",
+    "name": "Issue raised by maligned",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "megacheck.bug.major",
+    "name": "Issue raised by megacheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "nosnakecase.bug.major",
+    "name": "Issue raised by nosnakecase",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "scopelint.bug.major",
+    "name": "Issue raised by scopelint",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "structcheck.bug.major",
+    "name": "Issue raised by structcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "stylecheck.bug.major",
+    "name": "Issue raised by stylecheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "tenv.bug.major",
+    "name": "Issue raised by tenv",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
+    "key": "varcheck.bug.major",
+    "name": "Issue raised by varcheck",
+    "code": {
+      "attribute": "LOGICAL",
+      "impacts": {
+        "RELIABILITY": "MEDIUM"
+      }
+    }
+  },
+  {
     "key": "gosec",
     "name": "Issue raised by gosec",
     "code": {

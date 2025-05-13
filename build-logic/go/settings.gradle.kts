@@ -14,29 +14,14 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-pluginManagement {
-    includeBuild("build-logic/common") {
-        name = "build-logic-common"
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
     }
-    includeBuild("build-logic/go") {
-        name = "build-logic-go"
+    versionCatalogs {
+        create("libs") {
+            from(files("../../gradle/libs.versions.toml"))
+        }
     }
-}
-
-plugins {
-    id("org.sonarsource.cloud-native.common-settings")
-}
-
-rootProject.name = "sonar-go"
-
-include(":sonar-go-to-slang")
-include(":sonar-go-plugin")
-include(":sonar-go-checks")
-include(":sonar-go-frontend")
-include(":sonar-go-commons")
-
-// "extraSettings.gradle" should not be renamed "settings.gradle" to not create a wrong project rootDir
-var extraSettings = File(rootDir, "private/extraSettings.gradle.kts")
-if (extraSettings.exists()) {
-    apply(extraSettings)
 }

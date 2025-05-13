@@ -41,6 +41,14 @@ spotless {
         // no Java sources in the root project
         target("")
     }
+    kotlin {
+        target("build-logic/go/src/**/*.kt")
+        ktlint().setEditorConfigPath("$rootDir/build-logic/common/.editorconfig")
+        licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
+    }
+    kotlinGradle {
+        target("build-logic/go/src/**/*.gradle.kts", "build-logic/go/*.gradle.kts", "*.gradle.kts")
+    }
 }
 
 val projectTitle = properties["projectTitle"] as String

@@ -19,6 +19,9 @@ classgraph = "4.8.179"
 yguard = "4.1.1"
 commons-codec = "1.18.0"
 jsr305 = "3.0.2"
+download = "5.6.0"
+kotlinx-serialization-json = "1.8.1"
+kotlin-serialization-plugin = "2.0.21"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -48,3 +51,8 @@ classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref 
 yguard = { module = "com.yworks:yguard", version.ref = "yguard"}
 commons-codec = { module = "commons-codec:commons-codec", version.ref = "commons-codec" }
 jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
+download = { module = "de.undercouch.download:de.undercouch.download.gradle.plugin", version.ref = "download" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
+
+[plugins]
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }
