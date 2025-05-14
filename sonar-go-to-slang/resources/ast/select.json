@@ -507,13 +507,10 @@
                 {"@type": "AssignmentExpression", "metaData": "49:9::22","statementOrExpression":
                   {"@type": "UnaryExpression", "metaData": "49:18::22","operator":"ARROW","operand":
                     {"@type": "Identifier", "metaData": "49:20::22","type":"chan int","package":"UNKNOWN","name":"c4","id":527,"__cfgId":59},"__cfgId":60},"operator":"EQUAL","leftHandSide":
-                  {"@type": "Native", "metaData": "49:9::15","nativeKind":"[0](IndexExpr)","children":[
-                    {"@type": "Identifier", "metaData": "49:9::10","type":"[]int","package":"UNKNOWN","name":"a","id":496,"__cfgId":55},
-                    {"@type": "Native", "metaData": "49:10::11","nativeKind":"Lbrack"},
+                  {"@type": "IndexExpression", "metaData": "49:9::15","index":
                     {"@type": "FunctionInvocation", "metaData": "49:11::14","returnType":[],"memberSelect":
-                      {"@type": "Identifier", "metaData": "49:11::12","type":"UNKNOWN","package":"UNKNOWN","name":"f","id":0,"__cfgId":56},"arguments":[],"__cfgId":57},
-                    {"@type": "Native", "metaData": "49:14::15","nativeKind":"Rbrack"}
-                  ],"__cfgId":58},"__cfgId":61},
+                      {"@type": "Identifier", "metaData": "49:11::12","type":"UNKNOWN","package":"UNKNOWN","name":"f","id":0,"__cfgId":56},"arguments":[],"__cfgId":57},"expression":
+                    {"@type": "Identifier", "metaData": "49:9::10","type":"[]int","package":"UNKNOWN","name":"a","id":496,"__cfgId":55},"__cfgId":58},"__cfgId":61},
                 {"@type": "Native", "metaData": "49:22::23","nativeKind":"Colon"}
               ],"__cfgId":62},
               {"@type": "Native", "metaData": "53:4:54:35","nativeKind":"[4](CommClause)","children":[

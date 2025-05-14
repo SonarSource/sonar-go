@@ -39,6 +39,7 @@ import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.ImportSpecificationTreeImpl;
+import org.sonar.go.impl.IndexExpressionTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
@@ -113,6 +114,7 @@ public final class JsonTreeConverter {
   public static final String IDENTIFIER = "identifier";
   public static final String IDENTIFIERS = "identifiers";
   public static final String IF_KEYWORD = "ifKeyword";
+  public static final String INDEX = "index";
   public static final String INITIALIZERS = "initializers";
   public static final String IS_VAL = "isVal";
   public static final String KEYWORD = "keyword";
@@ -421,6 +423,17 @@ public final class JsonTreeConverter {
       (ctx, json) -> new ImaginaryLiteralTreeImpl(
         ctx.metaData(json),
         ctx.fieldToString(json, VALUE)));
+
+    register(IndexExpressionTreeImpl.class,
+
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(EXPRESSION, ctx.toJson(tree.expression()))
+        .add(INDEX, ctx.toJson(tree.index())),
+
+      (ctx, json) -> new IndexExpressionTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, EXPRESSION, Tree.class),
+        ctx.fieldToObject(json, INDEX, Tree.class)));
 
     register(JumpTreeImpl.class,
 

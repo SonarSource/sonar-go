@@ -1,0 +1,33 @@
+package main
+
+// https://go.dev/doc/effective_go#maps
+
+func mapCreatedAtInitialization() {
+	var m = map[string]string{"key": "value"}
+	b := m["key"]
+}
+
+func mapCreatedAtInitializationMultiplesValues() {
+	var m = map[string]string{"key": "value", "key2": "value2"}
+}
+
+func mapFilledWithOneElement() {
+	var m = make(map[string]string)
+	m["key"] = "value"
+}
+
+func mapCommaOkIdiom() {
+	var m = make(map[string]string)
+	m["key"] = "value"
+	if v, ok := m["key"]; ok {
+		b := v
+	}
+}
+
+func mapsTimeZoneExample() {
+	var timeZone = map[string]int{
+		"UTC":  0*60*60,
+		"EST": -5*60*60,
+		"CST": -6*60*60,
+	}
+}

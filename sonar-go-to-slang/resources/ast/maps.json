@@ -1,0 +1,347 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+      {"text":"// https://go.dev/doc/effective_go#maps", "contentText":" https://go.dev/doc/effective_go#maps", "range":"3:0::39", "contentRange": "3:2::39"}
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"func","textRange":"5:0::4","type":"KEYWORD"},
+      {"text":"mapCreatedAtInitialization","textRange":"5:5::31"},
+      {"text":"(","textRange":"5:31::32"},
+      {"text":")","textRange":"5:32::33"},
+      {"text":"{","textRange":"5:34::35"},
+      {"text":"var","textRange":"6:1::4","type":"KEYWORD"},
+      {"text":"m","textRange":"6:5::6"},
+      {"text":"map","textRange":"6:9::12","type":"KEYWORD"},
+      {"text":"string","textRange":"6:13::19"},
+      {"text":"[","textRange":"6:12::13"},
+      {"text":"string","textRange":"6:20::26"},
+      {"text":"]","textRange":"6:19::20"},
+      {"text":"{","textRange":"6:26::27"},
+      {"text":"\"key\"","textRange":"6:27::32","type":"STRING_LITERAL"},
+      {"text":":","textRange":"6:32::33"},
+      {"text":"\"value\"","textRange":"6:34::41","type":"STRING_LITERAL"},
+      {"text":"}","textRange":"6:41::42"},
+      {"text":"=","textRange":"6:7::8"},
+      {"text":"b","textRange":"7:1::2"},
+      {"text":":=","textRange":"7:3::5"},
+      {"text":"m","textRange":"7:6::7"},
+      {"text":"[","textRange":"7:7::8"},
+      {"text":"\"key\"","textRange":"7:8::13","type":"STRING_LITERAL"},
+      {"text":"]","textRange":"7:13::14"},
+      {"text":"}","textRange":"8:0::1"},
+      {"text":"func","textRange":"10:0::4","type":"KEYWORD"},
+      {"text":"mapCreatedAtInitializationMultiplesValues","textRange":"10:5::46"},
+      {"text":"(","textRange":"10:46::47"},
+      {"text":")","textRange":"10:47::48"},
+      {"text":"{","textRange":"10:49::50"},
+      {"text":"var","textRange":"11:1::4","type":"KEYWORD"},
+      {"text":"m","textRange":"11:5::6"},
+      {"text":"map","textRange":"11:9::12","type":"KEYWORD"},
+      {"text":"string","textRange":"11:13::19"},
+      {"text":"[","textRange":"11:12::13"},
+      {"text":"string","textRange":"11:20::26"},
+      {"text":"]","textRange":"11:19::20"},
+      {"text":"{","textRange":"11:26::27"},
+      {"text":"\"key\"","textRange":"11:27::32","type":"STRING_LITERAL"},
+      {"text":":","textRange":"11:32::33"},
+      {"text":"\"value\"","textRange":"11:34::41","type":"STRING_LITERAL"},
+      {"text":"\"key2\"","textRange":"11:43::49","type":"STRING_LITERAL"},
+      {"text":":","textRange":"11:49::50"},
+      {"text":"\"value2\"","textRange":"11:51::59","type":"STRING_LITERAL"},
+      {"text":",","textRange":"11:41::42"},
+      {"text":"}","textRange":"11:59::60"},
+      {"text":"=","textRange":"11:7::8"},
+      {"text":"}","textRange":"12:0::1"},
+      {"text":"func","textRange":"14:0::4","type":"KEYWORD"},
+      {"text":"mapFilledWithOneElement","textRange":"14:5::28"},
+      {"text":"(","textRange":"14:28::29"},
+      {"text":")","textRange":"14:29::30"},
+      {"text":"{","textRange":"14:31::32"},
+      {"text":"var","textRange":"15:1::4","type":"KEYWORD"},
+      {"text":"m","textRange":"15:5::6"},
+      {"text":"make","textRange":"15:9::13"},
+      {"text":"(","textRange":"15:13::14"},
+      {"text":"map","textRange":"15:14::17","type":"KEYWORD"},
+      {"text":"string","textRange":"15:18::24"},
+      {"text":"[","textRange":"15:17::18"},
+      {"text":"string","textRange":"15:25::31"},
+      {"text":"]","textRange":"15:24::25"},
+      {"text":")","textRange":"15:31::32"},
+      {"text":"=","textRange":"15:7::8"},
+      {"text":"m","textRange":"16:1::2"},
+      {"text":"[","textRange":"16:2::3"},
+      {"text":"\"key\"","textRange":"16:3::8","type":"STRING_LITERAL"},
+      {"text":"]","textRange":"16:8::9"},
+      {"text":"=","textRange":"16:10::11"},
+      {"text":"\"value\"","textRange":"16:12::19","type":"STRING_LITERAL"},
+      {"text":"}","textRange":"17:0::1"},
+      {"text":"func","textRange":"19:0::4","type":"KEYWORD"},
+      {"text":"mapCommaOkIdiom","textRange":"19:5::20"},
+      {"text":"(","textRange":"19:20::21"},
+      {"text":")","textRange":"19:21::22"},
+      {"text":"{","textRange":"19:23::24"},
+      {"text":"var","textRange":"20:1::4","type":"KEYWORD"},
+      {"text":"m","textRange":"20:5::6"},
+      {"text":"make","textRange":"20:9::13"},
+      {"text":"(","textRange":"20:13::14"},
+      {"text":"map","textRange":"20:14::17","type":"KEYWORD"},
+      {"text":"string","textRange":"20:18::24"},
+      {"text":"[","textRange":"20:17::18"},
+      {"text":"string","textRange":"20:25::31"},
+      {"text":"]","textRange":"20:24::25"},
+      {"text":")","textRange":"20:31::32"},
+      {"text":"=","textRange":"20:7::8"},
+      {"text":"m","textRange":"21:1::2"},
+      {"text":"[","textRange":"21:2::3"},
+      {"text":"\"key\"","textRange":"21:3::8","type":"STRING_LITERAL"},
+      {"text":"]","textRange":"21:8::9"},
+      {"text":"=","textRange":"21:10::11"},
+      {"text":"\"value\"","textRange":"21:12::19","type":"STRING_LITERAL"},
+      {"text":"if","textRange":"22:1::3","type":"KEYWORD"},
+      {"text":"v","textRange":"22:4::5"},
+      {"text":"ok","textRange":"22:7::9"},
+      {"text":",","textRange":"22:5::6"},
+      {"text":":=","textRange":"22:10::12"},
+      {"text":"m","textRange":"22:13::14"},
+      {"text":"[","textRange":"22:14::15"},
+      {"text":"\"key\"","textRange":"22:15::20","type":"STRING_LITERAL"},
+      {"text":"]","textRange":"22:20::21"},
+      {"text":"ok","textRange":"22:23::25"},
+      {"text":";","textRange":"22:21::22"},
+      {"text":"{","textRange":"22:26::27"},
+      {"text":"b","textRange":"23:2::3"},
+      {"text":":=","textRange":"23:4::6"},
+      {"text":"v","textRange":"23:7::8"},
+      {"text":"}","textRange":"24:1::2"},
+      {"text":"}","textRange":"25:0::1"},
+      {"text":"func","textRange":"27:0::4","type":"KEYWORD"},
+      {"text":"mapsTimeZoneExample","textRange":"27:5::24"},
+      {"text":"(","textRange":"27:24::25"},
+      {"text":")","textRange":"27:25::26"},
+      {"text":"{","textRange":"27:27::28"},
+      {"text":"var","textRange":"28:1::4","type":"KEYWORD"},
+      {"text":"timeZone","textRange":"28:5::13"},
+      {"text":"map","textRange":"28:16::19","type":"KEYWORD"},
+      {"text":"string","textRange":"28:20::26"},
+      {"text":"[","textRange":"28:19::20"},
+      {"text":"int","textRange":"28:27::30"},
+      {"text":"]","textRange":"28:26::27"},
+      {"text":"{","textRange":"28:30::31"},
+      {"text":"\"UTC\"","textRange":"29:2::7","type":"STRING_LITERAL"},
+      {"text":":","textRange":"29:7::8"},
+      {"text":"0","textRange":"29:10::11"},
+      {"text":"*","textRange":"29:11::12"},
+      {"text":"60","textRange":"29:12::14"},
+      {"text":"*","textRange":"29:14::15"},
+      {"text":"60","textRange":"29:15::17"},
+      {"text":"\"EST\"","textRange":"30:2::7","type":"STRING_LITERAL"},
+      {"text":":","textRange":"30:7::8"},
+      {"text":"-","textRange":"30:9::10"},
+      {"text":"5","textRange":"30:10::11"},
+      {"text":"*","textRange":"30:11::12"},
+      {"text":"60","textRange":"30:12::14"},
+      {"text":"*","textRange":"30:14::15"},
+      {"text":"60","textRange":"30:15::17"},
+      {"text":",","textRange":"29:17::18"},
+      {"text":"\"CST\"","textRange":"31:2::7","type":"STRING_LITERAL"},
+      {"text":":","textRange":"31:7::8"},
+      {"text":"-","textRange":"31:9::10"},
+      {"text":"6","textRange":"31:10::11"},
+      {"text":"*","textRange":"31:11::12"},
+      {"text":"60","textRange":"31:12::14"},
+      {"text":"*","textRange":"31:14::15"},
+      {"text":"60","textRange":"31:15::17"},
+      {"text":",","textRange":"30:17::18"},
+      {"text":"}","textRange":"32:1::2"},
+      {"text":",","textRange":"31:17::18"},
+      {"text":"=","textRange":"28:14::15"},
+      {"text":"}","textRange":"33:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:34:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "FunctionDeclaration", "metaData": "5:0:8:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "5:5::31","type":"func()","package":"main","name":"mapCreatedAtInitialization","id":61,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,15,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "5:34:8:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "6:1::42","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "6:9::42","type":
+              {"@type": "Native", "metaData": "6:9::26","nativeKind":"Type(MapType)","children":[
+                {"@type": "Native", "metaData": "6:9::12","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "6:12::13"},
+                {"@type": "Identifier", "metaData": "6:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
+                {"@type": "Native", "metaData": "6:19::20"},
+                {"@type": "Identifier", "metaData": "6:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
+              ],"__cfgId":8},"elements":[
+              {"@type": "KeyValue", "metaData": "6:27::41","value":
+                {"@type": "StringLiteral", "metaData": "6:34::41","value":"\"value\"","content":"value"},"key":
+                {"@type": "StringLiteral", "metaData": "6:27::32","value":"\"key\"","content":"key"},"__cfgId":9}
+            ],"__cfgId":10}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "6:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":97,"__cfgId":5}
+          ],"__cfgId":11},
+          {"@type": "VariableDeclaration", "metaData": "7:1::14","type":null,"isVal":false,"initializers":[
+            {"@type": "IndexExpression", "metaData": "7:6::14","index":
+              {"@type": "StringLiteral", "metaData": "7:8::13","value":"\"key\"","content":"key"},"expression":
+              {"@type": "Identifier", "metaData": "7:6::7","type":"map[string]string","package":"UNKNOWN","name":"m","id":97,"__cfgId":13},"__cfgId":14}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "7:1::2","type":"string","package":"UNKNOWN","name":"b","id":136,"__cfgId":12}
+          ],"__cfgId":15}
+        ],"__cfgId":16},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "10:0:12:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "10:5::46","type":"func()","package":"main","name":"mapCreatedAtInitializationMultiplesValues","id":158,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "10:49:12:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "11:1::60","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "11:9::60","type":
+              {"@type": "Native", "metaData": "11:9::26","nativeKind":"Type(MapType)","children":[
+                {"@type": "Native", "metaData": "11:9::12","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "11:12::13"},
+                {"@type": "Identifier", "metaData": "11:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},
+                {"@type": "Native", "metaData": "11:19::20"},
+                {"@type": "Identifier", "metaData": "11:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6}
+              ],"__cfgId":7},"elements":[
+              {"@type": "KeyValue", "metaData": "11:27::41","value":
+                {"@type": "StringLiteral", "metaData": "11:34::41","value":"\"value\"","content":"value"},"key":
+                {"@type": "StringLiteral", "metaData": "11:27::32","value":"\"key\"","content":"key"},"__cfgId":8},
+              {"@type": "KeyValue", "metaData": "11:43::59","value":
+                {"@type": "StringLiteral", "metaData": "11:51::59","value":"\"value2\"","content":"value2"},"key":
+                {"@type": "StringLiteral", "metaData": "11:43::49","value":"\"key2\"","content":"key2"},"__cfgId":9}
+            ],"__cfgId":10}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "11:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":209,"__cfgId":4}
+          ],"__cfgId":11}
+        ],"__cfgId":12},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "14:0:17:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "14:5::28","type":"func()","package":"main","name":"mapFilledWithOneElement","id":273,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "14:31:17:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "15:1::32","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "15:9::32","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "15:9::13","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":5},"arguments":[
+              {"@type": "Native", "metaData": "15:14::31","nativeKind":"[0](MapType)","children":[
+                {"@type": "Native", "metaData": "15:14::17","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "15:17::18"},
+                {"@type": "Identifier", "metaData": "15:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
+                {"@type": "Native", "metaData": "15:24::25"},
+                {"@type": "Identifier", "metaData": "15:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
+              ],"__cfgId":8}
+            ],"__cfgId":9}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "15:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":306,"__cfgId":4}
+          ],"__cfgId":10},
+          {"@type": "AssignmentExpression", "metaData": "16:1::19","statementOrExpression":
+            {"@type": "StringLiteral", "metaData": "16:12::19","value":"\"value\"","content":"value"},"operator":"EQUAL","leftHandSide":
+            {"@type": "IndexExpression", "metaData": "16:1::9","index":
+              {"@type": "StringLiteral", "metaData": "16:3::8","value":"\"key\"","content":"key"},"expression":
+              {"@type": "Identifier", "metaData": "16:1::2","type":"map[string]string","package":"UNKNOWN","name":"m","id":306,"__cfgId":11},"__cfgId":12},"__cfgId":13}
+        ],"__cfgId":14},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "19:0:25:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "19:5::20","type":"func()","package":"main","name":"mapCommaOkIdiom","id":362,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,18,19],"Successors":[1,2]},{"Node":[22],"Successors":[2]},{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "19:23:25:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "20:1::32","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "20:9::32","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "20:9::13","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":5},"arguments":[
+              {"@type": "Native", "metaData": "20:14::31","nativeKind":"[0](MapType)","children":[
+                {"@type": "Native", "metaData": "20:14::17","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "20:17::18"},
+                {"@type": "Identifier", "metaData": "20:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
+                {"@type": "Native", "metaData": "20:24::25"},
+                {"@type": "Identifier", "metaData": "20:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
+              ],"__cfgId":8}
+            ],"__cfgId":9}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "20:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":387,"__cfgId":4}
+          ],"__cfgId":10},
+          {"@type": "AssignmentExpression", "metaData": "21:1::19","statementOrExpression":
+            {"@type": "StringLiteral", "metaData": "21:12::19","value":"\"value\"","content":"value"},"operator":"EQUAL","leftHandSide":
+            {"@type": "IndexExpression", "metaData": "21:1::9","index":
+              {"@type": "StringLiteral", "metaData": "21:3::8","value":"\"key\"","content":"key"},"expression":
+              {"@type": "Identifier", "metaData": "21:1::2","type":"map[string]string","package":"UNKNOWN","name":"m","id":387,"__cfgId":11},"__cfgId":12},"__cfgId":13},
+          {"@type": "If", "metaData": "22:1:24:2","thenBranch":
+            {"@type": "Block", "metaData": "22:26:24:2","statementOrExpressions":[
+              {"@type": "VariableDeclaration", "metaData": "23:2::8","type":null,"isVal":false,"initializers":[
+                {"@type": "Identifier", "metaData": "23:7::8","type":"string","package":"UNKNOWN","name":"v","id":439,"__cfgId":21}
+              ],"identifiers":[
+                {"@type": "Identifier", "metaData": "23:2::3","type":"string","package":"UNKNOWN","name":"b","id":465,"__cfgId":20}
+              ],"__cfgId":22}
+            ],"__cfgId":23},"ifKeyword":"22:1::3","elseKeyword":null,"elseBranch":
+            null,"condition":
+            {"@type": "Native", "metaData": "22:4::25","nativeKind":"InitAndCond","children":[
+              {"@type": "VariableDeclaration", "metaData": "22:4::21","type":null,"isVal":false,"initializers":[
+                {"@type": "IndexExpression", "metaData": "22:13::21","index":
+                  {"@type": "StringLiteral", "metaData": "22:15::20","value":"\"key\"","content":"key"},"expression":
+                  {"@type": "Identifier", "metaData": "22:13::14","type":"map[string]string","package":"UNKNOWN","name":"m","id":387,"__cfgId":16},"__cfgId":17}
+              ],"identifiers":[
+                {"@type": "Identifier", "metaData": "22:4::5","type":"string","package":"UNKNOWN","name":"v","id":439,"__cfgId":14},
+                {"@type": "Identifier", "metaData": "22:7::9","type":"bool","package":"UNKNOWN","name":"ok","id":442,"__cfgId":15}
+              ],"__cfgId":18},
+              {"@type": "Native", "metaData": "22:21::22","nativeKind":"Semicolon"},
+              {"@type": "Identifier", "metaData": "22:23::25","type":"bool","package":"UNKNOWN","name":"ok","id":442,"__cfgId":19}
+            ]},"__cfgId":24}
+        ],"__cfgId":25},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "27:0:33:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "27:5::24","type":"func()","package":"main","name":"mapsTimeZoneExample","id":483,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[20,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "27:27:33:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "28:1:32:2","type":
+            null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "28:16:32:2","type":
+              {"@type": "Native", "metaData": "28:16::30","nativeKind":"Type(MapType)","children":[
+                {"@type": "Native", "metaData": "28:16::19","nativeKind":"Map"},
+                {"@type": "Native", "metaData": "28:19::20"},
+                {"@type": "Identifier", "metaData": "28:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},
+                {"@type": "Native", "metaData": "28:26::27"},
+                {"@type": "Identifier", "metaData": "28:27::30","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6}
+              ],"__cfgId":7},"elements":[
+              {"@type": "KeyValue", "metaData": "29:2::17","value":
+                {"@type": "BinaryExpression", "metaData": "29:10::17","rightOperand":
+                  {"@type": "IntegerLiteral", "metaData": "29:15::17","value":"60"},"operatorToken":"29:14::15","operator":"TIMES","leftOperand":
+                  {"@type": "BinaryExpression", "metaData": "29:10::14","rightOperand":
+                    {"@type": "IntegerLiteral", "metaData": "29:12::14","value":"60"},"operatorToken":"29:11::12","operator":"TIMES","leftOperand":
+                    {"@type": "IntegerLiteral", "metaData": "29:10::11","value":"0"},"__cfgId":8},"__cfgId":9},"key":
+                {"@type": "StringLiteral", "metaData": "29:2::7","value":"\"UTC\"","content":"UTC"},"__cfgId":10},
+              {"@type": "KeyValue", "metaData": "30:2::17","value":
+                {"@type": "BinaryExpression", "metaData": "30:9::17","rightOperand":
+                  {"@type": "IntegerLiteral", "metaData": "30:15::17","value":"60"},"operatorToken":"30:14::15","operator":"TIMES","leftOperand":
+                  {"@type": "BinaryExpression", "metaData": "30:9::14","rightOperand":
+                    {"@type": "IntegerLiteral", "metaData": "30:12::14","value":"60"},"operatorToken":"30:11::12","operator":"TIMES","leftOperand":
+                    {"@type": "UnaryExpression", "metaData": "30:9::11","operator":"MINUS","operand":
+                      {"@type": "IntegerLiteral", "metaData": "30:10::11","value":"5"},"__cfgId":11},"__cfgId":12},"__cfgId":13},"key":
+                {"@type": "StringLiteral", "metaData": "30:2::7","value":"\"EST\"","content":"EST"},"__cfgId":14},
+              {"@type": "KeyValue", "metaData": "31:2::17","value":
+                {"@type": "BinaryExpression", "metaData": "31:9::17","rightOperand":
+                  {"@type": "IntegerLiteral", "metaData": "31:15::17","value":"60"},"operatorToken":"31:14::15","operator":"TIMES","leftOperand":
+                  {"@type": "BinaryExpression", "metaData": "31:9::14","rightOperand":
+                    {"@type": "IntegerLiteral", "metaData": "31:12::14","value":"60"},"operatorToken":"31:11::12","operator":"TIMES","leftOperand":
+                    {"@type": "UnaryExpression", "metaData": "31:9::11","operator":"MINUS","operand":
+                      {"@type": "IntegerLiteral", "metaData": "31:10::11","value":"6"},"__cfgId":15},"__cfgId":16},"__cfgId":17},"key":
+                {"@type": "StringLiteral", "metaData": "31:2::7","value":"\"CST\"","content":"CST"},"__cfgId":18}
+            ],"__cfgId":19}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "28:5::13","type":"map[string]int","package":"UNKNOWN","name":"timeZone","id":512,"__cfgId":4}
+          ],"__cfgId":20}
+        ],"__cfgId":21},"__cfgId":1}
+    ],"__cfgId":2}
+} 

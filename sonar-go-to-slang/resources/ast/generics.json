@@ -459,12 +459,9 @@
             {"@type": "Native", "metaData": "13:8::9","nativeKind":"Names([]*Ident)","children":[
               {"@type": "Identifier", "metaData": "13:8::9","type":"P","package":"main","name":"P","id":151,"__cfgId":3}
             ]},
-            {"@type": "Native", "metaData": "13:10::16","nativeKind":"Type(IndexExpr)","children":[
-              {"@type": "Identifier", "metaData": "13:10::11","type":"main.M[T any]","package":"main","name":"M","id":34,"__cfgId":4},
-              {"@type": "Native", "metaData": "13:11::12","nativeKind":"Lbrack"},
-              {"@type": "Identifier", "metaData": "13:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":5},
-              {"@type": "Native", "metaData": "13:15::16","nativeKind":"Rbrack"}
-            ],"__cfgId":6}
+            {"@type": "IndexExpression", "metaData": "13:10::16","index":
+              {"@type": "Identifier", "metaData": "13:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":5},"expression":
+              {"@type": "Identifier", "metaData": "13:10::11","type":"main.M[T any]","package":"main","name":"M","id":34,"__cfgId":4},"__cfgId":6}
           ],"__cfgId":7},
           {"@type": "Native", "metaData": "13:16::17","nativeKind":"Closing"}
         ],"__cfgId":8},"returnType":

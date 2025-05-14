@@ -1024,7 +1024,22 @@ func (t *SlangMapper) mapEllipsisImpl(ellipsis *ast.Ellipsis, fieldName string) 
 }
 
 func (t *SlangMapper) mapIndexExprImpl(expr *ast.IndexExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	expression := t.mapExpr(expr.X, "X")
+	slangField["expression"] = expression
+	children = t.appendNode(children, expression)
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Lbrack, token.LBRACK, "Lbrack"))
+
+	index := t.mapExpr(expr.Index, "Index")
+	slangField["index"] = index
+	children = t.appendNode(children, index)
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Rbrack, token.RBRACK, "Rbrack"))
+
+	return t.createNode(expr, children, fieldName+"(IndexExpr)", "IndexExpression", slangField)
 }
 
 func (t *SlangMapper) mapIndexListExprImpl(astNode *ast.IndexListExpr, fieldName string) *Node {

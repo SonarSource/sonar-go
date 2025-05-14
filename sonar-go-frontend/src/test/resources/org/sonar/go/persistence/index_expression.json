@@ -1,0 +1,16 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:1::2", "text": "["},
+      {"textRange": "1:2::4", "text": "42"},
+      {"textRange": "1:4::5", "text": "]"}
+    ]
+  },
+  "tree": {
+    "@type": "IndexExpression",
+    "metaData": "1:1::5",
+    "expression": {"@type": "Identifier", "metaData": "1:0::1", "name": "x", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0},
+    "index": {"@type": "IntegerLiteral", "metaData": "1:2::4", "value": "42"}
+  }
+}

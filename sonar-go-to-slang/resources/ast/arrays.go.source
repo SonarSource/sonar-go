@@ -1,0 +1,21 @@
+package main
+
+// https://go.dev/doc/effective_go#arrays
+
+func oneElement() {
+	var a [1]string
+	a[0] = ""
+	b := a[0]
+}
+
+func multiDimensional() {
+	var a [2][2]string
+	a[0][0] = "a"
+	a[0][1] = "b"
+	b := a[0][0]
+}
+
+func arrayCreatedAtInitialization() {
+	var a = [4]string{"a", "b", "c", "d"}
+	b := a[0]
+}
