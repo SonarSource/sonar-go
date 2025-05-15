@@ -19,7 +19,8 @@ package org.sonar.go.externalreport;
 import org.sonar.api.SonarRuntime;
 
 public class GoVetRulesDefinition extends AbstractExternalRulesDefinition {
-  protected GoVetRulesDefinition(SonarRuntime sonarRuntime) {
+
+  public GoVetRulesDefinition(SonarRuntime sonarRuntime) {
     super(sonarRuntime, GoVetReportSensor.LINTER_ID, GoVetReportSensor.LINTER_NAME);
   }
 }
