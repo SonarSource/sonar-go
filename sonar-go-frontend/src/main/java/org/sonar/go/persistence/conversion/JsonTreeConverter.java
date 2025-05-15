@@ -46,6 +46,7 @@ import org.sonar.go.impl.KeyValueTreeImpl;
 import org.sonar.go.impl.LeftRightHandSideTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
+import org.sonar.go.impl.MapTypeTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
 import org.sonar.go.impl.MatchTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
@@ -471,6 +472,16 @@ public final class JsonTreeConverter {
         ctx.fieldToObject(json, BODY, Tree.class),
         ctx.fieldToEnum(json, KIND, LoopTree.LoopKind.class),
         ctx.fieldToToken(json, KEYWORD)));
+
+    register(MapTypeTreeImpl.class,
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(KEY, ctx.toJson(tree.key()))
+        .add(VALUE, ctx.toJson(tree.value())),
+
+      (ctx, json) -> new MapTypeTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, KEY, Tree.class),
+        ctx.fieldToObject(json, VALUE, Tree.class)));
 
     register(MatchTreeImpl.class,
 

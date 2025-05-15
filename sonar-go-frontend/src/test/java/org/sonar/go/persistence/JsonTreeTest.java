@@ -45,6 +45,7 @@ import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.LoopTreeImpl;
+import org.sonar.go.impl.MapTypeTreeImpl;
 import org.sonar.go.impl.MatchCaseTreeImpl;
 import org.sonar.go.impl.MatchTreeImpl;
 import org.sonar.go.impl.MemberSelectTreeImpl;
@@ -88,6 +89,7 @@ import org.sonar.plugins.go.api.IntegerLiteralTree;
 import org.sonar.plugins.go.api.JumpTree;
 import org.sonar.plugins.go.api.LiteralTree;
 import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.MapTypeTree;
 import org.sonar.plugins.go.api.MatchCaseTree;
 import org.sonar.plugins.go.api.MatchTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
@@ -135,6 +137,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.IF_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.INDEX;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.INITIALIZERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IS_VAL;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.KEY;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KIND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LABEL;
@@ -976,4 +979,27 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(EllipsisTree.class)).containsExactlyInAnyOrder(ELEMENT, ELLIPSIS);
   }
+
+  @Test
+  void testMapType() throws IOException {
+    var tokenMap = otherToken(1, 0, "map");
+    otherToken(1, 1, "[");
+    var tokenKey = otherToken(1, 2, "string");
+    otherToken(1, 8, "]");
+    var tokenValue = otherToken(1, 9, "int");
+
+    var integerLiteral = TreeCreationUtils.identifier(metaData(tokenKey), tokenKey.text());
+    var identifier = TreeCreationUtils.identifier(metaData(tokenValue), tokenValue.text());
+
+    var metaData = metaData(tokenMap, tokenValue);
+    var mapTypeTree = new MapTypeTreeImpl(metaData, integerLiteral, identifier);
+
+    var expression = checkJsonSerializationDeserialization(mapTypeTree, "map_type.json");
+    assertThat(expression.key().textRange()).isEqualTo(tokenKey.textRange());
+    assertThat(expression.value().textRange()).isEqualTo(tokenValue.textRange());
+
+    assertThat(methodNames(MapTypeTree.class))
+      .containsExactlyInAnyOrder(KEY, VALUE);
+  }
+
 }

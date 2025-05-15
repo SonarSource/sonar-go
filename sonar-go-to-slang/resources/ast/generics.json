@@ -509,13 +509,9 @@
         {"@type": "Block", "metaData": "24:12:52:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:4:29:5","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "26:12:29:5","type":
-              {"@type": "Native", "metaData": "26:12::28","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "26:12::15","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "26:15::16"},
-                {"@type": "Identifier", "metaData": "26:16::22","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":14},
-                {"@type": "Native", "metaData": "26:22::23"},
-                {"@type": "Identifier", "metaData": "26:23::28","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":15}
-              ],"__cfgId":16},"elements":[
+              {"@type": "MapType", "metaData": "26:12::28","value":
+                {"@type": "Identifier", "metaData": "26:23::28","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":15},"key":
+                {"@type": "Identifier", "metaData": "26:16::22","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":14},"__cfgId":16},"elements":[
               {"@type": "KeyValue", "metaData": "27:8::19","value":
                 {"@type": "IntegerLiteral", "metaData": "27:17::19","value":"34"},"key":
                 {"@type": "StringLiteral", "metaData": "27:8::15","value":"\"first\"","content":"first"},"__cfgId":17},
@@ -528,13 +524,9 @@
           ],"__cfgId":20},
           {"@type": "VariableDeclaration", "metaData": "32:4:35:5","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "32:14:35:5","type":
-              {"@type": "Native", "metaData": "32:14::32","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "32:14::17","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "32:17::18"},
-                {"@type": "Identifier", "metaData": "32:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":22},
-                {"@type": "Native", "metaData": "32:24::25"},
-                {"@type": "Identifier", "metaData": "32:25::32","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":23}
-              ],"__cfgId":24},"elements":[
+              {"@type": "MapType", "metaData": "32:14::32","value":
+                {"@type": "Identifier", "metaData": "32:25::32","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":23},"key":
+                {"@type": "Identifier", "metaData": "32:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":22},"__cfgId":24},"elements":[
               {"@type": "KeyValue", "metaData": "33:8::22","value":
                 {"@type": "FloatLiteral", "metaData": "33:17::22","value":"35.98"},"key":
                 {"@type": "StringLiteral", "metaData": "33:8::15","value":"\"first\"","content":"first"},"__cfgId":25},
@@ -630,13 +622,9 @@
         null,"name":
         {"@type": "Identifier", "metaData": "55:5::12","type":"func(m map[string]int64) int64","package":"main","name":"SumInts","id":1108,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "55:13::31","type":
-          {"@type": "Native", "metaData": "55:15::31","nativeKind":"Type(MapType)","children":[
-            {"@type": "Native", "metaData": "55:15::18","nativeKind":"Map"},
-            {"@type": "Native", "metaData": "55:18::19"},
-            {"@type": "Identifier", "metaData": "55:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
-            {"@type": "Native", "metaData": "55:25::26"},
-            {"@type": "Identifier", "metaData": "55:26::31","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":5}
-          ],"__cfgId":6},"identifier":
+          {"@type": "MapType", "metaData": "55:15::31","value":
+            {"@type": "Identifier", "metaData": "55:26::31","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":5},"key":
+            {"@type": "Identifier", "metaData": "55:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"__cfgId":6},"identifier":
           {"@type": "Identifier", "metaData": "55:13::14","type":"map[string]int64","package":"UNKNOWN","name":"m","id":1116,"__cfgId":3},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[15,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "55:39:61:1","statementOrExpressions":[
@@ -672,13 +660,9 @@
         null,"name":
         {"@type": "Identifier", "metaData": "64:5::14","type":"func(m map[string]float64) float64","package":"main","name":"SumFloats","id":1272,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:15::35","type":
-          {"@type": "Native", "metaData": "64:17::35","nativeKind":"Type(MapType)","children":[
-            {"@type": "Native", "metaData": "64:17::20","nativeKind":"Map"},
-            {"@type": "Native", "metaData": "64:20::21"},
-            {"@type": "Identifier", "metaData": "64:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},
-            {"@type": "Native", "metaData": "64:27::28"},
-            {"@type": "Identifier", "metaData": "64:28::35","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":5}
-          ],"__cfgId":6},"identifier":
+          {"@type": "MapType", "metaData": "64:17::35","value":
+            {"@type": "Identifier", "metaData": "64:28::35","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":5},"key":
+            {"@type": "Identifier", "metaData": "64:21::27","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"__cfgId":6},"identifier":
           {"@type": "Identifier", "metaData": "64:15::16","type":"map[string]float64","package":"UNKNOWN","name":"m","id":1282,"__cfgId":3},"__cfgId":7}
       ],"cfg":{"Blocks":[{"Node":[15,18,16,17],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[21],"Successors":[1]},{"Node":[25],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "64:45:70:1","statementOrExpressions":[
@@ -732,13 +716,9 @@
         null,"name":
         {"@type": "Identifier", "metaData": "74:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":1500,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "74:54::63","type":
-          {"@type": "Native", "metaData": "74:56::63","nativeKind":"Type(MapType)","children":[
-            {"@type": "Native", "metaData": "74:56::59","nativeKind":"Map"},
-            {"@type": "Native", "metaData": "74:59::60"},
-            {"@type": "Identifier", "metaData": "74:60::61","type":"K","package":"main","name":"K","id":1516,"__cfgId":13},
-            {"@type": "Native", "metaData": "74:61::62"},
-            {"@type": "Identifier", "metaData": "74:62::63","type":"V","package":"main","name":"V","id":1530,"__cfgId":14}
-          ],"__cfgId":15},"identifier":
+          {"@type": "MapType", "metaData": "74:56::63","value":
+            {"@type": "Identifier", "metaData": "74:62::63","type":"V","package":"main","name":"V","id":1530,"__cfgId":14},"key":
+            {"@type": "Identifier", "metaData": "74:60::61","type":"K","package":"main","name":"K","id":1516,"__cfgId":13},"__cfgId":15},"identifier":
           {"@type": "Identifier", "metaData": "74:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":1549,"__cfgId":12},"__cfgId":16}
       ],"cfg":{"Blocks":[{"Node":[24,27,25,26],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[30],"Successors":[1]},{"Node":[34],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "74:67:80:1","statementOrExpressions":[
@@ -790,13 +770,9 @@
         null,"name":
         {"@type": "Identifier", "metaData": "84:5::15","type":"func[K comparable, V main.Number](m map[K]V) V","package":"main","name":"SumNumbers","id":1740,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "84:40::49","type":
-          {"@type": "Native", "metaData": "84:42::49","nativeKind":"Type(MapType)","children":[
-            {"@type": "Native", "metaData": "84:42::45","nativeKind":"Map"},
-            {"@type": "Native", "metaData": "84:45::46"},
-            {"@type": "Identifier", "metaData": "84:46::47","type":"K","package":"main","name":"K","id":1751,"__cfgId":11},
-            {"@type": "Native", "metaData": "84:47::48"},
-            {"@type": "Identifier", "metaData": "84:48::49","type":"V","package":"main","name":"V","id":1765,"__cfgId":12}
-          ],"__cfgId":13},"identifier":
+          {"@type": "MapType", "metaData": "84:42::49","value":
+            {"@type": "Identifier", "metaData": "84:48::49","type":"V","package":"main","name":"V","id":1765,"__cfgId":12},"key":
+            {"@type": "Identifier", "metaData": "84:46::47","type":"K","package":"main","name":"K","id":1751,"__cfgId":11},"__cfgId":13},"identifier":
           {"@type": "Identifier", "metaData": "84:40::41","type":"map[K]V","package":"UNKNOWN","name":"m","id":1775,"__cfgId":10},"__cfgId":14}
       ],"cfg":{"Blocks":[{"Node":[22,25,23,24],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[28],"Successors":[1]},{"Node":[32],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "84:53:90:1","statementOrExpressions":[

@@ -244,13 +244,9 @@
       {"@type": "VariableDeclaration", "metaData": "18:0::42","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "18:8::42","type":
-          {"@type": "Native", "metaData": "18:8::22","nativeKind":"Type(MapType)","children":[
-            {"@type": "Native", "metaData": "18:8::11","nativeKind":"Map"},
-            {"@type": "Native", "metaData": "18:11::12"},
-            {"@type": "Identifier", "metaData": "18:12::18","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":48},
-            {"@type": "Native", "metaData": "18:18::19"},
-            {"@type": "Identifier", "metaData": "18:19::22","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":49}
-          ],"__cfgId":50},"elements":[
+          {"@type": "MapType", "metaData": "18:8::22","value":
+            {"@type": "Identifier", "metaData": "18:19::22","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":49},"key":
+            {"@type": "Identifier", "metaData": "18:12::18","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":48},"__cfgId":50},"elements":[
           {"@type": "KeyValue", "metaData": "18:23::31","value":
             {"@type": "IntegerLiteral", "metaData": "18:30::31","value":"1"},"key":
             {"@type": "StringLiteral", "metaData": "18:23::28","value":"\"one\"","content":"one"},"__cfgId":51},
@@ -265,13 +261,9 @@
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "20:13:23:1","type":
           {"@type": "ArrayType", "metaData": "20:13::29","length":null,"element":
-            {"@type": "Native", "metaData": "20:15::29","nativeKind":"Elt(MapType)","children":[
-              {"@type": "Native", "metaData": "20:15::18","nativeKind":"Map"},
-              {"@type": "Native", "metaData": "20:18::19"},
-              {"@type": "Identifier", "metaData": "20:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":56},
-              {"@type": "Native", "metaData": "20:25::26"},
-              {"@type": "Identifier", "metaData": "20:26::29","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":57}
-            ],"__cfgId":58},"__cfgId":59},"elements":[
+            {"@type": "MapType", "metaData": "20:15::29","value":
+              {"@type": "Identifier", "metaData": "20:26::29","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":57},"key":
+              {"@type": "Identifier", "metaData": "20:19::25","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":56},"__cfgId":58},"__cfgId":59},"elements":[
           {"@type": "CompositeLiteral", "metaData": "21:4::24","type":
             null,"elements":[
             {"@type": "KeyValue", "metaData": "21:5::13","value":

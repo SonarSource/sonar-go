@@ -1069,7 +1069,20 @@ func (t *SlangMapper) mapKeyValueExprImpl(expr *ast.KeyValueExpr, fieldName stri
 }
 
 func (t *SlangMapper) mapMapTypeImpl(mapType *ast.MapType, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(mapType.Map, token.MAP, "Map"))
+
+	key := t.mapExpr(mapType.Key, "Key")
+	children = t.appendNode(children, key)
+	slangField["key"] = key
+
+	value := t.mapExpr(mapType.Value, "Value")
+	children = t.appendNode(children, value)
+	slangField["value"] = value
+
+	return t.createNode(mapType, children, fieldName+"(MapType)", "MapType", slangField)
 }
 
 func (t *SlangMapper) mapParenExprImpl(expr *ast.ParenExpr, fieldName string) *Node {

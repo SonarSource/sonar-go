@@ -556,13 +556,9 @@
             ],"__cfgId":146},"__cfgId":147},
           {"@type": "VariableDeclaration", "metaData": "64:4::25","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "64:9::25","type":
-              {"@type": "Native", "metaData": "64:9::23","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "64:9::12","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "64:12::13"},
-                {"@type": "Identifier", "metaData": "64:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":149},
-                {"@type": "Native", "metaData": "64:16::17"},
-                {"@type": "Identifier", "metaData": "64:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":150}
-              ],"__cfgId":151},"elements":[],"__cfgId":152}
+              {"@type": "MapType", "metaData": "64:9::23","value":
+                {"@type": "Identifier", "metaData": "64:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":150},"key":
+                {"@type": "Identifier", "metaData": "64:13::16","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":149},"__cfgId":151},"elements":[],"__cfgId":152}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "64:4::5","type":"map[int]string","package":"UNKNOWN","name":"m","id":1115,"__cfgId":148}
           ],"__cfgId":153},

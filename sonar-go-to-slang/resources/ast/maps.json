@@ -175,13 +175,9 @@
           {"@type": "VariableDeclaration", "metaData": "6:1::42","type":
             null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "6:9::42","type":
-              {"@type": "Native", "metaData": "6:9::26","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "6:9::12","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "6:12::13"},
-                {"@type": "Identifier", "metaData": "6:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
-                {"@type": "Native", "metaData": "6:19::20"},
-                {"@type": "Identifier", "metaData": "6:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
-              ],"__cfgId":8},"elements":[
+              {"@type": "MapType", "metaData": "6:9::26","value":
+                {"@type": "Identifier", "metaData": "6:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7},"key":
+                {"@type": "Identifier", "metaData": "6:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},"__cfgId":8},"elements":[
               {"@type": "KeyValue", "metaData": "6:27::41","value":
                 {"@type": "StringLiteral", "metaData": "6:34::41","value":"\"value\"","content":"value"},"key":
                 {"@type": "StringLiteral", "metaData": "6:27::32","value":"\"key\"","content":"key"},"__cfgId":9}
@@ -206,13 +202,9 @@
           {"@type": "VariableDeclaration", "metaData": "11:1::60","type":
             null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:9::60","type":
-              {"@type": "Native", "metaData": "11:9::26","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "11:9::12","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "11:12::13"},
-                {"@type": "Identifier", "metaData": "11:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},
-                {"@type": "Native", "metaData": "11:19::20"},
-                {"@type": "Identifier", "metaData": "11:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6}
-              ],"__cfgId":7},"elements":[
+              {"@type": "MapType", "metaData": "11:9::26","value":
+                {"@type": "Identifier", "metaData": "11:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},"key":
+                {"@type": "Identifier", "metaData": "11:13::19","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},"__cfgId":7},"elements":[
               {"@type": "KeyValue", "metaData": "11:27::41","value":
                 {"@type": "StringLiteral", "metaData": "11:34::41","value":"\"value\"","content":"value"},"key":
                 {"@type": "StringLiteral", "metaData": "11:27::32","value":"\"key\"","content":"key"},"__cfgId":8},
@@ -234,13 +226,9 @@
             null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "15:9::32","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "15:9::13","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":5},"arguments":[
-              {"@type": "Native", "metaData": "15:14::31","nativeKind":"[0](MapType)","children":[
-                {"@type": "Native", "metaData": "15:14::17","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "15:17::18"},
-                {"@type": "Identifier", "metaData": "15:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
-                {"@type": "Native", "metaData": "15:24::25"},
-                {"@type": "Identifier", "metaData": "15:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
-              ],"__cfgId":8}
+              {"@type": "MapType", "metaData": "15:14::31","value":
+                {"@type": "Identifier", "metaData": "15:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7},"key":
+                {"@type": "Identifier", "metaData": "15:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},"__cfgId":8}
             ],"__cfgId":9}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "15:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":306,"__cfgId":4}
@@ -261,13 +249,9 @@
             null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "20:9::32","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "20:9::13","type":"UNKNOWN","package":"UNKNOWN","name":"make","id":0,"__cfgId":5},"arguments":[
-              {"@type": "Native", "metaData": "20:14::31","nativeKind":"[0](MapType)","children":[
-                {"@type": "Native", "metaData": "20:14::17","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "20:17::18"},
-                {"@type": "Identifier", "metaData": "20:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},
-                {"@type": "Native", "metaData": "20:24::25"},
-                {"@type": "Identifier", "metaData": "20:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7}
-              ],"__cfgId":8}
+              {"@type": "MapType", "metaData": "20:14::31","value":
+                {"@type": "Identifier", "metaData": "20:25::31","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":7},"key":
+                {"@type": "Identifier", "metaData": "20:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":6},"__cfgId":8}
             ],"__cfgId":9}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "20:5::6","type":"map[string]string","package":"UNKNOWN","name":"m","id":387,"__cfgId":4}
@@ -308,13 +292,9 @@
           {"@type": "VariableDeclaration", "metaData": "28:1:32:2","type":
             null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "28:16:32:2","type":
-              {"@type": "Native", "metaData": "28:16::30","nativeKind":"Type(MapType)","children":[
-                {"@type": "Native", "metaData": "28:16::19","nativeKind":"Map"},
-                {"@type": "Native", "metaData": "28:19::20"},
-                {"@type": "Identifier", "metaData": "28:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},
-                {"@type": "Native", "metaData": "28:26::27"},
-                {"@type": "Identifier", "metaData": "28:27::30","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6}
-              ],"__cfgId":7},"elements":[
+              {"@type": "MapType", "metaData": "28:16::30","value":
+                {"@type": "Identifier", "metaData": "28:27::30","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6},"key":
+                {"@type": "Identifier", "metaData": "28:20::26","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":5},"__cfgId":7},"elements":[
               {"@type": "KeyValue", "metaData": "29:2::17","value":
                 {"@type": "BinaryExpression", "metaData": "29:10::17","rightOperand":
                   {"@type": "IntegerLiteral", "metaData": "29:15::17","value":"60"},"operatorToken":"29:14::15","operator":"TIMES","leftOperand":

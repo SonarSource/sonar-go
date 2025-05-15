@@ -1,0 +1,18 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:0::3", "text": "map"},
+      {"textRange": "1:1::2", "text": "["},
+      {"textRange": "1:2::8", "text": "string"},
+      {"textRange": "1:8::9", "text": "]"},
+      {"textRange": "1:9::12", "text": "int"}
+    ]
+  },
+  "tree": {
+    "@type": "MapType",
+    "metaData": "1:0::12",
+    "key": {"@type": "Identifier", "metaData": "1:2::8", "name": "string", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0},
+    "value": {"@type": "Identifier", "metaData": "1:9::12", "name": "int", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
+  }
+}
