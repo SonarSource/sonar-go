@@ -1,0 +1,24 @@
+{
+  "treeMetaData": {
+    "comments": [],
+    "tokens": [
+      {"textRange": "1:0::3", "text": "arr"},
+      {"textRange": "1:4::5", "text": "["},
+      {"textRange": "1:5::6", "text": "1"},
+      {"textRange": "1:6::7", "text": ":"},
+      {"textRange": "1:7::8", "text": "4"},
+      {"textRange": "1:8::9", "text": ":"},
+      {"textRange": "1:9::10", "text": "6"},
+      {"textRange": "1:10::11", "text": "]"}
+    ]
+  },
+  "tree": {
+    "@type": "Slice",
+    "metaData": "1:0::11",
+    "expression": {"@type": "Identifier", "metaData": "1:0::3", "name": "arr", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0},
+    "low": {"@type": "IntegerLiteral", "metaData": "1:5::6", "value": "1"},
+    "high": {"@type": "IntegerLiteral", "metaData": "1:7::8", "value": "4"},
+    "max": {"@type": "IntegerLiteral", "metaData": "1:9::10", "value": "6"},
+    "slice3": true
+  }
+}

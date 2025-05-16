@@ -243,13 +243,11 @@
               {"@type": "ArrayType", "metaData": "7:10::17","length":
                 {"@type": "IntegerLiteral", "metaData": "7:11::12","value":"1"},"element":
                 {"@type": "Identifier", "metaData": "7:13::17","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":18},"__cfgId":19},"arguments":[
-              {"@type": "Native", "metaData": "7:18::23","nativeKind":"[0](SliceExpr)","children":[
-                {"@type": "Identifier", "metaData": "7:18::19","type":"[]byte","package":"UNKNOWN","name":"s","id":36,"__cfgId":20},
-                {"@type": "Native", "metaData": "7:19::20","nativeKind":"Lbrack"},
-                {"@type": "IntegerLiteral", "metaData": "7:20::21","value":"1"},
-                {"@type": "Native", "metaData": "7:21::22"},
-                {"@type": "Native", "metaData": "7:22::23","nativeKind":"Rbrack"}
-              ],"__cfgId":21}
+              {"@type": "Slice", "metaData": "7:18::23","slice3":false,"max":
+                null,"low":
+                {"@type": "IntegerLiteral", "metaData": "7:20::21","value":"1"},"high":
+                null,"expression":
+                {"@type": "Identifier", "metaData": "7:18::19","type":"[]byte","package":"UNKNOWN","name":"s","id":36,"__cfgId":20},"__cfgId":21}
             ],"__cfgId":22}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "7:4::6","type":"[1]byte","package":"UNKNOWN","name":"a1","id":86,"__cfgId":17}
@@ -293,13 +291,11 @@
                   {"@type": "ArrayType", "metaData": "12:12::19","length":
                     {"@type": "IntegerLiteral", "metaData": "12:13::14","value":"1"},"element":
                     {"@type": "Identifier", "metaData": "12:15::19","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":45},"__cfgId":46},"__cfgId":47},"__cfgId":48},"arguments":[
-              {"@type": "Native", "metaData": "12:21::26","nativeKind":"[0](SliceExpr)","children":[
-                {"@type": "Identifier", "metaData": "12:21::22","type":"[]byte","package":"UNKNOWN","name":"s","id":36,"__cfgId":49},
-                {"@type": "Native", "metaData": "12:22::23","nativeKind":"Lbrack"},
-                {"@type": "IntegerLiteral", "metaData": "12:23::24","value":"1"},
-                {"@type": "Native", "metaData": "12:24::25"},
-                {"@type": "Native", "metaData": "12:25::26","nativeKind":"Rbrack"}
-              ],"__cfgId":50}
+              {"@type": "Slice", "metaData": "12:21::26","slice3":false,"max":
+                null,"low":
+                {"@type": "IntegerLiteral", "metaData": "12:23::24","value":"1"},"high":
+                null,"expression":
+                {"@type": "Identifier", "metaData": "12:21::22","type":"[]byte","package":"UNKNOWN","name":"s","id":36,"__cfgId":49},"__cfgId":50}
             ],"__cfgId":51}
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "12:4::6","type":"*[1]byte","package":"UNKNOWN","name":"s1","id":283,"__cfgId":44}

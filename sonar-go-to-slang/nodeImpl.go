@@ -36,6 +36,7 @@ const rParentKind = "Rparen"
 const lBraceKind = "Lbrace"
 const rBraceKind = "Rbrace"
 const lBrackKind = "Lbrack"
+const rBrackKind = "Rbrack"
 
 func (t *SlangMapper) mapReturnStmtImpl(stmt *ast.ReturnStmt, fieldName string) *Node {
 	var children []*Node
@@ -1120,7 +1121,32 @@ func (t *SlangMapper) mapSelectorExprImpl(expr *ast.SelectorExpr, fieldName stri
 }
 
 func (t *SlangMapper) mapSliceExprImpl(expr *ast.SliceExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	xNode := t.mapExpr(expr.X, "X")
+	children = t.appendNode(children, xNode)
+	slangField[expressionField] = xNode
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Lbrack, token.LBRACK, lBrackKind))
+
+	lowNode := t.mapExpr(expr.Low, "Low")
+	children = t.appendNode(children, lowNode)
+	slangField["low"] = lowNode
+
+	highNode := t.mapExpr(expr.High, "High")
+	children = t.appendNode(children, highNode)
+	slangField["high"] = highNode
+
+	maxNode := t.mapExpr(expr.Max, "Max")
+	children = t.appendNode(children, maxNode)
+	slangField["max"] = maxNode
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(expr.Rbrack, token.RBRACK, rBrackKind))
+
+	slangField["slice3"] = expr.Slice3
+
+	return t.createNode(expr, children, fieldName+"(SliceExpr)", "Slice", slangField)
 }
 
 func (t *SlangMapper) mapStarExprImpl(expr *ast.StarExpr, fieldName string) *Node {

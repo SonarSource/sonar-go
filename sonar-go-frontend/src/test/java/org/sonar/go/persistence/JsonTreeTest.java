@@ -56,6 +56,7 @@ import org.sonar.go.impl.ParameterTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.ReturnTreeImpl;
+import org.sonar.go.impl.SliceTreeImpl;
 import org.sonar.go.impl.StarExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -100,6 +101,7 @@ import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
 import org.sonar.plugins.go.api.PlaceHolderTree;
 import org.sonar.plugins.go.api.ReturnTree;
+import org.sonar.plugins.go.api.SliceTree;
 import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.ThrowTree;
@@ -131,6 +133,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.EXPRESSIONS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FINALLY_BLOCK;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FIRST_CPD_TOKEN;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.FORMAL_PARAMETERS;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.HIGH;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIER;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IF_KEYWORD;
@@ -145,6 +148,8 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_HAND_SI
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LEFT_PARENTHESIS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.LENGTH;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.LOW;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.MAX;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NAME;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.NATIVE_KIND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.OPERAND;
@@ -156,6 +161,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.RECEIVER;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.RETURN_TYPE;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.RIGHT_OPERAND;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.RIGHT_PARENTHESIS;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.SLICE_3;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.STATEMENT_OR_EXPRESSION;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.STATEMENT_OR_EXPRESSIONS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.THEN_BRANCH;
@@ -1000,6 +1006,36 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(MapTypeTree.class))
       .containsExactlyInAnyOrder(KEY, VALUE);
+  }
+
+  @Test
+  void testSlice() throws IOException {
+    var tokenExpr = otherToken(1, 0, "arr");
+    otherToken(1, 4, "[");
+    var tokenLow = otherToken(1, 5, "1");
+    otherToken(1, 6, ":");
+    var tokenHigh = otherToken(1, 7, "4");
+    otherToken(1, 8, ":");
+    var tokenMax = otherToken(1, 9, "6");
+    var lastToken = otherToken(1, 10, "]");
+
+    var expr = TreeCreationUtils.identifier(metaData(tokenExpr), tokenExpr.text());
+    var low = TreeCreationUtils.integerLiteral(metaData(tokenLow), tokenLow.text());
+    var high = TreeCreationUtils.integerLiteral(metaData(tokenHigh), tokenHigh.text());
+    var max = TreeCreationUtils.integerLiteral(metaData(tokenMax), tokenMax.text());
+
+    var metaData = metaData(tokenExpr, lastToken);
+    var sliceTree = new SliceTreeImpl(metaData, expr, low, high, max, true);
+
+    var expression = checkJsonSerializationDeserialization(sliceTree, "slice.json");
+    assertThat(expression.expression().textRange()).isEqualTo(tokenExpr.textRange());
+    assertThat(expression.low().textRange()).isEqualTo(tokenLow.textRange());
+    assertThat(expression.high().textRange()).isEqualTo(tokenHigh.textRange());
+    assertThat(expression.max().textRange()).isEqualTo(tokenMax.textRange());
+    assertThat(expression.slice3()).isTrue();
+
+    assertThat(methodNames(SliceTree.class))
+      .containsExactlyInAnyOrder(EXPRESSION, LOW, HIGH, MAX, SLICE_3);
   }
 
 }

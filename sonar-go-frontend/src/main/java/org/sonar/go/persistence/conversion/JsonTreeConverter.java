@@ -57,6 +57,7 @@ import org.sonar.go.impl.ParameterTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.ReturnTreeImpl;
+import org.sonar.go.impl.SliceTreeImpl;
 import org.sonar.go.impl.StarExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.ThrowTreeImpl;
@@ -111,6 +112,7 @@ public final class JsonTreeConverter {
   public static final String FINALLY_BLOCK = "finallyBlock";
   public static final String FIRST_CPD_TOKEN = "firstCpdToken";
   public static final String FORMAL_PARAMETERS = "formalParameters";
+  public static final String HIGH = "high";
   public static final String ID = "id";
   public static final String IDENTIFIER = "identifier";
   public static final String IDENTIFIERS = "identifiers";
@@ -125,9 +127,11 @@ public final class JsonTreeConverter {
   public static final String LEFT_OPERAND = "leftOperand";
   public static final String LEFT_PARENTHESIS = "leftParenthesis";
   public static final String LENGTH = "length";
+  public static final String LOW = "low";
   public static final String MEMBER_SELECT = "memberSelect";
   public static final String NAME = "name";
   public static final String NATIVE_KIND = "nativeKind";
+  public static final String MAX = "max";
   public static final String OPERAND = "operand";
   public static final String OPERATOR = "operator";
   public static final String OPERATOR_TOKEN = "operatorToken";
@@ -139,6 +143,7 @@ public final class JsonTreeConverter {
   public static final String RETURN_TYPE = "returnType";
   public static final String RIGHT_OPERAND = "rightOperand";
   public static final String RIGHT_PARENTHESIS = "rightParenthesis";
+  public static final String SLICE_3 = "slice3";
   public static final String STATEMENT_OR_EXPRESSION = "statementOrExpression";
   public static final String STATEMENT_OR_EXPRESSIONS = "statementOrExpressions";
   public static final String TEXT = "text";
@@ -682,6 +687,21 @@ public final class JsonTreeConverter {
       (ctx, json) -> new ExpressionStatementTreeImpl(
         ctx.metaData(json),
         ctx.fieldToObject(json, EXPRESSION, Tree.class)));
+
+    register(SliceTreeImpl.class,
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(EXPRESSION, ctx.toJson(tree.expression()))
+        .add(LOW, ctx.toJson(tree.low()))
+        .add(HIGH, ctx.toJson(tree.high()))
+        .add(MAX, ctx.toJson(tree.max()))
+        .add(SLICE_3, tree.slice3()),
+      (ctx, json) -> new SliceTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, EXPRESSION, Tree.class),
+        ctx.fieldToNullableObject(json, LOW, Tree.class),
+        ctx.fieldToNullableObject(json, HIGH, Tree.class),
+        ctx.fieldToNullableObject(json, MAX, Tree.class),
+        json.getBoolean(SLICE_3, false)));
   }
 
   private JsonTreeConverter() {
