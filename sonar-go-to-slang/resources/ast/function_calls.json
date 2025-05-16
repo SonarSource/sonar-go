@@ -397,14 +397,11 @@
           ],"__cfgId":27},
           {"@type": "ExpressionStatement", "metaData": "32:1::37","expression":
             {"@type": "FunctionInvocation", "metaData": "32:1::37","returnType":[],"memberSelect":
-              {"@type": "Native", "metaData": "32:1::31","nativeKind":"Fun(IndexListExpr)","children":[
-                {"@type": "Identifier", "metaData": "32:1::16","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":28},
-                {"@type": "Native", "metaData": "32:16::17","nativeKind":"Lbrack"},
+              {"@type": "IndexListExpression", "metaData": "32:1::31","indices":[
                 {"@type": "Identifier", "metaData": "32:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":29},
-                {"@type": "Native", "metaData": "32:23::24"},
-                {"@type": "Identifier", "metaData": "32:25::30","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":30},
-                {"@type": "Native", "metaData": "32:30::31","nativeKind":"Rbrack"}
-              ],"__cfgId":31},"arguments":[
+                {"@type": "Identifier", "metaData": "32:25::30","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":30}
+              ],"expression":
+                {"@type": "Identifier", "metaData": "32:1::16","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":28},"__cfgId":31},"arguments":[
               {"@type": "Identifier", "metaData": "32:32::36","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":355,"__cfgId":32}
             ],"__cfgId":33},"__cfgId":34},
           {"@type": "VariableDeclaration", "metaData": "34:1:36:2","type":null,"isVal":false,"initializers":[

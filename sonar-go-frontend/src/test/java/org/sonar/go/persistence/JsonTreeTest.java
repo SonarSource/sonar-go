@@ -40,6 +40,7 @@ import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
 import org.sonar.go.impl.ImportSpecificationTreeImpl;
 import org.sonar.go.impl.IndexExpressionTreeImpl;
+import org.sonar.go.impl.IndexListExpressionTreeImpl;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.JumpTreeImpl;
 import org.sonar.go.impl.KeyValueTreeImpl;
@@ -86,6 +87,7 @@ import org.sonar.plugins.go.api.ImaginaryLiteralTree;
 import org.sonar.plugins.go.api.ImportDeclarationTree;
 import org.sonar.plugins.go.api.ImportSpecificationTree;
 import org.sonar.plugins.go.api.IndexExpressionTree;
+import org.sonar.plugins.go.api.IndexListExpressionTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
 import org.sonar.plugins.go.api.JumpTree;
 import org.sonar.plugins.go.api.LiteralTree;
@@ -138,6 +140,7 @@ import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIER;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IDENTIFIERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IF_KEYWORD;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.INDEX;
+import static org.sonar.go.persistence.conversion.JsonTreeConverter.INDICES;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.INITIALIZERS;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.IS_VAL;
 import static org.sonar.go.persistence.conversion.JsonTreeConverter.KEY;
@@ -563,6 +566,30 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(IndexExpressionTree.class))
       .containsExactlyInAnyOrder(EXPRESSION, INDEX);
+  }
+
+  @Test
+  void testIndexListExpression() throws IOException {
+    var exprToken = otherToken(1, 0, "x");
+    var expr = TreeCreationUtils.identifier(metaData(exprToken), exprToken.text());
+    var tokenOpen = otherToken(1, 1, "[");
+
+    var indexToken1 = otherToken(1, 2, "1");
+    var index1 = new IntegerLiteralTreeImpl(metaData(indexToken1), indexToken1.text());
+    otherToken(1, 3, ",");
+    var indexToken2 = otherToken(1, 4, "2");
+    var index2 = new IntegerLiteralTreeImpl(metaData(indexToken2), indexToken2.text());
+    var tokenClose = otherToken(1, 5, "]");
+
+    var initialIndexExpressionTree = new IndexListExpressionTreeImpl(metaData(tokenOpen, tokenClose), expr, List.of(index1, index2));
+    var indexExpressionTree = checkJsonSerializationDeserialization(initialIndexExpressionTree, "index_list_expression.json");
+
+    assertThat(indexExpressionTree.expression()).isInstanceOfSatisfying(IdentifierTree.class, identifierTree -> assertThat(identifierTree.name()).isEqualTo("x"));
+    assertThat(indexExpressionTree.indices()).hasSize(2);
+    assertThat(indexExpressionTree.indices().get(0)).isInstanceOfSatisfying(IntegerLiteralTree.class, integerLiteralTree -> assertThat(integerLiteralTree.value()).isEqualTo("1"));
+    assertThat(indexExpressionTree.indices().get(1)).isInstanceOfSatisfying(IntegerLiteralTree.class, integerLiteralTree -> assertThat(integerLiteralTree.value()).isEqualTo("2"));
+
+    assertThat(methodNames(IndexListExpressionTree.class)).containsExactlyInAnyOrder(EXPRESSION, INDICES);
   }
 
   @Test

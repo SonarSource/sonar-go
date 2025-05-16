@@ -1044,7 +1044,26 @@ func (t *SlangMapper) mapIndexExprImpl(expr *ast.IndexExpr, fieldName string) *N
 }
 
 func (t *SlangMapper) mapIndexListExprImpl(astNode *ast.IndexListExpr, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	expression := t.mapExpr(astNode.X, "X")
+	slangField["expression"] = expression
+	children = t.appendNode(children, expression)
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(astNode.Lbrack, token.LBRACK, "Lbrack"))
+
+	var indices []*Node
+	for i := 0; i < len(astNode.Indices); i++ {
+		indice := t.mapExpr(astNode.Indices[i], "["+strconv.Itoa(i)+"]")
+		indices = append(indices, indice)
+		children = t.appendNode(children, indice)
+	}
+	slangField["indices"] = t.filterOutComments(indices)
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(astNode.Rbrack, token.RBRACK, "Rbrack"))
+
+	return t.createNode(astNode, children, fieldName+"(IndexListExpr)", "IndexListExpression", slangField)
 }
 
 func (t *SlangMapper) mapInterfaceTypeImpl(interfaceType *ast.InterfaceType, fieldName string) *Node {
