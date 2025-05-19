@@ -19,14 +19,13 @@ package org.sonar.go.impl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nullable;
-import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.IdentifierTree;
-import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.ParameterTree;
-import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 import org.sonar.plugins.go.api.Type;
+
+import static org.sonar.go.utils.ExpressionUtils.getTypeOfTree;
 
 public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
 
@@ -46,7 +45,7 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
 
   @Override
   public Type type() {
-    return getTypeOfParameter("", type);
+    return getTypeOfTree(type);
   }
 
   @Override
@@ -62,24 +61,5 @@ public class ParameterTreeImpl extends BaseTreeImpl implements ParameterTree {
       children.add(type);
     }
     return children;
-  }
-
-  private static Type getTypeOfParameter(String typePrefix, Tree tree) {
-    if (tree instanceof IdentifierTree identifierTree) {
-      return new TypeImpl(typePrefix + identifierTree.type(), identifierTree.packageName());
-    } else if (tree instanceof MemberSelectTree memberSelectTree) {
-      return getTypeOfParameter(typePrefix, memberSelectTree.identifier());
-    } else if (tree instanceof StarExpressionTree starExpressionTree) {
-      return getTypeOfParameter(typePrefix + "*", starExpressionTree.operand());
-    } else if (tree instanceof EllipsisTree) {
-      var id = tree.children().stream()
-        .filter(t -> t instanceof IdentifierTree || t instanceof MemberSelectTree || t instanceof StarExpressionTree)
-        .findFirst();
-      if (id.isPresent()) {
-        var identifierTree = id.get();
-        return getTypeOfParameter(typePrefix + "...", identifierTree);
-      }
-    }
-    return new TypeImpl("UNKNOWN", "UNKNOWN");
   }
 }

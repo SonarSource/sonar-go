@@ -31,4 +31,9 @@ public interface MapTypeTree extends Tree {
    * @return the value type of the map
    */
   Tree value();
+
+  /**
+   * @return the {@link org.sonar.plugins.go.api.Type} this Tree is referring to
+   */
+  Type type();
 }

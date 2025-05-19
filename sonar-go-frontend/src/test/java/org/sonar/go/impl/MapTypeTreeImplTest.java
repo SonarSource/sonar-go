@@ -20,19 +20,39 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.MapTypeTree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class MapTypeTreeImplTest {
+  private static final TreeMetaData META_DATA = null;
 
   @Test
   void testMapType() {
-    TreeMetaData meta = null;
-    var key = TreeCreationUtils.identifier("key");
-    var value = TreeCreationUtils.integerLiteral("1");
-    MapTypeTree tree = new MapTypeTreeImpl(meta, key, value);
+    var key = TreeCreationUtils.identifier("int", "int");
+    var value = TreeCreationUtils.identifier("string", "string");
+    MapTypeTree tree = new MapTypeTreeImpl(META_DATA, key, value);
     assertThat(tree.children()).containsExactly(key, value);
     assertThat(tree.key()).isSameAs(key);
     assertThat(tree.value()).isSameAs(value);
+    Type type = tree.type();
+    assertThat(type.type()).isEqualTo("map[int]string");
+    assertThat(type.packageName()).isEmpty();
+  }
+
+  @Test
+  void testMapTypeWithArrayTypeAsValue() {
+    var key = TreeCreationUtils.identifier("string", "string");
+    var value = new ArrayTypeTreeImpl(META_DATA, null, TreeCreationUtils.identifier("int", "int"));
+    MapTypeTree tree = new MapTypeTreeImpl(META_DATA, key, value);
+    assertThat(tree.type().type()).isEqualTo("map[string][]int");
+  }
+
+  @Test
+  void testMapTypeWithMapTypeAsValue() {
+    var key = TreeCreationUtils.identifier("string", "string");
+    var value = new MapTypeTreeImpl(META_DATA, TreeCreationUtils.identifier("byte", "byte"), TreeCreationUtils.identifier("int", "int"));
+    MapTypeTree tree = new MapTypeTreeImpl(META_DATA, key, value);
+    assertThat(tree.type().type()).isEqualTo("map[string]map[byte]int");
   }
 }

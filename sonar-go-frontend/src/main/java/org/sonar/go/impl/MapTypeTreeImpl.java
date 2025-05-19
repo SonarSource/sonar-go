@@ -20,15 +20,20 @@ import java.util.List;
 import org.sonar.plugins.go.api.MapTypeTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.Type;
+
+import static org.sonar.go.utils.ExpressionUtils.getTypeOfTree;
 
 public class MapTypeTreeImpl extends BaseTreeImpl implements MapTypeTree {
   private final Tree key;
   private final Tree value;
+  private final Type type;
 
   public MapTypeTreeImpl(TreeMetaData metaData, Tree key, Tree value) {
     super(metaData);
     this.key = key;
     this.value = value;
+    this.type = computeMapType();
   }
 
   @Override
@@ -44,5 +49,16 @@ public class MapTypeTreeImpl extends BaseTreeImpl implements MapTypeTree {
   @Override
   public Tree value() {
     return value;
+  }
+
+  @Override
+  public Type type() {
+    return type;
+  }
+
+  private Type computeMapType() {
+    var keyType = getTypeOfTree(key);
+    var valueType = getTypeOfTree(value);
+    return new TypeImpl(String.format("map[%s]%s", keyType.type(), valueType.type()), "");
   }
 }

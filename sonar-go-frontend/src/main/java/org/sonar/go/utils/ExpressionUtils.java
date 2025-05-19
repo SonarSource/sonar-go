@@ -25,10 +25,12 @@ import org.sonar.go.impl.TypeImpl;
 import org.sonar.plugins.go.api.ArrayTypeTree;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
+import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.KeyValueTree;
 import org.sonar.plugins.go.api.LiteralTree;
+import org.sonar.plugins.go.api.MapTypeTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
 import org.sonar.plugins.go.api.PlaceHolderTree;
@@ -37,6 +39,7 @@ import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.Type;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
 
+import static org.sonar.go.impl.TypeImpl.UNKNOWN_TYPE;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
@@ -239,5 +242,32 @@ public class ExpressionUtils {
       identifierType = identifierType.substring(1);
     }
     return identifierType.equals(type);
+  }
+
+  public static Type getTypeOfTree(@Nullable Tree tree) {
+    return getTypeOfTree("", tree);
+  }
+
+  private static Type getTypeOfTree(String typePrefix, @Nullable Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      return new TypeImpl(typePrefix + identifierTree.type(), identifierTree.packageName());
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return getTypeOfTree(typePrefix, memberSelectTree.identifier());
+    } else if (tree instanceof StarExpressionTree starExpressionTree) {
+      return getTypeOfTree(typePrefix + "*", starExpressionTree.operand());
+    } else if (tree instanceof EllipsisTree) {
+      var id = tree.children().stream()
+        .filter(t -> t instanceof IdentifierTree || t instanceof MemberSelectTree || t instanceof StarExpressionTree)
+        .findFirst();
+      if (id.isPresent()) {
+        var identifierTree = id.get();
+        return getTypeOfTree(typePrefix + "...", identifierTree);
+      }
+    } else if (tree instanceof ArrayTypeTree arrayTypeTree) {
+      return arrayTypeTree.type();
+    } else if (tree instanceof MapTypeTree mapTypeTree) {
+      return mapTypeTree.type();
+    }
+    return UNKNOWN_TYPE;
   }
 }

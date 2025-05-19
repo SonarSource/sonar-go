@@ -194,7 +194,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(expression.element().textRange()).isEqualTo(tokenType.textRange());
 
     assertThat(methodNames(ArrayTypeTree.class))
-      .containsExactlyInAnyOrder(ELEMENT, LENGTH);
+      .containsExactlyInAnyOrder(ELEMENT, LENGTH, TYPE);
   }
 
   @Test
@@ -1032,7 +1032,7 @@ class JsonTreeTest extends JsonTestHelper {
     assertThat(expression.value().textRange()).isEqualTo(tokenValue.textRange());
 
     assertThat(methodNames(MapTypeTree.class))
-      .containsExactlyInAnyOrder(KEY, VALUE);
+      .containsExactlyInAnyOrder(KEY, VALUE, TYPE);
   }
 
   @Test

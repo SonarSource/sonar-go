@@ -27,4 +27,9 @@ public interface ArrayTypeTree extends Tree {
   Tree length();
 
   Tree element();
+
+  /**
+   * @return the {@link org.sonar.plugins.go.api.Type} this Tree is referring to
+   */
+  Type type();
 }

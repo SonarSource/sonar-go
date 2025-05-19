@@ -20,6 +20,8 @@ import org.sonar.plugins.go.api.Type;
 
 public class TypeImpl implements Type {
 
+  public static final Type UNKNOWN_TYPE = new TypeImpl("UNKNOWN", "UNKNOWN");
+
   private final String type;
   private final String packageName;
 
