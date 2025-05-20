@@ -3,6 +3,8 @@
 package main
 
 var packageExportData = map[string]string{
+	"archive/tar": "archive_tar.o",
+	"archive/zip": "archive_zip.o",
 	"builtin": "builtin.o",
 	"crypto": "crypto.o",
 	"crypto/aes": "crypto_aes.o",
