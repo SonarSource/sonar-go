@@ -1,0 +1,16 @@
+package foo
+
+const MagicNumber int = 42
+
+var GlobalMyType = MyType{}
+
+func Calculate(x int) int {
+	return x * MagicNumber
+}
+
+type MyType struct {
+}
+
+func (m *MyType) Hello() string {
+	return "hello"
+}

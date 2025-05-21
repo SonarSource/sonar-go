@@ -40,8 +40,12 @@ IF "%~1%" == "build" (
 ) ELSE IF "%~1%"=="test" (
   CALL :generate_test_report
 ) ELSE IF "%~1%"=="clean" (
-  DEL "build\executable\sonar-go-to-slang-*"
+  DEL "goparser_generated.go"
   DEL "build\test-report.json"
+  DEL "build\executable\*"
+  DEL "build/test-coverage.out"
+  DEL "build/main_test"
+  DEL "build/cross-file-tests"
 ) ELSE (
   echo "Unrecognized command %~1%"
   exit "1"

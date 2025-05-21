@@ -76,6 +76,15 @@ def build_test_sonar_env():
         "BUILD_ARGUMENTS": "--build-cache -x build -x artifactoryPublish test --configuration-cache"
     }
 
+def go_and_gradle_on_failure():
+    on_failure = default_gradle_on_failure()
+    on_failure |= {
+        "go_tests_artifacts": {
+            "path": "**/build/test-report.json"
+        }
+    }
+    return on_failure
+
 
 def build_test_sonar_task():
     return {
@@ -88,7 +97,7 @@ def build_test_sonar_task():
             "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
             "build_script": build_script(),
             "cleanup_gradle_script": cleanup_gradle_script(),
-            "on_failure": default_gradle_on_failure()
+            "on_failure": go_and_gradle_on_failure()
         }
     }
 

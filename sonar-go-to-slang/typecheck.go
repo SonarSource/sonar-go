@@ -6,10 +6,9 @@ import (
 	"go/ast"
 	"go/token"
 	"go/types"
-	"io/fs"
 	"os"
-
-	"golang.org/x/tools/go/gcexportdata"
+	"path/filepath"
+	"strings"
 )
 
 // PackageExportDataDir is also hardcoded in the go:embed directive below.
@@ -20,33 +19,61 @@ const PackageExportDataDir = "packages"
 //go:embed packages
 var packages embed.FS
 
-type localImporter struct{}
+type localImporter struct {
+	gcExportDataDir string
+}
 
-func (fi *localImporter) Import(path string) (*types.Package, error) {
+func (li *localImporter) Import(path string) (*types.Package, error) {
 	if exportDataFileName, ok := packageExportData[path]; ok {
-		return getPackageFromExportData(exportDataFileName, path)
+		return getPackageFromExportData(PackageExportDataDir+string(os.PathSeparator)+exportDataFileName, path)
+	} else {
+		return li.getPackageFromLocalCodeExportData(path)
+	}
+}
+
+func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, error) {
+	if li.gcExportDataDir != "" {
+		//TODO SONARGO-576 Go executable should read all gcexportdata of user's code
+		for _, filePath := range li.getFiles() {
+			file, err := os.Open(filePath)
+			if err != nil {
+				fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", filePath, err)
+				return getEmptyPackage(path), nil
+			}
+			pkg, _ := getPackageFromFile(file, path)
+			if pkg != nil {
+				if pkg.Name() == path {
+					return pkg, nil
+				}
+			}
+			return pkg, nil
+		}
 	}
 	return getEmptyPackage(path), nil
 }
 
+func (li *localImporter) getFiles() []string {
+	var files []string
+
+	err := filepath.Walk(li.gcExportDataDir, func(path string, info os.FileInfo, err error) error {
+		if strings.HasSuffix(path, ".o") {
+			files = append(files, path)
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	return files
+}
+
 func getPackageFromExportData(exportDataFileName string, path string) (*types.Package, error) {
-	file, err := packages.Open(PackageExportDataDir + "/" + exportDataFileName)
+	file, err := packages.Open(exportDataFileName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", exportDataFileName, err)
 		return getEmptyPackage(path), nil
 	}
-	defer func(file fs.File) {
-		_ = file.Close()
-	}(file)
-
-	imports := make(map[string]*types.Package)
-	pkg, err := gcexportdata.Read(file, nil, imports, path)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while reading %s export data: %s\n", path, err)
-		return getEmptyPackage(path), nil
-	}
-
-	return pkg, nil
+	return getPackageFromFile(file, path)
 }
 
 func getEmptyPackage(path string) *types.Package {
@@ -55,9 +82,11 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugTypeCheck bool) (*types.Info, error) {
+func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugTypeCheck bool, gcExportDataDir string) (*types.Info, error) {
 	conf := types.Config{
-		Importer: &localImporter{},
+		Importer: &localImporter{
+			gcExportDataDir: gcExportDataDir,
+		},
 		Error: func(err error) {
 			if debugTypeCheck {
 				fmt.Fprintf(os.Stderr, "Warning while type checking '%s': %s\n", path, err)

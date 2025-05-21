@@ -23,19 +23,25 @@ import (
 )
 
 type Params struct {
-	dumpAst        bool
-	debugTypeCheck bool
-	path           string
+	dumpAst          bool
+	debugTypeCheck   bool
+	path             string
+	dumpGcExportData bool
+	gcExportDataFile string
+	gcExportDataDir  string
 }
 
 func parseArgs() Params {
 	flag.Usage = func() {
-		fmt.Printf("Usage: %s [options] source.go\n\n", os.Args[0])
+		fmt.Printf("Usage: %s [options] [- | path]\n\n", os.Args[0])
 		flag.PrintDefaults()
 	}
 
 	dumpAstFlag := flag.Bool("d", false, "dump ast (instead of JSON)")
 	debugTypeCheckFlag := flag.Bool("debug_type_check", false, "print errors logs from type checking")
+	dumpGcExportData := flag.Bool("dump_gc_export_data", false, "dump GC export data")
+	gcExportDataFile := flag.String("gc_export_data_file", "", "file to dump GC export data")
+	gcExportDataDir := flag.String("gc_export_data_dir", "", "directory where GC export data is located")
 	flag.Parse()
 	var path string
 	if len(flag.Args()) == 1 {
@@ -43,9 +49,12 @@ func parseArgs() Params {
 	}
 
 	return Params{
-		dumpAst:        *dumpAstFlag,
-		debugTypeCheck: *debugTypeCheckFlag,
-		path:           path,
+		dumpAst:          *dumpAstFlag,
+		debugTypeCheck:   *debugTypeCheckFlag,
+		path:             path,
+		dumpGcExportData: *dumpGcExportData,
+		gcExportDataFile: *gcExportDataFile,
+		gcExportDataDir:  *gcExportDataDir,
 	}
 }
 
@@ -55,8 +64,16 @@ func main() {
 	fileSet := token.NewFileSet()
 	astFile, fileContent, _ := readAstFile(fileSet, params.path)
 
-	info, _ := typeCheckAst(params.path, fileSet, astFile, params.debugTypeCheck)
+	info, _ := typeCheckAst(params.path, fileSet, astFile, params.debugTypeCheck, params.gcExportDataDir)
 	// Ignoring errors at this point, they are reported before if needed.
+
+	if params.dumpGcExportData {
+		if params.gcExportDataFile == "" {
+			panic("If the dump_gc_export_data flag is set then the gc_export_data_file flag must be set too")
+		}
+		exportGcExportData(info, params.gcExportDataFile)
+		return
+	}
 
 	if params.dumpAst {
 		fmt.Println(render(astFile))

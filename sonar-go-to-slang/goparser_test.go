@@ -32,7 +32,7 @@ import (
 
 func slangFromString(filename string, source string) (*Node, []*Node, []*Token) {
 	fileSet, astFile := astFromString(filename, source)
-	info, _ := typeCheckAst(filename, fileSet, astFile, true)
+	info, _ := typeCheckAst(filename, fileSet, astFile, true, "")
 	return toSlangTree(fileSet, astFile, source, info)
 }
 
@@ -45,7 +45,7 @@ func astFromString(filename string, source string) (fileSet *token.FileSet, astF
 	return
 }
 
-// Update all .txt files in resources/ast from all .go.source files
+// Update all .json files in resources/ast from all .go.source files
 // Add "Test_" before to run in IDE
 func fix_all_go_files_test_automatically(t *testing.T) {
 	for _, file := range getAllGoFiles("resources/ast") {

@@ -34,7 +34,7 @@ func Test_importNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
 }
 
 func Test_getPackageFromExportData_validFile_returnsPackage(t *testing.T) {
-	pkg, err := getPackageFromExportData("net_http.o", "net/http")
+	pkg, err := getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
@@ -63,7 +63,7 @@ func Test_typeCheckAst(t *testing.T) {
 	}
 
 	fileSet, astFile := astFromString("simple_file_with_packages.go", string(source))
-	info, _ := typeCheckAst("my/path", fileSet, astFile, true)
+	info, _ := typeCheckAst("my/path", fileSet, astFile, true, "")
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -82,7 +82,7 @@ func Test_testOnlyFirstErrorIsReturned(t *testing.T) {
 
 	fileSet, astFile := astFromString("file_with_many_errors.go", string(source))
 
-	info, err := typeCheckAst("my/path", fileSet, astFile, false)
+	info, err := typeCheckAst("my/path", fileSet, astFile, false, "")
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", err.Error())
 	assert.NotNil(t, info)
 }

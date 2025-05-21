@@ -153,6 +153,9 @@ main() {
       rm -f build/sonar-go-to-slang-*
       rm -f build/test-report.json
       rm -f build/executable/*
+      rm -f build/test-coverage.out
+      rm -rf build/main_test
+      rm -rf build/cross-file-tests
       ;;
     *)
       echo "Unrecognized command ${command}" >&2

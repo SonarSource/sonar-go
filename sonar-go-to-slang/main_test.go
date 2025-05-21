@@ -127,6 +127,55 @@ func TestMainWithInvalidFile(t *testing.T) {
 	assert.Fail(t, "The main() should throw panic for invalid file")
 }
 
+func TestMainWithDumpGcExportDataFlagOnly(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "-dump_gc_export_data", "resources/simple_file.go.source"}
+
+	writeOut, oldStdOut, outChanel := captureStandardOutput()
+
+	defer func() {
+		output := getStandardOutput(writeOut, oldStdOut, outChanel)
+		if r := recover(); r != nil {
+			assert.Empty(t, output, "Expected empty standard output")
+		}
+	}()
+	main()
+	assert.Fail(t, "The main() should throw panic for missing gc_export_data_file")
+}
+
+func TestMainShouldExportGcData(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_file", "build/main_test/out.o", "resources/simple_file_with_packages.go.source"}
+
+	main()
+	assert.FileExists(t, "build/main_test/out.o", "File should exist")
+}
+
+func TestPrintUsageForInvalidArguments(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "-invalid-flag"}
+
+	writeOut, oldStdOut, outChanel := captureStandardError()
+
+	defer func() {
+		output := getStandardError(writeOut, oldStdOut, outChanel)
+		if r := recover(); r != nil {
+			assert.Contains(t, output, "flag provided but not defined: -invalid-flag", "Expected in standard output")
+			assert.Contains(t, output, "-d\tdump ast (instead of JSON)", "Expected in standard output")
+			assert.Contains(t, output, "debug_type_check", "Expected in standard output")
+			assert.Contains(t, output, "\tprint errors logs from type checking", "Expected in standard output")
+			assert.Contains(t, output, "-dump_gc_export_data", "Expected in standard output")
+			assert.Contains(t, output, "\tdump GC export data", "Expected in standard output")
+			assert.Contains(t, output, "-gc_export_data_dir string", "Expected in standard output")
+			assert.Contains(t, output, "\tdirectory where GC export data is located", "Expected in standard output")
+			assert.Contains(t, output, "-gc_export_data_file string", "Expected in standard output")
+			assert.Contains(t, output, "\tfile to dump GC export data", "Expected in standard output")
+		}
+	}()
+	main()
+	assert.Fail(t, "The main() should throw panic for ???")
+}
+
 func getStandardOutput(w *os.File, old *os.File, outC chan string) string {
 	// Restore the original stdout
 	w.Close()
