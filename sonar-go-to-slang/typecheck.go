@@ -25,7 +25,8 @@ type localImporter struct {
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
 	if exportDataFileName, ok := packageExportData[path]; ok {
-		return getPackageFromExportData(PackageExportDataDir+string(os.PathSeparator)+exportDataFileName, path)
+		// In embedded filesystem, the path separator is always '/', even on Windows.
+		return getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
 	} else {
 		return li.getPackageFromLocalCodeExportData(path)
 	}
