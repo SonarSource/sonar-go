@@ -108,4 +108,5 @@ var packageExportData = map[string]string{
 	"runtime/pprof": "runtime_pprof.o",
 	"slices": "slices.o",
 	"strconv": "strconv.o",
+	"strings": "strings.o",
 }
