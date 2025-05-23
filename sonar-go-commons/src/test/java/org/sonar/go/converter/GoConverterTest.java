@@ -17,7 +17,6 @@
 package org.sonar.go.converter;
 
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -26,7 +25,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
-import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverter;
@@ -59,11 +57,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
-import static org.sonar.go.converter.GoConverter.DefaultCommand.createCommand;
-import static org.sonar.go.converter.GoConverter.DefaultCommand.getExecutableForCurrentOS;
 
 class GoConverterTest {
   @TempDir
@@ -405,13 +399,13 @@ class GoConverterTest {
   void shouldFailWithParseError() {
     ParseException e = assertThrows(ParseException.class,
       () -> TestGoConverter.parse("$!#@"));
-    assertThat(e).hasMessage("Go parser external process returned non-zero exit value: 2");
+    assertThat(e).hasMessage("Go executable returned non-zero exit value: 2");
   }
 
   @Test
   void shouldFailOnInvalidCommand() {
-    GoConverter.Command command = mock(GoConverter.Command.class);
-    when(command.getCommand()).thenReturn(Collections.singletonList("invalid-command"));
+    var command = new DefaultCommand(tempDir);
+    command.getCommand().set(0, "invalid-command");
     GoConverter converter = new GoConverter(command);
     ParseException e = assertThrows(ParseException.class,
       () -> converter.parse("package main\nfunc foo() {}"));
@@ -420,11 +414,11 @@ class GoConverterTest {
 
   @Test
   void shouldReturnNullForUnsupportedPlatform() {
-    try (var mockedStatic = mockStatic(GoConverter.DefaultCommand.class)) {
-      mockedStatic.when(() -> GoConverter.DefaultCommand.getExecutableForCurrentOS(anyString(), anyString()))
+    try (var mockedStatic = mockStatic(DefaultCommand.class)) {
+      mockedStatic.when(() -> DefaultCommand.getExecutableForCurrentOS(anyString(), anyString()))
         .thenThrow(new IllegalStateException("Unsupported platform: test/test"));
 
-      var command = GoConverter.DefaultCommand.createCommand(tempDir);
+      var command = DefaultCommand.createCommand(tempDir);
       assertThat(command).isNull();
 
       var goConverter = new GoConverter(command);
@@ -461,52 +455,18 @@ class GoConverterTest {
 
   @Test
   void shouldThrowExceptionOnInvalidExecutablePath() {
-    assertThatThrownBy(() -> GoConverter.DefaultCommand.getBytesFromResource("invalid-exe-path"))
+    assertThatThrownBy(() -> DefaultCommand.getBytesFromResource("invalid-exe-path"))
       .isInstanceOf(IllegalStateException.class)
       .hasMessage("invalid-exe-path binary not found on class path");
   }
 
   @Test
-  void shouldThrowParseExceptionOnUInitializedCommand() {
-    var goConverter = new GoConverter((GoConverter.Command) null);
+  void shouldThrowParseExceptionOnNotInitializedCommand() {
+    var goConverter = new GoConverter((Command) null);
 
     assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}"))
       .isInstanceOf(ParseException.class)
       .hasMessage("Go converter is not initialized");
-  }
-
-  @ParameterizedTest
-  @CsvSource(textBlock = """
-    Linux, x86_64, sonar-go-to-slang-linux-amd64
-    Linux, aarch64, sonar-go-to-slang-linux-arm64
-    Linux, arm64, sonar-go-to-slang-linux-arm64
-    Linux, armv8, sonar-go-to-slang-linux-arm64
-    Linux, amd64, sonar-go-to-slang-linux-amd64
-    Linux, x64, sonar-go-to-slang-linux-amd64
-    Windows 10, x86_64, sonar-go-to-slang-windows-amd64.exe
-    Mac OS X, x86_64, sonar-go-to-slang-darwin-amd64
-    Mac OS X, aarch64, sonar-go-to-slang-darwin-arm64
-    """)
-  void shouldReturnCorrectExecutableForCurrentOs(String osName, String arch, String expectedExecutable) {
-    assertThat(getExecutableForCurrentOS(osName, arch)).isEqualTo(expectedExecutable);
-  }
-
-  @Test
-  void shouldThrowForUnsupportedPlatform() {
-    assertThatThrownBy(() -> getExecutableForCurrentOS("linux", "ppc64"))
-      .isInstanceOf(IllegalStateException.class)
-      .hasMessage("Unsupported OS/architecture: linux/ppc64");
-  }
-
-  @Test
-  void shouldReturnNullForInvalidPlatform() {
-    var currentArch = System.getProperty("os.arch");
-    try {
-      System.setProperty("os.arch", "invalid-arch");
-      assertThat(createCommand(tempDir)).isNull();
-    } finally {
-      System.setProperty("os.arch", currentArch);
-    }
   }
 
   @Test

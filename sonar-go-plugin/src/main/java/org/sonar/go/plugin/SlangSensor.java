@@ -61,8 +61,8 @@ public abstract class SlangSensor implements Sensor {
     && !(t instanceof FunctionDeclarationTree)
     && !(t instanceof BlockTree);
 
+  protected static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
   private static final Logger LOG = LoggerFactory.getLogger(SlangSensor.class);
-  private static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
 
   private final NoSonarFilter noSonarFilter;
   private final Language language;
@@ -91,6 +91,10 @@ public abstract class SlangSensor implements Sensor {
     return EXECUTABLE_LINE_PREDICATE;
   }
 
+  protected void beforeAnalyzeFile(SensorContext sensorContext, List<InputFile> inputFiles) {
+    // the default implementation does nothing
+  }
+
   private boolean analyseFiles(ASTConverter converter,
     SensorContext sensorContext,
     List<InputFile> inputFiles,
@@ -100,6 +104,8 @@ public abstract class SlangSensor implements Sensor {
     if (sensorContext.canSkipUnchangedFiles()) {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
+
+    beforeAnalyzeFile(sensorContext, inputFiles);
 
     for (InputFile inputFile : inputFiles) {
       if (sensorContext.isCancelled()) {
@@ -204,7 +210,7 @@ public abstract class SlangSensor implements Sensor {
     return false;
   }
 
-  private static ParseException toParseException(String action, InputFile inputFile, Exception cause) {
+  protected static ParseException toParseException(String action, InputFile inputFile, Exception cause) {
     TextPointer position = cause instanceof ParseException actual ? actual.getPosition() : null;
     return new ParseException("Cannot " + action + " '" + inputFile + "': " + cause.getMessage(), position, cause);
   }

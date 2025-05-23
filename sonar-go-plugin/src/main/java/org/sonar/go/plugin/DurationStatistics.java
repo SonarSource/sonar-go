@@ -29,7 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.config.Configuration;
 
-class DurationStatistics {
+public class DurationStatistics {
 
   private static final Logger LOG = LoggerFactory.getLogger(DurationStatistics.class);
 
@@ -39,7 +39,7 @@ class DurationStatistics {
 
   private final boolean recordStat;
 
-  DurationStatistics(Configuration config) {
+  public DurationStatistics(Configuration config) {
     recordStat = config.getBoolean(PROPERTY_KEY).orElse(false);
   }
 
@@ -51,7 +51,7 @@ class DurationStatistics {
     }
   }
 
-  void time(String id, Runnable runnable) {
+  public void time(String id, Runnable runnable) {
     if (recordStat) {
       time(id, () -> {
         runnable.run();
