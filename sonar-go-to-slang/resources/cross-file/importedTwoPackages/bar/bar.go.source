@@ -1,0 +1,8 @@
+package bar
+
+type MyType struct {
+}
+
+func (m *MyType) Hello() int {
+	return 42
+}

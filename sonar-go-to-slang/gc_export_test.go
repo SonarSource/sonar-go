@@ -13,21 +13,14 @@ import (
 )
 
 func Test_exportGcExportData(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{
-			"e1",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			for _, file := range getAllGoFiles("resources/cross-file/" + tt.name) {
-				exportGcData(file, tt)
+	for _, name := range getSubDirs("resources/cross-file") {
+		t.Run("Test_exportGcExportData_"+name, func(t *testing.T) {
+			for _, file := range getAllGoFiles("resources/cross-file/" + name) {
+				exportGcData(file, name)
 			}
 
-			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + tt.name) {
-				actual := parseFileToJson(file, tt)
+			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + name) {
+				actual := parseFileToJson(file, name)
 				jsonFile := strings.Replace(file, ".source", ".json", 1)
 
 				expected, err := os.ReadFile(jsonFile)
@@ -42,24 +35,17 @@ func Test_exportGcExportData(t *testing.T) {
 
 // Update all .json files in resources/cross-file from all .go.source files (ignoring sub directories)
 // Add "Test_" before to run in IDE
-func fixExportGcExportData(t *testing.T) {
-	tests := []struct {
-		name string
-	}{
-		{
-			"e1",
-		},
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			for _, file := range getAllGoFiles("resources/cross-file/" + tt.name) {
-				exportGcData(file, tt)
+func Test_fixExportGcExportData(t *testing.T) {
+	for _, name := range getSubDirs("resources/cross-file") {
+		t.Run("fixExportGcExportData_"+name, func(t *testing.T) {
+			for _, file := range getAllGoFiles("resources/cross-file/" + name) {
+				exportGcData(file, name)
 			}
 
-			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + tt.name) {
-				actual := parseFileToJson(file, tt)
+			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + name) {
+				actual := parseFileToJson(file, name)
 				jsonFile := strings.Replace(file, ".source", ".json", 1)
-				err := os.WriteFile(jsonFile, []byte(actual), 7444)
+				err := os.WriteFile(jsonFile, []byte(actual), 0644)
 				if err != nil {
 					t.Fatalf("failed to write file %s: %v", jsonFile, err)
 				}
@@ -68,22 +54,21 @@ func fixExportGcExportData(t *testing.T) {
 	}
 }
 
-func exportGcData(file string, tt struct{ name string }) {
+func exportGcData(file string, name string) {
 	fmt.Printf("Exporting GC data for: %s\n", file)
 	fileSet := token.NewFileSet()
 	astFile, _, _ := readAstFile(fileSet, file)
-	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+tt.name)
-	fileNoPrefix := strings.Replace(file, "resources/cross-file/"+tt.name+"/", "", 1)
-	fileExt := strings.Replace(fileNoPrefix, ".go.source", ".o", 1)
-	exportGcExportData(info, "build/cross-file-tests/"+tt.name+"/"+fileExt)
+	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+name)
+	fileNoPrefix := strings.Replace(file, "resources/cross-file/"+name+"/", "", 1)
+	fileExt := strings.Replace(fileNoPrefix, ".go.source", ".go.o", 1)
+	exportGcExportData(info, "build/cross-file-tests/"+name+"/"+fileExt)
 }
 
-func parseFileToJson(file string, tt struct{ name string }) string {
+func parseFileToJson(file string, name string) string {
 	fmt.Printf("Parsing %s\n", file)
 	fileSet := token.NewFileSet()
 	astFile, fileContent, _ := readAstFile(fileSet, file)
-	//TODO SONARGO-576 Go executable should read all gcexportdata of user's code, the foo should be removed here
-	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+tt.name+"/foo")
+	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+name)
 	slangTree, comments, tokens := toSlangTree(fileSet, astFile, fileContent, info)
 	actual := toJsonSlang(slangTree, comments, tokens, "  ")
 	return actual
@@ -96,6 +81,22 @@ func getGoFilesIgnoreSubDirs(folder string) []string {
 		lastPathSep := strings.LastIndex(path, string(os.PathSeparator))
 		if strings.HasSuffix(path, ".go.source") && lastPathSep == len(folder) {
 			files = append(files, path)
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	return files
+}
+
+func getSubDirs(folder string) []string {
+	var files []string
+
+	err := filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
+		lastPathSep := strings.LastIndex(path, string(os.PathSeparator))
+		if info.IsDir() && lastPathSep == len(folder) {
+			files = append(files, info.Name())
 		}
 		return nil
 	})

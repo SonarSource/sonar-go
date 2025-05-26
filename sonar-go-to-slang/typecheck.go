@@ -33,30 +33,52 @@ func (li *localImporter) Import(path string) (*types.Package, error) {
 }
 
 func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, error) {
+	fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	if li.gcExportDataDir != "" {
-		//TODO SONARGO-576 Go executable should read all gcexportdata of user's code
-		for _, filePath := range li.getFiles() {
+		var pkgToMerge []*types.Package
+		for _, filePath := range li.getGcExportDataFilesForPackage(path) {
 			file, err := os.Open(filePath)
 			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", filePath, err)
+				fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
 				return getEmptyPackage(path), nil
 			}
 			pkg, _ := getPackageFromFile(file, path)
 			if pkg != nil {
 				if pkg.Name() == path {
-					return pkg, nil
+					pkgToMerge = append(pkgToMerge, pkg)
 				}
 			}
-			return pkg, nil
 		}
+		return mergedPackage(pkgToMerge, path)
 	}
 	return getEmptyPackage(path), nil
 }
 
-func (li *localImporter) getFiles() []string {
-	var files []string
+func mergedPackage(pkgToMerge []*types.Package, path string) (*types.Package, error) {
+	if len(pkgToMerge) == 0 {
+		return getEmptyPackage(path), nil
+	}
+	if len(pkgToMerge) == 1 {
+		return pkgToMerge[0], nil
+	}
+	result := pkgToMerge[0]
 
-	err := filepath.Walk(li.gcExportDataDir, func(path string, info os.FileInfo, err error) error {
+	for _, pkg := range pkgToMerge[1:] {
+		for _, name := range pkg.Scope().Names() {
+			if result.Scope().Lookup(name) == nil {
+				result.Scope().Insert(pkg.Scope().Lookup(name))
+			} else {
+				fmt.Fprintf(os.Stderr, "There is a colision in package: \"%s\" for name: \"%s\"\n", path, name)
+			}
+		}
+	}
+	return result, nil
+}
+
+func (li *localImporter) getGcExportDataFilesForPackage(packagePath string) []string {
+	var files []string
+	dir := filepath.Join(li.gcExportDataDir, packagePath)
+	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".o") {
 			files = append(files, path)
 		}

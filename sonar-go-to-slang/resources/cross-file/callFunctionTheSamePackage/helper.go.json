@@ -1,0 +1,63 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"func","textRange":"3:0::4","type":"KEYWORD"},
+      {"text":"privateFunction","textRange":"3:5::20"},
+      {"text":"(","textRange":"3:20::21"},
+      {"text":")","textRange":"3:21::22"},
+      {"text":"int","textRange":"3:23::26"},
+      {"text":"{","textRange":"3:27::28"},
+      {"text":"return","textRange":"4:1::7","type":"KEYWORD"},
+      {"text":"1","textRange":"4:8::9"},
+      {"text":"}","textRange":"5:0::1"},
+      {"text":"func","textRange":"7:0::4","type":"KEYWORD"},
+      {"text":"PublicFunction","textRange":"7:5::19"},
+      {"text":"(","textRange":"7:19::20"},
+      {"text":")","textRange":"7:20::21"},
+      {"text":"float32","textRange":"7:22::29"},
+      {"text":"{","textRange":"7:30::31"},
+      {"text":"return","textRange":"8:1::7","type":"KEYWORD"},
+      {"text":"1.0","textRange":"8:8::11"},
+      {"text":"}","textRange":"9:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:10:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "FunctionDeclaration", "metaData": "3:0:5:1","typeParameters":
+        null,"returnType":
+        {"@type": "Native", "metaData": "3:23::26","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "3:23::26","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "3:23::26","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":5}
+          ],"__cfgId":6}
+        ],"__cfgId":7},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "3:5::20","type":"func() int","package":"main","name":"privateFunction","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "3:27:5:1","statementOrExpressions":[
+          {"@type": "Return", "metaData": "4:1::9","keyword":"4:1::7","expressions":[
+            {"@type": "IntegerLiteral", "metaData": "4:8::9","value":"1"}
+          ],"__cfgId":8}
+        ],"__cfgId":9},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "7:0:9:1","typeParameters":
+        null,"returnType":
+        {"@type": "Native", "metaData": "7:22::29","nativeKind":"Results(FieldList)","children":[
+          {"@type": "Native", "metaData": "7:22::29","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "7:22::29","type":"float32","package":"UNKNOWN","name":"float32","id":0,"__cfgId":4}
+          ],"__cfgId":5}
+        ],"__cfgId":6},"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "7:5::19","type":"func() float32","package":"main","name":"PublicFunction","id":62,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "7:30:9:1","statementOrExpressions":[
+          {"@type": "Return", "metaData": "8:1::11","keyword":"8:1::7","expressions":[
+            {"@type": "FloatLiteral", "metaData": "8:8::11","value":"1.0"}
+          ],"__cfgId":7}
+        ],"__cfgId":8},"__cfgId":1}
+    ],"__cfgId":2}
+} 

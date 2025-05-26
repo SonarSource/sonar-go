@@ -1,0 +1,9 @@
+package main
+
+func privateFunction() int {
+	return 1
+}
+
+func PublicFunction() float32 {
+	return 1.0
+}

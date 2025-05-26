@@ -1,0 +1,18 @@
+package main
+
+import (
+	"bar"
+	"fmt"
+	"foo"
+)
+
+func mainX() {
+	a := foo.Calculate(foo.MagicNumber)
+	fmt.Print(a)
+	my := new(foo.MyType)
+	my.Hello()
+	foo.GlobalMyType.Hello()
+
+	my2 := new(bar.MyType)
+	my2.Hello()
+}

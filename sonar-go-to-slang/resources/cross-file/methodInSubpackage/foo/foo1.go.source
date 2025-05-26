@@ -1,0 +1,15 @@
+package foo
+
+
+var GlobalMyType = MyType{}
+
+func Calculate(x int) int {
+	return x * MagicNumber
+}
+
+type MyType struct {
+}
+
+func (m *MyType) SomePublicMethod() string {
+	return "hello"
+}

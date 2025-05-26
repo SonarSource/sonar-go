@@ -1,0 +1,7 @@
+package foo
+
+const MagicNumber int = 42
+
+func (m *MyType) Hello() string {
+	return "hello"
+}
