@@ -63,7 +63,12 @@ sonar {
         property("sonar.exclusions", "**/build/**/*")
         property(
             "sonar.sca.exclusions",
-            "private/its/**,go/**,private/go-custom-rules-plugin/**"
+            "private/its/sources/**," +
+                "private/its/ruling/src/integrationTest/resources/sources/**," +
+                "private/its/plugin/projects/**," +
+                "go/**," +
+                "private/go-custom-rules-plugin/**," +
+                "private/go-package-data-exporter/**"
         )
     }
 }
