@@ -109,7 +109,7 @@ tasks.shadowJar {
     val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
     doLast {
         val (minSize, maxSize) = if (isCrossCompile) {
-            14_000_000L to 15_000_000L
+            14_500_000L to 15_500_000L
         } else {
             3_500_000L to 4_500_000L
         }

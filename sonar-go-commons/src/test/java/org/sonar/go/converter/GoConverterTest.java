@@ -596,7 +596,7 @@ class GoConverterTest {
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
 
     assertThat(getIdentifierByName(functionDeclaration, "sublogger").type()).isEqualTo("UNKNOWN");
-    assertThat(getIdentifierByName(functionDeclaration, "err").type()).isEqualTo("UNKNOWN");
+    assertThat(getIdentifierByName(functionDeclaration, "err").type()).isEqualTo("error");
   }
 
   @Test
