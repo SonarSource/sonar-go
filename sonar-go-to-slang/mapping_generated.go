@@ -126,4 +126,5 @@ var packageExportData = map[string]string{
 	"text/scanner": "text_scanner.o",
 	"text/tabwriter": "text_tabwriter.o",
 	"text/template": "text_template.o",
+	"text/template/parse": "text_template_parse.o",
 }
