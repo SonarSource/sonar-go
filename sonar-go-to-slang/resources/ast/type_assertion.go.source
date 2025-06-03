@@ -1,0 +1,8 @@
+package ast
+
+func typeAssertion() {
+    var x interface{}
+    y := x.(int)
+
+    z, ok := x.(int)
+}

@@ -1,0 +1,76 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"ast","textRange":"1:8::11"},
+      {"text":"func","textRange":"3:0::4","type":"KEYWORD"},
+      {"text":"typeAssertion","textRange":"3:5::18"},
+      {"text":"(","textRange":"3:18::19"},
+      {"text":")","textRange":"3:19::20"},
+      {"text":"{","textRange":"3:21::22"},
+      {"text":"var","textRange":"4:4::7","type":"KEYWORD"},
+      {"text":"x","textRange":"4:8::9"},
+      {"text":"interface","textRange":"4:10::19","type":"KEYWORD"},
+      {"text":"{","textRange":"4:19::20"},
+      {"text":"}","textRange":"4:20::21"},
+      {"text":"y","textRange":"5:4::5"},
+      {"text":":=","textRange":"5:6::8"},
+      {"text":"x","textRange":"5:9::10"},
+      {"text":"(","textRange":"5:11::12"},
+      {"text":".","textRange":"5:10::11"},
+      {"text":"int","textRange":"5:12::15"},
+      {"text":")","textRange":"5:15::16"},
+      {"text":"z","textRange":"7:4::5"},
+      {"text":"ok","textRange":"7:7::9"},
+      {"text":",","textRange":"7:5::6"},
+      {"text":":=","textRange":"7:10::12"},
+      {"text":"x","textRange":"7:13::14"},
+      {"text":"(","textRange":"7:15::16"},
+      {"text":".","textRange":"7:14::15"},
+      {"text":"int","textRange":"7:16::19"},
+      {"text":")","textRange":"7:19::20"},
+      {"text":"}","textRange":"8:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:9:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::11","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::11","type":"UNKNOWN","package":"UNKNOWN","name":"ast","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "FunctionDeclaration", "metaData": "3:0:8:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "3:5::18","type":"func()","package":"ast","name":"typeAssertion","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,19,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "3:21:8:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "4:4::21","type":
+            {"@type": "Native", "metaData": "4:10::21","nativeKind":"Type(InterfaceType)","children":[
+              {"@type": "Native", "metaData": "4:10::19","nativeKind":"Interface"},
+              {"@type": "Native", "metaData": "4:19::21","nativeKind":"Methods(FieldList)","children":[
+                {"@type": "Native", "metaData": "4:19::20","nativeKind":"Opening"},
+                {"@type": "Native", "metaData": "4:20::21","nativeKind":"Closing"}
+              ],"__cfgId":6}
+            ],"__cfgId":7},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "4:8::9","type":"interface{}","package":"UNKNOWN","name":"x","id":45,"__cfgId":5}
+          ],"__cfgId":8},
+          {"@type": "VariableDeclaration", "metaData": "5:4::16","type":null,"isVal":false,"initializers":[
+            {"@type": "TypeAssertionExpression", "metaData": "5:9::16","type":
+              {"@type": "Identifier", "metaData": "5:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":11},"expression":
+              {"@type": "Identifier", "metaData": "5:9::10","type":"interface{}","package":"UNKNOWN","name":"x","id":45,"__cfgId":10},"__cfgId":12}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "5:4::5","type":"int","package":"UNKNOWN","name":"y","id":63,"__cfgId":9}
+          ],"__cfgId":13},
+          {"@type": "VariableDeclaration", "metaData": "7:4::20","type":null,"isVal":false,"initializers":[
+            {"@type": "TypeAssertionExpression", "metaData": "7:13::20","type":
+              {"@type": "Identifier", "metaData": "7:16::19","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":17},"expression":
+              {"@type": "Identifier", "metaData": "7:13::14","type":"interface{}","package":"UNKNOWN","name":"x","id":45,"__cfgId":16},"__cfgId":18}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "7:4::5","type":"int","package":"UNKNOWN","name":"z","id":81,"__cfgId":14},
+            {"@type": "Identifier", "metaData": "7:7::9","type":"bool","package":"UNKNOWN","name":"ok","id":84,"__cfgId":15}
+          ],"__cfgId":19}
+        ],"__cfgId":20},"__cfgId":1}
+    ],"__cfgId":2}
+} 

@@ -422,13 +422,9 @@
           {"@type": "Match", "metaData": "30:4:44:5","keyword":"30:4::10","expression":
             {"@type": "Native", "metaData": "30:11::30","nativeKind":"InitAndAssign","children":[
               {"@type": "VariableDeclaration", "metaData": "30:11::30","type":null,"isVal":false,"initializers":[
-                {"@type": "Native", "metaData": "30:16::30","nativeKind":"[0](TypeAssertExpr)","children":[
-                  {"@type": "Identifier", "metaData": "30:16::23","type":"interface{}","package":"UNKNOWN","name":"intType","id":533,"__cfgId":89},
-                  {"@type": "Native", "metaData": "30:23::24"},
-                  {"@type": "Native", "metaData": "30:24::25","nativeKind":"Lparen"},
-                  {"@type": "Native", "metaData": "30:25::29"},
-                  {"@type": "Native", "metaData": "30:29::30","nativeKind":"Rparen"}
-                ],"__cfgId":90}
+                {"@type": "TypeAssertionExpression", "metaData": "30:16::30","type":
+                  null,"expression":
+                  {"@type": "Identifier", "metaData": "30:16::23","type":"interface{}","package":"UNKNOWN","name":"intType","id":533,"__cfgId":89},"__cfgId":90}
               ],"identifiers":[
                 {"@type": "Identifier", "metaData": "30:11::12","type":"UNKNOWN","package":"UNKNOWN","name":"i","id":0,"__cfgId":88}
               ],"__cfgId":91}

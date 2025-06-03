@@ -65,6 +65,7 @@ import org.sonar.go.impl.ThrowTreeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
 import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.go.impl.TypeAssertionExpressionTreeImpl;
 import org.sonar.go.impl.TypeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
@@ -715,6 +716,16 @@ public final class JsonTreeConverter {
         ctx.fieldToNullableObject(json, HIGH, Tree.class),
         ctx.fieldToNullableObject(json, MAX, Tree.class),
         json.getBoolean(SLICE_3, false)));
+
+    register(TypeAssertionExpressionTreeImpl.class,
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(EXPRESSION, ctx.toJson(tree.expression()))
+        .add(TYPE, ctx.toJson(tree.type())),
+
+      (ctx, json) -> new TypeAssertionExpressionTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToObject(json, EXPRESSION, Tree.class),
+        ctx.fieldToNullableObject(json, TYPE, Tree.class)));
   }
 
   private JsonTreeConverter() {

@@ -1186,8 +1186,23 @@ func (t *SlangMapper) mapStructTypeImpl(structType *ast.StructType, fieldName st
 	return nil
 }
 
-func (t *SlangMapper) mapTypeAssertExprImpl(expr *ast.TypeAssertExpr, fieldName string) *Node {
-	return nil
+func (t *SlangMapper) mapTypeAssertExprImpl(typeExpr *ast.TypeAssertExpr, fieldName string) *Node {
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	expression := t.mapExpr(typeExpr.X, "X")
+	children = t.appendNode(children, expression)
+	slangField["expression"] = expression
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(typeExpr.Lparen, token.LPAREN, "Lparen"))
+
+	typePart := t.mapExpr(typeExpr.Type, "Type")
+	children = t.appendNode(children, typePart)
+	slangField["type"] = typePart
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(typeExpr.Rparen, token.RPAREN, "Rparen"))
+
+	return t.createNode(typeExpr, children, fieldName+"(TypeAssertExpr)", "TypeAssertionExpression", slangField)
 }
 
 func (t *SlangMapper) mapUnaryExprImpl(expr *ast.UnaryExpr, fieldName string) *Node {

@@ -63,6 +63,7 @@ import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.ThrowTreeImpl;
 import org.sonar.go.impl.TopLevelTreeImpl;
+import org.sonar.go.impl.TypeAssertionExpressionTreeImpl;
 import org.sonar.go.impl.TypeImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
@@ -1065,4 +1066,25 @@ class JsonTreeTest extends JsonTestHelper {
       .containsExactlyInAnyOrder(EXPRESSION, LOW, HIGH, MAX, SLICE_3);
   }
 
+  @Test
+  void testTypeAssertionExpression() throws IOException {
+    var tokenExpr = otherToken(1, 0, "x");
+    otherToken(1, 2, ".");
+    otherToken(1, 3, "(");
+    var tokenType = otherToken(1, 4, "type");
+    Token closingParenthesis = otherToken(1, 8, ")");
+    var expr = TreeCreationUtils.identifier(metaData(tokenExpr), tokenExpr.text());
+    var type = TreeCreationUtils.identifier(metaData(tokenType), tokenType.text());
+
+    var metaData = metaData(tokenExpr, closingParenthesis);
+    var typeAssertionExpression = new TypeAssertionExpressionTreeImpl(metaData, expr, type);
+
+    var expression = checkJsonSerializationDeserialization(typeAssertionExpression, "type_assertion_expression.json");
+    assertThat(expression.textRange()).isEqualTo(metaData.textRange());
+    assertThat(expression.expression().textRange()).isEqualTo(expr.textRange());
+    assertThat(expression.type().textRange()).isEqualTo(tokenType.textRange());
+
+    assertThat(methodNames(TypeAssertionExpressionTreeImpl.class))
+      .containsExactlyInAnyOrder(EXPRESSION, TYPE);
+  }
 }
