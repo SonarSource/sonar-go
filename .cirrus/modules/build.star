@@ -91,7 +91,7 @@ def build_test_sonar_task():
         "build_test_sonar_task": {
             "env": build_test_sonar_env(),
             "depends_on": "build",
-            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="8G"),
+            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=4, memory="10G"),
             "gradle_cache": gradle_cache(),
             "gradle_wrapper_cache": gradle_wrapper_cache(),
             "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
