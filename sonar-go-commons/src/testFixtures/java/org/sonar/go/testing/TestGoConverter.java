@@ -25,7 +25,7 @@ import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
 public class TestGoConverter {
-  private static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
+  public static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
   public static final GoConverter GO_CONVERTER = new GoConverter(CONVERTER_DIR);
   public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
 

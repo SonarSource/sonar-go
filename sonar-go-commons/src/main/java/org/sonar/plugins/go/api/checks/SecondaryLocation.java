@@ -39,5 +39,4 @@ public class SecondaryLocation {
     this.textRange = textRange;
     this.message = message;
   }
-
 }

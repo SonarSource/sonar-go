@@ -68,8 +68,7 @@ public class GoVerifier {
     return createVerifier(path, check, GoVersion.UNKNOWN_VERSION);
   }
 
-  private static SingleFileVerifier createVerifier(Path path, GoCheck check, GoVersion goVersion) {
-
+  protected static SingleFileVerifier createVerifier(Path path, GoCheck check, GoVersion goVersion) {
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
     String testFileContent = readFile(path);
@@ -89,7 +88,7 @@ public class GoVerifier {
     return verifier;
   }
 
-  private static String readFile(Path path) {
+  protected static String readFile(Path path) {
     try {
       return new String(Files.readAllBytes(path), UTF_8);
     } catch (IOException e) {
@@ -97,7 +96,7 @@ public class GoVerifier {
     }
   }
 
-  private static class TestContext extends TreeContext implements InitContext, CheckContext {
+  protected static class TestContext extends TreeContext implements InitContext, CheckContext {
 
     private final TreeVisitor<TestContext> visitor;
     private final SingleFileVerifier verifier;
