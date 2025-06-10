@@ -44,9 +44,9 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 			}
 			pkg, _ := getPackageFromFile(file, path)
 			if pkg != nil {
-				if pkg.Name() == path {
-					pkgToMerge = append(pkgToMerge, pkg)
-				}
+				pkg.SetName(path)
+				fmt.Fprintf(os.Stderr, "- Found package \"%s\" in file \"%s\", number of elements: %d\n", pkg, filePath, pkg.Scope().Len())
+				pkgToMerge = append(pkgToMerge, pkg)
 			}
 		}
 		return mergedPackage(pkgToMerge, path)
@@ -105,14 +105,15 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugTypeCheck bool, gcExportDataDir string) (*types.Info, error) {
+func typeCheckAst(fileSet *token.FileSet, astFiles map[string]ast.File, debugTypeCheck bool, gcExportDataDir string) (*types.Info, error) {
+	packageName := getPackageName(astFiles)
 	conf := types.Config{
 		Importer: &localImporter{
 			gcExportDataDir: gcExportDataDir,
 		},
 		Error: func(err error) {
 			if debugTypeCheck {
-				fmt.Fprintf(os.Stderr, "Warning while type checking '%s': %s\n", path, err)
+				fmt.Fprintf(os.Stderr, "Warning while type checking for package: \"%s\": %s\n", packageName, err)
 			}
 			// Our current logic type checks only the types that are used in the rules, and "ignores" the rest.
 			// It means that we expect many errors in the type checking process (missing types, undefined variables, etc).
@@ -136,7 +137,24 @@ func typeCheckAst(path string, fileSet *token.FileSet, astFile *ast.File, debugT
 
 	// We pass the file name which correspond to the name of the package, in order to have local type/package
 	// named after this package names.
-	_, err := conf.Check(astFile.Name.Name, fileSet, []*ast.File{astFile}, info)
+	_, err := conf.Check(packageName, fileSet, mapToSlice(astFiles), info)
 
 	return info, err
+}
+
+func getPackageName(astFiles map[string]ast.File) string {
+	for _, v := range astFiles {
+		if v.Name != nil && v.Name.Name != "" {
+			return v.Name.Name
+		}
+	}
+	return ""
+}
+
+func mapToSlice(astFiles map[string]ast.File) []*ast.File {
+	files := make([]*ast.File, 0, len(astFiles))
+	for _, v := range astFiles {
+		files = append(files, &v)
+	}
+	return files
 }

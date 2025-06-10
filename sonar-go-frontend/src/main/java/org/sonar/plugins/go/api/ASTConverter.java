@@ -16,21 +16,19 @@
  */
 package org.sonar.plugins.go.api;
 
-import javax.annotation.Nullable;
+import java.util.Map;
 
 public interface ASTConverter {
 
   /**
-   * @deprecated
-   * Use {@link ASTConverter#parse(String, String)} instead.
-   * It provides improved logging when used with ASTConverterValidation.
+   * Parses the given content and returns a map of file names to their corresponding AST trees.
+   *
+   * @param content the content to parse
+   * @param filename the name of the current file being parsed
+   * @return a map where keys are file names and values are their corresponding AST trees
+   * @throws ParseException if an error occurs during parsing
    */
-  @Deprecated(since = "1.8")
-  Tree parse(String content);
-
-  default Tree parse(String content, @Nullable String currentFile) {
-    return parse(content);
-  }
+  Map<String, Tree> parse(String content, String filename);
 
   default void terminate() {
     // Nothing to do by default

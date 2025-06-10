@@ -152,7 +152,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_missing_type() throws IOException {
     String invalidJson = indentedJsonFromFile("error_missing_type.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Missing non-null value for field '@type' at 'tree/Return/expressions[]'" +
       " member: {\"invalid_type\":\"Literal\",\"metaData\":\"1:7:1:11\",\"value\":\"true\"}");
   }
@@ -161,7 +161,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_invalid_json_tree() throws IOException {
     String invalidJson = indentedJsonFromFile("error_invalid_json_tree.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Expect Array instead of JsonNumber at 'tree/Return' member: 1234");
   }
 
@@ -169,7 +169,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_invalid_tree_type() throws IOException {
     String invalidJson = indentedJsonFromFile("error_invalid_tree_type.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Invalid '@type' value at 'tree/Return/expressions[]/UnsupportedType' member: UnsupportedType");
   }
 
@@ -207,7 +207,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_unexpected_match_child_class() throws IOException {
     String invalidJson = indentedJsonFromFile("error_unexpected_match_child_class.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Unexpected 'org.sonar.go.impl.IntegerLiteralTreeImpl'" +
       " type for member 'cases[]' instead of" +
       " 'org.sonar.plugins.go.api.MatchCaseTree'" +
@@ -219,7 +219,7 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_unary_expression_without_child() throws IOException {
     String invalidJson = indentedJsonFromFile("error_unary_expression_without_child.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Unexpected null value for field 'operand' at 'tree/UnaryExpression' member: null");
   }
 
@@ -227,13 +227,13 @@ class JsonTreeConverterTest extends JsonTestHelper {
   void error_unary_expression_with_null_child() throws IOException {
     String invalidJson = indentedJsonFromFile("error_unary_expression_with_null_child.json");
     IllegalStateException e = assertThrows(IllegalStateException.class,
-      () -> JsonTree.fromJson(invalidJson));
+      () -> JsonTree.fromJsonSingleTree(invalidJson));
     assertThat(e).hasMessage("Unexpected null value for field 'operand' at 'tree/UnaryExpression' member: null");
   }
 
   @Test
   void nullable_child_can_be_omitted() throws IOException {
-    JumpTree jump = (JumpTree) JsonTree.fromJson(indentedJsonFromFile("nullable_child_can_be_omitted.json"));
+    JumpTree jump = (JumpTree) JsonTree.fromJsonSingleTree(indentedJsonFromFile("nullable_child_can_be_omitted.json"));
     assertThat(jump.label()).isNull();
   }
 

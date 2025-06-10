@@ -62,8 +62,8 @@ func Test_typeCheckAst(t *testing.T) {
 		t.Fatalf("Failed to read source file: %v", err)
 	}
 
-	fileSet, astFile := astFromString("simple_file_with_packages.go", string(source))
-	info, _ := typeCheckAst("my/path", fileSet, astFile, true, "")
+	fileSet, astFiles := astFromString("simple_file_with_packages.go", string(source))
+	info, _ := typeCheckAst(fileSet, astFiles, true, "")
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -80,9 +80,9 @@ func Test_testOnlyFirstErrorIsReturned(t *testing.T) {
 		t.Fatalf("Failed to read source file: %v", err)
 	}
 
-	fileSet, astFile := astFromString("file_with_many_errors.go", string(source))
+	fileSet, astFiles := astFromString("file_with_many_errors.go", string(source))
 
-	info, err := typeCheckAst("my/path", fileSet, astFile, false, "")
+	info, err := typeCheckAst(fileSet, astFiles, false, "")
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", err.Error())
 	assert.NotNil(t, info)
 }

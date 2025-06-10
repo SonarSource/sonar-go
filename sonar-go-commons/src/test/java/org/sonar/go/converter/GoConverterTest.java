@@ -408,7 +408,7 @@ class GoConverterTest {
     command.getCommand().set(0, "invalid-command");
     GoConverter converter = new GoConverter(command);
     ParseException e = assertThrows(ParseException.class,
-      () -> converter.parse("package main\nfunc foo() {}"));
+      () -> converter.parse("package main\nfunc foo() {}", "foo.go"));
     assertThat(e).hasMessageContaining("Cannot run program \"invalid-command\"");
   }
 
@@ -422,7 +422,7 @@ class GoConverterTest {
       assertThat(command).isNull();
 
       var goConverter = new GoConverter(command);
-      assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}"))
+      assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}", "foo.go"))
         .isInstanceOf(ParseException.class)
         .hasMessage("Go converter is not initialized");
     }
@@ -464,7 +464,7 @@ class GoConverterTest {
   void shouldThrowParseExceptionOnNotInitializedCommand() {
     var goConverter = new GoConverter((Command) null);
 
-    assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}"))
+    assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}", "foo.go"))
       .isInstanceOf(ParseException.class)
       .hasMessage("Go converter is not initialized");
   }

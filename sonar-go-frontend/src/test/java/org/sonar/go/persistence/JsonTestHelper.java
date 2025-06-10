@@ -108,7 +108,7 @@ public class JsonTestHelper {
       .describedAs("Comparing tree serialized into json with " + fileName)
       .isEqualTo(expectedJson);
 
-    T loadedTree = (T) JsonTree.fromJson(initialTreeAsJson);
+    T loadedTree = (T) JsonTree.fromJsonSingleTree(initialTreeAsJson);
     String loadedTreeAsJson = indentedJson(JsonTree.toJson(loadedTree));
     assertThat(loadedTreeAsJson)
       .describedAs("Comparing tree de-serialized/serialized into json with " + fileName)

@@ -158,7 +158,7 @@ class CompositeLiteralTreeImplTest {
   @MethodSource
   void shouldMatchType(String code, String importInstruction) {
 
-    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
       package main
 
       %s
@@ -189,7 +189,7 @@ class CompositeLiteralTreeImplTest {
   }
 
   public static CompositeLiteralTree parseCompositeLiteral(String code) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
       package main
 
       import "net/http"

@@ -19,14 +19,14 @@ package main
 
 import (
 	"bytes"
+	"encoding/binary"
 	"errors"
 	"fmt"
 	"go/ast"
 	"go/parser"
 	"go/token"
 	"go/types"
-	"io/ioutil"
-	"os"
+	"io"
 	"strings"
 	"unicode/utf8"
 )
@@ -72,36 +72,95 @@ const other = "OTHER"
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
+func toSlangJson(fileSet *token.FileSet, astFiles map[string]ast.File, fileContents map[string]string, info *types.Info, indent string) string {
+	fileNameToString := make(map[string]string)
+	for fileName, astFile := range astFiles {
+		slangTree, comments, tokens := toSlangTree(fileSet, &astFile, fileContents[fileName], info)
+		jsonPart := toJsonSlang(slangTree, comments, tokens, indent)
+		fileNameToString[fileName] = jsonPart
+	}
+	return toJson(fileNameToString)
+}
+
+func toJson(fileNameToString map[string]string) string {
+	var buf bytes.Buffer
+	buf.WriteString("{\n")
+	for fileName, jsonPart := range fileNameToString {
+		buf.WriteString(fmt.Sprintf("  \"%s\": %s,\n", fileName, jsonPart))
+	}
+	if len(fileNameToString) > 0 {
+		buf.Truncate(buf.Len() - 2) // Remove the last comma
+	}
+	buf.WriteString("\n}")
+	return buf.String()
+}
+
 func toSlangTree(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) (*Node, []*Node, []*Token) {
 	return NewSlangMapper(fileSet, astFile, fileContent, info).toSlang()
 }
 
-func readAstFile(fileSet *token.FileSet, filename string) (astFile *ast.File, fileContent string, err error) {
+func readAstFile(fileSet *token.FileSet, reader io.Reader) (map[string]ast.File, map[string]string, error) {
 	var bytesArray []byte
-	if filename == "-" {
-		bytesArray, err = ioutil.ReadAll(os.Stdin)
-	} else {
-		bytesArray, err = ioutil.ReadFile(filename)
-	}
+	bytesArray, err := io.ReadAll(reader)
 	if err != nil {
-		return
+		return nil, nil, err
 	}
-	fileContent = string(bytesArray)
-	astFile, err = readAstString(fileSet, filename, fileContent)
-	return
+	files := readBytesToFilenameContentMap(bytesArray)
+	astFiles, err := readAstString(fileSet, files)
+	return astFiles, files, err
 }
 
-func readAstString(fileSet *token.FileSet, filename string, fileContent string) (astFile *ast.File, err error) {
-	astFile, err = parser.ParseFile(fileSet, filename, fileContent, parser.ParseComments)
+// The byte format of the byte array is:
+// N (4 bytes) file name length
+// <file name> (N bytes)
+// M (4 bytes) file content length
+// <file content> (M bytes)
+// next files until the end of the byte array (EOF)
+func readBytesToFilenameContentMap(bytesArray []byte) map[string]string {
+	result := map[string]string{}
+	begin := 0
+	for {
+		filename := readFixedSizeText(bytesArray, begin)
+		begin = begin + len(filename) + 4 // +4 for the length of the filename
+		fileContent := readFixedSizeText(bytesArray, begin)
+
+		result[filename] = fileContent
+		begin = begin + len(fileContent) + 4
+		if begin >= len(bytesArray) {
+			break
+		}
+	}
+	return result
+}
+
+func readFixedSizeText(bytesArray []byte, begin int) string {
+	var length32 int32 = 0
+	reader := bytes.NewReader(bytesArray[begin : begin+4])
+	err := binary.Read(reader, binary.LittleEndian, &length32)
 	if err != nil {
-		return
+		panic(err)
 	}
-	fileSize := fileSet.File(astFile.Pos()).Size()
-	if len(fileContent) != fileSize {
-		err = errors.New(fmt.Sprintf("Unexpected file size, expect %d instead of %d for file %s",
-			len(fileContent), fileSize, filename))
+	length := int(length32)
+	return string(bytesArray[begin+4 : begin+4+length])
+}
+
+func readAstString(fileSet *token.FileSet, files map[string]string) (map[string]ast.File, error) {
+	astFiles := map[string]ast.File{}
+	var err error = nil
+	for fileName, fileContent := range files {
+		astFile, err := parser.ParseFile(fileSet, fileName, fileContent, parser.ParseComments)
+		if err != nil {
+			return astFiles, err
+		}
+		fileSize := fileSet.File(astFile.Pos()).Size()
+		if len(fileContent) != fileSize {
+			err = errors.New(fmt.Sprintf("Unexpected file size, expect %d instead of %d for file %s",
+				len(fileContent), fileSize, fileName))
+		}
+		astFiles[fileName] = *astFile
 	}
-	return
+
+	return astFiles, err
 }
 
 type SlangMapper struct {

@@ -73,7 +73,7 @@ class DefaultCommandTest {
     var command = new DefaultCommand(tempDir);
     command.getCommand().set(0, "invalid-command");
     var e = assertThrows(IOException.class,
-      () -> command.executeCommand("package main\nfunc foo() {}"));
+      () -> command.executeCommand("package main\nfunc foo() {}", "foo.go"));
     assertThat(e).hasMessageContaining("Cannot run program \"invalid-command\"");
   }
 }

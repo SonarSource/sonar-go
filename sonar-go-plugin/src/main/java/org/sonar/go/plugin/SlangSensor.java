@@ -107,6 +107,7 @@ public abstract class SlangSensor implements Sensor {
 
     beforeAnalyzeFile(sensorContext, inputFiles);
 
+    // TODO SONARGO-618 Parse files in batches, Java part
     for (InputFile inputFile : inputFiles) {
       if (sensorContext.isCancelled()) {
         return false;
@@ -163,7 +164,7 @@ public abstract class SlangSensor implements Sensor {
       return;
     }
 
-    Tree tree = statistics.time("Parse", () -> {
+    Map<String, Tree> trees = statistics.time("Parse", () -> {
       try {
         return converter.parse(content, fileName);
       } catch (RuntimeException e) {
@@ -176,7 +177,7 @@ public abstract class SlangSensor implements Sensor {
           continue;
         }
         String visitorId = visitor.getClass().getSimpleName();
-        statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
+        trees.values().forEach(tree -> statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree)));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
         LOG.warn("Cannot analyse '" + inputFile + "': " + e.getMessage(), e);

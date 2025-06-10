@@ -107,14 +107,14 @@
             {"@type": "Identifier", "metaData": "11:1::3","type":"*foo.MyType","package":"UNKNOWN","name":"my","id":106,"__cfgId":23}
           ],"__cfgId":29},
           {"@type": "ExpressionStatement", "metaData": "12:1::11","expression":
-            {"@type": "FunctionInvocation", "metaData": "12:1::11","returnType":[],"memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "12:1::11","returnType":["string"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "12:1::9","identifier":
-                {"@type": "Identifier", "metaData": "12:4::9","type":"UNKNOWN","package":"UNKNOWN","name":"Hello","id":0,"__cfgId":31},"expression":
+                {"@type": "Identifier", "metaData": "12:4::9","type":"func() string","package":"foo","name":"Hello","id":0,"__cfgId":31},"expression":
                 {"@type": "Identifier", "metaData": "12:1::3","type":"*foo.MyType","package":"UNKNOWN","name":"my","id":106,"__cfgId":30},"__cfgId":32},"arguments":[],"__cfgId":33},"__cfgId":34},
           {"@type": "ExpressionStatement", "metaData": "13:1::25","expression":
-            {"@type": "FunctionInvocation", "metaData": "13:1::25","returnType":[],"memberSelect":
+            {"@type": "FunctionInvocation", "metaData": "13:1::25","returnType":["string"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "13:1::23","identifier":
-                {"@type": "Identifier", "metaData": "13:18::23","type":"UNKNOWN","package":"UNKNOWN","name":"Hello","id":0,"__cfgId":38},"expression":
+                {"@type": "Identifier", "metaData": "13:18::23","type":"func() string","package":"foo","name":"Hello","id":0,"__cfgId":38},"expression":
                 {"@type": "MemberSelect", "metaData": "13:1::17","identifier":
                   {"@type": "Identifier", "metaData": "13:5::17","type":"foo.MyType","package":"UNKNOWN","name":"GlobalMyType","id":0,"__cfgId":36},"expression":
                   {"@type": "Identifier", "metaData": "13:1::4","type":"UNKNOWN","package":"foo","name":"foo","id":24,"__cfgId":35},"__cfgId":37},"__cfgId":39},"arguments":[],"__cfgId":40},"__cfgId":41}

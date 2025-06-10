@@ -30,7 +30,7 @@ public class TestGoConverter {
   public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
 
   public static Tree parse(String content) {
-    return GO_CONVERTER.parse(content);
+    return GO_CONVERTER.parse(content, "foo.go").get("foo.go");
   }
 
   public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {
@@ -51,7 +51,7 @@ public class TestGoConverter {
       func main() {
         %s
       }
-      """.formatted(content));
+      """.formatted(content), "foo.go").get("foo.go");
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
   }

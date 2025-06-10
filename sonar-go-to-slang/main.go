@@ -25,7 +25,6 @@ import (
 type Params struct {
 	dumpAst          bool
 	debugTypeCheck   bool
-	path             string
 	dumpGcExportData bool
 	gcExportDataFile string
 	gcExportDataDir  string
@@ -43,15 +42,10 @@ func parseArgs() Params {
 	gcExportDataFile := flag.String("gc_export_data_file", "", "file to dump GC export data")
 	gcExportDataDir := flag.String("gc_export_data_dir", "", "directory where GC export data is located")
 	flag.Parse()
-	var path string
-	if len(flag.Args()) == 1 {
-		path = flag.Args()[0]
-	}
 
 	return Params{
 		dumpAst:          *dumpAstFlag,
 		debugTypeCheck:   *debugTypeCheckFlag,
-		path:             path,
 		dumpGcExportData: *dumpGcExportData,
 		gcExportDataFile: *gcExportDataFile,
 		gcExportDataDir:  *gcExportDataDir,
@@ -62,9 +56,13 @@ func main() {
 	params := parseArgs()
 
 	fileSet := token.NewFileSet()
-	astFile, fileContent, _ := readAstFile(fileSet, params.path)
+	astFiles, fileContents, err := readAstFile(fileSet, os.Stdin)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error reading AST file: %v\n", err)
+		panic(err)
+	}
 
-	info, _ := typeCheckAst(params.path, fileSet, astFile, params.debugTypeCheck, params.gcExportDataDir)
+	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir)
 	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpGcExportData {
@@ -76,9 +74,9 @@ func main() {
 	}
 
 	if params.dumpAst {
-		fmt.Println(render(astFile))
+		fmt.Println(render(astFiles))
 	} else {
-		slangTree, comments, tokens := toSlangTree(fileSet, astFile, fileContent, info)
-		fmt.Println(toJsonSlang(slangTree, comments, tokens, ""))
+		json := toSlangJson(fileSet, astFiles, fileContents, info, "")
+		fmt.Println(json)
 	}
 }

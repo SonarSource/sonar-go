@@ -22,5 +22,5 @@ import java.util.List;
 public interface Command {
   List<String> getCommand();
 
-  String executeCommand(String content) throws IOException, InterruptedException;
+  String executeCommand(String content, String filename) throws IOException, InterruptedException;
 }

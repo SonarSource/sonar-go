@@ -88,14 +88,9 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   @Override
-  public Tree parse(String content) {
-    return parse(content, null);
-  }
-
-  @Override
-  public Tree parse(String content, @Nullable String currentFile) {
-    this.currentFile = currentFile;
-    Tree tree = wrapped.parse(content, currentFile);
+  public Map<String, Tree> parse(String content, String filename) {
+    this.currentFile = filename;
+    var tree = wrapped.parse(content, filename);
     assertTreeIsValid(tree);
     assertTokensMatchSourceCode(tree, content);
     return tree;
@@ -134,6 +129,10 @@ public class ASTConverterValidation implements ASTConverter {
     return tree.getClass().getSimpleName();
   }
 
+  private void assertTreeIsValid(Map<String, Tree> trees) {
+    trees.values().forEach(this::assertTreeIsValid);
+  }
+
   private void assertTreeIsValid(Tree tree) {
     assertTextRangeIsValid(tree);
     assertTreeHasAtLeastOneToken(tree);
@@ -169,6 +168,10 @@ public class ASTConverterValidation implements ASTConverter {
     if (!(tree instanceof TopLevelTree) && tree.metaData().tokens().isEmpty()) {
       raiseError(kind(tree) + " has no token", "", tree.textRange().start());
     }
+  }
+
+  private void assertTokensMatchSourceCode(Map<String, Tree> trees, String code) {
+    trees.values().forEach(tree -> assertTokensMatchSourceCode(tree, code));
   }
 
   private void assertTokensMatchSourceCode(Tree tree, String code) {

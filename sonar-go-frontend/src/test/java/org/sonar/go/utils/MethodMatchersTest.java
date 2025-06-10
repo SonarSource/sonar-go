@@ -567,7 +567,7 @@ class MethodMatchersTest {
   }
 
   public static TopLevelTree parseFunction(String functionCode, String importedType) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
       package main
 
       import("%s")
@@ -598,7 +598,7 @@ class MethodMatchersTest {
   }
 
   private static TopLevelTree parseCodeAndReturnTopLevelTree(String wholeCode) {
-    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(wholeCode);
+    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.parse(wholeCode);
     new SymbolVisitor<>().scan(mock(), topLevelTree);
     return topLevelTree;
   }

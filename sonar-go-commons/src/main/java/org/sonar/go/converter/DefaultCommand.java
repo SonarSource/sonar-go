@@ -21,6 +21,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +39,7 @@ public class DefaultCommand implements Command {
   private static final Logger LOG = LoggerFactory.getLogger(DefaultCommand.class);
   private static final long PROCESS_TIMEOUT_MS = 5_000;
   private static final int COPY_BUFFER_SIZE = 8192;
+  private static final int FILENAME_AND_CONTENT_LENGTH = 8;
 
   protected final List<String> command;
 
@@ -65,14 +68,17 @@ public class DefaultCommand implements Command {
     return command;
   }
 
-  public String executeCommand(String content) throws IOException, InterruptedException {
+  @Override
+  public String executeCommand(String content, String filename) throws IOException, InterruptedException {
+    var bytes = convertToBytesArray(content, filename);
+
     var processBuilder = new ProcessBuilder(getCommand());
     var errorConsumer = new ExternalProcessStreamConsumer();
 
     var process = processBuilder.start();
     errorConsumer.consumeStream(process.getErrorStream(), LOG::debug);
     try (var out = process.getOutputStream()) {
-      out.write(content.getBytes(UTF_8));
+      out.write(bytes);
     }
     String output;
     try (var in = process.getInputStream()) {
@@ -87,6 +93,29 @@ public class DefaultCommand implements Command {
       throw new ParseException("Go executable took too long. External process killed forcibly");
     }
     return output;
+  }
+
+  /**
+   * The byte format of the byte array is:
+   * <pre>
+   * N (4 bytes) file name length
+   * file name (N bytes)
+   * M (4 bytes) file content length
+   * file content (M bytes)
+   * next files until the end of the byte array (EOF)
+   * <pre/>
+   */
+  private static byte[] convertToBytesArray(String content, String filename) {
+    var filenameBytes = filename.getBytes(UTF_8);
+    var contentBytes = content.getBytes(UTF_8);
+    int capacity = filenameBytes.length + contentBytes.length + FILENAME_AND_CONTENT_LENGTH;
+    var byteBuffer = ByteBuffer.allocate(capacity)
+      .order(ByteOrder.LITTLE_ENDIAN)
+      .putInt(filenameBytes.length)
+      .put(filenameBytes)
+      .putInt(contentBytes.length)
+      .put(contentBytes);
+    return byteBuffer.array();
   }
 
   private static String readAsString(InputStream in) throws IOException {

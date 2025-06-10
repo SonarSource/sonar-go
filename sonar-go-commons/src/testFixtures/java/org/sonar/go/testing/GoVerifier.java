@@ -72,7 +72,7 @@ public class GoVerifier {
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
     String testFileContent = readFile(path);
-    Tree root = GO_CONVERTER_DEBUG_TYPE_CHECK.parse(testFileContent, null);
+    Tree root = GO_CONVERTER_DEBUG_TYPE_CHECK.parse(testFileContent, "foo.go").get("foo.go");
 
     ((TopLevelTree) root).allComments()
       .forEach(comment -> {

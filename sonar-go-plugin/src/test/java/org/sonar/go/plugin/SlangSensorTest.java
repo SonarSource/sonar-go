@@ -473,7 +473,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, times(1)).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG)).contains(
         "Checking that previous results can be reused for input file moduleKey:file1.slang.",
         "Visitor FailingToReuseVisitor failed to reuse previous results for input file moduleKey:file1.slang.",
@@ -495,7 +495,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain(
         "Skipping input file moduleKey:file1.slang (status is unchanged).");
       verify(nextCache, never()).copyFromPrevious(hashKey);
@@ -519,7 +519,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG))
         .doesNotContain("Skipping input file moduleKey:file1.slang (status is unchanged).")
         .contains("File moduleKey:file1.slang is considered changed: file status is CHANGED.");
@@ -545,7 +545,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain("Skipping input file moduleKey:file1.slang (status is unchanged).");
 
       verify(nextCache, never()).copyFromPrevious(hashKey);
@@ -564,7 +564,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG))
         .doesNotContain("Skipping input file moduleKey:file1.slang (status is unchanged).")
         .contains("File moduleKey:file1.slang is considered changed: hash cache is disabled.");
@@ -585,7 +585,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG))
         .doesNotContain("Skipping input file moduleKey:file1.slang (status is unchanged).")
         .contains("File moduleKey:file1.slang is considered changed: hash could not be found in the cache.");
@@ -615,7 +615,7 @@ class SlangSensorTest extends AbstractSensorTest {
         List.of(visitor),
         new DurationStatistics(sensorContext.config()));
       verify(visitor, never()).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       assertThat(logTester.logs(Level.DEBUG))
         .doesNotContain("Skipping input file moduleKey:file1.slang (status is unchanged).")
         .contains("File moduleKey:file1.slang is considered changed: failed to read hash from the cache.");
@@ -635,7 +635,7 @@ class SlangSensorTest extends AbstractSensorTest {
         new DurationStatistics(sensorContext.config()));
       verify(visitor, times(1)).reusePreviousResults(inputFileContext);
       verify(failing, times(1)).reusePreviousResults(inputFileContext);
-      verify(converter, times(1)).parse(any());
+      verify(converter, times(1)).parse(any(), any());
       verify(visitor, never()).scan(eq(inputFileContext), any(Tree.class));
       verify(failing, times(1)).scan(eq(inputFileContext), any(Tree.class));
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain(

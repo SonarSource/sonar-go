@@ -27,11 +27,11 @@ public class ParseUtils {
   }
 
   public static TopLevelTree parseFile(String code) {
-    return (TopLevelTree) TestGoConverter.GO_CONVERTER.parse(code);
+    return (TopLevelTree) TestGoConverter.parse(code);
   }
 
   public static BlockTree parseStatements(String code) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.GO_CONVERTER.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
       package main
       func main() {
         %s

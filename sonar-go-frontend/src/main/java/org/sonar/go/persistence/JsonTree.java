@@ -18,6 +18,8 @@ package org.sonar.go.persistence;
 
 import com.eclipsesource.json.Json;
 import com.eclipsesource.json.JsonObject;
+import java.util.HashMap;
+import java.util.Map;
 import org.sonar.go.impl.TreeMetaDataProvider;
 import org.sonar.go.persistence.conversion.DeserializationContext;
 import org.sonar.go.persistence.conversion.JsonTreeConverter;
@@ -40,13 +42,28 @@ public final class JsonTree {
       .toString();
   }
 
-  public static Tree fromJson(String json) {
+  public static Tree fromJsonSingleTree(String json) {
     JsonObject root = Json.parse(json).asObject();
+    return fromJsonSingleTree(root);
+  }
+
+  private static Tree fromJsonSingleTree(JsonObject root) {
     JsonObject treeMetaData = root.get("treeMetaData").asObject();
     DeserializationContext ctx = new DeserializationContext(JsonTreeConverter.POLYMORPHIC_CONVERTER);
     TreeMetaDataProvider metaDataProvider = JsonTreeConverter.TREE_METADATA_PROVIDER_FROM_JSON.apply(ctx, treeMetaData);
     ctx = ctx.withMetaDataProvider(metaDataProvider);
     return ctx.fieldToNullableObject(root, "tree", Tree.class);
+  }
+
+  public static Map<String, Tree> fromJson(String json) {
+    Map<String, Tree> trees = new HashMap<>();
+    JsonObject root = Json.parse(json).asObject();
+    for (String name : root.names()) {
+      var treeRoot = root.get(name).asObject();
+      var tree = fromJsonSingleTree(treeRoot);
+      trees.put(name, tree);
+    }
+    return trees;
   }
 
 }

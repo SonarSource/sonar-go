@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/stretchr/testify/assert"
 	"go/ast"
@@ -15,19 +16,21 @@ import (
 func Test_exportGcExportData(t *testing.T) {
 	for _, name := range getSubDirs("resources/cross-file") {
 		t.Run("Test_exportGcExportData_"+name, func(t *testing.T) {
-			for _, file := range getAllGoFiles("resources/cross-file/" + name) {
-				exportGcData(file, name)
+			filesByDir := getAllGoFilesByDirs("resources/cross-file/" + name)
+			for _, files := range filesByDir {
+				exportGcData(files, name)
 			}
 
-			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + name) {
-				actual := parseFileToJson(file, name)
-				jsonFile := strings.Replace(file, ".source", ".json", 1)
+			files := getGoFilesIgnoreSubDirs("resources/cross-file/" + name)
 
-				expected, err := os.ReadFile(jsonFile)
+			filesToJson := parseFileToJson(files, name)
+
+			for file, json := range filesToJson {
+				expected, err := os.ReadFile(file)
 				if err != nil {
-					t.Fatalf("failed to read file %s: %v", jsonFile, err)
+					t.Fatalf("failed to read file %s: %v", file, err)
 				}
-				assert.Equal(t, string(expected), actual)
+				assert.Equal(t, string(expected), json)
 			}
 		})
 	}
@@ -35,43 +38,74 @@ func Test_exportGcExportData(t *testing.T) {
 
 // Update all .json files in resources/cross-file from all .go.source files (ignoring sub directories)
 // Add "Test_" before to run in IDE
-func Test_fixExportGcExportData(t *testing.T) {
+func fixExportGcExportData(t *testing.T) {
 	for _, name := range getSubDirs("resources/cross-file") {
 		t.Run("fixExportGcExportData_"+name, func(t *testing.T) {
-			for _, file := range getAllGoFiles("resources/cross-file/" + name) {
-				exportGcData(file, name)
+			filesByDir := getAllGoFilesByDirs("resources/cross-file/" + name)
+			for _, files := range filesByDir {
+				exportGcData(files, name)
 			}
 
-			for _, file := range getGoFilesIgnoreSubDirs("resources/cross-file/" + name) {
-				actual := parseFileToJson(file, name)
-				jsonFile := strings.Replace(file, ".source", ".json", 1)
-				err := os.WriteFile(jsonFile, []byte(actual), 0644)
-				if err != nil {
-					t.Fatalf("failed to write file %s: %v", jsonFile, err)
-				}
-			}
+			filesIgnoreSubDirs := getGoFilesIgnoreSubDirs("resources/cross-file/" + name)
+			parseFileToJsonAndSave(filesIgnoreSubDirs, name)
 		})
 	}
+	t.Fatal("This test is only for local development and should not run in CI build.")
 }
 
-func exportGcData(file string, name string) {
-	fmt.Printf("Exporting GC data for: %s\n", file)
+func exportGcData(files []string, name string) {
+	fmt.Printf("Exporting GC data for: %s\n", files)
 	fileSet := token.NewFileSet()
-	astFile, _, _ := readAstFile(fileSet, file)
-	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+name)
-	fileNoPrefix := strings.Replace(file, "resources/cross-file/"+name+"/", "", 1)
-	fileExt := strings.Replace(fileNoPrefix, ".go.source", ".go.o", 1)
+
+	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name)
+	pkgName := getPackageName(astFiles)
+	fileExt := pkgName + "/" + pkgName + ".o"
 	exportGcExportData(info, "build/cross-file-tests/"+name+"/"+fileExt)
 }
 
-func parseFileToJson(file string, name string) string {
-	fmt.Printf("Parsing %s\n", file)
+func readFilesToReader(files []string) *bytes.Reader {
+	var slice []byte
+	for _, file := range files {
+		slice = append(slice, readFileToByteSlice(file)...)
+	}
+	return bytes.NewReader(slice)
+}
+
+func parseFileToJsonAndSave(files []string, name string) {
 	fileSet := token.NewFileSet()
-	astFile, fileContent, _ := readAstFile(fileSet, file)
-	info, _ := typeCheckAst("-", fileSet, astFile, true, "build/cross-file-tests/"+name)
-	slangTree, comments, tokens := toSlangTree(fileSet, astFile, fileContent, info)
-	actual := toJsonSlang(slangTree, comments, tokens, "  ")
-	return actual
+	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
+
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name)
+
+	for fileName, aFile := range astFiles {
+		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
+		actual := toJsonSlang(slangTree, comments, tokens, "  ")
+
+		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
+		fmt.Printf("Writing %s\n", jsonFile)
+		err := os.WriteFile(jsonFile, []byte(actual), 0644)
+		if err != nil {
+			panic(fmt.Sprintf("failed to write file %s: %v", jsonFile, err))
+		}
+	}
+}
+
+func parseFileToJson(files []string, name string) map[string]string {
+	fileSet := token.NewFileSet()
+	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
+
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name)
+
+	result := map[string]string{}
+
+	for fileName, aFile := range astFiles {
+		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
+		actual := toJsonSlang(slangTree, comments, tokens, "  ")
+		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
+		result[jsonFile] = actual
+	}
+	return result
 }
 
 func getGoFilesIgnoreSubDirs(folder string) []string {
@@ -141,4 +175,20 @@ func Test_should_not_fail_when_path_does_not_contain_path_separator(t *testing.T
 	if err != nil {
 		assert.Fail(t, "The file should have been created", err)
 	}
+}
+
+func getAllGoFilesByDirs(folder string) map[string][]string {
+	files := map[string][]string{}
+
+	err := filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
+		if strings.HasSuffix(path, ".go.source") {
+			dir := path[0:strings.LastIndex(path, string(os.PathSeparator))]
+			files[dir] = append(files[dir], path)
+		}
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+	return files
 }

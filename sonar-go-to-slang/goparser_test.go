@@ -31,14 +31,17 @@ import (
 )
 
 func slangFromString(filename string, source string) (*Node, []*Node, []*Token) {
-	fileSet, astFile := astFromString(filename, source)
-	info, _ := typeCheckAst(filename, fileSet, astFile, true, "")
-	return toSlangTree(fileSet, astFile, source, info)
+	fileSet, astFiles := astFromString(filename, source)
+	info, _ := typeCheckAst(fileSet, astFiles, true, "")
+	ast := astFiles[filename]
+	return toSlangTree(fileSet, &ast, source, info)
 }
 
-func astFromString(filename string, source string) (fileSet *token.FileSet, astFile *ast.File) {
+func astFromString(filename string, source string) (fileSet *token.FileSet, astFiles map[string]ast.File) {
 	fileSet = token.NewFileSet()
-	astFile, err := readAstString(fileSet, filename, source)
+	fileNameToContent := make(map[string]string)
+	fileNameToContent[filename] = source
+	astFiles, err := readAstString(fileSet, fileNameToContent)
 	if err != nil {
 		panic(err)
 	}
