@@ -96,7 +96,8 @@ class CheckContextTest {
       return null;
     }
 
-    public GoVersion goVersion() {
+    @Override
+    public GoModFileData goModFileData() {
       return null;
     }
 

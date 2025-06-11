@@ -362,7 +362,7 @@ class GoSensorTest {
     @Override
     public void initialize(InitContext init) {
       init.register(VariableDeclarationTree.class, (ctx, tree) -> {
-        if (!ctx.goVersion().isUnknownVersion()) {
+        if (!ctx.goModFileData().goVersion().isUnknownVersion()) {
           ctx.reportIssue(tree, "issue");
         }
       });

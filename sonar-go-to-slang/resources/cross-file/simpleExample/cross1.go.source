@@ -1,8 +1,8 @@
 package main
 
 import (
-"foo"
-"fmt"
+	"fmt"
+	"simpleExample/foo"
 )
 
 func mainX() {

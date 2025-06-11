@@ -51,7 +51,7 @@ import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
-import org.sonar.plugins.go.api.checks.GoVersion;
+import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonarsource.analyzer.commons.ProgressReport;
 
 public abstract class SlangSensor implements Sensor {
@@ -233,7 +233,7 @@ public abstract class SlangSensor implements Sensor {
     FilePredicate mainFilePredicate = fileSystem.predicates().and(
       fileSystem.predicates().hasLanguage(language.getKey()),
       fileSystem.predicates().hasType(InputFile.Type.MAIN));
-    var goVersion = new GoVersionAnalyzer(sensorContext).analyzeGoVersion();
+    var goModFileData = new GoModFileAnalyzer(sensorContext).analyzeGoModFile();
     List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
       .toList();
     List<String> filenames = inputFiles.stream().map(InputFile::toString).toList();
@@ -242,7 +242,7 @@ public abstract class SlangSensor implements Sensor {
     boolean success = false;
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
     try {
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors(sensorContext, statistics, goVersion), statistics);
+      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors(sensorContext, statistics, goModFileData), statistics);
     } finally {
       if (success) {
         progressReport.stop();
@@ -254,20 +254,20 @@ public abstract class SlangSensor implements Sensor {
     statistics.log();
   }
 
-  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoVersion goVersion) {
+  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileData goModFileData) {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goVersion));
+        new ChecksVisitor(checks(), statistics, goModFileData));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goVersion),
+        new ChecksVisitor(checks(), statistics, goModFileData),
         new CpdVisitor(),
         new SyntaxHighlighter());
     }

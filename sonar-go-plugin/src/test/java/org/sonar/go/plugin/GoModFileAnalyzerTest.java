@@ -41,11 +41,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-class GoVersionAnalyzerTest {
+class GoModFileAnalyzerTest {
 
   private Path projectDir;
   private SensorContextTester sensorContext;
-  private GoVersionAnalyzer goVersionAnalyzer;
+  private GoModFileAnalyzer goModFileAnalyzer;
 
   @RegisterExtension
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
@@ -58,7 +58,40 @@ class GoVersionAnalyzerTest {
     projectDir.toFile().deleteOnExit();
     sensorContext = SensorContextTester.create(workDir);
     sensorContext.fileSystem().setWorkDir(workDir);
-    goVersionAnalyzer = new GoVersionAnalyzer(sensorContext);
+    goModFileAnalyzer = new GoModFileAnalyzer(sensorContext);
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldAnalyzeGoModuleNameCorrectly(String addedContent, String expectedModuleName) {
+    InputFile goModFile = createInputFile("go.mod", """
+      %s
+      """.formatted(addedContent));
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.moduleName()).isEqualTo(expectedModuleName);
+    if (expectedModuleName.isEmpty()) {
+      assertThat(logTester.logs()).contains(
+        "Failed to detect a module name in the go.mod file: go.mod");
+    } else {
+      assertThat(logTester.logs()).contains("Detected go module name in project: " + expectedModuleName);
+    }
+  }
+
+  static Stream<Arguments> shouldAnalyzeGoModuleNameCorrectly() {
+    return Stream.of(
+      Arguments.of("module myModule", "myModule"),
+      Arguments.of("module myModule   ", "myModule"),
+      Arguments.of("module myModule/v2", "myModule/v2"),
+      Arguments.of("module \"myModule\"", "myModule"),
+      Arguments.of("module \"myModule", "\"myModule"),
+      Arguments.of("module \"myMo\\\"dule\"", "myMo\\\"dule"),
+      Arguments.of("module `myModule`", "myModule"),
+      Arguments.of("module `myMo\\`dule`", "myMo\\`dule"),
+      Arguments.of("", ""),
+      Arguments.of("go 1.23.4", ""));
   }
 
   @ParameterizedTest
@@ -71,12 +104,12 @@ class GoVersionAnalyzerTest {
       """.formatted(addedContent));
 
     sensorContext.fileSystem().add(goModFile);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(expectedVersion);
+    assertThat(goModFileData.goVersion()).isEqualTo(expectedVersion);
     if (expectedVersion == GoVersion.UNKNOWN_VERSION) {
       assertThat(logTester.logs()).contains(
-        "Could not detect the used go version of the project",
+        "Detected go module name in project: myModule",
         "Failed to detect a go version in the go.mod file: go.mod");
     } else {
       assertThat(logTester.logs()).contains("Detected go version in project: " + expectedVersion);
@@ -114,12 +147,29 @@ class GoVersionAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(goModFileData.moduleName()).isEmpty();
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(logTester.logs()).contains(
-      "Could not detect the used go version of the project",
-      "Expected exactly one go.mod file, but found 0 files.");
+      "Expected exactly one go.mod file, but found 0 files.",
+      "Could not detect the metadata from mod file of the project");
+  }
+
+  @Test
+  void shouldReturnUnknownModuleNameWhenNotPresent() {
+    InputFile goModFile = createInputFile("go.mod", """
+      go 1.23.4
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.moduleName()).isEmpty();
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(logTester.logs()).contains(
+      "Failed to detect a module name in the go.mod file: go.mod",
+      "Detected go version in project: 1.23.4");
   }
 
   @Test
@@ -133,10 +183,10 @@ class GoVersionAnalyzerTest {
     when(crashingInputFile.contents()).thenThrow(new IOException());
 
     sensorContext.fileSystem().add(crashingInputFile);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
-    assertThat(logTester.logs()).contains("Failed to read go.mod file: " + crashingInputFile, "Could not detect the used go version of the project");
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(logTester.logs()).contains("Failed to read go.mod file: " + crashingInputFile, "Could not detect the metadata from mod file of the project");
   }
 
   @Test
@@ -149,9 +199,9 @@ class GoVersionAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     // As we don't support the feature yet, we don't need to log there
     assertThat(logTester.logs()).isEmpty();
   }
@@ -165,9 +215,9 @@ class GoVersionAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(logTester.logs()).contains("Detected go version in project: 1.23.4");
   }
 
@@ -187,12 +237,12 @@ class GoVersionAnalyzerTest {
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goModFile2);
-    var goVersion = goVersionAnalyzer.analyzeGoVersion();
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
-    assertThat(goVersion).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(logTester.logs()).contains(
-      "Could not detect the used go version of the project",
-      "Expected exactly one go.mod file, but found 2 files.");
+      "Expected exactly one go.mod file, but found 2 files.",
+      "Could not detect the metadata from mod file of the project");
   }
 
   private InputFile createInputFile(String filename, String content) {

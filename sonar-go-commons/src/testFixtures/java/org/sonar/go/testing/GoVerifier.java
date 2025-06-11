@@ -36,6 +36,7 @@ import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.checks.CheckContext;
 import org.sonar.plugins.go.api.checks.GoCheck;
+import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonar.plugins.go.api.checks.GoVersion;
 import org.sonar.plugins.go.api.checks.InitContext;
 import org.sonar.plugins.go.api.checks.SecondaryLocation;
@@ -53,22 +54,31 @@ public class GoVerifier {
   }
 
   public static void verifyWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
-    createVerifier(BASE_DIR.resolve(fileName), check, goVersion).assertOneOrMoreIssues();
+    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion)).assertOneOrMoreIssues();
+  }
+
+  public static void verifyWithGoVersion(String fileName, GoCheck check, GoModFileData goModFileData) {
+    createVerifier(BASE_DIR.resolve(fileName), check, goModFileData).assertOneOrMoreIssues();
   }
 
   public static void verifyNoIssue(String fileName, GoCheck check) {
     createVerifier(BASE_DIR.resolve(fileName), check).assertNoIssues();
   }
 
+  public static void verifyNoIssueWithGoVersion(String fileName, GoCheck check, GoModFileData goModFileData) {
+    createVerifier(BASE_DIR.resolve(fileName), check, goModFileData).assertNoIssues();
+  }
+
   public static void verifyNoIssueWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
-    createVerifier(BASE_DIR.resolve(fileName), check, goVersion).assertNoIssues();
+    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion)).assertNoIssues();
   }
 
   private static SingleFileVerifier createVerifier(Path path, GoCheck check) {
-    return createVerifier(path, check, GoVersion.UNKNOWN_VERSION);
+    return createVerifier(path, check, GoModFileData.UNKNOWN_DATA);
   }
 
-  protected static SingleFileVerifier createVerifier(Path path, GoCheck check, GoVersion goVersion) {
+  protected static SingleFileVerifier createVerifier(Path path, GoCheck check, GoModFileData goModFileData) {
+
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
     String testFileContent = readFile(path);
@@ -80,7 +90,7 @@ public class GoVerifier {
         verifier.addComment(start.line(), start.lineOffset() + 1, comment.text(), 2, 0);
       });
 
-    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goVersion);
+    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goModFileData);
     new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
@@ -100,17 +110,17 @@ public class GoVerifier {
 
     private final TreeVisitor<TestContext> visitor;
     private final SingleFileVerifier verifier;
-    private final GoVersion goVersion;
+    private final GoModFileData goModFileData;
     private final InputFile inputFile;
     private final String filename;
     private final String testFileContent;
     private Consumer<Tree> onLeave;
 
-    public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoVersion goVersion) {
+    public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoModFileData goModFileData) {
       this.verifier = verifier;
       this.inputFile = inputFile;
       this.filename = filename;
-      this.goVersion = goVersion;
+      this.goModFileData = goModFileData;
       this.testFileContent = testFileContent;
       visitor = new TreeVisitor<>();
     }
@@ -158,8 +168,8 @@ public class GoVerifier {
     }
 
     @Override
-    public GoVersion goVersion() {
-      return goVersion;
+    public GoModFileData goModFileData() {
+      return goModFileData;
     }
 
     @Override

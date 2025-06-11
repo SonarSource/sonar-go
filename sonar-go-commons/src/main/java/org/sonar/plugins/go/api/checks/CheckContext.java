@@ -56,7 +56,11 @@ public interface CheckContext {
 
   String fileContent();
 
-  GoVersion goVersion();
+  /**
+   * Provide the {@link GoModFileData} related to the current file.
+   * @return the {@link GoModFileData} related to the current file
+   */
+  GoModFileData goModFileData();
 
   void reportIssue(TextRange textRange, String message);
 

@@ -24,36 +24,43 @@ import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.sensor.SensorContext;
+import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonar.plugins.go.api.checks.GoVersion;
 
 /**
- * The purpose of this GoVersionAnalyzer is to retrieve the go version of the project from the go.mod file.
- * In case we're unable to retrieve the version, we always fallback to an unknown version and don't return null
+ * The purpose of this {@link GoModFileAnalyzer} is to retrieve data of the project from the go.mod file.
+ * It retrieves some information from it:
+ * - the go version used in the project, if missing we fall back to an unknown version and don't return null
+ * - the module name
  * For more information about allowed structure of a go.mod file and the go versions, check the following resources:
  * @see <a href="https://go.dev/doc/toolchain#version">https://go.dev/doc/toolchain#version</a>
  * @see <a href="https://go.dev/doc/modules/gomod-ref#go">https://go.dev/doc/modules/gomod-ref#go</a>
  */
-public class GoVersionAnalyzer {
+public class GoModFileAnalyzer {
 
-  private static final Logger LOG = LoggerFactory.getLogger(GoVersionAnalyzer.class);
+  private static final Logger LOG = LoggerFactory.getLogger(GoModFileAnalyzer.class);
   private static final Pattern LINE_TERMINATOR = Pattern.compile("[\\n\\r\\u2028\\u2029]");
+  private static final String STRING_PATTERN_STRING = "(?:\"(?:\\\\.|[^\"\\\\])*+\"|`[^`]*+`)";
+  private static final String IDENTIFIER_PATTERN_STRING = "[^\\s]++";
+  private static final String GO_MODULE_PATTERN_STRING = "^module\\s++(?<moduleName>(?:%s|%s))\\s*+$".formatted(STRING_PATTERN_STRING, IDENTIFIER_PATTERN_STRING);
+  private static final Pattern GO_MODULE_PATTERN = Pattern.compile(GO_MODULE_PATTERN_STRING);
   private static final String GO_VERSION_PATTERN_STRING = "^go\\s++(?<majorAndMinor>[1-9]\\d*+\\.\\d++)(?<patch>\\.\\d++)?(?:(?:rc|beta)\\d+)?\\s*+$";
   private static final Pattern GO_VERSION_PATTERN = Pattern.compile(GO_VERSION_PATTERN_STRING);
 
   private final SensorContext sensorContext;
 
-  public GoVersionAnalyzer(SensorContext sensorContext) {
+  public GoModFileAnalyzer(SensorContext sensorContext) {
     this.sensorContext = sensorContext;
   }
 
-  public GoVersion analyzeGoVersion() {
+  public GoModFileData analyzeGoModFile() {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       // Restricted behavior in SQ for IDE
       // TODO: https://sonarsource.atlassian.net/browse/SONARGO-420
-      return GoVersion.UNKNOWN_VERSION;
+      return GoModFileData.UNKNOWN_DATA;
     }
 
-    // hasPath is not supported in SQ for IDE, see above for follow up ticket
+    // hasPath is not supported in SQ for IDE, see above for follow-up ticket
     FilePredicates predicates = sensorContext.fileSystem().predicates();
     var goModFilePredicate = predicates.or(predicates.hasPath("go.mod"), predicates.hasPath("src/go.mod"));
     var goModFiles = StreamSupport.stream(
@@ -67,7 +74,7 @@ public class GoVersionAnalyzer {
     var goModFile = goModFiles.get(0);
     try {
       var content = goModFile.contents();
-      return analyzeGoModFile(content, goModFile.toString());
+      return analyzeGoModFileContent(content, goModFile.toString());
     } catch (IOException e) {
       LOG.debug("Failed to read go.mod file: {}", goModFile, e);
     }
@@ -75,13 +82,41 @@ public class GoVersionAnalyzer {
   }
 
   /**
-   * Analyzed the content of a go.mod file and returns the go version.
-   * If the go version is not found, the method returns {@link GoVersion#UNKNOWN_VERSION}
+   * Analyzed the content of a go.mod file and returns a {@link GoModFileData} object.
+   * If the module name is not found, it will be set to an empty string.
+   * If the go version is not found, the version will be set to {@link GoVersion#UNKNOWN_VERSION}
    * Information about release candidate (rc) or beta versions are stripped, as we don't need this detail.
    * Also {@link GoVersion} does not support beta/rc versions.
    */
-  private static GoVersion analyzeGoModFile(String content, String loggableFilePath) {
+  private static GoModFileData analyzeGoModFileContent(String content, String loggableFilePath) {
     var lines = LINE_TERMINATOR.split(content);
+    var moduleName = extractModuleName(lines, loggableFilePath);
+    var goVersion = extractGoVersion(lines, loggableFilePath);
+    return new GoModFileData(moduleName, goVersion);
+  }
+
+  private static String extractModuleName(String[] lines, String loggableFilePath) {
+    for (String line : lines) {
+      var matcher = GO_MODULE_PATTERN.matcher(line);
+      if (matcher.find()) {
+        String moduleName = removeQuotes(matcher.group("moduleName"));
+
+        LOG.debug("Detected go module name in project: {}", moduleName);
+        return moduleName;
+      }
+    }
+    LOG.debug("Failed to detect a module name in the go.mod file: {}", loggableFilePath);
+    return "";
+  }
+
+  private static String removeQuotes(String string) {
+    if ((string.startsWith("\"") && string.endsWith("\"")) || (string.startsWith("`") && string.endsWith("`"))) {
+      return string.substring(1, string.length() - 1);
+    }
+    return string;
+  }
+
+  private static GoVersion extractGoVersion(String[] lines, String loggableFilePath) {
     for (String line : lines) {
       var matcher = GO_VERSION_PATTERN.matcher(line);
       if (matcher.find()) {
@@ -100,12 +135,11 @@ public class GoVersionAnalyzer {
       }
     }
     LOG.debug("Failed to detect a go version in the go.mod file: {}", loggableFilePath);
-    return logDetectionFailureAndReturn();
-  }
-
-  private static GoVersion logDetectionFailureAndReturn() {
-    LOG.debug("Could not detect the used go version of the project");
     return GoVersion.UNKNOWN_VERSION;
   }
 
+  private static GoModFileData logDetectionFailureAndReturn() {
+    LOG.debug("Could not detect the metadata from mod file of the project");
+    return GoModFileData.UNKNOWN_DATA;
+  }
 }
