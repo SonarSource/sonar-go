@@ -31,7 +31,6 @@ public class GoConverter implements ASTConverter {
 
   public static final long MAX_SUPPORTED_SOURCE_FILE_SIZE = 1_500_000L;
   private static final Logger LOG = LoggerFactory.getLogger(GoConverter.class);
-  @Nullable
   private final Command command;
 
   public GoConverter(File workDir) {
@@ -41,21 +40,18 @@ public class GoConverter implements ASTConverter {
   // Visible for testing
   public GoConverter(@Nullable Command command) {
     this.command = command;
-    if (command != null) {
-      LOG.debug("Go converter command: {}", command.getCommand());
-    }
   }
 
   @Override
-  public Map<String, Tree> parse(String content, String filename) {
-    if (command == null) {
-      throw new ParseException("Go converter is not initialized");
-    } else if (content.length() > MAX_SUPPORTED_SOURCE_FILE_SIZE) {
-      throw new ParseException("The file size is too big and should be excluded," +
-        " its size is " + content.length() + " (maximum allowed is " + MAX_SUPPORTED_SOURCE_FILE_SIZE + " bytes)");
+  public Map<String, Tree> parse(Map<String, String> filenameToContentMap) {
+    for (String content : filenameToContentMap.values()) {
+      if (content.length() > MAX_SUPPORTED_SOURCE_FILE_SIZE) {
+        throw new ParseException("The file size is too big and should be excluded," +
+          " its size is " + content.length() + " (maximum allowed is " + MAX_SUPPORTED_SOURCE_FILE_SIZE + " bytes)");
+      }
     }
     try {
-      var json = command.executeCommand(content, filename);
+      var json = command.executeCommand(filenameToContentMap);
       return JsonTree.fromJson(json);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

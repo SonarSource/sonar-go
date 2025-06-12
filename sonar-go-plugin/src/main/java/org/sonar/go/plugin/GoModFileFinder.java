@@ -14,23 +14,24 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.plugins.go.api;
+package org.sonar.go.plugin;
 
-import java.util.Map;
+import java.util.List;
+import java.util.stream.StreamSupport;
+import org.sonar.api.batch.fs.FilePredicates;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.sensor.SensorContext;
 
-public interface ASTConverter {
-
-  /**
-   * Parses the given content and returns a map of file names to their corresponding AST trees.
-   *
-   * @param filenameToContentMap a map where keys are file names and values are their content
-   * @return a map where keys are file names and values are their corresponding AST trees
-   * @throws ParseException if an error occurs during parsing
-   */
-  Map<String, Tree> parse(Map<String, String> filenameToContentMap);
-
-  default void terminate() {
-    // Nothing to do by default
+public final class GoModFileFinder {
+  private GoModFileFinder() {
+    // Utility class
   }
 
+  public static List<InputFile> findGoModFiles(SensorContext sensorContext) {
+    FilePredicates predicates = sensorContext.fileSystem().predicates();
+    var goModFilePredicate = predicates.matchesPathPattern("**/go.mod");
+    return StreamSupport.stream(
+      sensorContext.fileSystem().inputFiles(goModFilePredicate).spliterator(), false)
+      .toList();
+  }
 }

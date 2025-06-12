@@ -18,10 +18,12 @@ package org.sonar.go.converter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.sonar.plugins.go.api.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -58,11 +60,13 @@ class DefaultCommandTest {
   }
 
   @Test
-  void shouldReturnNullForInvalidPlatform() {
+  void shouldThrowExceptionForInvalidPlatform() {
     var currentArch = System.getProperty("os.arch");
     try {
       System.setProperty("os.arch", "invalid-arch");
-      assertThat(createCommand(tempDir)).isNull();
+      assertThatThrownBy(() -> createCommand(tempDir))
+        .isInstanceOf(ParseException.class)
+        .hasMessage("Go executable is not initialized");
     } finally {
       System.setProperty("os.arch", currentArch);
     }
@@ -73,7 +77,7 @@ class DefaultCommandTest {
     var command = new DefaultCommand(tempDir);
     command.getCommand().set(0, "invalid-command");
     var e = assertThrows(IOException.class,
-      () -> command.executeCommand("package main\nfunc foo() {}", "foo.go"));
+      () -> command.executeCommand(Map.of("foo.go", "package main\nfunc foo() {}")));
     assertThat(e).hasMessageContaining("Cannot run program \"invalid-command\"");
   }
 }

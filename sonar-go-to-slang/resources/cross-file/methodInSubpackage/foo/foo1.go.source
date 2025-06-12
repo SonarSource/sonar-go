@@ -1,10 +1,9 @@
 package foo
 
-
 var GlobalMyType = MyType{}
 
 func Calculate(x int) int {
-	return x * MagicNumber
+	return x * 2
 }
 
 type MyType struct {

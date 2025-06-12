@@ -1,14 +1,15 @@
-package main
+package methodInSubpackage
 
 import (
-"foo"
-"fmt"
+	"foo"
+	"foo/bar"
+	"fmt"
 )
 
-func mainX() {
-	a := foo.Calculate(foo.MagicNumber)
+func Cross1() {
+	a := foo.Calculate(bar.MagicNumber)
 	fmt.Print(a)
 	my := new(foo.MyType)
-	my.Hello()
-	foo.GlobalMyType.Hello()
+	my.SomePublicMethod()
+	bar.BarMethod()
 }

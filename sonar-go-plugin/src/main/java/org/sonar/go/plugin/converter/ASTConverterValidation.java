@@ -88,12 +88,11 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   @Override
-  public Map<String, Tree> parse(String content, String filename) {
-    this.currentFile = filename;
-    var tree = wrapped.parse(content, filename);
-    assertTreeIsValid(tree);
-    assertTokensMatchSourceCode(tree, content);
-    return tree;
+  public Map<String, Tree> parse(Map<String, String> filenameToContentMap) {
+    var filenameToTree = wrapped.parse(filenameToContentMap);
+    assertTreeIsValid(filenameToTree);
+    assertTokensMatchSourceCode(filenameToTree, filenameToContentMap);
+    return filenameToTree;
   }
 
   @Override
@@ -130,7 +129,10 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   private void assertTreeIsValid(Map<String, Tree> trees) {
-    trees.values().forEach(this::assertTreeIsValid);
+    for (Map.Entry<String, Tree> filenameToTree : trees.entrySet()) {
+      currentFile = filenameToTree.getKey();
+      assertTreeIsValid(filenameToTree.getValue());
+    }
   }
 
   private void assertTreeIsValid(Tree tree) {
@@ -170,8 +172,12 @@ public class ASTConverterValidation implements ASTConverter {
     }
   }
 
-  private void assertTokensMatchSourceCode(Map<String, Tree> trees, String code) {
-    trees.values().forEach(tree -> assertTokensMatchSourceCode(tree, code));
+  private void assertTokensMatchSourceCode(Map<String, Tree> trees, Map<String, String> filenameToContentMap) {
+    for (Map.Entry<String, Tree> filenameToTree : trees.entrySet()) {
+      currentFile = filenameToTree.getKey();
+      var tree = filenameToTree.getValue();
+      assertTokensMatchSourceCode(tree, filenameToContentMap.get(currentFile));
+    }
   }
 
   private void assertTokensMatchSourceCode(Tree tree, String code) {

@@ -18,9 +18,10 @@ package org.sonar.go.converter;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface Command {
   List<String> getCommand();
 
-  String executeCommand(String content, String filename) throws IOException, InterruptedException;
+  String executeCommand(Map<String, String> filenameToContentMap) throws IOException, InterruptedException;
 }

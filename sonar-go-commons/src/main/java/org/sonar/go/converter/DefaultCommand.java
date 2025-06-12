@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,8 +59,7 @@ public class DefaultCommand implements Command {
     try {
       return new DefaultCommand(workDir, "-");
     } catch (IllegalStateException e) {
-      // GoConverter cannot be fully initialized (e.g. because of unsupported platform), continue in a no-op mode
-      return null;
+      throw new ParseException("Go executable is not initialized");
     }
   }
 
@@ -69,8 +69,8 @@ public class DefaultCommand implements Command {
   }
 
   @Override
-  public String executeCommand(String content, String filename) throws IOException, InterruptedException {
-    var bytes = convertToBytesArray(content, filename);
+  public String executeCommand(Map<String, String> filenameToContentMap) throws IOException, InterruptedException {
+    var byteBuffers = convertToBytesArray(filenameToContentMap);
 
     var processBuilder = new ProcessBuilder(getCommand());
     var errorConsumer = new ExternalProcessStreamConsumer();
@@ -78,7 +78,9 @@ public class DefaultCommand implements Command {
     var process = processBuilder.start();
     errorConsumer.consumeStream(process.getErrorStream(), LOG::debug);
     try (var out = process.getOutputStream()) {
-      out.write(bytes);
+      for (ByteBuffer byteBuffer : byteBuffers) {
+        out.write(byteBuffer.array());
+      }
     }
     String output;
     try (var in = process.getInputStream()) {
@@ -96,26 +98,29 @@ public class DefaultCommand implements Command {
   }
 
   /**
-   * The byte format of the byte array is:
+   * Each ByteBuffer on the result list contains bytes in the following format:
    * <pre>
    * N (4 bytes) file name length
    * file name (N bytes)
    * M (4 bytes) file content length
    * file content (M bytes)
-   * next files until the end of the byte array (EOF)
    * <pre/>
    */
-  private static byte[] convertToBytesArray(String content, String filename) {
-    var filenameBytes = filename.getBytes(UTF_8);
-    var contentBytes = content.getBytes(UTF_8);
-    int capacity = filenameBytes.length + contentBytes.length + FILENAME_AND_CONTENT_LENGTH;
-    var byteBuffer = ByteBuffer.allocate(capacity)
-      .order(ByteOrder.LITTLE_ENDIAN)
-      .putInt(filenameBytes.length)
-      .put(filenameBytes)
-      .putInt(contentBytes.length)
-      .put(contentBytes);
-    return byteBuffer.array();
+  private static List<ByteBuffer> convertToBytesArray(Map<String, String> filenameToContentMap) {
+    List<ByteBuffer> buffers = new ArrayList<>();
+    for (Map.Entry<String, String> filenameToContent : filenameToContentMap.entrySet()) {
+      var filenameBytes = filenameToContent.getKey().getBytes(UTF_8);
+      var contentBytes = filenameToContent.getValue().getBytes(UTF_8);
+      int capacity = filenameBytes.length + contentBytes.length + FILENAME_AND_CONTENT_LENGTH;
+      var byteBuffer = ByteBuffer.allocate(capacity)
+        .order(ByteOrder.LITTLE_ENDIAN)
+        .putInt(filenameBytes.length)
+        .put(filenameBytes)
+        .putInt(contentBytes.length)
+        .put(contentBytes);
+      buffers.add(byteBuffer);
+    }
+    return buffers;
   }
 
   private static String readAsString(InputStream in) throws IOException {

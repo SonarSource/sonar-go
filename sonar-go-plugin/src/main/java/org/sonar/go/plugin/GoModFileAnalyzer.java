@@ -18,11 +18,9 @@ package org.sonar.go.plugin;
 
 import java.io.IOException;
 import java.util.regex.Pattern;
-import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
-import org.sonar.api.batch.fs.FilePredicates;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonar.plugins.go.api.checks.GoVersion;
@@ -57,15 +55,10 @@ public class GoModFileAnalyzer {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       // Restricted behavior in SQ for IDE
       // TODO: https://sonarsource.atlassian.net/browse/SONARGO-420
+      // Early return to avoid unnecessary logging
       return GoModFileData.UNKNOWN_DATA;
     }
-
-    // hasPath is not supported in SQ for IDE, see above for follow-up ticket
-    FilePredicates predicates = sensorContext.fileSystem().predicates();
-    var goModFilePredicate = predicates.or(predicates.hasPath("go.mod"), predicates.hasPath("src/go.mod"));
-    var goModFiles = StreamSupport.stream(
-      sensorContext.fileSystem().inputFiles(goModFilePredicate).spliterator(), false).toList();
-
+    var goModFiles = GoModFileFinder.findGoModFiles(sensorContext);
     if (goModFiles.size() != 1) {
       LOG.debug("Expected exactly one go.mod file, but found {} files.", goModFiles.size());
       return logDetectionFailureAndReturn();

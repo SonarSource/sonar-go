@@ -17,6 +17,7 @@
 package org.sonar.go.plugin;
 
 import java.io.File;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.sonar.api.utils.TempFolder;
@@ -34,7 +35,7 @@ class InstanceScopeGoConverterTest {
     when(tempFolder.newDir()).thenReturn(tempDir);
     InstanceScopeGoConverter converter = new InstanceScopeGoConverter(tempFolder);
 
-    Tree tree = converter.parse("package main\nfunc foo() {}", "foo.go").get("foo.go");
+    Tree tree = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}")).get("foo.go");
     assertThat(tree).isInstanceOf(TopLevelTree.class);
   }
 }

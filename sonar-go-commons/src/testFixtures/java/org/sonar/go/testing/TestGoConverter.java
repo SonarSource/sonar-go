@@ -18,6 +18,7 @@ package org.sonar.go.testing;
 
 import java.io.File;
 import java.nio.file.Paths;
+import java.util.Map;
 import org.sonar.go.converter.DefaultCommand;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
@@ -30,7 +31,7 @@ public class TestGoConverter {
   public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
 
   public static Tree parse(String content) {
-    return GO_CONVERTER.parse(content, "foo.go").get("foo.go");
+    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go");
   }
 
   public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {
@@ -46,12 +47,13 @@ public class TestGoConverter {
   }
 
   public static Tree parseStatement(String content) {
-    var root = (TopLevelTree) GO_CONVERTER.parse("""
+    var code = """
       package main
       func main() {
         %s
       }
-      """.formatted(content), "foo.go").get("foo.go");
+      """.formatted(content);
+    var root = (TopLevelTree) GO_CONVERTER.parse(Map.of("foo.go", code)).get("foo.go");
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
   }

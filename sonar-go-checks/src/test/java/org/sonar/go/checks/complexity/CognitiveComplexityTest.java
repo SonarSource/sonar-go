@@ -16,6 +16,7 @@
  */
 package org.sonar.go.checks.complexity;
 
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.testing.TestGoConverter;
@@ -142,7 +143,7 @@ class CognitiveComplexityTest {
   }
 
   private CognitiveComplexity complexityFromFullSample(String code) {
-    Tree tree = parser.parse(code, "foo.go").get("foo.go");
+    Tree tree = parser.parse(Map.of("foo.go", code)).get("foo.go");
     return new CognitiveComplexity(tree);
   }
 }

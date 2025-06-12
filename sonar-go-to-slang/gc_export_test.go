@@ -16,12 +16,14 @@ import (
 func Test_exportGcExportData(t *testing.T) {
 	for _, name := range getSubDirs("resources/cross-file") {
 		t.Run("Test_exportGcExportData_"+name, func(t *testing.T) {
-			filesByDir := getAllGoFilesByDirs("resources/cross-file/" + name)
-			for _, files := range filesByDir {
-				exportGcData(files, name)
+			projectDir := "resources/cross-file/" + name
+			filesByDir := getAllGoFilesByDirs(projectDir)
+			for dir, files := range filesByDir {
+				exportDir := strings.TrimPrefix(dir, "resources/cross-file/")
+				exportGcData(files, exportDir)
 			}
 
-			files := getGoFilesIgnoreSubDirs("resources/cross-file/" + name)
+			files := getGoFilesIgnoreSubDirs(projectDir)
 
 			filesToJson := parseFileToJson(files, name)
 
@@ -41,12 +43,14 @@ func Test_exportGcExportData(t *testing.T) {
 func fixExportGcExportData(t *testing.T) {
 	for _, name := range getSubDirs("resources/cross-file") {
 		t.Run("fixExportGcExportData_"+name, func(t *testing.T) {
-			filesByDir := getAllGoFilesByDirs("resources/cross-file/" + name)
-			for _, files := range filesByDir {
-				exportGcData(files, name)
+			projectDir := "resources/cross-file/" + name
+			filesByDir := getAllGoFilesByDirs(projectDir)
+			for dir, files := range filesByDir {
+				exportDir := strings.TrimPrefix(dir, "resources/cross-file/")
+				exportGcData(files, exportDir)
 			}
 
-			filesIgnoreSubDirs := getGoFilesIgnoreSubDirs("resources/cross-file/" + name)
+			filesIgnoreSubDirs := getGoFilesIgnoreSubDirs(projectDir)
 			parseFileToJsonAndSave(filesIgnoreSubDirs, name)
 		})
 	}
@@ -59,9 +63,7 @@ func exportGcData(files []string, name string) {
 
 	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
 	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name)
-	pkgName := getPackageName(astFiles)
-	fileExt := pkgName + "/" + pkgName + ".o"
-	exportGcExportData(info, "build/cross-file-tests/"+name+"/"+fileExt)
+	exportGcExportData(info, "build/cross-file-tests/"+name)
 }
 
 func readFilesToReader(files []string) *bytes.Reader {
@@ -153,7 +155,7 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 	}
 }
 
-func Test_should_not_fail_when_path_does_not_contain_path_separator(t *testing.T) {
+func Test_should_not_fail_when_empty_path(t *testing.T) {
 	ident := &ast.Ident{
 		Name: "foo",
 	}
@@ -166,12 +168,12 @@ func Test_should_not_fail_when_path_does_not_contain_path_separator(t *testing.T
 		Defs: defs,
 	}
 
-	exportGcExportData(&info, "path_does_not_contain_path_separator.o")
+	exportGcExportData(&info, "")
 
 	defer func() {
-		os.Remove("path_does_not_contain_path_separator.o")
+		os.Remove("foo.o")
 	}()
-	_, err := os.ReadFile("path_does_not_contain_path_separator.o")
+	_, err := os.ReadFile("foo.o")
 	if err != nil {
 		assert.Fail(t, "The file should have been created", err)
 	}

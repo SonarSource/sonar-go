@@ -4,6 +4,6 @@ import "foo"
 
 const MagicNumber int = 42
 
-func (m *foo.MyType) Hello() string {
-	return "hello"
+func BarMethod() int {
+	return foo.Calculate(2)
 }

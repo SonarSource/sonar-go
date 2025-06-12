@@ -18,6 +18,7 @@ package org.sonar.go.converter;
 
 import java.io.File;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -56,8 +57,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.mockStatic;
 
 class GoConverterTest {
   @TempDir
@@ -407,25 +406,10 @@ class GoConverterTest {
     var command = new DefaultCommand(tempDir);
     command.getCommand().set(0, "invalid-command");
     GoConverter converter = new GoConverter(command);
+    var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
     ParseException e = assertThrows(ParseException.class,
-      () -> converter.parse("package main\nfunc foo() {}", "foo.go"));
+      () -> converter.parse(filenameToContentMap));
     assertThat(e).hasMessageContaining("Cannot run program \"invalid-command\"");
-  }
-
-  @Test
-  void shouldReturnNullForUnsupportedPlatform() {
-    try (var mockedStatic = mockStatic(DefaultCommand.class)) {
-      mockedStatic.when(() -> DefaultCommand.getExecutableForCurrentOS(anyString(), anyString()))
-        .thenThrow(new IllegalStateException("Unsupported platform: test/test"));
-
-      var command = DefaultCommand.createCommand(tempDir);
-      assertThat(command).isNull();
-
-      var goConverter = new GoConverter(command);
-      assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}", "foo.go"))
-        .isInstanceOf(ParseException.class)
-        .hasMessage("Go converter is not initialized");
-    }
   }
 
   @Test
@@ -458,15 +442,6 @@ class GoConverterTest {
     assertThatThrownBy(() -> DefaultCommand.getBytesFromResource("invalid-exe-path"))
       .isInstanceOf(IllegalStateException.class)
       .hasMessage("invalid-exe-path binary not found on class path");
-  }
-
-  @Test
-  void shouldThrowParseExceptionOnNotInitializedCommand() {
-    var goConverter = new GoConverter((Command) null);
-
-    assertThatThrownBy(() -> goConverter.parse("package main\nfunc foo() {}", "foo.go"))
-      .isInstanceOf(ParseException.class)
-      .hasMessage("Go converter is not initialized");
   }
 
   @Test

@@ -135,11 +135,11 @@ class GoModFileAnalyzerTest {
 
   @ParameterizedTest
   @ValueSource(strings = {
-    "someFolder/go.mod",
     "goo.mod",
     "somefile.go",
+    "notgo.mod",
   })
-  void shouldNotFindGoVersionWhenGoModIsNotInRoot(String fileName) {
+  void shouldNotFindGoVersionWhenGoModHasWrongName(String fileName) {
     InputFile goModFile = createInputFile(fileName, """
       module myModule
 

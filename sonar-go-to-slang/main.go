@@ -26,7 +26,6 @@ type Params struct {
 	dumpAst          bool
 	debugTypeCheck   bool
 	dumpGcExportData bool
-	gcExportDataFile string
 	gcExportDataDir  string
 }
 
@@ -39,7 +38,6 @@ func parseArgs() Params {
 	dumpAstFlag := flag.Bool("d", false, "dump ast (instead of JSON)")
 	debugTypeCheckFlag := flag.Bool("debug_type_check", false, "print errors logs from type checking")
 	dumpGcExportData := flag.Bool("dump_gc_export_data", false, "dump GC export data")
-	gcExportDataFile := flag.String("gc_export_data_file", "", "file to dump GC export data")
 	gcExportDataDir := flag.String("gc_export_data_dir", "", "directory where GC export data is located")
 	flag.Parse()
 
@@ -47,7 +45,6 @@ func parseArgs() Params {
 		dumpAst:          *dumpAstFlag,
 		debugTypeCheck:   *debugTypeCheckFlag,
 		dumpGcExportData: *dumpGcExportData,
-		gcExportDataFile: *gcExportDataFile,
 		gcExportDataDir:  *gcExportDataDir,
 	}
 }
@@ -66,10 +63,10 @@ func main() {
 	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpGcExportData {
-		if params.gcExportDataFile == "" {
-			panic("If the dump_gc_export_data flag is set then the gc_export_data_file flag must be set too")
+		if params.gcExportDataDir == "" {
+			panic("If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too")
 		}
-		exportGcExportData(info, params.gcExportDataFile)
+		exportGcExportData(info, params.gcExportDataDir)
 		return
 	}
 

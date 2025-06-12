@@ -150,14 +150,14 @@ func TestMainWithDumpGcExportDataFlagOnly(t *testing.T) {
 		}
 	}()
 	callMain()
-	assert.Fail(t, "The main() should throw panic for missing gc_export_data_file")
+	assert.Fail(t, "The main() should throw panic for missing gc_export_data_dir")
 }
 
 func TestMainShouldExportGcData(t *testing.T) {
 	resetCommandLineFlagsToDefault()
-	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_file", "build/main_test/out.o"}
+	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_dir", "build/main_test/"}
 	callMainStdinFromFile("resources/simple_file_with_packages.go.source")
-	assert.FileExists(t, "build/main_test/out.o", "File should exist")
+	assert.FileExists(t, "build/main_test/main.o", "File should exist")
 }
 
 func TestPrintUsageForInvalidArguments(t *testing.T) {
@@ -176,8 +176,6 @@ func TestPrintUsageForInvalidArguments(t *testing.T) {
 			assert.Contains(t, stderr, "\tdump GC export data", "Expected in standard output")
 			assert.Contains(t, stderr, "-gc_export_data_dir string", "Expected in standard output")
 			assert.Contains(t, stderr, "\tdirectory where GC export data is located", "Expected in standard output")
-			assert.Contains(t, stderr, "-gc_export_data_file string", "Expected in standard output")
-			assert.Contains(t, stderr, "\tfile to dump GC export data", "Expected in standard output")
 		}
 	}()
 	callMain()

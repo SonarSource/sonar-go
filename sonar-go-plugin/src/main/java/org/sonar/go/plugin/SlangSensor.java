@@ -16,6 +16,7 @@
  */
 package org.sonar.go.plugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -91,7 +92,7 @@ public abstract class SlangSensor implements Sensor {
     return EXECUTABLE_LINE_PREDICATE;
   }
 
-  protected void beforeAnalyzeFile(SensorContext sensorContext, List<InputFile> inputFiles) {
+  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles) {
     // the default implementation does nothing
   }
 
@@ -105,7 +106,9 @@ public abstract class SlangSensor implements Sensor {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
 
-    beforeAnalyzeFile(sensorContext, inputFiles);
+    var filesByDirectory = groupFilesByDirectory(inputFiles);
+
+    beforeAnalyzeFile(sensorContext, filesByDirectory);
 
     // TODO SONARGO-618 Parse files in batches, Java part
     for (InputFile inputFile : inputFiles) {
@@ -122,6 +125,18 @@ public abstract class SlangSensor implements Sensor {
       progressReport.nextFile();
     }
     return true;
+  }
+
+  private static Map<String, List<InputFile>> groupFilesByDirectory(List<InputFile> inputFiles) {
+    return inputFiles.stream()
+      .collect(Collectors.groupingBy((InputFile inputFile) -> {
+        var path = inputFile.uri().getPath();
+        int lastSeparatorIndex = path.lastIndexOf(File.separatorChar);
+        if (lastSeparatorIndex == -1) {
+          return "";
+        }
+        return path.substring(0, lastSeparatorIndex);
+      }));
   }
 
   static void analyseFile(ASTConverter converter,
@@ -166,7 +181,7 @@ public abstract class SlangSensor implements Sensor {
 
     Map<String, Tree> trees = statistics.time("Parse", () -> {
       try {
-        return converter.parse(content, fileName);
+        return converter.parse(Map.of(fileName, content));
       } catch (RuntimeException e) {
         throw toParseException("parse", inputFile, e);
       }

@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
@@ -82,7 +83,7 @@ public class GoVerifier {
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
     String testFileContent = readFile(path);
-    Tree root = GO_CONVERTER_DEBUG_TYPE_CHECK.parse(testFileContent, "foo.go").get("foo.go");
+    Tree root = GO_CONVERTER_DEBUG_TYPE_CHECK.parse(Map.of("foo.go", testFileContent)).get("foo.go");
 
     ((TopLevelTree) root).allComments()
       .forEach(comment -> {

@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-func exportGcExportData(info *types.Info, exportDataFile string) {
+func exportGcExportData(info *types.Info, exportDataDir string) {
 	var pkgToExport *types.Package
 	for _, obj := range info.Defs {
 		if obj != nil && obj.Pkg() != nil {
@@ -21,7 +21,14 @@ func exportGcExportData(info *types.Info, exportDataFile string) {
 		return
 	}
 
-	createDirs(exportDataFile)
+	createDirs(exportDataDir)
+
+	exportDataFile := ""
+	if isBlank(exportDataDir) {
+		exportDataFile = pkgToExport.Path() + ".o"
+	} else {
+		exportDataFile = exportDataDir + string(os.PathSeparator) + pkgToExport.Path() + ".o"
+	}
 
 	file, err := os.Create(exportDataFile)
 	if err != nil {
@@ -41,16 +48,17 @@ func exportGcExportData(info *types.Info, exportDataFile string) {
 	}
 }
 
+func isBlank(text string) bool {
+	return len(strings.TrimSpace(text)) == 0
+}
+
 func createDirs(path string) {
-	lastPathSeparatorIndex := strings.LastIndex(path, string(os.PathSeparator))
-	if lastPathSeparatorIndex == -1 {
-		return
-	}
-	dir := path[:lastPathSeparatorIndex]
-	err := os.MkdirAll(dir, 0755)
-	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error creating directory: %s\n", err)
-		panic("Error creating directory")
+	if !isBlank(path) {
+		err := os.MkdirAll(path, 0755)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error creating directory: %s\n", err)
+			panic("Error creating directory")
+		}
 	}
 }
 
