@@ -19,6 +19,7 @@ package org.sonar.go.plugin;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,6 +35,7 @@ import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
+import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonar.plugins.go.api.checks.GoVersion;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -88,8 +90,8 @@ class GoModFileAnalyzerTest {
       Arguments.of("module \"myModule\"", "myModule"),
       Arguments.of("module \"myModule", "\"myModule"),
       Arguments.of("module \"myMo\\\"dule\"", "myMo\\\"dule"),
-      Arguments.of("module `myModule`", "myModule"),
-      Arguments.of("module `myMo\\`dule`", "myMo\\`dule"),
+      Arguments.of("module `myModule`", "`myModule`"),
+      Arguments.of("module 'myModule'", "'myModule'"),
       Arguments.of("", ""),
       Arguments.of("go 1.23.4", ""));
   }
@@ -150,6 +152,7 @@ class GoModFileAnalyzerTest {
     var goModFileData = goModFileAnalyzer.analyzeGoModFile();
 
     assertThat(goModFileData.moduleName()).isEmpty();
+    assertThat(goModFileData.replacedModules()).isEmpty();
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(logTester.logs()).contains(
       "Expected exactly one go.mod file, but found 0 files.",
@@ -219,6 +222,86 @@ class GoModFileAnalyzerTest {
 
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(logTester.logs()).contains("Detected go version in project: 1.23.4");
+  }
+
+  @Test
+  void shouldFindSingleReplace() {
+    InputFile goModFile = createInputFile("go.mod", """
+      module myModule
+      replace example.com/old v1.0 => example.com/new v1.2.3
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.replacedModules())
+      .containsExactly(Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")));
+  }
+
+  @Test
+  void shouldFindReplaceWithDotsInPath() {
+    InputFile goModFile = createInputFile("go.mod", """
+      module myModule
+      replace golang.org/x/net v1.2.3 => ./fork/net
+      replace golang.org/x/net => ../fork/net
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.replacedModules()).containsExactly(
+      Map.entry(new GoModFileData.ModuleSpec("golang.org/x/net", "v1.2.3"), new GoModFileData.ModuleSpec("./fork/net", null)),
+      Map.entry(new GoModFileData.ModuleSpec("golang.org/x/net", null), new GoModFileData.ModuleSpec("../fork/net", null)));
+  }
+
+  @Test
+  void shouldGetRidOfQuotesInReplace() {
+    InputFile goModFile = createInputFile("go.mod", """
+      module myModule
+      replace "example.com/old" v1.0 => example.com/new v1.2.3
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.replacedModules())
+      .containsExactly(Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")));
+  }
+
+  static Stream<Arguments> shouldFindSeveralReplace() {
+    return Stream.of(
+      Arguments.of("""
+        replace example.com/old v1.0 => example.com/new v1.2.3
+        replace example.com/old2 => example.com/new2
+        """),
+      Arguments.of("""
+        replace (
+          example.com/old v1.0 => example.com/new v1.2.3
+          example.com/old2 => example.com/new2
+        )
+        """),
+      Arguments.of("""
+        replace example.com/old v1.0 => example.com/new v1.2.3
+        replace (
+          example.com/old2 => example.com/new2
+        )
+        """));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldFindSeveralReplace(String replaceContent) {
+    InputFile goModFile = createInputFile("go.mod", """
+      module myModule
+      %s
+      """.formatted(replaceContent));
+
+    sensorContext.fileSystem().add(goModFile);
+    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+
+    assertThat(goModFileData.replacedModules()).containsExactly(
+      Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")),
+      Map.entry(new GoModFileData.ModuleSpec("example.com/old2", null), new GoModFileData.ModuleSpec("example.com/new2", null)));
   }
 
   @Test

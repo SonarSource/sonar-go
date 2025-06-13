@@ -55,7 +55,7 @@ public class GoVerifier {
   }
 
   public static void verifyWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
-    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion)).assertOneOrMoreIssues();
+    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion, Collections.emptyList())).assertOneOrMoreIssues();
   }
 
   public static void verifyWithGoVersion(String fileName, GoCheck check, GoModFileData goModFileData) {
@@ -71,7 +71,7 @@ public class GoVerifier {
   }
 
   public static void verifyNoIssueWithGoVersion(String fileName, GoCheck check, GoVersion goVersion) {
-    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion)).assertNoIssues();
+    createVerifier(BASE_DIR.resolve(fileName), check, new GoModFileData("", goVersion, Collections.emptyList())).assertNoIssues();
   }
 
   private static SingleFileVerifier createVerifier(Path path, GoCheck check) {
