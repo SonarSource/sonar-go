@@ -16,6 +16,7 @@
  */
 package org.sonar.go.plugin;
 
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
@@ -23,11 +24,13 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultTextPointer;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.error.NewAnalysisError;
+import org.sonar.api.config.Configuration;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.impl.TextRanges;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
@@ -45,13 +48,33 @@ class InputFileContextTest {
     when(inputFile.newRange(anyInt(), anyInt(), anyInt(), anyInt())).thenThrow(new IllegalArgumentException("boom"));
     when(inputFile.lines()).thenReturn(5);
     when(inputFile.toString()).thenReturn("foo/bar.go");
-    var inputFileContext = new InputFileContext(null, inputFile);
+    var sensorContext = mock(SensorContext.class);
+    when(sensorContext.config()).thenReturn(mock(Configuration.class));
+    var inputFileContext = new InputFileContext(sensorContext, inputFile);
     var range = TextRanges.range(10, 1, 10, 5);
 
     var actual = inputFileContext.textRange(range);
 
     assertThat(actual).isNull();
     assertThat(logTester.logs(Level.DEBUG)).contains("Invalid TextRange[10, 1, 10, 5], for file: foo/bar.go, number of lines: 5");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenLocationIsWrongAndFailFastIsEnabled() {
+    var inputFile = mock(InputFile.class);
+    when(inputFile.newRange(anyInt(), anyInt(), anyInt(), anyInt())).thenThrow(new IllegalArgumentException("boom"));
+    when(inputFile.lines()).thenReturn(5);
+    when(inputFile.toString()).thenReturn("foo/bar.go");
+    var configMock = mock(Configuration.class);
+    when(configMock.getBoolean(GoSensor.FAIL_FAST_PROPERTY_NAME)).thenReturn(Optional.of(true));
+    var sensorContext = mock(SensorContext.class);
+    when(sensorContext.config()).thenReturn(configMock);
+    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var range = TextRanges.range(10, 1, 10, 5);
+
+    assertThatThrownBy(() -> inputFileContext.textRange(range))
+      .hasMessage("Invalid TextRange[10, 1, 10, 5], for file: foo/bar.go, number of lines: 5")
+      .isInstanceOf(IllegalStateException.class);
   }
 
   @Test

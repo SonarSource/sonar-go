@@ -31,8 +31,9 @@ import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 public class GoSensor extends SlangSensor {
 
-  private final GoChecks checks;
+  public static final String FAIL_FAST_PROPERTY_NAME = "sonar.internal.analysis.failFast";
 
+  private final GoChecks checks;
   private final ASTConverter goConverter;
 
   public GoSensor(CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
@@ -81,5 +82,9 @@ public class GoSensor extends SlangSensor {
 
   private static boolean isGenericDeclaration(Tree tree) {
     return NativeKinds.isStringNativeKind(tree, str -> str.contains("GenDecl"));
+  }
+
+  public static boolean isFailFast(SensorContext context) {
+    return context.config().getBoolean(FAIL_FAST_PROPERTY_NAME).orElse(false);
   }
 }

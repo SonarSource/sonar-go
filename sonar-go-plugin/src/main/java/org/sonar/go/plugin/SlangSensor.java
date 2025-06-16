@@ -121,6 +121,9 @@ public abstract class SlangSensor implements Sensor {
       } catch (ParseException e) {
         logParsingError(inputFile, e);
         inputFileContext.reportAnalysisParseError(repositoryKey(), inputFile, e.getPosition());
+        if (GoSensor.isFailFast(sensorContext)) {
+          throw new IllegalStateException("Exception when analyzing '" + inputFile + "'", e);
+        }
       }
       progressReport.nextFile();
     }

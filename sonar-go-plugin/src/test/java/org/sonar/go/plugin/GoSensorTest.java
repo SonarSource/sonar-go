@@ -29,6 +29,8 @@ import javax.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.slf4j.event.Level;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
@@ -480,6 +482,17 @@ class GoSensorTest {
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
     assertThat(logTester.logs(Level.WARN)).contains("Unsupported mode for converter validation: 'invalid', falling back to no validation");
+  }
+
+  @ParameterizedTest
+  @CsvSource({
+    GoSensor.FAIL_FAST_PROPERTY_NAME + ",true,true",
+    GoSensor.FAIL_FAST_PROPERTY_NAME + ",false,false",
+    "other,true,false",
+  })
+  void shouldReturnFailFastValue(String propertyKey, String propertyValue, boolean expected) {
+    sensorContext.settings().setProperty(propertyKey, propertyValue);
+    assertThat(GoSensor.isFailFast(sensorContext)).isEqualTo(expected);
   }
 
   private void assertHighlighting(String componentKey, int line, int columnFirst, int columnLast, @Nullable TypeOfText type) {

@@ -37,6 +37,8 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
+import static org.sonar.go.plugin.GoSensor.isFailFast;
+
 public class InputFileContext extends TreeContext {
 
   private static final Logger LOG = LoggerFactory.getLogger(InputFileContext.class);
@@ -73,6 +75,9 @@ public class InputFileContext extends TreeContext {
       var numberOfLines = inputFile.lines();
       var message = "Invalid %s, for file: %s, number of lines: %s".formatted(textRange, inputFile, numberOfLines);
       LOG.debug(message, e);
+      if (isFailFast(sensorContext)) {
+        throw new IllegalStateException(message, e);
+      }
     }
     return null;
   }
