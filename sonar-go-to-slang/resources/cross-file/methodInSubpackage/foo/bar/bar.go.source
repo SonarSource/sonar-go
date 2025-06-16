@@ -1,6 +1,6 @@
 package bar
 
-import "foo"
+import "example.com/met_in_sub_pack/foo"
 
 const MagicNumber int = 42
 

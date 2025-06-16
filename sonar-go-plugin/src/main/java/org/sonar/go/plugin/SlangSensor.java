@@ -92,7 +92,7 @@ public abstract class SlangSensor implements Sensor {
     return EXECUTABLE_LINE_PREDICATE;
   }
 
-  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles) {
+  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles, GoModFileData goModFileData) {
     // the default implementation does nothing
   }
 
@@ -101,14 +101,15 @@ public abstract class SlangSensor implements Sensor {
     List<InputFile> inputFiles,
     ProgressReport progressReport,
     List<TreeVisitor<InputFileContext>> visitors,
-    DurationStatistics statistics) {
+    DurationStatistics statistics,
+    GoModFileData goModFileData) {
     if (sensorContext.canSkipUnchangedFiles()) {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
 
     var filesByDirectory = groupFilesByDirectory(inputFiles);
 
-    beforeAnalyzeFile(sensorContext, filesByDirectory);
+    beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileData);
 
     // TODO SONARGO-618 Parse files in batches, Java part
     for (InputFile inputFile : inputFiles) {
@@ -260,7 +261,8 @@ public abstract class SlangSensor implements Sensor {
     boolean success = false;
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
     try {
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors(sensorContext, statistics, goModFileData), statistics);
+      var visitors = visitors(sensorContext, statistics, goModFileData);
+      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, statistics, goModFileData);
     } finally {
       if (success) {
         progressReport.stop();

@@ -21,6 +21,7 @@ var packages embed.FS
 
 type localImporter struct {
 	gcExportDataDir string
+	moduleName      string
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
@@ -44,7 +45,6 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 			}
 			pkg, _ := getPackageFromFile(file, path)
 			if pkg != nil {
-				pkg.SetName(path)
 				fmt.Fprintf(os.Stderr, "- Found package \"%s\" in file \"%s\", number of elements: %d\n", pkg, filePath, pkg.Scope().Len())
 				pkgToMerge = append(pkgToMerge, pkg)
 			}
@@ -79,7 +79,8 @@ func (li *localImporter) getGcExportDataFilesForPackage(packagePath string) []st
 	var files []string
 	dir := filepath.Join(li.gcExportDataDir, packagePath)
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		if strings.HasSuffix(path, ".o") {
+		lastPathSep := strings.LastIndex(path, string(os.PathSeparator))
+		if lastPathSep == len(dir) && strings.HasSuffix(path, ".o") {
 			files = append(files, path)
 		}
 		return nil
@@ -105,11 +106,12 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(fileSet *token.FileSet, astFiles map[string]ast.File, debugTypeCheck bool, gcExportDataDir string) (*types.Info, error) {
+func typeCheckAst(fileSet *token.FileSet, astFiles map[string]ast.File, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, error) {
 	packageName := getPackageName(astFiles)
 	conf := types.Config{
 		Importer: &localImporter{
 			gcExportDataDir: gcExportDataDir,
+			moduleName:      moduleName,
 		},
 		Error: func(err error) {
 			if debugTypeCheck {

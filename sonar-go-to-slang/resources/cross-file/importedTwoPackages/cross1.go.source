@@ -1,9 +1,9 @@
 package main
 
 import (
-	"bar"
+	"example.com/company/sub-modules/impTwoPack/bar"
+	"example.com/company/sub-modules/impTwoPack/foo"
 	"fmt"
-	"foo"
 )
 
 func mainX() {

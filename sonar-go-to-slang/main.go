@@ -27,6 +27,8 @@ type Params struct {
 	debugTypeCheck   bool
 	dumpGcExportData bool
 	gcExportDataDir  string
+	moduleName       string
+	packagePath      string
 }
 
 func parseArgs() Params {
@@ -39,13 +41,20 @@ func parseArgs() Params {
 	debugTypeCheckFlag := flag.Bool("debug_type_check", false, "print errors logs from type checking")
 	dumpGcExportData := flag.Bool("dump_gc_export_data", false, "dump GC export data")
 	gcExportDataDir := flag.String("gc_export_data_dir", "", "directory where GC export data is located")
+	moduleName := flag.String("module_name", "", "specify module name (defined in go.mod)")
+	packagePath := flag.String("package_path", "", "specify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)")
 	flag.Parse()
+
+	fmt.Fprintf(os.Stderr, "Received parameters: dumpAst=%t, debugTypeCheck=%t, dumpGcExportData=%t, gcExportDataDir=\"%s\", moduleName=\"%s\", packagePath=\"%s\"\n",
+		*dumpAstFlag, *debugTypeCheckFlag, *dumpGcExportData, *gcExportDataDir, *moduleName, *packagePath)
 
 	return Params{
 		dumpAst:          *dumpAstFlag,
 		debugTypeCheck:   *debugTypeCheckFlag,
 		dumpGcExportData: *dumpGcExportData,
 		gcExportDataDir:  *gcExportDataDir,
+		moduleName:       *moduleName,
+		packagePath:      *packagePath,
 	}
 }
 
@@ -59,14 +68,14 @@ func main() {
 		panic(err)
 	}
 
-	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir)
+	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName)
 	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpGcExportData {
 		if params.gcExportDataDir == "" {
 			panic("If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too")
 		}
-		exportGcExportData(info, params.gcExportDataDir)
+		exportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath)
 		return
 	}
 

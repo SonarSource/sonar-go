@@ -94,8 +94,9 @@ public class GoModFileAnalyzer {
    * If the go version is not found, the version will be set to {@link GoVersion#UNKNOWN_VERSION}
    * Information about release candidate (rc) or beta versions are stripped, as we don't need this detail.
    * Also {@link GoVersion} does not support beta/rc versions.
+   * Method is public for tests, but should be called by {@link #analyzeGoModFile()}.
    */
-  private static GoModFileData analyzeGoModFileContent(String content, String loggableFilePath) {
+  public static GoModFileData analyzeGoModFileContent(String content, String loggableFilePath) {
     var lines = LINE_TERMINATOR.split(content);
     var moduleName = "";
     var goVersion = GoVersion.UNKNOWN_VERSION;

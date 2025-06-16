@@ -79,16 +79,16 @@ func TestMainWithDumpAstFlag(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file.go.source")
 
 	assert.Contains(t, stdout, "Package: token.Pos(1)")
-	assert.Empty(t, stderr, "Expected empty stderr")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=true, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"")
 }
 
-func TestMainWithFilePath(t *testing.T) {
+func TestMainWithSimpleFile(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd"}
 	stdout, stderr := callMainStdinFromFile("resources/simple_file.go.source")
 
 	assert.Contains(t, stdout, "\"@type\": \"PackageDeclaration\", \"metaData\": \"1:0::17\"")
-	assert.Empty(t, stderr, "Expected empty stderr")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func TestMainWithPackageResolution(t *testing.T) {
@@ -97,7 +97,7 @@ func TestMainWithPackageResolution(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file_with_packages.go.source")
 
 	assert.Contains(t, stdout, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
-	assert.Empty(t, stderr, "Expected empty stderr")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func TestMainFillIdentifierWithInfo(t *testing.T) {
@@ -109,7 +109,7 @@ func TestMainFillIdentifierWithInfo(t *testing.T) {
 	assert.Contains(t, stdout, "\"id\":66")
 	assert.Contains(t, stdout, "\"type\":\"*database/sql.DB\"")
 	assert.Contains(t, stdout, "\"package\":\"database/sql\"")
-	assert.Empty(t, stderr, "Expected empty stderr")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func TestMainWithDotImport(t *testing.T) {
@@ -119,7 +119,7 @@ func TestMainWithDotImport(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file_with_dot_import.go.source")
 
 	assert.Contains(t, stdout, "\"package\":\"math/rand\",\"name\":\"Intn\"")
-	assert.Empty(t, stderr, "Expected empty stderr")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func TestMainWithInvalidFile(t *testing.T) {
@@ -176,6 +176,10 @@ func TestPrintUsageForInvalidArguments(t *testing.T) {
 			assert.Contains(t, stderr, "\tdump GC export data", "Expected in standard output")
 			assert.Contains(t, stderr, "-gc_export_data_dir string", "Expected in standard output")
 			assert.Contains(t, stderr, "\tdirectory where GC export data is located", "Expected in standard output")
+			assert.Contains(t, stderr, "-module_name string", "Expected in standard output")
+			assert.Contains(t, stderr, "\tspecify module name (defined in go.mod)", "Expected in standard output")
+			assert.Contains(t, stderr, "-package_path", "Expected in standard output")
+			assert.Contains(t, stderr, "\tspecify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)", "Expected in standard output")
 		}
 	}()
 	callMain()

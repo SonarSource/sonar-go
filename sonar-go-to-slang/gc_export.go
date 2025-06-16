@@ -6,10 +6,11 @@ import (
 	"golang.org/x/tools/go/gcexportdata"
 	"io/fs"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
-func exportGcExportData(info *types.Info, exportDataDir string) {
+func exportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string) {
 	var pkgToExport *types.Package
 	for _, obj := range info.Defs {
 		if obj != nil && obj.Pkg() != nil {
@@ -21,14 +22,10 @@ func exportGcExportData(info *types.Info, exportDataDir string) {
 		return
 	}
 
-	createDirs(exportDataDir)
+	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
+	createDirs(fullExportDataDir)
 
-	exportDataFile := ""
-	if isBlank(exportDataDir) {
-		exportDataFile = pkgToExport.Path() + ".o"
-	} else {
-		exportDataFile = exportDataDir + string(os.PathSeparator) + pkgToExport.Path() + ".o"
-	}
+	exportDataFile := filepath.Join(fullExportDataDir, pkgToExport.Path()+".o")
 
 	file, err := os.Create(exportDataFile)
 	if err != nil {

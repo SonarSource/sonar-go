@@ -20,8 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import javax.annotation.Nullable;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.sonar.go.persistence.JsonTree;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
@@ -30,7 +28,6 @@ import org.sonar.plugins.go.api.Tree;
 public class GoConverter implements ASTConverter {
 
   public static final long MAX_SUPPORTED_SOURCE_FILE_SIZE = 1_500_000L;
-  private static final Logger LOG = LoggerFactory.getLogger(GoConverter.class);
   private final Command command;
 
   public GoConverter(File workDir) {

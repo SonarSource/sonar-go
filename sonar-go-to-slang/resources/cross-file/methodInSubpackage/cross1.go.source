@@ -1,8 +1,8 @@
 package methodInSubpackage
 
 import (
-	"foo"
-	"foo/bar"
+	"example.com/met_in_sub_pack/foo"
+	"example.com/met_in_sub_pack/foo/bar"
 	"fmt"
 )
 
