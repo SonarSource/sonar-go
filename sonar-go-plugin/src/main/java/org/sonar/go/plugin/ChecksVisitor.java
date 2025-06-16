@@ -23,13 +23,13 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
-import java.util.function.Consumer;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.TextRange;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.checks.CheckContext;
 import org.sonar.plugins.go.api.checks.GoCheck;
@@ -38,8 +38,6 @@ import org.sonar.plugins.go.api.checks.InitContext;
 import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 public class ChecksVisitor extends TreeVisitor<InputFileContext> {
-
-  private Consumer<Tree> onLeaveFile;
 
   private final DurationStatistics statistics;
 
@@ -53,13 +51,6 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
       var ruleKey = goChecks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));
-    }
-  }
-
-  @Override
-  protected void after(InputFileContext ctx, Tree root) {
-    if (onLeaveFile != null) {
-      onLeaveFile.accept(root);
     }
   }
 
@@ -87,7 +78,10 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     @Override
     public void registerOnLeave(BiConsumer<CheckContext, Tree> visitor) {
-      ChecksVisitor.this.onLeaveFile = tree -> visitor.accept(this, tree);
+      ChecksVisitor.this.registerOnLeaveTree(TopLevelTree.class, statistics.time(ruleKey.rule(), (InputFileContext ctx, TopLevelTree tree) -> {
+        currentCtx = ctx;
+        visitor.accept(this, tree);
+      }));
     }
 
     @Override

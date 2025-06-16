@@ -25,12 +25,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.mockito.Mockito;
 import org.slf4j.event.Level;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
@@ -57,7 +59,9 @@ import org.sonar.api.utils.Version;
 import org.sonar.check.Rule;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
+import org.sonar.plugins.go.api.checks.CheckContext;
 import org.sonar.plugins.go.api.checks.GoCheck;
 import org.sonar.plugins.go.api.checks.InitContext;
 
@@ -493,6 +497,58 @@ class GoSensorTest {
   void shouldReturnFailFastValue(String propertyKey, String propertyValue, boolean expected) {
     sensorContext.settings().setProperty(propertyKey, propertyValue);
     assertThat(GoSensor.isFailFast(sensorContext)).isEqualTo(expected);
+  }
+
+  @Test
+  void two_checks_registering_on_leave_should_not_interfere() {
+    BiConsumer<CheckContext, Tree> consumer1 = spy(new ConsumerToSpy());
+    BiConsumer<CheckContext, Tree> consumer2 = spy(new ConsumerToSpy());
+
+    GoSensor sensor = getSensorWithCustomChecks(Set.of(CheckRegisteringOnLeave1.class, CheckRegisteringOnLeave2.class));
+    List<GoCheck> allChecks = sensor.checks().all();
+    assertThat(allChecks).hasSize(2);
+    ((CheckRegisteringOnLeave) allChecks.get(0)).setConsumerToRegister(consumer1);
+    ((CheckRegisteringOnLeave) allChecks.get(1)).setConsumerToRegister(consumer2);
+
+    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main
+        var a int
+        """);
+    sensorContext.fileSystem().add(goFile);
+
+    sensor.execute(sensorContext);
+
+    Mockito.verify(consumer1, Mockito.times(1)).accept(any(), any());
+    Mockito.verify(consumer2, Mockito.times(1)).accept(any(), any());
+  }
+
+  private abstract static class CheckRegisteringOnLeave implements GoCheck {
+    private BiConsumer<CheckContext, Tree> consumerToRegister;
+
+    public void setConsumerToRegister(BiConsumer<CheckContext, Tree> consumerToRegister) {
+      this.consumerToRegister = consumerToRegister;
+    }
+
+    @Override
+    public void initialize(InitContext init) {
+      init.registerOnLeave(consumerToRegister);
+    }
+  }
+
+  @Rule(key = "CheckRegisteringOnLeave1")
+  public static class CheckRegisteringOnLeave1 extends CheckRegisteringOnLeave {
+  }
+
+  @Rule(key = "CheckRegisteringOnLeave2")
+  public static class CheckRegisteringOnLeave2 extends CheckRegisteringOnLeave {
+  }
+
+  private static class ConsumerToSpy implements BiConsumer<CheckContext, Tree> {
+    @Override
+    public void accept(CheckContext checkContext, Tree tree) {
+      // do nothing
+    }
   }
 
   private void assertHighlighting(String componentKey, int line, int columnFirst, int columnLast, @Nullable TypeOfText type) {
