@@ -74,7 +74,7 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   public static ASTConverter wrap(ASTConverter converter, Configuration configuration) {
-    String mode = configuration.get("sonar.slang.converter.validation").orElse(null);
+    String mode = configuration.get("sonar.go.converter.validation").orElse(null);
     if (mode == null) {
       return converter;
     } else if (mode.equals("throw")) {

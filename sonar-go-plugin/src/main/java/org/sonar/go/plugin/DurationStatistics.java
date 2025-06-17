@@ -33,7 +33,7 @@ public class DurationStatistics {
 
   private static final Logger LOG = LoggerFactory.getLogger(DurationStatistics.class);
 
-  private static final String PROPERTY_KEY = "sonar.slang.duration.statistics";
+  private static final String PROPERTY_KEY = "sonar.go.duration.statistics";
 
   private final Map<String, AtomicLong> stats = new ConcurrentHashMap<>();
 

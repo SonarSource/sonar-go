@@ -94,7 +94,7 @@ class GoSensorTest {
     projectDir.toFile().deleteOnExit();
     sensorContext = SensorContextTester.create(workDir);
     sensorContext.fileSystem().setWorkDir(workDir);
-    sensorContext.settings().setProperty("sonar.slang.converter.validation", "throw");
+    sensorContext.settings().setProperty("sonar.go.converter.validation", "throw");
     sensorContext.setRuntime(SQ_LTS_RUNTIME);
     fileLinesContext = new FileLinesContextTester();
     when(fileLinesContextFactory.createFor(any(InputFile.class))).thenReturn(fileLinesContext);
@@ -464,7 +464,7 @@ class GoSensorTest {
          x := ((2 + 3))
         }""");
     sensorContext.fileSystem().add(inputFile);
-    sensorContext.settings().setProperty("sonar.slang.converter.validation", "log");
+    sensorContext.settings().setProperty("sonar.go.converter.validation", "log");
     GoSensor goSensor = getSensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
@@ -481,7 +481,7 @@ class GoSensorTest {
          x := ((2 + 3))
         }""");
     sensorContext.fileSystem().add(inputFile);
-    sensorContext.settings().setProperty("sonar.slang.converter.validation", "invalid");
+    sensorContext.settings().setProperty("sonar.go.converter.validation", "invalid");
     GoSensor goSensor = getSensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);

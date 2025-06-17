@@ -42,7 +42,7 @@ class DurationStatisticsTest {
 
   @Test
   void statistics_activated() {
-    sensorContext.settings().setProperty("sonar.slang.duration.statistics", "true");
+    sensorContext.settings().setProperty("sonar.go.duration.statistics", "true");
     DurationStatistics statistics = new DurationStatistics(sensorContext.config());
     fillStatistics(statistics);
     statistics.log();
@@ -52,7 +52,7 @@ class DurationStatisticsTest {
 
   @Test
   void statistics_format() {
-    sensorContext.settings().setProperty("sonar.slang.duration.statistics", "true");
+    sensorContext.settings().setProperty("sonar.go.duration.statistics", "true");
     DurationStatistics statistics = new DurationStatistics(sensorContext.config());
     statistics.store("A", 12_000_000L);
     statistics.store("B", 15_000_000_000L);
