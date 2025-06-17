@@ -57,7 +57,7 @@
     {"@type": "TopLevel", "metaData": "1:0:16:0","firstCpdToken":null,"declarations":[
       {"@type": "PackageDeclaration", "metaData": "1:0::26","children":[
         {"@type": "Native", "metaData": "1:0::7"},
-        {"@type": "Identifier", "metaData": "1:8::26","type":"UNKNOWN","package":"UNKNOWN","name":"methodInSubpackage","id":0,"__cfgId":1}
+        {"@type": "Identifier", "metaData": "1:8::26","type":"UNKNOWN","package":"UNKNOWN","name":"methodInSubpackage","id":"__id_placeholder__","__cfgId":1}
       ],"__cfgId":2},
       {"@type": "ImportDeclaration", "metaData": "3:0:7:1","children":[
         {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
@@ -77,47 +77,47 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::11","type":"func()","package":"methodInSubpackage","name":"Cross1","id":127,"__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[17,23,30,35,40,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "9:5::11","type":"func()","package":"methodInSubpackage","name":"Cross1","id":"__id_placeholder__","__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[17,23,30,35,40,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:14:15:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "10:1::36","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "10:6::36","returnType":["int"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "10:6::19","identifier":
-                {"@type": "Identifier", "metaData": "10:10::19","type":"func(x int) int","package":"example.com/met_in_sub_pack/foo","name":"Calculate","id":0,"__cfgId":11},"expression":
-                {"@type": "Identifier", "metaData": "10:6::9","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo","name":"foo","id":39,"__cfgId":10},"__cfgId":12},"arguments":[
+                {"@type": "Identifier", "metaData": "10:10::19","type":"func(x int) int","package":"example.com/met_in_sub_pack/foo","name":"Calculate","id":"__id_placeholder__","__cfgId":11},"expression":
+                {"@type": "Identifier", "metaData": "10:6::9","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo","name":"foo","id":"__id_placeholder__","__cfgId":10},"__cfgId":12},"arguments":[
               {"@type": "MemberSelect", "metaData": "10:20::35","identifier":
-                {"@type": "Identifier", "metaData": "10:24::35","type":"int","package":"UNKNOWN","name":"MagicNumber","id":0,"__cfgId":14},"expression":
-                {"@type": "Identifier", "metaData": "10:20::23","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo/bar","name":"bar","id":74,"__cfgId":13},"__cfgId":15}
+                {"@type": "Identifier", "metaData": "10:24::35","type":"int","package":"UNKNOWN","name":"MagicNumber","id":"__id_placeholder__","__cfgId":14},"expression":
+                {"@type": "Identifier", "metaData": "10:20::23","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo/bar","name":"bar","id":"__id_placeholder__","__cfgId":13},"__cfgId":15}
             ],"__cfgId":16}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "10:1::2","type":"int","package":"UNKNOWN","name":"a","id":139,"__cfgId":9}
+            {"@type": "Identifier", "metaData": "10:1::2","type":"int","package":"UNKNOWN","name":"a","id":"__id_placeholder__","__cfgId":9}
           ],"__cfgId":17},
           {"@type": "ExpressionStatement", "metaData": "11:1::13","expression":
             {"@type": "FunctionInvocation", "metaData": "11:1::13","returnType":["int","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "11:1::10","identifier":
-                {"@type": "Identifier", "metaData": "11:5::10","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Print","id":0,"__cfgId":19},"expression":
-                {"@type": "Identifier", "metaData": "11:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":113,"__cfgId":18},"__cfgId":20},"arguments":[
-              {"@type": "Identifier", "metaData": "11:11::12","type":"int","package":"UNKNOWN","name":"a","id":139,"__cfgId":21}
+                {"@type": "Identifier", "metaData": "11:5::10","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Print","id":"__id_placeholder__","__cfgId":19},"expression":
+                {"@type": "Identifier", "metaData": "11:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":"__id_placeholder__","__cfgId":18},"__cfgId":20},"arguments":[
+              {"@type": "Identifier", "metaData": "11:11::12","type":"int","package":"UNKNOWN","name":"a","id":"__id_placeholder__","__cfgId":21}
             ],"__cfgId":22},"__cfgId":23},
           {"@type": "VariableDeclaration", "metaData": "12:1::22","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "12:7::22","returnType":[],"memberSelect":
-              {"@type": "Identifier", "metaData": "12:7::10","type":"UNKNOWN","package":"UNKNOWN","name":"new","id":0,"__cfgId":25},"arguments":[
+              {"@type": "Identifier", "metaData": "12:7::10","type":"UNKNOWN","package":"UNKNOWN","name":"new","id":"__id_placeholder__","__cfgId":25},"arguments":[
               {"@type": "MemberSelect", "metaData": "12:11::21","identifier":
-                {"@type": "Identifier", "metaData": "12:15::21","type":"example.com/met_in_sub_pack/foo.MyType","package":"example.com/met_in_sub_pack/foo","name":"MyType","id":0,"__cfgId":27},"expression":
-                {"@type": "Identifier", "metaData": "12:11::14","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo","name":"foo","id":39,"__cfgId":26},"__cfgId":28}
+                {"@type": "Identifier", "metaData": "12:15::21","type":"example.com/met_in_sub_pack/foo.MyType","package":"example.com/met_in_sub_pack/foo","name":"MyType","id":"__id_placeholder__","__cfgId":27},"expression":
+                {"@type": "Identifier", "metaData": "12:11::14","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo","name":"foo","id":"__id_placeholder__","__cfgId":26},"__cfgId":28}
             ],"__cfgId":29}
           ],"identifiers":[
-            {"@type": "Identifier", "metaData": "12:1::3","type":"*example.com/met_in_sub_pack/foo.MyType","package":"UNKNOWN","name":"my","id":190,"__cfgId":24}
+            {"@type": "Identifier", "metaData": "12:1::3","type":"*example.com/met_in_sub_pack/foo.MyType","package":"UNKNOWN","name":"my","id":"__id_placeholder__","__cfgId":24}
           ],"__cfgId":30},
           {"@type": "ExpressionStatement", "metaData": "13:1::22","expression":
             {"@type": "FunctionInvocation", "metaData": "13:1::22","returnType":["string"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "13:1::20","identifier":
-                {"@type": "Identifier", "metaData": "13:4::20","type":"func() string","package":"example.com/met_in_sub_pack/foo","name":"SomePublicMethod","id":0,"__cfgId":32},"expression":
-                {"@type": "Identifier", "metaData": "13:1::3","type":"*example.com/met_in_sub_pack/foo.MyType","package":"UNKNOWN","name":"my","id":190,"__cfgId":31},"__cfgId":33},"arguments":[],"__cfgId":34},"__cfgId":35},
+                {"@type": "Identifier", "metaData": "13:4::20","type":"func() string","package":"example.com/met_in_sub_pack/foo","name":"SomePublicMethod","id":"__id_placeholder__","__cfgId":32},"expression":
+                {"@type": "Identifier", "metaData": "13:1::3","type":"*example.com/met_in_sub_pack/foo.MyType","package":"UNKNOWN","name":"my","id":"__id_placeholder__","__cfgId":31},"__cfgId":33},"arguments":[],"__cfgId":34},"__cfgId":35},
           {"@type": "ExpressionStatement", "metaData": "14:1::16","expression":
             {"@type": "FunctionInvocation", "metaData": "14:1::16","returnType":["int"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "14:1::14","identifier":
-                {"@type": "Identifier", "metaData": "14:5::14","type":"func() int","package":"example.com/met_in_sub_pack/foo/bar","name":"BarMethod","id":0,"__cfgId":37},"expression":
-                {"@type": "Identifier", "metaData": "14:1::4","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo/bar","name":"bar","id":74,"__cfgId":36},"__cfgId":38},"arguments":[],"__cfgId":39},"__cfgId":40}
+                {"@type": "Identifier", "metaData": "14:5::14","type":"func() int","package":"example.com/met_in_sub_pack/foo/bar","name":"BarMethod","id":"__id_placeholder__","__cfgId":37},"expression":
+                {"@type": "Identifier", "metaData": "14:1::4","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo/bar","name":"bar","id":"__id_placeholder__","__cfgId":36},"__cfgId":38},"arguments":[],"__cfgId":39},"__cfgId":40}
         ],"__cfgId":41},"__cfgId":1}
     ],"__cfgId":2}
 } 

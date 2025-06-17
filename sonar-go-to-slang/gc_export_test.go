@@ -100,7 +100,8 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
-		actual := toJsonSlang(slangTree, comments, tokens, "  ")
+		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
+		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, "  ")
 
 		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
 		fmt.Printf("Writing %s\n", jsonFile)
@@ -121,11 +122,27 @@ func parseFileToJson(files []string, name string, moduleName string) map[string]
 
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
-		actual := toJsonSlang(slangTree, comments, tokens, "  ")
+		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
+		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, "  ")
 		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
 		result[jsonFile] = actual
 	}
 	return result
+}
+
+// We need to replace all "id" values with placeholders because the actual IDs may change between different runs.
+func slangTreeWithIdPlaceholders(slangTree *Node) *Node {
+	if slangTree.SlangField != nil {
+		if _, ok := slangTree.SlangField["id"]; ok {
+			slangTree.SlangField["id"] = "__id_placeholder__"
+		}
+	}
+
+	for _, child := range slangTree.Children {
+		slangTreeWithIdPlaceholders(child)
+	}
+
+	return slangTree
 }
 
 func getGoFilesIgnoreSubDirs(folder string) []string {
