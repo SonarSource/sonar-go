@@ -46,6 +46,13 @@ dependencies {
     testImplementation(libs.sonar.plugin.api.impl)
     testImplementation(libs.sonar.plugin.api.test.fixtures)
     testImplementation(testFixtures(project(":sonar-go-commons")))
+    testImplementation(libs.archunit) {
+        // The logging dependencies of archunit are excluded to avoid conflicts.
+        exclude("ch.qos.logback", "logback-classic")
+        exclude("org.slf4j", "slf4j-api")
+        exclude("org.slf4j", "jcl-over-slf4j")
+        exclude("org.slf4j", "log4j-over-slf4j")
+    }
 
     testRuntimeOnly(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
