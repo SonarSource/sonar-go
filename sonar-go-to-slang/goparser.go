@@ -69,6 +69,10 @@ const childrenField = "children"
 const basicLiteral = "(BasicLit)"
 const other = "OTHER"
 
+// This const control the calls to File.PositionFor 'adjust' parameter. By setting it to false, we make it ignore line directives.
+// This is required as otherwise all position computing are affected by the line directives, which is not what we want and can cause crashes.
+const processLineDirective = false
+
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
@@ -644,7 +648,7 @@ func (t *SlangMapper) createLeafNode(originalNode ast.Node, offset, endOffset in
 }
 
 func (t *SlangMapper) toPosition(offset int) token.Position {
-	position := t.file.Position(t.file.Pos(offset))
+	position := t.file.PositionFor(t.file.Pos(offset), processLineDirective)
 	if t.paranoiac && !position.IsValid() {
 		panic("Invalid offset" + t.location(offset, offset))
 	}
@@ -655,7 +659,7 @@ func (t *SlangMapper) location(offset, endOffset int) string {
 	var out bytes.Buffer
 	out.WriteString(fmt.Sprintf(" at offset %d:%d for file %s", offset, endOffset, t.file.Name()))
 	if 0 <= offset && offset <= t.file.Size() {
-		p := t.file.Position(t.file.Pos(offset))
+		p := t.file.PositionFor(t.file.Pos(offset), processLineDirective)
 		out.WriteString(fmt.Sprintf(":%d:%d", p.Line, p.Column))
 	}
 	return out.String()

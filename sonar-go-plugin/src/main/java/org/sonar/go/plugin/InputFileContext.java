@@ -67,11 +67,8 @@ public class InputFileContext extends TreeContext {
         textRange.end().line(),
         textRange.end().lineOffset());
     } catch (IllegalArgumentException e) {
-      // When Go file contains comments like: /*line :6:1*/ then the TextRanges are taken from such comments and not from real location.
-      // It can be disabled in call: parser.ParseFile(fileSet, filename, fileContent, 0)
-      // (last argument equals zero instead of parser.ParseComments), but then the comments are missing in the AST.
-      // To avoid exceptions in visitors, there is extra validation if the TextRange is valid.
-      // If not, it is logged below and `null` is returned.
+      // Extra security check for invalid TextRange.
+      // It shouldn't happen anymore since we disabled line directives in Go parser.
       var numberOfLines = inputFile.lines();
       var message = "Invalid %s, for file: %s, number of lines: %s".formatted(textRange, inputFile, numberOfLines);
       LOG.debug(message, e);

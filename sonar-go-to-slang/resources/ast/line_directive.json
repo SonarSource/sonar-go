@@ -1,0 +1,56 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+      {"text":"//line line_directive_changed_file.go:1000", "contentText":"line line_directive_changed_file.go:1000", "range":"7:0::42", "contentRange": "7:2::42"}
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
+      {"text":"(","textRange":"3:7::8"},
+      {"text":"\"fmt\"","textRange":"4:1::6","type":"STRING_LITERAL"},
+      {"text":")","textRange":"5:0::1"},
+      {"text":"func","textRange":"9:0::4","type":"KEYWORD"},
+      {"text":"main","textRange":"9:5::9"},
+      {"text":"(","textRange":"9:9::10"},
+      {"text":")","textRange":"9:10::11"},
+      {"text":"{","textRange":"9:12::13"},
+      {"text":"fmt","textRange":"10:1::4"},
+      {"text":"Println","textRange":"10:5::12"},
+      {"text":".","textRange":"10:4::5"},
+      {"text":"(","textRange":"10:12::13"},
+      {"text":"\"Hello World\"","textRange":"10:13::26","type":"STRING_LITERAL"},
+      {"text":")","textRange":"10:26::27"},
+      {"text":"}","textRange":"11:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:12:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "3:0:5:1","children":[
+        {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
+        {"@type": "Native", "metaData": "3:7::8","nativeKind":"Lparen"},
+        {"@type": "ImportSpecification", "metaData": "4:1::6","path":
+          {"@type": "StringLiteral", "metaData": "4:1::6","value":"\"fmt\"","content":"fmt"},"name":
+          null,"__cfgId":3},
+        {"@type": "Native", "metaData": "5:0::1","nativeKind":"Rparen"}
+      ],"__cfgId":4},
+      {"@type": "FunctionDeclaration", "metaData": "9:0:11:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "9:5::9","type":"func()","package":"main","name":"main","id":83,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "9:12:11:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "10:1::27","expression":
+            {"@type": "FunctionInvocation", "metaData": "10:1::27","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "10:1::12","identifier":
+                {"@type": "Identifier", "metaData": "10:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":8},"expression":
+                {"@type": "Identifier", "metaData": "10:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":25,"__cfgId":7},"__cfgId":9},"arguments":[
+              {"@type": "StringLiteral", "metaData": "10:13::26","value":"\"Hello World\"","content":"Hello World"}
+            ],"__cfgId":10},"__cfgId":11}
+        ],"__cfgId":12},"__cfgId":1}
+    ],"__cfgId":2}
+} 

@@ -1,0 +1,11 @@
+package main
+
+import (
+	"fmt"
+)
+
+//line line_directive_changed_file.go:1000
+
+func main() {
+	fmt.Println("Hello World")
+}

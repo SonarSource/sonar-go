@@ -265,7 +265,7 @@ class MetricVisitorTest {
   }
 
   @Test
-  void shouldCreateMetricsWhenContainsInvalidLineComments() throws IOException {
+  void metricsShouldIgnoreLineDirective() throws IOException {
     scan("""
       package p
 
@@ -275,9 +275,8 @@ class MetricVisitorTest {
       // ERROR "unknown field foo"
       """);
 
-    // The 7th line is empty, but the ':' has line 7 in metadata, set by '/*line :7:1*/' comment
-    assertThat(visitor.linesOfCode()).containsExactly(1, 4, 6, 7);
-    assertThat(visitor.commentLines()).containsExactly(3, 4, 6, 7, 10);
+    assertThat(visitor.linesOfCode()).containsExactly(1, 4);
+    assertThat(visitor.commentLines()).containsExactly(3, 4, 6);
     assertThat(visitor.executableLines()).containsExactly(4);
   }
 
