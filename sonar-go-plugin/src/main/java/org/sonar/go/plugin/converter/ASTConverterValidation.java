@@ -43,6 +43,7 @@ import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.TreeOrError;
 
 import static org.sonar.go.utils.LogArg.lazyArg;
 
@@ -88,7 +89,7 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   @Override
-  public Map<String, Tree> parse(Map<String, String> filenameToContentMap) {
+  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap) {
     var filenameToTree = wrapped.parse(filenameToContentMap);
     assertTreeIsValid(filenameToTree);
     assertTokensMatchSourceCode(filenameToTree, filenameToContentMap);
@@ -128,10 +129,13 @@ public class ASTConverterValidation implements ASTConverter {
     return tree.getClass().getSimpleName();
   }
 
-  private void assertTreeIsValid(Map<String, Tree> trees) {
-    for (Map.Entry<String, Tree> filenameToTree : trees.entrySet()) {
+  private void assertTreeIsValid(Map<String, TreeOrError> trees) {
+    for (Map.Entry<String, TreeOrError> filenameToTree : trees.entrySet()) {
       currentFile = filenameToTree.getKey();
-      assertTreeIsValid(filenameToTree.getValue());
+      var treeOrError = filenameToTree.getValue();
+      if (treeOrError.isTree()) {
+        assertTreeIsValid(treeOrError.tree());
+      }
     }
   }
 
@@ -172,11 +176,14 @@ public class ASTConverterValidation implements ASTConverter {
     }
   }
 
-  private void assertTokensMatchSourceCode(Map<String, Tree> trees, Map<String, String> filenameToContentMap) {
-    for (Map.Entry<String, Tree> filenameToTree : trees.entrySet()) {
+  private void assertTokensMatchSourceCode(Map<String, TreeOrError> trees, Map<String, String> filenameToContentMap) {
+    for (Map.Entry<String, TreeOrError> filenameToTree : trees.entrySet()) {
       currentFile = filenameToTree.getKey();
-      var tree = filenameToTree.getValue();
-      assertTokensMatchSourceCode(tree, filenameToContentMap.get(currentFile));
+      var treeOrError = filenameToTree.getValue();
+      if (treeOrError.isTree()) {
+        var tree = treeOrError.tree();
+        assertTokensMatchSourceCode(tree, filenameToContentMap.get(currentFile));
+      }
     }
   }
 

@@ -18,8 +18,8 @@ package org.sonar.go.plugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -52,6 +52,7 @@ import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeOrError;
 import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonarsource.analyzer.commons.ProgressReport;
 
@@ -111,19 +112,28 @@ public abstract class SlangSensor implements Sensor {
 
     beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileData);
 
-    // TODO SONARGO-618 Parse files in batches, Java part
-    for (InputFile inputFile : inputFiles) {
+    for (List<InputFile> inputFilesInDir : filesByDirectory.values()) {
       if (sensorContext.isCancelled()) {
         return false;
       }
-      InputFileContext inputFileContext = new InputFileContext(sensorContext, inputFile);
+
+      var filesToAnalyse = inputFilesInDir.stream()
+        .map(inputFile -> new InputFileContext(sensorContext, inputFile))
+        .toList();
+
       try {
-        analyseFile(converter, inputFileContext, inputFile, visitors, statistics);
+        analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext);
       } catch (ParseException e) {
-        logParsingError(inputFile, e);
-        inputFileContext.reportAnalysisParseError(repositoryKey(), inputFile, e.getPosition());
-        if (GoSensor.isFailFast(sensorContext)) {
-          throw new IllegalStateException("Exception when analyzing '" + inputFile + "'", e);
+        LOG.warn("Unable to parse file.", e);
+        var inputFilePath = e.getInputFilePath();
+        if (inputFilePath != null) {
+          filesToAnalyse.stream()
+            .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
+            .findFirst()
+            .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), e.getMessage()));
+          if (GoSensor.isFailFast(sensorContext)) {
+            throw new IllegalStateException("Exception when analyzing '" + inputFilePath + "'", e);
+          }
         }
       }
       progressReport.nextFile();
@@ -143,63 +153,118 @@ public abstract class SlangSensor implements Sensor {
       }));
   }
 
-  static void analyseFile(ASTConverter converter,
-    InputFileContext inputFileContext,
-    InputFile inputFile,
+  static void analyseDirectory(ASTConverter converter,
+    List<InputFileContext> inputFileContextList,
     List<TreeVisitor<InputFileContext>> visitors,
-    DurationStatistics statistics) {
-    List<TreeVisitor<InputFileContext>> canBeSkipped = new ArrayList<>();
-    if (fileCanBeSkipped(inputFileContext)) {
-      String fileKey = inputFile.key();
-      LOG.debug("Checking that previous results can be reused for input file {}.", fileKey);
+    DurationStatistics statistics,
+    SensorContext sensorContext) {
 
-      Map<PullRequestAwareVisitor, Boolean> successfulCacheReuseByVisitor = visitors.stream()
-        .filter(PullRequestAwareVisitor.class::isInstance)
-        .map(PullRequestAwareVisitor.class::cast)
-        .collect(Collectors.toMap(visitor -> visitor, visitor -> reusePreviousResults(visitor, inputFileContext)));
+    Map<String, CacheEntry> filenameToCacheEntry = filterOutFilesFromCache(inputFileContextList, visitors);
 
-      boolean allVisitorsSuccessful = successfulCacheReuseByVisitor.values().stream().allMatch(Boolean.TRUE::equals);
-      if (allVisitorsSuccessful) {
-        LOG.debug("Skipping input file {} (status is unchanged).", fileKey);
-        HashCacheUtils.copyFromPrevious(inputFileContext);
-        return;
-      }
-      LOG.debug("Will convert input file {} for full analysis.", fileKey);
-      successfulCacheReuseByVisitor.entrySet().stream()
-        .filter(Map.Entry::getValue)
-        .map(Map.Entry::getKey)
-        .forEach(canBeSkipped::add);
-    }
-    String content;
-    String fileName;
-    try {
-      content = inputFile.contents();
-      fileName = inputFile.toString();
-    } catch (IOException | RuntimeException e) {
-      throw toParseException("read", inputFile, e);
-    }
+    Map<String, String> filenameToContentMap = filenameToCacheEntry.values().stream()
+      .map(SlangSensor::convertCacheEntryToFilenameAndContent)
+      .filter(entry -> !EMPTY_FILE_CONTENT_PATTERN.matcher(entry.getValue()).matches())
+      .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
-    if (EMPTY_FILE_CONTENT_PATTERN.matcher(content).matches()) {
+    if (filenameToContentMap.isEmpty()) {
       return;
     }
 
-    Map<String, Tree> trees = statistics.time("Parse", () -> {
-      try {
-        return converter.parse(Map.of(fileName, content));
-      } catch (RuntimeException e) {
-        throw toParseException("parse", inputFile, e);
+    Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap));
+
+    handleParsingErrors(sensorContext, treeOrErrorMap, filenameToCacheEntry);
+
+    visitTrees(visitors, statistics, treeOrErrorMap, filenameToCacheEntry);
+  }
+
+  private static Map.Entry<String, String> convertCacheEntryToFilenameAndContent(CacheEntry cacheEntry) {
+    String content;
+    String fileName;
+    try {
+      content = cacheEntry.fileContext().inputFile.contents();
+      fileName = cacheEntry.fileContext().inputFile.toString();
+      return Map.entry(fileName, content);
+    } catch (IOException | RuntimeException e) {
+      throw toParseException("read", cacheEntry.fileContext().inputFile, e);
+    }
+  }
+
+  private static void handleParsingErrors(SensorContext sensorContext, Map<String, TreeOrError> treeOrErrorMap, Map<String, CacheEntry> filenameToCacheResult) {
+    var isAnyError = false;
+    for (Map.Entry<String, TreeOrError> filenameToTree : treeOrErrorMap.entrySet()) {
+      var treeOrError = filenameToTree.getValue();
+      if (treeOrError.isError()) {
+        isAnyError = true;
+        String fileName = filenameToTree.getKey();
+        LOG.warn("Unable to parse file: {}. {}", fileName, treeOrError.error());
+        filenameToCacheResult.get(fileName).fileContext().reportAnalysisParseError(GoRulesDefinition.REPOSITORY_KEY, treeOrError.error());
       }
-    });
+    }
+    if (isAnyError && GoSensor.isFailFast(sensorContext)) {
+      throw new IllegalStateException("Exception when analyzing files. See logs above for details.");
+    }
+  }
+
+  private static Map<String, CacheEntry> filterOutFilesFromCache(List<InputFileContext> inputFileContexts, List<TreeVisitor<InputFileContext>> visitors) {
+    Map<String, CacheEntry> result = new HashMap<>();
+    for (InputFileContext inputFileContext : inputFileContexts) {
+      if (fileCanBeSkipped(inputFileContext)) {
+        String fileKey = inputFileContext.inputFile.key();
+        LOG.debug("Checking that previous results can be reused for input file {}.", fileKey);
+
+        Map<PullRequestAwareVisitor, Boolean> successfulCacheReuseByVisitor = visitors.stream()
+          .filter(PullRequestAwareVisitor.class::isInstance)
+          .map(PullRequestAwareVisitor.class::cast)
+          .collect(Collectors.toMap(visitor -> visitor, visitor -> reusePreviousResults(visitor, inputFileContext)));
+
+        boolean allVisitorsSuccessful = successfulCacheReuseByVisitor.values().stream().allMatch(Boolean.TRUE::equals);
+        if (allVisitorsSuccessful) {
+          LOG.debug("Skipping input file {} (status is unchanged).", fileKey);
+          HashCacheUtils.copyFromPrevious(inputFileContext);
+          // The file can be skipped completely
+          continue;
+        }
+        LOG.debug("Will convert input file {} for full analysis.", fileKey);
+        var visitorsToSkip = successfulCacheReuseByVisitor.entrySet().stream()
+          .filter(Map.Entry::getValue)
+          .map(Map.Entry::getKey)
+          .map(visitor -> (TreeVisitor<InputFileContext>) visitor)
+          .toList();
+        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, visitorsToSkip));
+      } else {
+        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, List.of()));
+      }
+    }
+    return result;
+  }
+
+  private static void visitTrees(List<TreeVisitor<InputFileContext>> visitors, DurationStatistics statistics, Map<String, TreeOrError> treeOrErrorMap,
+    Map<String, CacheEntry> filenameToCacheEntry) {
+    for (Map.Entry<String, TreeOrError> filenameToTree : treeOrErrorMap.entrySet()) {
+      var treeOrError = filenameToTree.getValue();
+      if (treeOrError.isTree()) {
+        var filename = filenameToTree.getKey();
+        var cacheResult = filenameToCacheEntry.get(filename);
+        visitTree(visitors, statistics, cacheResult, treeOrError.tree());
+      }
+    }
+  }
+
+  private static void visitTree(List<TreeVisitor<InputFileContext>> visitors, DurationStatistics statistics, CacheEntry cacheResult, Tree tree) {
+    var visitorsToSkip = cacheResult.visitorsToSkip();
+    var inputFileContext = cacheResult.fileContext();
+
     for (TreeVisitor<InputFileContext> visitor : visitors) {
       try {
-        if (canBeSkipped.contains(visitor)) {
+        if (visitorsToSkip.contains(visitor)) {
           continue;
         }
         String visitorId = visitor.getClass().getSimpleName();
-        trees.values().forEach(tree -> statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree)));
+        statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
-        LOG.warn("Cannot analyse '" + inputFile + "': " + e.getMessage(), e);
+        var message = "Cannot analyse '" + inputFileContext.inputFile + "': " + e.getMessage();
+        LOG.warn(message, e);
       }
     }
     writeHashToCache(inputFileContext);
@@ -232,17 +297,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected static ParseException toParseException(String action, InputFile inputFile, Exception cause) {
     TextPointer position = cause instanceof ParseException actual ? actual.getPosition() : null;
-    return new ParseException("Cannot " + action + " '" + inputFile + "': " + cause.getMessage(), position, cause);
-  }
-
-  private static void logParsingError(InputFile inputFile, ParseException e) {
-    TextPointer position = e.getPosition();
-    String positionMessage = "";
-    if (position != null) {
-      positionMessage = String.format("Parse error at position %s:%s", position.line(), position.lineOffset());
-    }
-    LOG.warn("Unable to parse file: {}. {}", inputFile.uri(), positionMessage);
-    LOG.warn(e.getMessage());
+    return new ParseException("Cannot " + action + " '" + inputFile + "': " + cause.getMessage(), position, cause, inputFile.toString());
   }
 
   @Override
@@ -252,7 +307,6 @@ public abstract class SlangSensor implements Sensor {
     FilePredicate mainFilePredicate = fileSystem.predicates().and(
       fileSystem.predicates().hasLanguage(language.getKey()),
       fileSystem.predicates().hasType(InputFile.Type.MAIN));
-    var goModFileData = new GoModFileAnalyzer(sensorContext).analyzeGoModFile();
     List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
       .toList();
     List<String> filenames = inputFiles.stream().map(InputFile::toString).toList();
@@ -260,6 +314,7 @@ public abstract class SlangSensor implements Sensor {
     progressReport.start(filenames);
     boolean success = false;
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
+    var goModFileData = new GoModFileAnalyzer(sensorContext).analyzeGoModFile();
     try {
       var visitors = visitors(sensorContext, statistics, goModFileData);
       success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, statistics, goModFileData);
@@ -291,5 +346,8 @@ public abstract class SlangSensor implements Sensor {
         new CpdVisitor(),
         new SyntaxHighlighter());
     }
+  }
+
+  record CacheEntry(InputFileContext fileContext, List<TreeVisitor<InputFileContext>> visitorsToSkip) {
   }
 }

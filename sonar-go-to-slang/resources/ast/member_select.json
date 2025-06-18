@@ -204,5 +204,6 @@
                   {"@type": "Identifier", "metaData": "21:1::6","type":"*main.Person","package":"UNKNOWN","name":"value","id":189,"__cfgId":25},"__cfgId":27},"arguments":[],"__cfgId":28},"__cfgId":30},"__cfgId":31},
           {"@type": "Native", "metaData": "21:32::33","nativeKind":"Semicolon"}
         ],"__cfgId":32},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

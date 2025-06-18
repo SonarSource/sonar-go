@@ -27,7 +27,7 @@ public interface ASTConverter {
    * @return a map where keys are file names and values are their corresponding AST trees
    * @throws ParseException if an error occurs during parsing
    */
-  Map<String, Tree> parse(Map<String, String> filenameToContentMap);
+  Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap);
 
   default void terminate() {
     // Nothing to do by default

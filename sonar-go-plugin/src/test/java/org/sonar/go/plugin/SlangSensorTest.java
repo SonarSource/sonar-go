@@ -33,6 +33,7 @@ import org.slf4j.event.Level;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextPointer;
+import org.sonar.api.batch.fs.internal.DefaultTextPointer;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -240,9 +241,9 @@ class SlangSensorTest extends AbstractSensorTest {
     AnalysisError analysisError = analysisErrors.iterator().next();
     assertThat(analysisError.inputFile()).isEqualTo(spyInputFile);
     assertThat(analysisError.message()).isEqualTo("Unable to parse file: fakeFile.go");
-    assertThat(analysisError.location()).isNull();
+    assertThat(analysisError.location()).isEqualTo(new DefaultTextPointer(1, 0));
 
-    assertThat(logTester.logs()).contains(String.format("Unable to parse file: %s. ", inputFile.uri()));
+    assertThat(logTester.logs()).contains("Unable to parse file.");
   }
 
   @Test
@@ -264,7 +265,7 @@ class SlangSensorTest extends AbstractSensorTest {
     IssueLocation location = issue.primaryLocation();
     assertThat(location.inputComponent()).isEqualTo(inputFile);
     assertThat(location.message()).isEqualTo("A parsing error occurred in this file.");
-    assertThat(location.textRange()).isNull();
+    assertThat(location.textRange()).hasRange(1, 0, 1, 10);
 
     Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
     assertThat(analysisErrors).hasSize(1);
@@ -272,9 +273,9 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(analysisError.inputFile()).isEqualTo(inputFile);
     assertThat(analysisError.message()).isEqualTo("Unable to parse file: file1.go");
     TextPointer textPointer = analysisError.location();
-    assertThat(textPointer).isNull();
+    assertThat(textPointer).isEqualTo(new DefaultTextPointer(1, 2));
 
-    assertThat(logTester.logs()).contains(String.format("Unable to parse file: %s. ", inputFile.uri()));
+    assertThat(logTester.logs()).contains("Unable to parse file: file1.go. file1.go:1:2: expected 'package', found class");
   }
 
   @Test
@@ -290,7 +291,7 @@ class SlangSensorTest extends AbstractSensorTest {
     CheckFactory checkFactory = checkFactory("S2260");
     var sensor = sensor(checkFactory);
     assertThatThrownBy(() -> sensor.execute(context))
-      .hasMessage("Exception when analyzing 'file1.go'")
+      .hasMessage("Exception when analyzing files. See logs above for details.")
       .isInstanceOf(IllegalStateException.class);
   }
 
@@ -327,9 +328,9 @@ class SlangSensorTest extends AbstractSensorTest {
     GoCheck failingCheck = init -> init.register(TopLevelTree.class, (ctx, tree) -> {
       throw new IllegalStateException("BOUM");
     });
-    when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(repositoryKey(), "failing"));
+    when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, "failing"));
     // The two following calls are called by "GoChecks".
-    when(checkFactory.create(repositoryKey())).thenReturn(checks);
+    when(checkFactory.create(GoRulesDefinition.REPOSITORY_KEY)).thenReturn(checks);
     when(checks.addAnnotatedChecks(any(Iterable.class))).thenReturn(checks);
     when(checks.all()).thenReturn(Collections.singletonList(failingCheck));
     sensor(checkFactory).execute(context);
@@ -465,12 +466,11 @@ class SlangSensorTest extends AbstractSensorTest {
     @Test
     void shouldSkipsConversionForUnchangedFileWithCachedResults() {
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, times(1)).reusePreviousResults(inputFileContext);
       verify(converter, never()).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG)).contains(
@@ -485,12 +485,11 @@ class SlangSensorTest extends AbstractSensorTest {
       // Set the only pull request aware visitor to fail reusing previous results
       visitor = spy(new FailingToReuseVisitor());
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, times(1)).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG)).contains(
@@ -507,12 +506,11 @@ class SlangSensorTest extends AbstractSensorTest {
       // Disable the skipping of unchanged files
       sensorContext.setCanSkipUnchangedFiles(false);
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain(
@@ -531,12 +529,11 @@ class SlangSensorTest extends AbstractSensorTest {
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       sensorContext.fileSystem().add(changedFile);
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        changedFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG))
@@ -557,12 +554,11 @@ class SlangSensorTest extends AbstractSensorTest {
       sensorContext.fileSystem().add(changedFile);
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        changedFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain("Skipping input file moduleKey:file1.go (status is unchanged).");
@@ -576,12 +572,11 @@ class SlangSensorTest extends AbstractSensorTest {
       // Disable caching
       sensorContext.setCacheEnabled(false);
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG))
@@ -597,12 +592,11 @@ class SlangSensorTest extends AbstractSensorTest {
       // Set an empty previous cache
       sensorContext.setPreviousCache(new DummyReadCache());
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG))
@@ -627,12 +621,11 @@ class SlangSensorTest extends AbstractSensorTest {
       doReturn(failingToClose).when(corruptedCache).read(hashKey);
       sensorContext.setPreviousCache(corruptedCache);
       // Execute analyzeFile
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, never()).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
       assertThat(logTester.logs(Level.DEBUG))
@@ -646,12 +639,11 @@ class SlangSensorTest extends AbstractSensorTest {
     @Test
     void visitorShouldNotBeCalledToVisitTheAstAfterConversion() {
       FailingToReuseVisitor failing = spy(new FailingToReuseVisitor());
-      SlangSensor.analyseFile(
+      SlangSensor.analyseDirectory(
         converter,
-        inputFileContext,
-        inputFile,
+        List.of(inputFileContext),
         List.of(visitor, failing),
-        new DurationStatistics(sensorContext.config()));
+        new DurationStatistics(sensorContext.config()), sensorContext);
       verify(visitor, times(1)).reusePreviousResults(inputFileContext);
       verify(failing, times(1)).reusePreviousResults(inputFileContext);
       verify(converter, times(1)).parse(anyMap());
@@ -660,16 +652,6 @@ class SlangSensorTest extends AbstractSensorTest {
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain(
         "Skipping input file moduleKey:file1.go (status is unchanged).");
     }
-  }
-
-  @Override
-  protected String repositoryKey() {
-    return "slang";
-  }
-
-  @Override
-  protected Language language() {
-    return GoLanguage.GO;
   }
 
   private SlangSensor sensor(CheckFactory checkFactory) {
@@ -692,7 +674,7 @@ class SlangSensorTest extends AbstractSensorTest {
 
       @Override
       protected String repositoryKey() {
-        return SlangSensorTest.this.repositoryKey();
+        return GoRulesDefinition.REPOSITORY_KEY;
       }
     };
   }

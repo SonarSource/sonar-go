@@ -151,5 +151,6 @@
                 {"@type": "Identifier", "metaData": "17:5::10","type":"func() int","package":"example.com/company/sub-modules/impTwoPack/bar","name":"Hello","id":"__id_placeholder__","__cfgId":51},"expression":
                 {"@type": "Identifier", "metaData": "17:1::4","type":"*example.com/company/sub-modules/impTwoPack/bar.MyType","package":"UNKNOWN","name":"my2","id":"__id_placeholder__","__cfgId":50},"__cfgId":52},"arguments":[],"__cfgId":53},"__cfgId":54}
         ],"__cfgId":55},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

@@ -433,5 +433,6 @@
       ],"identifiers":[
         {"@type": "Identifier", "metaData": "34:4::6","type":"func(a int) int","package":"UNKNOWN","name":"g4","id":493,"__cfgId":2}
       ],"__cfgId":22}
-    ],"__cfgId":23}
+    ],"__cfgId":23}  ,
+  "error": null
 } 

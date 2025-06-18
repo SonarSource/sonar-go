@@ -62,6 +62,11 @@ type IdentifierInfo struct {
 	Package string
 }
 
+type AstFileOrError struct {
+	ast *ast.File
+	err error
+}
+
 const keywordKind = "KEYWORD"
 const nativeSlangType = "Native"
 const nativeKind = "nativeKind"
@@ -76,11 +81,11 @@ const processLineDirective = false
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
-func toSlangJson(fileSet *token.FileSet, astFiles map[string]ast.File, fileContents map[string]string, info *types.Info, indent string) string {
+func toSlangJson(fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, indent string) string {
 	fileNameToString := make(map[string]string)
 	for fileName, astFile := range astFiles {
-		slangTree, comments, tokens := toSlangTree(fileSet, &astFile, fileContents[fileName], info)
-		jsonPart := toJsonSlang(slangTree, comments, tokens, indent)
+		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info)
+		jsonPart := toJsonSlang(slangTree, comments, tokens, errMgs, indent)
 		fileNameToString[fileName] = jsonPart
 	}
 	return toJson(fileNameToString)
@@ -99,19 +104,24 @@ func toJson(fileNameToString map[string]string) string {
 	return buf.String()
 }
 
-func toSlangTree(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) (*Node, []*Node, []*Token) {
-	return NewSlangMapper(fileSet, astFile, fileContent, info).toSlang()
+func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info) (*Node, []*Node, []*Token, *string) {
+	if astFile.err != nil {
+		errMsg := astFile.err.Error()
+		return nil, nil, nil, &errMsg
+	}
+	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info).toSlang()
+	return slangTree, comments, tokens, nil
 }
 
-func readAstFile(fileSet *token.FileSet, reader io.Reader) (map[string]ast.File, map[string]string, error) {
+func readAstFile(fileSet *token.FileSet, reader io.Reader) (map[string]AstFileOrError, map[string]string, error) {
 	var bytesArray []byte
 	bytesArray, err := io.ReadAll(reader)
 	if err != nil {
 		return nil, nil, err
 	}
 	files := readBytesToFilenameContentMap(bytesArray)
-	astFiles, err := readAstString(fileSet, files)
-	return astFiles, files, err
+	astFiles := readAstString(fileSet, files)
+	return astFiles, files, nil
 }
 
 // The byte format of the byte array is:
@@ -148,23 +158,22 @@ func readFixedSizeText(bytesArray []byte, begin int) string {
 	return string(bytesArray[begin+4 : begin+4+length])
 }
 
-func readAstString(fileSet *token.FileSet, files map[string]string) (map[string]ast.File, error) {
-	astFiles := map[string]ast.File{}
-	var err error = nil
+func readAstString(fileSet *token.FileSet, files map[string]string) map[string]AstFileOrError {
+	astFiles := map[string]AstFileOrError{}
 	for fileName, fileContent := range files {
 		astFile, err := parser.ParseFile(fileSet, fileName, fileContent, parser.ParseComments)
 		if err != nil {
-			return astFiles, err
+			astFiles[fileName] = AstFileOrError{nil, err}
+			continue
 		}
 		fileSize := fileSet.File(astFile.Pos()).Size()
 		if len(fileContent) != fileSize {
 			err = errors.New(fmt.Sprintf("Unexpected file size, expect %d instead of %d for file %s",
 				len(fileContent), fileSize, fileName))
 		}
-		astFiles[fileName] = *astFile
+		astFiles[fileName] = AstFileOrError{astFile, nil}
 	}
-
-	return astFiles, err
+	return astFiles
 }
 
 type SlangMapper struct {

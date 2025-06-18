@@ -76,5 +76,6 @@
               {"@type": "Identifier", "metaData": "8:16::22","type":"net/http.Cookie","package":"UNKNOWN","name":"cookie","id":81,"__cfgId":21}
             ],"__cfgId":22},"__cfgId":23}
         ],"__cfgId":24},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

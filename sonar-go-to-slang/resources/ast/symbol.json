@@ -44,5 +44,6 @@
               {"@type": "Identifier", "metaData": "5:8::9","type":"int","package":"UNKNOWN","name":"x","id":33,"__cfgId":8},"__cfgId":9},"operator":"EQUAL","leftHandSide":
             {"@type": "Identifier", "metaData": "5:4::5","type":"int","package":"UNKNOWN","name":"x","id":33,"__cfgId":7},"__cfgId":10}
         ],"__cfgId":11},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

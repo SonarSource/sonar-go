@@ -26,6 +26,7 @@ import org.sonar.go.persistence.conversion.JsonTreeConverter;
 import org.sonar.go.persistence.conversion.SerializationContext;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.TreeOrError;
 
 public final class JsonTree {
 
@@ -55,13 +56,19 @@ public final class JsonTree {
     return ctx.fieldToNullableObject(root, "tree", Tree.class);
   }
 
-  public static Map<String, Tree> fromJson(String json) {
-    Map<String, Tree> trees = new HashMap<>();
+  public static Map<String, TreeOrError> fromJson(String json) {
+    Map<String, TreeOrError> trees = new HashMap<>();
     JsonObject root = Json.parse(json).asObject();
     for (String name : root.names()) {
       var treeRoot = root.get(name).asObject();
-      var tree = fromJsonSingleTree(treeRoot);
-      trees.put(name, tree);
+      var errorJson = treeRoot.get("error");
+      if (errorJson != null && errorJson.isString()) {
+        var errorMessage = errorJson.asString();
+        trees.put(name, TreeOrError.of(errorMessage));
+      } else {
+        var tree = fromJsonSingleTree(treeRoot);
+        trees.put(name, TreeOrError.of(tree));
+      }
     }
     return trees;
   }

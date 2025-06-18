@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 public class ParseException extends RuntimeException {
 
   private final transient TextPointer position;
+  private final String inputFilePath;
 
   public ParseException(String message) {
     this(message, null);
@@ -32,8 +33,13 @@ public class ParseException extends RuntimeException {
   }
 
   public ParseException(String message, @Nullable TextPointer position, @Nullable Throwable cause) {
+    this(message, position, cause, null);
+  }
+
+  public ParseException(String message, @Nullable TextPointer position, @Nullable Throwable cause, @Nullable String inputFilePath) {
     super(message, cause);
     this.position = position;
+    this.inputFilePath = inputFilePath;
   }
 
   @CheckForNull
@@ -41,4 +47,8 @@ public class ParseException extends RuntimeException {
     return position;
   }
 
+  @CheckForNull
+  public String getInputFilePath() {
+    return inputFilePath;
+  }
 }

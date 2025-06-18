@@ -31,7 +31,7 @@ class SecondaryLocationTest {
         "treeMetaData": {"tokens": [{"textRange": "1:0:1:3", "text": "foo", "type": "OTHER"}]},
         "tree": {"@type": "Identifier", "metaData": "1:0:1:3", "name": "foo", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
       }
-    }""").get("foo.go");
+    }""").get("foo.go").tree();
 
   @Test
   void constructor_with_tree() {

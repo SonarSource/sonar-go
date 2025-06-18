@@ -125,18 +125,24 @@ func TestMainWithDotImport(t *testing.T) {
 func TestMainWithInvalidFile(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd"}
+	stdout, stderr := callMainStdinFromFile("resources/invalid_file.go.source")
 
-	defer func() {
-		stdout, stderr := getStdOutAndStdErr()
-		if r := recover(); r != nil {
-			assert.Empty(t, stdout, "Expected empty standard output")
-			assert.Contains(t, stderr, "Error reading AST file: resources/invalid_file.go.source:1:1: expected 'package', found xpackage")
-		}
-	}()
+	assert.Equal(t, stdout, `{
+  "resources/invalid_file.go.source": { 
+"treeMetaData": {
+"comments": [
+],
+"tokens": [
+]
+},
+"tree":
+null,
+"error": "resources/invalid_file.go.source:1:1: expected 'package', found xpackage"
+} 
 
-	callMainStdinFromFile("resources/invalid_file.go.source")
-
-	assert.Fail(t, "The main() should throw panic for invalid file")
+}
+`)
+	assert.Equal(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func TestMainWithDumpGcExportDataFlagOnly(t *testing.T) {
@@ -184,6 +190,24 @@ func TestPrintUsageForInvalidArguments(t *testing.T) {
 	}()
 	callMain()
 	assert.Fail(t, "The main() should throw panic for invalid flag")
+}
+
+func TestShouldNotPanicWhenGcExportOneInvalidFile(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_dir", "build/main_test/"}
+	stdout, stderr := callMainStdinFromFile("resources/invalid_file.go.source", "resources/simple_file_with_packages.go.source")
+	assert.Empty(t, stdout)
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=true, gcExportDataDir=\"build/main_test/\", moduleName=\"\", packagePath=\"\"")
+}
+
+func TestShouldNotPanicWhenGenerateASTOneInvalidFile(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd", "-gc_export_data_dir", "build/main_test/"}
+	stdout, stderr := callMainStdinFromFile("resources/invalid_file.go.source", "resources/simple_file_with_packages.go.source")
+
+	assert.Contains(t, stdout, "\"tree\":\nnull,\n\"error\": \"resources/invalid_file.go.source:1:1: expected 'package', found xpackage\"")
+	assert.Contains(t, stdout, "\"__cfgId\":2},\n\"error\": null")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"build/main_test/\", moduleName=\"\", packagePath=\"\"\n")
 }
 
 func getStandardOutput(w *os.File, old *os.File, outC chan string) string {
@@ -250,9 +274,9 @@ func resetCommandLineFlagsToDefault() {
 	flag.CommandLine = flag.NewFlagSet(os.Args[0], flag.PanicOnError)
 }
 
-func callMainStdinFromFile(file string) (stdout string, stderr string) {
+func callMainStdinFromFile(files ...string) (stdout string, stderr string) {
 	captureStdOutAndStdErr()
-	oldStdin := setStdIn(file)
+	oldStdin := setStdIn(files)
 	main()
 	os.Stdin = oldStdin
 	return getStdOutAndStdErr()
@@ -287,14 +311,14 @@ func writeBytes(byteData *bytes.Buffer, data any) {
 	}
 }
 
-func setStdIn(filePath string) *os.File {
-
+func setStdIn(filePaths []string) *os.File {
 	r, w, err := os.Pipe()
-
 	go func() {
-		_, err = w.Write(readFileToByteSlice(filePath))
-		if err != nil {
-			panic(err)
+		for _, filePath := range filePaths {
+			_, err = w.Write(readFileToByteSlice(filePath))
+			if err != nil {
+				panic(err)
+			}
 		}
 		w.Close()
 	}()

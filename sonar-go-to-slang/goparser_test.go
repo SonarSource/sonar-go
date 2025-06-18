@@ -22,7 +22,6 @@ package main
 import (
 	"encoding/json"
 	"github.com/stretchr/testify/assert"
-	"go/ast"
 	"go/token"
 	"os"
 	"path/filepath"
@@ -30,21 +29,18 @@ import (
 	"testing"
 )
 
-func slangFromString(filename string, source string) (*Node, []*Node, []*Token) {
-	fileSet, astFiles := astFromString(filename, source)
-	info, _ := typeCheckAst(fileSet, astFiles, true, "", "")
-	ast := astFiles[filename]
-	return toSlangTree(fileSet, &ast, source, info)
+func slangFromString(filename string, source string) (*Node, []*Node, []*Token, *string) {
+	fileSet, astFileOrErrors := astFromString(filename, source)
+	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "")
+	astFileOrError := astFileOrErrors[filename]
+	return toSlangTree(fileSet, &astFileOrError, source, info)
 }
 
-func astFromString(filename string, source string) (fileSet *token.FileSet, astFiles map[string]ast.File) {
+func astFromString(filename string, source string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
 	fileSet = token.NewFileSet()
 	fileNameToContent := make(map[string]string)
 	fileNameToContent[filename] = source
-	astFiles, err := readAstString(fileSet, fileNameToContent)
-	if err != nil {
-		panic(err)
-	}
+	astFileOrErrors = readAstString(fileSet, fileNameToContent)
 	return
 }
 
@@ -57,14 +53,15 @@ func fix_all_go_files_test_automatically(t *testing.T) {
 			panic(err)
 		}
 		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
-		node, comment, tokens := slangFromString(filename, string(source))
-		actual := toJsonSlang(node, comment, tokens, "  ")
+		node, comment, tokens, errMsg := slangFromString(filename, string(source))
+		actual := toJsonSlang(node, comment, tokens, errMsg, "  ")
 		d1 := []byte(actual)
 		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
 		if errWrite != nil {
 			panic(errWrite)
 		}
 	}
+	t.Fatal("This test is only for local development and should not run in CI build.")
 }
 
 func Test_all_go_files(t *testing.T) {
@@ -74,8 +71,8 @@ func Test_all_go_files(t *testing.T) {
 			panic(err)
 		}
 		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
-		node, comment, tokens := slangFromString(filename, string(source))
-		actual := toJsonSlang(node, comment, tokens, "  ")
+		node, comment, tokens, errMsg := slangFromString(filename, string(source))
+		actual := toJsonSlang(node, comment, tokens, errMsg, "  ")
 
 		var jsonActual interface{}
 		err1 := json.Unmarshal([]byte(actual), &jsonActual)

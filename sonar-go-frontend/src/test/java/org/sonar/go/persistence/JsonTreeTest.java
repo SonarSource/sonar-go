@@ -22,6 +22,7 @@ import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.impl.ArrayTypeTreeImpl;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
@@ -112,6 +113,7 @@ import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
+import org.sonar.plugins.go.api.TreeOrError;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 
@@ -1086,5 +1088,15 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(TypeAssertionExpressionTreeImpl.class))
       .containsExactlyInAnyOrder(EXPRESSION, TYPE);
+  }
+
+  @Test
+  void shouldConvertParsingError() throws IOException {
+    var content = indentedJsonFromFile("parsing_error.json");
+
+    var filenameToTreeOrError = JsonTree.fromJson(content);
+    assertThat(filenameToTreeOrError).containsOnly(Map.entry(
+      "resources/invalid_file.go",
+      new TreeOrError(null, "resources/invalid_file.go:1:1: expected 'package', found xpackage")));
   }
 }

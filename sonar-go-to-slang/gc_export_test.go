@@ -99,9 +99,9 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName)
 
 	for fileName, aFile := range astFiles {
-		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
+		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
 		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
-		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, "  ")
+		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
 
 		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
 		fmt.Printf("Writing %s\n", jsonFile)
@@ -121,9 +121,9 @@ func parseFileToJson(files []string, name string, moduleName string) map[string]
 	result := map[string]string{}
 
 	for fileName, aFile := range astFiles {
-		slangTree, comments, tokens := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
+		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info)
 		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
-		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, "  ")
+		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
 		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
 		result[jsonFile] = actual
 	}

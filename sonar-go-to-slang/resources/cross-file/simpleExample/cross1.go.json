@@ -119,5 +119,6 @@
                   {"@type": "Identifier", "metaData": "13:5::17","type":"simpleExample/foo.MyType","package":"UNKNOWN","name":"GlobalMyType","id":"__id_placeholder__","__cfgId":36},"expression":
                   {"@type": "Identifier", "metaData": "13:1::4","type":"UNKNOWN","package":"simpleExample/foo","name":"foo","id":"__id_placeholder__","__cfgId":35},"__cfgId":37},"__cfgId":39},"arguments":[],"__cfgId":40},"__cfgId":41}
         ],"__cfgId":42},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

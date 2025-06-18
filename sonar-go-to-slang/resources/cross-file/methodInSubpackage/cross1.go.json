@@ -119,5 +119,6 @@
                 {"@type": "Identifier", "metaData": "14:5::14","type":"func() int","package":"example.com/met_in_sub_pack/foo/bar","name":"BarMethod","id":"__id_placeholder__","__cfgId":37},"expression":
                 {"@type": "Identifier", "metaData": "14:1::4","type":"UNKNOWN","package":"example.com/met_in_sub_pack/foo/bar","name":"bar","id":"__id_placeholder__","__cfgId":36},"__cfgId":38},"arguments":[],"__cfgId":39},"__cfgId":40}
         ],"__cfgId":41},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

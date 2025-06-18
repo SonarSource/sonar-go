@@ -106,7 +106,7 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(fileSet *token.FileSet, astFiles map[string]ast.File, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, error) {
+func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, error) {
 	packageName := getPackageName(astFiles)
 	conf := types.Config{
 		Importer: &localImporter{
@@ -144,19 +144,23 @@ func typeCheckAst(fileSet *token.FileSet, astFiles map[string]ast.File, debugTyp
 	return info, err
 }
 
-func getPackageName(astFiles map[string]ast.File) string {
+func getPackageName(astFiles map[string]AstFileOrError) string {
 	for _, v := range astFiles {
-		if v.Name != nil && v.Name.Name != "" {
-			return v.Name.Name
+		if v.ast != nil {
+			if v.ast.Name != nil && v.ast.Name.Name != "" {
+				return v.ast.Name.Name
+			}
 		}
 	}
 	return ""
 }
 
-func mapToSlice(astFiles map[string]ast.File) []*ast.File {
+func mapToSlice(astFiles map[string]AstFileOrError) []*ast.File {
 	files := make([]*ast.File, 0, len(astFiles))
 	for _, v := range astFiles {
-		files = append(files, &v)
+		if v.ast != nil {
+			files = append(files, v.ast)
+		}
 	}
 	return files
 }

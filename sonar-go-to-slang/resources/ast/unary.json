@@ -205,5 +205,6 @@
             {"@type": "Identifier", "metaData": "28:5::6","type":"**main.Person","package":"UNKNOWN","name":"a","id":397,"__cfgId":59}
           ],"__cfgId":62}
         ],"__cfgId":63},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

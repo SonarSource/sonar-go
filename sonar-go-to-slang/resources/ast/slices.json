@@ -504,5 +504,6 @@
             {"@type": "Identifier", "metaData": "48:1::6","type":"[]string","package":"UNKNOWN","name":"slice","id":736,"__cfgId":9}
           ],"__cfgId":12}
         ],"__cfgId":13},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

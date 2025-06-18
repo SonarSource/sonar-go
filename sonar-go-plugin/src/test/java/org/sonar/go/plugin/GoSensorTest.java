@@ -161,7 +161,7 @@ class GoSensorTest {
     GoSensor goSensor = getSensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
-    assertThat(logTester.logs(Level.WARN)).contains("Cannot read 'lets.go': The file is corrupted");
+    assertThat(logTester.logs(Level.WARN)).contains("Unable to parse file.");
   }
 
   @Test

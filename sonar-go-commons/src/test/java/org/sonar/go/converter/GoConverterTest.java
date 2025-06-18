@@ -395,10 +395,9 @@ class GoConverterTest {
   }
 
   @Test
-  void shouldFailWithParseError() {
-    ParseException e = assertThrows(ParseException.class,
-      () -> TestGoConverter.parse("$!#@"));
-    assertThat(e).hasMessage("Go executable returned non-zero exit value: 2");
+  void shouldNotFailWithParseError() {
+    var parseResult = TestGoConverter.parseAndReturnError("$!#@");
+    assertThat(parseResult).isEqualTo("foo.go:1:1: illegal character U+0024 '$'");
   }
 
   @Test

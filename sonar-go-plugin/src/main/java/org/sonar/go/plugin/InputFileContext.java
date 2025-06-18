@@ -34,6 +34,7 @@ import org.sonar.api.batch.sensor.error.NewAnalysisError;
 import org.sonar.api.batch.sensor.issue.NewIssue;
 import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
@@ -44,6 +45,9 @@ public class InputFileContext extends TreeContext {
   private static final Logger LOG = LoggerFactory.getLogger(InputFileContext.class);
 
   private static final String PARSING_ERROR_RULE_KEY = "S2260";
+  private static final int MIN_NUMBER_OF_PARTS_FOR_LOCATION_EXTRACT = 3;
+  private static final int LINE_INDEX = 1;
+  private static final int LINE_OFFSET_INDEX = 2;
   private Map<String, Set<org.sonar.plugins.go.api.TextRange>> filteredRules = new HashMap<>();
 
   public final SensorContext sensorContext;
@@ -119,7 +123,8 @@ public class InputFileContext extends TreeContext {
     issue.save();
   }
 
-  public void reportAnalysisParseError(String repositoryKey, InputFile inputFile, @Nullable org.sonar.plugins.go.api.TextPointer location) {
+  public void reportAnalysisParseError(String repositoryKey, String errorMessage) {
+    var location = extractLocation(errorMessage);
     reportAnalysisError("Unable to parse file: " + inputFile, location);
     RuleKey parsingErrorRuleKey = RuleKey.of(repositoryKey, PARSING_ERROR_RULE_KEY);
     if (sensorContext.activeRules().find(parsingErrorRuleKey) == null) {
@@ -130,7 +135,7 @@ public class InputFileContext extends TreeContext {
       .on(inputFile)
       .message("A parsing error occurred in this file.");
 
-    Optional.ofNullable(location)
+    Optional.of(location)
       .map(org.sonar.plugins.go.api.TextPointer::line)
       .map(inputFile::selectLine)
       .ifPresent(parseErrorLocation::at);
@@ -139,6 +144,23 @@ public class InputFileContext extends TreeContext {
       .forRule(parsingErrorRuleKey)
       .at(parseErrorLocation)
       .save();
+  }
+
+  private static org.sonar.plugins.go.api.TextPointer extractLocation(String errorMessage) {
+    // Example error message:
+    // foo.go:1:1: illegal character U+0024 '$'
+    String[] parts = errorMessage.split(":");
+    if (parts.length < MIN_NUMBER_OF_PARTS_FOR_LOCATION_EXTRACT) {
+      return new TextPointerImpl(1, 0);
+    }
+    try {
+      var line = Integer.parseInt(parts[LINE_INDEX]);
+      var lineOffset = Integer.parseInt(parts[LINE_OFFSET_INDEX]);
+      return new TextPointerImpl(line, lineOffset);
+    } catch (NumberFormatException e) {
+      LOG.warn("Failed to parse location from error message: \"{}\"", errorMessage, e);
+      return new TextPointerImpl(1, 0);
+    }
   }
 
   public void reportAnalysisError(String message, @Nullable org.sonar.plugins.go.api.TextPointer location) {

@@ -198,5 +198,6 @@
             {"@type": "Identifier", "metaData": "24:1::9","type":"[]int","package":"UNKNOWN","name":"integers","id":427,"__cfgId":29}
           ],"__cfgId":43}
         ],"__cfgId":44},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

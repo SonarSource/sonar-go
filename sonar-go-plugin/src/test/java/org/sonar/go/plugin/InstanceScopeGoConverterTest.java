@@ -35,7 +35,7 @@ class InstanceScopeGoConverterTest {
     when(tempFolder.newDir()).thenReturn(tempDir);
     InstanceScopeGoConverter converter = new InstanceScopeGoConverter(tempFolder);
 
-    Tree tree = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}")).get("foo.go");
+    Tree tree = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}")).get("foo.go").tree();
     assertThat(tree).isInstanceOf(TopLevelTree.class);
   }
 }

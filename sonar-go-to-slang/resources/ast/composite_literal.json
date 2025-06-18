@@ -296,5 +296,6 @@
       ],"identifiers":[
         {"@type": "Identifier", "metaData": "25:4::26","type":"main.Person","package":"UNKNOWN","name":"personValueInitializer","id":391,"__cfgId":68}
       ],"__cfgId":71}
-    ],"__cfgId":72}
+    ],"__cfgId":72}  ,
+  "error": null
 } 

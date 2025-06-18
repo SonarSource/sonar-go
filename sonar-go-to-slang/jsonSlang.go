@@ -23,12 +23,14 @@ import (
 	"strings"
 )
 
-func toJsonSlang(node *Node, comments []*Node, tokens []*Token, indent string) string {
+func toJsonSlang(node *Node, comments []*Node, tokens []*Token, errMsg *string, indent string) string {
 	var buf bytes.Buffer
 	buf.WriteString("{ \n")
 	marshallSlangMetaData(&buf, comments, tokens, indent)
 	buf.WriteString(indent + "\"tree\":\n")
 	marshalIndentSlang(&buf, node, strings.Repeat(indent, 2), indent)
+	buf.WriteString(indent + ",\n")
+	marshalErrorMessage(&buf, errMsg, indent)
 	buf.WriteString("\n} \n")
 	return string(buf.Bytes())
 }
@@ -186,6 +188,15 @@ func writeObjectSlang(dst *bytes.Buffer, obj interface{}) {
 	}
 
 	dst.Write(b)
+}
+
+func marshalErrorMessage(dst *bytes.Buffer, msg *string, indent string) {
+	dst.WriteString(indent + "\"error\": ")
+	if msg == nil {
+		dst.WriteString("null")
+		return
+	}
+	writeObjectSlang(dst, *msg)
 }
 
 func (t TextRange) MarshalJSON() ([]byte, error) {

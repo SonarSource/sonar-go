@@ -172,5 +172,6 @@
         null,"name":
         {"@type": "PlaceHolder", "metaData": "21:6::7","placeHolderToken":"21:6::7","__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "21:10:23:2","statementOrExpressions":[],"__cfgId":4},"__cfgId":1}
-    ],"__cfgId":2}
+    ],"__cfgId":2}  ,
+  "error": null
 } 

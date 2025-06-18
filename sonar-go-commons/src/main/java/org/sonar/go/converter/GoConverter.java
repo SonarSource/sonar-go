@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import org.sonar.go.persistence.JsonTree;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
-import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeOrError;
 
 public class GoConverter implements ASTConverter {
 
@@ -40,7 +40,7 @@ public class GoConverter implements ASTConverter {
   }
 
   @Override
-  public Map<String, Tree> parse(Map<String, String> filenameToContentMap) {
+  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap) {
     for (String content : filenameToContentMap.values()) {
       if (content.length() > MAX_SUPPORTED_SOURCE_FILE_SIZE) {
         throw new ParseException("The file size is too big and should be excluded," +

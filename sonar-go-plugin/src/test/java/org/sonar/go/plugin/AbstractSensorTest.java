@@ -23,22 +23,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.event.Level;
-import org.sonar.api.SonarEdition;
-import org.sonar.api.SonarQubeSide;
-import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
 import org.sonar.api.batch.rule.internal.NewActiveRule;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.api.resources.Language;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
-import org.sonar.api.utils.Version;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -49,7 +43,6 @@ public abstract class AbstractSensorTest {
   protected File baseDir;
   protected SensorContextTester context;
   protected FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
-  public static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
 
   @RegisterExtension
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
@@ -66,7 +59,7 @@ public abstract class AbstractSensorTest {
     ActiveRulesBuilder builder = new ActiveRulesBuilder();
     for (String ruleKey : ruleKeys) {
       NewActiveRule newRule = new NewActiveRule.Builder()
-        .setRuleKey(RuleKey.of(repositoryKey(), ruleKey))
+        .setRuleKey(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, ruleKey))
         .setName(ruleKey)
         .build();
       builder.addRule(newRule);
@@ -83,7 +76,7 @@ public abstract class AbstractSensorTest {
     TestInputFileBuilder builder = new TestInputFileBuilder("moduleKey", relativePath)
       .setModuleBaseDir(baseDir.toPath())
       .setType(InputFile.Type.MAIN)
-      .setLanguage(language().getKey())
+      .setLanguage(GoLanguage.KEY)
       .setCharset(StandardCharsets.UTF_8)
       .setContents(content);
     if (status != null) {
@@ -91,9 +84,5 @@ public abstract class AbstractSensorTest {
     }
     return builder.build();
   }
-
-  protected abstract String repositoryKey();
-
-  protected abstract Language language();
 
 }

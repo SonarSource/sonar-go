@@ -143,7 +143,7 @@ class CognitiveComplexityTest {
   }
 
   private CognitiveComplexity complexityFromFullSample(String code) {
-    Tree tree = parser.parse(Map.of("foo.go", code)).get("foo.go");
+    Tree tree = parser.parse(Map.of("foo.go", code)).get("foo.go").tree();
     return new CognitiveComplexity(tree);
   }
 }

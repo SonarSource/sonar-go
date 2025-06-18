@@ -31,7 +31,11 @@ public class TestGoConverter {
   public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
 
   public static Tree parse(String content) {
-    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go");
+    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go").tree();
+  }
+
+  public static String parseAndReturnError(String content) {
+    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go").error();
   }
 
   public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {
@@ -53,7 +57,7 @@ public class TestGoConverter {
         %s
       }
       """.formatted(content);
-    var root = (TopLevelTree) GO_CONVERTER.parse(Map.of("foo.go", code)).get("foo.go");
+    var root = (TopLevelTree) GO_CONVERTER.parse(Map.of("foo.go", code)).get("foo.go").tree();
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
   }
