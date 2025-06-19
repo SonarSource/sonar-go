@@ -220,6 +220,8 @@ func getAllGoFilesByDirs(folder string) map[string][]string {
 	err := filepath.Walk(folder, func(path string, info os.FileInfo, err error) error {
 		if strings.HasSuffix(path, ".go.source") {
 			dir := path[0:strings.LastIndex(path, string(os.PathSeparator))]
+			// Windows uses backslashes, so we need to replace them with forward slashes
+			dir = strings.ReplaceAll(dir, "\\", "/")
 			files[dir] = append(files[dir], path)
 		}
 		return nil

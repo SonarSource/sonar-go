@@ -16,7 +16,6 @@
  */
 package org.sonar.go.plugin;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -141,11 +140,11 @@ public abstract class SlangSensor implements Sensor {
     return true;
   }
 
-  private static Map<String, List<InputFile>> groupFilesByDirectory(List<InputFile> inputFiles) {
+  static Map<String, List<InputFile>> groupFilesByDirectory(List<InputFile> inputFiles) {
     return inputFiles.stream()
       .collect(Collectors.groupingBy((InputFile inputFile) -> {
         var path = inputFile.uri().getPath();
-        int lastSeparatorIndex = path.lastIndexOf(File.separatorChar);
+        int lastSeparatorIndex = path.lastIndexOf("/");
         if (lastSeparatorIndex == -1) {
           return "";
         }

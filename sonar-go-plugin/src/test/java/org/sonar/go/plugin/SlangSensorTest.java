@@ -17,6 +17,7 @@
 package org.sonar.go.plugin;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
@@ -25,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
@@ -652,6 +654,25 @@ class SlangSensorTest extends AbstractSensorTest {
       assertThat(logTester.logs(Level.DEBUG)).doesNotContain(
         "Skipping input file moduleKey:file1.go (status is unchanged).");
     }
+  }
+
+  @Test
+  void shouldGroupFilesByDirectory() {
+    InputFile file1 = mockInputFile("dir1/file1.go");
+    InputFile file2 = mockInputFile("dir1/file2.go");
+    InputFile file3 = mockInputFile("dir2/file3.go");
+
+    var map = SlangSensor.groupFilesByDirectory(List.of(file1, file2, file3));
+
+    assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
+      new File("dir1").toURI().getPath(), List.of(file1, file2),
+      new File("dir2").toURI().getPath(), List.of(file3)));
+  }
+
+  InputFile mockInputFile(String path) {
+    InputFile inputFile = mock(InputFile.class);
+    when(inputFile.uri()).thenReturn(new File(path).toURI());
+    return inputFile;
   }
 
   private SlangSensor sensor(CheckFactory checkFactory) {
