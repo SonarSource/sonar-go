@@ -523,6 +523,24 @@ class GoSensorTest {
     Mockito.verify(consumer2, Mockito.times(1)).accept(any(), any());
   }
 
+  @Test
+  void shouldLogDurationStatistics() {
+    MapSettings settings = sensorContext.settings();
+    settings.setProperty("sonar.go.duration.statistics", "true");
+    InputFile inputFile = new TestInputFileBuilder("projectKey", "foo.go")
+      .setType(InputFile.Type.MAIN)
+      .setLanguage(GoLanguage.KEY)
+      .setContents("package main\n\nfunc Foo() {}")
+      .build();
+    sensorContext.fileSystem().add(inputFile);
+
+    GoSensor goSensor = getSensor();
+    goSensor.execute(sensorContext);
+
+    assertThat(logTester.logs(Level.INFO))
+      .anyMatch(log -> log.startsWith("Duration Statistics"));
+  }
+
   private abstract static class CheckRegisteringOnLeave implements GoCheck {
     private BiConsumer<CheckContext, Tree> consumerToRegister;
 

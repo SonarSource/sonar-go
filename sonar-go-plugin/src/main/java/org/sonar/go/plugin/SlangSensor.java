@@ -69,6 +69,8 @@ public abstract class SlangSensor implements Sensor {
   private final Language language;
   private final FileLinesContextFactory fileLinesContextFactory;
 
+  protected DurationStatistics durationStatistics;
+
   protected SlangSensor(NoSonarFilter noSonarFilter, FileLinesContextFactory fileLinesContextFactory, Language language) {
     this.noSonarFilter = noSonarFilter;
     this.fileLinesContextFactory = fileLinesContextFactory;
@@ -301,7 +303,8 @@ public abstract class SlangSensor implements Sensor {
 
   @Override
   public void execute(SensorContext sensorContext) {
-    DurationStatistics statistics = new DurationStatistics(sensorContext.config());
+    initialize(sensorContext);
+
     FileSystem fileSystem = sensorContext.fileSystem();
     FilePredicate mainFilePredicate = fileSystem.predicates().and(
       fileSystem.predicates().hasLanguage(language.getKey()),
@@ -315,8 +318,8 @@ public abstract class SlangSensor implements Sensor {
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
     var goModFileData = new GoModFileAnalyzer(sensorContext).analyzeGoModFile();
     try {
-      var visitors = visitors(sensorContext, statistics, goModFileData);
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, statistics, goModFileData);
+      var visitors = visitors(sensorContext, durationStatistics, goModFileData);
+      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, durationStatistics, goModFileData);
     } finally {
       if (success) {
         progressReport.stop();
@@ -325,7 +328,21 @@ public abstract class SlangSensor implements Sensor {
       }
       converter.terminate();
     }
-    statistics.log();
+
+    processMetrics();
+    cleanUp();
+  }
+
+  protected void initialize(SensorContext sensorContext) {
+    durationStatistics = new DurationStatistics(sensorContext.config());
+  }
+
+  protected void processMetrics() {
+    durationStatistics.log();
+  }
+
+  protected void cleanUp() {
+    durationStatistics = null;
   }
 
   private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileData goModFileData) {
