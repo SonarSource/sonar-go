@@ -19,14 +19,14 @@ package org.sonar.go.checks.complexity;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.converter.GoConverter;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class CognitiveComplexityTest {
 
-  public static final GoConverter parser = TestGoConverter.GO_CONVERTER;
+  public static final GoConverter parser = TestGoConverterSingleFile.GO_CONVERTER;
 
   @Test
   void unrelated_statement() {

@@ -23,7 +23,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.NativeKind;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -92,7 +92,7 @@ class NativeKindsTest {
 
   @Test
   void shouldReturnMethodReceiver() {
-    var tree = (TopLevelTree) TestGoConverter.parse("""
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
       func (ctrl *MyController) users() {}
       """);
@@ -105,7 +105,7 @@ class NativeKindsTest {
 
   @Test
   void shouldNotFindMethodReceiver() {
-    var tree = (TopLevelTree) TestGoConverter.parse("""
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
       func users() {}
       """);

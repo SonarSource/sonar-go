@@ -134,6 +134,7 @@ public class DefaultCommand implements Command {
     byte[] executableData = getBytesFromResource(executable);
     var dest = new File(workDir, executable);
     if (!fileMatch(dest, executableData)) {
+      workDir.mkdirs();
       Files.write(dest.toPath(), executableData);
       dest.setExecutable(true);
     }

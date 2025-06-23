@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test;
 import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
 
@@ -598,10 +598,10 @@ class SymbolVisitorTest {
 
   @Test
   void testSymbolVisitorCleanUpItsStateAfterVisit() {
-    var ast = TestGoConverter.parse("package main\n const x = 1");
+    var ast = TestGoConverterSingleFile.parse("package main\n const x = 1");
     SymbolVisitor<TreeContext> visitor = new SymbolVisitor<>();
     visitor.scan(mock(), ast);
-    var secondAst = TestGoConverter.parse("package main\n func main() { x }");
+    var secondAst = TestGoConverterSingleFile.parse("package main\n func main() { x }");
     visitor.scan(mock(), secondAst);
     Optional<IdentifierTree> xSymbol = secondAst.descendants()
       .filter(IdentifierTree.class::isInstance)
@@ -615,8 +615,8 @@ class SymbolVisitorTest {
 
   @Test
   void symbolVisitorShouldCleanItsSymbolTableAfterEachFile() {
-    var ast1 = TestGoConverter.parse("package main\n const x = 1");
-    var ast2 = TestGoConverter.parse("package main\n const x = 2");
+    var ast1 = TestGoConverterSingleFile.parse("package main\n const x = 1");
+    var ast2 = TestGoConverterSingleFile.parse("package main\n const x = 2");
     SymbolVisitor<TreeContext> visitor = new SymbolVisitor<>();
     visitor.scan(mock(), ast1);
     visitor.scan(mock(), ast2);
@@ -642,7 +642,7 @@ class SymbolVisitorTest {
    * Parse a go code and provide the symbols in order of presence in the code.
    */
   private List<Symbol> parseAndGetSymbols(String code) {
-    var ast = TestGoConverter.parse(code);
+    var ast = TestGoConverterSingleFile.parse(code);
     new SymbolVisitor<>().scan(mock(), ast);
     var symbols = new ArrayList<Symbol>();
     var symbolsRetriever = new TreeVisitor<>();

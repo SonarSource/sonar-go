@@ -28,14 +28,14 @@ import org.sonar.plugins.go.api.TreeOrError;
 public class GoConverter implements ASTConverter {
 
   public static final long MAX_SUPPORTED_SOURCE_FILE_SIZE = 1_500_000L;
-  private final Command command;
+  private final GoParseCommand command;
 
   public GoConverter(File workDir) {
-    this(DefaultCommand.createCommand(workDir));
+    this(new GoParseCommand(workDir));
   }
 
   // Visible for testing
-  public GoConverter(@Nullable Command command) {
+  public GoConverter(@Nullable GoParseCommand command) {
     this.command = command;
   }
 
@@ -48,7 +48,7 @@ public class GoConverter implements ASTConverter {
       }
     }
     try {
-      var json = command.executeCommand(filenameToContentMap);
+      var json = command.executeGoParseCommand(filenameToContentMap);
       return JsonTree.fromJson(json);
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

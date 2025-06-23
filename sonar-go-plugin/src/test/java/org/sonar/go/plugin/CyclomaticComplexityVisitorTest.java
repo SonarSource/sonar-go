@@ -18,7 +18,7 @@ package org.sonar.go.plugin;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.LoopTree;
@@ -31,7 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class CyclomaticComplexityVisitorTest {
 
   private static List<HasTextRange> getComplexityTrees(String content) {
-    Tree root = TestGoConverter.parse(content);
+    Tree root = TestGoConverterSingleFile.parse(content);
     return new CyclomaticComplexityVisitor().complexityTrees(root);
   }
 

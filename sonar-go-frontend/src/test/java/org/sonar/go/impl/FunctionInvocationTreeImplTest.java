@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -138,7 +138,7 @@ class FunctionInvocationTreeImplTest {
       }
       """.formatted(arguments, body);
 
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 
@@ -164,13 +164,13 @@ class FunctionInvocationTreeImplTest {
       }
       %s
       """.formatted(arguments, body, funcDefinition);
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo("main.foo");
   }
 
   @Test
   void shouldHaveSignatureWithoutPackageNameForUnknownFunction() {
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTree.class, """
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTree.class, """
       package main
       func bar(text string, i ...int) {
         foo(text, i)
@@ -190,7 +190,7 @@ class FunctionInvocationTreeImplTest {
         my_md5.Sum(array)
       }
       """;
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo("crypto/md5.Sum");
   }
 
@@ -205,7 +205,7 @@ class FunctionInvocationTreeImplTest {
         Sum(array)
       }
       """;
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo("crypto/md5.Sum");
   }
 
@@ -269,7 +269,7 @@ class FunctionInvocationTreeImplTest {
       func (ctrl *MainController) method1() {
       }
       """.formatted(function);
-    var func = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 
@@ -293,7 +293,7 @@ class FunctionInvocationTreeImplTest {
         web.Controller
       }
       """;
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse(code);
+    var topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
     var func = topLevelTree.descendants()
       .filter(FunctionInvocationTreeImpl.class::isInstance)
       .map(FunctionInvocationTreeImpl.class::cast)
@@ -370,7 +370,7 @@ class FunctionInvocationTreeImplTest {
 
       %s""".formatted(function);
 
-    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var functionInvocationTree = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     SoftAssertions.assertSoftly(softly -> {
       for (int i = 0; i < expectedReturnType.size(); i++) {
         var returnType = functionInvocationTree.returnTypes().get(i);
@@ -403,7 +403,7 @@ class FunctionInvocationTreeImplTest {
       	return "select * from USER"
       }""";
 
-    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var functionInvocationTree = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(functionInvocationTree.signature()).isEqualTo("*database/sql.DB.Query");
   }
 
@@ -432,7 +432,7 @@ class FunctionInvocationTreeImplTest {
         return C{}
       }""";
 
-    var functionInvocationTree = TestGoConverter.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
+    var functionInvocationTree = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
     assertThat(functionInvocationTree.signature()).isEqualTo("main.B.c");
   }
 }

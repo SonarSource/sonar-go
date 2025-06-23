@@ -28,7 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
@@ -64,7 +64,7 @@ class GoConverterTest {
 
   @Test
   void testParseReturn() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 42}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {return 42}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
 
@@ -73,7 +73,7 @@ class GoConverterTest {
 
   @Test
   void testParseBinaryNotation() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 0b_0010_1010}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {return 0b_0010_1010}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
 
@@ -82,14 +82,14 @@ class GoConverterTest {
 
   @Test
   void testParseImaginaryLiterals() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {return 6.67428e-11i}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {return 6.67428e-11i}");
     List<ReturnTree> returnList = getReturnsList(tree);
     assertThat(returnList).hasSize(1);
   }
 
   @Test
   void testParseEmbedOverlappingInterfaces() {
-    var tree = TestGoConverter.parse("""
+    var tree = TestGoConverterSingleFile.parse("""
       package main
       type A interface{
            DoX() string
@@ -110,14 +110,14 @@ class GoConverterTest {
 
   @Test
   void testParseInfiniteFor() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {for {}}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {for {}}");
     List<Tree> returnList = tree.descendants().filter(LoopTree.class::isInstance).toList();
     assertThat(returnList).hasSize(1);
   }
 
   @Test
   void testParseGenerics() {
-    Tree tree = TestGoConverter.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc f1[T any]() {}\nfunc f2() {\nf:=f1[string]}");
     List<FunctionDeclarationTree> functions = tree.descendants()
       .filter(FunctionDeclarationTree.class::isInstance)
       .map(FunctionDeclarationTree.class::cast)
@@ -139,7 +139,7 @@ class GoConverterTest {
 
   @Test
   void testParseMemberSelect() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {fmt.Println()}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {fmt.Println()}");
     List<MemberSelectTree> returnList = tree.descendants().filter(MemberSelectTree.class::isInstance).map(MemberSelectTree.class::cast).toList();
     assertThat(returnList).hasSize(1);
     MemberSelectTree memberSelectTree = returnList.get(0);
@@ -151,7 +151,7 @@ class GoConverterTest {
 
   @Test
   void testParseFunctionInvocation() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {bar(\"arg\", 42)}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {bar(\"arg\", 42)}");
     List<Tree> functionInvocations = tree.descendants().filter(FunctionInvocationTree.class::isInstance).toList();
     assertThat(functionInvocations).hasSize(1);
     FunctionInvocationTree functionInvocation = (FunctionInvocationTree) functionInvocations.get(0);
@@ -166,7 +166,7 @@ class GoConverterTest {
 
   @Test
   void testParseCompositeLiteral() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {thing := Thing{\"value\"}}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {thing := Thing{\"value\"}}");
     List<CompositeLiteralTree> returnList = tree.descendants().filter(CompositeLiteralTree.class::isInstance).map(CompositeLiteralTree.class::cast).toList();
     assertThat(returnList).hasSize(1);
     CompositeLiteralTree compositeLiteralTree = returnList.get(0);
@@ -203,7 +203,7 @@ class GoConverterTest {
   @ParameterizedTest
   @MethodSource
   void testParseBinaryExpression(String code, BinaryExpressionTree.Operator operator) {
-    var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement(code);
+    var binaryExpression = (BinaryExpressionTree) TestGoConverterSingleFile.parseStatement(code);
     assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class,
       identifierTree -> assertThat(identifierTree.name()).isEqualTo("a"));
     assertThat(binaryExpression.operator()).isSameAs(operator);
@@ -213,7 +213,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseComplexBinaryExpression() {
-    var binaryExpression = (BinaryExpressionTree) TestGoConverter.parseStatement("a + b + c");
+    var binaryExpression = (BinaryExpressionTree) TestGoConverterSingleFile.parseStatement("a + b + c");
     assertThat(binaryExpression.leftOperand()).isInstanceOfSatisfying(BinaryExpressionTree.class, subBinaryExpression -> {
       assertThat(subBinaryExpression.leftOperand()).isInstanceOfSatisfying(IdentifierTree.class,
         identifierA -> assertThat(identifierA.name()).isEqualTo("a"));
@@ -226,7 +226,7 @@ class GoConverterTest {
 
   @Test
   void testParseStarExpression() {
-    Tree tree = TestGoConverter.parse("package main\nfunc foo() {*string}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc foo() {*string}");
     List<StarExpressionTree> starExpressionsList = tree.descendants().filter(StarExpressionTree.class::isInstance).map(StarExpressionTree.class::cast).toList();
     assertThat(starExpressionsList).hasSize(1);
     StarExpressionTree starExpressionTree = starExpressionsList.get(0);
@@ -236,7 +236,7 @@ class GoConverterTest {
 
   @Test
   void testParseFunctionDeclarationWithReceiver() {
-    Tree tree = TestGoConverter.parse("package main\nfunc (m MyType) foo(i int) {}");
+    Tree tree = TestGoConverterSingleFile.parse("package main\nfunc (m MyType) foo(i int) {}");
     List<Tree> functionDeclarations = tree.descendants().filter(FunctionDeclarationTree.class::isInstance).toList();
     assertThat(functionDeclarations).hasSize(1);
     FunctionDeclarationTree functionDeclaration = (FunctionDeclarationTree) functionDeclarations.get(0);
@@ -253,7 +253,7 @@ class GoConverterTest {
 
   @Test
   void testParseExternalFunctionDeclaration() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       //go:noescape
       func externalFunction()
@@ -299,7 +299,7 @@ class GoConverterTest {
   @MethodSource
   void testParseVariableDeclarationDetailed(String code, List<String> variableNames, List<Result> variableValues,
     @Nullable String type, boolean isVal) {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       func foo() {
         %s
@@ -346,7 +346,7 @@ class GoConverterTest {
 
   @Test
   void testParseFunctionDeclarationWithTypeParameter() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       func funWithTypeParameter[T any]() {}
       """);
@@ -364,7 +364,7 @@ class GoConverterTest {
 
   @Test
   void testParseImports() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       import (
       	"io"
@@ -396,13 +396,13 @@ class GoConverterTest {
 
   @Test
   void shouldNotFailWithParseError() {
-    var parseResult = TestGoConverter.parseAndReturnError("$!#@");
+    var parseResult = TestGoConverterSingleFile.parseAndReturnError("$!#@");
     assertThat(parseResult).isEqualTo("foo.go:1:1: illegal character U+0024 '$'");
   }
 
   @Test
   void shouldFailOnInvalidCommand() {
-    var command = new DefaultCommand(tempDir);
+    var command = new GoParseCommand(tempDir);
     command.getCommand().set(0, "invalid-command");
     GoConverter converter = new GoConverter(command);
     var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
@@ -419,7 +419,7 @@ class GoConverterTest {
       }
       """;
     String bigCode = code + new String(new char[700_000 - code.length()]).replace("\0", "\n");
-    Tree tree = TestGoConverter.parse(bigCode);
+    Tree tree = TestGoConverterSingleFile.parse(bigCode);
     assertThat(tree).isInstanceOf(TopLevelTree.class);
   }
 
@@ -432,7 +432,7 @@ class GoConverterTest {
       """;
     String bigCode = code + new String(new char[1_500_000]).replace("\0", "\n");
     ParseException e = assertThrows(ParseException.class,
-      () -> TestGoConverter.parse(bigCode));
+      () -> TestGoConverterSingleFile.parse(bigCode));
     assertThat(e).hasMessage("The file size is too big and should be excluded, its size is 1500028 (maximum allowed is 1500000 bytes)");
   }
 
@@ -445,7 +445,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithTypeDetectionDatabaseSql() {
-    var tree = TestGoConverter.parse("""
+    var tree = TestGoConverterSingleFile.parse("""
       package main
       import (
           "database/sql"
@@ -470,7 +470,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithTypeDetectionNativeType() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       import "fmt"
 
@@ -488,7 +488,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithTypeDetectionHttpCookie() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       import (
           	"fmt"
@@ -508,7 +508,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithTypeDetectionBeegoServerWeb() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       import "github.com/beego/beego/v2/server/web"
 
@@ -529,7 +529,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithTypeDetectionLocalType() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
        package main
        import "fmt"
 
@@ -552,7 +552,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionWithUnresolvedPackages() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
        package main
        import (
          "errors"
@@ -575,7 +575,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionDeclarationCfgWithIfStatements() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
        package main
        import (
          "fmt"
@@ -622,7 +622,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionDeclarationCfgWithSwitchStatements() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
       package main
       import (
         "fmt"
@@ -687,7 +687,7 @@ class GoConverterTest {
 
   @Test
   void shouldParseFunctionDeclarationCfgWithInnerFunction() {
-    Tree tree = TestGoConverter.parse("""
+    Tree tree = TestGoConverterSingleFile.parse("""
        package main
        import (
          "fmt"

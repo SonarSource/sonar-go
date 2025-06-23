@@ -22,7 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -131,7 +131,7 @@ class GoNativeTypeTest {
         %s
       }
       """.formatted(variableDeclaration);
-    var ast = TestGoConverter.parse(code);
+    var ast = TestGoConverterSingleFile.parse(code);
     new SymbolVisitor<>().scan(mock(), ast);
     var symbolRef = new AtomicReference<Symbol>();
     var symbolsRetriever = new TreeVisitor<>();

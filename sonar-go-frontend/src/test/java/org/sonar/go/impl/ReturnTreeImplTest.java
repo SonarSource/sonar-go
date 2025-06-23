@@ -19,7 +19,7 @@ package org.sonar.go.impl;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
 import org.sonar.plugins.go.api.ReturnTree;
 import org.sonar.plugins.go.api.StringLiteralTree;
@@ -52,7 +52,7 @@ class ReturnTreeImplTest {
 
   @Test
   void testSimpleEmptyReturn() {
-    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+    var returnTree = TestGoConverterSingleFile.parseAndRetrieve(ReturnTree.class, """
       package main
 
       func foo() {
@@ -65,7 +65,7 @@ class ReturnTreeImplTest {
 
   @Test
   void testNamedReturn() {
-    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+    var returnTree = TestGoConverterSingleFile.parseAndRetrieve(ReturnTree.class, """
       package main
 
       func foo() (name string) {
@@ -79,7 +79,7 @@ class ReturnTreeImplTest {
 
   @Test
   void testSimpleReturnValue() {
-    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+    var returnTree = TestGoConverterSingleFile.parseAndRetrieve(ReturnTree.class, """
       package main
 
       func foo() {
@@ -94,7 +94,7 @@ class ReturnTreeImplTest {
 
   @Test
   void testMultipleReturnValue() {
-    var returnTree = TestGoConverter.parseAndRetrieve(ReturnTree.class, """
+    var returnTree = TestGoConverterSingleFile.parseAndRetrieve(ReturnTree.class, """
       package main
 
       func foo() {

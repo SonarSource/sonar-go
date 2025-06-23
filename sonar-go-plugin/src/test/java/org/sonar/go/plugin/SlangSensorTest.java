@@ -56,7 +56,7 @@ import org.sonar.go.checks.StringLiteralDuplicatedCheck;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
@@ -461,7 +461,7 @@ class SlangSensorTest extends AbstractSensorTest {
       nextCache.bind(previousCache);
       sensorContext.setNextCache(nextCache);
 
-      converter = spy(TestGoConverter.GO_CONVERTER);
+      converter = spy(TestGoConverterSingleFile.GO_CONVERTER);
       visitor = spy(new SuccessfulReuseVisitor());
     }
 
@@ -679,7 +679,7 @@ class SlangSensorTest extends AbstractSensorTest {
     return new SlangSensor(new DefaultNoSonarFilter(), fileLinesContextFactory, GoLanguage.GO) {
       @Override
       protected ASTConverter astConverter(SensorContext sensorContext) {
-        return TestGoConverter.GO_CONVERTER;
+        return TestGoConverterSingleFile.GO_CONVERTER;
       }
 
       @Override

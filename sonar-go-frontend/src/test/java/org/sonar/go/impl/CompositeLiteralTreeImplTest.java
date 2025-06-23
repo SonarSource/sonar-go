@@ -24,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
@@ -158,7 +158,7 @@ class CompositeLiteralTreeImplTest {
   @MethodSource
   void shouldMatchType(String code, String importInstruction) {
 
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
 
       %s
@@ -189,7 +189,7 @@ class CompositeLiteralTreeImplTest {
   }
 
   public static CompositeLiteralTree parseCompositeLiteral(String code) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
 
       import "net/http"

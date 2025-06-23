@@ -19,16 +19,16 @@ package org.sonar.go.testing;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.Map;
-import org.sonar.go.converter.DefaultCommand;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.converter.GoParseCommand;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
-public class TestGoConverter {
-  public static final File CONVERTER_DIR = Paths.get("build", "tmp").toFile();
+public class TestGoConverterSingleFile {
+  public static final File CONVERTER_DIR = Paths.get("build", "test-tmp").toFile();
   public static final GoConverter GO_CONVERTER = new GoConverter(CONVERTER_DIR);
-  public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new CommandWithDebugTypeCheck(CONVERTER_DIR));
+  public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new GoParseCommand(CONVERTER_DIR, "-debug_type_check"));
 
   public static Tree parse(String content) {
     return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go").tree();
@@ -60,11 +60,5 @@ public class TestGoConverter {
     var root = (TopLevelTree) GO_CONVERTER.parse(Map.of("foo.go", code)).get("foo.go").tree();
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
-  }
-
-  private static class CommandWithDebugTypeCheck extends DefaultCommand {
-    public CommandWithDebugTypeCheck(File workDir) {
-      super(workDir, "-debug_type_check", "-");
-    }
   }
 }

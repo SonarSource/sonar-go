@@ -25,7 +25,7 @@ import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
@@ -216,7 +216,7 @@ class ConstantResolutionTest {
 
   @Test
   void shouldHandleRecursiveAssignments() {
-    var root = (TopLevelTree) TestGoConverter.parse("""
+    var root = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
       func main() {
         a := "a"
@@ -238,7 +238,7 @@ class ConstantResolutionTest {
 
   @Test
   void shouldNotGoIntoInfiniteRecursionToResolveConstant() {
-    var root = (TopLevelTree) TestGoConverter.parse("""
+    var root = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
       func main(a string) {
         var b string

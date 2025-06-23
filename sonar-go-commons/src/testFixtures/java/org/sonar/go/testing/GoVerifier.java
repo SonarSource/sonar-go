@@ -45,7 +45,7 @@ import org.sonarsource.analyzer.commons.checks.verifier.SingleFileVerifier;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.mockito.Mockito.mock;
-import static org.sonar.go.testing.TestGoConverter.GO_CONVERTER_DEBUG_TYPE_CHECK;
+import static org.sonar.go.testing.TestGoConverterSingleFile.GO_CONVERTER_DEBUG_TYPE_CHECK;
 
 public class GoVerifier {
   private static final Path BASE_DIR = Paths.get("src", "test", "resources", "checks");

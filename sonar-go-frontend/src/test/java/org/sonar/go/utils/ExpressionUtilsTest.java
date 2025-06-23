@@ -30,7 +30,7 @@ import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -230,7 +230,7 @@ class ExpressionUtilsTest {
   }
 
   private static Optional<Type> getTypeOfFirstDeclarationInitializer(String code) {
-    return TestGoConverter.parse(code)
+    return TestGoConverterSingleFile.parse(code)
       .descendants()
       .filter(VariableDeclarationTree.class::isInstance)
       .map(VariableDeclarationTree.class::cast)
@@ -363,7 +363,7 @@ class ExpressionUtilsTest {
       }
       """;
 
-    var memberSelect = TestGoConverter.parse(code)
+    var memberSelect = TestGoConverterSingleFile.parse(code)
       .descendants()
       .filter(MemberSelectTree.class::isInstance)
       .map(MemberSelectTree.class::cast)
@@ -373,7 +373,7 @@ class ExpressionUtilsTest {
 
   @Test
   void shouldGetKeyOfCompositeLiteral() {
-    var tree = (CompositeLiteralTree) TestGoConverter.parseStatement("""
+    var tree = (CompositeLiteralTree) TestGoConverterSingleFile.parseStatement("""
       http.Cookie{
         Name: "name",
         Value: "value",
@@ -410,7 +410,7 @@ class ExpressionUtilsTest {
       }
       """.formatted(expression);
 
-    var variableDeclaration = TestGoConverter.parse(code)
+    var variableDeclaration = TestGoConverterSingleFile.parse(code)
       .descendants()
       .filter(VariableDeclarationTree.class::isInstance)
       .map(VariableDeclarationTree.class::cast)

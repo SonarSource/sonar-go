@@ -27,7 +27,7 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.BlockTree;
@@ -567,7 +567,7 @@ class MethodMatchersTest {
   }
 
   public static TopLevelTree parseFunction(String functionCode, String importedType) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
 
       import("%s")
@@ -598,7 +598,7 @@ class MethodMatchersTest {
   }
 
   private static TopLevelTree parseCodeAndReturnTopLevelTree(String wholeCode) {
-    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverter.parse(wholeCode);
+    TopLevelTree topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse(wholeCode);
     new SymbolVisitor<>().scan(mock(), topLevelTree);
     return topLevelTree;
   }

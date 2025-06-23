@@ -24,7 +24,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -139,7 +139,7 @@ class ParameterTreeImplTest {
 
       func foo(%s) {
       }""".formatted(params);
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     var functionTree = tree.descendants()
       .filter(FunctionDeclarationTree.class::isInstance)

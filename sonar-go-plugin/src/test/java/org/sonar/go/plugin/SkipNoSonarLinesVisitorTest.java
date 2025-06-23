@@ -26,7 +26,7 @@ import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.issue.NoSonarFilter;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -82,7 +82,7 @@ class SkipNoSonarLinesVisitorTest {
   private void testNosonarCommentLines(String content, Set<Integer> expectedNosonarCommentLines) throws IOException {
     InputFile inputFile = createInputFile(content);
 
-    visitor.scan(createInputFileContext(inputFile), TestGoConverter.parse(content));
+    visitor.scan(createInputFileContext(inputFile), TestGoConverterSingleFile.parse(content));
 
     verify(mockNoSonarFilter).noSonarInFile(inputFile, expectedNosonarCommentLines);
   }

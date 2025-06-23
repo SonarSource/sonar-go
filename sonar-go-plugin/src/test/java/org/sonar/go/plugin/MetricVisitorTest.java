@@ -29,7 +29,7 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -286,7 +286,7 @@ class MetricVisitorTest {
       .setCharset(StandardCharsets.UTF_8)
       .initMetadata(code).build();
     InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
-    Tree root = TestGoConverter.parse(code);
+    Tree root = TestGoConverterSingleFile.parse(code);
     visitor.scan(ctx, root);
   }
 }

@@ -41,7 +41,7 @@ import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 
@@ -77,7 +77,7 @@ class CpdVisitorTest {
     DefaultInputFile inputFile = new TestInputFileBuilder("moduleKey", file.getName())
       .setContents(content)
       .build();
-    Tree root = TestGoConverter.parse(content);
+    Tree root = TestGoConverterSingleFile.parse(content);
     InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
     new CpdVisitor().scan(ctx, root);
 
@@ -136,7 +136,7 @@ class CpdVisitorTest {
       inputFile = new TestInputFileBuilder("moduleKey", file.getName())
         .setContents(content)
         .build();
-      root = TestGoConverter.parse(content);
+      root = TestGoConverterSingleFile.parse(content);
       inputFileContext = new InputFileContext(sensorContext, inputFile);
       // Set up the writing cache
       nextCache = new DummyWriteCache();

@@ -18,7 +18,7 @@ package org.sonar.go.impl;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.TopLevelTree;
 
@@ -34,7 +34,7 @@ class TopLevelTreeImplTest {
         "fmt"
       )
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("fmt")).isTrue();
     assertThat(tree.doesImportType("os")).isFalse();
@@ -46,7 +46,7 @@ class TopLevelTreeImplTest {
       package main
       import "fmt"
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("fmt")).isTrue();
     assertThat(tree.doesImportType("os")).isFalse();
@@ -61,7 +61,7 @@ class TopLevelTreeImplTest {
         "os"
       )
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("fmt")).isTrue();
     assertThat(tree.doesImportType("os")).isTrue();
@@ -74,7 +74,7 @@ class TopLevelTreeImplTest {
       import (
       )
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("fmt")).isFalse();
   }
@@ -85,7 +85,7 @@ class TopLevelTreeImplTest {
       package main
       import f "fmt"
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("fmt")).isFalse();
   }
@@ -96,7 +96,7 @@ class TopLevelTreeImplTest {
       package main
       import . "os"
       """;
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
 
     assertThat(tree.doesImportType("os")).isFalse();
   }

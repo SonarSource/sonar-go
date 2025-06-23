@@ -26,7 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.impl.cfg.BlockImpl;
 import org.sonar.go.impl.cfg.ControlFlowGraphImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -181,7 +181,7 @@ class FunctionDeclarationTreeImplTest {
       )
       %s
       """.formatted(function);
-    var func = TestGoConverter.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo("main.foo");
   }
 
@@ -204,7 +204,7 @@ class FunctionDeclarationTreeImplTest {
               fmt.Println(a)
           }(5)
       }""";
-    var tree = (TopLevelTree) TestGoConverter.parse(code);
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse(code);
     var funcList = tree.descendants()
       .filter(FunctionDeclarationTreeImpl.class::isInstance)
       .map(FunctionDeclarationTreeImpl.class::cast)
@@ -242,7 +242,7 @@ class FunctionDeclarationTreeImplTest {
       	db *sql.DB
       }
       """.formatted(function);
-    var func = TestGoConverter.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
+    var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
     assertThat(func.signature()).isEqualTo(expectedSignature);
   }
 }

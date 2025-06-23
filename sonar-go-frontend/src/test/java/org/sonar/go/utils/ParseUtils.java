@@ -16,7 +16,7 @@
  */
 package org.sonar.go.utils;
 
-import org.sonar.go.testing.TestGoConverter;
+import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -27,11 +27,11 @@ public class ParseUtils {
   }
 
   public static TopLevelTree parseFile(String code) {
-    return (TopLevelTree) TestGoConverter.parse(code);
+    return (TopLevelTree) TestGoConverterSingleFile.parse(code);
   }
 
   public static BlockTree parseStatements(String code) {
-    var topLevelTree = (TopLevelTree) TestGoConverter.parse("""
+    var topLevelTree = (TopLevelTree) TestGoConverterSingleFile.parse("""
       package main
       func main() {
         %s
