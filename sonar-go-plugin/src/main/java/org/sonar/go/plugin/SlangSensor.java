@@ -70,6 +70,7 @@ public abstract class SlangSensor implements Sensor {
   private final FileLinesContextFactory fileLinesContextFactory;
 
   protected DurationStatistics durationStatistics;
+  protected MemoryMonitor memoryMonitor;
 
   protected SlangSensor(NoSonarFilter noSonarFilter, FileLinesContextFactory fileLinesContextFactory, Language language) {
     this.noSonarFilter = noSonarFilter;
@@ -335,14 +336,18 @@ public abstract class SlangSensor implements Sensor {
 
   protected void initialize(SensorContext sensorContext) {
     durationStatistics = new DurationStatistics(sensorContext.config());
+    memoryMonitor = new MemoryMonitor(sensorContext.config());
   }
 
   protected void processMetrics() {
     durationStatistics.log();
+    memoryMonitor.addRecord("End of the sensor");
+    memoryMonitor.logMemory();
   }
 
   protected void cleanUp() {
     durationStatistics = null;
+    memoryMonitor = null;
   }
 
   private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileData goModFileData) {

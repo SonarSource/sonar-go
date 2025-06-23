@@ -524,7 +524,7 @@ class GoSensorTest {
   }
 
   @Test
-  void shouldLogDurationStatistics() {
+  void shouldLogDurationStatisticsAndMemoryMeasurementsWhenEnabled() {
     MapSettings settings = sensorContext.settings();
     settings.setProperty("sonar.go.duration.statistics", "true");
     InputFile inputFile = new TestInputFileBuilder("projectKey", "foo.go")
@@ -538,7 +538,25 @@ class GoSensorTest {
     goSensor.execute(sensorContext);
 
     assertThat(logTester.logs(Level.INFO))
-      .anyMatch(log -> log.startsWith("Duration Statistics"));
+      .anyMatch(log -> log.startsWith("Duration Statistics"))
+      .anyMatch(log -> log.startsWith("Go memory statistics"));
+  }
+
+  @Test
+  void shouldNotLogDurationStatisticsAndMemoryMeasurementsOnDefault() {
+    InputFile inputFile = new TestInputFileBuilder("projectKey", "foo.go")
+      .setType(InputFile.Type.MAIN)
+      .setLanguage(GoLanguage.KEY)
+      .setContents("package main\n\nfunc Foo() {}")
+      .build();
+    sensorContext.fileSystem().add(inputFile);
+
+    GoSensor goSensor = getSensor();
+    goSensor.execute(sensorContext);
+
+    assertThat(logTester.logs(Level.INFO))
+      .noneMatch(log -> log.startsWith("Duration Statistics"))
+      .noneMatch(log -> log.startsWith("Go memory statistics"));
   }
 
   private abstract static class CheckRegisteringOnLeave implements GoCheck {
