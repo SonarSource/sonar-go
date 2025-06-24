@@ -106,24 +106,9 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, error) {
-	packageName := getPackageName(astFiles)
-	conf := types.Config{
-		Importer: &localImporter{
-			gcExportDataDir: gcExportDataDir,
-			moduleName:      moduleName,
-		},
-		Error: func(err error) {
-			if debugTypeCheck {
-				fmt.Fprintf(os.Stderr, "Warning while type checking for package: \"%s\": %s\n", packageName, err)
-			}
-			// Our current logic type checks only the types that are used in the rules, and "ignores" the rest.
-			// It means that we expect many errors in the type checking process (missing types, undefined variables, etc).
-			// In theory, we would like to log only errors that are related to the types that we support, in order to spot potential issues.
-			// In practise, the message is often not enough to determine if the error is relevant or not.
-			// Therefore, we don't log any error at the moment.
-		},
-	}
+func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, []error) {
+	astFilesPerPackage := groupFilesPerPackageName(astFiles)
+	errors := make([]error, 0)
 
 	info := &types.Info{
 		Types:        make(map[ast.Expr]types.TypeAndValue),
@@ -137,22 +122,50 @@ func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, de
 		FileVersions: make(map[*ast.File]string),
 	}
 
-	// We pass the file name which correspond to the name of the package, in order to have local type/package
-	// named after this package names.
-	_, err := conf.Check(packageName, fileSet, mapToSlice(astFiles), info)
+	for packageName, files := range astFilesPerPackage {
+		fmt.Fprintf(os.Stderr, "Processing package: \"%s\"\n", packageName)
+		conf := types.Config{
+			Importer: &localImporter{
+				gcExportDataDir: gcExportDataDir,
+				moduleName:      moduleName,
+			},
+			Error: func(err error) {
+				if debugTypeCheck {
+					fmt.Fprintf(os.Stderr, "Warning while type checking for package: \"%s\": %s\n", packageName, err)
+				}
+				// Our current logic type checks only the types that are used in the rules, and "ignores" the rest.
+				// It means that we expect many errors in the type checking process (missing types, undefined variables, etc).
+				// In theory, we would like to log only errors that are related to the types that we support, in order to spot potential issues.
+				// In practise, the message is often not enough to determine if the error is relevant or not.
+				// Therefore, we don't log any error at the moment.
+			},
+		}
 
-	return info, err
+		// We pass the file name which correspond to the name of the package, in order to have local type/package
+		// named after this package names.
+		_, err := conf.Check(packageName, fileSet, mapToSlice(files), info)
+		if err != nil {
+			errors = append(errors, err)
+		}
+	}
+
+	return info, errors
 }
 
-func getPackageName(astFiles map[string]AstFileOrError) string {
-	for _, v := range astFiles {
+func groupFilesPerPackageName(astFiles map[string]AstFileOrError) map[string]map[string]AstFileOrError {
+	filesPerPackage := make(map[string]map[string]AstFileOrError)
+	for k, v := range astFiles {
 		if v.ast != nil {
 			if v.ast.Name != nil && v.ast.Name.Name != "" {
-				return v.ast.Name.Name
+				packageName := v.ast.Name.Name
+				if _, ok := filesPerPackage[packageName]; !ok {
+					filesPerPackage[packageName] = make(map[string]AstFileOrError)
+				}
+				filesPerPackage[packageName][k] = v
 			}
 		}
 	}
-	return ""
+	return filesPerPackage
 }
 
 func mapToSlice(astFiles map[string]AstFileOrError) []*ast.File {

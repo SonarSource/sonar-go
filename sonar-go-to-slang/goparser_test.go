@@ -44,6 +44,12 @@ func astFromString(filename string, source string) (fileSet *token.FileSet, astF
 	return
 }
 
+func astFromStrings(fileNameToContent map[string]string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
+	fileSet = token.NewFileSet()
+	astFileOrErrors = readAstString(fileSet, fileNameToContent)
+	return
+}
+
 // Update all .json files in resources/ast from all .go.source files
 // Add "Test_" before to run in IDE
 func fix_all_go_files_test_automatically(t *testing.T) {
