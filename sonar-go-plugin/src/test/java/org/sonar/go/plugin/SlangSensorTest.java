@@ -245,7 +245,7 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(analysisError.message()).isEqualTo("Unable to parse file: fakeFile.go");
     assertThat(analysisError.location()).isEqualTo(new DefaultTextPointer(1, 0));
 
-    assertThat(logTester.logs()).contains("Unable to parse file.");
+    assertThat(logTester.logs()).isNotEmpty().anyMatch(l -> l.startsWith("Unable to parse directory '"));
   }
 
   @Test
@@ -295,6 +295,15 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThatThrownBy(() -> sensor.execute(context))
       .hasMessage("Exception when analyzing files. See logs above for details.")
       .isInstanceOf(IllegalStateException.class);
+  }
+
+  @Test
+  void shouldOnlyLogErrorWithHardFailureWithoutFailFast() {
+    SlangSensor sensor = sensor(mock(CheckFactory.class));
+    context.setFileSystem(null);
+    sensor.execute(context);
+
+    assertThat(logTester.logs(Level.ERROR)).contains("An error occurred during the analysis of the Go language:");
   }
 
   @Test

@@ -24,6 +24,7 @@ import org.sonar.go.converter.GoParseCommand;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeOrError;
 
 public class TestGoConverterSingleFile {
   public static final File CONVERTER_DIR = Paths.get("build", "test-tmp").toFile();
@@ -31,11 +32,11 @@ public class TestGoConverterSingleFile {
   public static final GoConverter GO_CONVERTER_DEBUG_TYPE_CHECK = new GoConverter(new GoParseCommand(CONVERTER_DIR, "-debug_type_check"));
 
   public static Tree parse(String content) {
-    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go").tree();
+    return parseAndReturnTreeOrError(content).tree();
   }
 
-  public static String parseAndReturnError(String content) {
-    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go").error();
+  public static TreeOrError parseAndReturnTreeOrError(String content) {
+    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go");
   }
 
   public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {

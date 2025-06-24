@@ -114,7 +114,8 @@ public abstract class SlangSensor implements Sensor {
 
     beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileData);
 
-    for (List<InputFile> inputFilesInDir : filesByDirectory.values()) {
+    for (Map.Entry<String, List<InputFile>> entry : filesByDirectory.entrySet()) {
+      List<InputFile> inputFilesInDir = entry.getValue();
       if (sensorContext.isCancelled()) {
         return false;
       }
@@ -126,7 +127,7 @@ public abstract class SlangSensor implements Sensor {
       try {
         analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext);
       } catch (ParseException e) {
-        LOG.warn("Unable to parse file.", e);
+        LOG.warn("Unable to parse directory '{}'.", entry.getKey(), e);
         var inputFilePath = e.getInputFilePath();
         if (inputFilePath != null) {
           filesToAnalyse.stream()
@@ -304,6 +305,18 @@ public abstract class SlangSensor implements Sensor {
 
   @Override
   public void execute(SensorContext sensorContext) {
+    try {
+      executeLogic(sensorContext);
+    } catch (RuntimeException e) {
+      if (GoSensor.isFailFast(sensorContext)) {
+        throw e;
+      } else {
+        LOG.error("An error occurred during the analysis of the Go language:", e);
+      }
+    }
+  }
+
+  private void executeLogic(SensorContext sensorContext) {
     initialize(sensorContext);
 
     FileSystem fileSystem = sensorContext.fileSystem();

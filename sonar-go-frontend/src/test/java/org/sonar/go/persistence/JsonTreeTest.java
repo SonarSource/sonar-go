@@ -1099,4 +1099,14 @@ class JsonTreeTest extends JsonTestHelper {
       "resources/invalid_file.go",
       new TreeOrError(null, "resources/invalid_file.go:1:1: expected 'package', found xpackage")));
   }
+
+  @Test
+  void shouldConvertErroneousContent() throws IOException {
+    var content = indentedJsonFromFile("erroneous_content.json");
+    var filenameToTreeOrError = JsonTree.fromJson(content);
+    assertThat(filenameToTreeOrError).hasSize(1).containsOnlyKeys("resources/erroneous_content.go");
+    TreeOrError treeOrError = filenameToTreeOrError.get("resources/erroneous_content.go");
+    assertThat(treeOrError.isError()).isTrue();
+    assertThat(treeOrError.error()).startsWith("Error converting json tree: Expect String instead of 'JsonLiteral' for field 'value' at 'tree/Literal'");
+  }
 }

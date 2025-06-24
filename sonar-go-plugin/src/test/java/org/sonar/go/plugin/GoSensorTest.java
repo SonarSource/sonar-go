@@ -161,7 +161,7 @@ class GoSensorTest {
     GoSensor goSensor = getSensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
-    assertThat(logTester.logs(Level.WARN)).contains("Unable to parse file.");
+    assertThat(logTester.logs(Level.WARN)).isNotEmpty().anyMatch(l -> l.startsWith("Unable to parse directory"));
   }
 
   @Test

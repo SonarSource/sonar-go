@@ -90,10 +90,30 @@ public class ASTConverterValidation implements ASTConverter {
 
   @Override
   public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap) {
-    var filenameToTree = wrapped.parse(filenameToContentMap);
-    assertTreeIsValid(filenameToTree);
-    assertTokensMatchSourceCode(filenameToTree, filenameToContentMap);
-    return filenameToTree;
+    var filenamesToTrees = wrapped.parse(filenameToContentMap);
+    var result = new HashMap<String, TreeOrError>();
+    for (Map.Entry<String, TreeOrError> filenameToTree : filenamesToTrees.entrySet()) {
+      currentFile = filenameToTree.getKey();
+      var treeOrError = filenameToTree.getValue();
+      if (treeOrError.isTree()) {
+        var tree = treeOrError.tree();
+        try {
+          assertTreeIsValid(tree);
+          assertTokensMatchSourceCode(tree, filenameToContentMap.get(currentFile));
+          result.put(currentFile, treeOrError);
+        } catch (RuntimeException e) {
+          // Let's acknowledge catching exceptions here is definitely not a good design.
+          // We went from file-by-file to batch, this validation now requires to validate multiple files at once,
+          // we cannot throw an exception for a single file anymore. Changing this would require a lot of refactoring, we don't want to invest in this
+          // right now.
+          result.put(currentFile, TreeOrError.of("AST validation failed: " + e.getMessage()));
+        }
+      } else {
+        result.put(currentFile, treeOrError);
+      }
+    }
+
+    return result;
   }
 
   @Override
@@ -127,16 +147,6 @@ public class ASTConverterValidation implements ASTConverter {
 
   private static String kind(Tree tree) {
     return tree.getClass().getSimpleName();
-  }
-
-  private void assertTreeIsValid(Map<String, TreeOrError> trees) {
-    for (Map.Entry<String, TreeOrError> filenameToTree : trees.entrySet()) {
-      currentFile = filenameToTree.getKey();
-      var treeOrError = filenameToTree.getValue();
-      if (treeOrError.isTree()) {
-        assertTreeIsValid(treeOrError.tree());
-      }
-    }
   }
 
   private void assertTreeIsValid(Tree tree) {
@@ -173,17 +183,6 @@ public class ASTConverterValidation implements ASTConverter {
   private void assertTreeHasAtLeastOneToken(Tree tree) {
     if (!(tree instanceof TopLevelTree) && tree.metaData().tokens().isEmpty()) {
       raiseError(kind(tree) + " has no token", "", tree.textRange().start());
-    }
-  }
-
-  private void assertTokensMatchSourceCode(Map<String, TreeOrError> trees, Map<String, String> filenameToContentMap) {
-    for (Map.Entry<String, TreeOrError> filenameToTree : trees.entrySet()) {
-      currentFile = filenameToTree.getKey();
-      var treeOrError = filenameToTree.getValue();
-      if (treeOrError.isTree()) {
-        var tree = treeOrError.tree();
-        assertTokensMatchSourceCode(tree, filenameToContentMap.get(currentFile));
-      }
     }
   }
 

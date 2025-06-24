@@ -49,6 +49,7 @@ import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeOrError;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 import org.sonar.plugins.go.api.cfg.Block;
 import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
@@ -396,8 +397,9 @@ class GoConverterTest {
 
   @Test
   void shouldNotFailWithParseError() {
-    var parseResult = TestGoConverterSingleFile.parseAndReturnError("$!#@");
-    assertThat(parseResult).isEqualTo("foo.go:1:1: illegal character U+0024 '$'");
+    var parseResult = TestGoConverterSingleFile.parseAndReturnTreeOrError("$!#@");
+    assertThat(parseResult.isError()).isTrue();
+    assertThat(parseResult.error()).isEqualTo("foo.go:1:1: illegal character U+0024 '$'");
   }
 
   @Test
@@ -424,16 +426,16 @@ class GoConverterTest {
   }
 
   @Test
-  void bigFileShouldBeRejectedInParse() {
+  void bigFileShouldBeSilentlyRejectedInParse() {
     var code = """
       package main
       func foo() {
       }
       """;
     String bigCode = code + new String(new char[1_500_000]).replace("\0", "\n");
-    ParseException e = assertThrows(ParseException.class,
-      () -> TestGoConverterSingleFile.parse(bigCode));
-    assertThat(e).hasMessage("The file size is too big and should be excluded, its size is 1500028 (maximum allowed is 1500000 bytes)");
+    TreeOrError treeOrError = TestGoConverterSingleFile.parseAndReturnTreeOrError(bigCode);
+    assertThat(treeOrError.isError()).isTrue();
+    assertThat(treeOrError.error()).isEqualTo("The file size is too big and should be excluded, its size is 1500028 (maximum allowed is 1500000 bytes)");
   }
 
   @Test

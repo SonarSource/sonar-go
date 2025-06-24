@@ -66,8 +66,13 @@ public final class JsonTree {
         var errorMessage = errorJson.asString();
         trees.put(name, TreeOrError.of(errorMessage));
       } else {
-        var tree = fromJsonSingleTree(treeRoot);
-        trees.put(name, TreeOrError.of(tree));
+        try {
+          var tree = fromJsonSingleTree(treeRoot);
+          trees.put(name, TreeOrError.of(tree));
+        } catch (RuntimeException e) {
+          // If there is an error during parsing, we store it as an error message
+          trees.put(name, TreeOrError.of("Error converting json tree: " + e.getMessage()));
+        }
       }
     }
     return trees;
