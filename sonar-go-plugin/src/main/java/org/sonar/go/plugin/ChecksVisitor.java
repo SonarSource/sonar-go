@@ -41,11 +41,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final DurationStatistics statistics;
 
-  private final GoModFileData goModFileData;
+  private final GoModFileDataStore goModFileDataStore;
 
-  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileData goModFileData) {
+  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore) {
     this.statistics = statistics;
-    this.goModFileData = goModFileData;
+    this.goModFileDataStore = goModFileDataStore;
     Collection<GoCheck> rulesActiveInSonarQube = goChecks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
       var ruleKey = goChecks.ruleKey(check);
@@ -58,6 +58,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     public final RuleKey ruleKey;
     private InputFileContext currentCtx;
+    private GoModFileData currentGoModFileData;
 
     public ContextAdapter(RuleKey ruleKey) {
       this.ruleKey = ruleKey;
@@ -65,13 +66,14 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     @Override
     public GoModFileData goModFileData() {
-      return goModFileData;
+      return currentGoModFileData;
     }
 
     @Override
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor) {
       ChecksVisitor.this.register(cls, statistics.time(ruleKey.rule(), (ctx, tree) -> {
         currentCtx = ctx;
+        currentGoModFileData = goModFileDataStore.retrieveClosedGoModFileData(currentCtx.inputFile.uri());
         visitor.accept(this, tree);
       }));
     }

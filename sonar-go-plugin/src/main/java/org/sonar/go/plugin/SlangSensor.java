@@ -52,7 +52,6 @@ import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeOrError;
-import org.sonar.plugins.go.api.checks.GoModFileData;
 import org.sonarsource.analyzer.commons.ProgressReport;
 
 public abstract class SlangSensor implements Sensor {
@@ -95,7 +94,7 @@ public abstract class SlangSensor implements Sensor {
     return EXECUTABLE_LINE_PREDICATE;
   }
 
-  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles, GoModFileData goModFileData) {
+  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles, GoModFileDataStore goModFileDataStore) {
     // the default implementation does nothing
   }
 
@@ -105,14 +104,14 @@ public abstract class SlangSensor implements Sensor {
     ProgressReport progressReport,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics,
-    GoModFileData goModFileData) {
+    GoModFileDataStore goModFileDataStore) {
     if (sensorContext.canSkipUnchangedFiles()) {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
 
     var filesByDirectory = groupFilesByDirectory(inputFiles);
 
-    beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileData);
+    beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileDataStore);
 
     for (Map.Entry<String, List<InputFile>> entry : filesByDirectory.entrySet()) {
       List<InputFile> inputFilesInDir = entry.getValue();
@@ -330,10 +329,10 @@ public abstract class SlangSensor implements Sensor {
     progressReport.start(filenames);
     boolean success = false;
     ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
-    var goModFileData = new GoModFileAnalyzer(sensorContext).analyzeGoModFile();
+    var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
     try {
-      var visitors = visitors(sensorContext, durationStatistics, goModFileData);
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, durationStatistics, goModFileData);
+      var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);
+      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, durationStatistics, goModFileDataStore);
     } finally {
       if (success) {
         progressReport.stop();
@@ -363,20 +362,20 @@ public abstract class SlangSensor implements Sensor {
     memoryMonitor = null;
   }
 
-  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileData goModFileData) {
+  private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileDataStore goModFileDataStore) {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goModFileData));
+        new ChecksVisitor(checks(), statistics, goModFileDataStore));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goModFileData),
+        new ChecksVisitor(checks(), statistics, goModFileDataStore),
         new CpdVisitor(),
         new SyntaxHighlighter());
     }

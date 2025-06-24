@@ -65,27 +65,31 @@ public class GoModFileAnalyzer {
     this.sensorContext = sensorContext;
   }
 
-  public GoModFileData analyzeGoModFile() {
+  public GoModFileDataStore analyzeGoModFiles() {
     if (sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
       // Restricted behavior in SQ for IDE
       // TODO: https://sonarsource.atlassian.net/browse/SONARGO-420
       // Early return to avoid unnecessary logging
-      return GoModFileData.UNKNOWN_DATA;
+      return GoModFileDataStore.EMPTY;
     }
-    var goModFiles = GoModFileFinder.findGoModFiles(sensorContext);
-    if (goModFiles.size() != 1) {
-      LOG.debug("Expected exactly one go.mod file, but found {} files.", goModFiles.size());
+
+    var modFiles = GoModFileFinder.findGoModFiles(sensorContext);
+    if (modFiles.isEmpty()) {
+      LOG.debug("Expected at least one go.mod file, but found none.");
       return logDetectionFailureAndReturn();
     }
 
-    var goModFile = goModFiles.get(0);
-    try {
-      var content = goModFile.contents();
-      return analyzeGoModFileContent(content, goModFile.toString());
-    } catch (IOException e) {
-      LOG.debug("Failed to read go.mod file: {}", goModFile, e);
+    var goModFileDataStore = new GoModFileDataStore();
+    for (var goModFile : modFiles) {
+      try {
+        var goModFileData = analyzeGoModFileContent(goModFile.contents(), goModFile.toString());
+        goModFileDataStore.addGoModFile(goModFile.uri(), goModFileData);
+      } catch (IOException e) {
+        LOG.debug("Failed to read go.mod file: {}", goModFile, e);
+      }
     }
-    return logDetectionFailureAndReturn();
+    goModFileDataStore.complete();
+    return goModFileDataStore;
   }
 
   /**
@@ -94,7 +98,7 @@ public class GoModFileAnalyzer {
    * If the go version is not found, the version will be set to {@link GoVersion#UNKNOWN_VERSION}
    * Information about release candidate (rc) or beta versions are stripped, as we don't need this detail.
    * Also {@link GoVersion} does not support beta/rc versions.
-   * Method is public for tests, but should be called by {@link #analyzeGoModFile()}.
+   * Method is public for tests, but should be called by {@link #analyzeGoModFiles()}.
    */
   public static GoModFileData analyzeGoModFileContent(String content, String loggableFilePath) {
     var lines = LINE_TERMINATOR.split(content);
@@ -129,12 +133,12 @@ public class GoModFileAnalyzer {
     if (goVersion == GoVersion.UNKNOWN_VERSION) {
       LOG.debug("Failed to detect a go version in the go.mod file: {}", loggableFilePath);
     } else {
-      LOG.debug("Detected go version in project: {}", goVersion);
+      LOG.debug("Detected go version in project from {}: {}", loggableFilePath, goVersion);
     }
     if (moduleName.isEmpty()) {
       LOG.debug("Failed to detect a module name in the go.mod file: {}", loggableFilePath);
     } else {
-      LOG.debug("Detected go module name in project: {}", moduleName);
+      LOG.debug("Detected go module name in project from {}: {}", loggableFilePath, moduleName);
     }
   }
 
@@ -204,9 +208,9 @@ public class GoModFileAnalyzer {
     return Map.entry(moduleSpecLeft, moduleSpecRight);
   }
 
-  private static GoModFileData logDetectionFailureAndReturn() {
+  private static GoModFileDataStore logDetectionFailureAndReturn() {
     LOG.debug("Could not detect the metadata from mod file of the project");
-    return GoModFileData.UNKNOWN_DATA;
+    return GoModFileDataStore.EMPTY;
   }
 
   private static String removeQuotes(String string) {

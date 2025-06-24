@@ -17,6 +17,7 @@
 package org.sonar.go.plugin;
 
 import java.io.IOException;
+import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -71,14 +72,14 @@ class GoModFileAnalyzerTest {
       """.formatted(addedContent));
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.moduleName()).isEqualTo(expectedModuleName);
     if (expectedModuleName.isEmpty()) {
       assertThat(logTester.logs()).contains(
         "Failed to detect a module name in the go.mod file: go.mod");
     } else {
-      assertThat(logTester.logs()).contains("Detected go module name in project: " + expectedModuleName);
+      assertThat(logTester.logs()).contains("Detected go module name in project from go.mod: " + expectedModuleName);
     }
   }
 
@@ -106,15 +107,15 @@ class GoModFileAnalyzerTest {
       """.formatted(addedContent));
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.goVersion()).isEqualTo(expectedVersion);
     if (expectedVersion == GoVersion.UNKNOWN_VERSION) {
       assertThat(logTester.logs()).contains(
-        "Detected go module name in project: myModule",
+        "Detected go module name in project from go.mod: myModule",
         "Failed to detect a go version in the go.mod file: go.mod");
     } else {
-      assertThat(logTester.logs()).contains("Detected go version in project: " + expectedVersion);
+      assertThat(logTester.logs()).contains("Detected go version in project from go.mod: " + expectedVersion);
     }
   }
 
@@ -149,13 +150,13 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.moduleName()).isEmpty();
     assertThat(goModFileData.replacedModules()).isEmpty();
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(logTester.logs()).contains(
-      "Expected exactly one go.mod file, but found 0 files.",
+      "Expected at least one go.mod file, but found none.",
       "Could not detect the metadata from mod file of the project");
   }
 
@@ -166,13 +167,13 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.moduleName()).isEmpty();
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(logTester.logs()).contains(
       "Failed to detect a module name in the go.mod file: go.mod",
-      "Detected go version in project: 1.23.4");
+      "Detected go version in project from go.mod: 1.23.4");
   }
 
   @Test
@@ -186,10 +187,10 @@ class GoModFileAnalyzerTest {
     when(crashingInputFile.contents()).thenThrow(new IOException());
 
     sensorContext.fileSystem().add(crashingInputFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
-    assertThat(logTester.logs()).contains("Failed to read go.mod file: " + crashingInputFile, "Could not detect the metadata from mod file of the project");
+    assertThat(logTester.logs()).contains("Failed to read go.mod file: " + crashingInputFile);
   }
 
   @Test
@@ -202,7 +203,7 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     // As we don't support the feature yet, we don't need to log there
@@ -218,10 +219,10 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
-    assertThat(logTester.logs()).contains("Detected go version in project: 1.23.4");
+    assertThat(logTester.logs()).contains("Detected go version in project from src/go.mod: 1.23.4");
   }
 
   @Test
@@ -232,7 +233,7 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.replacedModules())
       .containsExactly(Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")));
@@ -247,7 +248,7 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.replacedModules()).containsExactly(
       Map.entry(new GoModFileData.ModuleSpec("golang.org/x/net", "v1.2.3"), new GoModFileData.ModuleSpec("./fork/net", null)),
@@ -262,7 +263,7 @@ class GoModFileAnalyzerTest {
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.replacedModules())
       .containsExactly(Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")));
@@ -297,7 +298,7 @@ class GoModFileAnalyzerTest {
       """.formatted(replaceContent));
 
     sensorContext.fileSystem().add(goModFile);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileData = parseSingleGoModFile();
 
     assertThat(goModFileData.replacedModules()).containsExactly(
       Map.entry(new GoModFileData.ModuleSpec("example.com/old", "v1.0"), new GoModFileData.ModuleSpec("example.com/new", "v1.2.3")),
@@ -305,27 +306,149 @@ class GoModFileAnalyzerTest {
   }
 
   @Test
-  void shouldNotFindGoVersionWithTwoGoModFiles() {
-    InputFile goModFile = createInputFile("go.mod", """
-      module myModule
+  void shouldParseMultipleGoModFile() {
+    InputFile goModFile = createInputFile("src/folder1/go.mod", """
+      module myModule1
 
       go 1.23.4
       """);
 
-    InputFile goModFile2 = createInputFile("src/go.mod", """
-      module myModule
+    InputFile goModFile2 = createInputFile("src/folder2/go.mod", """
+      module myModule2
+
+      go 1.23.2
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goModFile2);
+    var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
+
+    var goModFileData1 = goModFileDataStore.retrieveClosedGoModFileData(goModFile.uri());
+    assertThat(goModFileData1.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(goModFileData1.moduleName()).isEqualTo("myModule1");
+
+    var goModFileData2 = goModFileDataStore.retrieveClosedGoModFileData(goModFile2.uri());
+    assertThat(goModFileData2.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
+    assertThat(goModFileData2.moduleName()).isEqualTo("myModule2");
+
+    assertThat(goModFileDataStore.getRootPath()).endsWith("/src");
+  }
+
+  @Test
+  void shouldFindClosestGoModFileFromSubFolders() {
+    InputFile goModFile = createInputFile("src/go.mod", """
+      module myModule1
+
+      go 1.23.4
+      """);
+
+    InputFile goModFile2 = createInputFile("src/my/sub/folder/go.mod", """
+      module myModule2
+
+      go 1.23.2
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goModFile2);
+    var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
+
+    var folderPath = toInputFileUri("src/my/sub/file.go");
+    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
+
+    var subfolderPath = toInputFileUri("src/my/sub/folder/in/deeper/subfolder/file.go");
+    var goModFileDataSubfolder = goModFileDataStore.retrieveClosedGoModFileData(subfolderPath);
+    assertThat(goModFileDataSubfolder.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
+    assertThat(goModFileDataSubfolder.moduleName()).isEqualTo("myModule2");
+
+    var otherFolderPath = toInputFileUri("other/path/file.go");
+    var goModFileDataEmpty = goModFileDataStore.retrieveClosedGoModFileData(otherFolderPath);
+    assertThat(goModFileDataEmpty.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(goModFileDataEmpty.moduleName()).isEmpty();
+
+    assertThat(goModFileDataStore.getRootPath()).endsWith("/src");
+  }
+
+  @Test
+  void shouldNotFindGoModFileWhenDifferentFolderPath() {
+    InputFile goModFile = createInputFile("src/a/very/long/common/path/go.mod", """
+      module myModule1
+
+      go 1.23.4
+      """);
+
+    InputFile goModFile2 = createInputFile("src/a/very/long/common/path/but/different/here/go.mod", """
+      module myModule2
+
+      go 1.23.2
+      """);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goModFile2);
+    var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
+
+    var folderPath = toInputFileUri("src/a/very/long/common/path/file.go");
+    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
+
+    var subfolderPath = toInputFileUri("src/a/very/long/common/path/but/different/here/file.go");
+    var goModFileDataSubfolder = goModFileDataStore.retrieveClosedGoModFileData(subfolderPath);
+    assertThat(goModFileDataSubfolder.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
+    assertThat(goModFileDataSubfolder.moduleName()).isEqualTo("myModule2");
+
+    assertThat(goModFileDataStore.getRootPath()).endsWith("/src/a/very/long/common/path");
+  }
+
+  @Test
+  void shouldComputeLongestCommonPathPossibleAndResolveGoModFile() {
+    InputFile goModFile = createInputFile("src/go.mod", """
+      module myModule1
 
       go 1.23.4
       """);
 
     sensorContext.fileSystem().add(goModFile);
-    sensorContext.fileSystem().add(goModFile2);
-    var goModFileData = goModFileAnalyzer.analyzeGoModFile();
+    var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
-    assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
-    assertThat(logTester.logs()).contains(
-      "Expected exactly one go.mod file, but found 2 files.",
-      "Could not detect the metadata from mod file of the project");
+    var folderPath = toInputFileUri("test/folder/file.go");
+    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
+    assertThat(goModFileDataRoot.moduleName()).isEmpty();
+
+    assertThat(goModFileDataStore.getRootPath()).endsWith("/src");
+  }
+
+  @Test
+  void shouldGetModFileWithJustDirectory() {
+    InputFile goModFile1 = createInputFile("root/src/go.mod", """
+      module myModule1
+
+      go 1.23.4
+      """);
+    InputFile goModFile2 = createInputFile("root/test/go.mod", """
+      module myModule2
+
+      go 1.23.2
+      """);
+
+    sensorContext.fileSystem().add(goModFile1);
+    sensorContext.fileSystem().add(goModFile2);
+    var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
+
+    var folderPath = toInputFileUri("root/src");
+    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
+    assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
+
+    assertThat(goModFileDataStore.getRootPath()).endsWith("/root");
+  }
+
+  private GoModFileData parseSingleGoModFile() {
+    var goModFilesData = goModFileAnalyzer.analyzeGoModFiles();
+    var file = sensorContext.fileSystem().files(f -> true).iterator().next();
+    return goModFilesData.retrieveClosedGoModFileData(file.toURI());
   }
 
   private InputFile createInputFile(String filename, String content) {
@@ -336,5 +459,13 @@ class GoModFileAnalyzerTest {
       .setContents(content)
       .setType(InputFile.Type.MAIN)
       .build();
+  }
+
+  // Return a URI as computed by sonar InputFile API
+  private URI toInputFileUri(String filename) {
+    Path filePath = projectDir.resolve(filename);
+    return TestInputFileBuilder.create("module", projectDir.toFile(), filePath.toFile())
+      .build()
+      .uri();
   }
 }
