@@ -58,6 +58,7 @@ import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.ASTConverter;
+import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.checks.GoCheck;
@@ -249,6 +250,20 @@ class SlangSensorTest extends AbstractSensorTest {
   }
 
   @Test
+  void testFailInputWithFailFast() throws IOException {
+    context.settings().setProperty(GoSensor.FAIL_FAST_PROPERTY_NAME, true);
+    InputFile inputFile = createInputFile("fakeFile.go", "");
+    InputFile spyInputFile = spy(inputFile);
+    when(spyInputFile.contents()).thenThrow(IOException.class);
+    context.fileSystem().add(spyInputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    SlangSensor sensor = sensor(checkFactory);
+    assertThatThrownBy(() -> sensor.execute(context))
+      .hasMessage("Cannot read 'fakeFile.go': null")
+      .isInstanceOf(ParseException.class);
+  }
+
+  @Test
   void testFailParsing() {
     InputFile inputFile = createInputFile("file1.go",
       """
@@ -295,6 +310,22 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThatThrownBy(() -> sensor.execute(context))
       .hasMessage("Exception when analyzing files. See logs above for details.")
       .isInstanceOf(IllegalStateException.class);
+  }
+
+  @Test
+  void testFailParsingShouldNotThrowAnExceptionWhenFailFastIsDisable() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+         class A {
+         fun x() {}
+         fun y() {}\
+        """);
+    context.settings().setProperty(GoSensor.FAIL_FAST_PROPERTY_NAME, false);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S2260");
+    var sensor = sensor(checkFactory);
+    sensor.execute(context);
+    assertThat(logTester.logs(Level.WARN)).contains("Unable to parse file: file1.go. file1.go:1:2: expected 'package', found class");
   }
 
   @Test

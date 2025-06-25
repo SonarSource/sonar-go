@@ -137,7 +137,7 @@ public class InputFileContext extends TreeContext {
 
     Optional.of(location)
       .map(org.sonar.plugins.go.api.TextPointer::line)
-      .map(inputFile::selectLine)
+      .flatMap(l -> safeExtractSelectLine(inputFile, l))
       .ifPresent(parseErrorLocation::at);
 
     parseError
@@ -158,7 +158,8 @@ public class InputFileContext extends TreeContext {
       var lineOffset = Integer.parseInt(parts[LINE_OFFSET_INDEX]);
       return new TextPointerImpl(line, lineOffset);
     } catch (NumberFormatException e) {
-      LOG.warn("Failed to parse location from error message: \"{}\"", errorMessage, e);
+      // Nothing abnormal, this means that the error is not coming from the Go parser, but one issue thrown locally (ex: when converting the
+      // json).
       return new TextPointerImpl(1, 0);
     }
   }
@@ -170,11 +171,25 @@ public class InputFileContext extends TreeContext {
       .onFile(inputFile);
 
     if (location != null) {
-      TextPointer pointerLocation = inputFile.newPointer(location.line(), location.lineOffset());
-      error.at(pointerLocation);
+      try {
+        TextPointer pointerLocation = inputFile.newPointer(location.line(), location.lineOffset());
+        error.at(pointerLocation);
+      } catch (IllegalArgumentException e) {
+        LOG.debug("Invalid location '{}' for file {} when reporting parsing error.", location, inputFile, e);
+      }
     }
 
     error.save();
+  }
+
+  // Visible for testing
+  static Optional<TextRange> safeExtractSelectLine(InputFile inputFile, int line) {
+    try {
+      return Optional.of(inputFile.selectLine(line));
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Invalid line '{}' for file {} when reporting parsing error.", line, inputFile, e);
+    }
+    return Optional.empty();
   }
 
   public void setFilteredRules(Map<String, Set<org.sonar.plugins.go.api.TextRange>> filteredRules) {

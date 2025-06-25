@@ -133,9 +133,14 @@ public abstract class SlangSensor implements Sensor {
             .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
             .findFirst()
             .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), e.getMessage()));
-          if (GoSensor.isFailFast(sensorContext)) {
-            throw new IllegalStateException("Exception when analyzing '" + inputFilePath + "'", e);
-          }
+        }
+        if (GoSensor.isFailFast(sensorContext)) {
+          throw e;
+        }
+      } catch (RuntimeException e) {
+        LOG.warn("Unable to parse directory '{}'.", entry.getKey(), e);
+        if (GoSensor.isFailFast(sensorContext)) {
+          throw e;
         }
       }
       progressReport.nextFile();

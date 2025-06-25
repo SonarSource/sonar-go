@@ -19,8 +19,10 @@ package org.sonar.go.plugin;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.mockito.Mockito;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.TextRange;
 import org.sonar.api.batch.fs.internal.DefaultTextPointer;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.error.NewAnalysisError;
@@ -92,5 +94,39 @@ class InputFileContextTest {
     inputFileContext.reportAnalysisError("msg", textPointer);
 
     verify(analysisError).at(defaultTextPointer);
+  }
+
+  @Test
+  void shouldReportAnalysisErrorWithoutLocationWhenProvidedPointerIsErroneous() {
+    SensorContext sensorContext = mock(SensorContext.class);
+    var analysisError = mock(NewAnalysisError.class);
+    when(analysisError.message(anyString())).thenReturn(analysisError);
+    when(sensorContext.newAnalysisError()).thenReturn(analysisError);
+    var inputFile = mock(InputFile.class);
+    var defaultTextPointer = new DefaultTextPointer(1, 2);
+    when(inputFile.newPointer(1, 2)).thenThrow(new IllegalArgumentException());
+    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var textPointer = new TextPointerImpl(1, 2);
+
+    inputFileContext.reportAnalysisError("msg", textPointer);
+
+    verify(analysisError, Mockito.never()).at(defaultTextPointer);
+    assertThat(logTester.logs(Level.DEBUG)).isNotEmpty().anyMatch(l -> l.startsWith("Invalid location"));
+  }
+
+  @Test
+  void shouldHandleUnsafeLineSelect() {
+    var inputFile = mock(InputFile.class);
+    when(inputFile.selectLine(42)).thenThrow(new IllegalArgumentException());
+    assertThat(InputFileContext.safeExtractSelectLine(inputFile, 42)).isEmpty();
+    assertThat(logTester.logs(Level.DEBUG)).isNotEmpty().anyMatch(l -> l.startsWith("Invalid line '42' for file"));
+  }
+
+  @Test
+  void shouldHandleSafeLineSelect() {
+    var inputFile = mock(InputFile.class);
+    var textRange = mock(TextRange.class);
+    when(inputFile.selectLine(42)).thenReturn(textRange);
+    assertThat(InputFileContext.safeExtractSelectLine(inputFile, 42)).contains(textRange);
   }
 }
