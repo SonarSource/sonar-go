@@ -32,6 +32,7 @@ import org.sonar.plugins.go.api.VariableDeclarationTree;
 public class GoSensor extends SlangSensor {
 
   public static final String FAIL_FAST_PROPERTY_NAME = "sonar.internal.analysis.failFast";
+  public static final String DEBUG_TYPE_CHECK_PROPERTY_NAME = "sonar.go.internal.debugTypeCheck";
 
   private final GoChecks checks;
   private final ASTConverter goConverter;
@@ -55,7 +56,7 @@ public class GoSensor extends SlangSensor {
   }
 
   @Override
-  protected ASTConverter astConverter(SensorContext sensorContext) {
+  protected ASTConverter astConverter() {
     return goConverter;
   }
 
@@ -80,11 +81,23 @@ public class GoSensor extends SlangSensor {
       && !isGenericDeclaration(t));
   }
 
+  @Override
+  protected void initialize(SensorContext sensorContext) {
+    super.initialize(sensorContext);
+    if (debugTypeCheck(sensorContext)) {
+      astConverter().debugTypeCheck();
+    }
+  }
+
   private static boolean isGenericDeclaration(Tree tree) {
     return NativeKinds.isStringNativeKind(tree, str -> str.contains("GenDecl"));
   }
 
   public static boolean isFailFast(SensorContext context) {
     return context.config().getBoolean(FAIL_FAST_PROPERTY_NAME).orElse(false);
+  }
+
+  public static boolean debugTypeCheck(SensorContext context) {
+    return context.config().getBoolean(DEBUG_TYPE_CHECK_PROPERTY_NAME).orElse(false);
   }
 }

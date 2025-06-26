@@ -743,6 +743,16 @@ class GoConverterTest {
     assertThat(entryVar.nodes().get(0)).isInstanceOf(VariableDeclarationTree.class);
   }
 
+  @Test
+  void shouldCallDebugTypeCheckOnCommand() {
+    var command = new GoParseCommand(tempDir);
+    var converter = new GoConverter(command);
+
+    converter.debugTypeCheck();
+
+    assertThat(command.command).contains("-debug_type_check");
+  }
+
   private Optional<String> getStringDescendant(Tree tree) {
     return tree.descendants()
       .filter(StringLiteralTree.class::isInstance)

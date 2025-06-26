@@ -59,6 +59,7 @@ import org.sonar.api.utils.Version;
 import org.sonar.check.Rule;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.converter.GoParseCommand;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 import org.sonar.plugins.go.api.checks.CheckContext;
@@ -71,6 +72,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class GoSensorTest {
@@ -309,8 +312,8 @@ class GoSensorTest {
   @Test
   void always_use_the_same_ast_converter() {
     GoSensor goSensor = getSensor();
-    assertThat(goSensor.astConverter(sensorContext)).isSameAs(singleInstanceGoConverter);
-    assertThat(goSensor.astConverter(sensorContext)).isSameAs(singleInstanceGoConverter);
+    assertThat(goSensor.astConverter()).isSameAs(singleInstanceGoConverter);
+    assertThat(goSensor.astConverter()).isSameAs(singleInstanceGoConverter);
   }
 
   @Test
@@ -519,8 +522,8 @@ class GoSensorTest {
 
     sensor.execute(sensorContext);
 
-    Mockito.verify(consumer1, Mockito.times(1)).accept(any(), any());
-    Mockito.verify(consumer2, Mockito.times(1)).accept(any(), any());
+    verify(consumer1, Mockito.times(1)).accept(any(), any());
+    verify(consumer2, Mockito.times(1)).accept(any(), any());
   }
 
   @Test
@@ -557,6 +560,18 @@ class GoSensorTest {
     assertThat(logTester.logs(Level.INFO))
       .noneMatch(log -> log.startsWith("Duration Statistics"))
       .noneMatch(log -> log.startsWith("Go memory statistics"));
+  }
+
+  @Test
+  void shouldSetDebugTypeCheck() {
+    var command = mock(GoParseCommand.class);
+    singleInstanceGoConverter = new GoConverter(command);
+    sensorContext.settings().setProperty("sonar.go.internal.debugTypeCheck", true);
+
+    GoSensor sensor = getSensor();
+    sensor.execute(sensorContext);
+
+    verify(command, times(1)).debugTypeCheck();
   }
 
   private abstract static class CheckRegisteringOnLeave implements GoCheck {

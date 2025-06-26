@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-func exportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string) {
+func exportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
 	var pkgToExport *types.Package
 	for _, obj := range info.Defs {
 		if obj != nil && obj.Pkg() != nil {
@@ -37,7 +37,9 @@ func exportGcExportData(info *types.Info, exportDataDir string, moduleName strin
 		_ = file.Close()
 	}(file)
 
-	fmt.Fprintf(os.Stderr, "Writing gcexportdata to file: \"%s\", num of exported elements: %d\n", exportDataFile, pkgToExport.Scope().Len())
+	if debugTypeCheck {
+		fmt.Fprintf(os.Stderr, "Writing gcexportdata to file: \"%s\", num of exported elements: %d\n", exportDataFile, pkgToExport.Scope().Len())
+	}
 	err = gcexportdata.Write(file, nil, pkgToExport)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing gcexportdata: %s\n", err)

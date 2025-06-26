@@ -75,7 +75,7 @@ func main() {
 		if params.gcExportDataDir == "" {
 			panic("If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too")
 		}
-		exportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath)
+		exportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath, params.debugTypeCheck)
 		return
 	}
 

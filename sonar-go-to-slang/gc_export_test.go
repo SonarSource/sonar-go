@@ -81,7 +81,7 @@ func exportGcData(files []string, name string, moduleName string, packagePath st
 
 	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
 	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName)
-	exportGcExportData(info, exportLocation, moduleName, packagePath)
+	exportGcExportData(info, exportLocation, moduleName, packagePath, false)
 }
 
 func readFilesToReader(files []string) *bytes.Reader {
@@ -182,7 +182,7 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 		Defs: make(map[*ast.Ident]types.Object),
 	}
 
-	exportGcExportData(&info, "export-pkg-is-nil.o", "", "")
+	exportGcExportData(&info, "export-pkg-is-nil.o", "", "", false)
 
 	_, err := os.ReadFile("export-pkg-is-nil.o")
 	if err == nil {
@@ -203,7 +203,7 @@ func Test_should_not_fail_when_empty_path(t *testing.T) {
 		Defs: defs,
 	}
 
-	exportGcExportData(&info, "", "", "")
+	exportGcExportData(&info, "", "", "", false)
 
 	defer func() {
 		os.Remove("foo.o")

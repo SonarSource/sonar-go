@@ -36,7 +36,7 @@ public class TestGoConverterSingleFile {
   }
 
   public static TreeOrError parseAndReturnTreeOrError(String content) {
-    return GO_CONVERTER.parse(Map.of("foo.go", content)).get("foo.go");
+    return GO_CONVERTER_DEBUG_TYPE_CHECK.parse(Map.of("foo.go", content)).get("foo.go");
   }
 
   public static <T extends Tree> T parseAndRetrieve(Class<T> clazz, String content) {
@@ -58,7 +58,7 @@ public class TestGoConverterSingleFile {
         %s
       }
       """.formatted(content);
-    var root = (TopLevelTree) GO_CONVERTER.parse(Map.of("foo.go", code)).get("foo.go").tree();
+    var root = (TopLevelTree) GO_CONVERTER_DEBUG_TYPE_CHECK.parse(Map.of("foo.go", code)).get("foo.go").tree();
     var main = (FunctionDeclarationTree) root.declarations().get(1);
     return main.body().statementOrExpressions().get(0).children().get(0);
   }

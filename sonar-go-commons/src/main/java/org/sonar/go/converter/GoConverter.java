@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.Nullable;
 import org.sonar.go.persistence.JsonTree;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
@@ -36,7 +35,7 @@ public class GoConverter implements ASTConverter {
   }
 
   // Visible for testing
-  public GoConverter(@Nullable GoParseCommand command) {
+  public GoConverter(GoParseCommand command) {
     this.command = command;
   }
 
@@ -64,5 +63,10 @@ public class GoConverter implements ASTConverter {
       throw new ParseException(e.getMessage(), null, e);
     }
     return result;
+  }
+
+  @Override
+  public void debugTypeCheck() {
+    command.debugTypeCheck();
   }
 }

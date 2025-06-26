@@ -97,6 +97,10 @@ public class DefaultCommand implements Command {
     return output;
   }
 
+  public void debugTypeCheck() {
+    command.add("-debug_type_check");
+  }
+
   /**
    * Each ByteBuffer on the result list contains bytes in the following format:
    * <pre>

@@ -29,6 +29,11 @@ public interface ASTConverter {
    */
   Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap);
 
+  /**
+   * Enable the debug logging mode for type checking.
+   */
+  void debugTypeCheck();
+
   default void terminate() {
     // Nothing to do by default
   }

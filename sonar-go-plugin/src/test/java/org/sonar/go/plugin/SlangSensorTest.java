@@ -38,7 +38,6 @@ import org.sonar.api.batch.fs.TextPointer;
 import org.sonar.api.batch.fs.internal.DefaultTextPointer;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.Checks;
-import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.error.AnalysisError;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
@@ -718,7 +717,7 @@ class SlangSensorTest extends AbstractSensorTest {
   private SlangSensor sensor(CheckFactory checkFactory) {
     return new SlangSensor(new DefaultNoSonarFilter(), fileLinesContextFactory, GoLanguage.GO) {
       @Override
-      protected ASTConverter astConverter(SensorContext sensorContext) {
+      protected ASTConverter astConverter() {
         return TestGoConverterSingleFile.GO_CONVERTER;
       }
 

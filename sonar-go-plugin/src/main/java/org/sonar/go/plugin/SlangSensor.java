@@ -84,7 +84,7 @@ public abstract class SlangSensor implements Sensor {
       .name(language.getName() + " Sensor");
   }
 
-  protected abstract ASTConverter astConverter(SensorContext sensorContext);
+  protected abstract ASTConverter astConverter();
 
   protected abstract GoChecks checks();
 
@@ -333,7 +333,7 @@ public abstract class SlangSensor implements Sensor {
     ProgressReport progressReport = new ProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(10));
     progressReport.start(filenames);
     boolean success = false;
-    ASTConverter converter = ASTConverterValidation.wrap(astConverter(sensorContext), sensorContext.config());
+    var converter = ASTConverterValidation.wrap(astConverter(), sensorContext.config());
     var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
     try {
       var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);

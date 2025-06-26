@@ -117,6 +117,11 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   @Override
+  public void debugTypeCheck() {
+    // Do nothing
+  }
+
+  @Override
   public void terminate() {
     List<String> errors = errors();
     if (!errors.isEmpty()) {
