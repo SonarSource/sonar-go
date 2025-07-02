@@ -27,12 +27,10 @@ import org.sonar.plugins.go.api.checks.GoModFileData;
  * It aim to provide an efficient way to retrieve the closest Go mod file from a URI, through a tree structure.
  */
 public class GoModFileDataStore {
-  public static final GoModFileDataStore EMPTY = new GoModFileDataStore();
-
   private Node root = new Node();
   private String rootPath = "";
 
-  public String getRootPath() {
+  String getRootPath() {
     return rootPath;
   }
 
@@ -60,7 +58,7 @@ public class GoModFileDataStore {
     rootPath = sb.toString();
   }
 
-  public GoModFileData retrieveClosedGoModFileData(String path) {
+  public GoModFileData retrieveClosestGoModFileData(String path) {
     if (!path.startsWith(rootPath)) {
       return GoModFileData.UNKNOWN_DATA;
     }
@@ -81,8 +79,8 @@ public class GoModFileDataStore {
     return currentGoModFileData;
   }
 
-  public GoModFileData retrieveClosedGoModFileData(URI uri) {
-    return retrieveClosedGoModFileData(uri.getPath());
+  public GoModFileData retrieveClosestGoModFileData(URI uri) {
+    return retrieveClosestGoModFileData(uri.getPath());
   }
 
   private static String[] splitPathIntoFolderName(String path) {

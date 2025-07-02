@@ -70,13 +70,13 @@ public class GoModFileAnalyzer {
       // Restricted behavior in SQ for IDE
       // TODO: https://sonarsource.atlassian.net/browse/SONARGO-420
       // Early return to avoid unnecessary logging
-      return GoModFileDataStore.EMPTY;
+      return new GoModFileDataStore();
     }
 
     var modFiles = GoModFileFinder.findGoModFiles(sensorContext);
     if (modFiles.isEmpty()) {
       LOG.debug("Expected at least one go.mod file, but found none.");
-      return logDetectionFailureAndReturn();
+      return new GoModFileDataStore();
     }
 
     var goModFileDataStore = new GoModFileDataStore();
@@ -206,11 +206,6 @@ public class GoModFileAnalyzer {
     var moduleSpecLeft = new GoModFileData.ModuleSpec(moduleLeft, versionLeft);
     var moduleSpecRight = new GoModFileData.ModuleSpec(moduleRight, versionRight);
     return Map.entry(moduleSpecLeft, moduleSpecRight);
-  }
-
-  private static GoModFileDataStore logDetectionFailureAndReturn() {
-    LOG.debug("Could not detect the metadata from mod file of the project");
-    return GoModFileDataStore.EMPTY;
   }
 
   private static String removeQuotes(String string) {

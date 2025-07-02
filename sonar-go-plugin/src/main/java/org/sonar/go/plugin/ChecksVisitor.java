@@ -73,7 +73,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor) {
       ChecksVisitor.this.register(cls, statistics.time(ruleKey.rule(), (ctx, tree) -> {
         currentCtx = ctx;
-        currentGoModFileData = goModFileDataStore.retrieveClosedGoModFileData(currentCtx.inputFile.uri());
+        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.inputFile.uri());
         visitor.accept(this, tree);
       }));
     }

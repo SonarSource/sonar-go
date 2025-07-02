@@ -155,9 +155,7 @@ class GoModFileAnalyzerTest {
     assertThat(goModFileData.moduleName()).isEmpty();
     assertThat(goModFileData.replacedModules()).isEmpty();
     assertThat(goModFileData.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
-    assertThat(logTester.logs()).contains(
-      "Expected at least one go.mod file, but found none.",
-      "Could not detect the metadata from mod file of the project");
+    assertThat(logTester.logs()).contains("Expected at least one go.mod file, but found none.");
   }
 
   @Test
@@ -323,11 +321,11 @@ class GoModFileAnalyzerTest {
     sensorContext.fileSystem().add(goModFile2);
     var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
-    var goModFileData1 = goModFileDataStore.retrieveClosedGoModFileData(goModFile.uri());
+    var goModFileData1 = goModFileDataStore.retrieveClosestGoModFileData(goModFile.uri());
     assertThat(goModFileData1.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(goModFileData1.moduleName()).isEqualTo("myModule1");
 
-    var goModFileData2 = goModFileDataStore.retrieveClosedGoModFileData(goModFile2.uri());
+    var goModFileData2 = goModFileDataStore.retrieveClosestGoModFileData(goModFile2.uri());
     assertThat(goModFileData2.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
     assertThat(goModFileData2.moduleName()).isEqualTo("myModule2");
 
@@ -353,17 +351,17 @@ class GoModFileAnalyzerTest {
     var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
     var folderPath = toInputFileUri("src/my/sub/file.go");
-    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    var goModFileDataRoot = goModFileDataStore.retrieveClosestGoModFileData(folderPath);
     assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
 
     var subfolderPath = toInputFileUri("src/my/sub/folder/in/deeper/subfolder/file.go");
-    var goModFileDataSubfolder = goModFileDataStore.retrieveClosedGoModFileData(subfolderPath);
+    var goModFileDataSubfolder = goModFileDataStore.retrieveClosestGoModFileData(subfolderPath);
     assertThat(goModFileDataSubfolder.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
     assertThat(goModFileDataSubfolder.moduleName()).isEqualTo("myModule2");
 
     var otherFolderPath = toInputFileUri("other/path/file.go");
-    var goModFileDataEmpty = goModFileDataStore.retrieveClosedGoModFileData(otherFolderPath);
+    var goModFileDataEmpty = goModFileDataStore.retrieveClosestGoModFileData(otherFolderPath);
     assertThat(goModFileDataEmpty.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(goModFileDataEmpty.moduleName()).isEmpty();
 
@@ -389,12 +387,12 @@ class GoModFileAnalyzerTest {
     var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
     var folderPath = toInputFileUri("src/a/very/long/common/path/file.go");
-    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    var goModFileDataRoot = goModFileDataStore.retrieveClosestGoModFileData(folderPath);
     assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
 
     var subfolderPath = toInputFileUri("src/a/very/long/common/path/but/different/here/file.go");
-    var goModFileDataSubfolder = goModFileDataStore.retrieveClosedGoModFileData(subfolderPath);
+    var goModFileDataSubfolder = goModFileDataStore.retrieveClosestGoModFileData(subfolderPath);
     assertThat(goModFileDataSubfolder.goVersion()).isEqualTo(GoVersion.parse("1.23.2"));
     assertThat(goModFileDataSubfolder.moduleName()).isEqualTo("myModule2");
 
@@ -413,7 +411,7 @@ class GoModFileAnalyzerTest {
     var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
     var folderPath = toInputFileUri("test/folder/file.go");
-    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    var goModFileDataRoot = goModFileDataStore.retrieveClosestGoModFileData(folderPath);
     assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.UNKNOWN_VERSION);
     assertThat(goModFileDataRoot.moduleName()).isEmpty();
 
@@ -438,7 +436,7 @@ class GoModFileAnalyzerTest {
     var goModFileDataStore = goModFileAnalyzer.analyzeGoModFiles();
 
     var folderPath = toInputFileUri("root/src");
-    var goModFileDataRoot = goModFileDataStore.retrieveClosedGoModFileData(folderPath);
+    var goModFileDataRoot = goModFileDataStore.retrieveClosestGoModFileData(folderPath);
     assertThat(goModFileDataRoot.goVersion()).isEqualTo(GoVersion.parse("1.23.4"));
     assertThat(goModFileDataRoot.moduleName()).isEqualTo("myModule1");
 
@@ -448,7 +446,7 @@ class GoModFileAnalyzerTest {
   private GoModFileData parseSingleGoModFile() {
     var goModFilesData = goModFileAnalyzer.analyzeGoModFiles();
     var file = sensorContext.fileSystem().files(f -> true).iterator().next();
-    return goModFilesData.retrieveClosedGoModFileData(file.toURI());
+    return goModFilesData.retrieveClosestGoModFileData(file.toURI());
   }
 
   private InputFile createInputFile(String filename, String content) {
