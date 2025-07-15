@@ -126,7 +126,7 @@ public class GoModFileAnalyzer {
     }
 
     logDetails(goVersion, moduleName, loggableFilePath);
-    return new GoModFileData(moduleName, goVersion, replacedModules);
+    return new GoModFileData(moduleName, goVersion, replacedModules, loggableFilePath);
   }
 
   private static void logDetails(GoVersion goVersion, String moduleName, String loggableFilePath) {

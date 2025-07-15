@@ -123,6 +123,7 @@ public abstract class SlangSensor implements Sensor {
         .map(inputFile -> new InputFileContext(sensorContext, inputFile))
         .toList();
 
+      LOG.debug("Parse directory '{}', number of files: {}", entry.getKey(), filesToAnalyse.size());
       try {
         analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext);
       } catch (ParseException e) {

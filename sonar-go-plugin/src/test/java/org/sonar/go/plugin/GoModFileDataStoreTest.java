@@ -29,7 +29,7 @@ class GoModFileDataStoreTest {
   private final GoModFileData goModeFileData2 = mock(GoModFileData.class);
 
   @Test
-  void testGoModRootFolder() {
+  void shouldValidateGoModRootFolder() {
     GoModFileDataStore store = new GoModFileDataStore();
     store.addGoModFile(URI.create("/go.mod"), goModeFileData1);
     store.complete();

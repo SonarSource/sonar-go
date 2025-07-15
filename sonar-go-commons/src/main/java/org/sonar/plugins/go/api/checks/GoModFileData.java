@@ -27,9 +27,9 @@ import javax.annotation.Nullable;
  * @param goVersion the Go version used in the module
  * @param replacedModules a map of replaced modules, where the key is the original module and the value is the replacement module.
  */
-public record GoModFileData(String moduleName, GoVersion goVersion, List<Map.Entry<ModuleSpec, ModuleSpec>> replacedModules) {
+public record GoModFileData(String moduleName, GoVersion goVersion, List<Map.Entry<ModuleSpec, ModuleSpec>> replacedModules, String goModFilePath) {
 
-  public static final GoModFileData UNKNOWN_DATA = new GoModFileData("", GoVersion.UNKNOWN_VERSION, Collections.emptyList());
+  public static final GoModFileData UNKNOWN_DATA = new GoModFileData("", GoVersion.UNKNOWN_VERSION, Collections.emptyList(), "");
 
   /**
    * Represents a module specification with its name and an optional version.
