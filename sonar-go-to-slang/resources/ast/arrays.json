@@ -112,7 +112,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::15","type":"func()","package":"main","name":"oneElement","id":63,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,11,15,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::15","type":"func()","package":"ModuleNameForTest/main","name":"oneElement","id":63,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,11,15,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:18:9:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::16","type":
             {"@type": "ArrayType", "metaData": "6:7::16","length":
@@ -137,7 +137,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::21","type":"func()","package":"main","name":"multiDimensional","id":125,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,16,21,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "11:5::21","type":"func()","package":"ModuleNameForTest/main","name":"multiDimensional","id":125,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,16,21,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "11:24:16:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "12:1::19","type":
             {"@type": "ArrayType", "metaData": "12:7::19","length":
@@ -175,7 +175,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "18:5::33","type":"func()","package":"main","name":"arrayCreatedAtInitialization","id":218,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "18:5::33","type":"func()","package":"ModuleNameForTest/main","name":"arrayCreatedAtInitialization","id":218,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "18:36:21:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "19:1::38","type":
             null,"isVal":false,"initializers":[

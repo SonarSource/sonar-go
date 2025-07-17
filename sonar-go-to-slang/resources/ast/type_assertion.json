@@ -44,7 +44,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::18","type":"func()","package":"ast","name":"typeAssertion","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,19,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::18","type":"func()","package":"ModuleNameForTest/ast","name":"typeAssertion","id":19,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,19,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:21:8:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "4:4::21","type":
             {"@type": "Native", "metaData": "4:10::21","nativeKind":"Type(InterfaceType)","children":[

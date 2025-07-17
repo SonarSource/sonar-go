@@ -89,8 +89,8 @@ public class ASTConverterValidation implements ASTConverter {
   }
 
   @Override
-  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap) {
-    var filenamesToTrees = wrapped.parse(filenameToContentMap);
+  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap, String moduleName) {
+    var filenamesToTrees = wrapped.parse(filenameToContentMap, moduleName);
     var result = new HashMap<String, TreeOrError>();
     for (Map.Entry<String, TreeOrError> filenameToTree : filenamesToTrees.entrySet()) {
       currentFile = filenameToTree.getKey();

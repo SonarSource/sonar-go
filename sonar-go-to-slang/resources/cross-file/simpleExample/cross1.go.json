@@ -75,7 +75,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "8:5::10","type":"func()","package":"main","name":"mainX","id":"__id_placeholder__","__cfgId":6},"formalParameters":[],"cfg":{"Blocks":[{"Node":[16,22,29,34,41,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "8:5::10","type":"func()","package":"simpleExample/main","name":"mainX","id":"__id_placeholder__","__cfgId":6},"formalParameters":[],"cfg":{"Blocks":[{"Node":[16,22,29,34,41,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "8:13:14:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "9:1::36","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "9:6::36","returnType":["int"],"memberSelect":

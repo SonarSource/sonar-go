@@ -182,7 +182,7 @@ class FunctionDeclarationTreeImplTest {
       %s
       """.formatted(function);
     var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionDeclarationTreeImpl.class, code);
-    assertThat(func.signature()).isEqualTo("main.foo");
+    assertThat(func.signature()).isEqualTo("ModuleNameForTest/main.foo");
   }
 
   @Test

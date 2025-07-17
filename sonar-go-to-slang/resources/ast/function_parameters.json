@@ -199,13 +199,13 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::7","type":"func()","package":"main","name":"f1","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::7","type":"func()","package":"ModuleNameForTest/main","name":"f1","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:10::12","statementOrExpressions":[],"__cfgId":5},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "5:0::17","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::7","type":"func(a int)","package":"main","name":"f2","id":34,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "5:5::7","type":"func(a int)","package":"ModuleNameForTest/main","name":"f2","id":34,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "5:8::13","type":
           {"@type": "Identifier", "metaData": "5:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "5:8::9","type":"int","package":"UNKNOWN","name":"a","id":37,"__cfgId":3},"__cfgId":5}
@@ -215,7 +215,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::7","type":"func(a int, b int)","package":"main","name":"f3","id":53,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "7:5::7","type":"func(a int, b int)","package":"ModuleNameForTest/main","name":"f3","id":53,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "7:8::9","type":
           null,"identifier":
           {"@type": "Identifier", "metaData": "7:8::9","type":"int","package":"UNKNOWN","name":"a","id":56,"__cfgId":3},"__cfgId":4},
@@ -228,7 +228,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::7","type":"func(a int, b int)","package":"main","name":"f4","id":75,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "9:5::7","type":"func(a int, b int)","package":"ModuleNameForTest/main","name":"f4","id":75,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "9:8::13","type":
           {"@type": "Identifier", "metaData": "9:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "9:8::9","type":"int","package":"UNKNOWN","name":"a","id":78,"__cfgId":3},"__cfgId":5},
@@ -241,7 +241,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::7","type":"func(a int, b string)","package":"main","name":"f5","id":101,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "11:5::7","type":"func(a int, b string)","package":"ModuleNameForTest/main","name":"f5","id":101,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "11:8::13","type":
           {"@type": "Identifier", "metaData": "11:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "11:8::9","type":"int","package":"UNKNOWN","name":"a","id":104,"__cfgId":3},"__cfgId":5},
@@ -254,7 +254,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "13:5::7","type":"func(a int, b string, c string)","package":"main","name":"f6","id":130,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "13:5::7","type":"func(a int, b string, c string)","package":"ModuleNameForTest/main","name":"f6","id":130,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "13:8::13","type":
           {"@type": "Identifier", "metaData": "13:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "13:8::9","type":"int","package":"UNKNOWN","name":"a","id":133,"__cfgId":3},"__cfgId":5},
@@ -270,7 +270,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "15:5::7","type":"func(a int, b int, c string, d string)","package":"main","name":"f7","id":162,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "15:5::7","type":"func(a int, b int, c string, d string)","package":"ModuleNameForTest/main","name":"f7","id":162,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "15:8::9","type":
           null,"identifier":
           {"@type": "Identifier", "metaData": "15:8::9","type":"int","package":"UNKNOWN","name":"a","id":165,"__cfgId":3},"__cfgId":4},
@@ -293,7 +293,7 @@
           ],"__cfgId":9}
         ],"__cfgId":10},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "17:5::7","type":"func(a int) int","package":"main","name":"f8","id":197,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "17:5::7","type":"func(a int) int","package":"ModuleNameForTest/main","name":"f8","id":197,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "17:8::13","type":
           {"@type": "Identifier", "metaData": "17:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "17:8::9","type":"int","package":"UNKNOWN","name":"a","id":200,"__cfgId":3},"__cfgId":5}
@@ -317,7 +317,7 @@
           {"@type": "Native", "metaData": "21:27::28","nativeKind":"Closing"}
         ],"__cfgId":12},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "21:5::7","type":"func(a int) (int, string)","package":"main","name":"f9","id":234,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "21:5::7","type":"func(a int) (int, string)","package":"ModuleNameForTest/main","name":"f9","id":234,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "21:8::13","type":
           {"@type": "Identifier", "metaData": "21:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "21:8::9","type":"int","package":"UNKNOWN","name":"a","id":237,"__cfgId":3},"__cfgId":5}
@@ -342,13 +342,13 @@
           ],"__cfgId":5},
           {"@type": "Native", "metaData": "25:20::21","nativeKind":"Closing"}
         ],"__cfgId":6},"name":
-        {"@type": "Identifier", "metaData": "25:22::25","type":"func()","package":"main","name":"f10","id":305,"__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "25:22::25","type":"func()","package":"ModuleNameForTest/main","name":"f10","id":305,"__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "25:28::31","statementOrExpressions":[],"__cfgId":9},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "27:0::61","typeParameters":
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "27:5::8","type":"func(head string, handleFunc func(*invalid type))","package":"main","name":"f11","id":321,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "27:5::8","type":"func(head string, handleFunc func(*invalid type))","package":"ModuleNameForTest/main","name":"f11","id":321,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "27:9::20","type":
           {"@type": "Identifier", "metaData": "27:14::20","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "27:9::13","type":"string","package":"UNKNOWN","name":"head","id":325,"__cfgId":3},"__cfgId":5},
@@ -373,7 +373,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "29:5::7","type":"func(i int, j int)","package":"main","name":"g1","id":384,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "29:5::7","type":"func(i int, j int)","package":"ModuleNameForTest/main","name":"g1","id":384,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "29:8::9","type":
           null,"identifier":
           {"@type": "Identifier", "metaData": "29:8::9","type":"int","package":"UNKNOWN","name":"i","id":387,"__cfgId":3},"__cfgId":4},
@@ -386,7 +386,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "31:5::7","type":"func(i int, j int, k string, l string)","package":"main","name":"g3","id":417,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "31:5::7","type":"func(i int, j int, k string, l string)","package":"ModuleNameForTest/main","name":"g3","id":417,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "31:8::9","type":
           null,"identifier":
           {"@type": "Identifier", "metaData": "31:8::9","type":"int","package":"UNKNOWN","name":"i","id":420,"__cfgId":3},"__cfgId":4},

@@ -257,7 +257,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::21","type":"func()","package":"main","name":"SliceDeclaration","id":63,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,17,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::21","type":"func()","package":"ModuleNameForTest/main","name":"SliceDeclaration","id":63,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,13,17,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:24:9:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::15","type":
             {"@type": "ArrayType", "metaData": "6:7::15","length":null,"element":
@@ -283,7 +283,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::33","type":"func()","package":"main","name":"SliceDeclarationPreAllocated","id":139,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,14,18,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "11:5::33","type":"func()","package":"ModuleNameForTest/main","name":"SliceDeclarationPreAllocated","id":139,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,14,18,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "11:36:15:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "12:1::24","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "12:6::24","returnType":[],"memberSelect":
@@ -314,7 +314,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "17:5::19","type":"func()","package":"main","name":"SliceFromArray","id":236,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "17:5::19","type":"func()","package":"ModuleNameForTest/main","name":"SliceFromArray","id":236,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "17:22:20:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "18:1::42","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "18:8::42","type":
@@ -344,7 +344,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "22:5::15","type":"func()","package":"main","name":"SliceRange","id":325,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,11,9,10],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[13],"Successors":[4,5]},{"Node":[0],"Successors":null},{"Node":[16],"Successors":[5]},{"Node":null,"Successors":[1]}]},"body":
+        {"@type": "Identifier", "metaData": "22:5::15","type":"func()","package":"ModuleNameForTest/main","name":"SliceRange","id":325,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,11,9,10],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[13],"Successors":[4,5]},{"Node":[0],"Successors":null},{"Node":[16],"Successors":[5]},{"Node":null,"Successors":[1]}]},"body":
         {"@type": "Block", "metaData": "22:18:29:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "23:1::25","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "23:7::25","type":
@@ -384,7 +384,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "31:5::26","type":"func()","package":"main","name":"SliceMultiDimensional","id":429,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,16,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "31:5::26","type":"func()","package":"ModuleNameForTest/main","name":"SliceMultiDimensional","id":429,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,16,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "31:29:34:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "32:1::41","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "32:7::41","type":
@@ -419,7 +419,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "36:5::20","type":"func()","package":"main","name":"SliceOfPointers","id":520,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[15,19,24,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "36:5::20","type":"func()","package":"ModuleNameForTest/main","name":"SliceOfPointers","id":520,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[15,19,24,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "36:23:40:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "37:1::42","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "37:7::42","type":
@@ -457,7 +457,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "42:5::22","type":"func()","package":"main","name":"SliceOfInterfaces","id":618,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "42:5::22","type":"func()","package":"ModuleNameForTest/main","name":"SliceOfInterfaces","id":618,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "42:25:44:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "43:1::28","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "43:7::28","type":
@@ -480,7 +480,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "46:5::25","type":"func()","package":"main","name":"SliceFromArray3Index","id":677,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "46:5::25","type":"func()","package":"ModuleNameForTest/main","name":"SliceFromArray3Index","id":677,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,12,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "46:28:49:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "47:1::32","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "47:8::32","type":

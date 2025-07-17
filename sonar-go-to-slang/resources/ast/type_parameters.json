@@ -33,7 +33,7 @@
           {"@type": "Native", "metaData": "3:15::16","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "3:16::21","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "3:16::17","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "3:16::17","type":"T","package":"main","name":"T","id":31,"__cfgId":4}
+              {"@type": "Identifier", "metaData": "3:16::17","type":"T","package":"ModuleNameForTest/main","name":"T","id":31,"__cfgId":4}
             ]},
             {"@type": "Identifier", "metaData": "3:18::21","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":5}
           ],"__cfgId":6},
@@ -45,9 +45,9 @@
           ],"__cfgId":14}
         ],"__cfgId":15},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","package":"main","name":"MyFunction","id":20,"__cfgId":3},"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:5::15","type":"func[T any](param T) int","package":"ModuleNameForTest/main","name":"MyFunction","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:23::30","type":
-          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"main","name":"T","id":31,"__cfgId":9},"identifier":
+          {"@type": "Identifier", "metaData": "3:29::30","type":"T","package":"ModuleNameForTest/main","name":"T","id":31,"__cfgId":9},"identifier":
           {"@type": "Identifier", "metaData": "3:23::28","type":"T","package":"UNKNOWN","name":"param","id":38,"__cfgId":8},"__cfgId":10}
       ],"cfg":{"Blocks":[{"Node":[16],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:36:5:1","statementOrExpressions":[

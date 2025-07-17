@@ -409,7 +409,7 @@ class GoConverterTest {
     GoConverter converter = new GoConverter(command);
     var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
     ParseException e = assertThrows(ParseException.class,
-      () -> converter.parse(filenameToContentMap));
+      () -> converter.parse(filenameToContentMap, "moduleName"));
     assertThat(e).hasMessageContaining("Cannot run program \"invalid-command\"");
   }
 

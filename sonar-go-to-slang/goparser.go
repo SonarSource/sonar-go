@@ -81,10 +81,10 @@ const processLineDirective = false
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
-func toSlangJson(fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, indent string) string {
+func toSlangJson(fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, moduleName string, indent string) string {
 	fileNameToString := make(map[string]string)
 	for fileName, astFile := range astFiles {
-		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info)
+		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info, moduleName)
 		jsonPart := toJsonSlang(slangTree, comments, tokens, errMgs, indent)
 		fileNameToString[fileName] = jsonPart
 	}
@@ -104,12 +104,12 @@ func toJson(fileNameToString map[string]string) string {
 	return buf.String()
 }
 
-func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info) (*Node, []*Node, []*Token, *string) {
+func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string) (*Node, []*Node, []*Token, *string) {
 	if astFile.err != nil {
 		errMsg := astFile.err.Error()
 		return nil, nil, nil, &errMsg
 	}
-	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info).toSlang()
+	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info, moduleName).toSlang()
 	return slangTree, comments, tokens, nil
 }
 
@@ -188,9 +188,10 @@ type SlangMapper struct {
 	info              *types.Info
 	currentCfgId      int32
 	objectToCfgIds    map[any]int32
+	moduleName        string
 }
 
-func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info) *SlangMapper {
+func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info, moduleName string) *SlangMapper {
 	t := &SlangMapper{
 		astFile:           astFile,
 		fileContent:       fileContent,
@@ -200,6 +201,7 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		paranoiac:         true,
 		info:              info,
 		objectToCfgIds:    make(map[any]int32),
+		moduleName:        moduleName,
 	}
 	t.comments = t.mapAllComments()
 	t.commentPos = 0
@@ -715,7 +717,7 @@ func (t *SlangMapper) extractPackageName(obj *types.Object) string {
 	if fun, ok := (*obj).(*types.Func); ok && fun != nil {
 		pkg := fun.Pkg()
 		if pkg != nil {
-			return fun.Pkg().Path()
+			return t.packageNameFromPackage(pkg)
 		} else {
 			return "UNKNOWN"
 		}
@@ -723,10 +725,19 @@ func (t *SlangMapper) extractPackageName(obj *types.Object) string {
 	if typ, ok := (*obj).(*types.TypeName); ok && typ != nil {
 		pkg := typ.Pkg()
 		if pkg != nil {
-			return pkg.Path()
+			return t.packageNameFromPackage(pkg)
 		}
 	}
 	return "UNKNOWN"
+}
+
+func (t *SlangMapper) packageNameFromPackage(pkg *types.Package) string {
+	pkgName := pkg.Path()
+	_, isPackageFromKnownLibrary := packageExportData[pkgName]
+	if t.moduleName != "" && !isPackageFromKnownLibrary && !strings.HasPrefix(pkgName, t.moduleName) {
+		return t.moduleName + "/" + pkgName
+	}
+	return pkgName
 }
 
 // getTypeFromAst returns the type of the given identifier by looking at the AST

@@ -54,7 +54,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"main","name":"printCookie","id":55,"__cfgId":6},"formalParameters":[
+        {"@type": "Identifier", "metaData": "6:5::16","type":"func(id int)","package":"ModuleNameForTest/main","name":"printCookie","id":55,"__cfgId":6},"formalParameters":[
         {"@type": "Parameter", "metaData": "6:17::23","type":
           {"@type": "Identifier", "metaData": "6:20::23","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":8},"identifier":
           {"@type": "Identifier", "metaData": "6:17::19","type":"int","package":"UNKNOWN","name":"id","id":67,"__cfgId":7},"__cfgId":9}

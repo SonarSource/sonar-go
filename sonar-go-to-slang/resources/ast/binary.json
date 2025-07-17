@@ -118,7 +118,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::8","type":"func()","package":"main","name":"foo","id":266,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[28,43,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "10:5::8","type":"func()","package":"ModuleNameForTest/main","name":"foo","id":266,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[28,43,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "10:11:37:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "11:1:22:2","type":null,"isVal":false,"initializers":[
             {"@type": "CompositeLiteral", "metaData": "11:13:22:2","type":

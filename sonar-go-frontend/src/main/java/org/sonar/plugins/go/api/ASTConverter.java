@@ -24,10 +24,11 @@ public interface ASTConverter {
    * Parses the given content and returns a map of file names to their corresponding AST trees.
    *
    * @param filenameToContentMap a map where keys are file names and values are their content
+   * @param moduleName the module name for the files in filenameToContentMap
    * @return a map where keys are file names and values are their corresponding AST trees
    * @throws ParseException if an error occurs during parsing
    */
-  Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap);
+  Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap, String moduleName);
 
   /**
    * Enable the debug logging mode for type checking.

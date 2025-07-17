@@ -97,7 +97,7 @@
       {"@type": "ClassDeclaration", "metaData": "4:0::31","identifier":"4:5::11","classTree":
         {"@type": "Native", "metaData": "4:0::31","nativeKind":"[1](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "4:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "4:5::11","type":"main.class1","package":"main","name":"class1","id":62,"__cfgId":5},
+          {"@type": "Identifier", "metaData": "4:5::11","type":"main.class1","package":"ModuleNameForTest/main","name":"class1","id":62,"__cfgId":5},
           {"@type": "Native", "metaData": "4:12::31","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "4:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "4:19::31","nativeKind":"Fields(FieldList)","children":[
@@ -117,7 +117,7 @@
       {"@type": "ClassDeclaration", "metaData": "5:0::34","identifier":"5:5::11","classTree":
         {"@type": "Native", "metaData": "5:0::34","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "5:5::11","type":"main.class2","package":"main","name":"class2","id":94,"__cfgId":14},
+          {"@type": "Identifier", "metaData": "5:5::11","type":"main.class2","package":"ModuleNameForTest/main","name":"class2","id":94,"__cfgId":14},
           {"@type": "Native", "metaData": "5:12::34","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "5:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "5:19::34","nativeKind":"Fields(FieldList)","children":[
@@ -137,7 +137,7 @@
       {"@type": "ClassDeclaration", "metaData": "6:0::27","identifier":"6:5::14","classTree":
         {"@type": "Native", "metaData": "6:0::27","nativeKind":"[3](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "6:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "6:5::14","type":"main.anyObject","package":"main","name":"anyObject","id":129,"__cfgId":23},
+          {"@type": "Identifier", "metaData": "6:5::14","type":"main.anyObject","package":"ModuleNameForTest/main","name":"anyObject","id":129,"__cfgId":23},
           {"@type": "Native", "metaData": "6:15::27","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "6:15::24","nativeKind":"Interface"},
             {"@type": "Native", "metaData": "6:25::27","nativeKind":"Methods(FieldList)","children":[
@@ -150,7 +150,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"main","name":"fun1","id":157,"__cfgId":28},"formalParameters":[],"cfg":{"Blocks":[{"Node":[34,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "7:5::9","type":"func()","package":"ModuleNameForTest/main","name":"fun1","id":157,"__cfgId":28},"formalParameters":[],"cfg":{"Blocks":[{"Node":[34,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "7:12:9:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "8:2::28","expression":
             {"@type": "FunctionInvocation", "metaData": "8:2::28","returnType":["int","error"],"memberSelect":
@@ -164,7 +164,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"main","name":"fun2","id":202,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "10:5::9","type":"func(i int)","package":"ModuleNameForTest/main","name":"fun2","id":202,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "10:10::15","type":
           {"@type": "Identifier", "metaData": "10:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "10:10::11","type":"int","package":"UNKNOWN","name":"i","id":207,"__cfgId":3},"__cfgId":5}
@@ -197,7 +197,7 @@
           ],"__cfgId":10}
         ],"__cfgId":11},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"main","name":"fun3","id":309,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "18:5::9","type":"func(x interface{}) int","package":"ModuleNameForTest/main","name":"fun3","id":309,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "18:10::23","type":
           {"@type": "Native", "metaData": "18:12::23","nativeKind":"Type(InterfaceType)","children":[
             {"@type": "Native", "metaData": "18:12::21","nativeKind":"Interface"},

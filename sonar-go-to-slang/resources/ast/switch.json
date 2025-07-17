@@ -249,7 +249,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,9,0],"Successors":[3,5]},{"Node":[31,33,35,38],"Successors":[13,15]},{"Node":[14],"Successors":[1]},{"Node":[20],"Successors":[1]},{"Node":[26],"Successors":[1]},{"Node":[0],"Successors":[3,6]},{"Node":[0],"Successors":[3,7]},{"Node":[0],"Successors":[4,8]},{"Node":[0],"Successors":[4,9]},{"Node":[0],"Successors":[4,10]},{"Node":[0],"Successors":[4,11]},{"Node":null,"Successors":[2]},{"Node":[67,69],"Successors":[20,22]},{"Node":[43],"Successors":[12]},{"Node":[52],"Successors":[12]},{"Node":[47],"Successors":[14,17]},{"Node":[60],"Successors":[12]},{"Node":[55],"Successors":[16,18]},{"Node":null,"Successors":[12]},{"Node":[87,91],"Successors":[24,25]},{"Node":[74],"Successors":[19]},{"Node":[80],"Successors":[19]},{"Node":null,"Successors":[21]},{"Node":[142],"Successors":[37,38]},{"Node":[97],"Successors":[23]},{"Node":null,"Successors":[27,28]},{"Node":null,"Successors":[23]},{"Node":[106],"Successors":[23]},{"Node":null,"Successors":[27,29]},{"Node":null,"Successors":[30,31]},{"Node":[119],"Successors":[32]},{"Node":null,"Successors":[34,35]},{"Node":null,"Successors":null},{"Node":null,"Successors":[23]},{"Node":[129],"Successors":[23]},{"Node":[136],"Successors":[23]},{"Node":[0],"Successors":null},{"Node":[147],"Successors":[36]},{"Node":null,"Successors":[36]}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"ModuleNameForTest/main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8,9,0],"Successors":[3,5]},{"Node":[31,33,35,38],"Successors":[13,15]},{"Node":[14],"Successors":[1]},{"Node":[20],"Successors":[1]},{"Node":[26],"Successors":[1]},{"Node":[0],"Successors":[3,6]},{"Node":[0],"Successors":[3,7]},{"Node":[0],"Successors":[4,8]},{"Node":[0],"Successors":[4,9]},{"Node":[0],"Successors":[4,10]},{"Node":[0],"Successors":[4,11]},{"Node":null,"Successors":[2]},{"Node":[67,69],"Successors":[20,22]},{"Node":[43],"Successors":[12]},{"Node":[52],"Successors":[12]},{"Node":[47],"Successors":[14,17]},{"Node":[60],"Successors":[12]},{"Node":[55],"Successors":[16,18]},{"Node":null,"Successors":[12]},{"Node":[87,91],"Successors":[24,25]},{"Node":[74],"Successors":[19]},{"Node":[80],"Successors":[19]},{"Node":null,"Successors":[21]},{"Node":[142],"Successors":[37,38]},{"Node":[97],"Successors":[23]},{"Node":null,"Successors":[27,28]},{"Node":null,"Successors":[23]},{"Node":[106],"Successors":[23]},{"Node":null,"Successors":[27,29]},{"Node":null,"Successors":[30,31]},{"Node":[119],"Successors":[32]},{"Node":null,"Successors":[34,35]},{"Node":null,"Successors":null},{"Node":null,"Successors":[23]},{"Node":[129],"Successors":[23]},{"Node":[136],"Successors":[23]},{"Node":[0],"Successors":null},{"Node":[147],"Successors":[36]},{"Node":null,"Successors":[36]}]},"body":
         {"@type": "Block", "metaData": "5:12:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:4::12","type":null,"isVal":false,"initializers":[
             {"@type": "IntegerLiteral", "metaData": "6:11::12","value":"1"}
@@ -375,7 +375,7 @@
             {"@type": "Native", "metaData": "23:11::19","nativeKind":"InitAndTag","children":[
               {"@type": "VariableDeclaration", "metaData": "23:11::19","type":null,"isVal":false,"initializers":[
                 {"@type": "FunctionInvocation", "metaData": "23:16::19","returnType":["int"],"memberSelect":
-                  {"@type": "Identifier", "metaData": "23:16::17","type":"func() int","package":"main","name":"f","id":1338,"__cfgId":65},"arguments":[],"__cfgId":66}
+                  {"@type": "Identifier", "metaData": "23:16::17","type":"func() int","package":"ModuleNameForTest/main","name":"f","id":1338,"__cfgId":65},"arguments":[],"__cfgId":66}
               ],"identifiers":[
                 {"@type": "Identifier", "metaData": "23:11::12","type":"int","package":"UNKNOWN","name":"x","id":427,"__cfgId":64}
               ],"__cfgId":67}
@@ -543,7 +543,7 @@
           ],"__cfgId":5}
         ],"__cfgId":6},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","package":"main","name":"f","id":1338,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "52:5::6","type":"func() int","package":"ModuleNameForTest/main","name":"f","id":1338,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[8],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "52:13:54:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "53:1::11","keyword":"53:1::7","expressions":[
             {"@type": "UnaryExpression", "metaData": "53:8::11","operator":"MINUS","operand":

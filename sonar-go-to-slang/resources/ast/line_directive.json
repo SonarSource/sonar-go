@@ -42,7 +42,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::9","type":"func()","package":"main","name":"main","id":83,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "9:5::9","type":"func()","package":"ModuleNameForTest/main","name":"main","id":83,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:12:11:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "10:1::27","expression":
             {"@type": "FunctionInvocation", "metaData": "10:1::27","returnType":["int","error"],"memberSelect":

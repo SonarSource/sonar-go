@@ -82,7 +82,7 @@ func main() {
 	if params.dumpAst {
 		fmt.Println(render(astFiles))
 	} else {
-		json := toSlangJson(fileSet, astFiles, fileContents, info, "")
+		json := toSlangJson(fileSet, astFiles, fileContents, info, params.moduleName, "")
 		fmt.Println(json)
 	}
 }

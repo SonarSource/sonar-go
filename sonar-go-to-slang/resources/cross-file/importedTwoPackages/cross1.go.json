@@ -92,7 +92,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "9:5::10","type":"func()","package":"main","name":"mainX","id":"__id_placeholder__","__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[17,23,30,35,42,49,54,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "9:5::10","type":"func()","package":"example.com/company/sub-modules/impTwoPack/main","name":"mainX","id":"__id_placeholder__","__cfgId":7},"formalParameters":[],"cfg":{"Blocks":[{"Node":[17,23,30,35,42,49,54,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "9:13:18:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "10:1::36","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "10:6::36","returnType":["int"],"memberSelect":

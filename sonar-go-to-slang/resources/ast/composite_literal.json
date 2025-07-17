@@ -178,7 +178,7 @@
       {"@type": "ClassDeclaration", "metaData": "7:0:10:1","identifier":"7:5::11","classTree":
         {"@type": "Native", "metaData": "7:0:10:1","nativeKind":"[2](TypeSpecWrapped)","children":[
           {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
-          {"@type": "Identifier", "metaData": "7:5::11","type":"main.Person","package":"main","name":"Person","id":75,"__cfgId":13},
+          {"@type": "Identifier", "metaData": "7:5::11","type":"main.Person","package":"ModuleNameForTest/main","name":"Person","id":75,"__cfgId":13},
           {"@type": "Native", "metaData": "7:12:10:1","nativeKind":"Type(StructType)","children":[
             {"@type": "Native", "metaData": "7:12::18","nativeKind":"Struct"},
             {"@type": "Native", "metaData": "7:19:10:1","nativeKind":"Fields(FieldList)","children":[
@@ -202,7 +202,7 @@
       {"@type": "VariableDeclaration", "metaData": "12:0::43","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "12:13::43","type":
-          {"@type": "Identifier", "metaData": "12:13::19","type":"main.Person","package":"main","name":"Person","id":75,"__cfgId":25},"elements":[
+          {"@type": "Identifier", "metaData": "12:13::19","type":"main.Person","package":"ModuleNameForTest/main","name":"Person","id":75,"__cfgId":25},"elements":[
           {"@type": "KeyValue", "metaData": "12:20::33","value":
             {"@type": "StringLiteral", "metaData": "12:26::33","value":"\"Alice\"","content":"Alice"},"key":
             {"@type": "Identifier", "metaData": "12:20::24","type":"string","package":"UNKNOWN","name":"Name","id":95,"__cfgId":26},"__cfgId":27},
@@ -218,7 +218,7 @@
         {"@type": "CompositeLiteral", "metaData": "13:14:16:1","type":
           {"@type": "ArrayType", "metaData": "13:14::23","length":
             {"@type": "IntegerLiteral", "metaData": "13:15::16","value":"2"},"element":
-            {"@type": "Identifier", "metaData": "13:17::23","type":"main.Person","package":"main","name":"Person","id":75,"__cfgId":33},"__cfgId":34},"elements":[
+            {"@type": "Identifier", "metaData": "13:17::23","type":"main.Person","package":"ModuleNameForTest/main","name":"Person","id":75,"__cfgId":33},"__cfgId":34},"elements":[
           {"@type": "CompositeLiteral", "metaData": "14:4::28","type":
             null,"elements":[
             {"@type": "KeyValue", "metaData": "14:5::18","value":
@@ -289,7 +289,7 @@
       {"@type": "VariableDeclaration", "metaData": "25:0:28:1","type":
         null,"isVal":false,"initializers":[
         {"@type": "CompositeLiteral", "metaData": "25:29:28:1","type":
-          {"@type": "Identifier", "metaData": "25:29::35","type":"main.Person","package":"main","name":"Person","id":75,"__cfgId":69},"elements":[
+          {"@type": "Identifier", "metaData": "25:29::35","type":"main.Person","package":"ModuleNameForTest/main","name":"Person","id":75,"__cfgId":69},"elements":[
           {"@type": "StringLiteral", "metaData": "26:4::9","value":"\"Bob\"","content":"Bob"},
           {"@type": "IntegerLiteral", "metaData": "27:4::6","value":"31"}
         ],"__cfgId":70}

@@ -170,7 +170,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::31","type":"func()","package":"main","name":"mapCreatedAtInitialization","id":61,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,15,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::31","type":"func()","package":"ModuleNameForTest/main","name":"mapCreatedAtInitialization","id":61,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,15,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:34:8:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "6:1::42","type":
             null,"isVal":false,"initializers":[
@@ -197,7 +197,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "10:5::46","type":"func()","package":"main","name":"mapCreatedAtInitializationMultiplesValues","id":158,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "10:5::46","type":"func()","package":"ModuleNameForTest/main","name":"mapCreatedAtInitializationMultiplesValues","id":158,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "10:49:12:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "11:1::60","type":
             null,"isVal":false,"initializers":[
@@ -220,7 +220,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "14:5::28","type":"func()","package":"main","name":"mapFilledWithOneElement","id":273,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "14:5::28","type":"func()","package":"ModuleNameForTest/main","name":"mapFilledWithOneElement","id":273,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "14:31:17:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "15:1::32","type":
             null,"isVal":false,"initializers":[
@@ -243,7 +243,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "19:5::20","type":"func()","package":"main","name":"mapCommaOkIdiom","id":362,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,18,19],"Successors":[1,2]},{"Node":[22],"Successors":[2]},{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "19:5::20","type":"func()","package":"ModuleNameForTest/main","name":"mapCommaOkIdiom","id":362,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[10,13,18,19],"Successors":[1,2]},{"Node":[22],"Successors":[2]},{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "19:23:25:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::32","type":
             null,"isVal":false,"initializers":[
@@ -287,7 +287,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "27:5::24","type":"func()","package":"main","name":"mapsTimeZoneExample","id":483,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[20,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "27:5::24","type":"func()","package":"ModuleNameForTest/main","name":"mapsTimeZoneExample","id":483,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[20,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "27:27:33:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "28:1:32:2","type":
             null,"isVal":false,"initializers":[

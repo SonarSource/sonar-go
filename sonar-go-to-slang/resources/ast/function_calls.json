@@ -292,7 +292,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::8","type":"func(data []byte)","package":"main","name":"fc1","id":88,"__cfgId":9},"formalParameters":[
+        {"@type": "Identifier", "metaData": "11:5::8","type":"func(data []byte)","package":"ModuleNameForTest/main","name":"fc1","id":88,"__cfgId":9},"formalParameters":[
         {"@type": "Parameter", "metaData": "11:9::20","type":
           {"@type": "ArrayType", "metaData": "11:14::20","length":null,"element":
             {"@type": "Identifier", "metaData": "11:16::20","type":"byte","package":"UNKNOWN","name":"byte","id":0,"__cfgId":11},"__cfgId":12},"identifier":
@@ -311,14 +311,14 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "15:5::8","type":"func()","package":"main","name":"fc2","id":130,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "15:5::8","type":"func()","package":"ModuleNameForTest/main","name":"fc2","id":130,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "15:11:17:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "16:1::33","expression":
             {"@type": "FunctionInvocation", "metaData": "16:1::33","returnType":["*database/sql.Rows","error"],"memberSelect":
               {"@type": "MemberSelect", "metaData": "16:1::12","identifier":
                 {"@type": "Identifier", "metaData": "16:7::12","type":"func(query string, args ...any) (*database/sql.Rows, error)","package":"database/sql","name":"Query","id":0,"__cfgId":6},"expression":
                 {"@type": "FunctionInvocation", "metaData": "16:1::6","returnType":["*database/sql.DB"],"memberSelect":
-                  {"@type": "Identifier", "metaData": "16:1::4","type":"func() *database/sql.DB","package":"main","name":"fc3","id":180,"__cfgId":4},"arguments":[],"__cfgId":5},"__cfgId":7},"arguments":[
+                  {"@type": "Identifier", "metaData": "16:1::4","type":"func() *database/sql.DB","package":"ModuleNameForTest/main","name":"fc3","id":180,"__cfgId":4},"arguments":[],"__cfgId":5},"__cfgId":7},"arguments":[
               {"@type": "StringLiteral", "metaData": "16:13::32","value":"\"select * from foo\"","content":"select * from foo"}
             ],"__cfgId":8},"__cfgId":9}
         ],"__cfgId":10},"__cfgId":1},
@@ -333,7 +333,7 @@
           ],"__cfgId":8}
         ],"__cfgId":9},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "19:5::8","type":"func() *database/sql.DB","package":"main","name":"fc3","id":180,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[16,18],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "19:5::8","type":"func() *database/sql.DB","package":"ModuleNameForTest/main","name":"fc3","id":180,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[16,18],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "19:19:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::21","type":
             {"@type": "StarExpression", "metaData": "20:8::15","expression":
@@ -357,7 +357,7 @@
           ],"__cfgId":6}
         ],"__cfgId":7},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "24:5::8","type":"func() []byte","package":"main","name":"fc4","id":237,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,27,34,49,57,74,76],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "24:5::8","type":"func() []byte","package":"ModuleNameForTest/main","name":"fc4","id":237,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,27,34,49,57,74,76],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "24:18:45:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "26:1::24","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "26:6::24","returnType":[],"memberSelect":
@@ -401,7 +401,7 @@
                 {"@type": "Identifier", "metaData": "32:17::23","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":29},
                 {"@type": "Identifier", "metaData": "32:25::30","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":30}
               ],"expression":
-                {"@type": "Identifier", "metaData": "32:1::16","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":28},"__cfgId":31},"arguments":[
+                {"@type": "Identifier", "metaData": "32:1::16","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"ModuleNameForTest/main","name":"SumIntsOrFloats","id":811,"__cfgId":28},"__cfgId":31},"arguments":[
               {"@type": "Identifier", "metaData": "32:32::36","type":"map[string]int64","package":"UNKNOWN","name":"ints","id":355,"__cfgId":32}
             ],"__cfgId":33},"__cfgId":34},
           {"@type": "VariableDeclaration", "metaData": "34:1:36:2","type":null,"isVal":false,"initializers":[
@@ -473,7 +473,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "47:5::8","type":"func()","package":"main","name":"fc5","id":737,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "47:5::8","type":"func()","package":"ModuleNameForTest/main","name":"fc5","id":737,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[13,19,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "47:11:50:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "48:1::40","type":null,"isVal":false,"initializers":[
             {"@type": "FunctionInvocation", "metaData": "48:11::40","returnType":["int","error"],"memberSelect":
@@ -503,14 +503,14 @@
           {"@type": "Native", "metaData": "52:20::21","nativeKind":"Opening"},
           {"@type": "Native", "metaData": "52:21::33","nativeKind":"[0](Field)","children":[
             {"@type": "Native", "metaData": "52:21::22","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "52:21::22","type":"K","package":"main","name":"K","id":827,"__cfgId":3}
+              {"@type": "Identifier", "metaData": "52:21::22","type":"K","package":"ModuleNameForTest/main","name":"K","id":827,"__cfgId":3}
             ]},
             {"@type": "Identifier", "metaData": "52:23::33","type":"comparable","package":"UNKNOWN","name":"comparable","id":0,"__cfgId":4}
           ],"__cfgId":5},
           {"@type": "Native", "metaData": "52:33::34"},
           {"@type": "Native", "metaData": "52:35::52","nativeKind":"[1](Field)","children":[
             {"@type": "Native", "metaData": "52:35::36","nativeKind":"Names([]*Ident)","children":[
-              {"@type": "Identifier", "metaData": "52:35::36","type":"V","package":"main","name":"V","id":841,"__cfgId":6}
+              {"@type": "Identifier", "metaData": "52:35::36","type":"V","package":"ModuleNameForTest/main","name":"V","id":841,"__cfgId":6}
             ]},
             {"@type": "BinaryExpression", "metaData": "52:37::52","rightOperand":
               {"@type": "Identifier", "metaData": "52:45::52","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":8},"operatorToken":"52:43::44","operator":"BITWISE_OR","leftOperand":
@@ -520,20 +520,20 @@
         ],"__cfgId":11},"returnType":
         {"@type": "Native", "metaData": "52:65::66","nativeKind":"Results(FieldList)","children":[
           {"@type": "Native", "metaData": "52:65::66","nativeKind":"[0](Field)","children":[
-            {"@type": "Identifier", "metaData": "52:65::66","type":"V","package":"main","name":"V","id":841,"__cfgId":19}
+            {"@type": "Identifier", "metaData": "52:65::66","type":"V","package":"ModuleNameForTest/main","name":"V","id":841,"__cfgId":19}
           ],"__cfgId":20}
         ],"__cfgId":21},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "52:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"main","name":"SumIntsOrFloats","id":811,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "52:5::20","type":"func[K comparable, V int64 | float64](m map[K]V) V","package":"ModuleNameForTest/main","name":"SumIntsOrFloats","id":811,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "52:54::63","type":
           {"@type": "MapType", "metaData": "52:56::63","value":
-            {"@type": "Identifier", "metaData": "52:62::63","type":"V","package":"main","name":"V","id":841,"__cfgId":14},"key":
-            {"@type": "Identifier", "metaData": "52:60::61","type":"K","package":"main","name":"K","id":827,"__cfgId":13},"__cfgId":15},"identifier":
+            {"@type": "Identifier", "metaData": "52:62::63","type":"V","package":"ModuleNameForTest/main","name":"V","id":841,"__cfgId":14},"key":
+            {"@type": "Identifier", "metaData": "52:60::61","type":"K","package":"ModuleNameForTest/main","name":"K","id":827,"__cfgId":13},"__cfgId":15},"identifier":
           {"@type": "Identifier", "metaData": "52:54::55","type":"map[K]V","package":"UNKNOWN","name":"m","id":860,"__cfgId":12},"__cfgId":16}
       ],"cfg":{"Blocks":[{"Node":[24,27,25,26],"Successors":[1]},{"Node":null,"Successors":[2,3]},{"Node":[30],"Successors":[1]},{"Node":[34],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "52:67:58:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "53:1::8","type":
-            {"@type": "Identifier", "metaData": "53:7::8","type":"V","package":"main","name":"V","id":841,"__cfgId":23},"isVal":false,"initializers":[],"identifiers":[
+            {"@type": "Identifier", "metaData": "53:7::8","type":"V","package":"ModuleNameForTest/main","name":"V","id":841,"__cfgId":23},"isVal":false,"initializers":[],"identifiers":[
             {"@type": "Identifier", "metaData": "53:5::6","type":"V","package":"UNKNOWN","name":"s","id":880,"__cfgId":22}
           ],"__cfgId":24},
           {"@type": "Loop", "metaData": "54:1:56:2","kind":"FOR","keyword":"54:1::4","condition":
@@ -558,11 +558,11 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "60:5::8","type":"func()","package":"main","name":"fc6","id":937,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "60:5::8","type":"func()","package":"ModuleNameForTest/main","name":"fc6","id":937,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[6,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "60:11:62:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "61:1::17","expression":
             {"@type": "FunctionInvocation", "metaData": "61:1::17","returnType":["string"],"memberSelect":
-              {"@type": "Identifier", "metaData": "61:1::8","type":"func(text string) string","package":"main","name":"Println","id":971,"__cfgId":4},"arguments":[
+              {"@type": "Identifier", "metaData": "61:1::8","type":"func(text string) string","package":"ModuleNameForTest/main","name":"Println","id":971,"__cfgId":4},"arguments":[
               {"@type": "StringLiteral", "metaData": "61:9::16","value":"\"Hello\"","content":"Hello"}
             ],"__cfgId":5},"__cfgId":6}
         ],"__cfgId":7},"__cfgId":1},
@@ -574,7 +574,7 @@
           ],"__cfgId":9}
         ],"__cfgId":10},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "64:5::12","type":"func(text string) string","package":"main","name":"Println","id":971,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "64:5::12","type":"func(text string) string","package":"ModuleNameForTest/main","name":"Println","id":971,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "64:13::24","type":
           {"@type": "Identifier", "metaData": "64:18::24","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "64:13::17","type":"string","package":"UNKNOWN","name":"text","id":979,"__cfgId":3},"__cfgId":5}

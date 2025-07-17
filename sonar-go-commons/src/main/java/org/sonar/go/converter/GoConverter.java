@@ -40,7 +40,7 @@ public class GoConverter implements ASTConverter {
   }
 
   @Override
-  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap) {
+  public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap, String moduleName) {
     Map<String, TreeOrError> result = new HashMap<>(filenameToContentMap.size());
     Map<String, String> filesToParse = new HashMap<>();
     for (Map.Entry<String, String> entry : filenameToContentMap.entrySet()) {
@@ -54,7 +54,7 @@ public class GoConverter implements ASTConverter {
       }
     }
     try {
-      var json = command.executeGoParseCommand(filesToParse);
+      var json = command.executeGoParseCommand(filesToParse, moduleName);
       result.putAll(JsonTree.fromJson(json));
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();

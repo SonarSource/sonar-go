@@ -29,14 +29,14 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"main","name":"main","id":"__id_placeholder__","__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,10,0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::9","type":"func()","package":"example.com/company/sub-modules/module1/main","name":"main","id":"__id_placeholder__","__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7,10,0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:12:6:1","statementOrExpressions":[
           {"@type": "ExpressionStatement", "metaData": "4:1::18","expression":
             {"@type": "FunctionInvocation", "metaData": "4:1::18","returnType":["int"],"memberSelect":
-              {"@type": "Identifier", "metaData": "4:1::16","type":"func() int","package":"main","name":"privateFunction","id":"__id_placeholder__","__cfgId":5},"arguments":[],"__cfgId":6},"__cfgId":7},
+              {"@type": "Identifier", "metaData": "4:1::16","type":"func() int","package":"example.com/company/sub-modules/module1/main","name":"privateFunction","id":"__id_placeholder__","__cfgId":5},"arguments":[],"__cfgId":6},"__cfgId":7},
           {"@type": "ExpressionStatement", "metaData": "5:1::17","expression":
             {"@type": "FunctionInvocation", "metaData": "5:1::17","returnType":["float32"],"memberSelect":
-              {"@type": "Identifier", "metaData": "5:1::15","type":"func() float32","package":"main","name":"PublicFunction","id":"__id_placeholder__","__cfgId":8},"arguments":[],"__cfgId":9},"__cfgId":10}
+              {"@type": "Identifier", "metaData": "5:1::15","type":"func() float32","package":"example.com/company/sub-modules/module1/main","name":"PublicFunction","id":"__id_placeholder__","__cfgId":8},"arguments":[],"__cfgId":9},"__cfgId":10}
         ],"__cfgId":11},"__cfgId":1}
     ],"__cfgId":2}  ,
   "error": null

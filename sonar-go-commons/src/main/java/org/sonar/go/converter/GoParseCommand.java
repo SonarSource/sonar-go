@@ -24,11 +24,14 @@ import org.slf4j.LoggerFactory;
 
 public class GoParseCommand extends DefaultCommand {
   private static final Logger LOG = LoggerFactory.getLogger(GoParseCommand.class);
+  private final int moduleNameIndex;
 
   public GoParseCommand(File workDir, String... extraArgs) {
     super(workDir, mergeArgs(extraArgs,
+      "-module_name", "moduleNamePlaceholder",
       "-gc_export_data_dir",
       new File(workDir, "go").getAbsolutePath()));
+    moduleNameIndex = super.getCommand().indexOf("moduleNamePlaceholder");
   }
 
   private static String[] mergeArgs(String[] args, String... extraArgs) {
@@ -41,8 +44,9 @@ public class GoParseCommand extends DefaultCommand {
     return merged;
   }
 
-  public String executeGoParseCommand(Map<String, String> filenameToContentMap)
+  public String executeGoParseCommand(Map<String, String> filenameToContentMap, String moduleName)
     throws IOException, InterruptedException {
+    command.set(moduleNameIndex, moduleName);
     if (LOG.isDebugEnabled()) {
       LOG.debug("Executing Go parse data command: {}", String.join(" ", command));
     }

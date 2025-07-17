@@ -90,7 +90,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7],"Successors":[1,2]},{"Node":[12],"Successors":[2]},{"Node":[15],"Successors":[3,5]},{"Node":[20],"Successors":[4]},{"Node":[30],"Successors":[6,7]},{"Node":[26],"Successors":[4]},{"Node":[35],"Successors":[7]},{"Node":[39,43],"Successors":[8,9]},{"Node":[48],"Successors":[9]},{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "5:5::9","type":"func()","package":"ModuleNameForTest/main","name":"main","id":34,"__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7],"Successors":[1,2]},{"Node":[12],"Successors":[2]},{"Node":[15],"Successors":[3,5]},{"Node":[20],"Successors":[4]},{"Node":[30],"Successors":[6,7]},{"Node":[26],"Successors":[4]},{"Node":[35],"Successors":[7]},{"Node":[39,43],"Successors":[8,9]},{"Node":[48],"Successors":[9]},{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "5:12:23:1","statementOrExpressions":[
           {"@type": "If", "metaData": "6:1:8:2","thenBranch":
             {"@type": "Block", "metaData": "6:9:8:2","statementOrExpressions":[

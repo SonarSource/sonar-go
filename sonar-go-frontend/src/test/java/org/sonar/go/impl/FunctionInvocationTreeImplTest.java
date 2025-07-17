@@ -165,7 +165,7 @@ class FunctionInvocationTreeImplTest {
       %s
       """.formatted(arguments, body, funcDefinition);
     var func = TestGoConverterSingleFile.parseAndRetrieve(FunctionInvocationTreeImpl.class, code);
-    assertThat(func.signature()).isEqualTo("main.foo");
+    assertThat(func.signature()).isEqualTo("ModuleNameForTest/main.foo");
   }
 
   @Test

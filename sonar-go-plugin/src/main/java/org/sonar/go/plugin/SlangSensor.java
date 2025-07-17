@@ -123,9 +123,11 @@ public abstract class SlangSensor implements Sensor {
         .map(inputFile -> new InputFileContext(sensorContext, inputFile))
         .toList();
 
-      LOG.debug("Parse directory '{}', number of files: {}", entry.getKey(), filesToAnalyse.size());
+      var moduleName = goModFileDataStore.retrieveClosestGoModFileData(entry.getKey()).moduleName();
+      LOG.debug("Parse directory '{}', number of files: {}, nodule name: '{}'", entry.getKey(), filesToAnalyse.size(), moduleName);
+
       try {
-        analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext);
+        analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext, moduleName);
       } catch (ParseException e) {
         LOG.warn("Unable to parse directory '{}'.", entry.getKey(), e);
         var inputFilePath = e.getInputFilePath();
@@ -165,7 +167,8 @@ public abstract class SlangSensor implements Sensor {
     List<InputFileContext> inputFileContextList,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics,
-    SensorContext sensorContext) {
+    SensorContext sensorContext,
+    String moduleName) {
 
     Map<String, CacheEntry> filenameToCacheEntry = filterOutFilesFromCache(inputFileContextList, visitors);
 
@@ -178,7 +181,7 @@ public abstract class SlangSensor implements Sensor {
       return;
     }
 
-    Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap));
+    Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap, moduleName));
 
     handleParsingErrors(sensorContext, treeOrErrorMap, filenameToCacheEntry);
 

@@ -78,7 +78,7 @@
           ],"__cfgId":6}
         ],"__cfgId":7},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::15","type":"func() bool","package":"main","name":"returnTrue","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "3:5::15","type":"func() bool","package":"ModuleNameForTest/main","name":"returnTrue","id":20,"__cfgId":3},"formalParameters":[],"cfg":{"Blocks":[{"Node":[9],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "3:23:5:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "4:1::12","keyword":"4:1::7","expressions":[
             {"@type": "Literal", "metaData": "4:8::12","value":"true","__cfgId":8}
@@ -88,7 +88,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "7:5::16","type":"func()","package":"main","name":"emptyReturn","id":61,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[4],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "7:5::16","type":"func()","package":"ModuleNameForTest/main","name":"emptyReturn","id":61,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[4],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "7:19:9:1","statementOrExpressions":[
           {"@type": "Return", "metaData": "8:1::7","keyword":"8:1::7","expressions":[],"__cfgId":4}
         ],"__cfgId":5},"__cfgId":1},
@@ -100,7 +100,7 @@
           ],"__cfgId":5}
         ],"__cfgId":6},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "11:5::14","type":"func() string","package":"main","name":"twoReturn","id":93,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7],"Successors":[1,3]},{"Node":[8],"Successors":null},{"Node":null,"Successors":null},{"Node":[10],"Successors":null},{"Node":null,"Successors":[2]},{"Node":null,"Successors":[2]}]},"body":
+        {"@type": "Identifier", "metaData": "11:5::14","type":"func() string","package":"ModuleNameForTest/main","name":"twoReturn","id":93,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[7],"Successors":[1,3]},{"Node":[8],"Successors":null},{"Node":null,"Successors":null},{"Node":[10],"Successors":null},{"Node":null,"Successors":[2]},{"Node":null,"Successors":[2]}]},"body":
         {"@type": "Block", "metaData": "11:24:17:1","statementOrExpressions":[
           {"@type": "If", "metaData": "12:1:16:2","thenBranch":
             {"@type": "Block", "metaData": "12:9:14:2","statementOrExpressions":[
@@ -133,7 +133,7 @@
           {"@type": "Native", "metaData": "19:47::48","nativeKind":"Closing"}
         ],"__cfgId":10},"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "19:5::24","type":"func() (string, int, string)","package":"main","name":"multipleReturnValue","id":179,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[12,14],"Successors":null},{"Node":null,"Successors":null}]},"body":
+        {"@type": "Identifier", "metaData": "19:5::24","type":"func() (string, int, string)","package":"ModuleNameForTest/main","name":"multipleReturnValue","id":179,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[12,14],"Successors":null},{"Node":null,"Successors":null}]},"body":
         {"@type": "Block", "metaData": "19:49:22:1","statementOrExpressions":[
           {"@type": "VariableDeclaration", "metaData": "20:1::9","type":null,"isVal":false,"initializers":[
             {"@type": "StringLiteral", "metaData": "20:6::9","value":"\"b\"","content":"b"}
