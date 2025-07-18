@@ -235,6 +235,14 @@ public class MethodMatchers {
       return namePredicate.test(subMethodName);
     }
 
+    // it handles method chain calls like func1().func2().func3()
+    if (memberSelectTree.expression() instanceof FunctionInvocationTree functionInvocation) {
+      var returnedTypes = functionInvocation.returnTypes();
+      if (returnedTypes.size() == 1) {
+        return variableTypePredicate.test(returnedTypes.get(0).type()) && namePredicate.test(subMethodName);
+      }
+    }
+
     if (types.contains(firstIdentifier.packageName())) {
       // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the first
       // identifier (package imported with a dot)

@@ -27,6 +27,9 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.sonar.go.impl.FunctionInvocationTreeImpl;
+import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.go.impl.MemberSelectTreeImpl;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
@@ -38,7 +41,9 @@ import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
+import static java.util.stream.Stream.of;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.catchThrowable;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.Mockito.mock;
 import static org.sonar.go.testing.TextRangeGoAssert.assertThat;
@@ -46,7 +51,7 @@ import static org.sonar.go.testing.TextRangeGoAssert.assertThat;
 class MethodMatchersTest {
 
   static Stream<Arguments> shouldMatchMethodCallWithPackageName() {
-    return Stream.of(
+    return of(
       Arguments.of("rand.Intn()", "Intn", "Intn"),
       Arguments.of("rand.Intn(\"bar\")", "Intn", "Intn"),
       Arguments.of("rand.Intn.foo.bar(\"bar\")", "Intn.foo.bar", "bar"));
@@ -277,6 +282,171 @@ class MethodMatchersTest {
   }
 
   @Test
+  void shouldMatchOnMethodChain() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        GetRandObjLocal().Intn(42)
+      }
+
+      func GetRandObjLocal() *rand.Rand {
+        return rand.New(rand.NewSource(42))
+      }
+      """);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isNotEmpty();
+  }
+
+  @Test
+  void shouldMatchOnMultipleMethodChain() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofTypes(List.of("math/rand"))
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        first().second().Intn(42)
+      }
+
+      func first() *B {
+        return &B{}
+      }
+
+      type B struct {
+      }
+
+      func (b *B) second() *rand.Rand {
+        return rand.New(rand.NewSource(42))
+      }
+      """);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isNotEmpty();
+  }
+
+  static Stream<Arguments> shouldNotMatchOnIrrelevantMultipleMethodChain() {
+    return of(
+      arguments("""
+        // returned type doesn't match
+        package main
+        import "math/rand"
+        func main() {
+          first().second().Intn(42)
+        }
+
+        func first() *B {
+          return &B{}
+        }
+
+        type B struct {
+        }
+
+        // This method returns an int, not a *rand.Rand
+        func (b *B) second() int {
+          return 42
+        }
+        """, """
+        // invalid method name
+        package main
+        import "math/rand"
+        func main() {
+          // This method doesn't exist
+          first().second().FunctionThatDoesntExist(42)
+        }
+
+        func first() *B {
+          return &B{}
+        }
+
+        type B struct {
+        }
+
+        func (b *B) second() *rand.Rand {
+          return rand.New(rand.NewSource(42))
+        }
+        """, """
+        // method returns a tuple
+        package main
+        import "math/rand"
+        func main() {
+          // invalid call, first() returns a tuple
+          first().second().Intn(42)
+        }
+
+        func first() (*B, int) {
+          return &B{}, 42
+        }
+
+        type B struct {
+        }
+
+        func (b *B) second() *rand.Rand {
+          return rand.New(rand.NewSource(42))
+        }
+        """));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldNotMatchOnIrrelevantMultipleMethodChain(String code) {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofTypes(List.of("math/rand"))
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+    var methodCall = parseCode(code);
+    var matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldNotMatchFunctionWhenFirstIdentifierIsNotPresent() {
+    // This test is for coverage of line `if (optFirstIdentifier.isPresent()) {` in `matchesFunctionInvocation()`
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofTypes(List.of("math/rand"))
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    Tree memberSelect = new MemberSelectTreeImpl(null, null, null);
+    var methodCall = new FunctionInvocationTreeImpl(null, memberSelect, List.of(), List.of());
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldNotMatchFunctionWhenFunctionNameTreeIsIdentifierTree() {
+    // This test is for coverage of line `} else if (functionNameTree instanceof IdentifierTree identifierTree` in `matchesFunctionInvocation()`
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofTypes(List.of("math/rand"))
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    Tree memberSelect = new IdentifierTreeImpl(null, "name", "someType", "packageName", 1);
+    var methodCall = new FunctionInvocationTreeImpl(null, memberSelect, List.of(), List.of());
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
   void shouldMatchReceiver() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType("com/sonar")
@@ -295,7 +465,7 @@ class MethodMatchersTest {
   }
 
   static Stream<Arguments> shouldNotMatchReceiver() {
-    return Stream.of(
+    return of(
       arguments(null, "receiver.a.foo(\"bar\")"),
       arguments("somethingElse", "receiver.a.foo(\"bar\")"),
       arguments("receiver", "receiver.a.somethingElse(\"bar\")"),
@@ -339,6 +509,21 @@ class MethodMatchersTest {
     Optional<IdentifierTree> matches = matcher.matches(methodCall);
     assertThat(matches).isPresent();
     assertThat(matches.get().name()).isEqualTo("foo");
+  }
+
+  @Test
+  void shouldThrowExceptionWhenSetReceiverButReceiverIsNotDefined() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("com/sonar")
+      // no receiver set here
+      .withNames("foo")
+      .withAnyParameters()
+      .build();
+
+    var throwable = catchThrowable(() -> matcher.setReceiverName("receiver"));
+    assertThat(throwable)
+      .isInstanceOf(IllegalArgumentException.class)
+      .hasMessage("Setting receiver name, when MethodMatcher is not configured to expect receiver, doesn't make sense.");
   }
 
   @ParameterizedTest
@@ -417,7 +602,7 @@ class MethodMatchersTest {
   }
 
   static Stream<Arguments> testMatchWithParameterValuePredicate() {
-    return Stream.of(
+    return of(
       arguments("rand.Intn(\"bar\", 2)", true),
       arguments("rand.Intn(\"bar\", 2, 3)", true),
       arguments("rand.Intn(\"bar\")", false),
@@ -441,7 +626,7 @@ class MethodMatchersTest {
   }
 
   static Stream<Arguments> testMatchNumberOfParameter() {
-    return Stream.of(
+    return of(
       arguments("rand.Intn(\"bar\", 2)", true),
       arguments("rand.Intn(\"bar\", 2, 3)", false),
       arguments("rand.Intn(\"bar\")", false),
@@ -464,7 +649,7 @@ class MethodMatchersTest {
 
   // Currently we fail all matches because we don't have yet the detection of types
   static Stream<Arguments> testMatchNumberOfParameterWithAdditionalTypePredicate() {
-    return Stream.of(
+    return of(
       arguments("rand.Intn(\"bar\", 2)", true),
       arguments("rand.Intn(\"bar\", 2, 3)", false),
       arguments("rand.Intn(\"bar\")", false),
@@ -503,8 +688,8 @@ class MethodMatchersTest {
     parseAndCheckMatch(matcher, code, shouldMatch);
   }
 
-  static Stream<Arguments> shouldMatchMethodWithDIfferentKindOfImport() {
-    return Stream.of(
+  static Stream<Arguments> shouldMatchMethodWithDifferentKindOfImport() {
+    return of(
       arguments("math/rand", "import . \"math/rand\"", "Intn", "Intn()"),
       arguments("crypto", "import . \"crypto\"", "Hash.New", "Hash.New()"),
       arguments("crypto", "import \"crypto\"", "Hash.New", "crypto.Hash.New()"),
@@ -513,7 +698,7 @@ class MethodMatchersTest {
 
   @ParameterizedTest
   @MethodSource
-  void shouldMatchMethodWithDIfferentKindOfImport(String type, String importInstruction, String methodName, String methodCallInstruction) {
+  void shouldMatchMethodWithDifferentKindOfImport(String type, String importInstruction, String methodName, String methodCallInstruction) {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType(type)
       .withNames(methodName)
@@ -553,6 +738,68 @@ class MethodMatchersTest {
 
     var matches = applyMatcherToAllFunctionInvocation(topLevelTree, matcher);
     assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldCreateMatcherWith2ParametersPredicatesAndFirstFails() {
+    // To cover lines in withNumberOfParameters()
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withNames("Int")
+      .withParameters(p -> false)
+      .withNumberOfParameters(1)
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        rand.Int(42)
+      }
+      """);
+    var matches = matcher.matches(methodCall);
+    assertThat(matches).isNotEmpty();
+  }
+
+  @Test
+  void shouldCreateMatcherWith2ParametersPredicatesAndFirstFailsNumberOfParameterDoesntMatch() {
+    // To cover lines in withNumberOfParameters()
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withNames("Int")
+      .withParameters(p -> false)
+      .withNumberOfParameters(1)
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        rand.Int(42, 42)
+      }
+      """);
+    var matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldMatchWhenNoParametersPredicate() {
+    // To cover `if (parametersTypesPredicate == null) {` in build()
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withNames("Intn")
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        rand.Intn(42)
+      }
+      """);
+
+    var matches = matcher.matches(methodCall);
+    assertThat(matches).isNotEmpty();
   }
 
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
