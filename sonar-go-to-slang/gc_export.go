@@ -11,18 +11,54 @@ import (
 )
 
 func exportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
-	var pkgToExport *types.Package
-	for _, obj := range info.Defs {
-		if obj != nil && obj.Pkg() != nil {
-			pkgToExport = obj.Pkg()
-			break
+	packagesToExport := findPackagesToExport(info, packagePath)
+
+	for _, pkgToExport := range packagesToExport {
+		exportPackage(pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
+	}
+}
+
+func findPackagesToExport(info *types.Info, packagePath string) []*types.Package {
+	packagesToExport := make([]*types.Package, 0)
+	packageName := getPackageName(packagePath)
+	if isBlank(packageName) {
+		// if there is a blank package name, we export all packages
+		// this happens when Go files are located directly in the project root directory (at the same level as go.mod)
+		packagesToExport = findMultiplePackages(info, packagesToExport)
+	} else {
+		// otherwise, we export only packages that match the given package name
+		// this prevent exporting unintended packages, example:
+		// the dir "utils" contains files with package name "utils" and "utils_test", so only "utils" should be exported
+		for _, obj := range info.Defs {
+			if obj != nil && obj.Pkg() != nil && obj.Pkg().Path() == packageName {
+				packagesToExport = []*types.Package{obj.Pkg()}
+				break
+			}
 		}
 	}
-	if pkgToExport == nil {
-		return
+
+	return packagesToExport
+}
+
+func findMultiplePackages(info *types.Info, packagesToExport []*types.Package) []*types.Package {
+	pkgToExport := map[string]*types.Package{}
+	for _, obj := range info.Defs {
+		if obj != nil && obj.Pkg() != nil {
+			pkgToExport[obj.Pkg().Path()] = obj.Pkg()
+		}
 	}
 
+	for _, pkg := range pkgToExport {
+		packagesToExport = append(packagesToExport, pkg)
+	}
+	return packagesToExport
+}
+
+func exportPackage(pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
 	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
+	if !strings.HasSuffix(fullExportDataDir, pkgToExport.Path()) {
+		fullExportDataDir = filepath.Join(fullExportDataDir, pkgToExport.Path())
+	}
 	createDirs(fullExportDataDir)
 
 	exportDataFile := filepath.Join(fullExportDataDir, pkgToExport.Path()+".o")

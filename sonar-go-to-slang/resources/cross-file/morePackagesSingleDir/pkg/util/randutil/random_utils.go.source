@@ -1,0 +1,8 @@
+package randutil
+
+import "math/rand"
+
+func GetRandObj() *rand.Rand {
+	return rand.New(rand.NewSource(42))
+}
+

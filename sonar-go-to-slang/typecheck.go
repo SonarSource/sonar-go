@@ -39,61 +39,31 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 		fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	}
 	if li.gcExportDataDir != "" {
-		var pkgToMerge []*types.Package
-		for _, filePath := range li.getGcExportDataFilesForPackage(path) {
+		filePath := li.getGcExportDataFilesForPackage(path)
+		if _, err := os.Stat(filePath); !os.IsNotExist(err) {
 			file, err := os.Open(filePath)
 			if err != nil {
 				fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
 				return getEmptyPackage(path), nil
 			}
-			pkg, _ := getPackageFromFile(file, path)
-			if pkg != nil {
-				if li.debugTypeCheck {
-					fmt.Fprintf(os.Stderr, "- Found package \"%s\" in file \"%s\", number of elements: %d\n", pkg, filePath, pkg.Scope().Len())
-				}
-				pkgToMerge = append(pkgToMerge, pkg)
-			}
+			return getPackageFromFile(file, path)
 		}
-		return mergedPackage(pkgToMerge, path)
 	}
 	return getEmptyPackage(path), nil
 }
 
-func mergedPackage(pkgToMerge []*types.Package, path string) (*types.Package, error) {
-	if len(pkgToMerge) == 0 {
-		return getEmptyPackage(path), nil
-	}
-	if len(pkgToMerge) == 1 {
-		return pkgToMerge[0], nil
-	}
-	result := pkgToMerge[0]
-
-	for _, pkg := range pkgToMerge[1:] {
-		for _, name := range pkg.Scope().Names() {
-			if result.Scope().Lookup(name) == nil {
-				result.Scope().Insert(pkg.Scope().Lookup(name))
-			} else {
-				fmt.Fprintf(os.Stderr, "There is a colision in package: \"%s\" for name: \"%s\"\n", path, name)
-			}
-		}
-	}
-	return result, nil
+func (li *localImporter) getGcExportDataFilesForPackage(packagePath string) string {
+	packageName := getPackageName(packagePath)
+	return filepath.Join(li.gcExportDataDir, packagePath, packageName+".o")
 }
 
-func (li *localImporter) getGcExportDataFilesForPackage(packagePath string) []string {
-	var files []string
-	dir := filepath.Join(li.gcExportDataDir, packagePath)
-	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-		lastPathSep := strings.LastIndex(path, string(os.PathSeparator))
-		if lastPathSep == len(dir) && strings.HasSuffix(path, ".o") {
-			files = append(files, path)
-		}
-		return nil
-	})
-	if err != nil {
-		panic(err)
+func getPackageName(packagePath string) string {
+	packageName := packagePath
+	lastSlashIndex := strings.LastIndex(packagePath, "/")
+	if lastSlashIndex != -1 {
+		packageName = packagePath[lastSlashIndex+1:]
 	}
-	return files
+	return packageName
 }
 
 func getPackageFromExportData(exportDataFileName string, path string) (*types.Package, error) {

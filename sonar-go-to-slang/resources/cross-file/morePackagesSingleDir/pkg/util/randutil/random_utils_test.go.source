@@ -1,0 +1,44 @@
+// This file has a package name different than the directory name
+// Such situations are allowed for tests: https://pkg.go.dev/testing (aka "black box" testing)
+// Sometimes projects contains multiple packages in a single directory, example: https://github.com/golang/go/tree/master/test/fixedbugs
+package randutil_test
+
+import (
+	"math/rand"
+	"testing"
+
+	"more.packages/single/dir/pkg/util/randutil"
+)
+
+func TestGetRandObj(t *testing.T) {
+	// Test that GetRandObj returns a non-nil Rand object
+	randObj := randutil.GetRandObj()
+
+	if randObj == nil {
+		t.Fatal("GetRandObj() returned nil, expected *rand.Rand")
+	}
+
+	// Verify it's actually a *rand.Rand type
+	if _, ok := randObj.(*rand.Rand); !ok {
+		t.Errorf("GetRandObj() returned %T, expected *rand.Rand", randObj)
+	}
+}
+
+func TestGetRandObjDeterministic(t *testing.T) {
+}
+
+func TestGetRandObjReproducibleSequence(t *testing.T) {
+}
+
+func TestGetRandObjFunctionality(t *testing.T) {
+}
+
+func TestGetRandObjSeedValue(t *testing.T) {
+}
+
+func BenchmarkGetRandObj(b *testing.B) {
+}
+
+func BenchmarkGetRandObjIntn(b *testing.B) {
+
+}

@@ -163,7 +163,7 @@ func TestMainShouldExportGcData(t *testing.T) {
 	resetCommandLineFlagsToDefault()
 	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_dir", "build/main_test/"}
 	callMainStdinFromFile("resources/simple_file_with_packages.go.source")
-	assert.FileExists(t, "build/main_test/main.o", "File should exist")
+	assert.FileExists(t, "build/main_test/main/main.o", "File should exist")
 }
 
 func TestPrintUsageForInvalidArguments(t *testing.T) {

@@ -1,0 +1,56 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"morePackagesSingleDir","textRange":"1:8::29"},
+      {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
+      {"text":"\"more.packages/single/dir/pkg/util/randutil\"","textRange":"3:7::51","type":"STRING_LITERAL"},
+      {"text":"func","textRange":"5:0::4","type":"KEYWORD"},
+      {"text":"DoSomething","textRange":"5:5::16"},
+      {"text":"(","textRange":"5:16::17"},
+      {"text":")","textRange":"5:17::18"},
+      {"text":"{","textRange":"5:19::20"},
+      {"text":"randutil","textRange":"6:1::9"},
+      {"text":"GetRandObj","textRange":"6:10::20"},
+      {"text":".","textRange":"6:9::10"},
+      {"text":"(","textRange":"6:20::21"},
+      {"text":")","textRange":"6:21::22"},
+      {"text":"Int","textRange":"6:23::26"},
+      {"text":".","textRange":"6:22::23"},
+      {"text":"(","textRange":"6:26::27"},
+      {"text":")","textRange":"6:27::28"},
+      {"text":"}","textRange":"7:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:8:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::29","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::29","type":"UNKNOWN","package":"UNKNOWN","name":"morePackagesSingleDir","id":"__id_placeholder__","__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "3:0::51","children":[
+        {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "3:7::51","path":
+          {"@type": "StringLiteral", "metaData": "3:7::51","value":"\"more.packages/single/dir/pkg/util/randutil\"","content":"more.packages/single/dir/pkg/util/randutil"},"name":
+          null,"__cfgId":3}
+      ],"__cfgId":4},
+      {"@type": "FunctionDeclaration", "metaData": "5:0:7:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "5:5::16","type":"func()","package":"more.packages/single/dir/morePackagesSingleDir","name":"DoSomething","id":"__id_placeholder__","__cfgId":5},"formalParameters":[],"cfg":{"Blocks":[{"Node":[14,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "5:19:7:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "6:1::28","expression":
+            {"@type": "FunctionInvocation", "metaData": "6:1::28","returnType":["int"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "6:1::26","identifier":
+                {"@type": "Identifier", "metaData": "6:23::26","type":"func() int","package":"math/rand","name":"Int","id":"__id_placeholder__","__cfgId":11},"expression":
+                {"@type": "FunctionInvocation", "metaData": "6:1::22","returnType":["*math/rand.Rand"],"memberSelect":
+                  {"@type": "MemberSelect", "metaData": "6:1::20","identifier":
+                    {"@type": "Identifier", "metaData": "6:10::20","type":"func() *math/rand.Rand","package":"more.packages/single/dir/pkg/util/randutil","name":"GetRandObj","id":"__id_placeholder__","__cfgId":8},"expression":
+                    {"@type": "Identifier", "metaData": "6:1::9","type":"UNKNOWN","package":"more.packages/single/dir/pkg/util/randutil","name":"randutil","id":"__id_placeholder__","__cfgId":7},"__cfgId":9},"arguments":[],"__cfgId":10},"__cfgId":12},"arguments":[],"__cfgId":13},"__cfgId":14}
+        ],"__cfgId":15},"__cfgId":1}
+    ],"__cfgId":2}  ,
+  "error": null
+} 

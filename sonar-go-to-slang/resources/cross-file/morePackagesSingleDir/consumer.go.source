@@ -1,0 +1,7 @@
+package morePackagesSingleDir
+
+import "more.packages/single/dir/pkg/util/randutil"
+
+func DoSomething() {
+	randutil.GetRandObj().Int()
+}

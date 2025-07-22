@@ -100,6 +100,9 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName)
+		if errMsg != nil {
+			panic(errMsg)
+		}
 		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
 		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
 
@@ -190,7 +193,7 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 	}
 }
 
-func Test_should_not_fail_when_empty_path(t *testing.T) {
+func Test_should_store_nothing_when_empty_path(t *testing.T) {
 	ident := &ast.Ident{
 		Name: "foo",
 	}
@@ -205,12 +208,8 @@ func Test_should_not_fail_when_empty_path(t *testing.T) {
 
 	exportGcExportData(&info, "", "", "", false)
 
-	defer func() {
-		os.Remove("foo.o")
-	}()
-	_, err := os.ReadFile("foo.o")
-	if err != nil {
-		assert.Fail(t, "The file should have been created", err)
+	if _, err := os.Stat("foo.o"); !os.IsNotExist(err) {
+		assert.Fail(t, "The file should NOT have been created")
 	}
 }
 
