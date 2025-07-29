@@ -8,6 +8,7 @@ var packageExportData = map[string]string{
 	"bufio": "bufio.o",
 	"builtin": "builtin.o",
 	"bytes": "bytes.o",
+	"cmp": "cmp.o",
 	"crypto": "crypto.o",
 	"crypto/aes": "crypto_aes.o",
 	"crypto/cipher": "crypto_cipher.o",
