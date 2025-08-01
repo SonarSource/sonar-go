@@ -307,6 +307,56 @@ class MethodMatchersTest {
   }
 
   @Test
+  void shouldNotMatchOnMethodChainWhenNameIsWrongButVariableTypeInCorrect() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        GetRandObjLocal().IntX(42)
+      }
+
+      func GetRandObjLocal() *rand.Rand {
+        return rand.New(rand.NewSource(42))
+      }
+      """);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
+  void shouldNotMatchOnMethodChainWhenMethodReturnsTuple() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Int", "Intn")
+      .withAnyParameters()
+      .build();
+
+    var methodCall = parseCode("""
+      package main
+      import "math/rand"
+      func main() {
+        GetRandObjLocal().Intn(42)
+      }
+
+      func GetRandObjLocal() (*rand.Rand, int) {
+        return rand.New(rand.NewSource(42)), 42
+      }
+      """);
+
+    Optional<IdentifierTree> matches = matcher.matches(methodCall);
+    assertThat(matches).isEmpty();
+  }
+
+  @Test
   void shouldMatchOnMultipleMethodChain() {
     MethodMatchers matcher = MethodMatchers.create()
       .ofTypes(List.of("math/rand"))
@@ -690,28 +740,30 @@ class MethodMatchersTest {
 
   static Stream<Arguments> shouldMatchMethodWithDifferentKindOfImport() {
     return of(
-      arguments("math/rand", "import . \"math/rand\"", "Intn", "Intn()"),
-      arguments("crypto", "import . \"crypto\"", "Hash.New", "Hash.New()"),
-      arguments("crypto", "import \"crypto\"", "Hash.New", "crypto.Hash.New()"),
-      arguments("crypto", "import c \"crypto\"", "Hash.New", "c.Hash.New()"));
+      arguments("math/rand", null, "import . \"math/rand\"", "Intn", "Intn()"),
+      arguments("crypto", "crypto.Hash", "import . \"crypto\"", "Hash.New", "Hash.New()"),
+      arguments("crypto", "crypto.Hash", "import \"crypto\"", "New", "crypto.Hash.New()"),
+      arguments("crypto", "crypto.Hash", "import c \"crypto\"", "New", "c.Hash.New()"));
   }
 
   @ParameterizedTest
   @MethodSource
-  void shouldMatchMethodWithDifferentKindOfImport(String type, String importInstruction, String methodName, String methodCallInstruction) {
+  void shouldMatchMethodWithDifferentKindOfImport(String type, String variableTypeIn, String importInstruction, String methodName, String methodCallInstruction) {
     MethodMatchers matcher = MethodMatchers.create()
       .ofType(type)
+      .withVariableTypeIn(variableTypeIn)
       .withNames(methodName)
       .withAnyParameters()
       .build();
 
-    var functionInvocation = parseCode("""
+    var code = """
       package main
       %s
       func main() {
         %s
       }
-      """.formatted(importInstruction, methodCallInstruction));
+      """.formatted(importInstruction, methodCallInstruction);
+    var functionInvocation = parseCode(code);
 
     var result = matcher.matches(functionInvocation);
     assertThat(result).isNotEmpty();

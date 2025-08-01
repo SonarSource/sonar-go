@@ -27,10 +27,12 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
+import org.sonar.go.impl.TypeImpl;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.Type;
 
 import static org.sonar.go.utils.TreeUtils.retrieveFirstIdentifier;
 import static org.sonar.go.utils.TreeUtils.retrieveLastIdentifier;
@@ -235,12 +237,9 @@ public class MethodMatchers {
       return namePredicate.test(subMethodName);
     }
 
-    // it handles method chain calls like func1().func2().func3()
-    if (memberSelectTree.expression() instanceof FunctionInvocationTree functionInvocation) {
-      var returnedTypes = functionInvocation.returnTypes();
-      if (returnedTypes.size() == 1) {
-        return variableTypePredicate.test(returnedTypes.get(0).type()) && namePredicate.test(subMethodName);
-      }
+    Optional<Type> type = getType(memberSelectTree);
+    if (type.isPresent() && !type.get().type().startsWith("func(")) {
+      return variableTypePredicate.test(type.get().type()) && namePredicate.test(memberSelectTree.identifier().name());
     }
 
     if (types.contains(firstIdentifier.packageName())) {
@@ -249,6 +248,23 @@ public class MethodMatchers {
       return namePredicate.test(subMethodName) || namePredicate.test(firstIdentifier.name() + "." + subMethodName);
     }
     return false;
+  }
+
+  private static Optional<Type> getType(MemberSelectTree memberSelectTree) {
+    if (memberSelectTree.expression() instanceof FunctionInvocationTree functionInvocation) {
+      // it handles method chain calls like func1().func2().func3()
+      var returnedTypes = functionInvocation.returnTypes();
+      if (returnedTypes.size() == 1) {
+        return Optional.of(returnedTypes.get(0));
+      }
+    } else if (memberSelectTree.expression() instanceof MemberSelectTree expressionMemberSelect) {
+      // it handles fields chain calls like type1.field2.func3()
+      return getType(expressionMemberSelect);
+    } else if (memberSelectTree.expression() instanceof IdentifierTree) {
+      // it handles fields chain calls like type1.field2
+      return Optional.of(TypeImpl.createFromType(memberSelectTree.identifier().type()));
+    }
+    return Optional.empty();
   }
 
   private static String subMethodName(MemberSelectTree memberSelectTree) {
