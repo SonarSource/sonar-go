@@ -124,6 +124,7 @@ var packageExportData = map[string]string{
 	"slices": "slices.o",
 	"strconv": "strconv.o",
 	"strings": "strings.o",
+	"sync": "sync.o",
 	"text/scanner": "text_scanner.o",
 	"text/tabwriter": "text_tabwriter.o",
 	"text/template": "text_template.o",
