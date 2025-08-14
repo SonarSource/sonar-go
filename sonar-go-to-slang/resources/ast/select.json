@@ -346,20 +346,16 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "21:1::8","type":"chan string","package":"UNKNOWN","name":"output2","id":298,"__cfgId":10}
           ],"__cfgId":15},
-          {"@type": "Native", "metaData": "22:1::20","nativeKind":"[2](GoStmt)","children":[
-            {"@type": "Native", "metaData": "22:1::3","nativeKind":"Go"},
+          {"@type": "GoStatement", "metaData": "22:1::20","goToken":"22:1::3","functionInvocation":
             {"@type": "FunctionInvocation", "metaData": "22:4::20","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "22:4::11","type":"func(ch chan string)","package":"ModuleNameForTest/main","name":"server1","id":89,"__cfgId":16},"arguments":[
               {"@type": "Identifier", "metaData": "22:12::19","type":"chan string","package":"UNKNOWN","name":"output1","id":268,"__cfgId":17}
-            ],"__cfgId":18}
-          ],"__cfgId":19},
-          {"@type": "Native", "metaData": "23:1::20","nativeKind":"[3](GoStmt)","children":[
-            {"@type": "Native", "metaData": "23:1::3","nativeKind":"Go"},
+            ],"__cfgId":18},"__cfgId":19},
+          {"@type": "GoStatement", "metaData": "23:1::20","goToken":"23:1::3","functionInvocation":
             {"@type": "FunctionInvocation", "metaData": "23:4::20","returnType":[],"memberSelect":
               {"@type": "Identifier", "metaData": "23:4::11","type":"func(ch chan string)","package":"ModuleNameForTest/main","name":"server2","id":173,"__cfgId":20},"arguments":[
               {"@type": "Identifier", "metaData": "23:12::19","type":"chan string","package":"UNKNOWN","name":"output2","id":298,"__cfgId":21}
-            ],"__cfgId":22}
-          ],"__cfgId":23},
+            ],"__cfgId":22},"__cfgId":23},
           {"@type": "Native", "metaData": "24:1:30:2","nativeKind":"[4](SelectStmt)","children":[
             {"@type": "Native", "metaData": "24:1::7","nativeKind":"Select"},
             {"@type": "Block", "metaData": "24:8:30:2","statementOrExpressions":[

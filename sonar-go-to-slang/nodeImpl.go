@@ -675,7 +675,18 @@ func (t *SlangMapper) mapForStmtImpl(stmt *ast.ForStmt, fieldName string) *Node 
 }
 
 func (t *SlangMapper) mapGoStmtImpl(stmt *ast.GoStmt, fieldName string) *Node {
-	return nil
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	goToken := t.createTokenFromPosAstToken(stmt.Go, token.GO, "Go")
+	children = t.appendNode(children, goToken)
+	slangField["goToken"] = goToken.TextRange
+
+	functionInvocation := t.mapCallExpr(stmt.Call, "Call")
+	children = t.appendNode(children, functionInvocation)
+	slangField["functionInvocation"] = functionInvocation
+
+	return t.createNode(stmt, children, fieldName+"(GoStmt)", "GoStatement", slangField)
 }
 
 func (t *SlangMapper) mapIfStmtImpl(ifStmt *ast.IfStmt, fieldName string) *Node {

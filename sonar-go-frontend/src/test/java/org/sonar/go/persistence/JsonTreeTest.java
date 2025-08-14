@@ -36,6 +36,7 @@ import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
+import org.sonar.go.impl.GoStatementTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
 import org.sonar.go.impl.ImportDeclarationTreeImpl;
@@ -83,6 +84,7 @@ import org.sonar.plugins.go.api.ExceptionHandlingTree;
 import org.sonar.plugins.go.api.FloatLiteralTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
+import org.sonar.plugins.go.api.GoStatementTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IfTree;
 import org.sonar.plugins.go.api.ImaginaryLiteralTree;
@@ -1088,6 +1090,20 @@ class JsonTreeTest extends JsonTestHelper {
 
     assertThat(methodNames(TypeAssertionExpressionTreeImpl.class))
       .containsExactlyInAnyOrder(EXPRESSION, TYPE);
+  }
+
+  @Test
+  void testGoStatement() throws IOException {
+    Token tokenGo = otherToken(1, 0, "go");
+    Token tokenBar = otherToken(1, 3, "bar");
+    FunctionInvocationTree invocation = new FunctionInvocationTreeImpl(metaData(tokenBar), TreeCreationUtils.identifier(metaData(tokenBar),
+      tokenBar.text()), List.of(), List.of());
+    GoStatementTreeImpl initialGoStatement = new GoStatementTreeImpl(metaData(tokenGo, tokenBar), tokenGo, invocation);
+
+    GoStatementTree goStatementTree = checkJsonSerializationDeserialization(initialGoStatement, "go_statement.json");
+
+    assertThat(goStatementTree.goToken().text()).isEqualTo("go");
+    assertThat(goStatementTree.functionInvocation().memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, id -> assertThat(id.name()).isEqualTo("bar"));
   }
 
   @Test

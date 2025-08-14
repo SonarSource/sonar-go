@@ -158,8 +158,7 @@
           ],"identifiers":[
             {"@type": "Identifier", "metaData": "17:5::7","type":"chan int","package":"UNKNOWN","name":"ch","id":227,"__cfgId":30}
           ],"__cfgId":35},
-          {"@type": "Native", "metaData": "18:1::24","nativeKind":"[4](GoStmt)","children":[
-            {"@type": "Native", "metaData": "18:1::3","nativeKind":"Go"},
+          {"@type": "GoStatement", "metaData": "18:1::24","goToken":"18:1::3","functionInvocation":
             {"@type": "FunctionInvocation", "metaData": "18:4::24","returnType":[],"memberSelect":
               {"@type": "FunctionDeclaration", "metaData": "18:4::22","typeParameters":
                 null,"returnType":
@@ -170,8 +169,7 @@
                     {"@type": "Native", "metaData": "18:16::18","nativeKind":"Arrow"},
                     {"@type": "IntegerLiteral", "metaData": "18:19::20","value":"1"}
                   ],"__cfgId":38}
-                ],"__cfgId":39},"__cfgId":40},"arguments":[],"__cfgId":41}
-          ],"__cfgId":42},
+                ],"__cfgId":39},"__cfgId":40},"arguments":[],"__cfgId":41},"__cfgId":42},
           {"@type": "VariableDeclaration", "metaData": "19:1::13","type":
             null,"isVal":false,"initializers":[
             {"@type": "UnaryExpression", "metaData": "19:9::13","operator":"ARROW","operand":

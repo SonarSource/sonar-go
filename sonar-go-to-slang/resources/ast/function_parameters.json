@@ -415,8 +415,7 @@
             {"@type": "Identifier", "metaData": "34:14::15","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":3},"__cfgId":5}
         ],"cfg":{"Blocks":[{"Node":[17,19],"Successors":null},{"Node":null,"Successors":null}]},"body":
           {"@type": "Block", "metaData": "34:25:38:1","statementOrExpressions":[
-            {"@type": "Native", "metaData": "36:4::22","nativeKind":"[0](GoStmt)","children":[
-              {"@type": "Native", "metaData": "36:4::6","nativeKind":"Go"},
+            {"@type": "GoStatement", "metaData": "36:4::22","goToken":"36:4::6","functionInvocation":
               {"@type": "FunctionInvocation", "metaData": "36:7::22","returnType":[],"memberSelect":
                 {"@type": "FunctionDeclaration", "metaData": "36:7::20","typeParameters":
                   null,"returnType":
@@ -424,8 +423,7 @@
                   {"@type": "Block", "metaData": "36:13::20","statementOrExpressions":[
                     {"@type": "UnaryExpression", "metaData": "36:15::18","operator":"INCREMENT","operand":
                       {"@type": "Identifier", "metaData": "36:15::16","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":12},"__cfgId":13}
-                  ],"__cfgId":14},"__cfgId":15},"arguments":[],"__cfgId":16}
-            ],"__cfgId":17},
+                  ],"__cfgId":14},"__cfgId":15},"arguments":[],"__cfgId":16},"__cfgId":17},
             {"@type": "Return", "metaData": "37:4::12","keyword":"37:4::10","expressions":[
               {"@type": "Identifier", "metaData": "37:11::12","type":"int","package":"UNKNOWN","name":"a","id":503,"__cfgId":18}
             ],"__cfgId":19}

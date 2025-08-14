@@ -34,6 +34,7 @@ import org.sonar.go.impl.ExpressionStatementTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
+import org.sonar.go.impl.GoStatementTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.IfTreeImpl;
 import org.sonar.go.impl.ImaginaryLiteralTreeImpl;
@@ -76,6 +77,7 @@ import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.BinaryExpressionTree.Operator;
 import org.sonar.plugins.go.api.CatchTree;
 import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.JumpTree;
 import org.sonar.plugins.go.api.LoopTree;
@@ -114,6 +116,8 @@ public final class JsonTreeConverter {
   public static final String FINALLY_BLOCK = "finallyBlock";
   public static final String FIRST_CPD_TOKEN = "firstCpdToken";
   public static final String FORMAL_PARAMETERS = "formalParameters";
+  public static final String FUNCTION_INVOCATION = "functionInvocation";
+  public static final String GO_TOKEN = "goToken";
   public static final String HIGH = "high";
   public static final String ID = "id";
   public static final String IDENTIFIER = "identifier";
@@ -726,6 +730,16 @@ public final class JsonTreeConverter {
         ctx.metaData(json),
         ctx.fieldToObject(json, EXPRESSION, Tree.class),
         ctx.fieldToNullableObject(json, TYPE, Tree.class)));
+
+    register(GoStatementTreeImpl.class,
+      (ctx, tree) -> ctx.newTypedObject(tree)
+        .add(GO_TOKEN, ctx.toJson(tree.goToken()))
+        .add(FUNCTION_INVOCATION, ctx.toJson(tree.functionInvocation())),
+
+      (ctx, json) -> new GoStatementTreeImpl(
+        ctx.metaData(json),
+        ctx.fieldToToken(json, GO_TOKEN),
+        ctx.fieldToObject(json, FUNCTION_INVOCATION, FunctionInvocationTree.class)));
   }
 
   private JsonTreeConverter() {
