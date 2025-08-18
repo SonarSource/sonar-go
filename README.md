@@ -60,6 +60,11 @@ In most cases, the `help` task will resolve most of the dependencies without exe
 
 The file is regenerated on CI automatically, once it grows over specified number of lines.
 
+#### Known issues
+Due to a known bug in Gradle, `--write-verification-metadata` can still ignore some dependencies, especially BOMs.
+In this case, one workaround is to remove directory `$GRADLE_USER_HOME/caches/modules-2/metadata-2.x` and then call the Gradle command again.
+See [GitHub issue](https://github.com/gradle/gradle/issues/20194#issuecomment-1652095447) for more context.
+
 ## License headers
 
 License headers are automatically updated by the spotless plugin.
