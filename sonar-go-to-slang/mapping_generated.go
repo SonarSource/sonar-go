@@ -26,6 +26,7 @@ var packageExportData = map[string]string{
 	"crypto/tls": "crypto_tls.o",
 	"crypto/x509": "crypto_x509.o",
 	"database/sql": "database_sql.o",
+	"database/sql/driver": "database_sql_driver.o",
 	"encoding": "encoding.o",
 	"encoding/ascii85": "encoding_ascii85.o",
 	"encoding/asn1": "encoding_asn1.o",
