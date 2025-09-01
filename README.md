@@ -40,26 +40,6 @@ Build and run Unit Tests:
 ./gradlew build
 ```
 
-### Dependency verification
-
-Dependency verification by Gradle is enabled for this project. If unknown dependencies appear during the build, you will get an error
-with a message like `Dependency verification failed for configuration ...`.
-
-In this case, you can update the file `gradle/verification-metadata.xml` with the command:
-
-```shell
-./gradlew --write-verification-metadata sha256 <your gradle task>
-```
-and manually verify correctness of the added data.
-
-In most cases, the `help` task will resolve most of the dependencies without executing anything:
-
-```shell
-./gradlew --write-verification-metadata sha256 help
-```
-
-The file is regenerated on CI automatically, once it grows over specified number of lines.
-
 #### Known issues
 Due to a known bug in Gradle, `--write-verification-metadata` can still ignore some dependencies, especially BOMs.
 In this case, one workaround is to remove directory `$GRADLE_USER_HOME/caches/modules-2/metadata-2.x` and then call the Gradle command again.
