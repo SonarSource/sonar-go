@@ -348,7 +348,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "27:5::8","type":"func(head string, handleFunc func(*invalid type))","package":"ModuleNameForTest/main","name":"f11","id":321,"__cfgId":2},"formalParameters":[
+        {"@type": "Identifier", "metaData": "27:5::8","type":"func(head string, handleFunc func(invalid type))","package":"ModuleNameForTest/main","name":"f11","id":321,"__cfgId":2},"formalParameters":[
         {"@type": "Parameter", "metaData": "27:9::20","type":
           {"@type": "Identifier", "metaData": "27:14::20","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":4},"identifier":
           {"@type": "Identifier", "metaData": "27:9::13","type":"string","package":"UNKNOWN","name":"head","id":325,"__cfgId":3},"__cfgId":5},
@@ -366,7 +366,7 @@
               {"@type": "Native", "metaData": "27:55::56","nativeKind":"Closing"}
             ],"__cfgId":13}
           ],"__cfgId":14},"identifier":
-          {"@type": "Identifier", "metaData": "27:22::32","type":"func(*invalid type)","package":"UNKNOWN","name":"handleFunc","id":338,"__cfgId":7},"__cfgId":15}
+          {"@type": "Identifier", "metaData": "27:22::32","type":"func(invalid type)","package":"UNKNOWN","name":"handleFunc","id":338,"__cfgId":7},"__cfgId":15}
       ],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
         {"@type": "Block", "metaData": "27:58::61","statementOrExpressions":[],"__cfgId":18},"__cfgId":1},
       {"@type": "FunctionDeclaration", "metaData": "29:0::31","typeParameters":

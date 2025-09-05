@@ -63,7 +63,7 @@
         null,"returnType":
         null,"receiver":
         null,"name":
-        {"@type": "Identifier", "metaData": "3:5::8","type":"func(value *invalid type)","package":"ModuleNameForTest/main","name":"foo","id":20,"__cfgId":3},"formalParameters":[
+        {"@type": "Identifier", "metaData": "3:5::8","type":"func(value invalid type)","package":"ModuleNameForTest/main","name":"foo","id":20,"__cfgId":3},"formalParameters":[
         {"@type": "Parameter", "metaData": "3:9::22","type":
           {"@type": "StarExpression", "metaData": "3:15::22","expression":
             {"@type": "Identifier", "metaData": "3:16::22","type":"UNKNOWN","package":"UNKNOWN","name":"Person","id":0,"__cfgId":5},"__cfgId":6},"identifier":

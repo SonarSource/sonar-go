@@ -1,0 +1,683 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"import","textRange":"3:0::6","type":"KEYWORD"},
+      {"text":"\"fmt\"","textRange":"3:7::12","type":"STRING_LITERAL"},
+      {"text":"type","textRange":"5:0::4","type":"KEYWORD"},
+      {"text":"Container","textRange":"5:5::14"},
+      {"text":"[","textRange":"5:14::15"},
+      {"text":"T","textRange":"5:15::16"},
+      {"text":"any","textRange":"5:17::20"},
+      {"text":"]","textRange":"5:20::21"},
+      {"text":"struct","textRange":"5:22::28","type":"KEYWORD"},
+      {"text":"{","textRange":"5:29::30"},
+      {"text":"Value","textRange":"6:1::6"},
+      {"text":"T","textRange":"6:7::8"},
+      {"text":"}","textRange":"7:0::1"},
+      {"text":"type","textRange":"9:0::4","type":"KEYWORD"},
+      {"text":"Container2","textRange":"9:5::15"},
+      {"text":"[","textRange":"9:15::16"},
+      {"text":"T","textRange":"9:16::17"},
+      {"text":"any","textRange":"9:18::21"},
+      {"text":"]","textRange":"9:21::22"},
+      {"text":"=","textRange":"9:23::24"},
+      {"text":"Container","textRange":"9:25::34"},
+      {"text":"[","textRange":"9:34::35"},
+      {"text":"T","textRange":"9:35::36"},
+      {"text":"]","textRange":"9:36::37"},
+      {"text":"type","textRange":"11:0::4","type":"KEYWORD"},
+      {"text":"Vector","textRange":"11:5::11"},
+      {"text":"[","textRange":"11:12::13"},
+      {"text":"float64","textRange":"11:14::21"},
+      {"text":"]","textRange":"11:13::14"},
+      {"text":"type","textRange":"13:0::4","type":"KEYWORD"},
+      {"text":"VectorAlias","textRange":"13:5::16"},
+      {"text":"=","textRange":"13:17::18"},
+      {"text":"Vector","textRange":"13:19::25"},
+      {"text":"func","textRange":"15:0::4","type":"KEYWORD"},
+      {"text":"doSomething","textRange":"15:5::16"},
+      {"text":"(","textRange":"15:16::17"},
+      {"text":"v","textRange":"15:17::18"},
+      {"text":"Vector","textRange":"15:19::25"},
+      {"text":")","textRange":"15:25::26"},
+      {"text":"{","textRange":"15:27::28"},
+      {"text":"fmt","textRange":"16:1::4"},
+      {"text":"Println","textRange":"16:5::12"},
+      {"text":".","textRange":"16:4::5"},
+      {"text":"(","textRange":"16:12::13"},
+      {"text":"v","textRange":"16:13::14"},
+      {"text":")","textRange":"16:14::15"},
+      {"text":"}","textRange":"17:0::1"},
+      {"text":"type","textRange":"19:0::4","type":"KEYWORD"},
+      {"text":"A","textRange":"19:5::6"},
+      {"text":"[","textRange":"19:6::7"},
+      {"text":"T","textRange":"19:7::8"},
+      {"text":"any","textRange":"19:9::12"},
+      {"text":"]","textRange":"19:12::13"},
+      {"text":"int","textRange":"19:14::17"},
+      {"text":"type","textRange":"20:0::4","type":"KEYWORD"},
+      {"text":"B","textRange":"20:5::6"},
+      {"text":"[","textRange":"20:6::7"},
+      {"text":"U","textRange":"20:7::8"},
+      {"text":"comparable","textRange":"20:9::19"},
+      {"text":"]","textRange":"20:19::20"},
+      {"text":"=","textRange":"20:21::22"},
+      {"text":"A","textRange":"20:23::24"},
+      {"text":"[","textRange":"20:24::25"},
+      {"text":"U","textRange":"20:25::26"},
+      {"text":"]","textRange":"20:26::27"},
+      {"text":"func","textRange":"22:0::4","type":"KEYWORD"},
+      {"text":"F","textRange":"22:5::6"},
+      {"text":"(","textRange":"22:6::7"},
+      {"text":"x","textRange":"22:7::8"},
+      {"text":"int","textRange":"22:9::12"},
+      {"text":")","textRange":"22:12::13"},
+      {"text":"{","textRange":"22:14::15"},
+      {"text":"}","textRange":"22:15::16"},
+      {"text":"var","textRange":"24:0::3","type":"KEYWORD"},
+      {"text":"G","textRange":"24:4::5"},
+      {"text":"F","textRange":"24:8::9"},
+      {"text":"=","textRange":"24:6::7"},
+      {"text":"type","textRange":"26:0::4","type":"KEYWORD"},
+      {"text":"NamedMap","textRange":"26:5::13"},
+      {"text":"[","textRange":"26:13::14"},
+      {"text":"T","textRange":"26:14::15"},
+      {"text":"any","textRange":"26:16::19"},
+      {"text":"]","textRange":"26:19::20"},
+      {"text":"=","textRange":"26:21::22"},
+      {"text":"map","textRange":"26:23::26","type":"KEYWORD"},
+      {"text":"string","textRange":"26:27::33"},
+      {"text":"[","textRange":"26:26::27"},
+      {"text":"T","textRange":"26:34::35"},
+      {"text":"]","textRange":"26:33::34"},
+      {"text":"type","textRange":"28:0::4","type":"KEYWORD"},
+      {"text":"T","textRange":"28:5::6"},
+      {"text":"[","textRange":"28:6::7"},
+      {"text":"P","textRange":"28:7::8"},
+      {"text":"any","textRange":"28:9::12"},
+      {"text":"]","textRange":"28:12::13"},
+      {"text":"struct","textRange":"28:14::20","type":"KEYWORD"},
+      {"text":"{","textRange":"28:20::21"},
+      {"text":"}","textRange":"28:21::22"},
+      {"text":"func","textRange":"30:0::4","type":"KEYWORD"},
+      {"text":"(","textRange":"30:5::6"},
+      {"text":"T","textRange":"30:6::7"},
+      {"text":"[","textRange":"30:7::8"},
+      {"text":"P","textRange":"30:8::9"},
+      {"text":"]","textRange":"30:9::10"},
+      {"text":")","textRange":"30:10::11"},
+      {"text":"m","textRange":"30:12::13"},
+      {"text":"(","textRange":"30:13::14"},
+      {"text":")","textRange":"30:14::15"},
+      {"text":"{","textRange":"30:16::17"},
+      {"text":"}","textRange":"30:17::18"},
+      {"text":"type","textRange":"32:0::4","type":"KEYWORD"},
+      {"text":"A0","textRange":"32:5::7"},
+      {"text":"=","textRange":"32:8::9"},
+      {"text":"T","textRange":"32:10::11"},
+      {"text":"[","textRange":"32:11::12"},
+      {"text":"int","textRange":"32:12::15"},
+      {"text":"]","textRange":"32:15::16"},
+      {"text":"func","textRange":"34:0::4","type":"KEYWORD"},
+      {"text":"(","textRange":"34:5::6"},
+      {"text":"A0","textRange":"34:6::8"},
+      {"text":")","textRange":"34:8::9"},
+      {"text":"m0","textRange":"34:10::12"},
+      {"text":"(","textRange":"34:12::13"},
+      {"text":")","textRange":"34:13::14"},
+      {"text":"{","textRange":"34:15::16"},
+      {"text":"}","textRange":"34:16::17"},
+      {"text":"type","textRange":"36:0::4","type":"KEYWORD"},
+      {"text":"A1","textRange":"36:5::7"},
+      {"text":"[","textRange":"36:7::8"},
+      {"text":"P","textRange":"36:8::9"},
+      {"text":"int","textRange":"36:10::13"},
+      {"text":"]","textRange":"36:13::14"},
+      {"text":"=","textRange":"36:15::16"},
+      {"text":"T","textRange":"36:17::18"},
+      {"text":"[","textRange":"36:18::19"},
+      {"text":"P","textRange":"36:19::20"},
+      {"text":"]","textRange":"36:20::21"},
+      {"text":"func","textRange":"38:0::4","type":"KEYWORD"},
+      {"text":"(","textRange":"38:5::6"},
+      {"text":"A1","textRange":"38:6::8"},
+      {"text":"[","textRange":"38:8::9"},
+      {"text":"P","textRange":"38:9::10"},
+      {"text":"]","textRange":"38:10::11"},
+      {"text":")","textRange":"38:11::12"},
+      {"text":"m1","textRange":"38:13::15"},
+      {"text":"(","textRange":"38:15::16"},
+      {"text":"x","textRange":"38:16::17"},
+      {"text":"P","textRange":"38:18::19"},
+      {"text":")","textRange":"38:19::20"},
+      {"text":"{","textRange":"38:21::22"},
+      {"text":"}","textRange":"38:22::23"},
+      {"text":"type","textRange":"40:0::4","type":"KEYWORD"},
+      {"text":"A2","textRange":"40:5::7"},
+      {"text":"[","textRange":"40:7::8"},
+      {"text":"P","textRange":"40:8::9"},
+      {"text":"int32","textRange":"40:10::15"},
+      {"text":"Q","textRange":"40:17::18"},
+      {"text":"int64","textRange":"40:19::24"},
+      {"text":",","textRange":"40:15::16"},
+      {"text":"]","textRange":"40:24::25"},
+      {"text":"=","textRange":"40:26::27"},
+      {"text":"T","textRange":"40:28::29"},
+      {"text":"[","textRange":"40:29::30"},
+      {"text":"P","textRange":"40:30::31"},
+      {"text":"]","textRange":"40:31::32"},
+      {"text":"func","textRange":"42:0::4","type":"KEYWORD"},
+      {"text":"(","textRange":"42:5::6"},
+      {"text":"A2","textRange":"42:6::8"},
+      {"text":"[","textRange":"42:8::9"},
+      {"text":"P","textRange":"42:9::10"},
+      {"text":"Q","textRange":"42:12::13"},
+      {"text":",","textRange":"42:10::11"},
+      {"text":"]","textRange":"42:13::14"},
+      {"text":")","textRange":"42:14::15"},
+      {"text":"m2","textRange":"42:16::18"},
+      {"text":"(","textRange":"42:18::19"},
+      {"text":"x","textRange":"42:19::20"},
+      {"text":"P","textRange":"42:21::22"},
+      {"text":"y","textRange":"42:24::25"},
+      {"text":"Q","textRange":"42:26::27"},
+      {"text":",","textRange":"42:22::23"},
+      {"text":")","textRange":"42:27::28"},
+      {"text":"{","textRange":"42:29::30"},
+      {"text":"}","textRange":"42:30::31"},
+      {"text":"func","textRange":"44:0::4","type":"KEYWORD"},
+      {"text":"genericTypesAliasesTests","textRange":"44:5::29"},
+      {"text":"(","textRange":"44:29::30"},
+      {"text":")","textRange":"44:30::31"},
+      {"text":"{","textRange":"44:32::33"},
+      {"text":"intContainer","textRange":"45:1::13"},
+      {"text":":=","textRange":"45:14::16"},
+      {"text":"Container","textRange":"45:17::26"},
+      {"text":"[","textRange":"45:26::27"},
+      {"text":"int","textRange":"45:27::30"},
+      {"text":"]","textRange":"45:30::31"},
+      {"text":"{","textRange":"45:31::32"},
+      {"text":"Value","textRange":"45:32::37"},
+      {"text":":","textRange":"45:37::38"},
+      {"text":"42","textRange":"45:39::41"},
+      {"text":"}","textRange":"45:41::42"},
+      {"text":"fmt","textRange":"46:1::4"},
+      {"text":"Println","textRange":"46:5::12"},
+      {"text":".","textRange":"46:4::5"},
+      {"text":"(","textRange":"46:12::13"},
+      {"text":"intContainer","textRange":"46:13::25"},
+      {"text":"Value","textRange":"46:26::31"},
+      {"text":".","textRange":"46:25::26"},
+      {"text":")","textRange":"46:31::32"},
+      {"text":"v","textRange":"48:1::2"},
+      {"text":":=","textRange":"48:3::5"},
+      {"text":"Vector","textRange":"48:6::12"},
+      {"text":"{","textRange":"48:12::13"},
+      {"text":"3.14","textRange":"48:13::17"},
+      {"text":"}","textRange":"48:17::18"},
+      {"text":"doSomething","textRange":"49:1::12"},
+      {"text":"(","textRange":"49:12::13"},
+      {"text":"v","textRange":"49:13::14"},
+      {"text":")","textRange":"49:14::15"},
+      {"text":"va","textRange":"51:1::3"},
+      {"text":":=","textRange":"51:4::6"},
+      {"text":"VectorAlias","textRange":"51:7::18"},
+      {"text":"{","textRange":"51:18::19"},
+      {"text":"2.71","textRange":"51:19::23"},
+      {"text":"}","textRange":"51:23::24"},
+      {"text":"doSomething","textRange":"52:1::12"},
+      {"text":"(","textRange":"52:12::13"},
+      {"text":"va","textRange":"52:13::15"},
+      {"text":")","textRange":"52:15::16"},
+      {"text":"b","textRange":"54:1::2"},
+      {"text":":=","textRange":"54:3::5"},
+      {"text":"B","textRange":"54:6::7"},
+      {"text":"[","textRange":"54:7::8"},
+      {"text":"int","textRange":"54:8::11"},
+      {"text":"]","textRange":"54:11::12"},
+      {"text":"(","textRange":"54:12::13"},
+      {"text":"5","textRange":"54:13::14"},
+      {"text":")","textRange":"54:14::15"},
+      {"text":"fmt","textRange":"55:1::4"},
+      {"text":"Println","textRange":"55:5::12"},
+      {"text":".","textRange":"55:4::5"},
+      {"text":"(","textRange":"55:12::13"},
+      {"text":"b","textRange":"55:13::14"},
+      {"text":")","textRange":"55:14::15"},
+      {"text":"G","textRange":"57:1::2"},
+      {"text":"(","textRange":"57:2::3"},
+      {"text":"10","textRange":"57:3::5"},
+      {"text":")","textRange":"57:5::6"},
+      {"text":"nm","textRange":"59:1::3"},
+      {"text":":=","textRange":"59:4::6"},
+      {"text":"NamedMap","textRange":"59:7::15"},
+      {"text":"[","textRange":"59:15::16"},
+      {"text":"int","textRange":"59:16::19"},
+      {"text":"]","textRange":"59:19::20"},
+      {"text":"{","textRange":"59:20::21"},
+      {"text":"\"one\"","textRange":"59:21::26","type":"STRING_LITERAL"},
+      {"text":":","textRange":"59:26::27"},
+      {"text":"1","textRange":"59:28::29"},
+      {"text":"\"two\"","textRange":"59:31::36","type":"STRING_LITERAL"},
+      {"text":":","textRange":"59:36::37"},
+      {"text":"2","textRange":"59:38::39"},
+      {"text":",","textRange":"59:29::30"},
+      {"text":"}","textRange":"59:39::40"},
+      {"text":"fmt","textRange":"60:1::4"},
+      {"text":"Println","textRange":"60:5::12"},
+      {"text":".","textRange":"60:4::5"},
+      {"text":"(","textRange":"60:12::13"},
+      {"text":"nm","textRange":"60:13::15"},
+      {"text":")","textRange":"60:15::16"},
+      {"text":"}","textRange":"61:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:62:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ImportDeclaration", "metaData": "3:0::12","children":[
+        {"@type": "Native", "metaData": "3:0::6","nativeKind":"Tok"},
+        {"@type": "ImportSpecification", "metaData": "3:7::12","path":
+          {"@type": "StringLiteral", "metaData": "3:7::12","value":"\"fmt\"","content":"fmt"},"name":
+          null,"__cfgId":3}
+      ],"__cfgId":4},
+      {"@type": "ClassDeclaration", "metaData": "5:0:7:1","identifier":"5:5::14","classTree":
+        {"@type": "Native", "metaData": "5:0:7:1","nativeKind":"[1](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "5:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "5:5::14","type":"main.Container[T any]","package":"ModuleNameForTest/main","name":"Container","id":34,"__cfgId":5},
+          {"@type": "Native", "metaData": "5:14::21","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "5:14::15","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "5:15::20","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "5:15::16","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "5:15::16","type":"T","package":"ModuleNameForTest/main","name":"T","id":44,"__cfgId":6}
+              ]},
+              {"@type": "Identifier", "metaData": "5:17::20","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":7}
+            ],"__cfgId":8},
+            {"@type": "Native", "metaData": "5:20::21","nativeKind":"Closing"}
+          ],"__cfgId":9},
+          {"@type": "Native", "metaData": "5:22:7:1","nativeKind":"Type(StructType)","children":[
+            {"@type": "Native", "metaData": "5:22::28","nativeKind":"Struct"},
+            {"@type": "Native", "metaData": "5:29:7:1","nativeKind":"Fields(FieldList)","children":[
+              {"@type": "Native", "metaData": "5:29::30","nativeKind":"Opening"},
+              {"@type": "Native", "metaData": "6:1::8","nativeKind":"[0](Field)","children":[
+                {"@type": "Native", "metaData": "6:1::6","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "6:1::6","type":"T","package":"UNKNOWN","name":"Value","id":61,"__cfgId":10}
+                ]},
+                {"@type": "Identifier", "metaData": "6:7::8","type":"T","package":"ModuleNameForTest/main","name":"T","id":44,"__cfgId":11}
+              ],"__cfgId":12},
+              {"@type": "Native", "metaData": "7:0::1","nativeKind":"Closing"}
+            ],"__cfgId":13}
+          ],"__cfgId":14}
+        ],"__cfgId":15},"__cfgId":16},
+      {"@type": "ClassDeclaration", "metaData": "9:0::37","identifier":"9:5::15","classTree":
+        {"@type": "Native", "metaData": "9:0::37","nativeKind":"[2](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "9:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "9:5::15","type":"main.Container2[T any]","package":"ModuleNameForTest/main","name":"Container2","id":77,"__cfgId":17},
+          {"@type": "Native", "metaData": "9:15::22","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "9:15::16","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "9:16::21","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "9:16::17","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "9:16::17","type":"T","package":"ModuleNameForTest/main","name":"T","id":88,"__cfgId":18}
+              ]},
+              {"@type": "Identifier", "metaData": "9:18::21","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":19}
+            ],"__cfgId":20},
+            {"@type": "Native", "metaData": "9:21::22","nativeKind":"Closing"}
+          ],"__cfgId":21},
+          {"@type": "Native", "metaData": "9:23::24","nativeKind":"Assign"},
+          {"@type": "IndexExpression", "metaData": "9:25::37","index":
+            {"@type": "Identifier", "metaData": "9:35::36","type":"T","package":"ModuleNameForTest/main","name":"T","id":88,"__cfgId":23},"expression":
+            {"@type": "Identifier", "metaData": "9:25::34","type":"main.Container[T any]","package":"ModuleNameForTest/main","name":"Container","id":34,"__cfgId":22},"__cfgId":24}
+        ],"__cfgId":25},"__cfgId":26},
+      {"@type": "ClassDeclaration", "metaData": "11:0::21","identifier":"11:5::11","classTree":
+        {"@type": "Native", "metaData": "11:0::21","nativeKind":"[3](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "11:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "11:5::11","type":"main.Vector","package":"ModuleNameForTest/main","name":"Vector","id":116,"__cfgId":27},
+          {"@type": "ArrayType", "metaData": "11:12::21","length":null,"element":
+            {"@type": "Identifier", "metaData": "11:14::21","type":"float64","package":"UNKNOWN","name":"float64","id":0,"__cfgId":28},"__cfgId":29}
+        ],"__cfgId":30},"__cfgId":31},
+      {"@type": "ClassDeclaration", "metaData": "13:0::25","identifier":"13:5::16","classTree":
+        {"@type": "Native", "metaData": "13:0::25","nativeKind":"[4](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "13:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "13:5::16","type":"main.VectorAlias","package":"ModuleNameForTest/main","name":"VectorAlias","id":139,"__cfgId":32},
+          {"@type": "Native", "metaData": "13:17::18","nativeKind":"Assign"},
+          {"@type": "Identifier", "metaData": "13:19::25","type":"main.Vector","package":"ModuleNameForTest/main","name":"Vector","id":116,"__cfgId":33}
+        ],"__cfgId":34},"__cfgId":35},
+      {"@type": "FunctionDeclaration", "metaData": "15:0:17:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "15:5::16","type":"func(v main.Vector)","package":"ModuleNameForTest/main","name":"doSomething","id":166,"__cfgId":36},"formalParameters":[
+        {"@type": "Parameter", "metaData": "15:17::25","type":
+          {"@type": "Identifier", "metaData": "15:19::25","type":"main.Vector","package":"ModuleNameForTest/main","name":"Vector","id":116,"__cfgId":38},"identifier":
+          {"@type": "Identifier", "metaData": "15:17::18","type":"main.Vector","package":"UNKNOWN","name":"v","id":178,"__cfgId":37},"__cfgId":39}
+      ],"cfg":{"Blocks":[{"Node":[47,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "15:27:17:1","statementOrExpressions":[
+          {"@type": "ExpressionStatement", "metaData": "16:1::15","expression":
+            {"@type": "FunctionInvocation", "metaData": "16:1::15","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "16:1::12","identifier":
+                {"@type": "Identifier", "metaData": "16:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":43},"expression":
+                {"@type": "Identifier", "metaData": "16:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":42},"__cfgId":44},"arguments":[
+              {"@type": "Identifier", "metaData": "16:13::14","type":"main.Vector","package":"UNKNOWN","name":"v","id":178,"__cfgId":45}
+            ],"__cfgId":46},"__cfgId":47}
+        ],"__cfgId":48},"__cfgId":1},
+      {"@type": "ClassDeclaration", "metaData": "19:0::17","identifier":"19:5::6","classTree":
+        {"@type": "Native", "metaData": "19:0::17","nativeKind":"[6](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "19:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "19:5::6","type":"main.A[T any]","package":"ModuleNameForTest/main","name":"A","id":214,"__cfgId":2},
+          {"@type": "Native", "metaData": "19:6::13","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "19:6::7","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "19:7::12","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "19:7::8","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "19:7::8","type":"T","package":"ModuleNameForTest/main","name":"T","id":216,"__cfgId":3}
+              ]},
+              {"@type": "Identifier", "metaData": "19:9::12","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":4}
+            ],"__cfgId":5},
+            {"@type": "Native", "metaData": "19:12::13","nativeKind":"Closing"}
+          ],"__cfgId":6},
+          {"@type": "Identifier", "metaData": "19:14::17","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":7}
+        ],"__cfgId":8},"__cfgId":9},
+      {"@type": "ClassDeclaration", "metaData": "20:0::27","identifier":"20:5::6","classTree":
+        {"@type": "Native", "metaData": "20:0::27","nativeKind":"[7](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "20:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "20:5::6","type":"main.B[U comparable]","package":"ModuleNameForTest/main","name":"B","id":232,"__cfgId":10},
+          {"@type": "Native", "metaData": "20:6::20","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "20:6::7","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "20:7::19","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "20:7::8","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "20:7::8","type":"U","package":"ModuleNameForTest/main","name":"U","id":234,"__cfgId":11}
+              ]},
+              {"@type": "Identifier", "metaData": "20:9::19","type":"comparable","package":"UNKNOWN","name":"comparable","id":0,"__cfgId":12}
+            ],"__cfgId":13},
+            {"@type": "Native", "metaData": "20:19::20","nativeKind":"Closing"}
+          ],"__cfgId":14},
+          {"@type": "Native", "metaData": "20:21::22","nativeKind":"Assign"},
+          {"@type": "IndexExpression", "metaData": "20:23::27","index":
+            {"@type": "Identifier", "metaData": "20:25::26","type":"U","package":"ModuleNameForTest/main","name":"U","id":234,"__cfgId":16},"expression":
+            {"@type": "Identifier", "metaData": "20:23::24","type":"main.A[T any]","package":"ModuleNameForTest/main","name":"A","id":214,"__cfgId":15},"__cfgId":17}
+        ],"__cfgId":18},"__cfgId":19},
+      {"@type": "FunctionDeclaration", "metaData": "22:0::16","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "22:5::6","type":"func(x int)","package":"ModuleNameForTest/main","name":"F","id":261,"__cfgId":20},"formalParameters":[
+        {"@type": "Parameter", "metaData": "22:7::12","type":
+          {"@type": "Identifier", "metaData": "22:9::12","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":22},"identifier":
+          {"@type": "Identifier", "metaData": "22:7::8","type":"int","package":"UNKNOWN","name":"x","id":263,"__cfgId":21},"__cfgId":23}
+      ],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "22:14::16","statementOrExpressions":[],"__cfgId":26},"__cfgId":1},
+      {"@type": "VariableDeclaration", "metaData": "24:0::9","type":
+        null,"isVal":false,"initializers":[
+        {"@type": "Identifier", "metaData": "24:8::9","type":"func(x int)","package":"ModuleNameForTest/main","name":"F","id":261,"__cfgId":3}
+      ],"identifiers":[
+        {"@type": "Identifier", "metaData": "24:4::5","type":"func(x int)","package":"UNKNOWN","name":"G","id":278,"__cfgId":2}
+      ],"__cfgId":4},
+      {"@type": "ClassDeclaration", "metaData": "26:0::35","identifier":"26:5::13","classTree":
+        {"@type": "Native", "metaData": "26:0::35","nativeKind":"[10](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "26:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "26:5::13","type":"main.NamedMap[T any]","package":"ModuleNameForTest/main","name":"NamedMap","id":290,"__cfgId":5},
+          {"@type": "Native", "metaData": "26:13::20","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "26:13::14","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "26:14::19","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "26:14::15","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "26:14::15","type":"T","package":"ModuleNameForTest/main","name":"T","id":299,"__cfgId":6}
+              ]},
+              {"@type": "Identifier", "metaData": "26:16::19","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":7}
+            ],"__cfgId":8},
+            {"@type": "Native", "metaData": "26:19::20","nativeKind":"Closing"}
+          ],"__cfgId":9},
+          {"@type": "Native", "metaData": "26:21::22","nativeKind":"Assign"},
+          {"@type": "MapType", "metaData": "26:23::35","value":
+            {"@type": "Identifier", "metaData": "26:34::35","type":"T","package":"ModuleNameForTest/main","name":"T","id":299,"__cfgId":11},"key":
+            {"@type": "Identifier", "metaData": "26:27::33","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":10},"__cfgId":12}
+        ],"__cfgId":13},"__cfgId":14},
+      {"@type": "ClassDeclaration", "metaData": "28:0::22","identifier":"28:5::6","classTree":
+        {"@type": "Native", "metaData": "28:0::22","nativeKind":"[11](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "28:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "28:5::6","type":"main.T[P any]","package":"ModuleNameForTest/main","name":"T","id":327,"__cfgId":15},
+          {"@type": "Native", "metaData": "28:6::13","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "28:6::7","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "28:7::12","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "28:7::8","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "28:7::8","type":"P","package":"ModuleNameForTest/main","name":"P","id":329,"__cfgId":16}
+              ]},
+              {"@type": "Identifier", "metaData": "28:9::12","type":"any","package":"UNKNOWN","name":"any","id":0,"__cfgId":17}
+            ],"__cfgId":18},
+            {"@type": "Native", "metaData": "28:12::13","nativeKind":"Closing"}
+          ],"__cfgId":19},
+          {"@type": "Native", "metaData": "28:14::22","nativeKind":"Type(StructType)","children":[
+            {"@type": "Native", "metaData": "28:14::20","nativeKind":"Struct"},
+            {"@type": "Native", "metaData": "28:20::22","nativeKind":"Fields(FieldList)","children":[
+              {"@type": "Native", "metaData": "28:20::21","nativeKind":"Opening"},
+              {"@type": "Native", "metaData": "28:21::22","nativeKind":"Closing"}
+            ],"__cfgId":20}
+          ],"__cfgId":21}
+        ],"__cfgId":22},"__cfgId":23},
+      {"@type": "FunctionDeclaration", "metaData": "30:0::18","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        {"@type": "Native", "metaData": "30:5::11","nativeKind":"Recv(FieldList)","children":[
+          {"@type": "Native", "metaData": "30:5::6","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "30:6::10","nativeKind":"[0](Field)","children":[
+            {"@type": "IndexExpression", "metaData": "30:6::10","index":
+              {"@type": "Identifier", "metaData": "30:8::9","type":"P","package":"ModuleNameForTest/main","name":"P","id":354,"__cfgId":25},"expression":
+              {"@type": "Identifier", "metaData": "30:6::7","type":"main.T[P any]","package":"ModuleNameForTest/main","name":"T","id":327,"__cfgId":24},"__cfgId":26}
+          ],"__cfgId":27},
+          {"@type": "Native", "metaData": "30:10::11","nativeKind":"Closing"}
+        ],"__cfgId":28},"name":
+        {"@type": "Identifier", "metaData": "30:12::13","type":"func()","package":"ModuleNameForTest/main","name":"m","id":358,"__cfgId":29},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "30:16::18","statementOrExpressions":[],"__cfgId":31},"__cfgId":1},
+      {"@type": "ClassDeclaration", "metaData": "32:0::16","identifier":"32:5::7","classTree":
+        {"@type": "Native", "metaData": "32:0::16","nativeKind":"[13](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "32:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "32:5::7","type":"main.A0","package":"ModuleNameForTest/main","name":"A0","id":371,"__cfgId":2},
+          {"@type": "Native", "metaData": "32:8::9","nativeKind":"Assign"},
+          {"@type": "IndexExpression", "metaData": "32:10::16","index":
+            {"@type": "Identifier", "metaData": "32:12::15","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4},"expression":
+            {"@type": "Identifier", "metaData": "32:10::11","type":"main.T[P any]","package":"ModuleNameForTest/main","name":"T","id":327,"__cfgId":3},"__cfgId":5}
+        ],"__cfgId":6},"__cfgId":7},
+      {"@type": "FunctionDeclaration", "metaData": "34:0::17","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        {"@type": "Native", "metaData": "34:5::9","nativeKind":"Recv(FieldList)","children":[
+          {"@type": "Native", "metaData": "34:5::6","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "34:6::8","nativeKind":"[0](Field)","children":[
+            {"@type": "Identifier", "metaData": "34:6::8","type":"main.A0","package":"ModuleNameForTest/main","name":"A0","id":371,"__cfgId":8}
+          ],"__cfgId":9},
+          {"@type": "Native", "metaData": "34:8::9","nativeKind":"Closing"}
+        ],"__cfgId":10},"name":
+        {"@type": "Identifier", "metaData": "34:10::12","type":"func()","package":"ModuleNameForTest/main","name":"m0","id":394,"__cfgId":11},"formalParameters":[],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "34:15::17","statementOrExpressions":[],"__cfgId":13},"__cfgId":1},
+      {"@type": "ClassDeclaration", "metaData": "36:0::21","identifier":"36:5::7","classTree":
+        {"@type": "Native", "metaData": "36:0::21","nativeKind":"[15](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "36:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "36:5::7","type":"main.A1[P int]","package":"ModuleNameForTest/main","name":"A1","id":408,"__cfgId":2},
+          {"@type": "Native", "metaData": "36:7::14","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "36:7::8","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "36:8::13","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "36:8::9","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "36:8::9","type":"P","package":"ModuleNameForTest/main","name":"P","id":411,"__cfgId":3}
+              ]},
+              {"@type": "Identifier", "metaData": "36:10::13","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":4}
+            ],"__cfgId":5},
+            {"@type": "Native", "metaData": "36:13::14","nativeKind":"Closing"}
+          ],"__cfgId":6},
+          {"@type": "Native", "metaData": "36:15::16","nativeKind":"Assign"},
+          {"@type": "IndexExpression", "metaData": "36:17::21","index":
+            {"@type": "Identifier", "metaData": "36:19::20","type":"P","package":"ModuleNameForTest/main","name":"P","id":411,"__cfgId":8},"expression":
+            {"@type": "Identifier", "metaData": "36:17::18","type":"main.T[P any]","package":"ModuleNameForTest/main","name":"T","id":327,"__cfgId":7},"__cfgId":9}
+        ],"__cfgId":10},"__cfgId":11},
+      {"@type": "FunctionDeclaration", "metaData": "38:0::23","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        {"@type": "Native", "metaData": "38:5::12","nativeKind":"Recv(FieldList)","children":[
+          {"@type": "Native", "metaData": "38:5::6","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "38:6::11","nativeKind":"[0](Field)","children":[
+            {"@type": "IndexExpression", "metaData": "38:6::11","index":
+              {"@type": "Identifier", "metaData": "38:9::10","type":"P","package":"ModuleNameForTest/main","name":"P","id":435,"__cfgId":13},"expression":
+              {"@type": "Identifier", "metaData": "38:6::8","type":"main.A1[P int]","package":"ModuleNameForTest/main","name":"A1","id":408,"__cfgId":12},"__cfgId":14}
+          ],"__cfgId":15},
+          {"@type": "Native", "metaData": "38:11::12","nativeKind":"Closing"}
+        ],"__cfgId":16},"name":
+        {"@type": "Identifier", "metaData": "38:13::15","type":"func(x P)","package":"ModuleNameForTest/main","name":"m1","id":439,"__cfgId":17},"formalParameters":[
+        {"@type": "Parameter", "metaData": "38:16::19","type":
+          {"@type": "Identifier", "metaData": "38:18::19","type":"P","package":"ModuleNameForTest/main","name":"P","id":435,"__cfgId":19},"identifier":
+          {"@type": "Identifier", "metaData": "38:16::17","type":"P","package":"UNKNOWN","name":"x","id":442,"__cfgId":18},"__cfgId":20}
+      ],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "38:21::23","statementOrExpressions":[],"__cfgId":23},"__cfgId":1},
+      {"@type": "ClassDeclaration", "metaData": "40:0::32","identifier":"40:5::7","classTree":
+        {"@type": "Native", "metaData": "40:0::32","nativeKind":"[17](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "40:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "40:5::7","type":"main.A2[P int32, Q int64]","package":"ModuleNameForTest/main","name":"A2","id":456,"__cfgId":2},
+          {"@type": "Native", "metaData": "40:7::25","nativeKind":"TypeParams(FieldList)","children":[
+            {"@type": "Native", "metaData": "40:7::8","nativeKind":"Opening"},
+            {"@type": "Native", "metaData": "40:8::15","nativeKind":"[0](Field)","children":[
+              {"@type": "Native", "metaData": "40:8::9","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "40:8::9","type":"P","package":"ModuleNameForTest/main","name":"P","id":459,"__cfgId":3}
+              ]},
+              {"@type": "Identifier", "metaData": "40:10::15","type":"int32","package":"UNKNOWN","name":"int32","id":0,"__cfgId":4}
+            ],"__cfgId":5},
+            {"@type": "Native", "metaData": "40:15::16"},
+            {"@type": "Native", "metaData": "40:17::24","nativeKind":"[1](Field)","children":[
+              {"@type": "Native", "metaData": "40:17::18","nativeKind":"Names([]*Ident)","children":[
+                {"@type": "Identifier", "metaData": "40:17::18","type":"Q","package":"ModuleNameForTest/main","name":"Q","id":468,"__cfgId":6}
+              ]},
+              {"@type": "Identifier", "metaData": "40:19::24","type":"int64","package":"UNKNOWN","name":"int64","id":0,"__cfgId":7}
+            ],"__cfgId":8},
+            {"@type": "Native", "metaData": "40:24::25","nativeKind":"Closing"}
+          ],"__cfgId":9},
+          {"@type": "Native", "metaData": "40:26::27","nativeKind":"Assign"},
+          {"@type": "IndexExpression", "metaData": "40:28::32","index":
+            {"@type": "Identifier", "metaData": "40:30::31","type":"P","package":"ModuleNameForTest/main","name":"P","id":459,"__cfgId":11},"expression":
+            {"@type": "Identifier", "metaData": "40:28::29","type":"main.T[P any]","package":"ModuleNameForTest/main","name":"T","id":327,"__cfgId":10},"__cfgId":12}
+        ],"__cfgId":13},"__cfgId":14},
+      {"@type": "FunctionDeclaration", "metaData": "42:0::31","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        {"@type": "Native", "metaData": "42:5::15","nativeKind":"Recv(FieldList)","children":[
+          {"@type": "Native", "metaData": "42:5::6","nativeKind":"Opening"},
+          {"@type": "Native", "metaData": "42:6::14","nativeKind":"[0](Field)","children":[
+            {"@type": "IndexListExpression", "metaData": "42:6::14","indices":[
+              {"@type": "Identifier", "metaData": "42:9::10","type":"P","package":"ModuleNameForTest/main","name":"P","id":494,"__cfgId":16},
+              {"@type": "Identifier", "metaData": "42:12::13","type":"Q","package":"ModuleNameForTest/main","name":"Q","id":497,"__cfgId":17}
+            ],"expression":
+              {"@type": "Identifier", "metaData": "42:6::8","type":"main.A2[P int32, Q int64]","package":"ModuleNameForTest/main","name":"A2","id":456,"__cfgId":15},"__cfgId":18}
+          ],"__cfgId":19},
+          {"@type": "Native", "metaData": "42:14::15","nativeKind":"Closing"}
+        ],"__cfgId":20},"name":
+        {"@type": "Identifier", "metaData": "42:16::18","type":"func(x P, y Q)","package":"ModuleNameForTest/main","name":"m2","id":501,"__cfgId":21},"formalParameters":[
+        {"@type": "Parameter", "metaData": "42:19::22","type":
+          {"@type": "Identifier", "metaData": "42:21::22","type":"P","package":"ModuleNameForTest/main","name":"P","id":494,"__cfgId":23},"identifier":
+          {"@type": "Identifier", "metaData": "42:19::20","type":"P","package":"UNKNOWN","name":"x","id":504,"__cfgId":22},"__cfgId":24},
+        {"@type": "Parameter", "metaData": "42:24::27","type":
+          {"@type": "Identifier", "metaData": "42:26::27","type":"Q","package":"ModuleNameForTest/main","name":"Q","id":497,"__cfgId":27},"identifier":
+          {"@type": "Identifier", "metaData": "42:24::25","type":"Q","package":"UNKNOWN","name":"y","id":509,"__cfgId":26},"__cfgId":28}
+      ],"cfg":{"Blocks":[{"Node":[0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "42:29::31","statementOrExpressions":[],"__cfgId":31},"__cfgId":1},
+      {"@type": "FunctionDeclaration", "metaData": "44:0:61:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "44:5::29","type":"func()","package":"ModuleNameForTest/main","name":"genericTypesAliasesTests","id":523,"__cfgId":2},"formalParameters":[],"cfg":{"Blocks":[{"Node":[11,19,23,27,31,35,41,47,50,58,64,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "44:32:61:1","statementOrExpressions":[
+          {"@type": "VariableDeclaration", "metaData": "45:1::42","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "45:17::42","type":
+              {"@type": "IndexExpression", "metaData": "45:17::31","index":
+                {"@type": "Identifier", "metaData": "45:27::30","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":6},"expression":
+                {"@type": "Identifier", "metaData": "45:17::26","type":"main.Container[T any]","package":"ModuleNameForTest/main","name":"Container","id":34,"__cfgId":5},"__cfgId":7},"elements":[
+              {"@type": "KeyValue", "metaData": "45:32::41","value":
+                {"@type": "IntegerLiteral", "metaData": "45:39::41","value":"42"},"key":
+                {"@type": "Identifier", "metaData": "45:32::37","type":"int","package":"UNKNOWN","name":"Value","id":61,"__cfgId":8},"__cfgId":9}
+            ],"__cfgId":10}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "45:1::13","type":"main.Container[int]","package":"UNKNOWN","name":"intContainer","id":553,"__cfgId":4}
+          ],"__cfgId":11},
+          {"@type": "ExpressionStatement", "metaData": "46:1::32","expression":
+            {"@type": "FunctionInvocation", "metaData": "46:1::32","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "46:1::12","identifier":
+                {"@type": "Identifier", "metaData": "46:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":13},"expression":
+                {"@type": "Identifier", "metaData": "46:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":12},"__cfgId":14},"arguments":[
+              {"@type": "MemberSelect", "metaData": "46:13::31","identifier":
+                {"@type": "Identifier", "metaData": "46:26::31","type":"int","package":"UNKNOWN","name":"Value","id":61,"__cfgId":16},"expression":
+                {"@type": "Identifier", "metaData": "46:13::25","type":"main.Container[int]","package":"UNKNOWN","name":"intContainer","id":553,"__cfgId":15},"__cfgId":17}
+            ],"__cfgId":18},"__cfgId":19},
+          {"@type": "VariableDeclaration", "metaData": "48:1::18","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "48:6::18","type":
+              {"@type": "Identifier", "metaData": "48:6::12","type":"main.Vector","package":"ModuleNameForTest/main","name":"Vector","id":116,"__cfgId":21},"elements":[
+              {"@type": "FloatLiteral", "metaData": "48:13::17","value":"3.14"}
+            ],"__cfgId":22}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "48:1::2","type":"main.Vector","package":"UNKNOWN","name":"v","id":630,"__cfgId":20}
+          ],"__cfgId":23},
+          {"@type": "ExpressionStatement", "metaData": "49:1::15","expression":
+            {"@type": "FunctionInvocation", "metaData": "49:1::15","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "49:1::12","type":"func(v main.Vector)","package":"ModuleNameForTest/main","name":"doSomething","id":166,"__cfgId":24},"arguments":[
+              {"@type": "Identifier", "metaData": "49:13::14","type":"main.Vector","package":"UNKNOWN","name":"v","id":630,"__cfgId":25}
+            ],"__cfgId":26},"__cfgId":27},
+          {"@type": "VariableDeclaration", "metaData": "51:1::24","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "51:7::24","type":
+              {"@type": "Identifier", "metaData": "51:7::18","type":"main.VectorAlias","package":"ModuleNameForTest/main","name":"VectorAlias","id":139,"__cfgId":29},"elements":[
+              {"@type": "FloatLiteral", "metaData": "51:19::23","value":"2.71"}
+            ],"__cfgId":30}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "51:1::3","type":"main.VectorAlias","package":"UNKNOWN","name":"va","id":666,"__cfgId":28}
+          ],"__cfgId":31},
+          {"@type": "ExpressionStatement", "metaData": "52:1::16","expression":
+            {"@type": "FunctionInvocation", "metaData": "52:1::16","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "52:1::12","type":"func(v main.Vector)","package":"ModuleNameForTest/main","name":"doSomething","id":166,"__cfgId":32},"arguments":[
+              {"@type": "Identifier", "metaData": "52:13::15","type":"main.VectorAlias","package":"UNKNOWN","name":"va","id":666,"__cfgId":33}
+            ],"__cfgId":34},"__cfgId":35},
+          {"@type": "VariableDeclaration", "metaData": "54:1::15","type":null,"isVal":false,"initializers":[
+            {"@type": "FunctionInvocation", "metaData": "54:6::15","returnType":[],"memberSelect":
+              {"@type": "IndexExpression", "metaData": "54:6::12","index":
+                {"@type": "Identifier", "metaData": "54:8::11","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":38},"expression":
+                {"@type": "Identifier", "metaData": "54:6::7","type":"main.B[U comparable]","package":"ModuleNameForTest/main","name":"B","id":232,"__cfgId":37},"__cfgId":39},"arguments":[
+              {"@type": "IntegerLiteral", "metaData": "54:13::14","value":"5"}
+            ],"__cfgId":40}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "54:1::2","type":"main.B[int]","package":"UNKNOWN","name":"b","id":709,"__cfgId":36}
+          ],"__cfgId":41},
+          {"@type": "ExpressionStatement", "metaData": "55:1::15","expression":
+            {"@type": "FunctionInvocation", "metaData": "55:1::15","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "55:1::12","identifier":
+                {"@type": "Identifier", "metaData": "55:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":43},"expression":
+                {"@type": "Identifier", "metaData": "55:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":42},"__cfgId":44},"arguments":[
+              {"@type": "Identifier", "metaData": "55:13::14","type":"main.B[int]","package":"UNKNOWN","name":"b","id":709,"__cfgId":45}
+            ],"__cfgId":46},"__cfgId":47},
+          {"@type": "ExpressionStatement", "metaData": "57:1::6","expression":
+            {"@type": "FunctionInvocation", "metaData": "57:1::6","returnType":[],"memberSelect":
+              {"@type": "Identifier", "metaData": "57:1::2","type":"func(x int)","package":"UNKNOWN","name":"G","id":278,"__cfgId":48},"arguments":[
+              {"@type": "IntegerLiteral", "metaData": "57:3::5","value":"10"}
+            ],"__cfgId":49},"__cfgId":50},
+          {"@type": "VariableDeclaration", "metaData": "59:1::40","type":null,"isVal":false,"initializers":[
+            {"@type": "CompositeLiteral", "metaData": "59:7::40","type":
+              {"@type": "IndexExpression", "metaData": "59:7::20","index":
+                {"@type": "Identifier", "metaData": "59:16::19","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":53},"expression":
+                {"@type": "Identifier", "metaData": "59:7::15","type":"main.NamedMap[T any]","package":"ModuleNameForTest/main","name":"NamedMap","id":290,"__cfgId":52},"__cfgId":54},"elements":[
+              {"@type": "KeyValue", "metaData": "59:21::29","value":
+                {"@type": "IntegerLiteral", "metaData": "59:28::29","value":"1"},"key":
+                {"@type": "StringLiteral", "metaData": "59:21::26","value":"\"one\"","content":"one"},"__cfgId":55},
+              {"@type": "KeyValue", "metaData": "59:31::39","value":
+                {"@type": "IntegerLiteral", "metaData": "59:38::39","value":"2"},"key":
+                {"@type": "StringLiteral", "metaData": "59:31::36","value":"\"two\"","content":"two"},"__cfgId":56}
+            ],"__cfgId":57}
+          ],"identifiers":[
+            {"@type": "Identifier", "metaData": "59:1::3","type":"main.NamedMap[int]","package":"UNKNOWN","name":"nm","id":750,"__cfgId":51}
+          ],"__cfgId":58},
+          {"@type": "ExpressionStatement", "metaData": "60:1::16","expression":
+            {"@type": "FunctionInvocation", "metaData": "60:1::16","returnType":["int","error"],"memberSelect":
+              {"@type": "MemberSelect", "metaData": "60:1::12","identifier":
+                {"@type": "Identifier", "metaData": "60:5::12","type":"func(a ...any) (n int, err error)","package":"fmt","name":"Println","id":0,"__cfgId":60},"expression":
+                {"@type": "Identifier", "metaData": "60:1::4","type":"UNKNOWN","package":"fmt","name":"fmt","id":22,"__cfgId":59},"__cfgId":61},"arguments":[
+              {"@type": "Identifier", "metaData": "60:13::15","type":"main.NamedMap[int]","package":"UNKNOWN","name":"nm","id":750,"__cfgId":62}
+            ],"__cfgId":63},"__cfgId":64}
+        ],"__cfgId":65},"__cfgId":1}
+    ],"__cfgId":2}  ,
+  "error": null
+} 

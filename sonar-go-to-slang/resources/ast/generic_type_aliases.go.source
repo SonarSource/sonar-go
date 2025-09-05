@@ -1,0 +1,61 @@
+package main
+
+import "fmt"
+
+type Container[T any] struct {
+	Value T
+}
+
+type Container2[T any] = Container[T]
+
+type Vector []float64
+
+type VectorAlias = Vector
+
+func doSomething(v Vector) {
+	fmt.Println(v)
+}
+
+type A[T any] int
+type B[U comparable] = A[U]
+
+func F(x int) {}
+
+var G = F
+
+type NamedMap[T any] = map[string]T
+
+type T[P any] struct{}
+
+func (T[P]) m() {}
+
+type A0 = T[int]
+
+func (A0) m0() {}
+
+type A1[P int] = T[P]
+
+func (A1[P]) m1(x P) {}
+
+type A2[P int32, Q int64] = T[P]
+
+func (A2[P, Q]) m2(x P, y Q) {}
+
+func genericTypesAliasesTests() {
+	intContainer := Container[int]{Value: 42}
+	fmt.Println(intContainer.Value)
+
+	v := Vector{3.14}
+	doSomething(v)
+
+	va := VectorAlias{2.71}
+	doSomething(va)
+
+	b := B[int](5)
+	fmt.Println(b)
+
+	G(10)
+
+	nm := NamedMap[int]{"one": 1, "two": 2}
+	fmt.Println(nm)
+}

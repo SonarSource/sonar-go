@@ -21,12 +21,13 @@ package main
 
 import (
 	"encoding/json"
-	"github.com/stretchr/testify/assert"
 	"go/token"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func slangFromString(filename string, source string, moduleName string) (*Node, []*Node, []*Token, *string) {

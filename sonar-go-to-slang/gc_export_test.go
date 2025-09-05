@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"fmt"
-	"github.com/stretchr/testify/assert"
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -11,6 +10,8 @@ import (
 	"path/filepath"
 	"strings"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func Test_exportGcExportData(t *testing.T) {
@@ -193,7 +194,7 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 	}
 }
 
-func Test_should_store_nothing_when_empty_path(t *testing.T) {
+func Test_should_store_export_data(t *testing.T) {
 	ident := &ast.Ident{
 		Name: "foo",
 	}
@@ -206,10 +207,10 @@ func Test_should_store_nothing_when_empty_path(t *testing.T) {
 		Defs: defs,
 	}
 
-	exportGcExportData(&info, "", "", "", false)
+	exportGcExportData(&info, "build/gc_export_test", "", "", false)
 
-	if _, err := os.Stat("foo.o"); !os.IsNotExist(err) {
-		assert.Fail(t, "The file should NOT have been created")
+	if _, err := os.Stat("build/gc_export_test/foo/foo.o"); os.IsNotExist(err) {
+		assert.Fail(t, "The file should have been created")
 	}
 }
 
