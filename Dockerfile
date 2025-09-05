@@ -54,7 +54,7 @@ RUN curl --proto "=https" -sSfL https://dl.google.com/go/go${GO_VERSION}.linux-$
 FROM ${BUILD_ENV}_image
 
 ARG GO_VERSION
-ARG GOLANG_CI_LINT_VERSION=1.62.2
+ARG GOLANG_CI_LINT_VERSION=2.4.0
 
 USER sonarsource
 
