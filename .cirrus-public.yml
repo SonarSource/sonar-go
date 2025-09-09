@@ -15,7 +15,7 @@ base_analysis_template: &BASE_ANALYSIS
   eks_container:
     dockerfile: Dockerfile
     cpu: 2
-    memory: 7G
+    memory: 8G
     docker_arguments:
       CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       BUILD_ENV: "ci"
