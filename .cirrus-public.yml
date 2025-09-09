@@ -15,7 +15,7 @@ base_analysis_template: &BASE_ANALYSIS
   eks_container:
     dockerfile: Dockerfile
     cpu: 2
-    memory: 7G
+    memory: 10G
     docker_arguments:
       CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       BUILD_ENV: "ci"
@@ -64,6 +64,7 @@ analysis_sqc_eu_shadow_task:
   env:
     SONAR_TOKEN: VAULT[development/kv/data/sonarcloud data.token]
     SONAR_HOST_URL: https://sonarcloud.io
+    ADDITIONAL_BUILD_ARGUMENTS: "-x test"
 
 analysis_sqc_us_shadow_task:
   <<: *BASE_ANALYSIS
@@ -73,3 +74,4 @@ analysis_sqc_us_shadow_task:
   env:
     SONAR_TOKEN: VAULT[development/kv/data/sonarqube-us data.token]
     SONAR_HOST_URL: https://sonarqube.us
+    ADDITIONAL_BUILD_ARGUMENTS: "-x test"
