@@ -5,7 +5,19 @@ load(
     "merge_dict"
 )
 load(".cirrus/modules/env.star", "env")
-load(".cirrus/modules/build.star", "build_task", "sca_scan_task", "build_test_sonar_task")
+load(
+    ".cirrus/modules/build.star",
+    "build_task",
+    "sca_scan_task",
+    "build_test_sonar_task",
+    "shadow_scan_sqc_eu_task",
+    "shadow_scan_sqc_us_task",
+    "run_iris_next_enterprise_to_sqc_eu_enterprise_task",
+    "run_iris_next_enterprise_to_sqc_eu_public_task",
+    "run_iris_next_enterprise_to_sqc_us_enterprise_task",
+    "run_iris_next_enterprise_to_sqc_us_public_task",
+    "run_iris_next_enterprise_to_next_public_task",
+)
 load(
     ".cirrus/modules/qa.star",
     "qa_plugin_task",
@@ -25,4 +37,11 @@ def private_pipeline_builder():
     merge_dict(conf, qa_arm64_task())
     merge_dict(conf, sca_scan_task())
     merge_dict(conf, promote_task())
+    merge_dict(conf, shadow_scan_sqc_eu_task())
+    merge_dict(conf, shadow_scan_sqc_us_task())
+    merge_dict(conf, run_iris_next_enterprise_to_sqc_eu_enterprise_task())
+    merge_dict(conf, run_iris_next_enterprise_to_sqc_eu_public_task())
+    merge_dict(conf, run_iris_next_enterprise_to_sqc_us_enterprise_task())
+    merge_dict(conf, run_iris_next_enterprise_to_sqc_us_public_task())
+    merge_dict(conf, run_iris_next_enterprise_to_next_public_task())
     return conf

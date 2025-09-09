@@ -55,7 +55,7 @@ val projectTitle = properties["projectTitle"] as String
 sonar {
     properties {
         property("sonar.organization", "sonarsource")
-        property("sonar.projectKey", "SonarSource_sonar-go-enterprise")
+        property("sonar.projectKey", System.getenv("SONAR_PROJECT_KEY"))
         property("sonar.projectName", projectTitle)
         property("sonar.links.ci", "https://cirrus-ci.com/github/SonarSource/sonar-go-enterprise")
         property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
