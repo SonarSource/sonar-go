@@ -114,7 +114,7 @@ def shadow_scan_general_env():
     env = dict()
     env |= {
         "DEPLOY_PULL_REQUEST": "false",
-        "BUILD_ARGUMENTS": "--build-cache --configuration-cache -x artifactoryPublish -x test",
+        "BUILD_ARGUMENTS": "--build-cache --configuration-cache -x artifactoryPublish",
         "CRON_NIGHTLY_JOB_NAME": "nightly",
         "SONAR_PROJECT_KEY": "SonarSource_sonar-go-enterprise"
     }
