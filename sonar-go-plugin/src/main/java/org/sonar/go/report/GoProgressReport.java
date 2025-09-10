@@ -100,7 +100,7 @@ public class GoProgressReport {
     return "have";
   }
 
-  private static String formatStep(Step step) {
+  private static String formatStep(@Nullable Step step) {
     if (step == null) {
       return "";
     }
