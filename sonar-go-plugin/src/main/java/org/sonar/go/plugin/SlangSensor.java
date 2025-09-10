@@ -40,6 +40,7 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.resources.Language;
 import org.sonar.go.plugin.caching.HashCacheUtils;
 import org.sonar.go.plugin.converter.ASTConverterValidation;
+import org.sonar.go.report.GoProgressReport;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeVisitor;
 import org.sonar.plugins.go.api.ASTConverter;
@@ -52,7 +53,6 @@ import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeOrError;
-import org.sonarsource.analyzer.commons.ProgressReport;
 
 public abstract class SlangSensor implements Sensor {
   static final Predicate<Tree> EXECUTABLE_LINE_PREDICATE = t -> !(t instanceof PackageDeclarationTree)
@@ -63,6 +63,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
   private static final Logger LOG = LoggerFactory.getLogger(SlangSensor.class);
+  private static final int PROGRESS_REPORT_INTERVAL_SECOND = 10;
 
   private final NoSonarFilter noSonarFilter;
   private final Language language;
@@ -94,14 +95,14 @@ public abstract class SlangSensor implements Sensor {
     return EXECUTABLE_LINE_PREDICATE;
   }
 
-  protected void beforeAnalyzeFile(SensorContext sensorContext, Map<String, List<InputFile>> inputFiles, GoModFileDataStore goModFileDataStore) {
+  protected void beforeAnalyzeFile(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {
     // the default implementation does nothing
   }
 
-  private boolean analyseFiles(ASTConverter converter,
+  protected boolean analyseFiles(ASTConverter converter,
     SensorContext sensorContext,
     List<InputFile> inputFiles,
-    ProgressReport progressReport,
+    GoProgressReport goProgressReport,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics,
     GoModFileDataStore goModFileDataStore) {
@@ -110,49 +111,50 @@ public abstract class SlangSensor implements Sensor {
     }
 
     var filesByDirectory = groupFilesByDirectory(inputFiles);
+    goProgressReport.start(filesByDirectory);
 
     beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileDataStore);
 
-    for (Map.Entry<String, List<InputFile>> entry : filesByDirectory.entrySet()) {
-      List<InputFile> inputFilesInDir = entry.getValue();
+    for (var goFolder : filesByDirectory) {
       if (sensorContext.isCancelled()) {
         return false;
       }
 
-      var filesToAnalyse = inputFilesInDir.stream()
+      var filesToAnalyse = goFolder.files().stream()
         .map(inputFile -> new InputFileContext(sensorContext, inputFile))
         .toList();
 
-      var moduleName = goModFileDataStore.retrieveClosestGoModFileData(entry.getKey()).moduleName();
-      LOG.debug("Parse directory '{}', number of files: {}, nodule name: '{}'", entry.getKey(), filesToAnalyse.size(), moduleName);
+      var moduleName = goModFileDataStore.retrieveClosestGoModFileData(goFolder.name()).moduleName();
+      LOG.debug("Parse directory '{}', number of files: {}, nodule name: '{}'", goFolder.name(), filesToAnalyse.size(), moduleName);
 
       try {
-        analyseDirectory(converter, filesToAnalyse, visitors, statistics, sensorContext, moduleName);
-      } catch (ParseException e) {
-        LOG.warn("Unable to parse directory '{}'.", entry.getKey(), e);
-        var inputFilePath = e.getInputFilePath();
-        if (inputFilePath != null) {
-          filesToAnalyse.stream()
-            .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
-            .findFirst()
-            .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), e.getMessage()));
-        }
-        if (GoSensor.isFailFast(sensorContext)) {
-          throw e;
-        }
+        analyseDirectory(converter, filesToAnalyse, visitors, goProgressReport, statistics, sensorContext, moduleName);
       } catch (RuntimeException e) {
-        LOG.warn("Unable to parse directory '{}'.", entry.getKey(), e);
+        LOG.warn("Unable to parse directory '{}'.", goFolder.name(), e);
+        reportParseException(e, filesToAnalyse);
         if (GoSensor.isFailFast(sensorContext)) {
           throw e;
         }
       }
-      progressReport.nextFile();
+      goProgressReport.nextFolder();
     }
     return true;
   }
 
-  static Map<String, List<InputFile>> groupFilesByDirectory(List<InputFile> inputFiles) {
-    return inputFiles.stream()
+  private void reportParseException(RuntimeException e, List<InputFileContext> filesToAnalyse) {
+    if (e instanceof ParseException parseException) {
+      var inputFilePath = parseException.getInputFilePath();
+      if (inputFilePath != null) {
+        filesToAnalyse.stream()
+          .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
+          .findFirst()
+          .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), parseException.getMessage()));
+      }
+    }
+  }
+
+  static List<GoFolder> groupFilesByDirectory(List<InputFile> inputFiles) {
+    Map<String, List<InputFile>> filesByDirectory = inputFiles.stream()
       .collect(Collectors.groupingBy((InputFile inputFile) -> {
         var path = inputFile.uri().getPath();
         int lastSeparatorIndex = path.lastIndexOf("/");
@@ -161,15 +163,21 @@ public abstract class SlangSensor implements Sensor {
         }
         return path.substring(0, lastSeparatorIndex);
       }));
+
+    return filesByDirectory.entrySet().stream()
+      .map(entry -> new GoFolder(entry.getKey(), entry.getValue()))
+      .toList();
   }
 
   static void analyseDirectory(ASTConverter converter,
     List<InputFileContext> inputFileContextList,
     List<TreeVisitor<InputFileContext>> visitors,
+    GoProgressReport goProgressReport,
     DurationStatistics statistics,
     SensorContext sensorContext,
     String moduleName) {
 
+    goProgressReport.setStep(GoProgressReport.Step.CACHING);
     Map<String, CacheEntry> filenameToCacheEntry = filterOutFilesFromCache(inputFileContextList, visitors);
 
     Map<String, String> filenameToContentMap = filenameToCacheEntry.values().stream()
@@ -181,10 +189,13 @@ public abstract class SlangSensor implements Sensor {
       return;
     }
 
+    goProgressReport.setStep(GoProgressReport.Step.PARSING);
     Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap, moduleName));
 
+    goProgressReport.setStep(GoProgressReport.Step.HANDLING_PARSE_ERRORS);
     handleParsingErrors(sensorContext, treeOrErrorMap, filenameToCacheEntry);
 
+    goProgressReport.setStep(GoProgressReport.Step.ANALYZING);
     visitTrees(visitors, statistics, treeOrErrorMap, filenameToCacheEntry);
   }
 
@@ -333,20 +344,18 @@ public abstract class SlangSensor implements Sensor {
       fileSystem.predicates().hasType(InputFile.Type.MAIN));
     List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
       .toList();
-    List<String> filenames = inputFiles.stream().map(InputFile::toString).toList();
-    ProgressReport progressReport = new ProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(10));
-    progressReport.start(filenames);
+    var goProgressReport = new GoProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(PROGRESS_REPORT_INTERVAL_SECOND));
     boolean success = false;
     var converter = ASTConverterValidation.wrap(astConverter(), sensorContext.config());
     var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
     try {
       var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);
-      success = analyseFiles(converter, sensorContext, inputFiles, progressReport, visitors, durationStatistics, goModFileDataStore);
+      success = analyseFiles(converter, sensorContext, inputFiles, goProgressReport, visitors, durationStatistics, goModFileDataStore);
     } finally {
       if (success) {
-        progressReport.stop();
+        goProgressReport.stop();
       } else {
-        progressReport.cancel();
+        goProgressReport.cancel();
       }
       converter.terminate();
     }

@@ -26,7 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Nested;
@@ -55,6 +55,7 @@ import org.sonar.go.checks.StringLiteralDuplicatedCheck;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
+import org.sonar.go.report.GoProgressReport;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
@@ -194,7 +195,7 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(context.measure(inputFile.key(), CoreMetrics.COMPLEXITY).value()).isEqualTo(1);
     assertThat(context.measure(inputFile.key(), CoreMetrics.STATEMENTS).value()).isEqualTo(2);
 
-    assertThat(logTester.logs()).contains("1 source file to be analyzed");
+    assertThat(logTester.logs()).contains("1 folder (1 file) to be analyzed");
   }
 
   @Test
@@ -427,7 +428,7 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(context.measure(inputFile.key(), CoreMetrics.NCLOC)).isNull();
     assertThat(context.cpdTokens(inputFile.key())).isNull();
 
-    assertThat(logTester.logs()).contains("1 source file to be analyzed");
+    assertThat(logTester.logs()).contains("1 folder (1 file) to be analyzed");
   }
 
   @Test
@@ -465,9 +466,11 @@ class SlangSensorTest extends AbstractSensorTest {
     byte[] md5Hash;
     private InputFile inputFile;
     private InputFileContext inputFileContext;
+    private List<GoFolder> goFolders;
     private GoConverter converter;
     private PullRequestAwareVisitor visitor;
     private String hashKey;
+    private GoProgressReport goProgressReport;
 
     /**
      * Set up for happy with PR context
@@ -502,15 +505,19 @@ class SlangSensorTest extends AbstractSensorTest {
 
       converter = spy(TestGoConverterSingleFile.GO_CONVERTER);
       visitor = spy(new SuccessfulReuseVisitor());
+      goProgressReport = new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10));
+      goFolders = List.of(new GoFolder("myFolder", List.of(inputFile)));
     }
 
     @Test
     void shouldSkipsConversionForUnchangedFileWithCachedResults() {
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -528,10 +535,12 @@ class SlangSensorTest extends AbstractSensorTest {
       // Set the only pull request aware visitor to fail reusing previous results
       visitor = spy(new FailingToReuseVisitor());
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -551,10 +560,12 @@ class SlangSensorTest extends AbstractSensorTest {
       // Disable the skipping of unchanged files
       sensorContext.setCanSkipUnchangedFiles(false);
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -575,11 +586,13 @@ class SlangSensorTest extends AbstractSensorTest {
         InputFile.Status.CHANGED);
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       sensorContext.fileSystem().add(changedFile);
+      goProgressReport.start(goFolders);
       // Execute analyzeFile
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -603,10 +616,12 @@ class SlangSensorTest extends AbstractSensorTest {
       sensorContext.fileSystem().add(changedFile);
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -623,10 +638,12 @@ class SlangSensorTest extends AbstractSensorTest {
       // Disable caching
       sensorContext.setCacheEnabled(false);
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -645,10 +662,12 @@ class SlangSensorTest extends AbstractSensorTest {
       // Set an empty previous cache
       sensorContext.setPreviousCache(new DummyReadCache());
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -676,10 +695,12 @@ class SlangSensorTest extends AbstractSensorTest {
       doReturn(failingToClose).when(corruptedCache).read(hashKey);
       sensorContext.setPreviousCache(corruptedCache);
       // Execute analyzeFile
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -696,10 +717,12 @@ class SlangSensorTest extends AbstractSensorTest {
     @Test
     void visitorShouldNotBeCalledToVisitTheAstAfterConversion() {
       FailingToReuseVisitor failing = spy(new FailingToReuseVisitor());
+      goProgressReport.start(goFolders);
       SlangSensor.analyseDirectory(
         converter,
         List.of(inputFileContext),
         List.of(visitor, failing),
+        new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
         new DurationStatistics(sensorContext.config()),
         sensorContext,
         "MyModuleName");
@@ -719,11 +742,11 @@ class SlangSensorTest extends AbstractSensorTest {
     InputFile file2 = mockInputFile("dir1/file2.go");
     InputFile file3 = mockInputFile("dir2/file3.go");
 
-    var map = SlangSensor.groupFilesByDirectory(List.of(file1, file2, file3));
+    var goFolders = SlangSensor.groupFilesByDirectory(List.of(file1, file2, file3));
 
-    assertThat(map).containsExactlyInAnyOrderEntriesOf(Map.of(
-      new File("dir1").toURI().getPath(), List.of(file1, file2),
-      new File("dir2").toURI().getPath(), List.of(file3)));
+    assertThat(goFolders).containsExactlyInAnyOrder(
+      new GoFolder(new File("dir1").toURI().getPath(), List.of(file1, file2)),
+      new GoFolder(new File("dir2").toURI().getPath(), List.of(file3)));
   }
 
   InputFile mockInputFile(String path) {

@@ -53,6 +53,7 @@ dependencies {
         exclude("org.slf4j", "jcl-over-slf4j")
         exclude("org.slf4j", "log4j-over-slf4j")
     }
+    testImplementation(libs.awaitility)
 
     testRuntimeOnly(libs.junit.jupiter.engine)
     testRuntimeOnly(libs.junit.platform.launcher)
