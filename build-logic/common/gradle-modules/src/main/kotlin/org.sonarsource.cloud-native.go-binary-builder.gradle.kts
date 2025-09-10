@@ -86,8 +86,8 @@ if (isCi()) {
         commandLine(
             "golangci-lint",
             "run",
-            "--go=${inputs.properties["goVersion"]}",
-            "--out-format=checkstyle:${reportPath.get().asFile}"
+            "--output.checkstyle.path",
+            "${reportPath.get().asFile}"
         )
         // golangci-lint returns non-zero exit code if there are issues, we don't want to fail the build in this case.
         // A report with issues will be later ingested by SonarQube.
