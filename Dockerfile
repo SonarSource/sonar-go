@@ -6,6 +6,7 @@
 # * * CI_BUILDER_IMAGE=[...]/base:java-17 ARCH=arm64: ci image based on base image, w/o custom cert, Alpine-based, with Java and without Go
 
 ARG GO_VERSION
+ARG GOLANG_CI_LINT_VERSION
 # Possible values: ci, dev_custom_cert, dev
 ARG BUILD_ENV=ci
 # Placeholder; actual value is present on CI
@@ -54,7 +55,7 @@ RUN curl --proto "=https" -sSfL https://dl.google.com/go/go${GO_VERSION}.linux-$
 FROM ${BUILD_ENV}_image
 
 ARG GO_VERSION
-ARG GOLANG_CI_LINT_VERSION=2.4.0
+ARG GOLANG_CI_LINT_VERSION
 
 USER sonarsource
 

@@ -40,7 +40,7 @@ def build_env():
     env |= next_env()
     env |= {
         "DEPLOY_PULL_REQUEST": "true",
-        "BUILD_ARGUMENTS": "--build-cache -x test -x sonar storeProjectVersion",
+        "BUILD_ARGUMENTS": "--build-cache -x test -x sonar storeProjectVersion --rerun-tasks",
         "SONAR_PROJECT_KEY": "SonarSource_sonar-go-enterprise"
     }
     return env

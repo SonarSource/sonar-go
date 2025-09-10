@@ -25,4 +25,7 @@ def env():
     vars |= gradle_develocity_env()
     vars |= project_version_env()
     vars |= go_env()
+    vars |= {
+        "GOLANG_CI_LINT_VERSION": "2.4.0"
+    }
     return {"env": vars}

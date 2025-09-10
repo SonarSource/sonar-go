@@ -21,6 +21,7 @@ import org.sonarsource.cloudnative.gradle.allGoSourcesAndMakeScripts
 import org.sonarsource.cloudnative.gradle.callMake
 import org.sonarsource.cloudnative.gradle.getArchitecture
 import org.sonarsource.cloudnative.gradle.getPlatform
+import org.sonarsource.cloudnative.gradle.goLangCiLintVersion
 import org.sonarsource.cloudnative.gradle.goSources
 import org.sonarsource.cloudnative.gradle.goVersion
 import org.sonarsource.cloudnative.gradle.isCi
@@ -77,6 +78,7 @@ if (isCi()) {
         val reportPath = layout.buildDirectory.file("reports/golangci-lint-report.xml")
         inputs.files(goSources())
         inputs.property("goVersion", goVersion)
+        inputs.property("goLangCiLintVersion", goLangCiLintVersion)
 
         outputs.files(reportPath)
         outputs.cacheIf { true }

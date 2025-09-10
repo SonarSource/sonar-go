@@ -20,6 +20,7 @@ base_analysis_template: &BASE_ANALYSIS
       CIRRUS_AWS_ACCOUNT: ${CIRRUS_AWS_ACCOUNT}
       BUILD_ENV: "ci"
       GO_VERSION: "1.25.1"
+      GOLANG_CI_LINT_VERSION: "2.4.0"
     builder_role: cirrus-builder
     builder_image: "docker-builder-v*"
     builder_instance_type: t3.small
@@ -33,6 +34,7 @@ base_analysis_template: &BASE_ANALYSIS
     GRADLE_USER_HOME: ${CIRRUS_WORKING_DIR}/.gradle
     GRADLE_VERSION: "8.12"
     GO_VERSION: "1.25.1"
+    GOLANG_CI_LINT_VERSION: "2.4.0"
   gradle_cache:
     folder: ${GRADLE_USER_HOME}/caches
     fingerprint_script: find -type f \( -name "*.gradle*" -or -name "gradle*.properties" \) | sort | xargs cat
