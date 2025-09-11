@@ -17,6 +17,7 @@
 package org.sonar.go.utils;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -53,8 +54,7 @@ class MethodMatchersTest {
   static Stream<Arguments> shouldMatchMethodCallWithPackageName() {
     return of(
       Arguments.of("rand.Intn()", "Intn", "Intn"),
-      Arguments.of("rand.Intn(\"bar\")", "Intn", "Intn"),
-      Arguments.of("rand.Intn.foo.bar(\"bar\")", "Intn.foo.bar", "bar"));
+      Arguments.of("rand.Intn(\"bar\")", "Intn", "Intn"));
   }
 
   @ParameterizedTest
@@ -854,6 +854,69 @@ class MethodMatchersTest {
     assertThat(matches).isNotEmpty();
   }
 
+  @Test
+  void shouldMatchOnNestedReceivers() {
+    MethodMatchers matcher = MethodMatchers.create()
+      .ofType("math/rand")
+      .withVariableTypeIn("math/rand.Rand")
+      .withNames("Intn")
+      .build();
+
+    var tree = parseCodeAndReturnTopLevelTree("""
+      package main
+      import "math/rand"
+      func main() {
+        getRand().Intn(42) // 1st match
+      }
+
+      func getRand() *rand.Rand {
+        return rand.New(rand.NewSource(42))
+      }
+
+      type Wrapper struct {
+        Rand *rand.Rand
+      }
+
+      func (w *Wrapper) nextIntn(n int) int {
+        return w.Rand.Intn(n) // 2nd match
+      }
+
+      type WrappingWrapper struct {
+        Inner Wrapper
+      }
+
+      func (ww *WrappingWrapper) nextIntn(n int) int {
+        return ww.Inner.Rand.Intn(n) // 3rd match
+      }
+
+      func wrapperSupplier() WrappingWrapper {
+        return WrappingWrapper{Inner: Wrapper{Rand: rand.New(rand.NewSource(42))}}
+      }
+
+      func useWrapper() int {
+        return wrapperSupplier().Inner.Rand.Intn(42) // 4th match
+      }
+      """);
+
+    var matches = new ArrayList<IdentifierTree>();
+    var visitor = new TreeVisitor<>();
+    visitor.register(FunctionInvocationTree.class, (ctx, fn) -> {
+      matcher.matches(fn).ifPresent(matches::add);
+    });
+    visitor.scan(mock(), tree);
+    matches.sort(Comparator.comparingInt(t -> t.textRange().start().line()));
+
+    assertThat(matches).hasSize(4);
+    assertThat(matches.get(0).metaData().textRange())
+      .hasRange(4, 12, 4, 16);
+    assertThat(matches.get(1).metaData().textRange())
+      .hasRange(16, 16, 16, 20);
+    assertThat(matches.get(2).metaData().textRange())
+      .hasRange(24, 23, 24, 27);
+    assertThat(matches.get(3).metaData().textRange())
+      .hasRange(32, 38, 32, 42);
+  }
+
   private static void parseAndCheckMatch(MethodMatchers matcher, String code, boolean shouldMatch) {
     Tree methodCall = parse(code, "math/rand");
 
@@ -904,9 +967,9 @@ class MethodMatchersTest {
 
   private static List<IdentifierTree> applyMatcherToAllFunctionInvocation(Tree tree, MethodMatchers matcher) {
     var functionCalls = new ArrayList<FunctionInvocationTree>();
-    var methodVisiter = new TreeVisitor<>();
-    methodVisiter.register(FunctionInvocationTree.class, (ctx, functionInvocationTree) -> functionCalls.add(functionInvocationTree));
-    methodVisiter.scan(mock(), tree);
+    var methodVisitor = new TreeVisitor<>();
+    methodVisitor.register(FunctionInvocationTree.class, (ctx, functionInvocationTree) -> functionCalls.add(functionInvocationTree));
+    methodVisitor.scan(mock(), tree);
     return functionCalls.stream()
       .map(matcher::matches)
       .flatMap(Optional::stream)

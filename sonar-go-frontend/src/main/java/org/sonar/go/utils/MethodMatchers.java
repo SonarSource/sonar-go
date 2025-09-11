@@ -237,32 +237,33 @@ public class MethodMatchers {
       return namePredicate.test(subMethodName);
     }
 
-    Optional<Type> type = getType(memberSelectTree);
+    // At this point, memberSelectTree is a.b.c.foo(); we start retrieving type from a.b.c.
+    // First, check if function call uses package name as receiver or a variable.
+    boolean isTopLevel = memberSelectTree.expression() instanceof IdentifierTree identifier && identifier.symbol() == null;
+    Optional<Type> type = getType(isTopLevel ? memberSelectTree.identifier() : memberSelectTree.expression());
     if (type.isPresent() && !type.get().type().startsWith("func(")) {
       return variableTypePredicate.test(type.get().type()) && namePredicate.test(memberSelectTree.identifier().name());
     }
 
     if (types.contains(firstIdentifier.packageName())) {
-      // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the first
-      // identifier (package imported with a dot)
+      // Testing both the method name without the first identifier (normal or import package with an alias) and the method name with the
+      // first identifier (package imported with a dot)
       return namePredicate.test(subMethodName) || namePredicate.test(firstIdentifier.name() + "." + subMethodName);
     }
     return false;
   }
 
-  private static Optional<Type> getType(MemberSelectTree memberSelectTree) {
-    if (memberSelectTree.expression() instanceof FunctionInvocationTree functionInvocation) {
+  private static Optional<Type> getType(Tree tree) {
+    if (tree instanceof IdentifierTree identifierTree) {
+      return Optional.of(TypeImpl.createFromType(identifierTree.type()));
+    } else if (tree instanceof FunctionInvocationTree functionInvocation) {
       // it handles method chain calls like func1().func2().func3()
       var returnedTypes = functionInvocation.returnTypes();
       if (returnedTypes.size() == 1) {
         return Optional.of(returnedTypes.get(0));
       }
-    } else if (memberSelectTree.expression() instanceof MemberSelectTree expressionMemberSelect) {
-      // it handles fields chain calls like type1.field2.func3()
-      return getType(expressionMemberSelect);
-    } else if (memberSelectTree.expression() instanceof IdentifierTree) {
-      // it handles fields chain calls like type1.field2
-      return Optional.of(TypeImpl.createFromType(memberSelectTree.identifier().type()));
+    } else if (tree instanceof MemberSelectTree memberSelectTree) {
+      return getType(memberSelectTree.identifier());
     }
     return Optional.empty();
   }
