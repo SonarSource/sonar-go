@@ -16,8 +16,12 @@
  */
 package org.sonar.go.utils;
 
+import java.math.BigInteger;
 import java.util.Collections;
+import javax.annotation.Nullable;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.StringLiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
@@ -41,6 +45,8 @@ import org.sonar.plugins.go.api.VariableDeclarationTree;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
 import static org.sonar.go.utils.ConstantResolution.resolveAsStringConstant;
+import static org.sonar.go.utils.ParseUtils.parse;
+import static org.sonar.go.utils.ParseUtils.parseFile;
 import static org.sonar.go.utils.ParseUtils.parseStatements;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.PLUS;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.TIMES;
@@ -310,5 +316,42 @@ class ConstantResolutionTest {
     var assignementA = (AssignmentExpressionTree) mainFunc.body().statementOrExpressions().get(0);
     var valueA = ConstantResolution.resolveAsStringConstant(assignementA.leftHandSide());
     assertThat(valueA).isNull();
+  }
+
+  @ParameterizedTest
+  @CsvSource(textBlock = """
+    2*2,4
+    2 + 3 * 2,8
+    (2 + 3) * 2,10
+    2*x,null
+    x*2,null
+    x*y,null
+    true & false,null
+    2 / 5,0
+    2 - 5,-3
+    """, nullValues = {"null"})
+  void shouldEvaluateArithmeticExpressions(String expression, @Nullable BigInteger expected) {
+    var tree = ((VariableDeclarationTree) parse("x := %s".formatted(expression))).initializers().get(0);
+
+    assertThat(ConstantResolution.evaluateArithmeticExpression(tree)).isEqualTo(expected);
+  }
+
+  @Test
+  void shouldEvaluateArithmeticExpressionsWithVariables() {
+    var tree = parseFile("""
+      package main
+      func main() {
+        var a = 2
+        var b = 3
+        var x = a + b * 2
+      }
+      """);
+    var ctx = new TreeContext();
+    new SymbolVisitor<>().scan(ctx, tree);
+    var mainFunc = (FunctionDeclarationTree) tree.declarations().get(1);
+    var variableX = (VariableDeclarationTree) mainFunc.body().statementOrExpressions().get(2);
+    var treeX = variableX.initializers().get(0);
+
+    assertThat(ConstantResolution.evaluateArithmeticExpression(treeX)).isEqualTo(BigInteger.valueOf(8));
   }
 }

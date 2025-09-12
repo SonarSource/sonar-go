@@ -18,7 +18,6 @@ package org.sonar.go.utils;
 
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.BlockTree;
-import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
@@ -43,7 +42,6 @@ public class ParseUtils {
 
   public static Tree parse(String code) {
     var mainBlock = parseStatements(code);
-    var expressionStatement = (NativeTree) mainBlock.statementOrExpressions().get(0);
-    return expressionStatement.children().get(0);
+    return mainBlock.statementOrExpressions().get(0);
   }
 }

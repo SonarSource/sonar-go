@@ -16,13 +16,16 @@
  */
 package org.sonar.go.utils;
 
+import java.math.BigInteger;
 import java.util.Optional;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.HasSymbol;
 import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.IntegerLiteralTree;
 import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
 import org.sonar.plugins.go.api.StringLiteralTree;
 import org.sonar.plugins.go.api.Tree;
@@ -97,5 +100,34 @@ public class ConstantResolution {
     return Optional.ofNullable(symbol.getSafeValue())
       .map(value -> resolveAsPartialStringConstant(value, remainingIdentifierResolution - 1))
       .orElse(PLACEHOLDER);
+  }
+
+  @CheckForNull
+  public static BigInteger evaluateArithmeticExpression(Tree tree) {
+    if (tree instanceof IntegerLiteralTree integerLiteral) {
+      return integerLiteral.getIntegerValue();
+    } else if (tree instanceof ParenthesizedExpressionTree parenthesizedExpression) {
+      return evaluateArithmeticExpression(parenthesizedExpression.expression());
+    } else if (tree instanceof HasSymbol hasSymbol && hasSymbol.symbol() != null) {
+      var safeValue = hasSymbol.symbol().getSafeValue();
+      if (safeValue != null) {
+        return evaluateArithmeticExpression(safeValue);
+      }
+    } else if (tree instanceof BinaryExpressionTree binaryExpression) {
+      // Go parser already produces the tree with the correct order of operations, so we can simply evaluate operands recursively
+      var left = evaluateArithmeticExpression(binaryExpression.leftOperand());
+      var right = evaluateArithmeticExpression(binaryExpression.rightOperand());
+      if (left == null || right == null) {
+        return null;
+      }
+      return switch (binaryExpression.operator()) {
+        case PLUS -> left.add(right);
+        case MINUS -> left.subtract(right);
+        case TIMES -> left.multiply(right);
+        case DIVIDED_BY -> right.equals(BigInteger.ZERO) ? null : left.divide(right);
+        default -> null;
+      };
+    }
+    return null;
   }
 }
