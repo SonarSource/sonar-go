@@ -23,12 +23,13 @@ type localImporter struct {
 	gcExportDataDir string
 	moduleName      string
 	debugTypeCheck  bool
+	gcExporter      GcExporter
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
 	if exportDataFileName, ok := packageExportData[path]; ok {
 		// In embedded filesystem, the path separator is always '/', even on Windows.
-		return getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
+		return li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
 	} else {
 		return li.getPackageFromLocalCodeExportData(path)
 	}
@@ -46,7 +47,7 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 				fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
 				return getEmptyPackage(path), nil
 			}
-			return getPackageFromFile(file, path)
+			return li.gcExporter.getPackageFromFile(file, path)
 		}
 	}
 	return getEmptyPackage(path), nil
@@ -66,13 +67,13 @@ func getPackageName(packagePath string) string {
 	return packageName
 }
 
-func getPackageFromExportData(exportDataFileName string, path string) (*types.Package, error) {
+func (li *localImporter) getPackageFromExportData(exportDataFileName string, path string) (*types.Package, error) {
 	file, err := packages.Open(exportDataFileName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", exportDataFileName, err)
 		return getEmptyPackage(path), nil
 	}
-	return getPackageFromFile(file, path)
+	return li.gcExporter.getPackageFromFile(file, path)
 }
 
 func getEmptyPackage(path string) *types.Package {
@@ -81,7 +82,7 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string) (*types.Info, []error) {
+func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string, gcExporter GcExporter) (*types.Info, []error) {
 	astFilesPerPackage := groupFilesPerPackageName(astFiles)
 	errors := make([]error, 0)
 
@@ -104,6 +105,7 @@ func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, de
 				gcExportDataDir: gcExportDataDir,
 				moduleName:      moduleName,
 				debugTypeCheck:  debugTypeCheck,
+				gcExporter:      gcExporter,
 			},
 			Error: func(err error) {
 				if debugTypeCheck {

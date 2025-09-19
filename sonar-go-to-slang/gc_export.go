@@ -3,28 +3,51 @@ package main
 import (
 	"fmt"
 	"go/types"
-	"golang.org/x/tools/go/gcexportdata"
 	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"golang.org/x/tools/go/gcexportdata"
 )
 
-func exportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
-	packagesToExport := findPackagesToExport(info, packagePath)
+type GcExporter struct {
+	packagesImportIssueInvalidMemoryAddress []string
+}
+
+func (gc *GcExporter) ExportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+	packagesToExport := gc.findPackagesToExport(info, packagePath)
 
 	for _, pkgToExport := range packagesToExport {
-		exportPackage(pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
+		gc.exportPackage(pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
 	}
 }
 
-func findPackagesToExport(info *types.Info, packagePath string) []*types.Package {
+func (gc *GcExporter) PrintExportIssues() {
+	size := len(gc.packagesImportIssueInvalidMemoryAddress)
+	if size > 0 {
+		limit := 10
+		if size < 10 {
+			limit = size
+		}
+		fmt.Fprintf(os.Stderr,
+			"Found %d issues of type 'internal error while importing: invalid memory address or nil pointer dereference' for packages: %v",
+			len(gc.packagesImportIssueInvalidMemoryAddress),
+			gc.packagesImportIssueInvalidMemoryAddress[:limit])
+		if limit != size {
+			fmt.Fprintf(os.Stderr, " (%d more not shown)", size-limit)
+		}
+		fmt.Fprintln(os.Stderr)
+	}
+}
+
+func (gc *GcExporter) findPackagesToExport(info *types.Info, packagePath string) []*types.Package {
 	packagesToExport := make([]*types.Package, 0)
 	packageName := getPackageName(packagePath)
-	if isBlank(packageName) {
+	if gc.isBlank(packageName) {
 		// if there is a blank package name, we export all packages
 		// this happens when Go files are located directly in the project root directory (at the same level as go.mod)
-		packagesToExport = findMultiplePackages(info, packagesToExport)
+		packagesToExport = gc.findMultiplePackages(info, packagesToExport)
 	} else {
 		// otherwise, we export only packages that match the given package name
 		// this prevent exporting unintended packages, example:
@@ -40,7 +63,7 @@ func findPackagesToExport(info *types.Info, packagePath string) []*types.Package
 	return packagesToExport
 }
 
-func findMultiplePackages(info *types.Info, packagesToExport []*types.Package) []*types.Package {
+func (gc *GcExporter) findMultiplePackages(info *types.Info, packagesToExport []*types.Package) []*types.Package {
 	pkgToExport := map[string]*types.Package{}
 	for _, obj := range info.Defs {
 		if obj != nil && obj.Pkg() != nil {
@@ -54,12 +77,12 @@ func findMultiplePackages(info *types.Info, packagesToExport []*types.Package) [
 	return packagesToExport
 }
 
-func exportPackage(pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+func (gc *GcExporter) exportPackage(pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
 	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
 	if !strings.HasSuffix(fullExportDataDir, pkgToExport.Path()) {
 		fullExportDataDir = filepath.Join(fullExportDataDir, pkgToExport.Path())
 	}
-	createDirs(fullExportDataDir)
+	gc.createDirs(fullExportDataDir)
 
 	exportDataFile := filepath.Join(fullExportDataDir, pkgToExport.Path()+".o")
 
@@ -83,12 +106,12 @@ func exportPackage(pkgToExport *types.Package, exportDataDir string, moduleName 
 	}
 }
 
-func isBlank(text string) bool {
+func (gc *GcExporter) isBlank(text string) bool {
 	return len(strings.TrimSpace(text)) == 0
 }
 
-func createDirs(path string) {
-	if !isBlank(path) {
+func (gc *GcExporter) createDirs(path string) {
+	if !gc.isBlank(path) {
 		err := os.MkdirAll(path, 0755)
 		if err != nil {
 			fmt.Fprintf(os.Stderr, "Error creating directory: %s\n", err)
@@ -97,14 +120,19 @@ func createDirs(path string) {
 	}
 }
 
-func getPackageFromFile(file fs.File, path string) (*types.Package, error) {
+func (gc *GcExporter) getPackageFromFile(file fs.File, path string) (*types.Package, error) {
 	defer func(file fs.File) {
 		_ = file.Close()
 	}(file)
 	imports := make(map[string]*types.Package)
 	pkg, err := gcexportdata.Read(file, nil, imports, path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "Error while reading gcexportdata of %s error: %s\n", path, err)
+		msg := err.Error()
+		if strings.HasPrefix(msg, "internal error while importing") && strings.HasSuffix(msg, "(runtime error: invalid memory address or nil pointer dereference); please report an issue") {
+			gc.packagesImportIssueInvalidMemoryAddress = append(gc.packagesImportIssueInvalidMemoryAddress, path)
+		} else {
+			fmt.Fprintf(os.Stderr, "Error while reading gcexportdata of %s error: %s\n", path, err)
+		}
 		return getEmptyPackage(path), nil
 	}
 

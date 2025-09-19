@@ -68,14 +68,15 @@ func main() {
 		panic(err)
 	}
 
-	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName)
+	gcExporter := GcExporter{}
+	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, gcExporter)
 	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpGcExportData {
 		if params.gcExportDataDir == "" {
 			panic("If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too")
 		}
-		exportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath, params.debugTypeCheck)
+		gcExporter.ExportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath, params.debugTypeCheck)
 		return
 	}
 
@@ -85,4 +86,5 @@ func main() {
 		json := toSlangJson(fileSet, astFiles, fileContents, info, params.moduleName, "")
 		fmt.Println(json)
 	}
+	gcExporter.PrintExportIssues()
 }

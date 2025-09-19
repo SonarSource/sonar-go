@@ -35,7 +35,8 @@ func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
 }
 
 func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
-	pkg, err := getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
+	li := localImporter{}
+	pkg, err := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
@@ -43,7 +44,8 @@ func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
 }
 
 func TestGetPackageFromExportData_invalidFile_returnsEmptyPackage(t *testing.T) {
-	pkg, err := getPackageFromExportData("invalid_file.o", "invalid/path")
+	li := localImporter{}
+	pkg, err := li.getPackageFromExportData("invalid_file.o", "invalid/path")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "invalid/path", pkg.Path())
@@ -64,7 +66,7 @@ func TestTypeCheckAst(t *testing.T) {
 	}
 
 	fileSet, astFiles := astFromString("simple_file_with_packages.go", string(source))
-	info, _ := typeCheckAst(fileSet, astFiles, true, "", "")
+	info, _ := typeCheckAst(fileSet, astFiles, true, "", "", GcExporter{})
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -83,7 +85,7 @@ func TestTestOnlyFirstErrorIsReturned(t *testing.T) {
 
 	fileSet, astFiles := astFromString("file_with_many_errors.go", string(source))
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "")
+	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", GcExporter{})
 	assert.Len(t, errors, 1)
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", errors[0].Error())
 	assert.NotNil(t, info)
@@ -105,7 +107,7 @@ func TestShouldReturnErrorForAllFailingFilesPerPackage(t *testing.T) {
 	}
 	fileSet, astFiles := astFromStrings(filenameToContent)
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "")
+	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", GcExporter{})
 	assert.ElementsMatch(t, []string{
 		"file_with_many_errors_1.go:4:5: declared and not used: a1",
 		"file_with_many_errors_2.go:4:5: declared and not used: a1",

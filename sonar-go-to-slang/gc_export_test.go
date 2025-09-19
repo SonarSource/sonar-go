@@ -81,8 +81,9 @@ func exportGcData(files []string, name string, moduleName string, packagePath st
 	fileSet := token.NewFileSet()
 
 	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
-	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName)
-	exportGcExportData(info, exportLocation, moduleName, packagePath, false)
+	gc := GcExporter{}
+	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName, gc)
+	gc.ExportGcExportData(info, exportLocation, moduleName, packagePath, false)
 }
 
 func readFilesToReader(files []string) *bytes.Reader {
@@ -97,7 +98,7 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName)
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, GcExporter{})
 
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName)
@@ -120,7 +121,7 @@ func parseFileToJson(files []string, name string, moduleName string) map[string]
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName)
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, GcExporter{})
 
 	result := map[string]string{}
 
@@ -186,7 +187,8 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 		Defs: make(map[*ast.Ident]types.Object),
 	}
 
-	exportGcExportData(&info, "export-pkg-is-nil.o", "", "", false)
+	gc := GcExporter{}
+	gc.ExportGcExportData(&info, "export-pkg-is-nil.o", "", "", false)
 
 	_, err := os.ReadFile("export-pkg-is-nil.o")
 	if err == nil {
@@ -207,11 +209,45 @@ func Test_should_store_export_data(t *testing.T) {
 		Defs: defs,
 	}
 
-	exportGcExportData(&info, "build/gc_export_test", "", "", false)
+	gc := GcExporter{}
+	gc.ExportGcExportData(&info, "build/gc_export_test", "", "", false)
 
 	if _, err := os.Stat("build/gc_export_test/foo/foo.o"); os.IsNotExist(err) {
 		assert.Fail(t, "The file should have been created")
 	}
+}
+
+func Test_PrintExportIssues_WhenZeroIssues(t *testing.T) {
+	gc := GcExporter{}
+	captureStdOutAndStdErr()
+	gc.PrintExportIssues()
+	stdout, stderr := getStdOutAndStdErr()
+	assert.Empty(t, stdout)
+	assert.Empty(t, stderr)
+}
+
+func Test_PrintExportIssues_When2Issues(t *testing.T) {
+	gc := GcExporter{}
+	captureStdOutAndStdErr()
+	gc.packagesImportIssueInvalidMemoryAddress = []string{"foo", "bar"}
+	gc.PrintExportIssues()
+	stdout, stderr := getStdOutAndStdErr()
+	assert.Empty(t, stdout)
+	assert.Equal(t,
+		"Found 2 issues of type 'internal error while importing: invalid memory address or nil pointer dereference' for packages: [foo bar]\n",
+		stderr)
+}
+
+func Test_PrintExportIssues_When12Issues(t *testing.T) {
+	gc := GcExporter{}
+	captureStdOutAndStdErr()
+	gc.packagesImportIssueInvalidMemoryAddress = []string{"foo1", "foo2", "foo3", "foo4", "foo5", "foo6", "foo7", "foo8", "foo9", "foo10", "foo11", "foo12"}
+	gc.PrintExportIssues()
+	stdout, stderr := getStdOutAndStdErr()
+	assert.Empty(t, stdout)
+	assert.Equal(t,
+		"Found 12 issues of type 'internal error while importing: invalid memory address or nil pointer dereference' for packages: [foo1 foo2 foo3 foo4 foo5 foo6 foo7 foo8 foo9 foo10] (2 more not shown)\n",
+		stderr)
 }
 
 func getAllGoFilesByDirs(folder string) map[string][]string {
