@@ -32,7 +32,7 @@ FROM dev_base AS dev_image
 # This mode can be activated by providing build argument `BUILD_ENV=dev_custom_cert`.
 FROM dev_base AS dev_custom_cert_image
 
-ARG CA_CERT=Sonar-FGT-FW-TLS-Traffic-Inspection
+ARG CA_CERT=Sonar-CloudFlare-Inspection-Cert
 ARG CERT_LOCATION=/usr/local/share/ca-certificates
 
 ONBUILD COPY --from=root ${CA_CERT}.cer ${CERT_LOCATION}/${CA_CERT}.cer
