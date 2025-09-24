@@ -45,6 +45,8 @@ Due to a known bug in Gradle, `--write-verification-metadata` can still ignore s
 In this case, one workaround is to remove directory `$GRADLE_USER_HOME/caches/modules-2/metadata-2.x` and then call the Gradle command again.
 See [GitHub issue](https://github.com/gradle/gradle/issues/20194#issuecomment-1652095447) for more context.
 
+Using Rancher as the docker container management platform is currently not supported and may lead to issues.
+
 ## License headers
 
 License headers are automatically updated by the spotless plugin.
