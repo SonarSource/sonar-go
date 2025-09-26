@@ -2,8 +2,7 @@ load(
     "github.com/SonarSource/cirrus-modules/cloud-native/env.star@analysis/master",
     "gradle_signing_env",
     "pgp_signing_env",
-    "next_env",
-    "whitesource_api_env"
+    "next_env"
 )
 load(
     "github.com/SonarSource/cirrus-modules/cloud-native/conditions.star@analysis/master",
@@ -261,42 +260,4 @@ def iris_next_enterprise_to_next_public_env():
 def run_iris_next_enterprise_to_next_public_task():
     return {
         "run_iris_next_enterprise_to_next_public_task": run_iris_task_template(iris_next_enterprise_to_next_public_env())
-    }
-
-
-#
-# WhiteSource scan
-#
-
-def whitesource_script():
-    return [
-        "git submodule update --init --depth 1 -- build-logic",
-        "source cirrus-env QA",
-        "source .cirrus/use-gradle-wrapper.sh",
-        "export PROJECT_VERSION=$(cat ${PROJECT_VERSION_CACHE_DIR}/evaluated_project_version.txt)",
-        "GRADLE_OPTS=\"-Xmx64m -Dorg.gradle.jvmargs='-Xmx3G' -Dorg.gradle.daemon=false\" ./gradlew ${GRADLE_COMMON_FLAGS} :sonar-go-plugin:processResources -Pkotlin.compiler.execution.strategy=in-process",
-        "source ws_scan.sh -d \"${PWD},${PWD}/sonar-go-to-slang\""
-    ]
-
-
-def sca_scan_task():
-    return {
-        "sca_scan_task": {
-            "only_if": is_main_branch(),
-            "depends_on": "build",
-            "env": whitesource_api_env(),
-            "eks_container": custom_image_container_builder(dockerfile="Dockerfile", cpu=1, memory="7G"),
-            "gradle_cache": gradle_cache(),
-            "gradle_wrapper_cache": gradle_wrapper_cache(),
-            "go_build_cache": go_build_cache(go_src_dir="${CIRRUS_WORKING_DIR}/sonar-go-to-slang"),
-            "project_version_cache": project_version_cache(),
-            "whitesource_script": whitesource_script(),
-            "cleanup_gradle_script": cleanup_gradle_script(),
-            "allow_failures": "true",
-            "always": {
-                "ws_artifacts": {
-                    "path": "whitesource/**/*"
-                }
-            },
-        }
     }
