@@ -23,13 +23,14 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class ExternalProcessStreamConsumer {
 
   private static final Logger LOG = LoggerFactory.getLogger(ExternalProcessStreamConsumer.class);
-  private ExecutorService executorService;
+  private final ExecutorService executorService;
 
   public ExternalProcessStreamConsumer() {
     executorService = Executors.newCachedThreadPool(r -> {
@@ -53,6 +54,21 @@ public class ExternalProcessStreamConsumer {
   protected void readErrors(BufferedReader errorReader, StreamConsumer streamConsumer) {
     errorReader.lines().forEach(streamConsumer::consumeLine);
     streamConsumer.finished();
+  }
+
+  public void shutdown() {
+    if (executorService == null) {
+      return;
+    }
+    executorService.shutdown();
+    try {
+      if (!executorService.awaitTermination(1, TimeUnit.SECONDS)) {
+        executorService.shutdownNow();
+      }
+    } catch (InterruptedException e) {
+      executorService.shutdownNow();
+      Thread.currentThread().interrupt();
+    }
   }
 
   interface StreamConsumer {

@@ -76,25 +76,29 @@ public class DefaultCommand implements Command {
     var errorConsumer = new ExternalProcessStreamConsumer();
 
     var process = processBuilder.start();
-    errorConsumer.consumeStream(process.getErrorStream(), LOG::debug);
-    try (var out = process.getOutputStream()) {
-      for (ByteBuffer byteBuffer : byteBuffers) {
-        out.write(byteBuffer.array());
+    try {
+      errorConsumer.consumeStream(process.getErrorStream(), LOG::debug);
+      try (var out = process.getOutputStream()) {
+        for (ByteBuffer byteBuffer : byteBuffers) {
+          out.write(byteBuffer.array());
+        }
       }
+      String output;
+      try (var in = process.getInputStream()) {
+        output = readAsString(in);
+      }
+      boolean exited = process.waitFor(PROCESS_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+      if (exited && process.exitValue() != 0) {
+        throw new ParseException("Go executable returned non-zero exit value: " + process.exitValue());
+      }
+      if (process.isAlive()) {
+        process.destroyForcibly();
+        throw new ParseException("Go executable took too long. External process killed forcibly");
+      }
+      return output;
+    } finally {
+      errorConsumer.shutdown();
     }
-    String output;
-    try (var in = process.getInputStream()) {
-      output = readAsString(in);
-    }
-    boolean exited = process.waitFor(PROCESS_TIMEOUT_MS, TimeUnit.MILLISECONDS);
-    if (exited && process.exitValue() != 0) {
-      throw new ParseException("Go executable returned non-zero exit value: " + process.exitValue());
-    }
-    if (process.isAlive()) {
-      process.destroyForcibly();
-      throw new ParseException("Go executable took too long. External process killed forcibly");
-    }
-    return output;
   }
 
   public void debugTypeCheck() {

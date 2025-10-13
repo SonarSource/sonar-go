@@ -28,6 +28,7 @@ dependencies {
     implementation(libs.sonar.analyzer.commons)
 
     testImplementation(libs.assertj.core)
+    testImplementation(libs.awaitility)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.mockito.core)
