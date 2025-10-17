@@ -20,23 +20,40 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.go.persistence.JsonTree;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TreeOrError;
 
 public class GoConverter implements ASTConverter {
-
+  private static final Logger LOG = LoggerFactory.getLogger(GoConverter.class);
   public static final long MAX_SUPPORTED_SOURCE_FILE_SIZE = 1_500_000L;
   private final GoParseCommand command;
+  private final AtomicBoolean isInitialized = new AtomicBoolean(false);
 
   public GoConverter(File workDir) {
-    this(new GoParseCommand(workDir));
+    this(workDir, new SystemPlatformInfo());
+  }
+
+  public GoConverter(File workDir, PlatformInfo platformInfo) {
+    GoParseCommand commandOrNull;
+    try {
+      commandOrNull = new GoParseCommand(workDir, platformInfo);
+      isInitialized.set(true);
+    } catch (InitializationException e) {
+      LOG.warn("Go converter initialization failed: {}", e.getMessage());
+      commandOrNull = null;
+    }
+    this.command = commandOrNull;
   }
 
   // Visible for testing
   public GoConverter(GoParseCommand command) {
     this.command = command;
+    this.isInitialized.set(true);
   }
 
   @Override
@@ -68,5 +85,10 @@ public class GoConverter implements ASTConverter {
   @Override
   public void debugTypeCheck() {
     command.debugTypeCheck();
+  }
+
+  @Override
+  public boolean isInitialized() {
+    return isInitialized.get();
   }
 }

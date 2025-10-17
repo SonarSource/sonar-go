@@ -45,21 +45,17 @@ public class DefaultCommand implements Command {
   protected final List<String> command;
 
   public DefaultCommand(File workDir, String... arguments) {
+    this(workDir, new SystemPlatformInfo(), arguments);
+  }
+
+  public DefaultCommand(File workDir, PlatformInfo platformInfo, String... arguments) {
     try {
       command = new ArrayList<>();
-      var executable = extract(workDir);
+      var executable = extract(workDir, platformInfo);
       command.add(executable);
       command.addAll(Arrays.asList(arguments));
     } catch (IOException e) {
-      throw new IllegalStateException(e.getMessage(), e);
-    }
-  }
-
-  static Command createCommand(File workDir) {
-    try {
-      return new DefaultCommand(workDir, "-");
-    } catch (IllegalStateException e) {
-      throw new ParseException("Go executable is not initialized");
+      throw new InitializationException(e.getMessage(), e);
     }
   }
 
@@ -137,8 +133,8 @@ public class DefaultCommand implements Command {
     return outputStream.toString(UTF_8);
   }
 
-  private static String extract(File workDir) throws IOException {
-    var executable = getExecutableForCurrentOS(System.getProperty("os.name"), System.getProperty("os.arch"));
+  private static String extract(File workDir, PlatformInfo platformInfo) throws IOException {
+    var executable = getExecutableForCurrentOS(platformInfo.osName(), platformInfo.osArch());
     byte[] executableData = getBytesFromResource(executable);
     var dest = new File(workDir, executable);
     if (!fileMatch(dest, executableData)) {
@@ -161,7 +157,7 @@ public class DefaultCommand implements Command {
     var out = new ByteArrayOutputStream();
     try (InputStream in = DefaultCommand.class.getClassLoader().getResourceAsStream(executable)) {
       if (in == null) {
-        throw new IllegalStateException(executable + " binary not found on class path");
+        throw new InitializationException(executable + " binary not found on class path");
       }
       copy(in, out);
     }
@@ -171,7 +167,6 @@ public class DefaultCommand implements Command {
   static String getExecutableForCurrentOS(String osName, String arch) {
     var os = osName.toLowerCase(Locale.ROOT);
     var extension = "";
-    var isPlatformSupported = true;
     String suffix;
 
     if (os.contains("win")) {
@@ -187,16 +182,20 @@ public class DefaultCommand implements Command {
       suffix += "-arm64";
     } else if ("x86_64".equals(arch) || "amd64".equals(arch) || "x64".equals(arch)) {
       suffix += "-amd64";
-    } else {
-      isPlatformSupported = false;
     }
+
+    var isPlatformSupported = switch (suffix) {
+      // should be kept in sync with the platforms defined in make.sh
+      case "windows-amd64", "linux-amd64", "darwin-amd64", "linux-arm64", "darwin-arm64" -> true;
+      default -> false;
+    };
 
     if (isPlatformSupported) {
       var binaryName = "sonar-go-to-slang-" + suffix + extension;
       LOG.debug("Using Go converter binary: {}", binaryName);
       return binaryName;
     } else {
-      throw new IllegalStateException("Unsupported OS/architecture: " + osName + "/" + arch);
+      throw new InitializationException("Unsupported OS/architecture: " + osName + "/" + arch);
     }
   }
 

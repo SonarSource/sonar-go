@@ -69,7 +69,7 @@ public class ASTConverterValidation implements ASTConverter {
   @Nullable
   private String currentFile = null;
 
-  public ASTConverterValidation(ASTConverter wrapped, ValidationMode mode) {
+  private ASTConverterValidation(ASTConverter wrapped, ValidationMode mode) {
     this.wrapped = wrapped;
     this.mode = mode;
   }

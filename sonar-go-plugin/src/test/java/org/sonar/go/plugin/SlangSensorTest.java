@@ -749,6 +749,34 @@ class SlangSensorTest extends AbstractSensorTest {
       new GoFolder(new File("dir2").toURI().getPath(), List.of(file3)));
   }
 
+  @Test
+  void shouldSkipExecutionIfGoConverterNotInitialized() {
+    var sensor = new SlangSensor(new DefaultNoSonarFilter(), fileLinesContextFactory, GoLanguage.GO) {
+      @Override
+      protected ASTConverter astConverter() {
+        var mock = mock(GoConverter.class);
+        when(mock.isInitialized()).thenReturn(false);
+        return mock;
+      }
+
+      @Override
+      protected GoChecks checks() {
+        return new GoChecks(mock(CheckFactory.class));
+      }
+
+      @Override
+      protected String repositoryKey() {
+        return GoRulesDefinition.REPOSITORY_KEY;
+      }
+    };
+
+    context.setRuntime(SonarRuntimeImpl.forSonarLint(Version.create(13, 0)));
+    sensor.execute(context);
+
+    assertThat(context.allIssues()).isEmpty();
+    assertThat(logTester.logs(Level.INFO)).contains("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
+  }
+
   InputFile mockInputFile(String path) {
     InputFile inputFile = mock(InputFile.class);
     when(inputFile.uri()).thenReturn(new File(path).toURI());

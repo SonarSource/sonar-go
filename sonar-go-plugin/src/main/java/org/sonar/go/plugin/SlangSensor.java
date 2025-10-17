@@ -325,6 +325,11 @@ public abstract class SlangSensor implements Sensor {
   @Override
   public void execute(SensorContext sensorContext) {
     try {
+      if (!astConverter().isInitialized() && sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
+        LOG.info("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
+        return;
+      }
+
       executeLogic(sensorContext);
     } catch (RuntimeException e) {
       if (GoSensor.isFailFast(sensorContext)) {

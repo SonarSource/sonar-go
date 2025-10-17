@@ -39,4 +39,8 @@ public interface ASTConverter {
     // Nothing to do by default
   }
 
+  default boolean isInitialized() {
+    return true;
+  }
+
 }

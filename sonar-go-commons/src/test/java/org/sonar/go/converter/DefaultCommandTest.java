@@ -23,12 +23,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.sonar.plugins.go.api.ParseException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.sonar.go.converter.DefaultCommand.createCommand;
 import static org.sonar.go.converter.DefaultCommand.getExecutableForCurrentOS;
 
 class DefaultCommandTest {
@@ -55,7 +53,7 @@ class DefaultCommandTest {
   @Test
   void shouldThrowForUnsupportedPlatform() {
     assertThatThrownBy(() -> getExecutableForCurrentOS("linux", "ppc64"))
-      .isInstanceOf(IllegalStateException.class)
+      .isInstanceOf(InitializationException.class)
       .hasMessage("Unsupported OS/architecture: linux/ppc64");
   }
 
@@ -64,9 +62,9 @@ class DefaultCommandTest {
     var currentArch = System.getProperty("os.arch");
     try {
       System.setProperty("os.arch", "invalid-arch");
-      assertThatThrownBy(() -> createCommand(tempDir))
-        .isInstanceOf(ParseException.class)
-        .hasMessage("Go executable is not initialized");
+      assertThatThrownBy(() -> new DefaultCommand(tempDir))
+        .isInstanceOf(InitializationException.class)
+        .hasMessageMatching("Unsupported OS/architecture: .+/invalid-arch");
     } finally {
       System.setProperty("os.arch", currentArch);
     }

@@ -27,7 +27,11 @@ public class GoParseCommand extends DefaultCommand {
   private final int moduleNameIndex;
 
   public GoParseCommand(File workDir, String... extraArgs) {
-    super(workDir, mergeArgs(extraArgs,
+    this(workDir, new SystemPlatformInfo(), extraArgs);
+  }
+
+  public GoParseCommand(File workDir, PlatformInfo platformInfo, String... extraArgs) {
+    super(workDir, platformInfo, mergeArgs(extraArgs,
       "-module_name", "moduleNamePlaceholder",
       "-gc_export_data_dir",
       new File(workDir, "go").getAbsolutePath()));

@@ -56,6 +56,7 @@ import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.from;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
@@ -441,7 +442,7 @@ class GoConverterTest {
   @Test
   void shouldThrowExceptionOnInvalidExecutablePath() {
     assertThatThrownBy(() -> DefaultCommand.getBytesFromResource("invalid-exe-path"))
-      .isInstanceOf(IllegalStateException.class)
+      .isInstanceOf(InitializationException.class)
       .hasMessage("invalid-exe-path binary not found on class path");
   }
 
@@ -751,6 +752,24 @@ class GoConverterTest {
     converter.debugTypeCheck();
 
     assertThat(command.command).contains("-debug_type_check");
+  }
+
+  @Test
+  void shouldBeInitializedIfCommandCreated() {
+    var converter = new GoConverter(new GoParseCommand(tempDir));
+
+    assertThat(converter.isInitialized()).isTrue();
+  }
+
+  @Test
+  void shouldBeNotInitializedIfUnsupportedPlatform() {
+    var unsupportedPlatform = new TestPlatformInfo("unsupported-os", "unsupported-arch");
+
+    var converter = new GoConverter(tempDir, unsupportedPlatform);
+
+    assertThat(converter)
+      .isNotNull()
+      .returns(false, from(GoConverter::isInitialized));
   }
 
   private Optional<String> getStringDescendant(Tree tree) {
