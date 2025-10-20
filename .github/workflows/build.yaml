@@ -33,10 +33,6 @@ jobs:
       - uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
         with:
           version: 2025.7.12
-      - name: Inastall Go
-        uses: actions/setup-go@44694675825211faa026b3c33043df3e48a5fa00 # v6.0.0
-        with:
-          go-version: "${{ env.GO_VERSION }}"
 
       - &install-golangci-lint
         name: Install golangci-lint
