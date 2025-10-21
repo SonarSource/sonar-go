@@ -4,9 +4,7 @@ on:
     branches:
       - master
       - branch-*
-      # TODO SONARGO-669 remove before merge
       - SONARGO-669
-  pull_request:
   workflow_dispatch:
   schedule:
     - cron: '0 17 * * *'
@@ -33,25 +31,14 @@ jobs:
       - uses: jdx/mise-action@e3d7b8d67a7958d1207f6ed871e83b1ea780e7b0 # v3.3.1
         with:
           version: 2025.7.12
-
-      - &install-golangci-lint
-        name: Install golangci-lint
+      - name: Install golangci-lint
         run: |
-          pwd
-          echo $PATH
-          go version
-          go env 
           curl --proto "=https" -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /home/runner/go/bin v${GOLANG_CI_LINT_VERSION}
           echo "/opt/go/bin:/opt/protoc/bin:/opt/musl/bin:/home/runner/go/bin" >> $GITHUB_PATH
-      - &checkout-build-logic
-        name: Checkout build logic
+      - name: Checkout build logic
         run: |
-          set -x
-          echo $PATH
-          golangci-lint --version
           git submodule update --init --depth 1 -- build-logic/common
-      - &create-gradle-user-home
-        name: Create Gradle User Home
+      - name: Create Gradle User Home
         shell: bash
         run: |
           export GRADLE_USER_HOME=${GITHUB_WORKSPACE}/.gradle
@@ -63,32 +50,34 @@ jobs:
           export GRADLE_CACHE_KEY=$(md5sum gradle-md5-sums.txt | awk '{ print $1 }')
           echo "GRADLE_CACHE_KEY=${GRADLE_CACHE_KEY}" >> $GITHUB_ENV
           rm gradle-md5-sums.txt
-      - &cache-gradle-dependencies
-        name: Cache Gradle Dependencies
+      - name: Cache Gradle Dependencies
         uses: SonarSource/ci-github-actions/cache@v1
         with:
           path: ${{ env.GRADLE_USER_HOME }}
           key: gradle-${{ env.GRADLE_CACHE_KEY }}
-      - &cache-go-build
-        name: Cache Go Build
+      - name: Create Go cache keys
+        env:
+          GITHUB_WORKSPACE: ${{ github.workspace }}
+        run: |
+          export GOCACHE=$(go env GOCACHE)
+          echo "GOCACHE=${GOCACHE}" >> $GITHUB_ENV
+          export GOCACHE_KEY=$(find ${GITHUB_WORKSPACE}/sonar-go-to-slang -name '*.go' -o -name 'go.mod' -o -name 'go.sum' -exec cat {} + | sha256sum | xargs echo $RUNNER_OS $RUNNER_ARCH | tr -s ' ' '-')
+          echo "GOCACHE_KEY=${GOCACHE_KEY}" >> $GITHUB_ENV
+      - name: Cache Go Build
         uses: SonarSource/ci-github-actions/cache@v1
+        if: ${{ env.GO_CACHE_ENABLED }}
         with:
-          path: ${{ env.GITHUB_WORKSPACE }}/.cache/go-build
-          key: find ${{ env.GITHUB_WORKSPACE }}/sonar-go-to-slang -name '*.go' -o -name 'go.mod' -o -name 'go.sum' -exec cat {} + | sha256sum | xargs echo $CIRRUS_OS $CIRRUS_ARCH
+          path: ${{ env.GOCACHE }}
+          key: ${{ env.GOCACHE_KEY }}
 
       - uses: SonarSource/ci-github-actions/build-gradle@v1
         env:
-#          ARTIFACTORY_DEPLOY_REPO_PRIVATE: sonarsource-public-qa
           GO_CROSS_COMPILE: 1
-
         with:
           public: true
           deploy-pull-request: false
           skip-tests: false
           use-develocity: true
-#          artifactory-reader-role: public-reader
-#          artifactory-deployer-role: qa-deployer
-#          artifactory-deploy-repo: sonarsource-public-qa
           gradle-args: "--build-cache --configuration-cache -x artifactoryPublish"
           disable-caching: true
           run-shadow-scans: true
