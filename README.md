@@ -1,6 +1,6 @@
 # Sonar-Go
 
-[![Build Status](https://api.cirrus-ci.com/github/SonarSource/sonar-go.svg?branch=master)](https://cirrus-ci.com/github/SonarSource/sonar-go)
+[![Build](https://github.com/SonarSource/sonar-go-enterprise/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/SonarSource/sonar-go-enterprise/actions/workflows/build.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=SonarSource_sonar-go&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=SonarSource_sonar-go)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=SonarSource_sonar-go&metric=coverage)](https://sonarcloud.io/summary/new_code?id=SonarSource_sonar-go)
 
