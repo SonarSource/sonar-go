@@ -21,7 +21,7 @@ commons-codec = "1.19.0"
 jsr305 = "3.0.2"
 download = "5.6.0"
 kotlinx-serialization-json = "1.9.0"
-kotlin-serialization-plugin = "2.2.20"
+kotlin-serialization-plugin = "2.2.21"
 archunit = "1.4.1"
 
 [libraries]
