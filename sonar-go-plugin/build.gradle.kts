@@ -113,7 +113,8 @@ tasks.shadowJar {
         exclude("tmp/**")
         exclude("spotless/**")
     }
-    val isCrossCompile: Boolean = providers.environmentVariable("GO_CROSS_COMPILE").map { it == "1" }.getOrElse(false)
+    inputs.property("GO_CROSS_COMPILE", System.getenv("GO_CROSS_COMPILE"))
+    val isCrossCompile: Boolean = System.getenv("GO_CROSS_COMPILE")?.equals("1") ?: false
     val pluginJar = tasks.shadowJar.get().archiveFile.get().asFile
     val logger = project.logger
     doLast {

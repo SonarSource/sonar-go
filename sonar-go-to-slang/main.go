@@ -69,8 +69,8 @@ func main() {
 	}
 
 	gcExporter := GcExporter{}
+	// Ignoring errors at this point, they are reported before if needed
 	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, gcExporter)
-	// Ignoring errors at this point, they are reported before if needed.
 
 	if params.dumpGcExportData {
 		if params.gcExportDataDir == "" {
