@@ -49,6 +49,7 @@ Using Rancher as the docker container management platform is currently not suppo
 
 ## License headers
 
+
 License headers are automatically updated by the spotless plugin.
 
 ## License
