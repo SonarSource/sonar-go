@@ -77,7 +77,7 @@ jobs:
           deploy-pull-request: false
           skip-tests: false
           use-develocity: true
-          gradle-args: "--build-cache --configuration-cache -x artifactoryPublish"
+          gradle-args: "--build-cache --configuration-cache -x artifactoryPublish -Dsonar.projectName=SonarGo"
           disable-caching: true
           run-shadow-scans: true
 

@@ -57,7 +57,7 @@ sonar {
         property("sonar.organization", "sonarsource")
         property("sonar.projectKey", System.getenv("SONAR_PROJECT_KEY"))
         property("sonar.projectName", projectTitle)
-        property("sonar.links.ci", "https://cirrus-ci.com/github/SonarSource/sonar-go-enterprise")
+        property("sonar.links.ci", "https://github.com/SonarSource/sonar-go-enterprise/actions")
         property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
         property("sonar.exclusions", "**/build/**/*")
