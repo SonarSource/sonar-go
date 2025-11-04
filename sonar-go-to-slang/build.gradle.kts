@@ -24,7 +24,7 @@ plugins {
 val isCi: Boolean = System.getenv("CI")?.equals("true") == true
 
 goBuild {
-    dockerfile = layout.settingsDirectory.file("Dockerfile")
+    dockerfile = layout.settingsDirectory.file("build-logic/go/Dockerfile")
     dockerWorkDir = "/home/sonarsource/sonar-go-to-slang"
     additionalOutputFiles.add(layout.projectDirectory.file("goparser_generated.go"))
 }
