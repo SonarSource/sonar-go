@@ -51,12 +51,11 @@ spotless {
     }
 }
 
-val projectTitle = properties["projectTitle"] as String
 sonar {
     properties {
         property("sonar.organization", "sonarsource")
         property("sonar.projectKey", System.getenv("SONAR_PROJECT_KEY"))
-        property("sonar.projectName", projectTitle)
+        property("sonar.projectName", "SonarGo Enterprise")
         property("sonar.links.ci", "https://github.com/SonarSource/sonar-go-enterprise/actions")
         property("sonar.links.scm", "https://github.com/SonarSource/sonar-go-enterprise")
         property("sonar.links.issue", "https://jira.sonarsource.com/browse/SONARGO")
