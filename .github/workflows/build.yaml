@@ -79,14 +79,5 @@ jobs:
           use-develocity: true
           gradle-args: "--build-cache --configuration-cache -x artifactoryPublish -Dsonar.projectName=SonarGo"
           disable-caching: true
-          run-shadow-scans: true
+          run-shadow-scans: ${{ github.event_name == 'schedule' }}
 
-      - name: Run IRIS Analysis
-        uses: SonarSource/unified-dogfooding-actions/run-iris@v1
-        with:
-          primary_project_key: ${{ env.SONAR_PROJECT_KEY }}
-          primary_platform: "Next"
-          shadow1_project_key: ${{ env.SONAR_PROJECT_KEY }}
-          shadow1_platform: "SQC-EU"
-          shadow2_project_key: ${{ env.SONAR_PROJECT_KEY }}
-          shadow2_platform: "SQC-US"
