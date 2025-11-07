@@ -17,6 +17,7 @@
 package org.sonar.go.coverage;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,10 +25,15 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
@@ -42,6 +48,7 @@ import org.sonar.go.coverage.GoCoverSensor.FileCoverage;
 import org.sonar.go.coverage.GoCoverSensor.LineCoverage;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.spy;
@@ -228,6 +235,53 @@ class GoCoverSensorTest {
       .containsExactly("Ignoring line in coverage report: Invalid go coverage at line 7.");
   }
 
+  @ParameterizedTest
+  @ValueSource(ints = {5, 9997, 9998, 9999, 10_000, 10_001})
+  void shouldStoreBigCoverage10000LinesReport(int numberOfLines) throws IOException {
+    var lines = IntStream.range(0, numberOfLines).mapToObj(i -> "\tprint(\"foo\")\n").collect(Collectors.joining());
+    var code = """
+      package pgk1
+
+      func foo() {
+      %s
+      }
+      """.formatted(lines);
+    saveFile("cover_big.go", code);
+
+    var coverageLines = IntStream.range(0, numberOfLines)
+      .mapToObj(i -> "github.com/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover_big.go:" + (3 + i) + ".2," + (3 + i) + ".10 1 1\n")
+      .collect(Collectors.joining());
+    var coverageContent = "mode: set\n" + coverageLines;
+    saveFile("coverage.big.out", coverageContent);
+
+    Path coverageFile = COVERAGE_DIR.resolve("coverage.big.out");
+    GoPathContext linuxContext = new GoPathContext('/', ":", "/home/paul/go");
+    SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
+    String coverPath = "/home/paul/go/src/github.com/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover_big.go";
+    AtomicInteger linesCount = new AtomicInteger();
+
+    GoCoverSensor.parseAndSave(coverageFile, context, linuxContext, (sc, coverage) -> {
+      if (!coverage.fileMap.isEmpty()) {
+        linesCount.getAndAdd(coverage.fileMap.get(coverPath).size());
+      }
+    });
+
+    assertThat(linesCount.get()).isEqualTo(numberOfLines);
+    if (numberOfLines >= 9998) {
+      // Every 10_000 lines of code the debug is printed
+      // The code contains 2 extra lines (package and new line) that are not counted in coverage
+      assertThat(logTester.logs(Level.DEBUG)).contains("Save 10000 lines from coverage report 'src/test/resources/coverage/coverage.big.out'");
+    }
+  }
+
+  private static void saveFile(String filename, String code) throws IOException {
+    var file = new File(COVERAGE_DIR.toFile(), filename);
+    file.deleteOnExit();
+    var fileOutputStream = new FileOutputStream(file);
+    fileOutputStream.write(code.getBytes(UTF_8));
+    fileOutputStream.close();
+  }
+
   @Test
   void get_report_paths() {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
@@ -393,20 +447,20 @@ class GoCoverSensorTest {
   }
 
   private void assertCoverGo(Path coverageFile, GoPathContext goContext, String absolutePath) {
-    Coverage coverage = new Coverage(goContext);
-    GoCoverSensor.parse(coverageFile, coverage);
-    assertThat(coverage.fileMap.keySet()).containsExactlyInAnyOrder(absolutePath);
-    List<CoverageStat> coverageStats = coverage.fileMap.get(absolutePath);
-    FileCoverage fileCoverage = new FileCoverage(coverageStats, null);
-    assertThat(fileCoverage.lineMap.keySet()).containsExactlyInAnyOrder(3, 4, 5, 6, 7, 8);
-    assertThat(fileCoverage.lineMap.get(2)).isNull();
-    assertThat(fileCoverage.lineMap.get(3).hits).isEqualTo(1);
-    assertThat(fileCoverage.lineMap.get(4).hits).isEqualTo(2);
-    assertThat(fileCoverage.lineMap.get(5).hits).isEqualTo(2);
-    assertThat(fileCoverage.lineMap.get(6).hits).isZero();
-    assertThat(fileCoverage.lineMap.get(7).hits).isZero();
-    assertThat(fileCoverage.lineMap.get(8).hits).isZero();
-    assertThat(fileCoverage.lineMap.get(9)).isNull();
+    SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
+    GoCoverSensor.parseAndSave(coverageFile, context, goContext, (sc, coverage) -> {
+      assertThat(coverage.fileMap.keySet()).containsExactlyInAnyOrder(absolutePath);
+      List<CoverageStat> coverageStats = coverage.fileMap.get(absolutePath);
+      FileCoverage fileCoverage = new FileCoverage(coverageStats, null);
+      assertThat(fileCoverage.lineMap.keySet()).containsExactlyInAnyOrder(3, 4, 5, 6, 7, 8);
+      assertThat(fileCoverage.lineMap.get(2)).isNull();
+      assertThat(fileCoverage.lineMap.get(3).hits).isEqualTo(1);
+      assertThat(fileCoverage.lineMap.get(4).hits).isEqualTo(2);
+      assertThat(fileCoverage.lineMap.get(5).hits).isEqualTo(2);
+      assertThat(fileCoverage.lineMap.get(6).hits).isZero();
+      assertThat(fileCoverage.lineMap.get(7).hits).isZero();
+      assertThat(fileCoverage.lineMap.get(8).hits).isZero();
+      assertThat(fileCoverage.lineMap.get(9)).isNull();
+    });
   }
-
 }

@@ -28,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -48,15 +49,16 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class GoCoverSensor implements Sensor {
 
+  public static final String REPORT_PATH_KEY = "sonar.go.coverage.reportPaths";
   private static final Logger LOG = LoggerFactory.getLogger(GoCoverSensor.class);
   private static final String GO_LANGUAGE_KEY = "go";
-
-  public static final String REPORT_PATH_KEY = "sonar.go.coverage.reportPaths";
+  private static final int COVERAGE_SAVE_BATCH_SIZE = 10_000;
 
   // See ParseProfiles function:
   // https://github.com/golang/go/blob/master/src/cmd/cover/profile.go
   static final Pattern MODE_LINE_REGEXP = Pattern.compile("^mode: (\\w+)$");
   static final Pattern COVERAGE_LINE_REGEXP = Pattern.compile("^(.+):(\\d+)\\.(\\d+),(\\d+)\\.(\\d+) (\\d+) (\\d+)$");
+  private static final int MAX_FILES_WALK_DEPTH = 999;
 
   @Override
   public void describe(SensorDescriptor descriptor) {
@@ -73,18 +75,114 @@ public class GoCoverSensor implements Sensor {
 
   void execute(SensorContext context, GoPathContext goContext) {
     try {
-      Coverage coverage = new Coverage(goContext);
-      getReportPaths(context).forEach(reportPath -> parse(reportPath, coverage));
-      coverage.fileMap.forEach((filePath, coverageStats) -> {
-        try {
-          saveFileCoverage(context, filePath, coverageStats);
-        } catch (Exception e) {
-          LOG.warn("Failed saving coverage info for file: {}", filePath);
-        }
-      });
+      getReportPaths(context).forEach(reportPath -> parseAndSave(reportPath, context, goContext, GoCoverSensor::saveCoverage));
     } catch (Exception e) {
       LOG.warn("Coverage import failed: {}", e.getMessage(), e);
     }
+  }
+
+  static Stream<Path> getReportPaths(SensorContext sensorContext) {
+    Configuration config = sensorContext.config();
+    Path baseDir = sensorContext.fileSystem().baseDir().toPath();
+    String[] reportPaths = config.getStringArray(REPORT_PATH_KEY);
+    return Arrays.stream(reportPaths).flatMap(reportPath -> isWildcard(reportPath)
+      ? getPatternPaths(baseDir, reportPath)
+      : getRegularPath(baseDir, reportPath));
+  }
+
+  private static Stream<Path> getPatternPaths(Path baseDir, String reportPath) {
+    try (Stream<Path> paths = Files.walk(baseDir, MAX_FILES_WALK_DEPTH)) {
+      return findMatchingPaths(baseDir, reportPath, paths);
+
+    } catch (IOException e) {
+      LOG.warn("Failed finding coverage files using pattern {}", reportPath);
+      return Stream.empty();
+    }
+  }
+
+  private static Stream<Path> getRegularPath(Path baseDir, String reportPath) {
+    Path path = Paths.get(reportPath);
+    if (!path.isAbsolute()) {
+      path = baseDir.resolve(path);
+    }
+    if (path.toFile().exists()) {
+      return Stream.of(path);
+    }
+
+    LOG.warn("Coverage report can't be loaded, report file not found, ignoring this file {}.", reportPath);
+    return Stream.empty();
+  }
+
+  private static boolean isWildcard(String path) {
+    return path.contains("*") || path.contains("?");
+  }
+
+  private static String toUnixLikePath(String path) {
+    return path.replace('\\', '/');
+  }
+
+  private static Stream<Path> findMatchingPaths(Path baseDir, String reportPath, Stream<Path> paths) {
+    WildcardPattern globPattern = WildcardPattern.create(toUnixLikePath(reportPath));
+
+    List<Path> matchingPaths = paths
+      .filter(currentPath -> {
+        Path normalizedPath = baseDir.toAbsolutePath().relativize(currentPath.toAbsolutePath());
+        String pathToMatch = toUnixLikePath(normalizedPath.toString());
+        return globPattern.match(pathToMatch);
+      }).toList();
+
+    if (matchingPaths.isEmpty()) {
+      LOG.warn("Coverage report can't be loaded, file(s) not found for pattern: '{}', ignoring this file.", reportPath);
+    }
+
+    return matchingPaths.stream();
+  }
+
+  static void parseAndSave(Path reportPath, SensorContext context, GoPathContext goContext, BiConsumer<SensorContext, Coverage> saveCoverageFunction) {
+    LOG.info("Load coverage report from '{}'", reportPath);
+    try (InputStream input = new FileInputStream(reportPath.toFile())) {
+      Coverage coverage = new Coverage(goContext);
+      Scanner scanner = new Scanner(input, UTF_8);
+      if (!scanner.hasNextLine() || !MODE_LINE_REGEXP.matcher(scanner.nextLine()).matches()) {
+        throw new IOException("Invalid go coverage, expect 'mode:' on the first line.");
+      }
+      int lineNumber = 2;
+      while (scanner.hasNextLine()) {
+        String line = scanner.nextLine();
+        if (!line.isEmpty()) {
+          addIfValidLine(line, lineNumber, coverage);
+        }
+        lineNumber++;
+        if (lineNumber % COVERAGE_SAVE_BATCH_SIZE == 0) {
+          LOG.debug("Save {} lines from coverage report '{}'", lineNumber, reportPath);
+          saveCoverageFunction.accept(context, coverage);
+          coverage = new Coverage(goContext);
+        }
+      }
+      saveCoverageFunction.accept(context, coverage);
+    } catch (IOException e) {
+      LOG.warn("Failed parsing coverage info for file {}: {}", reportPath, e.getMessage());
+    }
+  }
+
+  private static void addIfValidLine(String line, int lineNumber, Coverage coverage) {
+    try {
+      coverage.add(new CoverageStat(lineNumber, line));
+    } catch (IllegalArgumentException e) {
+      LOG.debug("Ignoring line in coverage report: {}.", e.getMessage(), e);
+    }
+  }
+
+  private static void saveCoverage(SensorContext context, Coverage coverage) {
+    coverage.fileMap.forEach((filePath, coverageStats) -> {
+      try {
+        if (!coverageStats.isEmpty()) {
+          saveFileCoverage(context, filePath, coverageStats);
+        }
+      } catch (Exception e) {
+        LOG.warn("Failed saving coverage info for file: {}", filePath);
+      }
+    });
   }
 
   private static void saveFileCoverage(SensorContext sensorContext, String filePath, List<CoverageStat> coverageStats) throws IOException {
@@ -125,91 +223,6 @@ public class GoCoverSensor implements Sensor {
       inputFile = fileSystem.inputFile(predicates.hasRelativePath(path.toString()));
     }
     return inputFile;
-  }
-
-  static Stream<Path> getReportPaths(SensorContext sensorContext) {
-    Configuration config = sensorContext.config();
-    Path baseDir = sensorContext.fileSystem().baseDir().toPath();
-    String[] reportPaths = config.getStringArray(REPORT_PATH_KEY);
-    return Arrays.stream(reportPaths).flatMap(reportPath -> isWildcard(reportPath)
-      ? getPatternPaths(baseDir, reportPath)
-      : getRegularPath(baseDir, reportPath));
-  }
-
-  private static Stream<Path> getRegularPath(Path baseDir, String reportPath) {
-    Path path = Paths.get(reportPath);
-    if (!path.isAbsolute()) {
-      path = baseDir.resolve(path);
-    }
-    if (path.toFile().exists()) {
-      return Stream.of(path);
-    }
-
-    LOG.warn("Coverage report can't be loaded, report file not found, ignoring this file {}.", reportPath);
-    return Stream.empty();
-  }
-
-  private static boolean isWildcard(String path) {
-    return path.contains("*") || path.contains("?");
-  }
-
-  private static Stream<Path> getPatternPaths(Path baseDir, String reportPath) {
-    try (Stream<Path> paths = Files.walk(baseDir, 999)) {
-      return findMatchingPaths(baseDir, reportPath, paths);
-
-    } catch (IOException e) {
-      LOG.warn("Failed finding coverage files using pattern {}", reportPath);
-      return Stream.empty();
-    }
-  }
-
-  private static String toUnixLikePath(String path) {
-    return path.replace('\\', '/');
-  }
-
-  private static Stream<Path> findMatchingPaths(Path baseDir, String reportPath, Stream<Path> paths) {
-    WildcardPattern globPattern = WildcardPattern.create(toUnixLikePath(reportPath));
-
-    List<Path> matchingPaths = paths
-      .filter(currentPath -> {
-        Path normalizedPath = baseDir.toAbsolutePath().relativize(currentPath.toAbsolutePath());
-        String pathToMatch = toUnixLikePath(normalizedPath.toString());
-        return globPattern.match(pathToMatch);
-      }).toList();
-
-    if (matchingPaths.isEmpty()) {
-      LOG.warn("Coverage report can't be loaded, file(s) not found for pattern: '{}', ignoring this file.", reportPath);
-    }
-
-    return matchingPaths.stream();
-  }
-
-  static void parse(Path reportPath, Coverage coverage) {
-    LOG.info("Load coverage report from '{}'", reportPath);
-    try (InputStream input = new FileInputStream(reportPath.toFile())) {
-      Scanner scanner = new Scanner(input, UTF_8.name());
-      if (!scanner.hasNextLine() || !MODE_LINE_REGEXP.matcher(scanner.nextLine()).matches()) {
-        throw new IOException("Invalid go coverage, expect 'mode:' on the first line.");
-      }
-      int lineNumber = 2;
-      while (scanner.hasNextLine()) {
-        String line = scanner.nextLine();
-        if (!line.isEmpty()) {
-          addIfValidLine(line, lineNumber, coverage);
-        }
-        lineNumber++;
-      }
-    } catch (IOException e) {
-      LOG.warn("Failed parsing coverage info for file {}: {}", reportPath, e.getMessage());
-    }
-  }
-
-  private static void addIfValidLine(String line, int lineNumber, Coverage coverage) {
-    try {
-      coverage.add(new CoverageStat(lineNumber, line));
-    } catch (IllegalArgumentException e) {
-      LOG.debug("Ignoring line in coverage report: {}.", e.getMessage(), e);
-    }
   }
 
   static class Coverage {
@@ -342,7 +355,5 @@ public class GoCoverSensor implements Sensor {
       }
       return result;
     }
-
   }
-
 }
