@@ -123,6 +123,11 @@ compile_binaries() {
     echo "Building for platform: ${GOOS}/${GOARCH}"
     build_for_platform "${GOOS}" "${GOARCH}" "${EXTENSION}"
   fi
+  echo "Generating licenses for go libraries"
+  ${path_to_binary} install github.com/google/go-licenses/v2@v2.0.1
+  # Removing stale files, but we don't want to fail in case the directory doesn't exist
+  rm -rf build/go-licenses || true
+  ${GOBIN:+${GOBIN}/}go-licenses save . --save_path=build/go-licenses/generated --ignore github.com/SonarSource/slang/sonar-go-to-slang
 }
 
 generate_test_report() {

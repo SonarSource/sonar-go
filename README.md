@@ -40,6 +40,20 @@ Build and run Unit Tests:
 ./gradlew build
 ```
 
+### Fix license packaging issues
+During the Gradle build, a license packaging check is executed.
+This check can also be triggered manually with `./gradlew validateLicenseFiles`.
+It checks if the license files of third party libraries are correctly packaged to the resource folder according to SonarSource standards.
+Since sonar-go bundles a go binary, we are also including the licenses of all used go dependencies.
+
+If your build failed, you can fix the license packaging by running:
+
+```shell
+./gradlew generateLicenseResources
+```
+
+Note that this overwrites your current license files in the `resources/licenses` folder.
+
 #### Known issues
 Due to a known bug in Gradle, `--write-verification-metadata` can still ignore some dependencies, especially BOMs.
 In this case, one workaround is to remove directory `$GRADLE_USER_HOME/caches/modules-2/metadata-2.x` and then call the Gradle command again.

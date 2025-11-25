@@ -22,6 +22,8 @@ import org.sonarsource.cloudnative.gradle.enforceJarSize
 
 plugins {
     id("org.sonarsource.cloud-native.sonar-plugin")
+    id("org.sonarsource.cloud-native.license-file-generator")
+    id("org.sonarsource.cloud-native.go-license-file-generator")
     id("org.sonarsource.go.golangci-lint-rules-generator")
 }
 
@@ -101,18 +103,19 @@ tasks.jar {
 }
 
 tasks.shadowJar {
-    minimize { }
+    minimizeJar = true
     dependencies {
         exclude(dependency("org.sonarsource.api.plugin:sonar-plugin-api"))
         exclude(dependency("org.codehaus.woodstox:.*"))
         exclude(dependency("org.codehaus.staxmate:.*"))
         exclude(dependency("com.google.code.findbugs:jsr305"))
-
-        exclude("libs/**")
-        exclude("META-INF/maven/**")
-        exclude("tmp/**")
-        exclude("spotless/**")
     }
+    exclude("license/**")
+    exclude("libs/**")
+    exclude("META-INF/maven/**")
+    exclude("tmp/**")
+    exclude("spotless/**")
+
     val crossCompileValue = System.getenv("GO_CROSS_COMPILE") ?: 0
     inputs.property("GO_CROSS_COMPILE", crossCompileValue)
     val isCrossCompile: Boolean = crossCompileValue == "1"
@@ -120,7 +123,7 @@ tasks.shadowJar {
     val logger = project.logger
     doLast {
         val (minSize, maxSize) = if (isCrossCompile) {
-            16_000_000L to 17_000_000L
+            16_500_000L to 17_500_000L
         } else {
             3_500_000L to 4_500_000L
         }
@@ -148,4 +151,17 @@ publishing {
         artifact(tasks.sourcesJar)
         artifact(tasks.javadocJar)
     }
+}
+
+goLicenseGenerationConfig {
+    packagedBinaries = setOf(
+        "sonar-go-to-slang-darwin-amd64",
+        "sonar-go-to-slang-darwin-arm64",
+        "sonar-go-to-slang-linux-amd64",
+        "sonar-go-to-slang-linux-arm64",
+        "sonar-go-to-slang-windows-amd64"
+    )
+    binaryLicenseFile = project.rootDir.resolve("LICENSE.txt")
+    buildGoLicenseFilesDir = project.rootDir.resolve("sonar-go-to-slang/build/go-licenses")
+    generatingGoLicensesGradleTask = ":sonar-go-to-slang:dockerCompileGo"
 }
