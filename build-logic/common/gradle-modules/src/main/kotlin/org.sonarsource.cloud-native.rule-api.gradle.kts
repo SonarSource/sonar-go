@@ -15,6 +15,7 @@
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
 import org.sonarsource.cloudnative.gradle.RuleApiExtension
+import org.sonarsource.cloudnative.gradle.ifAuthenticatedOrElse
 import org.sonarsource.cloudnative.gradle.registerRuleApiGenerateTask
 import org.sonarsource.cloudnative.gradle.registerRuleApiUpdateTask
 import org.sonarsource.cloudnative.gradle.repox
@@ -23,8 +24,11 @@ val ruleApi: Configuration = configurations.create("ruleApi")
 val ruleApiExtension = extensions.create<RuleApiExtension>("ruleApi")
 
 repositories {
-    repox("sonarsource-private-releases", providers, ruleApiExtension.fileOperations)
-    mavenCentral()
+    ifAuthenticatedOrElse(providers, { artifactoryUsername, artifactoryPassword ->
+        repox("sonarsource-private-releases", artifactoryUsername, artifactoryPassword, ruleApiExtension.fileOperations)
+    }) {
+        error("Downloading dependencies from sonarsource-private-releases requires authentication.")
+    }
 }
 
 dependencies {
