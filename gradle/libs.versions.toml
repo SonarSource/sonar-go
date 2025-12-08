@@ -1,12 +1,12 @@
 [versions]
-analyzer-commons = "2.20.0.4607"
+analyzer-commons = "2.21.0.4626"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "11.1.0.2693"
 license-api = "3.4"
 sonarqube = "25.11.0.114957"
-orchestrator = "6.0.1.3892"
-sonarlint = "10.37.0.83877"
+orchestrator = "6.0.3.3907"
+sonarlint = "10.37.1.83894"
 minimal-json = "0.9.5"
 mockito-core = "5.20.0"
 assertj-core = "3.27.6"
