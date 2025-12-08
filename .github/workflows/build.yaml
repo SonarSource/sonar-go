@@ -81,3 +81,24 @@ jobs:
           disable-caching: true
           run-shadow-scans: ${{ github.event_name == 'schedule' }}
 
+  notify_slack:
+    name: Notify Slack on Failure
+    needs: [ build_test_sonar ]
+    if: >-
+      failure() && ! cancelled() &&
+      (github.ref_name == github.event.repository.default_branch ||
+      startsWith(github.ref_name, 'branch-') ||
+      startsWith(github.ref_name, 'feature'))
+    permissions:
+      id-token: write
+      statuses: read
+    runs-on: github-ubuntu-latest-s
+    steps:
+      - uses: SonarSource/release-github-actions/notify-slack@v1
+        with:
+          project-name: "SonarGo - Public"
+          slack-channel: "squad-security-cloud-notifs"
+          icon: ':gopher:'
+          jobs: ${{ toJSON(needs) }}
+
+
