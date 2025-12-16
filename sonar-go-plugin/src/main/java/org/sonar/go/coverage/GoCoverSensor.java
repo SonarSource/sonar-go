@@ -22,30 +22,24 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.BiConsumer;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
-import javax.annotation.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.api.batch.fs.FilePredicates;
-import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
-import org.sonar.api.batch.sensor.coverage.NewCoverage;
 import org.sonar.api.config.Configuration;
 import org.sonar.api.utils.WildcardPattern;
+import org.sonar.go.plugin.GoModFileFinder;
+import org.sonar.plugins.go.api.checks.GoModFileData;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.sonar.go.plugin.GoModFileAnalyzer.analyzeGoModFileContent;
 
 public class GoCoverSensor implements Sensor {
 
@@ -57,8 +51,9 @@ public class GoCoverSensor implements Sensor {
   // See ParseProfiles function:
   // https://github.com/golang/go/blob/master/src/cmd/cover/profile.go
   static final Pattern MODE_LINE_REGEXP = Pattern.compile("^mode: (\\w+)$");
-  static final Pattern COVERAGE_LINE_REGEXP = Pattern.compile("^(.+):(\\d+)\\.(\\d+),(\\d+)\\.(\\d+) (\\d+) (\\d+)$");
   private static final int MAX_FILES_WALK_DEPTH = 999;
+
+  private GoCoverageStorage coverageStorage = new GoCoverageStorageImpl();
 
   @Override
   public void describe(SensorDescriptor descriptor) {
@@ -75,7 +70,7 @@ public class GoCoverSensor implements Sensor {
 
   void execute(SensorContext context, GoPathContext goContext) {
     try {
-      getReportPaths(context).forEach(reportPath -> parseAndSave(reportPath, context, goContext, GoCoverSensor::saveCoverage));
+      getReportPaths(context).forEach(reportPath -> parseAndSave(reportPath, context, goContext));
     } catch (Exception e) {
       LOG.warn("Coverage import failed: {}", e.getMessage(), e);
     }
@@ -138,9 +133,11 @@ public class GoCoverSensor implements Sensor {
     return matchingPaths.stream();
   }
 
-  static void parseAndSave(Path reportPath, SensorContext context, GoPathContext goContext, BiConsumer<SensorContext, Coverage> saveCoverageFunction) {
+  void parseAndSave(Path reportPath, SensorContext context, GoPathContext goContext) {
     LOG.info("Load coverage report from '{}'", reportPath);
     try (InputStream input = new FileInputStream(reportPath.toFile())) {
+      var goModFileData = findGoModFileData(reportPath, context);
+
       Coverage coverage = new Coverage(goContext);
       Scanner scanner = new Scanner(input, UTF_8);
       if (!scanner.hasNextLine() || !MODE_LINE_REGEXP.matcher(scanner.nextLine()).matches()) {
@@ -155,205 +152,42 @@ public class GoCoverSensor implements Sensor {
         lineNumber++;
         if (lineNumber % COVERAGE_SAVE_BATCH_SIZE == 0) {
           LOG.debug("Save {} lines from coverage report '{}'", lineNumber, reportPath);
-          saveCoverageFunction.accept(context, coverage);
+          coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath);
           coverage = new Coverage(goContext);
         }
       }
-      saveCoverageFunction.accept(context, coverage);
+      coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath);
     } catch (IOException e) {
       LOG.warn("Failed parsing coverage info for file {}: {}", reportPath, e.getMessage());
     }
   }
 
+  private static GoModFileData findGoModFileData(Path reportPath, SensorContext context) throws IOException {
+    var reportParentDir = reportPath.getParent();
+    var goModFiles = GoModFileFinder.findGoModFiles(context);
+    GoModFileData goModFileData = GoModFileData.UNKNOWN_DATA;
+    if (reportParentDir != null) {
+      for (InputFile goModFile : goModFiles) {
+        var goModDir = Path.of(goModFile.file().getPath()).getParent();
+        if (reportParentDir.equals(goModDir)) {
+          goModFileData = analyzeGoModFileContent(goModFile.contents(), goModFile.toString());
+          break;
+        }
+      }
+    }
+    return goModFileData;
+  }
+
   private static void addIfValidLine(String line, int lineNumber, Coverage coverage) {
     try {
-      coverage.add(new CoverageStat(lineNumber, line));
+      coverage.add(CoverageStat.parseLine(lineNumber, line));
     } catch (IllegalArgumentException e) {
       LOG.debug("Ignoring line in coverage report: {}.", e.getMessage(), e);
     }
   }
 
-  private static void saveCoverage(SensorContext context, Coverage coverage) {
-    coverage.fileMap.forEach((filePath, coverageStats) -> {
-      try {
-        if (!coverageStats.isEmpty()) {
-          saveFileCoverage(context, filePath, coverageStats);
-        }
-      } catch (Exception e) {
-        LOG.warn("Failed saving coverage info for file: {}", filePath);
-      }
-    });
-  }
-
-  private static void saveFileCoverage(SensorContext sensorContext, String filePath, List<CoverageStat> coverageStats) throws IOException {
-    FileSystem fileSystem = sensorContext.fileSystem();
-    InputFile inputFile = findInputFile(filePath, fileSystem);
-    if (inputFile != null) {
-      LOG.debug("Saving coverage measures for file '{}'", filePath);
-      List<String> lines = Arrays.asList(inputFile.contents().split("\\r?\\n"));
-      NewCoverage newCoverage = sensorContext.newCoverage().onFile(inputFile);
-      FileCoverage fileCoverage = new FileCoverage(coverageStats, lines);
-      for (Map.Entry<Integer, LineCoverage> entry : fileCoverage.lineMap.entrySet()) {
-        newCoverage.lineHits(entry.getKey(), entry.getValue().hits);
-      }
-      newCoverage.save();
-    } else {
-      LOG.warn("File '{}' is not included in the project, ignoring coverage", filePath);
-    }
-  }
-
-  /**
-   *  It is possible that absolutePath references a file that does not exist in the file system.
-   *  It happens when go tests where executed on a different computer.
-   *  Even when absolute path does not match a file of the project, this method try to find a valid
-   *  mach using a shorter relative path.
-   *  @see <a href="https://github.com/SonarSource/sonar-go/issues/218">sonar-go/issues/218</a>
-   */
-  private static InputFile findInputFile(String absolutePath, FileSystem fileSystem) {
-    FilePredicates predicates = fileSystem.predicates();
-    InputFile inputFile = fileSystem.inputFile(predicates.hasAbsolutePath(absolutePath));
-    if (inputFile != null) {
-      return inputFile;
-    }
-    LOG.debug("Resolving file {} using relative path", absolutePath);
-    Path path = Paths.get(absolutePath);
-    inputFile = fileSystem.inputFile(predicates.hasRelativePath(path.toString()));
-    while (inputFile == null && path.getNameCount() > 1) {
-      path = path.subpath(1, path.getNameCount());
-      inputFile = fileSystem.inputFile(predicates.hasRelativePath(path.toString()));
-    }
-    return inputFile;
-  }
-
-  static class Coverage {
-    final GoPathContext goContext;
-    Map<String, List<CoverageStat>> fileMap = new HashMap<>();
-
-    Coverage(GoPathContext goContext) {
-      this.goContext = goContext;
-    }
-
-    void add(CoverageStat coverage) {
-      fileMap
-        .computeIfAbsent(goContext.resolve(coverage.filePath), key -> new ArrayList<>())
-        .add(coverage);
-    }
-  }
-
-  static class FileCoverage {
-    Map<Integer, LineCoverage> lineMap = new HashMap<>();
-    List<String> lines;
-
-    public FileCoverage(List<CoverageStat> coverageStats, @Nullable List<String> lines) {
-      this.lines = lines;
-      coverageStats.forEach(this::add);
-    }
-
-    private void add(CoverageStat coverage) {
-      int startLine = findStartIgnoringBrace(coverage);
-      int endLine = findEndIgnoringBrace(coverage, startLine);
-      for (int line = startLine; line <= endLine; line++) {
-        if (!isEmpty(line - 1)) {
-          lineMap.computeIfAbsent(line, key -> new LineCoverage())
-            .add(coverage);
-        }
-      }
-    }
-
-    private boolean isEmpty(int line) {
-      return lines != null &&
-        lines.get(line).trim().isEmpty();
-    }
-
-    int findStartIgnoringBrace(CoverageStat coverage) {
-      int line = coverage.startLine;
-      int column = coverage.startCol;
-      while (shouldIgnore(line, column)) {
-        column++;
-        if (column > lines.get(line - 1).length()) {
-          line++;
-          column = 1;
-        }
-      }
-      return line;
-    }
-
-    int findEndIgnoringBrace(CoverageStat coverage, int startLine) {
-      int line = coverage.endLine;
-      int column = coverage.endCol - 1;
-      if (lines != null && line > lines.size()) {
-        line = lines.size();
-        column = lines.get(line - 1).length();
-      }
-      while (line > startLine && shouldIgnore(line, column)) {
-        column--;
-        if (column == 0) {
-          line--;
-          column = lines.get(line - 1).length();
-        }
-      }
-      return line;
-    }
-
-    boolean shouldIgnore(int line, int column) {
-      if (lines != null && line > 0 && line <= lines.size() && column > 0) {
-        String currentLine = lines.get(line - 1);
-        if (column > currentLine.length()) {
-          // Ignore end of line
-          return true;
-        }
-        int ch = currentLine.charAt(column - 1);
-        return ch < ' ' || ch == '{' || ch == '}';
-      }
-      return false;
-    }
-  }
-
-  static class LineCoverage {
-    int hits = 0;
-
-    void add(CoverageStat coverage) {
-      long sum = ((long) hits) + coverage.count;
-      if (sum > Integer.MAX_VALUE) {
-        hits = Integer.MAX_VALUE;
-      } else {
-        hits = (int) sum;
-      }
-    }
-  }
-
-  static class CoverageStat {
-
-    final String filePath;
-    final int startLine;
-    final int startCol;
-    final int endLine;
-    final int endCol;
-    final int count;
-
-    CoverageStat(int lineNumber, String line) {
-      Matcher matcher = COVERAGE_LINE_REGEXP.matcher(line);
-      if (!matcher.matches()) {
-        throw new IllegalArgumentException("Invalid go coverage at line " + lineNumber);
-      }
-      filePath = matcher.group(1);
-      startLine = Integer.parseInt(matcher.group(2));
-      startCol = Integer.parseInt(matcher.group(3));
-      endLine = Integer.parseInt(matcher.group(4));
-      endCol = Integer.parseInt(matcher.group(5));
-      // No need to parse numStmt as it is never used.
-      count = parseIntWithOverflow(matcher.group(7));
-    }
-
-    private static int parseIntWithOverflow(String s) {
-      int result = 0;
-      try {
-        result = Integer.parseInt(s);
-      } catch (NumberFormatException e) {
-        // Thanks to the regex, we know that the input can only contain digits, the only possible Exception is therefore coming from overflow.
-        return Integer.MAX_VALUE;
-      }
-      return result;
-    }
+  // visible for tests
+  void setCoverageStorage(GoCoverageStorage coverageStorage) {
+    this.coverageStorage = coverageStorage;
   }
 }

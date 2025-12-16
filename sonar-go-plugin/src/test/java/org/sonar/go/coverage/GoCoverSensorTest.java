@@ -22,8 +22,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
@@ -42,15 +40,9 @@ import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
-import org.sonar.go.coverage.GoCoverSensor.Coverage;
-import org.sonar.go.coverage.GoCoverSensor.CoverageStat;
-import org.sonar.go.coverage.GoCoverSensor.FileCoverage;
-import org.sonar.go.coverage.GoCoverSensor.LineCoverage;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.assertj.core.api.Assertions.*;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
@@ -62,7 +54,7 @@ class GoCoverSensorTest {
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @Test
-  void test_descriptor() {
+  void shouldTestDescriptor() {
     DefaultSensorDescriptor sensorDescriptor = new DefaultSensorDescriptor();
     GoCoverSensor coverSensor = new GoCoverSensor();
     coverSensor.describe(sensorDescriptor);
@@ -70,7 +62,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void test_failure() {
+  void shouldFailWhenCoverageFileDoesntExit() {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     context.settings().setProperty("sonar.go.coverage.reportPaths", "invalid-coverage-path.out");
     GoCoverSensor coverSensor = new GoCoverSensor();
@@ -81,7 +73,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void mode_line() {
+  void shouldVerifyModeLineRegex() {
     Predicate<String> regexp = line -> GoCoverSensor.MODE_LINE_REGEXP.matcher(line).matches();
     assertThat(regexp.test("mode: set")).isTrue();
     assertThat(regexp.test("mode: count")).isTrue();
@@ -90,110 +82,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void line_regexp() {
-    Predicate<String> regexp = line -> GoCoverSensor.COVERAGE_LINE_REGEXP.matcher(line).matches();
-    assertThat(regexp.test("my-app/my-app.go:3.2,3.10 1 1")).isTrue();
-    assertThat(regexp.test("_/my-app/my-app.go:3.2,3.10 1 21")).isTrue();
-    assertThat(regexp.test("my-app\\my-app.go:3.2,3.10 1 0")).isTrue();
-    assertThat(regexp.test("_\\C_\\my-app\\my-app.go:3.2,3.10 1 42")).isTrue();
-    assertThat(regexp.test("mode: set")).isFalse();
-  }
-
-  @Test
-  void coverage_stat() {
-    CoverageStat coverage = new CoverageStat(2, "_/my-app/my-app.go:3.10,4.5 2 234");
-    assertThat(coverage.filePath).isEqualTo("_/my-app/my-app.go");
-    assertThat(coverage.startLine).isEqualTo(3);
-    assertThat(coverage.startCol).isEqualTo(10);
-    assertThat(coverage.endLine).isEqualTo(4);
-    assertThat(coverage.endCol).isEqualTo(5);
-    // numStmt is not parsed because not required.
-    assertThat(coverage.count).isEqualTo(234);
-
-    assertThatThrownBy(() -> new CoverageStat(42, "invalid"))
-      .isInstanceOf(IllegalArgumentException.class)
-      .hasMessageContaining("Invalid go coverage at line 42");
-  }
-
-  @Test
-  void line_coverage() {
-    LineCoverage line = new LineCoverage();
-    assertThat(line.hits).isZero();
-
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 0"));
-    assertThat(line.hits).isZero();
-
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 3"));
-    assertThat(line.hits).isEqualTo(3);
-
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 2"));
-    assertThat(line.hits).isEqualTo(5);
-
-    line.add(new CoverageStat(2, "main.go:2.8,2.10 1 0"));
-    assertThat(line.hits).isEqualTo(5);
-  }
-
-  @Test
-  void line_coverage_over_flow() {
-    LineCoverage line = new LineCoverage();
-    // hits is greater than Integer.MAX_VALUE
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 1 " + +(((long) Integer.MAX_VALUE) + 1)));
-    assertThat(line.hits).isEqualTo(Integer.MAX_VALUE);
-
-    LineCoverage lineWithTwoStats = new LineCoverage();
-    // hits is greater than Integer.MAX_VALUE
-    lineWithTwoStats.add(new CoverageStat(2, "main.go:2.2,2.5 1 " + (Integer.MAX_VALUE - 1)));
-    lineWithTwoStats.add(new CoverageStat(2, "main.go:2.2,2.5 1 2"));
-    assertThat(line.hits).isEqualTo(Integer.MAX_VALUE);
-  }
-
-  @Test
-  void line_coverage_do_not_parse_num_statement() {
-    LineCoverage line = new LineCoverage();
-    line.add(new CoverageStat(2, "main.go:2.2,2.5 2650701153 0"));
-    assertThat(line.hits).isZero();
-  }
-
-  @Test
-  void file_coverage() throws Exception {
-    List<CoverageStat> coverageStats = Arrays.asList(
-      new CoverageStat(2, "cover.go:4.11,6.3 1 3"),
-      new CoverageStat(3, "cover.go:6.3,8.3 1 0"));
-    FileCoverage file = new FileCoverage(coverageStats, Files.readAllLines(COVERAGE_DIR.resolve("cover.go")));
-
-    assertThat(file.lineMap.keySet()).containsExactlyInAnyOrder(5, 6, 7);
-    assertThat(file.lineMap.get(4)).isNull();
-    assertThat(file.lineMap.get(5).hits).isEqualTo(3);
-    assertThat(file.lineMap.get(6).hits).isZero();
-    assertThat(file.lineMap.get(7).hits).isZero();
-    assertThat(file.lineMap.get(8)).isNull();
-  }
-
-  @Test
-  void file_coverage_empty_lines() throws Exception {
-    final String fileName = "cover_empty_lines.go";
-    List<CoverageStat> coverageStats = Collections.singletonList(new CoverageStat(2, fileName + ":3.28,9.2 2 1"));
-    FileCoverage file = new FileCoverage(coverageStats, Files.readAllLines(COVERAGE_DIR.resolve(fileName)));
-
-    assertThat(file.lineMap.keySet()).containsExactlyInAnyOrder(5, 7);
-  }
-
-  @Test
-  void coverage() {
-    GoPathContext linuxContext = new GoPathContext('/', ":", "/home/paul/go");
-    Coverage coverage = new Coverage(linuxContext);
-    coverage.add(new CoverageStat(2, "main.go:2.2,2.5 1 1"));
-    coverage.add(new CoverageStat(3, "main.go:4.2,4.7 1 0"));
-    coverage.add(new CoverageStat(4, "other.go:3.2,4.12 1 1"));
-    assertThat(coverage.fileMap.keySet()).containsExactlyInAnyOrder("/home/paul/go/src/main.go", "/home/paul/go/src/other.go");
-    List<CoverageStat> coverageStats = coverage.fileMap.get("/home/paul/go/src/main.go");
-    FileCoverage fileCoverage = new FileCoverage(coverageStats, null);
-    assertThat(fileCoverage.lineMap.keySet()).containsExactlyInAnyOrder(2, 4);
-    assertThat(new FileCoverage(coverage.fileMap.get("/home/paul/go/src/other.go"), null).lineMap.keySet()).containsExactlyInAnyOrder(3, 4);
-  }
-
-  @Test
-  void parse_coverage_linux_relative() {
+  void shouldParseCoverageLinuxRrelative() {
     Path coverageFile = COVERAGE_DIR.resolve("coverage.linux.relative.out");
     GoPathContext linuxContext = new GoPathContext('/', ":", "/home/paul/go");
     String coverPath = "/home/paul/go/src/github.com/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover.go";
@@ -201,7 +90,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void parse_coverage_linux_absolute() {
+  void shouldParseCoverageLinuxAbsolute() {
     Path coverageFile = COVERAGE_DIR.resolve("coverage.linux.absolute.out");
     GoPathContext linuxContext = new GoPathContext('/', ":", "/home/paul/go");
     String coverPath = "/home/paul/dev/github/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover.go";
@@ -209,7 +98,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void parse_coverage_windows_relative() {
+  void shouldParseCoverageWindowsRelative() {
     Path coverageFile = COVERAGE_DIR.resolve("coverage.win.relative.out");
     GoPathContext windowsContext = new GoPathContext('\\', ";", "C:\\Users\\paul\\go");
     String coverPath = "C:\\Users\\paul\\go\\src\\github.com\\SonarSource\\slang\\sonar-go-plugin\\src\\test\\resources\\coverage\\cover.go";
@@ -217,7 +106,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void parse_coverage_windows_absolute() {
+  void shouldParseCoverageWindowsAbsolute() {
     Path coverageFile = COVERAGE_DIR.resolve("coverage.win.absolute.out");
     GoPathContext windowsContext = new GoPathContext('\\', ";", "C:\\Users\\paul\\go");
     String coverPath = "C:\\Users\\paul\\dev\\github\\SonarSource\\slang\\sonar-go-plugin\\src\\test\\resources\\coverage\\cover.go";
@@ -225,7 +114,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void parse_coverage_one_broken_line() {
+  void shouldParseCoverageOneBrokenLine() {
     Path coverageFile = COVERAGE_DIR.resolve("coverage.one.broken.line.out");
     GoPathContext linuxContext = new GoPathContext('/', ":", "/home/paul/go");
     String coverPath = "/home/paul/go/src/github.com/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover.go";
@@ -260,11 +149,13 @@ class GoCoverSensorTest {
     String coverPath = "/home/paul/go/src/github.com/SonarSource/slang/sonar-go-plugin/src/test/resources/coverage/cover_big.go";
     AtomicInteger linesCount = new AtomicInteger();
 
-    GoCoverSensor.parseAndSave(coverageFile, context, linuxContext, (sc, coverage) -> {
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath) -> {
       if (!coverage.fileMap.isEmpty()) {
         linesCount.getAndAdd(coverage.fileMap.get(coverPath).size());
       }
     });
+    sensor.parseAndSave(coverageFile, context, linuxContext);
 
     assertThat(linesCount.get()).isEqualTo(numberOfLines);
     if (numberOfLines >= 9998) {
@@ -283,25 +174,29 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void get_report_paths() {
+  void shouldGetReportPaths() {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     context.setSettings(new MapSettings());
     Path coverageFile1 = COVERAGE_DIR.resolve("coverage.linux.relative.out").toAbsolutePath();
     context.settings().setProperty("sonar.go.coverage.reportPaths",
       coverageFile1 + ",coverage.linux.absolute.out");
+
     Stream<Path> reportPaths = GoCoverSensor.getReportPaths(context);
+
     assertThat(reportPaths).containsExactlyInAnyOrder(
       coverageFile1,
       Paths.get("src", "test", "resources", "coverage", "coverage.linux.absolute.out"));
   }
 
   @Test
-  void get_report_paths_with_wildcards() {
+  void shouldGetReportPathsWithWildcards() {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     context.setSettings(new MapSettings());
     context.settings().setProperty("sonar.go.coverage.reportPaths",
       "*.absolute.out,glob" + File.separator + "*.out, test*" + File.separator + "*.out, coverage?.out");
+
     Stream<Path> reportPaths = GoCoverSensor.getReportPaths(context);
+
     assertThat(reportPaths).containsExactlyInAnyOrder(
       Paths.get("src", "test", "resources", "coverage", "coverage.linux.absolute.out"),
       Paths.get("src", "test", "resources", "coverage", "coverage.win.absolute.out"),
@@ -334,7 +229,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void should_continue_if_parsing_fails() {
+  void shouldContinueWhenParsingFails() {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     context.setSettings(new MapSettings());
     context.settings().setProperty("sonar.go.coverage.reportPaths",
@@ -342,32 +237,19 @@ class GoCoverSensorTest {
     Path baseDir = COVERAGE_DIR.toAbsolutePath();
     GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, baseDir.toString());
     GoCoverSensor sensor = new GoCoverSensor();
+
     sensor.execute(context, goContext);
+
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
     assertThat(logTester.logs(Level.WARN))
-      .hasSize(2)
+      .hasSize(3)
       .anyMatch(log -> log.endsWith("coverage.out: Invalid go coverage, expect 'mode:' on the first line."));
   }
 
   @Test
-  void upload_reports() throws IOException {
+  void shouldUploadReports() throws IOException {
     String fileName = "cover.go";
     SensorContextTester context = setUpContext(fileName, "coverage.relative.out");
-    String fileKey = "moduleKey:" + fileName;
-    assertThat(context.lineHits(fileKey, 3)).isNull();
-    assertThat(context.lineHits(fileKey, 4)).isEqualTo(1);
-    assertThat(context.lineHits(fileKey, 5)).isEqualTo(2);
-    assertThat(context.conditions(fileKey, 5)).isNull();
-    assertThat(context.coveredConditions(fileKey, 5)).isNull();
-    assertThat(context.lineHits(fileKey, 6)).isZero();
-    assertThat(context.lineHits(fileKey, 7)).isZero();
-    assertThat(context.lineHits(fileKey, 8)).isNull();
-  }
-
-  @Test
-  void coverage_fuzzy_inputfile() throws Exception {
-    String fileName = "cover.go";
-    SensorContextTester context = setUpContext(fileName, "coverage.fuzzy.out");
     String fileKey = "moduleKey:" + fileName;
     assertThat(context.lineHits(fileKey, 3)).isNull();
     assertThat(context.lineHits(fileKey, 4)).isEqualTo(1);
@@ -383,7 +265,7 @@ class GoCoverSensorTest {
   }
 
   @Test
-  void coverage_switch_case() throws Exception {
+  void shouldCoverageSwitchCase() throws Exception {
     String fileName = "coverage.switch.go";
     SensorContextTester context = setUpContext(fileName, "coverage.switch.out");
     String fileKey = "moduleKey:" + fileName;
@@ -424,7 +306,64 @@ class GoCoverSensorTest {
     GoCoverSensor sensor = new GoCoverSensor();
     sensor.execute(context, goContext);
 
-    assertThat(logTester.logs(Level.WARN)).containsExactly("Failed saving coverage info for file: cover.go");
+    assertThat(logTester.logs(Level.WARN)).contains("Failed saving coverage info for file: cover.go");
+  }
+
+  @Test
+  void shouldImportGoCoverageReportWithModuleName() throws IOException {
+    // this dir contains a go.mod with module name 'example.com/greetings', Go files and Go coverage report 'cover.out'
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-monorepo", "greetings");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = SensorContextTester.create(baseDir);
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "cover.out");
+
+    addFile(context, baseDir, "go.mod");
+    addFile(context, baseDir, "greetings.go");
+    addFile(context, baseDir, "greetings_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains(
+      "Saving coverage measures for file 'example.com/greetings/greetings.go'");
+    assertThat(logTester.logs(Level.DEBUG)).anyMatch(text -> text.startsWith(
+      "Resolved file 'example.com/greetings/greetings.go' to 'greetings.go' using absolute path, without module name in report path"));
+  }
+
+  @Test
+  void shouldImportGoCoverageReportForMonorepo() throws IOException {
+    // this dir contains a subdir greetings, that contains Go project. It simulates a monorepo structure
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-monorepo");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = SensorContextTester.create(baseDir);
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "greetings/cover.out");
+
+    addFile(context, baseDir, "greetings/go.mod");
+    addFile(context, baseDir, "greetings/greetings.go");
+    addFile(context, baseDir, "greetings/greetings_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains(
+      "Saving coverage measures for file 'example.com/greetings/greetings.go'");
+    assertThat(logTester.logs(Level.DEBUG)).anyMatch(text -> text.startsWith(
+      "Resolved file 'example.com/greetings/greetings.go' to 'greetings/greetings.go' using absolute path, without module name in report path"));
+  }
+
+  private void addFile(SensorContextTester context, Path baseDir, String fileName) throws IOException {
+    Path filepath = baseDir.resolve(fileName);
+    String content = Files.readString(filepath);
+    var file = TestInputFileBuilder.create("moduleKey", baseDir.toFile(), filepath.toFile())
+      .setType(InputFile.Type.MAIN)
+      .initMetadata(content)
+      .setContents(content)
+      .build();
+    context.fileSystem().add(file);
   }
 
   private SensorContextTester setUpContext(String fileName, String coverageFile) throws IOException {
@@ -433,7 +372,7 @@ class GoCoverSensorTest {
     context.setSettings(new MapSettings());
     context.settings().setProperty("sonar.go.coverage.reportPaths", coverageFile);
     Path goFilePath = baseDir.resolve(fileName);
-    String content = new String(Files.readAllBytes(goFilePath), UTF_8);
+    String content = Files.readString(goFilePath);
     context.fileSystem().add(TestInputFileBuilder.create("moduleKey", baseDir.toFile(), goFilePath.toFile())
       .setLanguage("go")
       .setType(InputFile.Type.MAIN)
@@ -448,7 +387,9 @@ class GoCoverSensorTest {
 
   private void assertCoverGo(Path coverageFile, GoPathContext goContext, String absolutePath) {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
-    GoCoverSensor.parseAndSave(coverageFile, context, goContext, (sc, coverage) -> {
+    GoCoverSensor sensor = new GoCoverSensor();
+
+    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath) -> {
       assertThat(coverage.fileMap.keySet()).containsExactlyInAnyOrder(absolutePath);
       List<CoverageStat> coverageStats = coverage.fileMap.get(absolutePath);
       FileCoverage fileCoverage = new FileCoverage(coverageStats, null);
@@ -462,5 +403,6 @@ class GoCoverSensorTest {
       assertThat(fileCoverage.lineMap.get(8).hits).isZero();
       assertThat(fileCoverage.lineMap.get(9)).isNull();
     });
+    sensor.parseAndSave(coverageFile, context, goContext);
   }
 }

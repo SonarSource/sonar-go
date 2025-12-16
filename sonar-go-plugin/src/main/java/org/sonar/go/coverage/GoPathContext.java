@@ -28,7 +28,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import org.sonar.api.batch.fs.FileSystem;
 
 public class GoPathContext {
   private static final String LINUX_ABSOLUTE_OLD_PREFIX = "_/";
@@ -71,7 +70,6 @@ public class GoPathContext {
    * try to append the first GOPATH entry where this file exists, otherwise return
    * a non-existing absolute path using the first GOPATH entry (or just filePath itself
    * if GOPATH is empty).
-   * See {@link GoCoverSensor#findInputFile(String, FileSystem)}
    */
   public String resolve(String filePath) {
     return resolvedPaths.computeIfAbsent(filePath, path -> getAbsolutePathForOldGoVersions(path)
