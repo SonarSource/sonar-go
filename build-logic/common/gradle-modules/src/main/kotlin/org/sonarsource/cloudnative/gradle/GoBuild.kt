@@ -1,6 +1,6 @@
 /*
  * SonarSource Cloud Native Gradle Modules
- * Copyright (C) 2024-2025 SonarSource Sàrl
+ * Copyright (C) 2024-2026 SonarSource Sàrl
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -53,7 +53,7 @@ val Project.goLangCiLintVersion get() = providers.environmentVariable("GOLANG_CI
     .orElse(providers.gradleProperty("goLangCiLintVersion"))
     .orNull ?: error("Either `GOLANG_CI_LINT_VERSION` env variable or `goLangCiLintVersion` Gradle property must be set")
 
-val Project.isCrossCompile: Provider<String> get() = providers.environmentVariable("GO_CROSS_COMPILE").orElse("0")
+val Project.crossCompileEnv: Provider<String> get() = providers.environmentVariable("GO_CROSS_COMPILE").orElse("0")
 
 fun Project.allGoSourcesAndMakeScripts(): FileTree =
     fileTree(projectDir).matching {

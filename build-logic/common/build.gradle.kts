@@ -14,10 +14,13 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonarsource.cloudnative.gradle
+plugins {
+    id("org.sonarqube") version "7.2.0.6526"
+}
 
-import org.gradle.api.file.RegularFileProperty
-
-interface CodeStyleConvention {
-    val editorConfigPath: RegularFileProperty
+sonar {
+    properties {
+        property("sonar.projectKey", "SonarSource_cloud-native-gradle-modules")
+        property("sonar.organization", "sonarsource")
+    }
 }
