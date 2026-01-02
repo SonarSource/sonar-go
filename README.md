@@ -68,7 +68,7 @@ License headers are automatically updated by the spotless plugin.
 
 ## License
 
-Copyright 2012-2025 SonarSource.
+Copyright 2012-2026 SonarSource.
 
 SonarQube analyzers released after November 29, 2024, including patch fixes for prior versions,
 are published under the [Sonar Source-Available License Version 1 (SSALv1)](LICENSE.txt).
