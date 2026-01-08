@@ -8,7 +8,7 @@ readability and maintainability, and it also complicates the testing process.</p
 <p>The following example demonstrates the behavior of the rule with the default threshold of 3 levels of nesting and one of the potential ways to fix
 the code smell by introducing guard clauses:</p>
 <h4>Noncompliant code example</h4>
-<pre>
+<pre data-diff-id="1" data-diff-type="noncompliant">
 if condition1 { // Compliant - depth = 1
 	/* ... */
 	if condition2 { // Compliant - depth = 2
@@ -23,6 +23,25 @@ if condition1 { // Compliant - depth = 1
 			}
 		}
 	}
+}
+</pre>
+<h4>Compliant solution</h4>
+<pre data-diff-id="1" data-diff-type="compliant">
+if !condition1 {
+  return
+}
+/* ... */
+if !condition2 {
+  return
+}
+for i := 1; i &lt;= 10; i++ {
+  /* ... */
+  if condition4 {
+    if condition5 {
+      /* ... */
+    }
+    return
+  }
 }
 </pre>
 <h2>Resources</h2>
