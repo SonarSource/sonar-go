@@ -23,6 +23,7 @@ download = "5.6.0"
 kotlinx-serialization-json = "1.9.0"
 kotlin-serialization-plugin = "2.3.0"
 archunit = "1.4.1"
+sonar-scanner-gradle = "7.1.0.6387"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -58,3 +59,4 @@ archunit = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "arc
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }
+sonarqube = { id = "org.sonarqube", version.ref = "sonar-scanner-gradle" }

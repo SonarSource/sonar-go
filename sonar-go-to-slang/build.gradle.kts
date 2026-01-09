@@ -18,7 +18,7 @@ plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
     id("org.sonarsource.cloud-native.java-conventions")
     id("org.sonarsource.cloud-native.go-binary-builder")
-    id("org.sonarqube")
+    alias(libs.plugins.sonarqube)
 }
 
 val isCi: Boolean = System.getenv("CI")?.equals("true") == true
