@@ -4,7 +4,7 @@ go 1.25.1
 
 require github.com/stretchr/testify v1.11.1
 
-require golang.org/x/tools v0.40.0
+require golang.org/x/tools v0.41.0
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
