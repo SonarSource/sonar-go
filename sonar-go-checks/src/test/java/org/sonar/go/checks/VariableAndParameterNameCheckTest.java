@@ -35,4 +35,9 @@ class VariableAndParameterNameCheckTest {
     GoVerifier.verify("VariableAndParameterNameCheck/VariableAndParameterNameCheckChangedRegex.go", checkWithChangedRegex);
   }
 
+  @Test
+  void shouldNotRaiseOnTemplGeneratedFile() {
+    GoVerifier.verifyNoIssue("VariableAndParameterNameCheck/VariableAndParameterNameCheck_templ.go", check);
+  }
+
 }

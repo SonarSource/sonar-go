@@ -41,17 +41,21 @@ public class VariableAndParameterNameCheck implements GoCheck {
     var pattern = Pattern.compile(format);
 
     init.register(VariableDeclarationTree.class, (ctx, tree) -> {
-      if (ctx.ancestors().stream().anyMatch(FunctionDeclarationTree.class::isInstance)) {
+      if (!isTemplGeneratedFile(ctx.filename()) && ctx.ancestors().stream().anyMatch(FunctionDeclarationTree.class::isInstance)) {
         for (var identifier : tree.identifiers()) {
           check(pattern, ctx, identifier, "local variable");
         }
       }
     });
 
-    init.register(FunctionDeclarationTree.class, (ctx, tree) -> tree.formalParameters().stream()
-      .filter(ParameterTree.class::isInstance)
-      .map(ParameterTree.class::cast)
-      .forEach(param -> check(pattern, ctx, param.identifier(), "parameter")));
+    init.register(FunctionDeclarationTree.class, (ctx, tree) -> {
+      if (!isTemplGeneratedFile(ctx.filename())) {
+        tree.formalParameters().stream()
+          .filter(ParameterTree.class::isInstance)
+          .map(ParameterTree.class::cast)
+          .forEach(param -> check(pattern, ctx, param.identifier(), "parameter"));
+      }
+    });
   }
 
   private void check(Pattern pattern, CheckContext ctx, IdentifierTree identifier, String variableKind) {
@@ -59,6 +63,10 @@ public class VariableAndParameterNameCheck implements GoCheck {
       var message = String.format("Rename this %s to match the regular expression \"%s\".", variableKind, this.format);
       ctx.reportIssue(identifier, message);
     }
+  }
+
+  private static boolean isTemplGeneratedFile(String fileName) {
+    return fileName.endsWith("_templ.go");
   }
 
 }
