@@ -23,8 +23,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
@@ -136,7 +138,7 @@ public class GoCoverSensor implements Sensor {
   void parseAndSave(Path reportPath, SensorContext context, GoPathContext goContext) {
     LOG.info("Load coverage report from '{}'", reportPath);
     try (InputStream input = new FileInputStream(reportPath.toFile())) {
-      var goModFileData = findGoModFileData(reportPath, context);
+      var goModFileData = findAllGoModFileData(context);
 
       Coverage coverage = new Coverage(goContext);
       Scanner scanner = new Scanner(input, UTF_8);
@@ -162,20 +164,13 @@ public class GoCoverSensor implements Sensor {
     }
   }
 
-  private static GoModFileData findGoModFileData(Path reportPath, SensorContext context) throws IOException {
-    var reportParentDir = reportPath.getParent();
+  private static Set<GoModFileData> findAllGoModFileData(SensorContext context) throws IOException {
     var goModFiles = GoModFileFinder.findGoModFiles(context);
-    GoModFileData goModFileData = GoModFileData.UNKNOWN_DATA;
-    if (reportParentDir != null) {
-      for (InputFile goModFile : goModFiles) {
-        var goModDir = Path.of(goModFile.file().getPath()).getParent();
-        if (reportParentDir.equals(goModDir)) {
-          goModFileData = analyzeGoModFileContent(goModFile.contents(), goModFile.toString());
-          break;
-        }
-      }
+    Set<GoModFileData> results = new HashSet<>();
+    for (InputFile goModFile : goModFiles) {
+      results.add(analyzeGoModFileContent(goModFile.contents(), goModFile.toString()));
     }
-    return goModFileData;
+    return results;
   }
 
   private static void addIfValidLine(String line, int lineNumber, Coverage coverage) {

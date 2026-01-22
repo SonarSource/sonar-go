@@ -17,9 +17,10 @@
 package org.sonar.go.coverage;
 
 import java.nio.file.Path;
+import java.util.Set;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.plugins.go.api.checks.GoModFileData;
 
 interface GoCoverageStorage {
-  void saveCoverage(SensorContext sensorContext, Coverage coverage, GoModFileData goModFileData, Path reportPath);
+  void saveCoverage(SensorContext sensorContext, Coverage coverage, Set<GoModFileData> goModFileData, Path reportPath);
 }

@@ -352,7 +352,61 @@ class GoCoverSensorTest {
     assertThat(logTester.logs(Level.DEBUG)).contains(
       "Saving coverage measures for file 'example.com/greetings/greetings.go'");
     assertThat(logTester.logs(Level.DEBUG)).anyMatch(text -> text.startsWith(
-      "Resolved file 'example.com/greetings/greetings.go' to 'greetings/greetings.go' using absolute path, without module name in report path"));
+      "Resolved file 'example.com/greetings/greetings.go' to 'greetings/greetings.go' using relative path, without module name in go.mod directory 'greetings'"));
+  }
+
+  @Test
+  void shouldImportGoCoverageForMultipleModules() throws IOException {
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-multiple-modules");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = SensorContextTester.create(baseDir);
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "scripts/results/coverage.out");
+
+    addFile(context, baseDir, "api/go.mod");
+    addFile(context, baseDir, "api/main.go");
+    addFile(context, baseDir, "api/main_test.go");
+    addFile(context, baseDir, "internal/go.mod");
+    addFile(context, baseDir, "internal/main.go");
+    addFile(context, baseDir, "internal/main_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+    assertThat(logTester.logs(Level.DEBUG)).contains(
+      "Resolved file 'github.com/x/y/api/main.go' to 'api/main.go' using relative path, without module name in go.mod directory 'api'",
+      "Saving coverage measures for file 'github.com/x/y/api/main.go'",
+      "Resolved file 'github.com/x/y/internal/main.go' to 'internal/main.go' using relative path, without module name in go.mod directory 'internal'",
+      "Saving coverage measures for file 'github.com/x/y/internal/main.go'");
+  }
+
+  @Test
+  void shouldImportGoCoverageForRelativeSubpaths() throws IOException {
+    // this test is very similar to the previous one, but the go.mod files are missing
+    // it verifies that the files are resolved using relative subpaths
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-multiple-modules");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = SensorContextTester.create(baseDir);
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "scripts/results/coverage.out");
+
+    addFile(context, baseDir, "api/main.go");
+    addFile(context, baseDir, "api/main_test.go");
+    addFile(context, baseDir, "internal/main.go");
+    addFile(context, baseDir, "internal/main_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+    assertThat(logTester.logs(Level.DEBUG)).contains(
+      "Resolved file 'github.com/x/y/api/main.go' to 'api/main.go' using relative path by searching subpaths",
+      "Saving coverage measures for file 'github.com/x/y/api/main.go'",
+      "Resolved file 'github.com/x/y/internal/main.go' to 'internal/main.go' using relative path by searching subpaths",
+      "Saving coverage measures for file 'github.com/x/y/internal/main.go'");
   }
 
   private void addFile(SensorContextTester context, Path baseDir, String fileName) throws IOException {
