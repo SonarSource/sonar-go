@@ -44,7 +44,7 @@ spotless {
     kotlin {
         target("build-logic/go/src/**/*.kt")
         ktlint().setEditorConfigPath("$rootDir/build-logic/common/.editorconfig")
-        licenseHeaderFile(rootProject.file("LICENSE_HEADER")).updateYearWithLatest(true)
+        licenseHeaderFile(rootProject.file("LICENSE_HEADER"))
     }
     kotlinGradle {
         target("build-logic/go/src/**/*.gradle.kts", "build-logic/go/*.gradle.kts", "*.gradle.kts")
