@@ -47,6 +47,7 @@ public class GoMetaLinterReportSensor extends AbstractReportSensor {
     Matcher matcher = GO_META_LINTER_REGEX.matcher(line);
     if (matcher.matches()) {
       String linter = mapLinterName(matcher.group("linter").trim());
+      // The type is only used, if the rule is not matched against a specific ruleKey. If it's matched, the type of the registered rule is used.
       RuleType type = "error".equals(matcher.group("severity")) ? RuleType.BUG : RuleType.CODE_SMELL;
       String filename = matcher.group("file").trim();
       int lineNumber = Integer.parseInt(matcher.group("line").trim());
