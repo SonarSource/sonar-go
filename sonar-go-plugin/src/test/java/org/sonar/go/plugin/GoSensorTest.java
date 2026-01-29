@@ -574,6 +574,22 @@ class GoSensorTest {
     verify(command, times(1)).debugTypeCheck();
   }
 
+  @Test
+  void shouldNotRaiseIssueWhenInactive() {
+    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+      """
+        package main\s
+
+        func test() {
+         x := ((2 + 3))
+        }""");
+    sensorContext.fileSystem().add(inputFile);
+    sensorContext.settings().setProperty("sonar.go.activate", "false");
+    GoSensor goSensor = getSensor("S1110");
+    goSensor.execute(sensorContext);
+    assertThat(sensorContext.allIssues()).isEmpty();
+  }
+
   private abstract static class CheckRegisteringOnLeave implements GoCheck {
     private BiConsumer<CheckContext, Tree> consumerToRegister;
 

@@ -56,6 +56,14 @@ public class GoSensor extends SlangSensor {
   }
 
   @Override
+  public void execute(SensorContext sensorContext) {
+    if (!isActive(sensorContext)) {
+      return;
+    }
+    super.execute(sensorContext);
+  }
+
+  @Override
   protected ASTConverter astConverter() {
     return goConverter;
   }
@@ -63,6 +71,10 @@ public class GoSensor extends SlangSensor {
   private static GoChecks initializeChecks(CheckFactory checkFactory) {
     return new GoChecks(checkFactory)
       .addChecks(GoRulesDefinition.REPOSITORY_KEY, GoCheckList.checks());
+  }
+
+  private static boolean isActive(SensorContext sensorContext) {
+    return sensorContext.config().getBoolean(GoPlugin.ACTIVATION_KEY).orElse(true);
   }
 
   @Override

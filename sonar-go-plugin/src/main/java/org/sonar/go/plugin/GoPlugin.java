@@ -17,6 +17,7 @@
 package org.sonar.go.plugin;
 
 import org.sonar.api.Plugin;
+import org.sonar.api.PropertyType;
 import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.config.PropertyDefinition;
@@ -37,6 +38,7 @@ public class GoPlugin implements Plugin {
 
   public static final String EXCLUSIONS_KEY = "sonar.go.exclusions";
   public static final String EXCLUSIONS_DEFAULT_VALUE = "**/vendor/**";
+  public static final String ACTIVATION_KEY = "sonar.go.activate";
 
   private static final String GO_CATEGORY = "Go";
   private static final String TEST_COVERAGE_SUBCATEGORY = "Test and Coverage";
@@ -74,6 +76,17 @@ public class GoPlugin implements Plugin {
         .subCategory(GENERAL_SUBCATEGORY)
         .onQualifiers(Qualifiers.PROJECT)
         .multiValues(true)
+        .build(),
+
+      PropertyDefinition.builder(ACTIVATION_KEY)
+        .index(0)
+        .defaultValue(String.valueOf(true))
+        .name("Activate Go file analysis")
+        .description("Activate analysis of all Go files.")
+        .category(GO_CATEGORY)
+        .subCategory(GENERAL_SUBCATEGORY)
+        .onQualifiers(Qualifiers.PROJECT)
+        .type(PropertyType.BOOLEAN)
         .build());
 
     if (context.getRuntime().getProduct() != SonarProduct.SONARLINT) {
