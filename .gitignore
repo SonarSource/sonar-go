@@ -47,3 +47,7 @@ test-report.out
 goparser_generated.go
 mapping_generated.go
 private/go-package-data-exporter/packages/*.o
+
+
+# ---- Local Claude config
+CLAUDE.local.md
