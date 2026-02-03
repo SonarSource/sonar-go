@@ -36,6 +36,7 @@ import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.config.Configuration;
+import org.sonar.api.utils.Version;
 import org.sonar.api.utils.WildcardPattern;
 import org.sonar.go.plugin.GoModFileFinder;
 import org.sonar.plugins.go.api.checks.GoModFileData;
@@ -44,6 +45,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.sonar.go.plugin.GoModFileAnalyzer.analyzeGoModFileContent;
 
 public class GoCoverSensor implements Sensor {
+
+  private static final Version TELEMETRY_SUPPORTED_API_VERSION = Version.create(10, 9);
 
   public static final String REPORT_PATH_KEY = "sonar.go.coverage.reportPaths";
   private static final Logger LOG = LoggerFactory.getLogger(GoCoverSensor.class);
@@ -137,6 +140,7 @@ public class GoCoverSensor implements Sensor {
 
   void parseAndSave(Path reportPath, SensorContext context, GoPathContext goContext) {
     LOG.info("Load coverage report from '{}'", reportPath);
+    var statistics = new FileResolutionStatistics();
     try (InputStream input = new FileInputStream(reportPath.toFile())) {
       var goModFileData = findAllGoModFileData(context);
 
@@ -154,14 +158,15 @@ public class GoCoverSensor implements Sensor {
         lineNumber++;
         if (lineNumber % COVERAGE_SAVE_BATCH_SIZE == 0) {
           LOG.debug("Save {} lines from coverage report '{}'", lineNumber, reportPath);
-          coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath);
+          coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath, statistics);
           coverage = new Coverage(goContext);
         }
       }
-      coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath);
+      coverageStorage.saveCoverage(context, coverage, goModFileData, reportPath, statistics);
     } catch (IOException e) {
       LOG.warn("Failed parsing coverage info for file {}: {}", reportPath, e.getMessage());
     }
+    saveFileResolutionStatistic(context, statistics);
   }
 
   private static Set<GoModFileData> findAllGoModFileData(SensorContext context) throws IOException {
@@ -178,6 +183,19 @@ public class GoCoverSensor implements Sensor {
       coverage.add(CoverageStat.parseLine(lineNumber, line));
     } catch (IllegalArgumentException e) {
       LOG.debug("Ignoring line in coverage report: {}.", e.getMessage(), e);
+    }
+  }
+
+  private static void saveFileResolutionStatistic(SensorContext context, FileResolutionStatistics statistics) {
+    var isTelemetrySupported = context.runtime().getApiVersion().isGreaterThanOrEqual(TELEMETRY_SUPPORTED_API_VERSION);
+    if (isTelemetrySupported) {
+      context.addTelemetryProperty("go.coverage_absolute_path", Integer.toString(statistics.absolutePath()));
+      context.addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", Integer.toString(statistics.relativeNoModuleInGoModDir()));
+      context.addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", Integer.toString(statistics.absoluteNoModuleInReportPath()));
+      context.addTelemetryProperty("go.coverage_relative_path", Integer.toString(statistics.relativePath()));
+      context.addTelemetryProperty("go.coverage_relative_no_module_in_report_path", Integer.toString(statistics.relativeNoModuleInReportPath()));
+      context.addTelemetryProperty("go.coverage_relative_sub_paths", Integer.toString(statistics.relativeSubPaths()));
+      context.addTelemetryProperty("go.coverage_unresolved", Integer.toString(statistics.unresolved()));
     }
   }
 

@@ -38,11 +38,11 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
   private static final Logger LOG = LoggerFactory.getLogger(GoCoverageStorageImpl.class);
 
   @Override
-  public void saveCoverage(SensorContext context, Coverage coverage, Set<GoModFileData> goModFileDataSet, Path reportPath) {
+  public void saveCoverage(SensorContext context, Coverage coverage, Set<GoModFileData> goModFileDataSet, Path reportPath, FileResolutionStatistics statistics) {
     coverage.fileMap.forEach((filePath, coverageStats) -> {
       try {
         if (!coverageStats.isEmpty()) {
-          saveFileCoverage(context, filePath, coverageStats, goModFileDataSet, reportPath);
+          saveFileCoverage(context, filePath, coverageStats, goModFileDataSet, reportPath, statistics);
         }
       } catch (Exception e) {
         LOG.warn("Failed saving coverage info for file: {}", filePath);
@@ -50,10 +50,15 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
     });
   }
 
-  private static void saveFileCoverage(SensorContext sensorContext, String filePath, List<CoverageStat> coverageStats, Set<GoModFileData> goModFileDataSet, Path reportPath)
+  private static void saveFileCoverage(SensorContext sensorContext,
+    String filePath,
+    List<CoverageStat> coverageStats,
+    Set<GoModFileData> goModFileDataSet,
+    Path reportPath,
+    FileResolutionStatistics statistics)
     throws IOException {
     FileSystem fileSystem = sensorContext.fileSystem();
-    InputFile inputFile = findInputFile(filePath, fileSystem, goModFileDataSet, reportPath);
+    InputFile inputFile = findInputFile(filePath, fileSystem, goModFileDataSet, reportPath, statistics);
     if (inputFile != null) {
       LOG.debug("Saving coverage measures for file '{}'", filePath);
       List<String> lines = Arrays.asList(inputFile.contents().split("\\r?\\n"));
@@ -72,44 +77,57 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
    * The method is trying to resolve the file from coverage report to an InputFile in the project in the following way:
    * <ul>
    *  <li> Try to resolve the file using absolute path as-is.</li>
-   *  <li> If module name is defined in go.mod file and the filename starts with module name + '/',
-   *       try to resolve the file using absolute path without module name in report path.</li>
-   *  <li> Try to resolve the file using relative path.</
+   *  <li> If module name is defined in nearest go.mod file and the filename starts with "module_name/",
+   *       try to resolve the file using relative path without module name in go.mod path.</li>
+   *  <li> If module name is defined in nearest go.mod file and the filename starts with "module_name/",
+   *       try to resolve the file using absolute path without module name in coverage report path.</li>
+   *  <li> Try to resolve the file using relative path.</li>
+   *  <li> If module name is defined in nearest go.mod file and the filename starts with "module_name/",
+   *       try to resolve the file using relative path without module name in coverage report path.</li>
+   *  <li> Try to resolve the file using relative subpaths, e.g. for filename "a/b/c/d.go", the following subpaths are checked:
+   *       "b/c/d.go", "c/d.go, "d.go"</li>
    * </ul>
    *
    * @param filename         The filename from coverage report, can be absolute or relative and can be prefixed with module name.
    * @param fileSystem       The FileSystem of the project.
    * @param goModFileDataSet The Set of go.mod file data of the Go modules.
    * @param reportPath       The path to the coverage report file.
+   * @param statistics       The FileResolutionStatistics to collect resolution statistics.
    * @return The resolved InputFile, or null if the file cannot be resolved.
    */
   @CheckForNull
-  private static InputFile findInputFile(String filename, FileSystem fileSystem, Set<GoModFileData> goModFileDataSet, Path reportPath) {
+  private static InputFile findInputFile(String filename,
+    FileSystem fileSystem,
+    Set<GoModFileData> goModFileDataSet,
+    Path reportPath,
+    FileResolutionStatistics statistics) {
     FilePredicates predicates = fileSystem.predicates();
     // try to resolve absolute path first
     var inputFile = fileSystem.inputFile(predicates.hasAbsolutePath(filename));
     if (inputFile != null) {
       LOG.debug("Resolved file '{}' to '{}' using absolute path.", filename, inputFile);
+      statistics.incrementAbsolutePath();
       return inputFile;
     }
     var goModFileData = findNearestGoModFileData(goModFileDataSet, filename);
-    inputFile = resolveWithModuleName(filename, fileSystem, reportPath, predicates, goModFileData);
+    inputFile = resolveWithModuleName(filename, fileSystem, reportPath, predicates, goModFileData, statistics);
     if (inputFile != null) {
       return inputFile;
     }
-    inputFile = resolveRelative(filename, fileSystem, predicates);
+    inputFile = resolveRelative(filename, fileSystem, predicates, statistics);
     if (inputFile != null) {
       return inputFile;
     }
-    inputFile = resolveRelativeWithoutModuleName(filename, fileSystem, reportPath, predicates, goModFileData);
+    inputFile = resolveRelativeWithoutModuleName(filename, fileSystem, reportPath, predicates, goModFileData, statistics);
     if (inputFile != null) {
       return inputFile;
     }
-    return resolveUsingSubpaths(filename, fileSystem, predicates);
+    return resolveUsingSubpaths(filename, fileSystem, predicates, statistics);
   }
 
   @CheckForNull
-  private static InputFile resolveWithModuleName(String filename, FileSystem fileSystem, Path reportPath, FilePredicates predicates, GoModFileData goModFileData) {
+  private static InputFile resolveWithModuleName(String filename, FileSystem fileSystem, Path reportPath, FilePredicates predicates, GoModFileData goModFileData,
+    FileResolutionStatistics statistics) {
     if (goModFileData.moduleName().isBlank()) {
       return null;
     }
@@ -130,6 +148,7 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
       var inputFile = fileSystem.inputFile(predicates.hasRelativePath(filenameNoModuleInGoModDir.toString()));
       if (inputFile != null) {
         LOG.debug("Resolved file '{}' to '{}' using relative path, without module name in go.mod directory '{}'", filename, inputFile, goModParentPath);
+        statistics.incrementRelativeNoModuleInGoModDir();
         return inputFile;
       }
     }
@@ -137,23 +156,26 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
     var inputFile = fileSystem.inputFile(predicates.hasAbsolutePath(filenameNoModuleNameInReportPath.toString()));
     if (inputFile != null) {
       LOG.debug("Resolved file '{}' to '{}' using absolute path, without module name in report path '{}'", filename, inputFile, reportPath.getParent());
+      statistics.incrementAbsoluteNoModuleInReportPath();
       return inputFile;
     }
     return null;
   }
 
   @CheckForNull
-  private static InputFile resolveRelative(String filename, FileSystem fileSystem, FilePredicates predicates) {
+  private static InputFile resolveRelative(String filename, FileSystem fileSystem, FilePredicates predicates, FileResolutionStatistics statistics) {
     var inputFile = fileSystem.inputFile(predicates.hasRelativePath(filename));
     if (inputFile != null) {
       LOG.debug("Resolved file '{}' to '{}' using relative path", filename, inputFile);
+      statistics.incrementRelativePath();
       return inputFile;
     }
     return null;
   }
 
   @CheckForNull
-  private static InputFile resolveRelativeWithoutModuleName(String filename, FileSystem fileSystem, Path reportPath, FilePredicates predicates, GoModFileData goModFileData) {
+  private static InputFile resolveRelativeWithoutModuleName(String filename, FileSystem fileSystem, Path reportPath, FilePredicates predicates, GoModFileData goModFileData,
+    FileResolutionStatistics statistics) {
     if (goModFileData.moduleName().isBlank()) {
       return null;
     }
@@ -166,15 +188,16 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
     var inputFile = fileSystem.inputFile(predicates.hasRelativePath(filenameNoModuleNameInReportPath.toString()));
     if (inputFile != null) {
       LOG.debug("Resolved file '{}' to '{}' using relative path, without module name in report path {}", filename, inputFile, reportPath.getParent());
+      statistics.incrementRelativeNoModuleInReportPath();
       return inputFile;
     }
     return null;
   }
 
   @CheckForNull
-  private static InputFile resolveUsingSubpaths(String filename, FileSystem fileSystem, FilePredicates predicates) {
+  private static InputFile resolveUsingSubpaths(String filename, FileSystem fileSystem, FilePredicates predicates, FileResolutionStatistics statistics) {
     // old fallback behavior: trying to resolve as relative path of subpaths, e.g.:
-    // for filename "a/b/c/d.go", try "a/b/c/d.go", "b/c/d.go", "c/d.go, "d.go"
+    // for filename "a/b/c/d.go", try "b/c/d.go", "c/d.go, "d.go"
     Path path = Paths.get(filename);
     var inputFile = fileSystem.inputFile(predicates.hasRelativePath(path.toString()));
     while (inputFile == null && path.getNameCount() > 1) {
@@ -182,9 +205,13 @@ class GoCoverageStorageImpl implements GoCoverageStorage {
       inputFile = fileSystem.inputFile(predicates.hasRelativePath(path.toString()));
       if (inputFile != null) {
         LOG.debug("Resolved file '{}' to '{}' using relative path by searching subpaths", filename, inputFile);
+        statistics.incrementRelativeSubPaths();
+        return inputFile;
       }
     }
-    return inputFile;
+    LOG.debug("Can't resolve '{}' for code coverage", filename);
+    statistics.incrementUnresolved();
+    return null;
   }
 
   private static GoModFileData findNearestGoModFileData(Set<GoModFileData> goModFileDataSet, String filename) {

@@ -39,11 +39,15 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
+import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.api.utils.Version;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class GoCoverSensorTest {
@@ -150,7 +154,7 @@ class GoCoverSensorTest {
     AtomicInteger linesCount = new AtomicInteger();
 
     GoCoverSensor sensor = new GoCoverSensor();
-    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath) -> {
+    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath, statistics) -> {
       if (!coverage.fileMap.isEmpty()) {
         linesCount.getAndAdd(coverage.fileMap.get(coverPath).size());
       }
@@ -161,7 +165,11 @@ class GoCoverSensorTest {
     if (numberOfLines >= 9998) {
       // Every 10_000 lines of code the debug is printed
       // The code contains 2 extra lines (package and new line) that are not counted in coverage
-      assertThat(logTester.logs(Level.DEBUG)).contains("Save 10000 lines from coverage report 'src/test/resources/coverage/coverage.big.out'");
+      var message = "Save 10000 lines from coverage report 'src/test/resources/coverage/coverage.big.out'";
+      if (File.separatorChar == '\\') {
+        message = message.replaceAll("/", "\\\\");
+      }
+      assertThat(logTester.logs(Level.DEBUG)).contains(message);
     }
   }
 
@@ -409,6 +417,124 @@ class GoCoverSensorTest {
       "Saving coverage measures for file 'github.com/x/y/internal/main.go'");
   }
 
+  @Test
+  void shouldAddTelemetryPropertiesWhenSupportedApiVersion() throws IOException {
+    String fileName = "cover.go";
+    Path baseDir = COVERAGE_DIR.toAbsolutePath();
+    SensorContextTester context = spy(SensorContextTester.create(baseDir));
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "coverage.relative.out");
+    context.setRuntime(SonarRuntimeImpl.forSonarQube(Version.create(10, 9), org.sonar.api.SonarQubeSide.SCANNER, org.sonar.api.SonarEdition.COMMUNITY));
+
+    Path goFilePath = baseDir.resolve(fileName);
+    String content = Files.readString(goFilePath);
+    context.fileSystem().add(TestInputFileBuilder.create("moduleKey", baseDir.toFile(), goFilePath.toFile())
+      .setLanguage("go")
+      .setType(InputFile.Type.MAIN)
+      .initMetadata(content)
+      .setContents(content)
+      .build());
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    verify(context).addTelemetryProperty("go.coverage_absolute_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", "0");
+    verify(context).addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_path", "1");
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_sub_paths", "0");
+    verify(context).addTelemetryProperty("go.coverage_unresolved", "1");
+  }
+
+  @Test
+  void shouldNotAddTelemetryPropertiesWhenUnsupportedApiVersion() throws IOException {
+    String fileName = "cover.go";
+    Path baseDir = COVERAGE_DIR.toAbsolutePath();
+    SensorContextTester context = spy(SensorContextTester.create(baseDir));
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "coverage.relative.out");
+    context.setRuntime(SonarRuntimeImpl.forSonarQube(Version.create(10, 8), org.sonar.api.SonarQubeSide.SCANNER, org.sonar.api.SonarEdition.COMMUNITY));
+
+    Path goFilePath = baseDir.resolve(fileName);
+    String content = Files.readString(goFilePath);
+    context.fileSystem().add(TestInputFileBuilder.create("moduleKey", baseDir.toFile(), goFilePath.toFile())
+      .setLanguage("go")
+      .setType(InputFile.Type.MAIN)
+      .initMetadata(content)
+      .setContents(content)
+      .build());
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    verify(context, never()).addTelemetryProperty("go.coverage_absolute_path", "0");
+    verify(context, never()).addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", "0");
+    verify(context, never()).addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", "0");
+    verify(context, never()).addTelemetryProperty("go.coverage_relative_path", "1");
+    verify(context, never()).addTelemetryProperty("go.coverage_relative_no_module_in_report_path", "0");
+    verify(context, never()).addTelemetryProperty("go.coverage_relative_sub_paths", "0");
+    verify(context, never()).addTelemetryProperty("go.coverage_unresolved", "0");
+  }
+
+  @Test
+  void shouldAddCorrectTelemetryValuesForMultipleResolutionMethods() throws IOException {
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-multiple-modules");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = spy(SensorContextTester.create(baseDir));
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "scripts/results/coverage.out");
+    context.setRuntime(SonarRuntimeImpl.forSonarQube(Version.create(10, 9), org.sonar.api.SonarQubeSide.SCANNER, org.sonar.api.SonarEdition.COMMUNITY));
+
+    addFile(context, baseDir, "api/go.mod");
+    addFile(context, baseDir, "api/main.go");
+    addFile(context, baseDir, "api/main_test.go");
+    addFile(context, baseDir, "internal/go.mod");
+    addFile(context, baseDir, "internal/main.go");
+    addFile(context, baseDir, "internal/main_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", "2");
+    verify(context).addTelemetryProperty("go.coverage_absolute_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_sub_paths", "0");
+    verify(context).addTelemetryProperty("go.coverage_unresolved", "0");
+  }
+
+  @Test
+  void shouldAddTelemetryForRelativeSubpathsResolution() throws IOException {
+    var coverageMonorepoDir = Paths.get("src", "test", "resources", "coverage-multiple-modules");
+    Path baseDir = coverageMonorepoDir.toAbsolutePath();
+    SensorContextTester context = spy(SensorContextTester.create(baseDir));
+    context.setSettings(new MapSettings());
+    context.settings().setProperty("sonar.go.coverage.reportPaths", "scripts/results/coverage.out");
+    context.setRuntime(SonarRuntimeImpl.forSonarQube(Version.create(10, 9), org.sonar.api.SonarQubeSide.SCANNER, org.sonar.api.SonarEdition.COMMUNITY));
+
+    addFile(context, baseDir, "api/main.go");
+    addFile(context, baseDir, "api/main_test.go");
+    addFile(context, baseDir, "internal/main.go");
+    addFile(context, baseDir, "internal/main_test.go");
+
+    GoPathContext goContext = new GoPathContext(File.separatorChar, File.pathSeparator, "");
+    GoCoverSensor sensor = new GoCoverSensor();
+    sensor.execute(context, goContext);
+
+    verify(context).addTelemetryProperty("go.coverage_relative_sub_paths", "2");
+    verify(context).addTelemetryProperty("go.coverage_absolute_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", "0");
+    verify(context).addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_relative_no_module_in_report_path", "0");
+    verify(context).addTelemetryProperty("go.coverage_unresolved", "0");
+  }
+
   private void addFile(SensorContextTester context, Path baseDir, String fileName) throws IOException {
     Path filepath = baseDir.resolve(fileName);
     String content = Files.readString(filepath);
@@ -443,7 +569,7 @@ class GoCoverSensorTest {
     SensorContextTester context = SensorContextTester.create(COVERAGE_DIR);
     GoCoverSensor sensor = new GoCoverSensor();
 
-    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath) -> {
+    sensor.setCoverageStorage((sensorContext, coverage, goModFileData, reportPath, statistics) -> {
       assertThat(coverage.fileMap.keySet()).containsExactlyInAnyOrder(absolutePath);
       List<CoverageStat> coverageStats = coverage.fileMap.get(absolutePath);
       FileCoverage fileCoverage = new FileCoverage(coverageStats, null);
