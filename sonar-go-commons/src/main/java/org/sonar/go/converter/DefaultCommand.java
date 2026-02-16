@@ -93,6 +93,14 @@ public class DefaultCommand implements Command {
       }
       return output;
     } finally {
+      // On Windows, the process handle must be explicitly closed to release the file lock on the executable.
+      // Without this, the .exe file remains locked and cannot be deleted during test cleanup.
+      process.destroyForcibly();
+      try {
+        process.waitFor();
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+      }
       errorConsumer.shutdown();
     }
   }

@@ -10,20 +10,22 @@ EXIT /B %ERRORLEVEL%
 SET GOOS=windows
 SET GOARCH=amd64
 SET CGO_ENABLED=0
-CALL go build -buildmode=exe -o build/executable/sonar-go-to-slang-amd64 ./src
-
-EXIT /B 0
+IF NOT EXIST "build\executable" MKDIR "build\executable"
+CALL go run generate_source.go
+IF ERRORLEVEL 1 EXIT /B 1
+CALL go build -ldflags="-s -w" -buildmode=exe -o build\executable\sonar-go-to-slang-windows-amd64.exe .
+EXIT /B %ERRORLEVEL%
 
 :generate_test_report
 SET CGO_ENABLED=0
-CALL go test -timeout 5s -json > build/test-report.json
+CALL go test -timeout 5s -json > build\test-report.json
 EXIT /B 0
 
 :go_install_check
 WHERE /q go
 IF ERRORLEVEL 1 (
     ECHO go is not installed
-    EXIT "1"
+    EXIT /B 1
 )
 EXIT /B
 
@@ -32,25 +34,24 @@ set argC=0
 for %%x in (%*) do Set /A argC+=1
 IF %argC% NEQ 1 (
   echo "Usage: %~0 build | clean | test"
-  exit "0"
+  EXIT /B 0
 )
 
-IF "%~1%" == "build" (
+IF "%~1" == "build" (
   CALL :compile_binaries
-) ELSE IF "%~1%"=="test" (
+) ELSE IF "%~1"=="test" (
   CALL :generate_test_report
-) ELSE IF "%~1%"=="clean" (
+) ELSE IF "%~1"=="clean" (
   DEL "goparser_generated.go"
   DEL "build\test-report.json"
   DEL "build\executable\*"
-  DEL "build/test-coverage.out"
-  DEL "build/main_test"
-  DEL "build/cross-file-tests"
+  DEL "build\test-coverage.out"
+  DEL "build\main_test"
+  DEL "build\cross-file-tests"
 ) ELSE (
-  echo "Unrecognized command %~1%"
-  exit "1"
+  echo "Unrecognized command %~1"
+  EXIT /B 1
 )
-exit "0"
 EXIT /B 0
 
 
