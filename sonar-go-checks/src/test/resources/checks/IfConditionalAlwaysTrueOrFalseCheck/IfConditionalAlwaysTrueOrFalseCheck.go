@@ -16,7 +16,20 @@ func main() {
     return 1
   }
 
-  if n := 3; true { // False negative
+  if n := 3; true { // Noncompliant {{Remove this useless "if" statement.}}
+ //          ^^^^
+    return 1
+  }
+
+  if n := 3; false { // Noncompliant
+    return 1
+  }
+
+  if n := 3; true || someCondition { // Noncompliant
+    return 1
+  }
+
+  if n := 3; false && someCondition { // Noncompliant
     return 1
   }
 

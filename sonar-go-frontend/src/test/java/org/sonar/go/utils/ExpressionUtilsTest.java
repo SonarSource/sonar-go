@@ -417,4 +417,156 @@ class ExpressionUtilsTest {
       .findFirst().get();
     return variableDeclaration.initializers().get(0);
   }
+
+  @Test
+  void shouldExtractActualConditionFromInitAndCond() {
+    var code = """
+      package test
+      func main() {
+        if n := 3; n > 0 {
+          return
+        }
+      }
+      """;
+
+    var ifTree = TestGoConverterSingleFile.parse(code)
+      .descendants()
+      .filter(org.sonar.plugins.go.api.IfTree.class::isInstance)
+      .map(org.sonar.plugins.go.api.IfTree.class::cast)
+      .findFirst().get();
+
+    var condition = ifTree.condition();
+    var extracted = ExpressionUtils.extractActualCondition(condition);
+
+    // The extracted condition should be "n > 0", not the entire "n := 3; n > 0"
+    assertThat(extracted).isInstanceOf(org.sonar.plugins.go.api.BinaryExpressionTree.class);
+    assertThat(((org.sonar.plugins.go.api.BinaryExpressionTree) extracted).operator())
+      .isEqualTo(org.sonar.plugins.go.api.BinaryExpressionTree.Operator.GREATER_THAN);
+    // Verify that the extracted tree is not the same as the original condition
+    assertThat(extracted).isNotSameAs(condition);
+  }
+
+  @Test
+  void shouldReturnSameTreeWhenNotInitAndCond() {
+    var code = """
+      package test
+      func main() {
+        if true {
+          return
+        }
+      }
+      """;
+
+    var ifTree = TestGoConverterSingleFile.parse(code)
+      .descendants()
+      .filter(org.sonar.plugins.go.api.IfTree.class::isInstance)
+      .map(org.sonar.plugins.go.api.IfTree.class::cast)
+      .findFirst().get();
+
+    var condition = ifTree.condition();
+    var extracted = ExpressionUtils.extractActualCondition(condition);
+
+    // When there's no InitAndCond wrapper, should return the same tree
+    assertThat(extracted).isSameAs(condition);
+  }
+
+  @Test
+  void shouldExtractActualConditionWithComplexExpression() {
+    var code = """
+      package test
+      func main() {
+        if x, y := foo(), bar(); x > 0 && y < 10 {
+          return
+        }
+      }
+      """;
+
+    var ifTree = TestGoConverterSingleFile.parse(code)
+      .descendants()
+      .filter(org.sonar.plugins.go.api.IfTree.class::isInstance)
+      .map(org.sonar.plugins.go.api.IfTree.class::cast)
+      .findFirst().get();
+
+    var condition = ifTree.condition();
+    var extracted = ExpressionUtils.extractActualCondition(condition);
+
+    // The extracted condition should be "x > 0 && y < 10"
+    assertThat(extracted).isInstanceOf(org.sonar.plugins.go.api.BinaryExpressionTree.class);
+    assertThat(((org.sonar.plugins.go.api.BinaryExpressionTree) extracted).operator())
+      .isEqualTo(org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND);
+    assertThat(extracted).isNotSameAs(condition);
+  }
+
+  @Test
+  void shouldHandleNullCondition() {
+    var extracted = ExpressionUtils.extractActualCondition(null);
+    assertThat(extracted).isNull();
+  }
+
+  @Test
+  void shouldHandleNestedIfWithShortStatement() {
+    var code = """
+      package test
+      func main() {
+        if x := 5; x > 0 {
+          if y := 10; y > 0 {
+            return
+          }
+        }
+      }
+      """;
+
+    var ifTrees = TestGoConverterSingleFile.parse(code)
+      .descendants()
+      .filter(org.sonar.plugins.go.api.IfTree.class::isInstance)
+      .map(org.sonar.plugins.go.api.IfTree.class::cast)
+      .toList();
+
+    // Should have two if statements
+    assertThat(ifTrees).hasSize(2);
+
+    // Test outer if
+    var outerCondition = ifTrees.get(0).condition();
+    var outerExtracted = ExpressionUtils.extractActualCondition(outerCondition);
+    assertThat(outerExtracted).isInstanceOf(org.sonar.plugins.go.api.BinaryExpressionTree.class);
+    assertThat(((org.sonar.plugins.go.api.BinaryExpressionTree) outerExtracted).operator())
+      .isEqualTo(org.sonar.plugins.go.api.BinaryExpressionTree.Operator.GREATER_THAN);
+
+    // Test inner if
+    var innerCondition = ifTrees.get(1).condition();
+    var innerExtracted = ExpressionUtils.extractActualCondition(innerCondition);
+    assertThat(innerExtracted).isInstanceOf(org.sonar.plugins.go.api.BinaryExpressionTree.class);
+    assertThat(((org.sonar.plugins.go.api.BinaryExpressionTree) innerExtracted).operator())
+      .isEqualTo(org.sonar.plugins.go.api.BinaryExpressionTree.Operator.GREATER_THAN);
+  }
+
+  @Test
+  void shouldHandleElseIfWithShortStatement() {
+    var code = """
+      package test
+      func main() {
+        if x > 0 {
+          return 1
+        } else if y := 5; y > 0 {
+          return 2
+        }
+      }
+      """;
+
+    var ifTrees = TestGoConverterSingleFile.parse(code)
+      .descendants()
+      .filter(org.sonar.plugins.go.api.IfTree.class::isInstance)
+      .map(org.sonar.plugins.go.api.IfTree.class::cast)
+      .toList();
+
+    // Should have two if statements (main if and else-if)
+    assertThat(ifTrees).hasSize(2);
+
+    // Test else-if with short statement
+    var elseIfCondition = ifTrees.get(1).condition();
+    var extracted = ExpressionUtils.extractActualCondition(elseIfCondition);
+    assertThat(extracted).isInstanceOf(org.sonar.plugins.go.api.BinaryExpressionTree.class);
+    assertThat(((org.sonar.plugins.go.api.BinaryExpressionTree) extracted).operator())
+      .isEqualTo(org.sonar.plugins.go.api.BinaryExpressionTree.Operator.GREATER_THAN);
+  }
 }

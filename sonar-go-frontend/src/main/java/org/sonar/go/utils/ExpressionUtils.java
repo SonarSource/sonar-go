@@ -76,6 +76,34 @@ public class ExpressionUtils {
     return tree instanceof UnaryExpressionTree unary && unary.operator() == UnaryExpressionTree.Operator.NEGATE;
   }
 
+  /**
+   * Extracts the actual condition from an if statement's condition tree.
+   * When an if statement has a short statement (e.g., "if n := 3; true"),
+   * the condition is wrapped in an "InitAndCond" native node.
+   * This method extracts the actual condition from such wrappers.
+   *
+   * @param condition the condition tree from an if statement (may be null)
+   * @return the actual condition tree, unwrapped from any InitAndCond node,
+   *         or the original condition if no wrapper exists, or null if input is null
+   */
+  public static Tree extractActualCondition(@Nullable Tree condition) {
+    if (condition == null) {
+      return null;
+    }
+    // If the condition is an "InitAndCond" native node (used when if has a short statement),
+    // extract the actual condition which is the third child (after init and semicolon)
+    boolean isInitAndCond = NativeKinds.isStringNativeKindOfType(condition, "InitAndCond");
+    if (isInitAndCond) {
+      var children = condition.children();
+      // The structure is: [init_statement, semicolon, condition]
+      if (children.size() >= 3) {
+        // Return the actual condition directly - it has the correct text range
+        return children.get(2);
+      }
+    }
+    return condition;
+  }
+
   public static boolean isBinaryOperation(Tree tree, BinaryExpressionTree.Operator operator) {
     return tree instanceof BinaryExpressionTree binaryExpressionTree && binaryExpressionTree.operator() == operator;
   }

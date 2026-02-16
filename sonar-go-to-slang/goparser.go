@@ -316,8 +316,19 @@ func (t *SlangMapper) appendNode(children []*Node, child *Node) []*Node {
 }
 
 func (t *SlangMapper) createAdditionalInitAndCond(astInit ast.Stmt, astCond ast.Expr) *Node {
+	if astInit == nil || astCond == nil {
+		// Handle error or return appropriate node
+		return nil
+	}
 	var children []*Node
 	children = t.appendNode(children, t.mapStmt(astInit, "Init"))
+	// Add a semicolon token between init and condition
+	// This allows ExpressionUtils.extractActualCondition() to correctly identify
+	// the condition as children[2] (after init and semicolon)
+	// The semicolon position is at the end of the init statement
+	semicolonPos := astInit.End()
+	semicolonToken := t.createTokenFromPosAstToken(semicolonPos, token.SEMICOLON, "Semicolon")
+	children = t.appendNode(children, semicolonToken)
 	children = t.appendNode(children, t.mapExpr(astCond, "Cond"))
 	return t.createNativeNode(nil, children, "InitAndCond")
 }

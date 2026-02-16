@@ -26,4 +26,9 @@ class IdenticalConditionsCheckTest {
     GoVerifier.verify("IdenticalConditionsCheck/IdenticalConditionsCheck.go", new IdenticalConditionsCheck());
   }
 
+  @Test
+  void shouldHandleIfWithShortStatement() {
+    GoVerifier.verify("IdenticalConditionsCheck/IfWithShortStatement.go", new IdenticalConditionsCheck());
+  }
+
 }

@@ -27,6 +27,7 @@ import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.checks.GoCheck;
 import org.sonar.plugins.go.api.checks.InitContext;
 
+import static org.sonar.go.utils.ExpressionUtils.extractActualCondition;
 import static org.sonar.go.utils.ExpressionUtils.isBinaryOperation;
 import static org.sonar.go.utils.ExpressionUtils.isBooleanLiteral;
 import static org.sonar.go.utils.ExpressionUtils.isFalseValueLiteral;
@@ -44,7 +45,7 @@ public class IfConditionalAlwaysTrueOrFalseCheck implements GoCheck {
   @Override
   public void initialize(InitContext init) {
     init.register(IfTree.class, (ctx, ifTree) -> {
-      var condition = ifTree.condition();
+      var condition = extractActualCondition(ifTree.condition());
       if (isAlwaysTrueOrFalse(condition)) {
         var message = String.format(MESSAGE_TEMPLATE, ifTree.ifKeyword().text());
         ctx.reportIssue(condition, message);
