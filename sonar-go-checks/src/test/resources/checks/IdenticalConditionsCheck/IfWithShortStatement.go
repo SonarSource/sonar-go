@@ -9,13 +9,21 @@ func test() {
 		return 2
 	}
 
+	// Test that spaces around semicolons do not affect condition extraction
+	if x := 5 ; x > 3 {
+		return 1
+		} else if y := 10 ; x > 3 { // Noncompliant {{This condition duplicates the one on line 13.}}
+		//		                  ^^^^^
+		return 2
+	}
+
 	// Test with multiple identical conditions
 	if a := 1; a == 1 {
 		return 3
-	} else if b := 2; a == 1 { // Noncompliant {{This condition duplicates the one on line 13.}}
+	} else if b := 2; a == 1 { // Noncompliant {{This condition duplicates the one on line 21.}}
 	//                ^^^^^^
 		return 4
-	} else if c := 3; a == 1 { // Noncompliant {{This condition duplicates the one on line 13.}}
+	} else if c := 3; a == 1 { // Noncompliant {{This condition duplicates the one on line 21.}}
 	//                ^^^^^^
 		return 5
 	}
@@ -32,7 +40,7 @@ func test() {
 	// Test with parentheses around condition
 	if x := 5; x > 3 {
 		return 9
-	} else if y := 10; x > 3 { // Noncompliant {{This condition duplicates the one on line 33.}}
+	} else if y := 10; x > 3 { // Noncompliant {{This condition duplicates the one on line 41.}}
 	//                 ^^^^^
 		return 10
 	}
@@ -61,7 +69,7 @@ func test() {
 	var z int = 10
 	if x := 1; z > 3 {
 		return 15
-	} else if y := 2; z > 3 { // Noncompliant {{This condition duplicates the one on line 62.}}
+	} else if y := 2; z > 3 { // Noncompliant {{This condition duplicates the one on line 70.}}
 	//                ^^^^^
 		return 16
 	}
@@ -77,7 +85,7 @@ func test() {
 	var w int = 5
 	if y := 5; w > 3 {
 		return 19
-	} else if x := 10; w > 3 { // Noncompliant {{This condition duplicates the one on line 78.}}
+	} else if x := 10; w > 3 { // Noncompliant {{This condition duplicates the one on line 86.}}
 	//                 ^^^^^
 		return 20
 	}

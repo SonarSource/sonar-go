@@ -38,8 +38,10 @@ import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.Type;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
+import org.sonarsource.analyzer.commons.collections.ListUtils;
 
 import static org.sonar.go.impl.TypeImpl.UNKNOWN_TYPE;
+import static org.sonar.go.utils.NativeKinds.isStringNativeKindOfType;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_AND;
 import static org.sonar.plugins.go.api.BinaryExpressionTree.Operator.CONDITIONAL_OR;
 
@@ -89,17 +91,8 @@ public class ExpressionUtils {
   public static Tree extractActualCondition(@Nullable Tree condition) {
     if (condition == null) {
       return null;
-    }
-    // If the condition is an "InitAndCond" native node (used when if has a short statement),
-    // extract the actual condition which is the third child (after init and semicolon)
-    boolean isInitAndCond = NativeKinds.isStringNativeKindOfType(condition, "InitAndCond");
-    if (isInitAndCond) {
-      var children = condition.children();
-      // The structure is: [init_statement, semicolon, condition]
-      if (children.size() >= 3) {
-        // Return the actual condition directly - it has the correct text range
-        return children.get(2);
-      }
+    } else if (isStringNativeKindOfType(condition, "InitAndCond") && !condition.children().isEmpty()) {
+      return ListUtils.getLast(condition.children());
     }
     return condition;
   }
