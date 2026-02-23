@@ -69,18 +69,20 @@ public abstract class AbstractSensorTest {
   }
 
   protected InputFile createInputFile(String relativePath, String content) {
-    return createInputFile(relativePath, content, null);
+    return createInputFile(relativePath, content, null, InputFile.Type.MAIN);
   }
 
-  protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status) {
+  protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status, @Nullable InputFile.Type type) {
     TestInputFileBuilder builder = new TestInputFileBuilder("moduleKey", relativePath)
       .setModuleBaseDir(baseDir.toPath())
-      .setType(InputFile.Type.MAIN)
       .setLanguage(GoLanguage.KEY)
       .setCharset(StandardCharsets.UTF_8)
       .setContents(content);
     if (status != null) {
       builder.setStatus(status);
+    }
+    if (type != null) {
+      builder.setType(type);
     }
     return builder.build();
   }

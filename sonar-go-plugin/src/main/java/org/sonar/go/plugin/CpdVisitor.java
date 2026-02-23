@@ -43,7 +43,8 @@ public class CpdVisitor extends PullRequestAwareVisitor {
 
   public CpdVisitor() {
     register(TopLevelTree.class, (ctx, tree) -> {
-      NewCpdTokens cpdTokens = ctx.sensorContext.newCpdTokens().onFile(ctx.inputFile);
+      NewCpdTokens cpdTokens = ctx.sensorContext.newCpdTokens()
+        .onFile(ctx.inputFile);
       List<Token> tokens = tree.metaData().tokens();
       List<Token> tokensToCache = new ArrayList<>(tokens.size());
 

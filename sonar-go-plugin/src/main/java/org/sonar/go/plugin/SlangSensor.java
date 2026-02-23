@@ -25,11 +25,11 @@ import java.util.concurrent.TimeUnit;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
-import org.sonar.api.batch.fs.FilePredicate;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
@@ -62,8 +62,13 @@ public abstract class SlangSensor implements Sensor {
     && !(t instanceof BlockTree);
 
   protected static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
+  private static final String SONAR_TESTS_KEY = "sonar.tests";
+  private static final String SONAR_TESTS_INCLUSIONS_KEY = "sonar.test.inclusions";
   private static final Logger LOG = LoggerFactory.getLogger(SlangSensor.class);
   private static final int PROGRESS_REPORT_INTERVAL_SECOND = 10;
+  private static final String EMPTY_TEST_PROPERTIES_MESSAGE = """
+    The properties "%s" and %s are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+    It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "%1$s=." and "%2$s=**/*_test.go\"""";
 
   private final NoSonarFilter noSonarFilter;
   private final Language language;
@@ -343,12 +348,7 @@ public abstract class SlangSensor implements Sensor {
   private void executeLogic(SensorContext sensorContext) {
     initialize(sensorContext);
 
-    FileSystem fileSystem = sensorContext.fileSystem();
-    FilePredicate mainFilePredicate = fileSystem.predicates().and(
-      fileSystem.predicates().hasLanguage(language.getKey()),
-      fileSystem.predicates().hasType(InputFile.Type.MAIN));
-    List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
-      .toList();
+    var inputFiles = findAllInputFiles(sensorContext);
     var goProgressReport = new GoProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(PROGRESS_REPORT_INTERVAL_SECOND));
     boolean success = false;
     var converter = ASTConverterValidation.wrap(astConverter(), sensorContext.config());
@@ -367,6 +367,39 @@ public abstract class SlangSensor implements Sensor {
 
     processMetrics();
     cleanUp();
+  }
+
+  // visible for testing
+  List<InputFile> findAllInputFiles(SensorContext sensorContext) {
+    FileSystem fileSystem = sensorContext.fileSystem();
+    var sonarTestsProperty = sensorContext.config().get(SONAR_TESTS_KEY).orElse("");
+    var sonarTestsInclusionsProperty = sensorContext.config().get(SONAR_TESTS_INCLUSIONS_KEY).orElse("");
+
+    if (sonarTestsProperty.isBlank() && sonarTestsInclusionsProperty.isBlank()) {
+      var message = EMPTY_TEST_PROPERTIES_MESSAGE
+        .formatted(SONAR_TESTS_KEY, SONAR_TESTS_INCLUSIONS_KEY);
+      LOG.info(message);
+
+      var mainFilePredicate = fileSystem.predicates().and(
+        fileSystem.predicates().hasLanguage(language.getKey()),
+        fileSystem.predicates().hasType(InputFile.Type.MAIN),
+        fileSystem.predicates().doesNotMatchPathPattern("**/*_test.go"));
+      var mainInputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false);
+
+      var testFilePredicate = fileSystem.predicates().and(
+        fileSystem.predicates().hasLanguage(language.getKey()),
+        fileSystem.predicates().matchesPathPattern("**/*_test.go"));
+      var testInputFiles = StreamSupport.stream(fileSystem.inputFiles(testFilePredicate).spliterator(), false)
+        .map(GoTestInputFile::new);
+      return Stream.concat(mainInputFiles, testInputFiles).toList();
+    } else {
+      var message = "The properties \"%s\" and \"%s\" are set: \"%1$s=%3$s\" and \"%2$s=%4$s\"".formatted(SONAR_TESTS_KEY, SONAR_TESTS_INCLUSIONS_KEY, sonarTestsProperty,
+        sonarTestsInclusionsProperty);
+      LOG.debug(message);
+      var allFilePredicate = fileSystem.predicates().hasLanguage(language.getKey());
+      return StreamSupport.stream(fileSystem.inputFiles(allFilePredicate).spliterator(), false)
+        .toList();
+    }
   }
 
   protected void initialize(SensorContext sensorContext) {

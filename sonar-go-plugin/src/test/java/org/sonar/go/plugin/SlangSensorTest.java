@@ -485,7 +485,7 @@ class SlangSensorTest extends AbstractSensorTest {
       inputFile = createInputFile(
         "file1.go",
         ORIGINAL_FILE_CONTENT,
-        InputFile.Status.SAME);
+        InputFile.Status.SAME, InputFile.Type.MAIN);
       sensorContext.fileSystem().add(inputFile);
       inputFileContext = new InputFileContext(sensorContext, inputFile);
       // Add the hash of the file to the cache
@@ -583,7 +583,7 @@ class SlangSensorTest extends AbstractSensorTest {
       InputFile changedFile = createInputFile(
         "file1.go",
         ORIGINAL_FILE_CONTENT,
-        InputFile.Status.CHANGED);
+        InputFile.Status.CHANGED, InputFile.Type.MAIN);
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       sensorContext.fileSystem().add(changedFile);
       goProgressReport.start(goFolders);
@@ -612,7 +612,7 @@ class SlangSensorTest extends AbstractSensorTest {
       InputFile changedFile = createInputFile(
         "file1.go",
         "// This is definitely not the same thing\npackage main",
-        InputFile.Status.SAME);
+        InputFile.Status.SAME, InputFile.Type.MAIN);
       sensorContext.fileSystem().add(changedFile);
       inputFileContext = new InputFileContext(sensorContext, changedFile);
       // Execute analyzeFile
@@ -777,8 +777,164 @@ class SlangSensorTest extends AbstractSensorTest {
     assertThat(logTester.logs(Level.INFO)).contains("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
   }
 
+  @Test
+  void shouldScanAllGoFilesWhenTestPropertiesAreNotSet() {
+    var content = """
+      package main
+      func main() {
+        print (1 == 1)
+      }""";
+    var inputFile1 = createInputFile("main.go", content);
+    // when no sonar.tests & sonar.test.inclusions are set then all files are indexed as MAIN
+    var inputFile2 = createInputFile("main_test.go", content, null, InputFile.Type.MAIN);
+    context.fileSystem().add(inputFile1);
+    context.fileSystem().add(inputFile2);
+
+    var files = sensor(checkFactory("S1764")).findAllInputFiles(context);
+
+    assertThat(files).filteredOn(f -> f.filename().equals("main.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.MAIN);
+    assertThat(files).filteredOn(f -> f.filename().equals("main_test.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.TEST);
+  }
+
+  @Test
+  void shouldScanAllGoFilesWhenTestPropertiesAreSetToDefaults() {
+    var content = """
+      package main
+      func main() {
+        print (1 == 1)
+      }""";
+    var inputFile1 = createInputFile("main.go", content);
+    var inputFile2 = createInputFile("main_test.go", content, null, InputFile.Type.TEST);
+    context.fileSystem().add(inputFile1);
+    context.fileSystem().add(inputFile2);
+    context.settings().setProperty("sonar.tests", ".");
+    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
+
+    var files = sensor(checkFactory("S1764")).findAllInputFiles(context);
+
+    assertThat(files).filteredOn(f -> f.filename().equals("main.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.MAIN);
+    assertThat(files).filteredOn(f -> f.filename().equals("main_test.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.TEST);
+  }
+
+  @Test
+  void shouldScanAllGoFilesWhenTestPropertiesAreSetToCustom() {
+    var content = """
+      package main
+      func main() {
+        print (1 == 1)
+      }""";
+    var inputFile1 = createInputFile("main.go", content);
+    var inputFile2 = createInputFile("main_foo.go", content, null, InputFile.Type.TEST);
+    context.fileSystem().add(inputFile1);
+    context.fileSystem().add(inputFile2);
+    context.settings().setProperty("sonar.tests", ".");
+    context.settings().setProperty("sonar.test.inclusions", "**/*_foo.go");
+
+    var files = sensor(checkFactory("S1764")).findAllInputFiles(context);
+
+    assertThat(files).filteredOn(f -> f.filename().equals("main.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.MAIN);
+    assertThat(files).filteredOn(f -> f.filename().equals("main_foo.go"))
+      .map(InputFile::type)
+      .containsOnly(InputFile.Type.TEST);
+  }
+
+  @Test
+  void shouldLogInfoMessageWhenTestPropertiesAreNotSet() {
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and sonar.test.inclusions are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+        It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenSonarTestsPropertyIsSet() {
+    context.settings().setProperty("sonar.tests", ".");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenSonarTestInclusionsPropertyIsSet() {
+    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
+
+    var mainFile = createInputFile("app.go", "package main\nfunc app() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=" and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenBothPropertiesAreSet() {
+    context.settings().setProperty("sonar.tests", ".");
+    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
+
+    var mainFile = createInputFile("code.go", "package main\nfunc code() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldHandleEmptyStringPropertiesAsSameAsNotSet() {
+    context.settings().setProperty("sonar.tests", "");
+    context.settings().setProperty("sonar.test.inclusions", "");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and sonar.test.inclusions are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+        It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldHandleWhitespaceOnlyPropertiesAsSameAsNotSet() {
+    context.settings().setProperty("sonar.tests", "   ");
+    context.settings().setProperty("sonar.test.inclusions", "\t");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}");
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and sonar.test.inclusions are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+        It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
   InputFile mockInputFile(String path) {
-    InputFile inputFile = mock(InputFile.class);
+    var inputFile = mock(InputFile.class);
     when(inputFile.uri()).thenReturn(new File(path).toURI());
     return inputFile;
   }
