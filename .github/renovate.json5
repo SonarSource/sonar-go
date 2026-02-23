@@ -6,7 +6,6 @@
   "schedule": [
     "before 4am on Monday"
   ],
-  "rebaseWhen": "conflicted",
   "cloneSubmodules": true,
   "cloneSubmodulesFilter": [
     "build-logic/common"
