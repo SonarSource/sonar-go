@@ -30,6 +30,7 @@ import org.sonar.api.config.Configuration;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.impl.TextRanges;
+import org.sonar.plugins.go.api.GoInputFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
@@ -52,7 +53,7 @@ class InputFileContextTest {
     when(inputFile.toString()).thenReturn("foo/bar.go");
     var sensorContext = mock(SensorContext.class);
     when(sensorContext.config()).thenReturn(mock(Configuration.class));
-    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
     var range = TextRanges.range(10, 1, 10, 5);
 
     var actual = inputFileContext.textRange(range);
@@ -71,7 +72,7 @@ class InputFileContextTest {
     when(configMock.getBoolean(GoSensor.FAIL_FAST_PROPERTY_NAME)).thenReturn(Optional.of(true));
     var sensorContext = mock(SensorContext.class);
     when(sensorContext.config()).thenReturn(configMock);
-    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
     var range = TextRanges.range(10, 1, 10, 5);
 
     assertThatThrownBy(() -> inputFileContext.textRange(range))
@@ -88,7 +89,7 @@ class InputFileContextTest {
     var inputFile = mock(InputFile.class);
     var defaultTextPointer = new DefaultTextPointer(1, 2);
     when(inputFile.newPointer(1, 2)).thenReturn(defaultTextPointer);
-    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
     var textPointer = new TextPointerImpl(1, 2);
 
     inputFileContext.reportAnalysisError("msg", textPointer);
@@ -105,7 +106,7 @@ class InputFileContextTest {
     var inputFile = mock(InputFile.class);
     var defaultTextPointer = new DefaultTextPointer(1, 2);
     when(inputFile.newPointer(1, 2)).thenThrow(new IllegalArgumentException());
-    var inputFileContext = new InputFileContext(sensorContext, inputFile);
+    var inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
     var textPointer = new TextPointerImpl(1, 2);
 
     inputFileContext.reportAnalysisError("msg", textPointer);

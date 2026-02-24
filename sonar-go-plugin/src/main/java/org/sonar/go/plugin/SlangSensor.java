@@ -47,6 +47,7 @@ import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.ImportDeclarationTree;
 import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.ParseException;
@@ -106,7 +107,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected boolean analyseFiles(ASTConverter converter,
     SensorContext sensorContext,
-    List<InputFile> inputFiles,
+    List<GoInputFile> inputFiles,
     GoProgressReport goProgressReport,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics,
@@ -151,16 +152,16 @@ public abstract class SlangSensor implements Sensor {
       var inputFilePath = parseException.getInputFilePath();
       if (inputFilePath != null) {
         filesToAnalyse.stream()
-          .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
+          .filter(inputFileContext -> inputFileContext.goInputFile.toString().equals(inputFilePath))
           .findFirst()
           .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), parseException.getMessage()));
       }
     }
   }
 
-  static List<GoFolder> groupFilesByDirectory(List<InputFile> inputFiles) {
-    Map<String, List<InputFile>> filesByDirectory = inputFiles.stream()
-      .collect(Collectors.groupingBy((InputFile inputFile) -> {
+  static List<GoFolder> groupFilesByDirectory(List<GoInputFile> inputFiles) {
+    Map<String, List<GoInputFile>> filesByDirectory = inputFiles.stream()
+      .collect(Collectors.groupingBy((GoInputFile inputFile) -> {
         var path = inputFile.uri().getPath();
         int lastSeparatorIndex = path.lastIndexOf("/");
         if (lastSeparatorIndex == -1) {
@@ -208,11 +209,11 @@ public abstract class SlangSensor implements Sensor {
     String content;
     String fileName;
     try {
-      content = cacheEntry.fileContext().inputFile.contents();
-      fileName = cacheEntry.fileContext().inputFile.toString();
+      content = cacheEntry.fileContext().goInputFile.contents();
+      fileName = cacheEntry.fileContext().goInputFile.toString();
       return Map.entry(fileName, content);
     } catch (IOException | RuntimeException e) {
-      throw toParseException("read", cacheEntry.fileContext().inputFile, e);
+      throw toParseException("read", cacheEntry.fileContext().goInputFile, e);
     }
   }
 
@@ -236,7 +237,7 @@ public abstract class SlangSensor implements Sensor {
     Map<String, CacheEntry> result = new HashMap<>();
     for (InputFileContext inputFileContext : inputFileContexts) {
       if (fileCanBeSkipped(inputFileContext)) {
-        String fileKey = inputFileContext.inputFile.key();
+        String fileKey = inputFileContext.goInputFile.key();
         LOG.debug("Checking that previous results can be reused for input file {}.", fileKey);
 
         Map<PullRequestAwareVisitor, Boolean> successfulCacheReuseByVisitor = visitors.stream()
@@ -257,9 +258,9 @@ public abstract class SlangSensor implements Sensor {
           .map(Map.Entry::getKey)
           .map(visitor -> (TreeVisitor<InputFileContext>) visitor)
           .toList();
-        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, visitorsToSkip));
+        result.put(inputFileContext.goInputFile.toString(), new CacheEntry(inputFileContext, visitorsToSkip));
       } else {
-        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, List.of()));
+        result.put(inputFileContext.goInputFile.toString(), new CacheEntry(inputFileContext, List.of()));
       }
     }
     return result;
@@ -290,7 +291,7 @@ public abstract class SlangSensor implements Sensor {
         statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
-        var message = "Cannot analyse '" + inputFileContext.inputFile + "': " + e.getMessage();
+        var message = "Cannot analyse '" + inputFileContext.goInputFile + "': " + e.getMessage();
         LOG.warn(message, e);
       }
     }
@@ -317,12 +318,12 @@ public abstract class SlangSensor implements Sensor {
     String message = String.format(
       "Visitor %s failed to reuse previous results for input file %s.",
       visitor.getClass().getSimpleName(),
-      inputFileContext.inputFile.key());
+      inputFileContext.goInputFile.key());
     LOG.debug(message);
     return false;
   }
 
-  protected static ParseException toParseException(String action, InputFile inputFile, Exception cause) {
+  protected static ParseException toParseException(String action, GoInputFile inputFile, Exception cause) {
     TextPointer position = cause instanceof ParseException actual ? actual.getPosition() : null;
     return new ParseException("Cannot " + action + " '" + inputFile + "': " + cause.getMessage(), position, cause, inputFile.toString());
   }
@@ -370,7 +371,7 @@ public abstract class SlangSensor implements Sensor {
   }
 
   // visible for testing
-  List<InputFile> findAllInputFiles(SensorContext sensorContext) {
+  List<GoInputFile> findAllInputFiles(SensorContext sensorContext) {
     FileSystem fileSystem = sensorContext.fileSystem();
     var sonarTestsProperty = sensorContext.config().get(SONAR_TESTS_KEY).orElse("");
     var sonarTestsInclusionsProperty = sensorContext.config().get(SONAR_TESTS_INCLUSIONS_KEY).orElse("");
@@ -384,20 +385,23 @@ public abstract class SlangSensor implements Sensor {
         fileSystem.predicates().hasLanguage(language.getKey()),
         fileSystem.predicates().hasType(InputFile.Type.MAIN),
         fileSystem.predicates().doesNotMatchPathPattern("**/*_test.go"));
-      var mainInputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false);
+      var mainInputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
+        .map(GoInputFile::new);
 
       var testFilePredicate = fileSystem.predicates().and(
         fileSystem.predicates().hasLanguage(language.getKey()),
         fileSystem.predicates().matchesPathPattern("**/*_test.go"));
       var testInputFiles = StreamSupport.stream(fileSystem.inputFiles(testFilePredicate).spliterator(), false)
-        .map(GoTestInputFile::new);
-      return Stream.concat(mainInputFiles, testInputFiles).toList();
+        .map(file -> new GoInputFile(file, true));
+      return Stream.concat(mainInputFiles, testInputFiles)
+        .toList();
     } else {
       var message = "The properties \"%s\" and \"%s\" are set: \"%1$s=%3$s\" and \"%2$s=%4$s\"".formatted(SONAR_TESTS_KEY, SONAR_TESTS_INCLUSIONS_KEY, sonarTestsProperty,
         sonarTestsInclusionsProperty);
       LOG.debug(message);
       var allFilePredicate = fileSystem.predicates().hasLanguage(language.getKey());
       return StreamSupport.stream(fileSystem.inputFiles(allFilePredicate).spliterator(), false)
+        .map(GoInputFile::new)
         .toList();
     }
   }

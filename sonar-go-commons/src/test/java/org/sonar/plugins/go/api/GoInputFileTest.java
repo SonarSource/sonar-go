@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.plugin;
+package org.sonar.plugins.go.api;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,25 +33,47 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class GoTestInputFileTest {
+class GoInputFileTest {
 
   @Test
-  void shouldReturnTestType() {
+  void shouldReturnTestTypeWhenTestFileIsTrue() {
     InputFile delegate = mock(InputFile.class);
     when(delegate.type()).thenReturn(InputFile.Type.MAIN);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate, true);
 
-    assertThat(goTestInputFile.type()).isEqualTo(InputFile.Type.TEST);
+    assertThat(goInputFile.type()).isEqualTo(InputFile.Type.TEST);
+  }
+
+  @Test
+  void shouldReturnDelegateTypeWhenTestFileIsFalse() {
+    InputFile delegate = mock(InputFile.class);
+    when(delegate.type()).thenReturn(InputFile.Type.MAIN);
+
+    GoInputFile goInputFile = new GoInputFile(delegate, false);
+
+    assertThat(goInputFile.type()).isEqualTo(InputFile.Type.MAIN);
+    verify(delegate).type();
+  }
+
+  @Test
+  void shouldReturnDelegateTypeWhenUsingSingleArgConstructor() {
+    InputFile delegate = mock(InputFile.class);
+    when(delegate.type()).thenReturn(InputFile.Type.MAIN);
+
+    GoInputFile goInputFile = new GoInputFile(delegate);
+
+    assertThat(goInputFile.type()).isEqualTo(InputFile.Type.MAIN);
+    verify(delegate).type();
   }
 
   @Test
   void shouldReturnDelegate() {
     InputFile delegate = mock(InputFile.class);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.getDelegate()).isEqualTo(delegate);
+    assertThat(goInputFile.getDelegate()).isEqualTo(delegate);
   }
 
   @Test
@@ -59,9 +81,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.relativePath()).thenReturn("src/test/go/file_test.go");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.relativePath()).isEqualTo("src/test/go/file_test.go");
+    assertThat(goInputFile.relativePath()).isEqualTo("src/test/go/file_test.go");
     verify(delegate).relativePath();
   }
 
@@ -70,9 +92,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.absolutePath()).thenReturn("/absolute/path/file_test.go");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.absolutePath()).isEqualTo("/absolute/path/file_test.go");
+    assertThat(goInputFile.absolutePath()).isEqualTo("/absolute/path/file_test.go");
     verify(delegate).absolutePath();
   }
 
@@ -82,9 +104,9 @@ class GoTestInputFileTest {
     File mockFile = new File("test.go");
     when(delegate.file()).thenReturn(mockFile);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.file()).isEqualTo(mockFile);
+    assertThat(goInputFile.file()).isEqualTo(mockFile);
     verify(delegate).file();
   }
 
@@ -94,9 +116,9 @@ class GoTestInputFileTest {
     Path mockPath = Paths.get("test.go");
     when(delegate.path()).thenReturn(mockPath);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.path()).isEqualTo(mockPath);
+    assertThat(goInputFile.path()).isEqualTo(mockPath);
     verify(delegate).path();
   }
 
@@ -106,9 +128,9 @@ class GoTestInputFileTest {
     URI mockUri = URI.create("file:///test.go");
     when(delegate.uri()).thenReturn(mockUri);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.uri()).isEqualTo(mockUri);
+    assertThat(goInputFile.uri()).isEqualTo(mockUri);
     verify(delegate).uri();
   }
 
@@ -117,9 +139,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.filename()).thenReturn("file_test.go");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.filename()).isEqualTo("file_test.go");
+    assertThat(goInputFile.filename()).isEqualTo("file_test.go");
     verify(delegate).filename();
   }
 
@@ -128,9 +150,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.language()).thenReturn("go");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.language()).isEqualTo("go");
+    assertThat(goInputFile.language()).isEqualTo("go");
     verify(delegate).language();
   }
 
@@ -140,9 +162,9 @@ class GoTestInputFileTest {
     InputStream mockInputStream = mock(InputStream.class);
     when(delegate.inputStream()).thenReturn(mockInputStream);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.inputStream()).isEqualTo(mockInputStream);
+    assertThat(goInputFile.inputStream()).isEqualTo(mockInputStream);
     verify(delegate).inputStream();
   }
 
@@ -152,9 +174,9 @@ class GoTestInputFileTest {
     String content = "package main\nfunc TestExample(t *testing.T) {}";
     when(delegate.contents()).thenReturn(content);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.contents()).isEqualTo(content);
+    assertThat(goInputFile.contents()).isEqualTo(content);
     verify(delegate).contents();
   }
 
@@ -163,9 +185,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.status()).thenReturn(InputFile.Status.CHANGED);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.status()).isEqualTo(InputFile.Status.CHANGED);
+    assertThat(goInputFile.status()).isEqualTo(InputFile.Status.CHANGED);
     verify(delegate).status();
   }
 
@@ -174,9 +196,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.lines()).thenReturn(42);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.lines()).isEqualTo(42);
+    assertThat(goInputFile.lines()).isEqualTo(42);
     verify(delegate).lines();
   }
 
@@ -185,9 +207,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.isEmpty()).thenReturn(false);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.isEmpty()).isFalse();
+    assertThat(goInputFile.isEmpty()).isFalse();
     verify(delegate).isEmpty();
   }
 
@@ -197,9 +219,9 @@ class GoTestInputFileTest {
     TextPointer mockPointer = mock(TextPointer.class);
     when(delegate.newPointer(1, 0)).thenReturn(mockPointer);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.newPointer(1, 0)).isEqualTo(mockPointer);
+    assertThat(goInputFile.newPointer(1, 0)).isEqualTo(mockPointer);
     verify(delegate).newPointer(1, 0);
   }
 
@@ -211,9 +233,9 @@ class GoTestInputFileTest {
     TextRange mockRange = mock(TextRange.class);
     when(delegate.newRange(start, end)).thenReturn(mockRange);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.newRange(start, end)).isEqualTo(mockRange);
+    assertThat(goInputFile.newRange(start, end)).isEqualTo(mockRange);
     verify(delegate).newRange(start, end);
   }
 
@@ -223,9 +245,9 @@ class GoTestInputFileTest {
     TextRange mockRange = mock(TextRange.class);
     when(delegate.newRange(1, 0, 2, 5)).thenReturn(mockRange);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.newRange(1, 0, 2, 5)).isEqualTo(mockRange);
+    assertThat(goInputFile.newRange(1, 0, 2, 5)).isEqualTo(mockRange);
     verify(delegate).newRange(1, 0, 2, 5);
   }
 
@@ -235,9 +257,9 @@ class GoTestInputFileTest {
     TextRange mockRange = mock(TextRange.class);
     when(delegate.selectLine(5)).thenReturn(mockRange);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.selectLine(5)).isEqualTo(mockRange);
+    assertThat(goInputFile.selectLine(5)).isEqualTo(mockRange);
     verify(delegate).selectLine(5);
   }
 
@@ -246,9 +268,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.charset()).thenReturn(StandardCharsets.UTF_8);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.charset()).isEqualTo(StandardCharsets.UTF_8);
+    assertThat(goInputFile.charset()).isEqualTo(StandardCharsets.UTF_8);
     verify(delegate).charset();
   }
 
@@ -257,9 +279,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.md5Hash()).thenReturn("abc123def456");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.md5Hash()).isEqualTo("abc123def456");
+    assertThat(goInputFile.md5Hash()).isEqualTo("abc123def456");
     verify(delegate).md5Hash();
   }
 
@@ -268,9 +290,9 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.key()).thenReturn("project:src/test/go/file_test.go");
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.key()).isEqualTo("project:src/test/go/file_test.go");
+    assertThat(goInputFile.key()).isEqualTo("project:src/test/go/file_test.go");
     verify(delegate).key();
   }
 
@@ -279,9 +301,19 @@ class GoTestInputFileTest {
     InputFile delegate = mock(InputFile.class);
     when(delegate.isFile()).thenReturn(true);
 
-    GoTestInputFile goTestInputFile = new GoTestInputFile(delegate);
+    GoInputFile goInputFile = new GoInputFile(delegate);
 
-    assertThat(goTestInputFile.isFile()).isTrue();
+    assertThat(goInputFile.isFile()).isTrue();
     verify(delegate).isFile();
+  }
+
+  @Test
+  void shouldDelegateToString() {
+    InputFile delegate = mock(InputFile.class);
+    when(delegate.toString()).thenReturn("foo/bar.go");
+
+    GoInputFile goInputFile = new GoInputFile(delegate);
+
+    assertThat(goInputFile).hasToString("foo/bar.go");
   }
 }

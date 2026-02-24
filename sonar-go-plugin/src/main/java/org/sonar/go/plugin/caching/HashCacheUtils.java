@@ -27,6 +27,7 @@ import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.cache.ReadCache;
 import org.sonar.api.batch.sensor.cache.WriteCache;
 import org.sonar.go.plugin.InputFileContext;
+import org.sonar.plugins.go.api.GoInputFile;
 
 /**
  * A utility class that enables developers to check that a file has changed and commit its checksum for future analysis.
@@ -45,7 +46,7 @@ public class HashCacheUtils {
    * @return True if the file has its status set to InputFile.Status.SAME and matches its MD5 hash in the cache.
    */
   public static boolean hasSameHashCached(InputFileContext inputFileContext) {
-    InputFile inputFile = inputFileContext.inputFile;
+    var inputFile = inputFileContext.goInputFile;
     String fileKey = inputFile.key();
     if (inputFile.status() != InputFile.Status.SAME) {
       LOG.debug("File {} is considered changed: file status is {}.", fileKey, inputFile.status());
@@ -93,7 +94,7 @@ public class HashCacheUtils {
     if (!inputFileContext.sensorContext.isCacheEnabled()) {
       return false;
     }
-    InputFile inputFile = inputFileContext.inputFile;
+    var inputFile = inputFileContext.goInputFile;
     String cacheKey = computeKey(inputFile);
     WriteCache nextCache = inputFileContext.sensorContext.nextCache();
     try {
@@ -109,10 +110,10 @@ public class HashCacheUtils {
     if (!inputFileContext.sensorContext.isCacheEnabled()) {
       return false;
     }
-    InputFile inputFile = inputFileContext.inputFile;
-    WriteCache nextCache = inputFileContext.sensorContext.nextCache();
+    var inputFile = inputFileContext.goInputFile;
+    var nextCache = inputFileContext.sensorContext.nextCache();
     try {
-      nextCache.write(computeKey(inputFileContext.inputFile), Hex.decodeHex(inputFile.md5Hash()));
+      nextCache.write(computeKey(inputFileContext.goInputFile), Hex.decodeHex(inputFile.md5Hash()));
     } catch (IllegalArgumentException ignored) {
       LOG.warn("Failed to write hash for {} to cache.", inputFile.key());
       return false;
@@ -123,7 +124,7 @@ public class HashCacheUtils {
     return true;
   }
 
-  private static String computeKey(InputFile inputFile) {
+  private static String computeKey(GoInputFile inputFile) {
     return "slang:hash:" + inputFile.key();
   }
 }

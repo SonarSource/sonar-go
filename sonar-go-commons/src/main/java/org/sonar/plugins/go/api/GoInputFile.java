@@ -14,7 +14,7 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.plugin;
+package org.sonar.plugins.go.api;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,124 +28,123 @@ import org.sonar.api.batch.fs.TextPointer;
 import org.sonar.api.batch.fs.TextRange;
 
 /**
- * The implementation of {@link InputFile} that always returns {@link Type#TEST}.
- * The rest of the methods are delegated to the original implementation passed by constructor.
+ * It is kind of wrapper or Anti-Corruption Layer around {@link InputFile} to use internally in this analyzer.
+ * It doesn't implement {@link InputFile} but contains the same set of methods.
+ * Only the {@link #type()} has different implementation and {@link #getDelegate()} is added to get original {@link InputFile}
+ * that needs to be passed to plugin-api methods.
+ * The {@link InputFile} can't be implemented on analyzer side, because in SQS the {@link DefaultInputFile} is used as
+ * implementation and will cause {@link ClassCastException}.
  */
-public class GoTestInputFile implements InputFile {
+public class GoInputFile {
 
   private final InputFile delegate;
+  private final boolean testFile;
 
-  public GoTestInputFile(InputFile inputFile) {
-    this.delegate = inputFile;
+  public GoInputFile(InputFile inputFile) {
+    this(inputFile, false);
   }
 
-  @Override
-  public Type type() {
-    return Type.TEST;
+  public GoInputFile(InputFile inputFile, boolean testFile) {
+    this.delegate = inputFile;
+    this.testFile = testFile;
+  }
+
+  public InputFile.Type type() {
+    if (testFile) {
+      return InputFile.Type.TEST;
+    } else {
+      return delegate.type();
+    }
   }
 
   public InputFile getDelegate() {
     return delegate;
   }
 
-  @Override
   public String relativePath() {
     return delegate.relativePath();
   }
 
-  @Override
   public String absolutePath() {
     return delegate.absolutePath();
   }
 
-  @Override
   public File file() {
     return delegate.file();
   }
 
-  @Override
   public Path path() {
     return delegate.path();
   }
 
-  @Override
   public URI uri() {
     return delegate.uri();
   }
 
-  @Override
   public String filename() {
     return delegate.filename();
   }
 
   @Nullable
-  @Override
+
   public String language() {
     return delegate.language();
   }
 
-  @Override
   public InputStream inputStream() throws IOException {
     return delegate.inputStream();
   }
 
-  @Override
   public String contents() throws IOException {
     return delegate.contents();
   }
 
-  @Override
-  public Status status() {
+  public InputFile.Status status() {
     return delegate.status();
   }
 
-  @Override
   public int lines() {
     return delegate.lines();
   }
 
-  @Override
   public boolean isEmpty() {
     return delegate.isEmpty();
   }
 
-  @Override
   public TextPointer newPointer(int line, int lineOffset) {
     return delegate.newPointer(line, lineOffset);
   }
 
-  @Override
   public TextRange newRange(TextPointer start, TextPointer end) {
     return delegate.newRange(start, end);
   }
 
-  @Override
   public TextRange newRange(int startLine, int startLineOffset, int endLine, int endLineOffset) {
     return delegate.newRange(startLine, startLineOffset, endLine, endLineOffset);
   }
 
-  @Override
   public TextRange selectLine(int line) {
     return delegate.selectLine(line);
   }
 
-  @Override
   public Charset charset() {
     return delegate.charset();
   }
 
-  @Override
   public String md5Hash() {
     return delegate.md5Hash();
   }
 
-  @Override
   public String key() {
     return delegate.key();
   }
 
-  @Override
   public boolean isFile() {
     return delegate.isFile();
+  }
+
+  @Override
+  public String toString() {
+    return delegate.toString();
   }
 }

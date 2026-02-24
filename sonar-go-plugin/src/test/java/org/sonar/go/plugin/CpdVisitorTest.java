@@ -42,6 +42,7 @@ import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.testing.TestGoConverterSingleFile;
+import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 
@@ -78,7 +79,7 @@ class CpdVisitorTest {
       .setContents(content)
       .build();
     Tree root = TestGoConverterSingleFile.parse(content);
-    InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
+    InputFileContext ctx = new InputFileContext(sensorContext, new GoInputFile(inputFile));
     new CpdVisitor().scan(ctx, root);
 
     List<TokensLine> cpdTokenLines = sensorContext.cpdTokens(inputFile.key());
@@ -123,7 +124,7 @@ class CpdVisitorTest {
       new TokenImpl(new TextRangeImpl(1, 13, 1, 14), ";", Token.Type.OTHER));
 
     private SensorContextTester sensorContext;
-    private DefaultInputFile inputFile;
+    private GoInputFile goInputFile;
     private Tree root;
     private InputFileContext inputFileContext;
     private DummyWriteCache nextCache;
@@ -133,11 +134,12 @@ class CpdVisitorTest {
       File file = File.createTempFile("file", ".tmp", tempFolder);
       String content = "package hello;";
       sensorContext = SensorContextTester.create(tempFolder);
-      inputFile = new TestInputFileBuilder("moduleKey", file.getName())
+      var inputFile = new TestInputFileBuilder("moduleKey", file.getName())
         .setContents(content)
         .build();
+      goInputFile = new GoInputFile(inputFile);
       root = TestGoConverterSingleFile.parse(content);
-      inputFileContext = new InputFileContext(sensorContext, inputFile);
+      inputFileContext = new InputFileContext(sensorContext, goInputFile);
       // Set up the writing cache
       nextCache = new DummyWriteCache();
       sensorContext.setNextCache(nextCache);
@@ -149,7 +151,7 @@ class CpdVisitorTest {
       // Produce tokens
       new CpdVisitor().scan(inputFileContext, root);
 
-      String cacheKey = computeCacheKey(inputFile);
+      String cacheKey = computeCacheKey(goInputFile);
       assertThat(nextCache.persisted)
         .hasSize(1)
         .containsKey(cacheKey);
@@ -171,14 +173,14 @@ class CpdVisitorTest {
     void tokens_are_not_persisted_when_the_cache_already_contains_an_entry_for_the_file() {
       // Set up the cache where will be writing but where an entry already exists
       var cache = new DummyWriteCache();
-      String cacheKey = computeCacheKey(inputFile);
+      String cacheKey = computeCacheKey(goInputFile);
       cache.persisted.put(cacheKey, new byte[] {});
       sensorContext.setNextCache(cache);
 
       new CpdVisitor().scan(inputFileContext, root);
 
       assertThat(cache.persisted).containsOnlyKeys(cacheKey);
-      String expectedWarningMessage = "Failed to write CPD tokens to cache for input file %s: ".formatted(inputFile.key()) +
+      String expectedWarningMessage = "Failed to write CPD tokens to cache for input file %s: ".formatted(goInputFile.key()) +
         "The cache already contains the key: %s".formatted(cacheKey);
       assertThat(logTester.logs(Level.WARN)).containsOnly(expectedWarningMessage);
     }
@@ -192,7 +194,7 @@ class CpdVisitorTest {
       new TokenImpl(new TextRangeImpl(1, 12, 1, 13), ";", Token.Type.OTHER));
 
     private String cacheKey;
-    private DefaultInputFile inputFile;
+    private GoInputFile goInputFile;
     private SensorContextTester sensorContext;
     private InputFileContext inputFileContext;
     private DummyReadCache previousCache;
@@ -210,17 +212,18 @@ class CpdVisitorTest {
       // Create file and set its status to something else than SAME
       File file = File.createTempFile("file", ".tmp", tempFolder);
       String content = "import hello;";
-      inputFile = new TestInputFileBuilder("moduleKey", file.getName())
+      var inputFile = new TestInputFileBuilder("moduleKey", file.getName())
         .setContents(content)
         .setStatus(InputFile.Status.SAME)
         .build();
+      goInputFile = new GoInputFile(inputFile);
       // Set context for PR analysis
       sensorContext = spy(SensorContextTester.create(tempFolder));
       sensorContext.setCanSkipUnchangedFiles(true);
       sensorContext.setCacheEnabled(true);
-      inputFileContext = new InputFileContext(sensorContext, inputFile);
+      inputFileContext = new InputFileContext(sensorContext, goInputFile);
       // Setup caches
-      cacheKey = "slang:cpd-tokens:" + inputFile.key();
+      cacheKey = "slang:cpd-tokens:" + goInputFile.key();
       previousCache = spy(new DummyReadCache());
       previousCache.persisted.put(cacheKey, CpdVisitor.serialize(EXPECTED_TOKENS));
       sensorContext.setPreviousCache(previousCache);
@@ -287,11 +290,12 @@ class CpdVisitorTest {
       // Prepare a file with a status different from InputFile.Status.SAME
       File file = File.createTempFile("file", ".tmp", tempFolder);
       String content = "import hello;";
-      inputFile = new TestInputFileBuilder("moduleKey", file.getName())
+      var inputFile = new TestInputFileBuilder("moduleKey", file.getName())
         .setContents(content)
         .setStatus(InputFile.Status.CHANGED)
         .build();
-      inputFileContext = new InputFileContext(sensorContext, inputFile);
+      goInputFile = new GoInputFile(inputFile);
+      inputFileContext = new InputFileContext(sensorContext, goInputFile);
 
       CpdVisitor visitor = new CpdVisitor();
 
@@ -335,7 +339,7 @@ class CpdVisitorTest {
       assertThat(nextCache.persisted).isEmpty();
 
       assertThat(logTester.logs(Level.WARN)).contains(
-        String.format("Failed to load cached CPD tokens for input file %s.", inputFile.key()));
+        String.format("Failed to load cached CPD tokens for input file %s.", goInputFile.key()));
     }
 
     @Test
@@ -357,7 +361,7 @@ class CpdVisitorTest {
 
       assertThat(visitor.reusePreviousResults(inputFileContext)).isFalse();
       assertThat(logTester.logs(Level.WARN))
-        .containsOnly("Failed to load cached CPD tokens for input file %s.".formatted(inputFile.key()));
+        .containsOnly("Failed to load cached CPD tokens for input file %s.".formatted(goInputFile.key()));
     }
 
     @Test
@@ -377,7 +381,7 @@ class CpdVisitorTest {
 
       assertThat(visitor.reusePreviousResults(inputFileContext)).isFalse();
       assertThat(logTester.logs(Level.WARN))
-        .containsOnly("Failed to load cached CPD tokens for input file %s.".formatted(inputFile.key()));
+        .containsOnly("Failed to load cached CPD tokens for input file %s.".formatted(goInputFile.key()));
     }
 
     @Test
@@ -395,7 +399,7 @@ class CpdVisitorTest {
       CpdVisitor visitor = new CpdVisitor();
 
       assertThat(visitor.reusePreviousResults(inputFileContext)).isFalse();
-      String expectedWarningMessage = "Failed to copy previous cached results for input file %s.".formatted(inputFile.key());
+      String expectedWarningMessage = "Failed to copy previous cached results for input file %s.".formatted(goInputFile.key());
       assertThat(logTester.logs(Level.WARN))
         .containsOnly(expectedWarningMessage);
     }
@@ -404,10 +408,11 @@ class CpdVisitorTest {
   @Test
   void test_computeCacheKey(@TempDir File tempFolder) throws IOException {
     File file = File.createTempFile("file", ".tmp", tempFolder);
-    InputFile inputFile = new TestInputFileBuilder("moduleKey", file.getName())
+    var inputFile = new TestInputFileBuilder("moduleKey", file.getName())
       .setContents("")
       .build();
-    assertThat(CpdVisitor.computeCacheKey(inputFile)).isEqualTo("slang:cpd-tokens:" + inputFile.key());
+    var goInputFile = new GoInputFile(inputFile);
+    assertThat(CpdVisitor.computeCacheKey(goInputFile)).isEqualTo("slang:cpd-tokens:" + inputFile.key());
   }
 
   @Test

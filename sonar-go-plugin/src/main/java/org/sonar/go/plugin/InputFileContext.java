@@ -36,6 +36,7 @@ import org.sonar.api.batch.sensor.issue.NewIssueLocation;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.go.impl.TextPointerImpl;
 import org.sonar.go.visitors.TreeContext;
+import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.checks.SecondaryLocation;
 
 import static org.sonar.go.plugin.GoSensor.isFailFast;
@@ -52,11 +53,11 @@ public class InputFileContext extends TreeContext {
 
   public final SensorContext sensorContext;
 
-  public final InputFile inputFile;
+  public final GoInputFile goInputFile;
 
-  public InputFileContext(SensorContext sensorContext, InputFile inputFile) {
+  public InputFileContext(SensorContext sensorContext, GoInputFile goInputFile) {
     this.sensorContext = sensorContext;
-    this.inputFile = inputFile;
+    this.goInputFile = goInputFile;
   }
 
   @CheckForNull
@@ -65,7 +66,7 @@ public class InputFileContext extends TreeContext {
       return null;
     }
     try {
-      return inputFile.newRange(
+      return goInputFile.newRange(
         textRange.start().line(),
         textRange.start().lineOffset(),
         textRange.end().line(),
@@ -73,8 +74,8 @@ public class InputFileContext extends TreeContext {
     } catch (IllegalArgumentException e) {
       // Extra security check for invalid TextRange.
       // It shouldn't happen anymore since we disabled line directives in Go parser.
-      var numberOfLines = inputFile.lines();
-      var message = "Invalid %s, for file: %s, number of lines: %s".formatted(textRange, inputFile, numberOfLines);
+      var numberOfLines = goInputFile.lines();
+      var message = "Invalid %s, for file: %s, number of lines: %s".formatted(textRange, goInputFile, numberOfLines);
       LOG.debug(message, e);
       if (isFailFast(sensorContext)) {
         throw new IllegalStateException(message, e);
@@ -97,7 +98,7 @@ public class InputFileContext extends TreeContext {
 
     NewIssue issue = sensorContext.newIssue();
     NewIssueLocation issueLocation = issue.newLocation()
-      .on(inputFile)
+      .on(goInputFile.getDelegate())
       .message(message);
     var location = textRange(textRange);
     if (location != null) {
@@ -111,7 +112,7 @@ public class InputFileContext extends TreeContext {
 
     secondaryLocations.forEach(secondary -> {
       var newIssueLocation = issue.newLocation()
-        .on(inputFile)
+        .on(goInputFile.getDelegate())
         .message(secondary.message == null ? "" : secondary.message);
       var secondaryLocation = textRange(secondary.textRange);
       if (secondaryLocation != null) {
@@ -125,19 +126,19 @@ public class InputFileContext extends TreeContext {
 
   public void reportAnalysisParseError(String repositoryKey, String errorMessage) {
     var location = extractLocation(errorMessage);
-    reportAnalysisError("Unable to parse file: " + inputFile, location);
+    reportAnalysisError("Unable to parse file: " + goInputFile, location);
     RuleKey parsingErrorRuleKey = RuleKey.of(repositoryKey, PARSING_ERROR_RULE_KEY);
     if (sensorContext.activeRules().find(parsingErrorRuleKey) == null) {
       return;
     }
     NewIssue parseError = sensorContext.newIssue();
     NewIssueLocation parseErrorLocation = parseError.newLocation()
-      .on(inputFile)
+      .on(goInputFile.getDelegate())
       .message("A parsing error occurred in this file.");
 
     Optional.of(location)
       .map(org.sonar.plugins.go.api.TextPointer::line)
-      .flatMap(l -> safeExtractSelectLine(inputFile, l))
+      .flatMap(l -> safeExtractSelectLine(goInputFile.getDelegate(), l))
       .ifPresent(parseErrorLocation::at);
 
     parseError
@@ -168,14 +169,14 @@ public class InputFileContext extends TreeContext {
     NewAnalysisError error = sensorContext.newAnalysisError();
     error
       .message(message)
-      .onFile(inputFile);
+      .onFile(goInputFile.getDelegate());
 
     if (location != null) {
       try {
-        TextPointer pointerLocation = inputFile.newPointer(location.line(), location.lineOffset());
+        TextPointer pointerLocation = goInputFile.newPointer(location.line(), location.lineOffset());
         error.at(pointerLocation);
       } catch (IllegalArgumentException e) {
-        LOG.debug("Invalid location '{}' for file {} when reporting parsing error.", location, inputFile, e);
+        LOG.debug("Invalid location '{}' for file {} when reporting parsing error.", location, goInputFile, e);
       }
     }
 

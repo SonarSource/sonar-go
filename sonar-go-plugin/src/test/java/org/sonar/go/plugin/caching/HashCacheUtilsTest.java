@@ -32,6 +32,7 @@ import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.plugin.InputFileContext;
+import org.sonar.plugins.go.api.GoInputFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -72,10 +73,11 @@ class HashCacheUtilsTest {
       .setContents(CONTENTS)
       .setStatus(InputFile.Status.SAME)
       .build();
+    var goInputFile = new GoInputFile(inputFile);
     previousCache.persisted.put(CACHE_KEY, Hex.decodeHex(EXPECTED_HASH));
 
     sensorContext.fileSystem().add(inputFile);
-    inputFileContext = new InputFileContext(sensorContext, inputFile);
+    inputFileContext = new InputFileContext(sensorContext, goInputFile);
   }
 
   @Test
@@ -131,7 +133,7 @@ class HashCacheUtilsTest {
   void shouldDetectDifferentHashCachedWhenInputFileStatusIsAdded() {
     inputFile = spy(inputFile);
     when(inputFile.status()).thenReturn(InputFile.Status.ADDED);
-    inputFileContext = new InputFileContext(sensorContext, inputFile);
+    inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
 
     assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
     assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: file status is ADDED.");
@@ -142,7 +144,7 @@ class HashCacheUtilsTest {
   void shouldDetectDifferentHashCachedWhenInputFileStatusIsChanged() {
     inputFile = spy(inputFile);
     when(inputFile.status()).thenReturn(InputFile.Status.CHANGED);
-    inputFileContext = new InputFileContext(sensorContext, inputFile);
+    inputFileContext = new InputFileContext(sensorContext, new GoInputFile(inputFile));
 
     assertThat(HashCacheUtils.hasSameHashCached(inputFileContext)).isFalse();
     assertThat(logTester.logs(Level.DEBUG)).containsOnly("File moduleKey:file1.slang is considered changed: file status is CHANGED.");
@@ -235,7 +237,7 @@ class HashCacheUtilsTest {
 
   @Test
   void shouldFailWhenInputFileHashIsNotValid() {
-    var inputFileWithFaultyHash = spy(inputFileContext.inputFile);
+    var inputFileWithFaultyHash = spy(inputFileContext.goInputFile);
     // return something that is not a hexadecimal string
     when(inputFileWithFaultyHash.md5Hash()).thenReturn("gggggggggggggggggggggggggggggggg");
     when(inputFileWithFaultyHash.status()).thenReturn(InputFile.Status.SAME);
