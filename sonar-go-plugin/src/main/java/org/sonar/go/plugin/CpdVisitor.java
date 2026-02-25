@@ -27,11 +27,11 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.cache.ReadCache;
 import org.sonar.api.batch.sensor.cpd.NewCpdTokens;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
-import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.TextRange;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -43,8 +43,7 @@ public class CpdVisitor extends PullRequestAwareVisitor {
 
   public CpdVisitor() {
     register(TopLevelTree.class, (ctx, tree) -> {
-      NewCpdTokens cpdTokens = ctx.sensorContext.newCpdTokens()
-        .onFile(ctx.goInputFile.getDelegate());
+      NewCpdTokens cpdTokens = ctx.sensorContext.newCpdTokens().onFile(ctx.inputFile);
       List<Token> tokens = tree.metaData().tokens();
       List<Token> tokensToCache = new ArrayList<>(tokens.size());
 
@@ -72,12 +71,12 @@ public class CpdVisitor extends PullRequestAwareVisitor {
   @Override
   public boolean reusePreviousResults(InputFileContext ctx) {
     if (canReusePreviousResults(ctx)) {
-      NewCpdTokens reusedTokens = ctx.sensorContext.newCpdTokens().onFile(ctx.goInputFile.getDelegate());
+      NewCpdTokens reusedTokens = ctx.sensorContext.newCpdTokens().onFile(ctx.inputFile);
       // Load from the cache and skip parsing
-      String fileKey = ctx.goInputFile.key();
+      String fileKey = ctx.inputFile.key();
       LOG.debug("Looking up cached CPD tokens for {} ...", fileKey);
       ReadCache cache = ctx.sensorContext.previousCache();
-      String key = computeCacheKey(ctx.goInputFile);
+      String key = computeCacheKey(ctx.inputFile);
       if (cache.contains(key)) {
         LOG.debug("Found cached CPD tokens for {}.", fileKey);
         LOG.debug("Loading cached CPD tokens for {} ...", fileKey);
@@ -117,10 +116,10 @@ public class CpdVisitor extends PullRequestAwareVisitor {
     if (ctx.sensorContext.isCacheEnabled()) {
       try {
         ctx.sensorContext.nextCache().write(
-          computeCacheKey(ctx.goInputFile),
+          computeCacheKey(ctx.inputFile),
           serialize(tokens));
       } catch (IllegalArgumentException e) {
-        LOG.warn("Failed to write CPD tokens to cache for input file {}: {}", ctx.goInputFile.key(), e.getMessage());
+        LOG.warn("Failed to write CPD tokens to cache for input file {}: {}", ctx.inputFile.key(), e.getMessage());
       }
     }
   }
@@ -128,7 +127,7 @@ public class CpdVisitor extends PullRequestAwareVisitor {
   /**
    * Computes a unique key for a file that can be used to store its CPD tokens in a cache.
    */
-  static String computeCacheKey(GoInputFile inputFile) {
+  static String computeCacheKey(InputFile inputFile) {
     return "slang:cpd-tokens:%s".formatted(inputFile.key());
   }
 

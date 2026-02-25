@@ -53,7 +53,7 @@ public class SyntaxHighlighter extends TreeVisitor<InputFileContext> {
   @Override
   protected void before(InputFileContext ctx, Tree root) {
     newHighlighting = ctx.sensorContext.newHighlighting()
-      .onFile(ctx.goInputFile.getDelegate());
+      .onFile(ctx.inputFile);
   }
 
   @Override

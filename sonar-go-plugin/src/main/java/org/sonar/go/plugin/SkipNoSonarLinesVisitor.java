@@ -49,7 +49,7 @@ public class SkipNoSonarLinesVisitor extends TreeVisitor<InputFileContext> {
 
   @Override
   protected void after(InputFileContext ctx, Tree root) {
-    noSonarFilter.noSonarInFile(ctx.goInputFile.getDelegate(), noSonarLines);
+    noSonarFilter.noSonarInFile(ctx.inputFile, noSonarLines);
   }
 
   private static Set<Integer> findNoSonarCommentLines(Comment comment, int firstTokenLine) {

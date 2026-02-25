@@ -26,10 +26,10 @@ import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import javax.annotation.Nullable;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.go.visitors.SymbolVisitor;
 import org.sonar.go.visitors.TreeContext;
 import org.sonar.go.visitors.TreeVisitor;
-import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.TextRange;
@@ -91,7 +91,7 @@ public class GoVerifier {
         verifier.addComment(start.line(), start.lineOffset() + 1, comment.text(), 2, 0);
       });
 
-    TestContext ctx = new TestContext(verifier, mock(GoInputFile.class), path.getFileName().toString(), testFileContent, goModFileData);
+    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goModFileData);
     new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
@@ -112,14 +112,14 @@ public class GoVerifier {
     private final TreeVisitor<TestContext> visitor;
     private final SingleFileVerifier verifier;
     private final GoModFileData goModFileData;
-    private final GoInputFile goInputFile;
+    private final InputFile inputFile;
     private final String filename;
     private final String testFileContent;
     private Consumer<Tree> onLeave;
 
-    public TestContext(SingleFileVerifier verifier, GoInputFile goInputFile, String filename, String testFileContent, GoModFileData goModFileData) {
+    public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoModFileData goModFileData) {
       this.verifier = verifier;
-      this.goInputFile = goInputFile;
+      this.inputFile = inputFile;
       this.filename = filename;
       this.goModFileData = goModFileData;
       this.testFileContent = testFileContent;
@@ -159,8 +159,8 @@ public class GoVerifier {
     }
 
     @Override
-    public GoInputFile goInputFile() {
-      return goInputFile;
+    public InputFile inputFile() {
+      return inputFile;
     }
 
     @Override

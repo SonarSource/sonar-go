@@ -22,9 +22,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.plugin.GoFolder;
-import org.sonar.plugins.go.api.GoInputFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -162,10 +162,10 @@ class GoProgressReportTest {
       .hasMessage("Cannot stop: start method has to be called first");
   }
 
-  List<GoInputFile> inputFiles(int size) {
+  List<InputFile> inputFiles(int size) {
     // create a list of mocked InputFile of the provided size
     return java.util.stream.IntStream.range(0, size)
-      .mapToObj(i -> mock(GoInputFile.class))
+      .mapToObj(i -> mock(InputFile.class))
       .toList();
   }
 

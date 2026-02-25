@@ -24,9 +24,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.go.visitors.TreeVisitor;
-import org.sonar.plugins.go.api.GoInputFile;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.TextRange;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -73,7 +73,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor) {
       ChecksVisitor.this.register(cls, statistics.time(ruleKey.rule(), (ctx, tree) -> {
         currentCtx = ctx;
-        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.goInputFile.uri());
+        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.inputFile.uri());
         visitor.accept(this, tree);
       }));
     }
@@ -93,20 +93,20 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     @Override
     public String filename() {
-      return currentCtx.goInputFile.filename();
+      return currentCtx.inputFile.filename();
     }
 
     @Override
-    public GoInputFile goInputFile() {
-      return currentCtx.goInputFile;
+    public InputFile inputFile() {
+      return currentCtx.inputFile;
     }
 
     @Override
     public String fileContent() {
       try {
-        return currentCtx.goInputFile.contents();
+        return currentCtx.inputFile.contents();
       } catch (IOException e) {
-        throw new IllegalStateException("Cannot read content of " + currentCtx.goInputFile, e);
+        throw new IllegalStateException("Cannot read content of " + currentCtx.inputFile, e);
       }
     }
 

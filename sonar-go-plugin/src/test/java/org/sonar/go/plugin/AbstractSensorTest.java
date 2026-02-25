@@ -33,7 +33,6 @@ import org.sonar.api.measures.FileLinesContext;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
-import org.sonar.plugins.go.api.GoInputFile;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -69,26 +68,19 @@ public abstract class AbstractSensorTest {
     return new CheckFactory(context.activeRules());
   }
 
-  protected GoInputFile createGoInputFile(String relativePath, String content, @Nullable InputFile.Status status, @Nullable InputFile.Type type) {
-    var inputFile = createInputFile(relativePath, content, status, type);
-    return new GoInputFile(inputFile);
-  }
-
   protected InputFile createInputFile(String relativePath, String content) {
-    return createInputFile(relativePath, content, null, InputFile.Type.MAIN);
+    return createInputFile(relativePath, content, null);
   }
 
-  protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status, @Nullable InputFile.Type type) {
+  protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status) {
     TestInputFileBuilder builder = new TestInputFileBuilder("moduleKey", relativePath)
       .setModuleBaseDir(baseDir.toPath())
+      .setType(InputFile.Type.MAIN)
       .setLanguage(GoLanguage.KEY)
       .setCharset(StandardCharsets.UTF_8)
       .setContents(content);
     if (status != null) {
       builder.setStatus(status);
-    }
-    if (type != null) {
-      builder.setType(type);
     }
     return builder.build();
   }

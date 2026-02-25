@@ -39,6 +39,6 @@ public abstract class PullRequestAwareVisitor extends TreeVisitor<InputFileConte
   public boolean canReusePreviousResults(InputFileContext inputFileContext) {
     return inputFileContext.sensorContext.canSkipUnchangedFiles() &&
       inputFileContext.sensorContext.isCacheEnabled() &&
-      inputFileContext.goInputFile.status() == InputFile.Status.SAME;
+      inputFileContext.inputFile.status() == InputFile.Status.SAME;
   }
 }

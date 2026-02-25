@@ -22,11 +22,11 @@ import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.go.testing.TestGoConverterSingleFile;
-import org.sonar.plugins.go.api.GoInputFile;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -80,22 +80,21 @@ class SkipNoSonarLinesVisitorTest {
   }
 
   private void testNosonarCommentLines(String content, Set<Integer> expectedNosonarCommentLines) throws IOException {
-    var goInputFile = createInputFile(content);
+    InputFile inputFile = createInputFile(content);
 
-    visitor.scan(createInputFileContext(goInputFile), TestGoConverterSingleFile.parse(content));
+    visitor.scan(createInputFileContext(inputFile), TestGoConverterSingleFile.parse(content));
 
-    verify(mockNoSonarFilter).noSonarInFile(goInputFile.getDelegate(), expectedNosonarCommentLines);
+    verify(mockNoSonarFilter).noSonarInFile(inputFile, expectedNosonarCommentLines);
   }
 
-  private GoInputFile createInputFile(String content) throws IOException {
+  private InputFile createInputFile(String content) throws IOException {
     File file = File.createTempFile("file", ".tmp", tempFolder);
-    var inputFile = new TestInputFileBuilder("moduleKey", file.getName())
+    return new TestInputFileBuilder("moduleKey", file.getName())
       .setContents(content)
       .build();
-    return new GoInputFile(inputFile);
   }
 
-  private InputFileContext createInputFileContext(GoInputFile inputFile) {
+  private InputFileContext createInputFileContext(InputFile inputFile) {
     SensorContextTester sensorContext = SensorContextTester.create(tempFolder);
     return new InputFileContext(sensorContext, inputFile);
   }
