@@ -235,7 +235,7 @@ class HashCacheUtilsTest {
 
   @Test
   void shouldFailWhenInputFileHashIsNotValid() {
-    var inputFileWithFaultyHash = spy(inputFileContext.inputFile);
+    var inputFileWithFaultyHash = spy(inputFileContext.inputFile());
     // return something that is not a hexadecimal string
     when(inputFileWithFaultyHash.md5Hash()).thenReturn("gggggggggggggggggggggggggggggggg");
     when(inputFileWithFaultyHash.status()).thenReturn(InputFile.Status.SAME);

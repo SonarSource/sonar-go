@@ -22,9 +22,9 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
-import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.plugin.GoFolder;
+import org.sonar.go.plugin.InputFileContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatNoException;
@@ -50,7 +50,7 @@ class GoProgressReportTest {
   void shouldLogStartMessage() {
     progressReport = new GoProgressReport("test-thread", 1000);
 
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(1))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(1))));
     assertThat(logTester.logs(Level.INFO)).containsOnly("1 folder (1 file) to be analyzed");
   }
 
@@ -58,14 +58,14 @@ class GoProgressReportTest {
   void shouldLogStartMessagePluralized() {
     progressReport = new GoProgressReport("test-thread", 1000);
 
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(2)), new GoFolder("folder2", inputFiles(2))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(2)), new GoFolder("folder2", inputFileContexts(2))));
     assertThat(logTester.logs(Level.INFO)).containsOnly("2 folders (4 files) to be analyzed");
   }
 
   @Test
   void shouldLogPeriodicMessages() {
     progressReport = new GoProgressReport("test-thread", 150);
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(3)), new GoFolder("folder2", inputFiles(5))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(3)), new GoFolder("folder2", inputFileContexts(5))));
 
     waitNextLog();
     assertThat(logTester.logs(Level.INFO))
@@ -104,7 +104,7 @@ class GoProgressReportTest {
   @Test
   void shouldLogFinalMessagesOnStopOneFolder() {
     progressReport = new GoProgressReport("test-thread", 150);
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(3))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(3))));
     progressReport.nextFolder();
     progressReport.stop();
 
@@ -117,7 +117,7 @@ class GoProgressReportTest {
   @Test
   void shouldLogFinalMessagesOnStopPluralized() {
     progressReport = new GoProgressReport("test-thread", 150);
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(3)), new GoFolder("folder2", inputFiles(5))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(3)), new GoFolder("folder2", inputFileContexts(5))));
     progressReport.nextFolder();
     progressReport.stop();
 
@@ -130,7 +130,7 @@ class GoProgressReportTest {
   @Test
   void shouldStopPeriodicLoggingAfterStop() {
     progressReport = new GoProgressReport("test-thread", 30);
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(3))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(3))));
 
     await().atMost(200, TimeUnit.MILLISECONDS)
       .untilAsserted(() -> assertThat(logTester.logs(Level.INFO)).hasSizeGreaterThan(2));
@@ -146,7 +146,7 @@ class GoProgressReportTest {
   @Test
   void shouldHandleMultipleStopCallsGracefully() {
     progressReport = new GoProgressReport("test-thread", 100);
-    progressReport.start(List.of(new GoFolder("folder1", inputFiles(3))));
+    progressReport.start(List.of(new GoFolder("folder1", inputFileContexts(3))));
 
     assertThatNoException().isThrownBy(() -> {
       progressReport.stop();
@@ -162,10 +162,10 @@ class GoProgressReportTest {
       .hasMessage("Cannot stop: start method has to be called first");
   }
 
-  List<InputFile> inputFiles(int size) {
-    // create a list of mocked InputFile of the provided size
+  List<InputFileContext> inputFileContexts(int size) {
+    // create a list of mocked InputFileContext of the provided size
     return java.util.stream.IntStream.range(0, size)
-      .mapToObj(i -> mock(InputFile.class))
+      .mapToObj(i -> mock(InputFileContext.class))
       .toList();
   }
 

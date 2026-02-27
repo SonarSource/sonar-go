@@ -30,7 +30,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.api.SonarProduct;
 import org.sonar.api.batch.fs.FilePredicate;
-import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;
 import org.sonar.api.batch.sensor.SensorContext;
@@ -64,6 +63,13 @@ public abstract class SlangSensor implements Sensor {
   protected static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
   private static final Logger LOG = LoggerFactory.getLogger(SlangSensor.class);
   private static final int PROGRESS_REPORT_INTERVAL_SECOND = 10;
+  private static final String SONAR_TESTS_PROPERTY = "sonar.tests";
+  private static final String SONAR_TEST_INCLUSIONS_PROPERTY = "sonar.test.inclusions";
+  private static final String TEST_PROPERTIES_NOT_SET_MESSAGE = """
+    The properties "%s" and "%s" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+      It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "%1$s=." and "%2$s=**/*_test.go\""""
+    .formatted(SONAR_TESTS_PROPERTY, SONAR_TEST_INCLUSIONS_PROPERTY);
+  private static final String TEST_PROPERTIES_SET_MESSAGE = "The properties \"%s\" and \"%s\" are set: \"%1$s=%3$s\" and \"%2$s=%4$s\"";
 
   private final NoSonarFilter noSonarFilter;
   private final Language language;
@@ -101,7 +107,7 @@ public abstract class SlangSensor implements Sensor {
 
   protected boolean analyseFiles(ASTConverter converter,
     SensorContext sensorContext,
-    List<InputFile> inputFiles,
+    List<InputFileContext> inputFileContexts,
     GoProgressReport goProgressReport,
     List<TreeVisitor<InputFileContext>> visitors,
     DurationStatistics statistics,
@@ -110,7 +116,7 @@ public abstract class SlangSensor implements Sensor {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
 
-    var filesByDirectory = groupFilesByDirectory(inputFiles);
+    var filesByDirectory = groupFilesByDirectory(inputFileContexts);
     goProgressReport.start(filesByDirectory);
 
     beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileDataStore);
@@ -120,9 +126,7 @@ public abstract class SlangSensor implements Sensor {
         return false;
       }
 
-      var filesToAnalyse = goFolder.files().stream()
-        .map(inputFile -> new InputFileContext(sensorContext, inputFile))
-        .toList();
+      var filesToAnalyse = goFolder.files();
 
       var moduleName = goModFileDataStore.retrieveClosestGoModFileData(goFolder.name()).moduleName();
       LOG.debug("Parse directory '{}', number of files: {}, nodule name: '{}'", goFolder.name(), filesToAnalyse.size(), moduleName);
@@ -146,17 +150,17 @@ public abstract class SlangSensor implements Sensor {
       var inputFilePath = parseException.getInputFilePath();
       if (inputFilePath != null) {
         filesToAnalyse.stream()
-          .filter(inputFileContext -> inputFileContext.inputFile.toString().equals(inputFilePath))
+          .filter(inputFileContext -> inputFileContext.inputFile().toString().equals(inputFilePath))
           .findFirst()
           .ifPresent(inputFileContext -> inputFileContext.reportAnalysisParseError(repositoryKey(), parseException.getMessage()));
       }
     }
   }
 
-  static List<GoFolder> groupFilesByDirectory(List<InputFile> inputFiles) {
-    Map<String, List<InputFile>> filesByDirectory = inputFiles.stream()
-      .collect(Collectors.groupingBy((InputFile inputFile) -> {
-        var path = inputFile.uri().getPath();
+  static List<GoFolder> groupFilesByDirectory(List<InputFileContext> inputFileContexts) {
+    Map<String, List<InputFileContext>> filesByDirectory = inputFileContexts.stream()
+      .collect(Collectors.groupingBy((InputFileContext ctx) -> {
+        var path = ctx.inputFile().uri().getPath();
         int lastSeparatorIndex = path.lastIndexOf("/");
         if (lastSeparatorIndex == -1) {
           return "";
@@ -203,11 +207,11 @@ public abstract class SlangSensor implements Sensor {
     String content;
     String fileName;
     try {
-      content = cacheEntry.fileContext().inputFile.contents();
-      fileName = cacheEntry.fileContext().inputFile.toString();
+      content = cacheEntry.fileContext().inputFile().contents();
+      fileName = cacheEntry.fileContext().inputFile().toString();
       return Map.entry(fileName, content);
     } catch (IOException | RuntimeException e) {
-      throw toParseException("read", cacheEntry.fileContext().inputFile, e);
+      throw toParseException("read", cacheEntry.fileContext().inputFile(), e);
     }
   }
 
@@ -231,7 +235,7 @@ public abstract class SlangSensor implements Sensor {
     Map<String, CacheEntry> result = new HashMap<>();
     for (InputFileContext inputFileContext : inputFileContexts) {
       if (fileCanBeSkipped(inputFileContext)) {
-        String fileKey = inputFileContext.inputFile.key();
+        String fileKey = inputFileContext.inputFile().key();
         LOG.debug("Checking that previous results can be reused for input file {}.", fileKey);
 
         Map<PullRequestAwareVisitor, Boolean> successfulCacheReuseByVisitor = visitors.stream()
@@ -252,9 +256,9 @@ public abstract class SlangSensor implements Sensor {
           .map(Map.Entry::getKey)
           .map(visitor -> (TreeVisitor<InputFileContext>) visitor)
           .toList();
-        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, visitorsToSkip));
+        result.put(inputFileContext.inputFile().toString(), new CacheEntry(inputFileContext, visitorsToSkip));
       } else {
-        result.put(inputFileContext.inputFile.toString(), new CacheEntry(inputFileContext, List.of()));
+        result.put(inputFileContext.inputFile().toString(), new CacheEntry(inputFileContext, List.of()));
       }
     }
     return result;
@@ -285,7 +289,7 @@ public abstract class SlangSensor implements Sensor {
         statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
-        var message = "Cannot analyse '" + inputFileContext.inputFile + "': " + e.getMessage();
+        var message = "Cannot analyse '" + inputFileContext.inputFile() + "': " + e.getMessage();
         LOG.warn(message, e);
       }
     }
@@ -312,7 +316,7 @@ public abstract class SlangSensor implements Sensor {
     String message = String.format(
       "Visitor %s failed to reuse previous results for input file %s.",
       visitor.getClass().getSimpleName(),
-      inputFileContext.inputFile.key());
+      inputFileContext.inputFile().key());
     LOG.debug(message);
     return false;
   }
@@ -343,19 +347,14 @@ public abstract class SlangSensor implements Sensor {
   private void executeLogic(SensorContext sensorContext) {
     initialize(sensorContext);
 
-    FileSystem fileSystem = sensorContext.fileSystem();
-    FilePredicate mainFilePredicate = fileSystem.predicates().and(
-      fileSystem.predicates().hasLanguage(language.getKey()),
-      fileSystem.predicates().hasType(InputFile.Type.MAIN));
-    List<InputFile> inputFiles = StreamSupport.stream(fileSystem.inputFiles(mainFilePredicate).spliterator(), false)
-      .toList();
+    List<InputFileContext> inputFileContexts = findAllInputFiles(sensorContext);
     var goProgressReport = new GoProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(PROGRESS_REPORT_INTERVAL_SECOND));
     boolean success = false;
     var converter = ASTConverterValidation.wrap(astConverter(), sensorContext.config());
     var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
     try {
       var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);
-      success = analyseFiles(converter, sensorContext, inputFiles, goProgressReport, visitors, durationStatistics, goModFileDataStore);
+      success = analyseFiles(converter, sensorContext, inputFileContexts, goProgressReport, visitors, durationStatistics, goModFileDataStore);
     } finally {
       if (success) {
         goProgressReport.stop();
@@ -367,6 +366,35 @@ public abstract class SlangSensor implements Sensor {
 
     processMetrics();
     cleanUp();
+  }
+
+  // visible for tests
+  List<InputFileContext> findAllInputFiles(SensorContext sensorContext) {
+    var fileSystem = sensorContext.fileSystem();
+    var predicates = fileSystem.predicates();
+    FilePredicate langPredicate = predicates.hasLanguage(language.getKey());
+
+    var sonarTests = sensorContext.config().getStringArray(SONAR_TESTS_PROPERTY);
+    var sonarTestInclusions = sensorContext.config().getStringArray(SONAR_TEST_INCLUSIONS_PROPERTY);
+
+    if (sonarTests.length == 0 && sonarTestInclusions.length == 0) {
+      LOG.info(TEST_PROPERTIES_NOT_SET_MESSAGE);
+
+      var allFiles = fileSystem.inputFiles(langPredicate);
+      return StreamSupport.stream(allFiles.spliterator(), false)
+        .map(inputFile -> new InputFileContext(sensorContext, inputFile, inputFile.filename().endsWith("_test.go")))
+        .toList();
+    } else {
+      var message = String.format(
+        TEST_PROPERTIES_SET_MESSAGE,
+        SONAR_TESTS_PROPERTY, SONAR_TEST_INCLUSIONS_PROPERTY,
+        String.join(",", sonarTests), String.join(",", sonarTestInclusions));
+      LOG.debug(message);
+
+      return StreamSupport.stream(fileSystem.inputFiles(langPredicate).spliterator(), false)
+        .map(inputFile -> new InputFileContext(sensorContext, inputFile))
+        .toList();
+    }
   }
 
   protected void initialize(SensorContext sensorContext) {

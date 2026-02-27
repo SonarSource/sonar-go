@@ -17,10 +17,9 @@
 package org.sonar.go.plugin;
 
 import java.util.List;
-import org.sonar.api.batch.fs.InputFile;
 
 /**
  * Used to store a folder and it's list of files.
  */
-public record GoFolder(String name, List<InputFile> files) {
+public record GoFolder(String name, List<InputFileContext> files) {
 }

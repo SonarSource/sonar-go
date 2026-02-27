@@ -69,10 +69,14 @@ public abstract class AbstractSensorTest {
   }
 
   protected InputFile createInputFile(String relativePath, String content) {
-    return createInputFile(relativePath, content, null);
+    return createInputFile(relativePath, content, null, null);
   }
 
   protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status) {
+    return createInputFile(relativePath, content, status, null);
+  }
+
+  protected InputFile createInputFile(String relativePath, String content, @Nullable InputFile.Status status, @Nullable InputFile.Type type) {
     TestInputFileBuilder builder = new TestInputFileBuilder("moduleKey", relativePath)
       .setModuleBaseDir(baseDir.toPath())
       .setType(InputFile.Type.MAIN)
@@ -81,6 +85,9 @@ public abstract class AbstractSensorTest {
       .setContents(content);
     if (status != null) {
       builder.setStatus(status);
+    }
+    if (type != null) {
+      builder.setType(type);
     }
     return builder.build();
   }

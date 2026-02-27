@@ -52,11 +52,26 @@ public class InputFileContext extends TreeContext {
 
   public final SensorContext sensorContext;
 
-  public final InputFile inputFile;
+  private final InputFile inputFile;
+
+  private final boolean testFile;
 
   public InputFileContext(SensorContext sensorContext, InputFile inputFile) {
+    this(sensorContext, inputFile, inputFile.type() == InputFile.Type.TEST);
+  }
+
+  public InputFileContext(SensorContext sensorContext, InputFile inputFile, boolean testFile) {
     this.sensorContext = sensorContext;
     this.inputFile = inputFile;
+    this.testFile = testFile;
+  }
+
+  public InputFile inputFile() {
+    return inputFile;
+  }
+
+  public boolean isTestFile() {
+    return testFile;
   }
 
   @CheckForNull

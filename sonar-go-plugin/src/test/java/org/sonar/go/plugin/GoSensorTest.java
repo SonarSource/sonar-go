@@ -253,7 +253,7 @@ class GoSensorTest {
 
   @Test
   void metrics_for_test_file() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.TEST,
+    InputFile inputFile = createInputFile("lets_test.go", InputFile.Type.TEST,
       """
         // This is not a line of code
         package main
@@ -266,15 +266,15 @@ class GoSensorTest {
     GoSensor goSensor = getSensor();
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC)).isNull();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COMMENT_LINES)).isNull();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.CLASSES)).isNull();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.FUNCTIONS)).isNull();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.STATEMENTS)).isNull();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COGNITIVE_COMPLEXITY)).isNull();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isZero();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COMMENT_LINES).value()).isZero();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.CLASSES).value()).isZero();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.FUNCTIONS).value()).isZero();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.STATEMENTS).value()).isZero();
+    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COGNITIVE_COMPLEXITY).value()).isZero();
 
-    assertThat(fileLinesContext.saveCount).isZero();
-    assertThat(fileLinesContext.metrics.keySet()).isEmpty();
+    assertThat(fileLinesContext.saveCount).isEqualTo(1);
+    assertThat(fileLinesContext.metrics).isEmpty();
   }
 
   @Test

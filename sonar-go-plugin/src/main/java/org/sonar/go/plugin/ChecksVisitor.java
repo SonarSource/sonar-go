@@ -73,7 +73,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor) {
       ChecksVisitor.this.register(cls, statistics.time(ruleKey.rule(), (ctx, tree) -> {
         currentCtx = ctx;
-        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.inputFile.uri());
+        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.inputFile().uri());
         visitor.accept(this, tree);
       }));
     }
@@ -93,20 +93,20 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
     @Override
     public String filename() {
-      return currentCtx.inputFile.filename();
+      return currentCtx.inputFile().filename();
     }
 
     @Override
     public InputFile inputFile() {
-      return currentCtx.inputFile;
+      return currentCtx.inputFile();
     }
 
     @Override
     public String fileContent() {
       try {
-        return currentCtx.inputFile.contents();
+        return currentCtx.inputFile().contents();
       } catch (IOException e) {
-        throw new IllegalStateException("Cannot read content of " + currentCtx.inputFile, e);
+        throw new IllegalStateException("Cannot read content of " + currentCtx.inputFile(), e);
       }
     }
 
