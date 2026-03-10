@@ -20,6 +20,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
+import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.measure.Metric;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.FileLinesContext;
@@ -51,7 +52,7 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
     this.executableLineOfCodePredicate = executableLineOfCodePredicate;
 
     register(TopLevelTree.class, (ctx, tree) -> {
-      if (notTestCode(ctx)) {
+      if (notTestFile(ctx)) {
         List<Tree> declarations = tree.declarations();
         int firstTokenLine = declarations.isEmpty() ? tree.textRange().end().line() : declarations.get(0).textRange().start().line();
         var numberOfLinesInFile = ctx.inputFile().lines();
@@ -66,26 +67,26 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
     });
 
     register(FunctionDeclarationTree.class, (ctx, tree) -> {
-      if (notTestCode(ctx) && tree.name() != null && tree.body() != null) {
+      if (notTestFile(ctx) && tree.name() != null && tree.body() != null) {
         numberOfFunctions++;
       }
     });
 
     register(ClassDeclarationTree.class, (ctx, tree) -> {
-      if (notTestCode(ctx)) {
+      if (notTestFile(ctx)) {
         numberOfClasses++;
       }
     });
 
     register(BlockTree.class, (ctx, tree) -> {
-      if (notTestCode(ctx)) {
+      if (notTestFile(ctx)) {
         addExecutableLines(tree.statementOrExpressions());
       }
     });
   }
 
-  private static boolean notTestCode(InputFileContext ctx) {
-    return !ctx.isTestFile();
+  private static boolean notTestFile(InputFileContext ctx) {
+    return ctx.inputFile().type() != InputFile.Type.TEST;
   }
 
   static Set<Integer> findNonEmptyCommentLines(Comment comment, int firstTokenLine) {

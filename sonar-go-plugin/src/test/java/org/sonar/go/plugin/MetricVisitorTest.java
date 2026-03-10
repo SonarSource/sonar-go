@@ -280,12 +280,46 @@ class MetricVisitorTest {
     assertThat(visitor.executableLines()).containsExactly(4);
   }
 
+  @Test
+  void shouldIgnoreFileWithTypeTest() throws IOException {
+    scan("""
+      package main
+      func main() {
+        x + 1;
+      }
+      // comment
+      func function1() { // comment
+        x = true || false;
+      }""", InputFile.Type.TEST, true);
+    assertThat(visitor.linesOfCode()).isEmpty();
+  }
+
+  @Test
+  void shouldNotIgnoreMainFileClassifiedAutomaticallyAsTestFile() throws IOException {
+    scan("""
+      package main
+      func main() {
+        x + 1;
+      }
+      // comment
+      func function1() { // comment
+        x = true || false;
+      }""", InputFile.Type.MAIN, true);
+
+    assertThat(visitor.linesOfCode()).containsExactly(1, 2, 3, 4, 6, 7, 8);
+  }
+
   private void scan(String code) throws IOException {
+    scan(code, InputFile.Type.MAIN, false);
+  }
+
+  private void scan(String code, InputFile.Type fileType, boolean detectedAsTestFile) throws IOException {
     File tmpFile = File.createTempFile("file", ".tmp", tempFolder);
     inputFile = new TestInputFileBuilder("moduleKey", tmpFile.getName())
       .setCharset(StandardCharsets.UTF_8)
+      .setType(fileType)
       .initMetadata(code).build();
-    InputFileContext ctx = new InputFileContext(sensorContext, inputFile);
+    InputFileContext ctx = new InputFileContext(sensorContext, inputFile, detectedAsTestFile);
     Tree root = TestGoConverterSingleFile.parse(code);
     visitor.scan(ctx, root);
   }
