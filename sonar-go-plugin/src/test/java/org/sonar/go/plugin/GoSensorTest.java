@@ -16,10 +16,12 @@
  */
 package org.sonar.go.plugin;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -28,8 +30,10 @@ import java.util.Set;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
+import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.mockito.Mockito;
@@ -38,15 +42,20 @@ import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.fs.TextPointer;
+import org.sonar.api.batch.fs.internal.DefaultTextPointer;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.rule.ActiveRules;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.batch.rule.internal.ActiveRulesBuilder;
 import org.sonar.api.batch.rule.internal.NewActiveRule;
+import org.sonar.api.batch.sensor.error.AnalysisError;
 import org.sonar.api.batch.sensor.highlighting.TypeOfText;
 import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
+import org.sonar.api.batch.sensor.issue.Issue;
+import org.sonar.api.batch.sensor.issue.IssueLocation;
 import org.sonar.api.batch.sensor.issue.internal.DefaultNoSonarFilter;
 import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.internal.SonarRuntimeImpl;
@@ -57,17 +66,20 @@ import org.sonar.api.rule.RuleKey;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
 import org.sonar.check.Rule;
-import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.converter.GoParseCommand;
+import org.sonar.go.testing.TestInputFileCreator;
+import org.sonar.go.testing.TextRangeAssert;
+import org.sonar.plugins.go.api.ParseException;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 import org.sonar.plugins.go.api.checks.CheckContext;
 import org.sonar.plugins.go.api.checks.GoCheck;
 import org.sonar.plugins.go.api.checks.InitContext;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -75,12 +87,17 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.sonar.go.testing.TestInputFileCreator.createInputFile;
 
 class GoSensorTest {
 
   private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
+  private static final SonarRuntime SONAR_LINT_RUNTIME = SonarRuntimeImpl.forSonarLint(Version.create(13, 0));
   private GoConverter singleInstanceGoConverter;
   private Path projectDir;
+  private File baseDir;
+  private SensorContextTester context;
+
   private SensorContextTester sensorContext;
   private final FileLinesContextFactory fileLinesContextFactory = mock(FileLinesContextFactory.class);
   private FileLinesContextTester fileLinesContext;
@@ -89,7 +106,10 @@ class GoSensorTest {
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @BeforeEach
-  void setUp() throws IOException {
+  void setUp(@TempDir File tmpBaseDir) throws IOException {
+    baseDir = tmpBaseDir;
+    context = SensorContextTester.create(baseDir);
+
     var workDir = Files.createTempDirectory("gotest");
     workDir.toFile().deleteOnExit();
     singleInstanceGoConverter = new GoConverter(workDir.toFile());
@@ -104,64 +124,69 @@ class GoSensorTest {
   }
 
   @Test
-  void test_description() {
+  void testDescriptor() {
     DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
 
-    getSensor("S1110").describe(descriptor);
+    sensor("S1110").describe(descriptor);
     assertThat(descriptor.name()).isEqualTo("Code Quality and Security for Go");
     assertThat(descriptor.languages()).containsOnly("go");
   }
 
   @Test
-  void test_issue() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+  void testIssue() {
+    InputFile inputFile = TestInputFileCreator.createInputFile("lets.go",
       """
         package main\s
 
         func test() {
          x := ((2 + 3))
-        }""");
+        }""", baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor("S1110");
+    GoSensor goSensor = sensor("S1110");
+
     goSensor.execute(sensorContext);
+
     assertThat(sensorContext.allIssues()).hasSize(1);
     assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   @Test
   void test_file_issue() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "// TODO implement the logic \n package main \n");
+    InputFile inputFile = createInputFile("lets.go",
+      "// TODO implement the logic \n package main \n",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor("S1135");
+    GoSensor goSensor = sensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
 
   @Test
   void test_line_issue() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
-      "package                                                                                                                                                                                                                               main\n");
+    InputFile inputFile = createInputFile("lets.go",
+      "package                                                                                                                                                                                                                               main\n",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor("S103");
+    GoSensor goSensor = sensor("S103");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
 
   @Test
   void test_failure() throws Exception {
-    InputFile failingFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile failingFile = createInputFile("lets.go",
       """
         package main\s
 
         func test() {
          pwd := "secret"
-        }""");
+        }""",
+      baseDir, null, InputFile.Type.MAIN);
     failingFile = spy(failingFile);
     doThrow(new IOException("The file is corrupted")).when(failingFile).contents();
 
     sensorContext.fileSystem().add(failingFile);
-    GoSensor goSensor = getSensor("S1135");
+    GoSensor goSensor = sensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
     assertThat(logTester.logs(Level.WARN)).isNotEmpty().anyMatch(l -> l.startsWith("Unable to parse directory"));
@@ -169,9 +194,9 @@ class GoSensorTest {
 
   @Test
   void test_empty_file() {
-    InputFile failingFile = createInputFile("lets.go", InputFile.Type.MAIN, "");
+    InputFile failingFile = createInputFile("lets.go", "", baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(failingFile);
-    GoSensor goSensor = getSensor("S1135");
+    GoSensor goSensor = sensor("S1135");
     goSensor.execute(sensorContext);
     assertThat(logTester.logs(Level.ERROR)).isEmpty();
     assertThat(logTester.logs(Level.WARN)).isEmpty();
@@ -179,7 +204,7 @@ class GoSensorTest {
 
   @Test
   void metrics() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN, """
+    InputFile inputFile = createInputFile("lets.go", """
       // This is not a line of code
       package main
       import "fmt"
@@ -199,9 +224,10 @@ class GoSensorTest {
       }
       func fun3(x interface{}) int {
         return 42 // Statement 4
-      }""");
+      }""",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
     assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isEqualTo(19);
@@ -226,7 +252,7 @@ class GoSensorTest {
 
   @Test
   void test_not_executable_lines() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         package awesomeProject
         const a = "a"
@@ -242,9 +268,10 @@ class GoSensorTest {
         type (
         \tRrsType string
         )
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
 
     assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isEqualTo(14);
@@ -253,7 +280,7 @@ class GoSensorTest {
 
   @Test
   void metrics_for_test_file() {
-    InputFile inputFile = createInputFile("lets_test.go", InputFile.Type.TEST,
+    InputFile inputFile = createInputFile("lets_test.go",
       """
         // This is not a line of code
         package main
@@ -261,9 +288,10 @@ class GoSensorTest {
         func main() {
           fmt.Println("Hello")
         }
-        """);
+        """,
+      baseDir, null, InputFile.Type.TEST);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
     assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isZero();
@@ -279,7 +307,7 @@ class GoSensorTest {
 
   @Test
   void cognitive_complexity_metric() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         package main
         import "fmt"
@@ -302,23 +330,17 @@ class GoSensorTest {
           return i + f(i)
         }
 
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
     assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COGNITIVE_COMPLEXITY).value()).isEqualTo(4);
   }
 
   @Test
-  void always_use_the_same_ast_converter() {
-    GoSensor goSensor = getSensor();
-    assertThat(goSensor.astConverter()).isSameAs(singleInstanceGoConverter);
-    assertThat(goSensor.astConverter()).isSameAs(singleInstanceGoConverter);
-  }
-
-  @Test
   void highlighting() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         //abc
         /*x*/
@@ -328,12 +350,13 @@ class GoSensorTest {
         func fun2(x string) int {
           return 42
         }
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
 
-    String componentKey = "module:lets.go";
+    String componentKey = "moduleKey:lets.go";
     // //abc
     assertHighlighting(componentKey, 1, 1, 5, TypeOfText.COMMENT);
     // /*x*/
@@ -363,7 +386,7 @@ class GoSensorTest {
 
   @Test
   void repository_key() {
-    assertThat(getSensor().repositoryKey()).isEqualTo("go");
+    assertThat(sensor().repositoryKey()).isEqualTo("go");
   }
 
   @Rule(key = "GoVersionCheck")
@@ -380,95 +403,103 @@ class GoSensorTest {
 
   @Test
   void versionShouldBeDetected() {
-    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+    InputFile goModFile = createInputFile("go.mod",
       """
         module myModule
 
         go 1.23.4
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
-    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile goFile = createInputFile("lets.go",
       """
         package main
         var a int
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
 
   @Test
   void versionShouldNotBeDetectedOnMissingVersion() {
-    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+    InputFile goModFile = createInputFile("go.mod",
       """
         module myModule
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
-    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile goFile = createInputFile("lets.go",
       """
         package main
         var a int
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
 
   @Test
   void versionShouldNotBeDetectedOnMissingGoModFile() {
-    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile goFile = createInputFile("lets.go",
       """
         package main
         var a int
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
 
   @Test
   void versionShouldNotBeDetectedInSonarQubeIDEContext() {
-    sensorContext.setRuntime(SonarRuntimeImpl.forSonarLint(Version.create(10, 18)));
-    InputFile goModFile = createInputFile("go.mod", InputFile.Type.MAIN,
+    sensorContext.setRuntime(SONAR_LINT_RUNTIME);
+    InputFile goModFile = createInputFile("go.mod",
       """
         module myModule
 
         go 1.23.4
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
-    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile goFile = createInputFile("lets.go",
       """
         package main
         var a int
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = getSensorWithCustomChecks(Set.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
 
   @Test
   void shouldRaiseIssueOnConverterLogValidation() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         package main\s
 
         func test() {
          x := ((2 + 3))
-        }""");
+        }""",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
     sensorContext.settings().setProperty("sonar.go.converter.validation", "log");
-    GoSensor goSensor = getSensor("S1110");
+    GoSensor goSensor = sensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
     assertThat(logTester.logs(Level.WARN)).isEmpty();
@@ -476,16 +507,17 @@ class GoSensorTest {
 
   @Test
   void shouldRaiseIssueOnWhenConverterPropertyIsInvalid() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         package main\s
 
         func test() {
          x := ((2 + 3))
-        }""");
+        }""",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
     sensorContext.settings().setProperty("sonar.go.converter.validation", "invalid");
-    GoSensor goSensor = getSensor("S1110");
+    GoSensor goSensor = sensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
     assertThat(logTester.logs(Level.WARN)).contains("Unsupported mode for converter validation: 'invalid', falling back to no validation");
@@ -493,8 +525,8 @@ class GoSensorTest {
 
   @ParameterizedTest
   @CsvSource({
-    GoSensor.FAIL_FAST_PROPERTY_NAME + ",true,true",
-    GoSensor.FAIL_FAST_PROPERTY_NAME + ",false,false",
+    "sonar.internal.analysis.failFast,true,true",
+    "sonar.internal.analysis.failFast,false,false",
     "other,true,false",
   })
   void shouldReturnFailFastValue(String propertyKey, String propertyValue, boolean expected) {
@@ -507,17 +539,18 @@ class GoSensorTest {
     BiConsumer<CheckContext, Tree> consumer1 = spy(new ConsumerToSpy());
     BiConsumer<CheckContext, Tree> consumer2 = spy(new ConsumerToSpy());
 
-    GoSensor sensor = getSensorWithCustomChecks(Set.of(CheckRegisteringOnLeave1.class, CheckRegisteringOnLeave2.class));
+    GoSensor sensor = sensor(List.of(CheckRegisteringOnLeave1.class, CheckRegisteringOnLeave2.class));
     List<GoCheck> allChecks = sensor.checks().all();
     assertThat(allChecks).hasSize(2);
     ((CheckRegisteringOnLeave) allChecks.get(0)).setConsumerToRegister(consumer1);
     ((CheckRegisteringOnLeave) allChecks.get(1)).setConsumerToRegister(consumer2);
 
-    InputFile goFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile goFile = createInputFile("lets.go",
       """
         package main
         var a int
-        """);
+        """,
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(goFile);
 
     sensor.execute(sensorContext);
@@ -537,7 +570,7 @@ class GoSensorTest {
       .build();
     sensorContext.fileSystem().add(inputFile);
 
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
 
     assertThat(logTester.logs(Level.INFO))
@@ -554,7 +587,7 @@ class GoSensorTest {
       .build();
     sensorContext.fileSystem().add(inputFile);
 
-    GoSensor goSensor = getSensor();
+    GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
 
     assertThat(logTester.logs(Level.INFO))
@@ -568,7 +601,7 @@ class GoSensorTest {
     singleInstanceGoConverter = new GoConverter(command);
     sensorContext.settings().setProperty("sonar.go.internal.debugTypeCheck", true);
 
-    GoSensor sensor = getSensor();
+    GoSensor sensor = sensor();
     sensor.execute(sensorContext);
 
     verify(command, times(1)).debugTypeCheck();
@@ -576,16 +609,17 @@ class GoSensorTest {
 
   @Test
   void shouldNotRaiseIssueWhenInactive() {
-    InputFile inputFile = createInputFile("lets.go", InputFile.Type.MAIN,
+    InputFile inputFile = createInputFile("lets.go",
       """
         package main\s
 
         func test() {
          x := ((2 + 3))
-        }""");
+        }""",
+      baseDir, null, InputFile.Type.MAIN);
     sensorContext.fileSystem().add(inputFile);
     sensorContext.settings().setProperty("sonar.go.activate", "false");
-    GoSensor goSensor = getSensor("S1110");
+    GoSensor goSensor = sensor("S1110");
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
@@ -629,30 +663,470 @@ class GoSensorTest {
     }
   }
 
-  private GoSensor getSensor(String... activeRuleArray) {
-    Set<String> activeRuleSet = new HashSet<>(Arrays.asList(activeRuleArray));
-    List<Class<?>> ruleClasses = GoCheckList.checks();
-    List<String> allKeys = ruleClasses.stream().map(ruleClass -> ((org.sonar.check.Rule) ruleClass.getAnnotations()[0]).key()).toList();
-    ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
-    allKeys.forEach(key -> {
-      if (activeRuleSet.contains(key)) {
-        NewActiveRule.Builder newActiveRuleBuilder = new NewActiveRule.Builder()
-          .setRuleKey(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, key));
-        if (key.equals("S1451")) {
-          newActiveRuleBuilder.setParam("headerFormat", "some header format");
-        }
-        rulesBuilder.addRule(newActiveRuleBuilder.build());
-      }
-    });
-    ActiveRules activeRules = rulesBuilder.build();
-    CheckFactory checkFactory = new CheckFactory(activeRules);
-    Checks<GoCheck> checks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
-    checks.addAnnotatedChecks(ruleClasses);
-    return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
+  @Test
+  void testOneRule() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func main() {
+        print (1 == 1)
+      }""", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+
+    sensor(checkFactory).execute(context);
+
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).hasSize(1);
+    Issue issue = issues.iterator().next();
+    assertThat(issue.ruleKey().rule()).isEqualTo("S1764");
+    IssueLocation location = issue.primaryLocation();
+    assertThat(location.inputComponent()).isEqualTo(inputFile);
+    assertThat(location.message()).isEqualTo("Correct one of the identical sub-expressions on both sides of this operator.");
+    TextRangeAssert.assertThat(location.textRange()).hasRange(3, 14, 3, 15);
   }
 
-  private GoSensor getSensorWithCustomChecks(Set<Class<?>> checks) {
+  @Test
+  void testRuleWithGap() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func f() {
+        print("string literal")
+        print("string literal")
+        print("string literal")
+      }""",
+      baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1192");
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).hasSize(1);
+    Issue issue = issues.iterator().next();
+    assertThat(issue.ruleKey().rule()).isEqualTo("S1192");
+    IssueLocation location = issue.primaryLocation();
+    assertThat(location.inputComponent()).isEqualTo(inputFile);
+    assertThat(location.message()).isEqualTo("Define a constant instead of duplicating this literal \"string literal\" 3 times.");
+    TextRangeAssert.assertThat(location.textRange()).hasRange(3, 8, 3, 24);
+    assertThat(issue.gap()).isEqualTo(2.0);
+  }
+
+  @Test
+  @Disabled("SONARGO-100 Fix NOSONAR suppression")
+  void testCommentedCode() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func main() {
+      // func foo() { if (true) {print("string literal");}}
+      print (1 == 1);
+      print(b);
+      // a b c ...
+      foo();
+      // Coefficients of polynomial
+      b = DoubleArray(n); // linear
+      c = DoubleArray(n + 1); // quadratic
+      d = DoubleArray(n); // cubic
+      }""", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S125");
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).hasSize(1);
+    Issue issue = issues.iterator().next();
+    assertThat(issue.ruleKey().rule()).isEqualTo("S125");
+    IssueLocation location = issue.primaryLocation();
+    assertThat(location.inputComponent()).isEqualTo(inputFile);
+    assertThat(location.message()).isEqualTo("Remove this commented out code.");
+  }
+
+  @Test
+  @Disabled("SONARGO-100 Fix NOSONAR suppression")
+  void testNosonarCommentedCode() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func main() {
+        // func foo() { if (true) {print("string literal");}} NOSONAR
+        print (1 == 1);
+        print(b);
+        // a b c ...
+        foo();
+        // Coefficients of polynomial
+        b = DoubleArray(n); // linear
+        c = DoubleArray(n + 1); // quadratic
+        d = DoubleArray(n); // cubic
+      }""", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S125");
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).isEmpty();
+  }
+
+  @Test
+  void testSimpleFile() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+        package main
+        func main(x int) {
+          print (1 == 1)
+          print("abc")
+        }
+        type A struct {}""", baseDir);
+    context.fileSystem().add(inputFile);
+    sensor(checkFactory()).execute(context);
+    assertThat(context.highlightingTypeAt(inputFile.key(), 2, 0)).containsExactly(TypeOfText.KEYWORD);
+    assertThat(context.highlightingTypeAt(inputFile.key(), 2, 4)).isEmpty();
+    assertThat(context.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isEqualTo(6);
+    assertThat(context.measure(inputFile.key(), CoreMetrics.COMMENT_LINES).value()).isZero();
+    assertThat(context.measure(inputFile.key(), CoreMetrics.FUNCTIONS).value()).isEqualTo(1);
+    assertThat(context.measure(inputFile.key(), CoreMetrics.CLASSES).value()).isEqualTo(1);
+    assertThat(context.cpdTokens(inputFile.key()).get(1).getValue()).isEqualTo("funcmain(xint){");
+    assertThat(context.measure(inputFile.key(), CoreMetrics.COMPLEXITY).value()).isEqualTo(1);
+    assertThat(context.measure(inputFile.key(), CoreMetrics.STATEMENTS).value()).isEqualTo(2);
+
+    assertThat(logTester.logs()).contains("1 folder (1 file) to be analyzed");
+  }
+
+  @Test
+  void testSuppressIssuesInClass() {
+    InputFile inputFile = createInputFile("file1.go", """
+      @Suppress("slang:S1764")
+      class { fun main() {
+      print (1 == 1);} }""", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).isEmpty();
+  }
+
+  @Test
+  @Disabled("SONARGO-100 Fix NOSONAR suppression")
+  void testSuppressIssuesInVar() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func bar() {
+        b = (1 == 1);  // NOSONAR
+        c = (1 == 1);
+      }
+      """, baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).hasSize(1);
+    Issue issue = issues.iterator().next();
+    IssueLocation location = issue.primaryLocation();
+    TextRangeAssert.assertThat(location.textRange()).hasRange(5, 22, 5, 23);
+  }
+
+  @Test
+  void testFailInput() throws IOException {
+    InputFile inputFile = createInputFile("fakeFile.go", "", baseDir);
+    InputFile spyInputFile = spy(inputFile);
+    when(spyInputFile.contents()).thenThrow(IOException.class);
+    context.fileSystem().add(spyInputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    sensor(checkFactory).execute(context);
+    Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
+    assertThat(analysisErrors).hasSize(1);
+    AnalysisError analysisError = analysisErrors.iterator().next();
+    assertThat(analysisError.inputFile()).isEqualTo(spyInputFile);
+    assertThat(analysisError.message()).isEqualTo("Unable to parse file: fakeFile.go");
+    assertThat(analysisError.location()).isEqualTo(new DefaultTextPointer(1, 0));
+
+    assertThat(logTester.logs()).isNotEmpty().anyMatch(l -> l.startsWith("Unable to parse directory '"));
+  }
+
+  @Test
+  void testFailInputWithFailFast() throws IOException {
+    context.settings().setProperty("sonar.internal.analysis.failFast", true);
+    InputFile inputFile = createInputFile("fakeFile.go", "", baseDir);
+    InputFile spyInputFile = spy(inputFile);
+    when(spyInputFile.contents()).thenThrow(IOException.class);
+    context.fileSystem().add(spyInputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    var sensor = sensor(checkFactory);
+    assertThatThrownBy(() -> sensor.execute(context))
+      .hasMessage("Cannot read 'fakeFile.go': null")
+      .isInstanceOf(ParseException.class);
+  }
+
+  @Test
+  void testFailParsing() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+         class A {
+         fun x() {}
+         fun y() {}\
+        """, baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S2260");
+    sensor(checkFactory).execute(context);
+
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).hasSize(1);
+    Issue issue = issues.iterator().next();
+    assertThat(issue.ruleKey().rule()).isEqualTo("S2260");
+    IssueLocation location = issue.primaryLocation();
+    assertThat(location.inputComponent()).isEqualTo(inputFile);
+    assertThat(location.message()).isEqualTo("A parsing error occurred in this file.");
+    TextRangeAssert.assertThat(location.textRange()).hasRange(1, 0, 1, 10);
+
+    Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
+    assertThat(analysisErrors).hasSize(1);
+    AnalysisError analysisError = analysisErrors.iterator().next();
+    assertThat(analysisError.inputFile()).isEqualTo(inputFile);
+    assertThat(analysisError.message()).isEqualTo("Unable to parse file: file1.go");
+    TextPointer textPointer = analysisError.location();
+    assertThat(textPointer).isEqualTo(new DefaultTextPointer(1, 2));
+
+    assertThat(logTester.logs()).contains("Unable to parse file: file1.go. file1.go:1:2: expected 'package', found class");
+  }
+
+  @Test
+  void testFailParsingShouldThrowAnExceptionWhenFailFastIsEnabled() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+         class A {
+         fun x() {}
+         fun y() {}\
+        """, baseDir);
+    context.settings().setProperty("sonar.internal.analysis.failFast", true);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S2260");
+    var sensor = sensor(checkFactory);
+    assertThatThrownBy(() -> sensor.execute(context))
+      .hasMessage("Exception when analyzing files. See logs above for details.")
+      .isInstanceOf(IllegalStateException.class);
+  }
+
+  @Test
+  void testFailParsingShouldNotThrowAnExceptionWhenFailFastIsDisable() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+         class A {
+         fun x() {}
+         fun y() {}\
+        """, baseDir);
+    context.settings().setProperty("sonar.internal.analysis.failFast", false);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S2260");
+    var sensor = sensor(checkFactory);
+    sensor.execute(context);
+    assertThat(logTester.logs(Level.WARN)).contains("Unable to parse file: file1.go. file1.go:1:2: expected 'package', found class");
+  }
+
+  @Test
+  void shouldOnlyLogErrorWithHardFailureWithoutFailFast() {
+    var sensor = sensor(checkFactory());
+    context.setFileSystem(null);
+    sensor.execute(context);
+
+    assertThat(logTester.logs(Level.ERROR)).contains("An error occurred during the analysis of the Go language:");
+  }
+
+  @Test
+  void testFailParsingWithoutParsingErrorRuleActivated() {
+    InputFile inputFile = createInputFile("file1.go", "{", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    sensor(checkFactory).execute(context);
+    assertThat(context.allIssues()).isEmpty();
+    assertThat(context.allAnalysisErrors()).hasSize(1);
+  }
+
+  @Test
+  void testEmptyFile() {
+    InputFile inputFile = createInputFile("empty.go", "\t\t  \r\n  \n ", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    sensor(checkFactory).execute(context);
+    Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
+    assertThat(analysisErrors).isEmpty();
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @Test
+  void testFailureInCheck() {
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func f() {}""", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = mock(CheckFactory.class);
+    var checks = mock(Checks.class);
+    GoCheck failingCheck = init -> init.register(TopLevelTree.class, (ctx, tree) -> {
+      throw new IllegalStateException("BOUM");
+    });
+    when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, "failing"));
+    // The two following calls are called by "GoChecks".
+    when(checkFactory.create(GoRulesDefinition.REPOSITORY_KEY)).thenReturn(checks);
+    when(checks.addAnnotatedChecks(any(Iterable.class))).thenReturn(checks);
+    when(checks.all()).thenReturn(Collections.singletonList(failingCheck));
+    sensor(checkFactory).execute(context);
+
+    Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
+    assertThat(analysisErrors).hasSize(1);
+    AnalysisError analysisError = analysisErrors.iterator().next();
+    assertThat(analysisError.inputFile()).isEqualTo(inputFile);
+    assertThat(logTester.logs()).contains("Cannot analyse 'file1.go': BOUM");
+  }
+
+  @Test
+  void testCancellation() {
+    InputFile inputFile = createInputFile("file1.go",
+      "fun main() {\nprint (1 == 1);}", baseDir);
+    context.fileSystem().add(inputFile);
+    CheckFactory checkFactory = checkFactory("S1764");
+    context.setCancelled(true);
+    sensor(checkFactory).execute(context);
+    Collection<Issue> issues = context.allIssues();
+    assertThat(issues).isEmpty();
+  }
+
+  @Test
+  void testSonarlintContext() {
+    SensorContextTester goContext = SensorContextTester.create(baseDir);
+    InputFile inputFile = createInputFile("file1.go", """
+      package main
+      func main(x int) {
+        print (1 == 1)
+        print("abc")
+      }
+      type A struct {}""", baseDir);
+    goContext.fileSystem().add(inputFile);
+    goContext.setRuntime(SONAR_LINT_RUNTIME);
+    sensor(checkFactory("S1764")).execute(goContext);
+
+    assertThat(goContext.allIssues()).hasSize(1);
+
+    // No CPD, highlighting and metrics in SonarLint
+    assertThat(goContext.highlightingTypeAt(inputFile.key(), 1, 0)).isEmpty();
+    assertThat(goContext.measure(inputFile.key(), CoreMetrics.NCLOC)).isNull();
+    assertThat(goContext.cpdTokens(inputFile.key())).isNull();
+
+    assertThat(logTester.logs()).contains("1 folder (1 file) to be analyzed");
+  }
+
+  @Test
+  void testSensorDescriptorDoesNotProcessFilesIndependently() {
+    var sensor = sensor(checkFactory());
+    DefaultSensorDescriptor descriptor = new DefaultSensorDescriptor();
+    sensor.describe(descriptor);
+    assertThat(descriptor.isProcessesFilesIndependently()).isFalse();
+  }
+
+  @Test
+  void testSensorLogsWhenUnchangedFilesCanBeSkipped() {
+    // Enable PR context
+    sensorContext.setCanSkipUnchangedFiles(true);
+    sensorContext.setCacheEnabled(true);
+    // Execute sensor
+    var sensor = sensor(checkFactory());
+    sensor.execute(sensorContext);
+    assertThat(logTester.logs(Level.INFO)).contains(
+      "The Go analyzer is running in a context where unchanged files can be skipped.");
+  }
+
+  @Test
+  void shouldSkipExecutionIfGoConverterNotInitialized() {
+    var goConverterMock = mock(GoConverter.class);
+    when(goConverterMock.isInitialized()).thenReturn(false);
+    var sensor = new GoSensor(checkFactory(), fileLinesContextFactory, new DefaultNoSonarFilter(), new GoLanguage(new MapSettings().asConfig()), goConverterMock);
+    context.setRuntime(SONAR_LINT_RUNTIME);
+
+    sensor.execute(context);
+
+    assertThat(context.allIssues()).isEmpty();
+    assertThat(logTester.logs(Level.INFO))
+      .contains("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
+  }
+
+  @Test
+  void shouldLogInfoMessageWhenTestPropertiesAreNotSet() {
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenSonarTestsPropertyIsSet() {
+    context.settings().setProperty("sonar.tests", ".");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenSonarTestInclusionsPropertyIsSet() {
+    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
+
+    var mainFile = createInputFile("app.go", "package main\nfunc app() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=" and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldLogDebugMessageWhenBothPropertiesAreSet() {
+    context.settings().setProperty("sonar.tests", ".");
+    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
+
+    var mainFile = createInputFile("code.go", "package main\nfunc code() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG)).contains("""
+      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldHandleEmptyStringPropertiesAsSameAsNotSet() {
+    context.settings().setProperty("sonar.tests", "");
+    context.settings().setProperty("sonar.test.inclusions", "");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  @Test
+  void shouldHandleWhitespaceOnlyPropertiesAsSameAsNotSet() {
+    context.settings().setProperty("sonar.tests", "   ");
+    context.settings().setProperty("sonar.test.inclusions", "\t");
+
+    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
+    context.fileSystem().add(mainFile);
+
+    sensor(checkFactory()).execute(context);
+
+    assertThat(logTester.logs(Level.INFO)).contains(
+      """
+        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
+          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+  }
+
+  private GoSensor sensor(List<Class<?>> checks) {
     ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
 
     for (Class<?> check : checks) {
@@ -666,22 +1140,44 @@ class GoSensorTest {
     CheckFactory checkFactory = new CheckFactory(activeRules);
     Checks<GoCheck> instantiatedChecks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
     instantiatedChecks.addAnnotatedChecks(checks);
-    return new GoSensor(new GoChecksTest(instantiatedChecks), fileLinesContextFactory, new DefaultNoSonarFilter(),
+    return new GoSensor(new GoTestChecks(instantiatedChecks), fileLinesContextFactory, new DefaultNoSonarFilter(),
       new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
   }
 
-  private InputFile createInputFile(String filename, InputFile.Type type, String content) {
-    Path filePath = projectDir.resolve(filename);
-    return TestInputFileBuilder.create("module", projectDir.toFile(), filePath.toFile())
-      .setCharset(UTF_8)
-      .setLanguage(GoLanguage.KEY)
-      .setContents(content)
-      .setType(type)
-      .build();
+  private GoSensor sensor(String... ruleKeys) {
+    var checkFactory = checkFactory(ruleKeys);
+    return sensor(checkFactory);
   }
 
-  private static class GoChecksTest extends GoChecks {
-    GoChecksTest(Checks<GoCheck> checks) {
+  private GoSensor sensor(CheckFactory checkFactory) {
+    return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
+  }
+
+  protected CheckFactory checkFactory(String... ruleKeys) {
+    ActiveRulesBuilder builder = new ActiveRulesBuilder();
+    for (String ruleKey : ruleKeys) {
+      NewActiveRule newRule = new NewActiveRule.Builder()
+        .setRuleKey(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, ruleKey))
+        .setName(ruleKey)
+        .build();
+      builder.addRule(newRule);
+    }
+    context.setActiveRules(builder.build());
+    return new CheckFactory(context.activeRules());
+  }
+
+  // help classes
+
+  static class FailingToReuseVisitor extends PullRequestAwareVisitor {
+    @Override
+    public boolean reusePreviousResults(InputFileContext unused) {
+      return false;
+    }
+  }
+
+  private static class GoTestChecks extends GoChecks {
+    GoTestChecks(Checks<GoCheck> checks) {
       super(null);
       this.checksByRepository.add(checks);
     }

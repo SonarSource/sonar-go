@@ -68,7 +68,7 @@ class InputFileContextTest {
     when(inputFile.lines()).thenReturn(5);
     when(inputFile.toString()).thenReturn("foo/bar.go");
     var configMock = mock(Configuration.class);
-    when(configMock.getBoolean(GoSensor.FAIL_FAST_PROPERTY_NAME)).thenReturn(Optional.of(true));
+    when(configMock.getBoolean("sonar.internal.analysis.failFast")).thenReturn(Optional.of(true));
     var sensorContext = mock(SensorContext.class);
     when(sensorContext.config()).thenReturn(configMock);
     var inputFileContext = new InputFileContext(sensorContext, inputFile);

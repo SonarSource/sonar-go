@@ -51,7 +51,7 @@ class MetricVisitorTest {
     FileLinesContext mockFileLinesContext = mock(FileLinesContext.class);
     FileLinesContextFactory mockFileLinesContextFactory = mock(FileLinesContextFactory.class);
     when(mockFileLinesContextFactory.createFor(any(InputFile.class))).thenReturn(mockFileLinesContext);
-    visitor = new MetricVisitor(mockFileLinesContextFactory, SlangSensor.EXECUTABLE_LINE_PREDICATE);
+    visitor = new MetricVisitor(mockFileLinesContextFactory, GoSensor.EXECUTABLE_LINE_PREDICATE);
   }
 
   @Test

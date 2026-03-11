@@ -30,6 +30,7 @@ import org.sonar.go.plugin.InputFileContext;
 
 /**
  * A utility class that enables developers to check that a file has changed and commit its checksum for future analysis.
+ * It contains package private methods, they should not be called directly but via {@link CacheHandler}.
  */
 public class HashCacheUtils {
   private static final Logger LOG = LoggerFactory.getLogger(HashCacheUtils.class);
@@ -44,7 +45,7 @@ public class HashCacheUtils {
    * @param inputFileContext The context joining both SensorContext and InputFile
    * @return True if the file has its status set to InputFile.Status.SAME and matches its MD5 hash in the cache.
    */
-  public static boolean hasSameHashCached(InputFileContext inputFileContext) {
+  static boolean hasSameHashCached(InputFileContext inputFileContext) {
     InputFile inputFile = inputFileContext.inputFile();
     String fileKey = inputFile.key();
     if (inputFile.status() != InputFile.Status.SAME) {
@@ -89,7 +90,7 @@ public class HashCacheUtils {
    * @param inputFileContext Context joining SensorContext and InputFile.
    * @return true if successfully copied. False if failing to copy because of a runtime caching issue or repeated call.
    */
-  public static boolean copyFromPrevious(InputFileContext inputFileContext) {
+  static boolean copyFromPrevious(InputFileContext inputFileContext) {
     if (!inputFileContext.sensorContext.isCacheEnabled()) {
       return false;
     }
@@ -105,7 +106,7 @@ public class HashCacheUtils {
     return true;
   }
 
-  public static boolean writeHashForNextAnalysis(InputFileContext inputFileContext) {
+  static boolean writeHashForNextAnalysis(InputFileContext inputFileContext) {
     if (!inputFileContext.sensorContext.isCacheEnabled()) {
       return false;
     }
