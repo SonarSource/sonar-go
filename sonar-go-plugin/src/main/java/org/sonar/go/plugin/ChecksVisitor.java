@@ -92,6 +92,11 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     }
 
     @Override
+    public boolean isTestFile() {
+      return currentCtx.isTestFile();
+    }
+
+    @Override
     public String filename() {
       return currentCtx.inputFile().filename();
     }

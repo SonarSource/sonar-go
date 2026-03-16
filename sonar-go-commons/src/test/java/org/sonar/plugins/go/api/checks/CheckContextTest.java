@@ -125,6 +125,10 @@ class CheckContextTest {
       // do nothing, test method
     }
 
+    public boolean isTestFile() {
+      return false;
+    }
+
     public void reportFileIssue(String message, @Nullable Double gap) {
       // do nothing, test method
     }

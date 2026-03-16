@@ -75,4 +75,6 @@ public interface CheckContext {
   void reportFileIssue(String message);
 
   void reportFileIssue(String message, @Nullable Double gap);
+
+  boolean isTestFile();
 }

@@ -62,6 +62,14 @@ public class GoVerifier {
     createVerifier(BASE_DIR.resolve(fileName), check, goModFileData).assertOneOrMoreIssues();
   }
 
+  public static void verifyAsTestFile(String fileName, GoCheck check) {
+    createVerifier(BASE_DIR.resolve(fileName), check, GoModFileData.UNKNOWN_DATA, true).assertOneOrMoreIssues();
+  }
+
+  public static void verifyNoIssueAsTestFile(String fileName, GoCheck check) {
+    createVerifier(BASE_DIR.resolve(fileName), check, GoModFileData.UNKNOWN_DATA, true).assertNoIssues();
+  }
+
   public static void verifyNoIssue(String fileName, GoCheck check) {
     createVerifier(BASE_DIR.resolve(fileName), check).assertNoIssues();
   }
@@ -75,10 +83,14 @@ public class GoVerifier {
   }
 
   private static SingleFileVerifier createVerifier(Path path, GoCheck check) {
-    return createVerifier(path, check, GoModFileData.UNKNOWN_DATA);
+    return createVerifier(path, check, GoModFileData.UNKNOWN_DATA, false);
   }
 
   protected static SingleFileVerifier createVerifier(Path path, GoCheck check, GoModFileData goModFileData) {
+    return createVerifier(path, check, goModFileData, false);
+  }
+
+  protected static SingleFileVerifier createVerifier(Path path, GoCheck check, GoModFileData goModFileData, boolean testFile) {
 
     SingleFileVerifier verifier = SingleFileVerifier.create(path, UTF_8);
 
@@ -91,7 +103,7 @@ public class GoVerifier {
         verifier.addComment(start.line(), start.lineOffset() + 1, comment.text(), 2, 0);
       });
 
-    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goModFileData);
+    TestContext ctx = new TestContext(verifier, mock(InputFile.class), path.getFileName().toString(), testFileContent, goModFileData, testFile);
     new SymbolVisitor<>().scan(ctx, root);
     check.initialize(ctx);
     ctx.scan(root);
@@ -115,14 +127,21 @@ public class GoVerifier {
     private final InputFile inputFile;
     private final String filename;
     private final String testFileContent;
+    private final boolean testFile;
     private Consumer<Tree> onLeave;
 
     public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoModFileData goModFileData) {
+      this(verifier, inputFile, filename, testFileContent, goModFileData, false);
+    }
+
+    public TestContext(SingleFileVerifier verifier, InputFile inputFile, String filename, String testFileContent, GoModFileData goModFileData,
+      boolean testFile) {
       this.verifier = verifier;
       this.inputFile = inputFile;
       this.filename = filename;
       this.goModFileData = goModFileData;
       this.testFileContent = testFileContent;
+      this.testFile = testFile;
       visitor = new TreeVisitor<>();
     }
 
@@ -151,6 +170,11 @@ public class GoVerifier {
     @Override
     public void reportIssue(HasTextRange toHighlight, String message, SecondaryLocation secondaryLocation) {
       reportIssue(toHighlight, message, Collections.singletonList(secondaryLocation));
+    }
+
+    @Override
+    public boolean isTestFile() {
+      return testFile;
     }
 
     @Override

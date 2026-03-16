@@ -27,9 +27,21 @@ class BadFunctionNameCheckTest {
   }
 
   @Test
-  void test_upper_case() {
+  void testUpperCase() {
     BadFunctionNameCheck check = new BadFunctionNameCheck();
     check.format = "^[A-Z]*$";
     GoVerifier.verify("BadFunctionNameCheck/bad_function_name_uppercase.go", check);
+  }
+
+  @Test
+  void testFileAllowsUnderscoresForTestFile() {
+    GoVerifier.verifyAsTestFile("BadFunctionNameCheck/bad_function_name_test_file.go", new BadFunctionNameCheck());
+  }
+
+  @Test
+  void testFileWithMainFormatReportsIssuesForTestFile() {
+    BadFunctionNameCheck check = new BadFunctionNameCheck();
+    check.formatForTests = GoChecksConstants.GO_NAMING_DEFAULT;
+    GoVerifier.verifyAsTestFile("BadFunctionNameCheck/bad_function_name.go", check);
   }
 }
