@@ -13,7 +13,7 @@ concurrency:
   cancel-in-progress: ${{ github.ref_name != github.event.repository.default_branch }}
 
 env:
-  GO_VERSION: "1.25.1"
+  GO_VERSION: "1.26.1"
   GOLANG_CI_LINT_VERSION: "2.4.0"
   ARCH: amd64
   SONAR_PROJECT_KEY: "SonarSource_sonar-go"

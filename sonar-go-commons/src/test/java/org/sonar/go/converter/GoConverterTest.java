@@ -772,6 +772,57 @@ class GoConverterTest {
       .returns(false, from(GoConverter::isInitialized));
   }
 
+  @Test
+  void testNewCallWithExpression() {
+    var code = """
+      package main
+
+      func foo() int {
+        return 42
+      }
+
+      func bar() *int {
+        return new(foo())
+      }
+      """;
+    var tree = TestGoConverterSingleFile.parse(code);
+    var returnList = getReturnsList(tree);
+    assertThat(returnList).hasSize(2);
+    checkIntegerValue(returnList.get(0), "42");
+
+    assertThat(returnList.get(1).expressions()).hasSize(1);
+    var functionInvocation = (FunctionInvocationTree) returnList.get(1).expressions().get(0);
+
+    assertThat(functionInvocation.memberSelect()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> {
+      assertThat(identifier.name()).isEqualTo("new");
+      assertThat(identifier.type()).isEqualTo("UNKNOWN");
+      assertThat(identifier.packageName()).isEqualTo("UNKNOWN");
+    });
+    assertThat(functionInvocation.returnTypes()).isEmpty();
+  }
+
+  @Test
+  void testRecursiveGenericTypes() {
+    var code = """
+      package main
+
+      type Adder[A Adder[A]] interface {
+        Add(A) A
+      }
+
+      func algo[A Adder[A]](x, y A) A {
+        return x.Add(y)
+      }
+      """;
+    var tree = TestGoConverterSingleFile.parse(code);
+    var returnList = getReturnsList(tree);
+    assertThat(returnList).hasSize(1);
+    assertThat(returnList.get(0).expressions()).hasSize(1);
+    var functionInvocation = (FunctionInvocationTree) returnList.get(0).expressions().get(0);
+    assertThat(functionInvocation.returnTypes()).hasSize(1);
+    assertThat(functionInvocation.returnTypes().get(0).isTypeOf("A")).isTrue();
+  }
+
   private Optional<String> getStringDescendant(Tree tree) {
     return tree.descendants()
       .filter(StringLiteralTree.class::isInstance)
