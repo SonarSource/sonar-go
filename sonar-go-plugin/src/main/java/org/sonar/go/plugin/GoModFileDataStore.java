@@ -19,8 +19,12 @@ package org.sonar.go.plugin;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.checks.GoModFileData;
+import org.sonar.plugins.go.api.checks.GoVersion;
 
 /**
  * This class provide a way to easily access Go mod files in the file system.
@@ -81,6 +85,18 @@ public class GoModFileDataStore {
 
   public GoModFileData retrieveClosestGoModFileData(URI uri) {
     return retrieveClosestGoModFileData(uri.getPath());
+  }
+
+  public Set<GoVersion> collectGoVersions() {
+    return flatNodes(root)
+      .map(n -> n.goModFileData)
+      .filter(data -> data != null && data != GoModFileData.UNKNOWN_DATA)
+      .map(GoModFileData::goVersion)
+      .collect(Collectors.toSet());
+  }
+
+  private static Stream<Node> flatNodes(Node node) {
+    return Stream.concat(Stream.of(node), node.children.values().stream().flatMap(GoModFileDataStore::flatNodes));
   }
 
   private static String[] splitPathIntoFolderName(String path) {

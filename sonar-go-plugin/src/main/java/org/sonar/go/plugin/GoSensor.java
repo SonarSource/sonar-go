@@ -53,6 +53,7 @@ import org.sonar.plugins.go.api.TextPointer;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeOrError;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
+import org.sonar.plugins.go.api.checks.GoVersion;
 
 public class GoSensor implements Sensor {
 
@@ -132,6 +133,7 @@ public class GoSensor implements Sensor {
     boolean success = false;
     var converter = ASTConverterValidation.wrap(goConverter, sensorContext.config());
     var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
+    collectTelemetry(sensorContext, goModFileDataStore);
     try {
       var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);
       success = analyseFiles(converter, sensorContext, inputFileContexts, goProgressReport, visitors, durationStatistics, goModFileDataStore);
@@ -185,10 +187,8 @@ public class GoSensor implements Sensor {
     if (sensorContext.canSkipUnchangedFiles()) {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
-
     var filesByDirectory = InputFileDiscovery.groupFilesByDirectory(inputFileContexts);
     goProgressReport.start(filesByDirectory);
-
     beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileDataStore);
 
     for (var goFolder : filesByDirectory) {
@@ -213,6 +213,21 @@ public class GoSensor implements Sensor {
       goProgressReport.nextFolder();
     }
     return true;
+  }
+
+  private static void collectTelemetry(SensorContext sensorContext, GoModFileDataStore goModFileDataStore) {
+    var goVersions = goModFileDataStore.collectGoVersions();
+    String usedVersion;
+    if (goVersions.isEmpty()) {
+      usedVersion = "noGoModFile";
+    } else {
+      usedVersion = goVersions.stream()
+        .sorted()
+        .map(GoVersion::toString)
+        .distinct()
+        .collect(Collectors.joining(";"));
+    }
+    sensorContext.addTelemetryProperty("go.used_version", usedVersion);
   }
 
   protected void beforeAnalyzeFile(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {

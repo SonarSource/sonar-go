@@ -20,7 +20,7 @@ import java.util.Objects;
 import javax.annotation.Nullable;
 import org.sonar.api.utils.Version;
 
-public class GoVersion {
+public class GoVersion implements Comparable<GoVersion> {
   public static final GoVersion UNKNOWN_VERSION = new GoVersion(null);
 
   private final Version version;
@@ -54,6 +54,20 @@ public class GoVersion {
     }
 
     return this.version.isGreaterThanOrEqual(otherVersion.version);
+  }
+
+  @Override
+  public int compareTo(GoVersion other) {
+    if (this.version == null && other.version == null) {
+      return 0;
+    }
+    if (this.version == null) {
+      return 1;
+    }
+    if (other.version == null) {
+      return -1;
+    }
+    return this.version.compareTo(other.version);
   }
 
   @Override

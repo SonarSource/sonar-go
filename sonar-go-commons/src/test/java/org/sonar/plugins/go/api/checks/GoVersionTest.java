@@ -17,6 +17,7 @@
 package org.sonar.plugins.go.api.checks;
 
 import java.util.stream.Stream;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -94,6 +95,27 @@ class GoVersionTest {
     } else {
       assertThat(goVersion.hashCode()).isNotEqualTo(objectToCompareAgainst.hashCode());
     }
+  }
+
+  @Test
+  void shouldSortVersionsCorrectly() {
+    var versions = Stream.of(
+      GoVersion.UNKNOWN_VERSION,
+      GoVersion.parse("1.23"),
+      GoVersion.parse("1.9"),
+      GoVersion.parse("1.21.1"),
+      GoVersion.parse("2.0"),
+      GoVersion.parse("1.21"))
+      .sorted()
+      .toList();
+
+    assertThat(versions).containsExactly(
+      GoVersion.parse("1.9"),
+      GoVersion.parse("1.21"),
+      GoVersion.parse("1.21.1"),
+      GoVersion.parse("1.23"),
+      GoVersion.parse("2.0"),
+      GoVersion.UNKNOWN_VERSION);
   }
 
   static Stream<Arguments> goVersionsSupplierForEqualsAndHashCode() {

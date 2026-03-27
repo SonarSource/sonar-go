@@ -488,6 +488,121 @@ class GoSensorTest {
   }
 
   @Test
+  void shouldSendTelemetryWithGoVersion() {
+    sensorContext = spy(sensorContext);
+    InputFile goModFile = createInputFile("go.mod",
+      """
+        module myModule
+
+        go 1.23.4
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    InputFile goFile = createInputFile("lets.go",
+      """
+        package main
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+    sensor("S1135").execute(sensorContext);
+
+    verify(sensorContext).addTelemetryProperty("go.used_version", "1.23.4");
+  }
+
+  @Test
+  void shouldSendTelemetryUnknownWhenGoModHasNoVersion() {
+    sensorContext = spy(sensorContext);
+    InputFile goModFile = createInputFile("go.mod",
+      """
+        module myModule
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    InputFile goFile = createInputFile("lets.go",
+      """
+        package main
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+    sensor("S1135").execute(sensorContext);
+
+    verify(sensorContext).addTelemetryProperty("go.used_version", "unknown");
+  }
+
+  @Test
+  void shouldSendTelemetryNoGoModFileWhenNoGoModPresent() {
+    sensorContext = spy(sensorContext);
+    InputFile goFile = createInputFile("lets.go",
+      """
+        package main
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    sensorContext.fileSystem().add(goFile);
+    sensor("S1135").execute(sensorContext);
+
+    verify(sensorContext).addTelemetryProperty("go.used_version", "noGoModFile");
+  }
+
+  @Test
+  void shouldSendTelemetryWithMultipleGoVersions() throws IOException {
+    var tempDir = Files.createTempDirectory("goMultiMod");
+    tempDir.toFile().deleteOnExit();
+    var moduleA = tempDir.resolve("moduleA");
+    Files.createDirectories(moduleA);
+    var moduleB = tempDir.resolve("moduleB");
+    Files.createDirectories(moduleB);
+
+    var multiModContext = spy(SensorContextTester.create(tempDir));
+    multiModContext.fileSystem().setWorkDir(tempDir);
+    multiModContext.settings().setProperty("sonar.go.converter.validation", "throw");
+    multiModContext.setRuntime(SQ_LTS_RUNTIME);
+
+    var goModFileA = createInputFile("moduleA/go.mod",
+      """
+        module moduleA
+
+        go 1.21
+        """,
+      tempDir.toFile(), null, InputFile.Type.MAIN);
+
+    var goModFileB = createInputFile("moduleB/go.mod",
+      """
+        module moduleB
+
+        go 1.23
+        """,
+      tempDir.toFile(), null, InputFile.Type.MAIN);
+
+    var goFileA = createInputFile("moduleA/main.go",
+      """
+        package main
+        """,
+      tempDir.toFile(), null, InputFile.Type.MAIN);
+
+    var goFileB = createInputFile("moduleB/main.go",
+      """
+        package main
+        """,
+      tempDir.toFile(), null, InputFile.Type.MAIN);
+
+    multiModContext.fileSystem().add(goModFileA);
+    multiModContext.fileSystem().add(goModFileB);
+    multiModContext.fileSystem().add(goFileA);
+    multiModContext.fileSystem().add(goFileB);
+
+    when(fileLinesContextFactory.createFor(any(InputFile.class))).thenReturn(fileLinesContext);
+    new GoSensor(checkFactory("S1135"), fileLinesContextFactory, new DefaultNoSonarFilter(),
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter).execute(multiModContext);
+
+    verify(multiModContext).addTelemetryProperty("go.used_version", "1.21;1.23");
+  }
+
+  @Test
   void shouldRaiseIssueOnConverterLogValidation() {
     InputFile inputFile = createInputFile("lets.go",
       """
