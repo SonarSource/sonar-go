@@ -32,7 +32,7 @@ default:
 </pre>
 <p>If the same logic is truly needed for both instances, then:</p>
 <ul>
-  <li> in an <code>if</code> chain they should be combined </li>
+  <li>in an <code>if</code> chain they should be combined</li>
 </ul>
 <pre data-diff-id="1" data-diff-type="compliant">
 if (a &gt;= 0 &amp;&amp; a &lt; 10) || (a &gt;= 20 &amp;&amp; a &lt; 50) {
@@ -45,7 +45,7 @@ if (a &gt;= 0 &amp;&amp; a &lt; 10) || (a &gt;= 20 &amp;&amp; a &lt; 50) {
 }
 </pre>
 <ul>
-  <li> for a <code>switch</code>, the values should be put in the <code>case</code> expression list. </li>
+  <li>for a <code>switch</code>, the values should be put in the <code>case</code> expression list.</li>
 </ul>
 <pre data-diff-id="2" data-diff-type="compliant">
 switch i {
@@ -72,6 +72,6 @@ if a == 1 {
 <h2>Resources</h2>
 <h3>Related rules</h3>
 <ul>
-  <li> {rule:go:S3923} - All branches in a conditional structure should not have exactly the same implementation </li>
+  <li>{rule:go:S3923} - All branches in a conditional structure should not have exactly the same implementation</li>
 </ul>
 

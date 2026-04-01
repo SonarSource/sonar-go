@@ -8,7 +8,7 @@ func setCoordinates(x1 int, y1 int, z1 int, x2 int, y2 int, z2 int) { // Noncomp
 </pre>
 <p>The solution can be to:</p>
 <ul>
-  <li> Split the function into smaller ones </li>
+  <li>Split the function into smaller ones</li>
 </ul>
 <pre>
 // Each function does a part of what the original setCoordinates function was doing, so confusion risks are lower
@@ -21,7 +21,7 @@ func setSize(width int, height int, depth int) {
 }
 </pre>
 <ul>
-  <li> Find a better data structure for the parameters that group data in a way that makes sense for the specific application domain </li>
+  <li>Find a better data structure for the parameters that group data in a way that makes sense for the specific application domain</li>
 </ul>
 <pre>
 type point struct { // In geometry, Point is a logical structure to group data
