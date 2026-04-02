@@ -46,7 +46,7 @@ import static org.sonar.go.plugin.GoModFileAnalyzer.analyzeGoModFileContent;
 
 public class GoCoverSensor implements Sensor {
 
-  private static final Version TELEMETRY_SUPPORTED_API_VERSION = Version.create(10, 9);
+  public static final Version TELEMETRY_SUPPORTED_API_VERSION = Version.create(10, 9);
 
   public static final String REPORT_PATH_KEY = "sonar.go.coverage.reportPaths";
   private static final Logger LOG = LoggerFactory.getLogger(GoCoverSensor.class);

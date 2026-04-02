@@ -81,18 +81,14 @@ import org.sonar.plugins.go.api.checks.InitContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.sonar.go.testing.TestInputFileCreator.createInputFile;
 
 class GoSensorTest {
 
   private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
   private static final SonarRuntime SONAR_LINT_RUNTIME = SonarRuntimeImpl.forSonarLint(Version.create(13, 0));
+  public static final SonarRuntime SQ_TELEMETRY_SUPPORTING_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(10, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
   private GoConverter singleInstanceGoConverter;
   private Path projectDir;
   private File baseDir;
@@ -489,6 +485,7 @@ class GoSensorTest {
 
   @Test
   void shouldSendTelemetryWithGoVersion() {
+    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goModFile = createInputFile("go.mod",
       """
@@ -506,13 +503,40 @@ class GoSensorTest {
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
+
     sensor("S1135").execute(sensorContext);
 
     verify(sensorContext).addTelemetryProperty("go.used_version", "1.23.4");
   }
 
   @Test
+  void shouldNotSendTelemetry() {
+    sensorContext = spy(sensorContext);
+    InputFile goModFile = createInputFile("go.mod",
+      """
+        module myModule
+
+        go 1.23.4
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    InputFile goFile = createInputFile("lets.go",
+      """
+        package main
+        """,
+      baseDir, null, InputFile.Type.MAIN);
+
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+
+    sensor("S1135").execute(sensorContext);
+
+    verify(sensorContext, never()).addTelemetryProperty(anyString(), anyString());
+  }
+
+  @Test
   void shouldSendTelemetryUnknownWhenGoModHasNoVersion() {
+    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goModFile = createInputFile("go.mod",
       """
@@ -535,6 +559,7 @@ class GoSensorTest {
 
   @Test
   void shouldSendTelemetryNoGoModFileWhenNoGoModPresent() {
+    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goFile = createInputFile("lets.go",
       """
@@ -560,7 +585,7 @@ class GoSensorTest {
     var multiModContext = spy(SensorContextTester.create(tempDir));
     multiModContext.fileSystem().setWorkDir(tempDir);
     multiModContext.settings().setProperty("sonar.go.converter.validation", "throw");
-    multiModContext.setRuntime(SQ_LTS_RUNTIME);
+    multiModContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
 
     var goModFileA = createInputFile("moduleA/go.mod",
       """

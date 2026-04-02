@@ -55,6 +55,8 @@ import org.sonar.plugins.go.api.TreeOrError;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 import org.sonar.plugins.go.api.checks.GoVersion;
 
+import static org.sonar.go.coverage.GoCoverSensor.TELEMETRY_SUPPORTED_API_VERSION;
+
 public class GoSensor implements Sensor {
 
   protected static final Pattern EMPTY_FILE_CONTENT_PATTERN = Pattern.compile("\\s*+");
@@ -216,6 +218,9 @@ public class GoSensor implements Sensor {
   }
 
   private static void collectTelemetry(SensorContext sensorContext, GoModFileDataStore goModFileDataStore) {
+    if (!sensorContext.runtime().getApiVersion().isGreaterThanOrEqual(TELEMETRY_SUPPORTED_API_VERSION)) {
+      return;
+    }
     var goVersions = goModFileDataStore.collectGoVersions();
     String usedVersion;
     if (goVersions.isEmpty()) {
