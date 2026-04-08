@@ -1,10 +1,10 @@
 /*
  * SonarSource Go
- * Copyright (C) 2018-2026 SonarSource Sàrl
+ * Copyright (C) SonarSource Sàrl
  * mailto:info AT sonarsource DOT com
  *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the Sonar Source-Available License Version 1, as published by SonarSource Sàrl.
+ * You can redistribute and/or modify this program under the terms of
+ * the Sonar Source-Available License Version 1, as published by SonarSource Sàrl.
  *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
@@ -14,6 +14,8 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
+import org.sonarsource.cloudnative.gradle.convertLicenseHeaderToGoCommentStyle
+
 plugins {
     id("org.sonarsource.cloud-native.code-style-conventions")
     id("org.sonarsource.cloud-native.java-conventions")
@@ -37,7 +39,11 @@ if (isCi) {
         go {
             gofmt("go$goVersion")
             target("*.go", "**/*.go")
-            targetExclude("*_generated.go")
+            targetExclude("*_generated.go", "render.go")
+            licenseHeader(
+                convertLicenseHeaderToGoCommentStyle(rootProject.file("LICENSE_HEADER")),
+                "(// The following directive|package)"
+            )
         }
     }
     tasks.named("check") {
