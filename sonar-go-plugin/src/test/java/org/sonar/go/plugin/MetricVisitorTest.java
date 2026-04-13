@@ -19,10 +19,14 @@ package org.sonar.go.plugin;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
@@ -291,7 +295,7 @@ class MetricVisitorTest {
       func function1() { // comment
         x = true || false;
       }""", InputFile.Type.TEST, true);
-    assertThat(visitor.linesOfCode()).isEmpty();
+    assertThat(visitor.linesOfCode()).isNull();
   }
 
   @Test
@@ -309,17 +313,37 @@ class MetricVisitorTest {
     assertThat(visitor.linesOfCode()).containsExactly(1, 2, 3, 4, 6, 7, 8);
   }
 
+  @MethodSource
+  @ParameterizedTest
+  void shouldBeApplicableToOnlyMainFiles(InputFile.Type fileType, boolean detectedAsTestFile, boolean shouldBeApplicable) throws IOException {
+    InputFileContext inputFileContext = createInputFileContext("", fileType, detectedAsTestFile);
+    assertThat(visitor.isApplicableTo(inputFileContext)).isEqualTo(shouldBeApplicable);
+  }
+
+  static Stream<Arguments> shouldBeApplicableToOnlyMainFiles() {
+    return Stream.of(
+      Arguments.of(InputFile.Type.MAIN, false, true),
+      Arguments.of(InputFile.Type.MAIN, true, true),
+      Arguments.of(InputFile.Type.TEST, true, false),
+      // never achievable in real conditions
+      Arguments.of(InputFile.Type.TEST, false, false));
+  }
+
   private void scan(String code) throws IOException {
     scan(code, InputFile.Type.MAIN, false);
   }
 
-  private void scan(String code, InputFile.Type fileType, boolean detectedAsTestFile) throws IOException {
+  private InputFileContext createInputFileContext(String code, InputFile.Type fileType, boolean detectedAsTestFile) throws IOException {
     File tmpFile = File.createTempFile("file", ".tmp", tempFolder);
     inputFile = new TestInputFileBuilder("moduleKey", tmpFile.getName())
       .setCharset(StandardCharsets.UTF_8)
       .setType(fileType)
       .initMetadata(code).build();
-    InputFileContext ctx = new InputFileContext(sensorContext, inputFile, detectedAsTestFile);
+    return new InputFileContext(sensorContext, inputFile, detectedAsTestFile);
+  }
+
+  private void scan(String code, InputFile.Type fileType, boolean detectedAsTestFile) throws IOException {
+    InputFileContext ctx = createInputFileContext(code, fileType, detectedAsTestFile);
     Tree root = TestGoConverterSingleFile.parse(code);
     visitor.scan(ctx, root);
   }

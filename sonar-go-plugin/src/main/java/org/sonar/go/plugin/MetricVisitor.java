@@ -52,41 +52,31 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
     this.executableLineOfCodePredicate = executableLineOfCodePredicate;
 
     register(TopLevelTree.class, (ctx, tree) -> {
-      if (notTestFile(ctx)) {
-        List<Tree> declarations = tree.declarations();
-        int firstTokenLine = declarations.isEmpty() ? tree.textRange().end().line() : declarations.get(0).textRange().start().line();
-        var numberOfLinesInFile = ctx.inputFile().lines();
-        tree.allComments()
-          .forEach(comment -> commentLines.addAll(findNonEmptyCommentLines(comment, firstTokenLine)));
-        addExecutableLines(declarations);
-        linesOfCode.addAll(tree.metaData().linesOfCode().stream().filter(line -> line <= numberOfLinesInFile).toList());
-        complexity = new CyclomaticComplexityVisitor().complexityTrees(tree).size();
-        statements = new StatementsVisitor().statements(tree);
-        cognitiveComplexity = new CognitiveComplexity(tree).value();
-      }
+      List<Tree> declarations = tree.declarations();
+      int firstTokenLine = declarations.isEmpty() ? tree.textRange().end().line() : declarations.get(0).textRange().start().line();
+      var numberOfLinesInFile = ctx.inputFile().lines();
+      tree.allComments()
+        .forEach(comment -> commentLines.addAll(findNonEmptyCommentLines(comment, firstTokenLine)));
+      addExecutableLines(declarations);
+      linesOfCode.addAll(tree.metaData().linesOfCode().stream().filter(line -> line <= numberOfLinesInFile).toList());
+      complexity = new CyclomaticComplexityVisitor().complexityTrees(tree).size();
+      statements = new StatementsVisitor().statements(tree);
+      cognitiveComplexity = new CognitiveComplexity(tree).value();
     });
 
     register(FunctionDeclarationTree.class, (ctx, tree) -> {
-      if (notTestFile(ctx) && tree.name() != null && tree.body() != null) {
+      if (tree.name() != null && tree.body() != null) {
         numberOfFunctions++;
       }
     });
 
     register(ClassDeclarationTree.class, (ctx, tree) -> {
-      if (notTestFile(ctx)) {
-        numberOfClasses++;
-      }
+      numberOfClasses++;
     });
 
     register(BlockTree.class, (ctx, tree) -> {
-      if (notTestFile(ctx)) {
-        addExecutableLines(tree.statementOrExpressions());
-      }
+      addExecutableLines(tree.statementOrExpressions());
     });
-  }
-
-  private static boolean notTestFile(InputFileContext ctx) {
-    return ctx.inputFile().type() != InputFile.Type.TEST;
   }
 
   static Set<Integer> findNonEmptyCommentLines(Comment comment, int firstTokenLine) {
@@ -130,6 +120,12 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
     linesOfCode().forEach(line -> fileLinesContext.setIntValue(CoreMetrics.NCLOC_DATA_KEY, line, 1));
     executableLines().forEach(line -> fileLinesContext.setIntValue(CoreMetrics.EXECUTABLE_LINES_DATA_KEY, line, 1));
     fileLinesContext.save();
+  }
+
+  @Override
+  public boolean isApplicableTo(InputFileContext ctx) {
+    // metrics are only calculated for files which are detected as MAIN files by the scanner
+    return ctx.inputFile().type() == InputFile.Type.MAIN;
   }
 
   private static void saveMetric(InputFileContext ctx, Metric<Integer> metric, Integer value) {

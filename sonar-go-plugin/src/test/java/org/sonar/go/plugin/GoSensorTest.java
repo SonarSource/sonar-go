@@ -20,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -35,8 +37,9 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.mockito.Mockito;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.event.Level;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
@@ -81,14 +84,21 @@ import org.sonar.plugins.go.api.checks.InitContext;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.sonar.go.testing.TestInputFileCreator.createInputFile;
 
 class GoSensorTest {
 
-  private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(8, 9), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
+  private static final SonarRuntime SQ_LTS_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(11, 1), SonarQubeSide.SCANNER, SonarEdition.DEVELOPER);
   private static final SonarRuntime SONAR_LINT_RUNTIME = SonarRuntimeImpl.forSonarLint(Version.create(13, 0));
-  public static final SonarRuntime SQ_TELEMETRY_SUPPORTING_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(10, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
+  public static final SonarRuntime SQ_TELEMETRY_NOT_SUPPORTING_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(9, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
   private GoConverter singleInstanceGoConverter;
   private Path projectDir;
   private File baseDir;
@@ -144,6 +154,45 @@ class GoSensorTest {
 
     assertThat(sensorContext.allIssues()).hasSize(1);
     assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  @MethodSource
+  @ParameterizedTest
+  void testThatCorrectChecksScopeIsApplied(String fileName, InputFile.Type fileType, List<String> expectedIssues) {
+    String code = """
+      /**/
+      package main\s
+
+      func test() {
+       x := ((2 + 3))
+      }""";
+
+    InputFile inputFile = TestInputFileCreator.createInputFile(fileName, code, baseDir, null, fileType);
+
+    sensorContext.fileSystem().add(inputFile);
+    if (fileType == InputFile.Type.TEST) {
+      // We don't want to trigger automatic test file detection
+      sensorContext.settings().setProperty("sonar.tests", "irrelevant-but-not-empty");
+    }
+
+    // S1110 is applicable to test and main files
+    // S4663 is only applicable to main files
+    GoSensor goSensor = sensor("S1110", "S4663");
+
+    goSensor.execute(sensorContext);
+
+    assertThat(sensorContext.allIssues()).hasSameSizeAs(expectedIssues);
+    List<String> raisedIssueKeys = sensorContext.allIssues().stream().map(issue -> issue.ruleKey().rule()).toList();
+    assertThat(raisedIssueKeys).containsExactlyInAnyOrderElementsOf(expectedIssues);
+
+    assertThat(logTester.logs(Level.WARN)).isEmpty();
+  }
+
+  static Stream<Arguments> testThatCorrectChecksScopeIsApplied() {
+    return Stream.of(
+      Arguments.of("lets.go", InputFile.Type.MAIN, List.of("S1110", "S4663")),
+      Arguments.of("lets.go", InputFile.Type.TEST, List.of("S1110")),
+      Arguments.of("lets_test.go", InputFile.Type.MAIN, List.of("S1110")));
   }
 
   @Test
@@ -290,14 +339,9 @@ class GoSensorTest {
     GoSensor goSensor = sensor();
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.NCLOC).value()).isZero();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COMMENT_LINES).value()).isZero();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.CLASSES).value()).isZero();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.FUNCTIONS).value()).isZero();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.STATEMENTS).value()).isZero();
-    assertThat(sensorContext.measure(inputFile.key(), CoreMetrics.COGNITIVE_COMPLEXITY).value()).isZero();
+    assertThat(sensorContext.measures(inputFile.key())).isEmpty();
 
-    assertThat(fileLinesContext.saveCount).isEqualTo(1);
+    assertThat(fileLinesContext.saveCount).isZero();
     assertThat(fileLinesContext.metrics).isEmpty();
   }
 
@@ -416,7 +460,7 @@ class GoSensorTest {
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class), Collections.emptyList());
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
@@ -438,7 +482,7 @@ class GoSensorTest {
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class), Collections.emptyList());
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
@@ -453,7 +497,7 @@ class GoSensorTest {
       baseDir, null, InputFile.Type.MAIN);
 
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class), Collections.emptyList());
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
@@ -478,14 +522,13 @@ class GoSensorTest {
 
     sensorContext.fileSystem().add(goModFile);
     sensorContext.fileSystem().add(goFile);
-    GoSensor goSensor = sensor(List.of(GoVersionCheck.class));
+    GoSensor goSensor = sensor(List.of(GoVersionCheck.class), Collections.emptyList());
     goSensor.execute(sensorContext);
     assertThat(sensorContext.allIssues()).isEmpty();
   }
 
   @Test
   void shouldSendTelemetryWithGoVersion() {
-    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goModFile = createInputFile("go.mod",
       """
@@ -510,7 +553,8 @@ class GoSensorTest {
   }
 
   @Test
-  void shouldNotSendTelemetry() {
+  void shouldNotSendTelemetryWhenApiDoesntSupportIt() {
+    sensorContext.setRuntime(SQ_TELEMETRY_NOT_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goModFile = createInputFile("go.mod",
       """
@@ -536,7 +580,6 @@ class GoSensorTest {
 
   @Test
   void shouldSendTelemetryUnknownWhenGoModHasNoVersion() {
-    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goModFile = createInputFile("go.mod",
       """
@@ -559,7 +602,6 @@ class GoSensorTest {
 
   @Test
   void shouldSendTelemetryNoGoModFileWhenNoGoModPresent() {
-    sensorContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
     sensorContext = spy(sensorContext);
     InputFile goFile = createInputFile("lets.go",
       """
@@ -585,7 +627,6 @@ class GoSensorTest {
     var multiModContext = spy(SensorContextTester.create(tempDir));
     multiModContext.fileSystem().setWorkDir(tempDir);
     multiModContext.settings().setProperty("sonar.go.converter.validation", "throw");
-    multiModContext.setRuntime(SQ_TELEMETRY_SUPPORTING_RUNTIME);
 
     var goModFileA = createInputFile("moduleA/go.mod",
       """
@@ -679,11 +720,16 @@ class GoSensorTest {
     BiConsumer<CheckContext, Tree> consumer1 = spy(new ConsumerToSpy());
     BiConsumer<CheckContext, Tree> consumer2 = spy(new ConsumerToSpy());
 
-    GoSensor sensor = sensor(List.of(CheckRegisteringOnLeave1.class, CheckRegisteringOnLeave2.class));
-    List<GoCheck> allChecks = sensor.checks().all();
+    List<Class<?>> mainAndTestChecks = List.of(CheckRegisteringOnLeave1.class, CheckRegisteringOnLeave2.class);
+    GoSensor sensor = spy(sensor(mainAndTestChecks, Collections.emptyList()));
+    GoChecks goChecks = sensor.initializeChecks(mainAndTestChecks);
+    List<GoCheck> allChecks = goChecks.all();
     assertThat(allChecks).hasSize(2);
+
     ((CheckRegisteringOnLeave) allChecks.get(0)).setConsumerToRegister(consumer1);
     ((CheckRegisteringOnLeave) allChecks.get(1)).setConsumerToRegister(consumer2);
+
+    when(sensor.mainAndTestChecks()).thenReturn(goChecks);
 
     InputFile goFile = createInputFile("lets.go",
       """
@@ -695,8 +741,8 @@ class GoSensorTest {
 
     sensor.execute(sensorContext);
 
-    verify(consumer1, Mockito.times(1)).accept(any(), any());
-    verify(consumer2, Mockito.times(1)).accept(any(), any());
+    verify(consumer1, times(1)).accept(any(), any());
+    verify(consumer2, times(1)).accept(any(), any());
   }
 
   @Test
@@ -1086,23 +1132,23 @@ class GoSensorTest {
     assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
+  @Rule(key = "failing")
+  public static class FailingCheck implements GoCheck {
+    @Override
+    public void initialize(InitContext init) {
+      init.register(TopLevelTree.class, (ctx, tree) -> {
+        throw new IllegalStateException("BOUM");
+      });
+    }
+  }
+
   @Test
   void testFailureInCheck() {
     InputFile inputFile = createInputFile("file1.go", """
       package main
       func f() {}""", baseDir);
     context.fileSystem().add(inputFile);
-    CheckFactory checkFactory = mock(CheckFactory.class);
-    var checks = mock(Checks.class);
-    GoCheck failingCheck = init -> init.register(TopLevelTree.class, (ctx, tree) -> {
-      throw new IllegalStateException("BOUM");
-    });
-    when(checks.ruleKey(failingCheck)).thenReturn(RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, "failing"));
-    // The two following calls are called by "GoChecks".
-    when(checkFactory.create(GoRulesDefinition.REPOSITORY_KEY)).thenReturn(checks);
-    when(checks.addAnnotatedChecks(any(Iterable.class))).thenReturn(checks);
-    when(checks.all()).thenReturn(Collections.singletonList(failingCheck));
-    sensor(checkFactory).execute(context);
+    sensor(List.of(FailingCheck.class), Collections.emptyList()).execute(context);
 
     Collection<AnalysisError> analysisErrors = context.allAnalysisErrors();
     assertThat(analysisErrors).hasSize(1);
@@ -1266,10 +1312,13 @@ class GoSensorTest {
           It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
   }
 
-  private GoSensor sensor(List<Class<?>> checks) {
+  private GoSensor sensor(List<Class<?>> mainAndTestChecks, List<Class<?>> mainChecks) {
     ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
 
-    for (Class<?> check : checks) {
+    ArrayList<Class<?>> allChecks = new ArrayList<>(mainAndTestChecks);
+    allChecks.addAll(mainChecks);
+
+    for (Class<?> check : allChecks) {
       RuleKey ruleKey = RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, ((Rule) check.getAnnotations()[0]).key());
       NewActiveRule.Builder newActiveRuleBuilder = new NewActiveRule.Builder()
         .setRuleKey(ruleKey);
@@ -1278,10 +1327,18 @@ class GoSensorTest {
 
     ActiveRules activeRules = rulesBuilder.build();
     CheckFactory checkFactory = new CheckFactory(activeRules);
-    Checks<GoCheck> instantiatedChecks = checkFactory.create(GoRulesDefinition.REPOSITORY_KEY);
-    instantiatedChecks.addAnnotatedChecks(checks);
-    return new GoSensor(new GoTestChecks(instantiatedChecks), fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter);
+    return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter) {
+      @Override
+      protected GoChecks mainAndTestChecks() {
+        return initializeChecks(mainAndTestChecks);
+      }
+
+      @Override
+      protected GoChecks mainChecks() {
+        return initializeChecks(mainChecks);
+      }
+    };
   }
 
   private GoSensor sensor(String... ruleKeys) {

@@ -17,6 +17,7 @@
 package org.sonar.go.checks;
 
 import java.io.File;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,7 +31,7 @@ class GoCheckListTest {
   void shouldContainEveryCheck() {
     File classDir = new File("src/main/java/org/sonar/go/checks/");
     File[] checkFiles = classDir.listFiles((dir, name) -> name.endsWith("Check.java") && !name.startsWith("Abstract"));
-    assertThat(GoCheckList.checks()).hasSize(checkFiles != null ? checkFiles.length : 0);
+    assertThat(GoCheckList.allChecks()).hasSize(checkFiles != null ? checkFiles.length : 0);
   }
 
   /**
@@ -38,7 +39,7 @@ class GoCheckListTest {
    */
   @Test
   void shouldHaveTestsForEachCheck() {
-    for (Class<?> cls : GoCheckList.checks()) {
+    for (Class<?> cls : GoCheckList.allChecks()) {
       if (cls.equals(ParsingErrorCheck.class)) {
         // We can't write any test for this check as it's empty
         continue;
@@ -48,5 +49,22 @@ class GoCheckListTest {
         .overridingErrorMessage("No test for " + cls.getSimpleName())
         .isNotNull();
     }
+  }
+
+  @Test
+  void checkListsShouldBeDisjoint() {
+    assertThat(Collections.disjoint(GoCheckList.mainAndTestChecks(), GoCheckList.mainChecks())).isTrue();
+  }
+
+  @Test
+  void allShouldNotContainDuplicates() {
+    assertThat(GoCheckList.allChecks()).doesNotHaveDuplicates();
+  }
+
+  @Test
+  void allShouldContainOnlyAllChecksFromOtherLists() {
+    assertThat(GoCheckList.allChecks()).containsAll(GoCheckList.mainAndTestChecks());
+    assertThat(GoCheckList.allChecks()).containsAll(GoCheckList.mainChecks());
+    assertThat(GoCheckList.allChecks()).size().isEqualTo(GoCheckList.mainAndTestChecks().size() + GoCheckList.mainChecks().size());
   }
 }

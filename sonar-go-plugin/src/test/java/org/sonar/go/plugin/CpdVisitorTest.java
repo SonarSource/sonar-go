@@ -23,15 +23,20 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
 import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
+import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.cache.ReadCache;
 import org.sonar.api.batch.sensor.cache.WriteCache;
 import org.sonar.api.batch.sensor.cpd.internal.TokensLine;
@@ -50,10 +55,12 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.sonar.go.plugin.CpdVisitor.ASCII_RECORD_SEPARATOR;
 import static org.sonar.go.plugin.CpdVisitor.ASCII_UNIT_SEPARATOR;
 import static org.sonar.go.plugin.CpdVisitor.computeCacheKey;
@@ -481,5 +488,21 @@ class CpdVisitorTest {
     assertThatThrownBy(() -> CpdVisitor.deserialize(unexpectedTokenType))
       .isInstanceOf(IllegalArgumentException.class)
       .hasMessageStartingWith("Could not deserialize cached CPD tokens:");
+  }
+
+  @MethodSource
+  @ParameterizedTest
+  void shouldBeApplicableToOnlyMainFiles(InputFile.Type fileType, boolean shouldBeApplicable) {
+    InputFile inputFile = mock(InputFile.class);
+    when(inputFile.type()).thenReturn(fileType);
+    InputFileContext inputFileContext = new InputFileContext(mock(SensorContext.class), inputFile);
+    CpdVisitor visitor = new CpdVisitor();
+    assertThat(visitor.isApplicableTo(inputFileContext)).isEqualTo(shouldBeApplicable);
+  }
+
+  static Stream<Arguments> shouldBeApplicableToOnlyMainFiles() {
+    return Stream.of(
+      Arguments.of(InputFile.Type.MAIN, true),
+      Arguments.of(InputFile.Type.TEST, false));
   }
 }

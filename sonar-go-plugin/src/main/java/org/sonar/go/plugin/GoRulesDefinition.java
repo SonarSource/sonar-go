@@ -40,7 +40,7 @@ public class GoRulesDefinition implements RulesDefinition {
     NewRepository repository = context.createRepository(REPOSITORY_KEY, GoLanguage.KEY)
       .setName("SonarAnalyzer");
 
-    loadRepository(GoPlugin.RESOURCE_FOLDER, GoProfileDefinition.PROFILE_PATH, repository, GoCheckList.checks());
+    loadRepository(GoPlugin.RESOURCE_FOLDER, GoProfileDefinition.PROFILE_PATH, repository, GoCheckList.allChecks());
 
     repository.done();
 

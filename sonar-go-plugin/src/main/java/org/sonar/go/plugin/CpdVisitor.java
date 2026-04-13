@@ -69,6 +69,12 @@ public class CpdVisitor extends PullRequestAwareVisitor {
   }
 
   @Override
+  public boolean isApplicableTo(InputFileContext ctx) {
+    // Cpd tokens only get saved for MAIN files
+    return ctx.inputFile().type() == InputFile.Type.MAIN;
+  }
+
+  @Override
   public boolean reusePreviousResults(InputFileContext ctx) {
     if (canReusePreviousResults(ctx)) {
       NewCpdTokens reusedTokens = ctx.sensorContext.newCpdTokens().onFile(ctx.inputFile());

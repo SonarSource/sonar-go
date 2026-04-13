@@ -33,7 +33,7 @@ public class TreeVisitor<C extends TreeContext> {
   }
 
   public void scan(C ctx, @Nullable Tree root) {
-    if (root != null) {
+    if (root != null && isApplicableTo(ctx)) {
       ctx.before(root);
       before(ctx, root);
       visit(ctx, root);
@@ -73,6 +73,13 @@ public class TreeVisitor<C extends TreeContext> {
   public <T extends Tree> TreeVisitor<C> registerOnLeaveTree(Class<T> cls, BiConsumer<C, T> visitor) {
     consumersOnLeaveTree.add(new ConsumerFilter<>(cls, visitor));
     return this;
+  }
+
+  /**
+   * @param ctx will be used for further evaluation in overriding classes
+   */
+  public boolean isApplicableTo(C ctx) {
+    return true;
   }
 
   private static class ConsumerFilter<C extends TreeContext, T extends Tree> {

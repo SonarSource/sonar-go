@@ -40,18 +40,24 @@ import org.sonar.plugins.go.api.checks.SecondaryLocation;
 public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final DurationStatistics statistics;
-
   private final GoModFileDataStore goModFileDataStore;
+  private final boolean applicableToTestFiles;
 
-  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore) {
+  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore, boolean applicableToTestFiles) {
     this.statistics = statistics;
     this.goModFileDataStore = goModFileDataStore;
+    this.applicableToTestFiles = applicableToTestFiles;
     Collection<GoCheck> rulesActiveInSonarQube = goChecks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
       var ruleKey = goChecks.ruleKey(check);
       Objects.requireNonNull(ruleKey);
       check.initialize(new ContextAdapter(ruleKey));
     }
+  }
+
+  @Override
+  public boolean isApplicableTo(InputFileContext ctx) {
+    return applicableToTestFiles || !ctx.isTestFile();
   }
 
   public class ContextAdapter implements InitContext, CheckContext {

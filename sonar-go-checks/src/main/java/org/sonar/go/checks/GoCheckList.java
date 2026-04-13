@@ -17,7 +17,6 @@
 package org.sonar.go.checks;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class GoCheckList {
@@ -26,43 +25,59 @@ public class GoCheckList {
     // utility class
   }
 
-  public static List<Class<?>> checks() {
-    return new ArrayList<>(Arrays.<Class<?>>asList(
-      AllBranchesIdenticalCheck.class,
-      BadFunctionNameCheck.class,
-      BooleanInversionCheck.class,
-      BooleanLiteralCheck.class,
-      CodeAfterJumpGoCheck.class,
-      DuplicateBranchGoCheck.class,
-      DuplicatedFunctionImplementationCheck.class,
-      ElseIfWithoutElseCheck.class,
-      EmptyBlockCheck.class,
-      EmptyCommentCheck.class,
-      EmptyFunctionCheck.class,
-      FileHeaderCheck.class,
-      FixMeCommentCheck.class,
-      FunctionCognitiveComplexityCheck.class,
-      IdenticalBinaryOperandCheck.class,
-      IdenticalConditionsCheck.class,
-      IfConditionalAlwaysTrueOrFalseCheck.class,
-      SwitchCaseTooBigCheck.class,
-      SwitchWithoutDefaultCheck.class,
-      NestedSwitchCheck.class,
-      OctalValuesCheck.class,
-      OneStatementPerLineGoCheck.class,
-      ParsingErrorCheck.class,
-      RedundantParenthesesCheck.class,
-      SelfAssignmentCheck.class,
-      StringLiteralDuplicatedCheck.class,
-      TodoCommentCheck.class,
-      TooComplexExpressionCheck.class,
-      TooDeeplyNestedStatementsCheck.class,
-      TooLongFunctionCheck.class,
-      TooLongLineCheck.class,
-      TooManyCasesCheck.class,
-      TooManyLinesOfCodeFileCheck.class,
-      TooManyParametersCheck.class,
-      VariableAndParameterNameCheck.class,
-      WrongAssignmentOperatorCheck.class));
+  // Rules that define the scope as 'Main' in rspec definition
+  private static final List<Class<?>> MAIN_CHECKS = List.of(
+    CodeAfterJumpGoCheck.class,
+    DuplicateBranchGoCheck.class,
+    EmptyCommentCheck.class,
+    EmptyFunctionCheck.class,
+    StringLiteralDuplicatedCheck.class,
+    SwitchCaseTooBigCheck.class,
+    TooLongFunctionCheck.class);
+
+  // Rules that define the scope as 'All' in rspec definition
+  private static final List<Class<?>> MAIN_AND_TEST_CHECKS = List.of(
+    AllBranchesIdenticalCheck.class,
+    BadFunctionNameCheck.class,
+    BooleanInversionCheck.class,
+    BooleanLiteralCheck.class,
+    DuplicatedFunctionImplementationCheck.class,
+    ElseIfWithoutElseCheck.class,
+    EmptyBlockCheck.class,
+    FileHeaderCheck.class,
+    FixMeCommentCheck.class,
+    FunctionCognitiveComplexityCheck.class,
+    IdenticalBinaryOperandCheck.class,
+    IdenticalConditionsCheck.class,
+    IfConditionalAlwaysTrueOrFalseCheck.class,
+    SwitchWithoutDefaultCheck.class,
+    NestedSwitchCheck.class,
+    OctalValuesCheck.class,
+    OneStatementPerLineGoCheck.class,
+    ParsingErrorCheck.class,
+    RedundantParenthesesCheck.class,
+    SelfAssignmentCheck.class,
+    TodoCommentCheck.class,
+    TooComplexExpressionCheck.class,
+    TooDeeplyNestedStatementsCheck.class,
+    TooLongLineCheck.class,
+    TooManyCasesCheck.class,
+    TooManyLinesOfCodeFileCheck.class,
+    TooManyParametersCheck.class,
+    VariableAndParameterNameCheck.class,
+    WrongAssignmentOperatorCheck.class);
+
+  public static List<Class<?>> mainChecks() {
+    return new ArrayList<>(MAIN_CHECKS);
+  }
+
+  public static List<Class<?>> mainAndTestChecks() {
+    return new ArrayList<>(MAIN_AND_TEST_CHECKS);
+  }
+
+  public static List<Class<?>> allChecks() {
+    ArrayList<Class<?>> allChecks = new ArrayList<>(GoCheckList.mainAndTestChecks());
+    allChecks.addAll(GoCheckList.mainChecks());
+    return allChecks;
   }
 }

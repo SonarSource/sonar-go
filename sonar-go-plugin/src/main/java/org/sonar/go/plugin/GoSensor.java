@@ -73,31 +73,21 @@ public class GoSensor implements Sensor {
   private final NoSonarFilter noSonarFilter;
   private final FileLinesContextFactory fileLinesContextFactory;
   private final Language language;
-  private final GoChecks checks;
   private final ASTConverter goConverter;
   private final InputFileDiscovery inputFileDiscovery;
 
   protected DurationStatistics durationStatistics;
   protected MemoryMonitor memoryMonitor;
+  protected final CheckFactory checkFactory;
 
   public GoSensor(CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
     NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
-    this(initializeChecks(checkFactory), fileLinesContextFactory, noSonarFilter, language, goConverter);
-  }
-
-  public GoSensor(GoChecks checks, FileLinesContextFactory fileLinesContextFactory,
-    NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter) {
+    this.checkFactory = checkFactory;
     this.noSonarFilter = noSonarFilter;
     this.fileLinesContextFactory = fileLinesContextFactory;
     this.language = language;
-    this.checks = checks;
     this.goConverter = goConverter;
     this.inputFileDiscovery = new InputFileDiscovery(language);
-  }
-
-  private static GoChecks initializeChecks(CheckFactory checkFactory) {
-    return new GoChecks(checkFactory)
-      .addChecks(GoRulesDefinition.REPOSITORY_KEY, GoCheckList.checks());
   }
 
   @Override
@@ -166,14 +156,16 @@ public class GoSensor implements Sensor {
         new IssueSuppressionVisitor(),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goModFileDataStore));
+        new ChecksVisitor(mainChecks(), statistics, goModFileDataStore, false),
+        new ChecksVisitor(mainAndTestChecks(), statistics, goModFileDataStore, true));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
         new MetricVisitor(fileLinesContextFactory, executableLineOfCodePredicate()),
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
-        new ChecksVisitor(checks(), statistics, goModFileDataStore),
+        new ChecksVisitor(mainChecks(), statistics, goModFileDataStore, false),
+        new ChecksVisitor(mainAndTestChecks(), statistics, goModFileDataStore, true),
         new CpdVisitor(),
         new SyntaxHighlighter());
     }
@@ -299,12 +291,12 @@ public class GoSensor implements Sensor {
   }
 
   private static void visitTree(List<TreeVisitor<InputFileContext>> visitors, DurationStatistics statistics, CacheHandler.CacheEntry cacheResult, Tree tree) {
-    var visitorsToSkip = cacheResult.visitorsToSkip();
+    var visitorsToSkipBasedOnCache = cacheResult.visitorsToSkip();
     var inputFileContext = cacheResult.fileContext();
 
     for (TreeVisitor<InputFileContext> visitor : visitors) {
       try {
-        if (visitorsToSkip.contains(visitor)) {
+        if (!visitor.isApplicableTo(inputFileContext) || visitorsToSkipBasedOnCache.contains(visitor)) {
           continue;
         }
         String visitorId = visitor.getClass().getSimpleName();
@@ -350,8 +342,17 @@ public class GoSensor implements Sensor {
     return sensorContext.config().getBoolean(GoPlugin.ACTIVATION_KEY).orElse(true);
   }
 
-  public GoChecks checks() {
-    return checks;
+  protected GoChecks mainChecks() {
+    return initializeChecks(GoCheckList.mainChecks());
+  }
+
+  protected GoChecks mainAndTestChecks() {
+    return initializeChecks(GoCheckList.mainAndTestChecks());
+  }
+
+  protected GoChecks initializeChecks(List<Class<?>> checksToInitialize) {
+    return new GoChecks(checkFactory)
+      .addChecks(GoRulesDefinition.REPOSITORY_KEY, checksToInitialize);
   }
 
   protected String repositoryKey() {
