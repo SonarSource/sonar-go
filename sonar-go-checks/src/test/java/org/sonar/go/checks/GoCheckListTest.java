@@ -22,6 +22,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+/**
+ * See GoCheckListScopeTest for tests that check whether the CheckLists are correctly sorted according to the scope defined in the RSPEC file.
+ */
 class GoCheckListTest {
 
   /**
