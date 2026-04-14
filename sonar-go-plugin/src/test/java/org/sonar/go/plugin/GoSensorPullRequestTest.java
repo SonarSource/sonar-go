@@ -25,11 +25,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.api.parallel.ResourceLock;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
@@ -52,7 +52,6 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.sonar.go.testing.TestInputFileCreator.createInputFile;
 
-@ResourceLock("progress_report_logger")
 class GoSensorPullRequestTest {
   private static final String ORIGINAL_FILE_CONTENT = """
     package main
@@ -114,6 +113,13 @@ class GoSensorPullRequestTest {
     visitor = spy(new SuccessfulReuseVisitor());
     goProgressReport = new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10));
     goFolders = List.of(new GoFolder("myFolder", List.of(inputFileContext)));
+  }
+
+  @AfterEach
+  void tearDown() {
+    if (goProgressReport != null) {
+      goProgressReport.stop();
+    }
   }
 
   @Test
