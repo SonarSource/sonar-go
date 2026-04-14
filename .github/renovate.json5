@@ -187,8 +187,5 @@
       ],
       "versioning": "go-mod-directive"
     }
-  ],
-  "reviewers": [
-    "team:security-cloud-squad"
   ]
 }
