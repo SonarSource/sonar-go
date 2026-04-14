@@ -70,13 +70,9 @@ public class MetricVisitor extends TreeVisitor<InputFileContext> {
       }
     });
 
-    register(ClassDeclarationTree.class, (ctx, tree) -> {
-      numberOfClasses++;
-    });
+    register(ClassDeclarationTree.class, (ctx, tree) -> numberOfClasses++);
 
-    register(BlockTree.class, (ctx, tree) -> {
-      addExecutableLines(tree.statementOrExpressions());
-    });
+    register(BlockTree.class, (ctx, tree) -> addExecutableLines(tree.statementOrExpressions()));
   }
 
   static Set<Integer> findNonEmptyCommentLines(Comment comment, int firstTokenLine) {
