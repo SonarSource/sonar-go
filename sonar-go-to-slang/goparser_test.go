@@ -30,14 +30,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func slangFromString(filename string, source string, moduleName string) (*Node, []*Node, []*Token, *string) {
+func slangFromString(filename, source, moduleName string) (*Node, []*Node, []*Token, *string) {
 	fileSet, astFileOrErrors := astFromString(filename, source)
 	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "ModuleNameForTest", GcExporter{})
 	astFileOrError := astFileOrErrors[filename]
 	return toSlangTree(fileSet, &astFileOrError, source, info, moduleName)
 }
 
-func astFromString(filename string, source string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
+func astFromString(filename, source string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
 	fileSet = token.NewFileSet()
 	fileNameToContent := make(map[string]string)
 	fileNameToContent[filename] = source

@@ -82,7 +82,7 @@ func getPackageName(packagePath string) string {
 	return packageName
 }
 
-func (li *localImporter) getPackageFromExportData(exportDataFileName string, path string) (*types.Package, error) {
+func (li *localImporter) getPackageFromExportData(exportDataFileName, path string) (*types.Package, error) {
 	file, err := packages.Open(exportDataFileName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", exportDataFileName, err)

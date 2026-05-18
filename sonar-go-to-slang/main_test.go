@@ -19,10 +19,11 @@ import (
 	"bytes"
 	"encoding/binary"
 	"flag"
-	"github.com/stretchr/testify/assert"
 	"io"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 var stdoutFile *os.File
@@ -54,7 +55,7 @@ func TestParseInvalidArguments(t *testing.T) {
 
 	defer func() {
 		stdout, stderr := getStdOutAndStdErr()
-		if r := recover(); r != nil {
+		if recover() != nil {
 			assert.Empty(t, stdout, "Expected empty standard output")
 			assert.Contains(t, stderr, "flag provided but not defined: -undefined")
 			assert.Contains(t, stderr, "Usage of cmd:")
@@ -166,7 +167,7 @@ func TestMainWithDumpGcExportDataFlagOnly(t *testing.T) {
 
 	defer func() {
 		stdout, _ := getStdOutAndStdErr()
-		if r := recover(); r != nil {
+		if recover() != nil {
 			assert.Empty(t, stdout, "Expected empty standard output")
 		}
 	}()
@@ -187,7 +188,7 @@ func TestPrintUsageForInvalidArguments(t *testing.T) {
 
 	defer func() {
 		stdout, stderr := getStdOutAndStdErr()
-		if r := recover(); r != nil {
+		if recover() != nil {
 			assert.Empty(t, stdout, "Expected empty standard output")
 			assert.Contains(t, stderr, "flag provided but not defined: -invalid-flag", "Expected in standard output")
 			assert.Contains(t, stderr, "-d\tdump ast (instead of JSON)", "Expected in standard output")
