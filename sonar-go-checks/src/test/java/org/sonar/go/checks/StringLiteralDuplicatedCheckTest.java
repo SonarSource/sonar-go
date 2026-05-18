@@ -33,4 +33,9 @@ class StringLiteralDuplicatedCheckTest {
     GoVerifier.verify("StringLiteralDuplicatedCheck/string_literal_duplicated_threshold_4.go", check);
   }
 
+  @Test
+  void test_third_party_log_libraries() {
+    GoVerifier.verifyNoIssue("StringLiteralDuplicatedCheck/string_literal_duplicated_third_party.go", new StringLiteralDuplicatedCheck());
+  }
+
 }

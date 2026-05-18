@@ -52,3 +52,6 @@ private/go-package-data-exporter/packages/*.o
 
 # ---- Local Claude config
 CLAUDE.local.md
+.claude/settings.json
+.claude/settings.local.json
+.claude/hooks/**

@@ -1,5 +1,12 @@
 package StringLiteralDuplicatedCheck
 
+import (
+  "errors"
+  "fmt"
+  "log"
+  "log/slog"
+)
+
 func main() {
   x := "string literal1" // Noncompliant {{Define a constant instead of duplicating this literal "string literal1" 3 times.}} [[effortToFix=2]]
   //   ^^^^^^^^^^^^^^^^^
@@ -42,6 +49,44 @@ func function2() string {
   return ""
 }
 
+func nested_log_calls() {
+  // Noncompliant@+1
+  log.Printf(foo("literal string"))
+  //             ^^^^^^^^^^^^^^^^
+  log.Printf(foo("literal string"))
+  //            <^^^^^^^^^^^^^^^^
+  log.Printf(foo("literal string"))
+  //            <^^^^^^^^^^^^^^^^
+  log.Printf(foo("literal string"))
+  //            <^^^^^^^^^^^^^^^^
+}
+
+func foo(text string) string {
+  return text
+}
+
+func nested_log_calls2() {
+  // Complaint as fmt.Sprintf is also ignored
+  log.Printf(fmt.Sprintf("literal string"))
+  log.Printf(fmt.Sprintf("literal string"))
+  log.Printf(fmt.Sprintf("literal string"))
+  log.Printf(fmt.Sprintf("literal string"))
+}
+
+func concatenation_in_func() {
+  // The issues below are raised for "prefix: " and "literal 2" literals
+  // Noncompliant@+2
+  // Noncompliant@+1
+  log.Printf("prefix: " + "literal 2")
+  //         ^^^^^^^^^^
+  log.Printf("prefix: " + "literal 2")
+  //        <^^^^^^^^^^
+  log.Printf("prefix: " + "literal 2")
+  //        <^^^^^^^^^^
+  log.Printf("prefix: " + "literal 2")
+  //        <^^^^^^^^^^
+}
+
 func function3() {
   "abcd"
   "abcd"
@@ -58,4 +103,22 @@ func function4() {
 
 type User struct {
   name string
+}
+
+func logAndErrorFunctions() {
+  log.Printf("log: operation failed")
+  log.Printf("log: operation failed")
+  log.Printf("log: operation failed") // Compliant - string literal used in log function
+
+  _ = fmt.Errorf("fmt: operation failed")
+  _ = fmt.Errorf("fmt: operation failed")
+  _ = fmt.Errorf("fmt: operation failed") // Compliant - string literal used in fmt.Errorf
+
+  _ = errors.New("errors: invalid input")
+  _ = errors.New("errors: invalid input")
+  _ = errors.New("errors: invalid input") // Compliant - string literal used in errors.New
+
+  slog.Info("slog: server started")
+  slog.Info("slog: server started")
+  slog.Info("slog: server started") // Compliant - string literal used in slog function
 }
