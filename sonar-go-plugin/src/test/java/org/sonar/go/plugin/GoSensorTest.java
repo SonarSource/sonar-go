@@ -794,6 +794,32 @@ class GoSensorTest {
   }
 
   @Test
+  void shouldUseModuleNamePropertyWhenGoModHasNoModuleName() {
+    sensorContext.settings().setProperty("sonar.go.internal.moduleName", "myOverrideModule");
+    InputFile goFile = createInputFile("main.go", "package main\n", baseDir, null, InputFile.Type.MAIN);
+    sensorContext.fileSystem().add(goFile);
+
+    sensor().execute(sensorContext);
+
+    assertThat(logTester.logs(Level.INFO))
+      .anyMatch(l -> l.contains("Using pre-computed moduleName from property 'sonar.go.internal.moduleName': myOverrideModule"));
+  }
+
+  @Test
+  void shouldUseModuleNamePropertyEvenWhenGoModHasModuleName() {
+    sensorContext.settings().setProperty("sonar.go.internal.moduleName", "myOverrideModule");
+    InputFile goModFile = createInputFile("go.mod", "module myActualModule\n\ngo 1.21\n", baseDir, null, InputFile.Type.MAIN);
+    InputFile goFile = createInputFile("main.go", "package main\n", baseDir, null, InputFile.Type.MAIN);
+    sensorContext.fileSystem().add(goModFile);
+    sensorContext.fileSystem().add(goFile);
+
+    sensor().execute(sensorContext);
+
+    assertThat(logTester.logs(Level.INFO))
+      .anyMatch(l -> l.contains("Using pre-computed moduleName from property 'sonar.go.internal.moduleName': myOverrideModule"));
+  }
+
+  @Test
   void shouldSetDebugTypeCheck() {
     var command = mock(GoParseCommand.class);
     singleInstanceGoConverter = new GoConverter(command);

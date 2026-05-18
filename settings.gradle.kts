@@ -40,3 +40,5 @@ var extraSettings = File(rootDir, "private/extraSettings.gradle.kts")
 if (extraSettings.exists()) {
     apply(extraSettings)
 }
+
+enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")

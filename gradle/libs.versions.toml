@@ -2,7 +2,7 @@
 analyzer-commons = "2.21.0.4626"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
-plugin-api = "11.1.0.2693"
+plugin-api = "13.4.3.4290"
 license-api = "3.4"
 sonarqube = "26.3.0.120487"
 orchestrator = "6.1.0.3962"
@@ -24,6 +24,8 @@ kotlinx-serialization-json = "1.10.0"
 kotlin-serialization-plugin = "2.3.20"
 archunit = "1.4.1"
 sonar-scanner-gradle = "7.2.3.7755"
+sonar-scanner-integration-tester = "0.6.0.1271"
+wiremock = "3.13.2"
 
 [libraries]
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
@@ -56,6 +58,8 @@ jsr305 = { module = "com.google.code.findbugs:jsr305", version.ref = "jsr305" }
 download = { module = "de.undercouch.download:de.undercouch.download.gradle.plugin", version.ref = "download" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 archunit = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
+sonar-scanner-integration-tester = { group = "com.sonarsource.scanner.integrationtester", name = "sonar-scanner-integration-tester", version.ref = "sonar-scanner-integration-tester" }
+wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }

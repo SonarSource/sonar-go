@@ -67,6 +67,10 @@ public class GoSensor implements Sensor {
   private static final int PROGRESS_REPORT_INTERVAL_SECOND = 10;
   private static final String FAIL_FAST_PROPERTY_NAME = "sonar.internal.analysis.failFast";
   private static final String DEBUG_TYPE_CHECK_PROPERTY_NAME = "sonar.go.internal.debugTypeCheck";
+
+  // This property is expected to be set only in A3S context
+  private static final String MODULE_NAME_PROPERTY = "sonar.go.internal.moduleName";
+
   private final NoSonarFilter noSonarFilter;
   private final FileLinesContextFactory fileLinesContextFactory;
   private final Language language;
@@ -182,7 +186,7 @@ public class GoSensor implements Sensor {
     }
     var filesByDirectory = InputFileDiscovery.groupFilesByDirectory(inputFileContexts);
     goProgressReport.start(filesByDirectory);
-    beforeAnalyzeFile(sensorContext, filesByDirectory, goModFileDataStore);
+    beforeAnalyzeFiles(sensorContext, filesByDirectory, goModFileDataStore);
 
     for (var goFolder : filesByDirectory) {
       if (sensorContext.isCancelled()) {
@@ -191,8 +195,11 @@ public class GoSensor implements Sensor {
 
       var filesToAnalyse = goFolder.files();
 
-      var moduleName = goModFileDataStore.retrieveClosestGoModFileData(goFolder.name()).moduleName();
-      LOG.debug("Parse directory '{}', number of files: {}, nodule name: '{}'", goFolder.name(), filesToAnalyse.size(), moduleName);
+      var moduleName = sensorContext.config().get(MODULE_NAME_PROPERTY).map(it -> {
+        LOG.info("Using pre-computed moduleName from property '{}': {}", MODULE_NAME_PROPERTY, it);
+        return it;
+      }).orElse(goModFileDataStore.retrieveClosestGoModFileData(goFolder.name()).moduleName());
+      LOG.debug("Parse directory '{}', number of files: {}, module name: '{}'", goFolder.name(), filesToAnalyse.size(), moduleName);
 
       try {
         analyseDirectory(converter, filesToAnalyse, visitors, goProgressReport, statistics, sensorContext, moduleName);
@@ -208,7 +215,7 @@ public class GoSensor implements Sensor {
     return true;
   }
 
-  protected void beforeAnalyzeFile(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {
+  protected void beforeAnalyzeFiles(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {
     // the default implementation does nothing
   }
 
