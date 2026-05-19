@@ -39,25 +39,30 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
   private static final int DEFAULT_THRESHOLD = 3;
   private static final int MINIMAL_LITERAL_LENGTH = 5;
   private static final Pattern NO_SEPARATOR_REGEXP = Pattern.compile("\\w++");
-  private static final String[] LOG_FUNCTIONS = {"Print", "Printf", "Println", "Fatal", "Fatalf", "Fatalln", "Panic", "Panicf", "Panicln"};
-  private static final String[] FMT_FUNCTIONS = {"Errorf", "Printf", "Fprintf", "Sprintf"};
+  private static final String PRINTF = "Printf";
+  private static final String FATAL = "Fatal";
+  private static final String FATALF = "Fatalf";
+  private static final String WARNF = "Warnf";
+  private static final String ERRORLN = "Errorln";
+  private static final String[] LOG_FUNCTIONS = {"Print", PRINTF, "Println", FATAL, FATALF, "Fatalln", "Panic", "Panicf", "Panicln"};
+  private static final String[] FMT_FUNCTIONS = {"Errorf", PRINTF, "Fprintf", "Sprintf"};
   private static final String[] SLOG_FUNCTIONS = {"Debug", "Info", "Warn", "Error", "Log", "LogAttrs"};
   private static final String[] LOGRUS_FUNCTIONS = {"Trace", "Tracef", "Traceln",
     "Debug", "Debugf", "Debugln", "Info", "Infof", "Infoln",
-    "Warn", "Warnf", "Warnln", "Warning", "Warningf", "Warningln",
-    "Error", "Errorf", "Errorln", "Fatal", "Fatalf", "Fatalln",
-    "Panic", "Panicf", "Panicln", "Print", "Printf", "Println",
+    "Warn", WARNF, "Warnln", "Warning", "Warningf", "Warningln",
+    "Error", "Errorf", ERRORLN, FATAL, FATALF, "Fatalln",
+    "Panic", "Panicf", "Panicln", "Print", PRINTF, "Println",
     "WithField", "WithFields", "WithError"};
-  private static final String[] ZAP_LOGGER_FUNCTIONS = {"Debug", "Info", "Warn", "Error", "DPanic", "Panic", "Fatal"};
+  private static final String[] ZAP_LOGGER_FUNCTIONS = {"Debug", "Info", "Warn", "Error", "DPanic", "Panic", FATAL};
   private static final String[] ZAP_SUGARED_LOGGER_FUNCTIONS = {"Debug", "Debugf", "Debugw", "Debugln", "Info", "Infof", "Infow", "Infoln",
-    "Warn", "Warnf", "Warnw", "Warnln", "Error", "Errorf", "Errorw", "Errorln",
+    "Warn", WARNF, "Warnw", "Warnln", "Error", "Errorf", "Errorw", ERRORLN,
     "DPanic", "DPanicf", "DPanicw", "DPanicln", "Panic", "Panicf", "Panicw", "Panicln",
-    "Fatal", "Fatalf", "Fatalw", "Fatalln"};
+    FATAL, FATALF, "Fatalw", "Fatalln"};
   private static final String[] GLOG_AND_KLOG_FUNCTIONS = {"Info", "Infof", "Infoln", "Warning", "Warningf", "Warningln",
-    "Error", "Errorf", "Errorln", "Fatal", "Fatalf", "Fatalln"};
+    "Error", "Errorf", ERRORLN, FATAL, FATALF, "Fatalln"};
   private static final String[] LOG15_FUNCTIONS = {"Debug", "Info", "Warn", "Error", "Crit"};
   private static final String[] GO_KIT_FUNCTIONS = {"Debug", "Info", "Warn", "Error"};
-  private static final String[] APEX_LOG_FUNCTIONS = {"Debug", "Debugf", "Info", "Infof", "Warn", "Warnf", "Error", "Errorf", "Fatal", "Fatalf"};
+  private static final String[] APEX_LOG_FUNCTIONS = {"Debug", "Debugf", "Info", "Infof", "Warn", WARNF, "Error", "Errorf", FATAL, FATALF};
   private static final String[] XERRORS_FUNCTIONS = {"Errorf", "New"};
   private static final String[] PKG_ERRORS_FUNCTIONS = {"New", "Errorf", "Wrap", "Wrapf", "WithMessage", "WithMessagef"};
 
