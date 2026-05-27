@@ -37,7 +37,7 @@ public class GoPlugin implements Plugin {
   public static final String RESOURCE_FOLDER = "org/sonar/l10n/go/rules/go";
 
   public static final String EXCLUSIONS_KEY = "sonar.go.exclusions";
-  public static final String EXCLUSIONS_DEFAULT_VALUE = "**/vendor/**";
+  public static final String EXCLUSIONS_DEFAULT_VALUE = "**/vendor/**,**/*.pb.go,**/*.pb.gorm.go";
   public static final String ACTIVATION_KEY = "sonar.go.activate";
 
   private static final String GO_CATEGORY = "Go";
