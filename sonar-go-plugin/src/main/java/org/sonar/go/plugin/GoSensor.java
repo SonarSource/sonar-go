@@ -201,6 +201,7 @@ public class GoSensor implements Sensor {
       }).orElse(goModFileDataStore.retrieveClosestGoModFileData(goFolder.name()).moduleName());
       LOG.debug("Parse directory '{}', number of files: {}, module name: '{}'", goFolder.name(), filesToAnalyse.size(), moduleName);
 
+      beforeAnalyzeDirectory(sensorContext, goFolder, goModFileDataStore);
       try {
         analyseDirectory(converter, filesToAnalyse, visitors, goProgressReport, statistics, sensorContext, moduleName);
       } catch (RuntimeException e) {
@@ -216,6 +217,10 @@ public class GoSensor implements Sensor {
   }
 
   protected void beforeAnalyzeFiles(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {
+    // the default implementation does nothing
+  }
+
+  protected void beforeAnalyzeDirectory(SensorContext sensorContext, GoFolder goFolder, GoModFileDataStore goModFileDataStore) {
     // the default implementation does nothing
   }
 

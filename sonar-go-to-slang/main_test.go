@@ -95,7 +95,7 @@ func TestMainWithDumpAstFlag(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file.go.source")
 
 	assert.Contains(t, stdout, "Package: token.Pos(1)")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=true, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=true, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"")
 }
 
 func TestMainWithSimpleFile(t *testing.T) {
@@ -104,7 +104,7 @@ func TestMainWithSimpleFile(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file.go.source")
 
 	assert.Contains(t, stdout, "\"@type\": \"PackageDeclaration\", \"metaData\": \"1:0::17\"")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestMainWithPackageResolution(t *testing.T) {
@@ -113,7 +113,7 @@ func TestMainWithPackageResolution(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file_with_packages.go.source")
 
 	assert.Contains(t, stdout, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestMainFillIdentifierWithInfo(t *testing.T) {
@@ -125,7 +125,7 @@ func TestMainFillIdentifierWithInfo(t *testing.T) {
 	assert.Contains(t, stdout, "\"id\":66")
 	assert.Contains(t, stdout, "\"type\":\"*database/sql.DB\"")
 	assert.Contains(t, stdout, "\"package\":\"database/sql\"")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestMainWithDotImport(t *testing.T) {
@@ -135,7 +135,7 @@ func TestMainWithDotImport(t *testing.T) {
 	stdout, stderr := callMainStdinFromFile("resources/simple_file_with_dot_import.go.source")
 
 	assert.Contains(t, stdout, "\"package\":\"math/rand\",\"name\":\"Intn\"")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestMainWithInvalidFile(t *testing.T) {
@@ -158,7 +158,7 @@ null,
 
 }
 `)
-	assert.Equal(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Equal(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestMainWithDumpGcExportDataFlagOnly(t *testing.T) {
@@ -213,7 +213,7 @@ func TestShouldNotPanicWhenGcExportOneInvalidFile(t *testing.T) {
 	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_dir", "build/main_test/"}
 	stdout, stderr := callMainStdinFromFile("resources/invalid_file.go.source", "resources/simple_file_with_packages.go.source")
 	assert.Empty(t, stdout)
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=true, gcExportDataDir=\"build/main_test/\", moduleName=\"\", packagePath=\"\"")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=true, gcExportDataDir=\"build/main_test/\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"")
 }
 
 func TestShouldNotPanicWhenGenerateASTOneInvalidFile(t *testing.T) {
@@ -223,7 +223,7 @@ func TestShouldNotPanicWhenGenerateASTOneInvalidFile(t *testing.T) {
 
 	assert.Contains(t, stdout, "\"tree\":\nnull,\n\"error\": \"resources/invalid_file.go.source:1:1: expected 'package', found xpackage\"")
 	assert.Contains(t, stdout, "\"__cfgId\":2},\n\"error\": null")
-	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"build/main_test/\", moduleName=\"\", packagePath=\"\"\n")
+	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"build/main_test/\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func getStandardOutput(w *os.File, old *os.File, outC chan string) string {

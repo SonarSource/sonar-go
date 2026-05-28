@@ -18,11 +18,15 @@ package main
 import (
 	"bytes"
 	"go/ast"
+	"go/token"
+	"go/types"
 	"log"
 	"os"
+	"path/filepath"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"golang.org/x/tools/go/gcexportdata"
 )
 
 func TestImportExistingPackage_returnsPackage(t *testing.T) {
@@ -81,7 +85,7 @@ func TestTypeCheckAst(t *testing.T) {
 	}
 
 	fileSet, astFiles := astFromString("simple_file_with_packages.go", string(source))
-	info, _ := typeCheckAst(fileSet, astFiles, true, "", "", GcExporter{})
+	info, _ := typeCheckAst(fileSet, astFiles, true, "", "", ".", GcExporter{})
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -100,7 +104,7 @@ func TestTestOnlyFirstErrorIsReturned(t *testing.T) {
 
 	fileSet, astFiles := astFromString("file_with_many_errors.go", string(source))
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", GcExporter{})
+	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", ".", GcExporter{})
 	assert.Len(t, errors, 1)
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", errors[0].Error())
 	assert.NotNil(t, info)
@@ -122,7 +126,7 @@ func TestShouldReturnErrorForAllFailingFilesPerPackage(t *testing.T) {
 	}
 	fileSet, astFiles := astFromStrings(filenameToContent)
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", GcExporter{})
+	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", ".", GcExporter{})
 	assert.ElementsMatch(t, []string{
 		"file_with_many_errors_1.go:4:5: declared and not used: a1",
 		"file_with_many_errors_2.go:4:5: declared and not used: a1",
@@ -195,4 +199,138 @@ func TestAllFilesFromMappingShouldBePresent(t *testing.T) {
 		assert.True(t, found, "File %s is missing in the `build/packages` directory", fileName)
 	}
 	assert.Empty(t, files, "There are files in the `build/packages` directory that are not present in the mapping")
+}
+
+// createTestExportData writes a minimal valid .o export data file for the given import path
+// under the specified directory. The created package has one exported variable so its scope
+// is non-empty, allowing tests to distinguish it from an empty fallback package.
+func createTestExportData(t *testing.T, dir string, importPath string) {
+	t.Helper()
+	pkgName := getPackageName(importPath)
+	fullDir := filepath.Join(dir, importPath)
+	err := os.MkdirAll(fullDir, 0755)
+	assert.NoError(t, err)
+
+	pkg := types.NewPackage(importPath, pkgName)
+	pkg.Scope().Insert(types.NewVar(token.NoPos, pkg, "TestMarker", types.Typ[types.Int]))
+	pkg.MarkComplete()
+
+	file, err := os.Create(filepath.Join(fullDir, pkgName+".o"))
+	assert.NoError(t, err)
+	defer file.Close()
+
+	err = gcexportdata.Write(file, nil, pkg)
+	assert.NoError(t, err)
+}
+
+func TestImport_moduleBaseDir_ownModule(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Write .o under {tmpDir}/service1/mymod/pkg/pkg.o
+	createTestExportData(t, filepath.Join(tmpDir, "service1"), "mymod/pkg")
+
+	importer := &localImporter{
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   "service1",
+		gcExporter:      GcExporter{},
+	}
+	pkg, err := importer.Import("mymod/pkg")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Equal(t, "mymod/pkg", pkg.Path())
+	assert.Greater(t, pkg.Scope().Len(), 0, "should find the real .o, not an empty package")
+}
+
+func TestImport_moduleBaseDir_crossModule(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Write .o under a different module's subdir
+	createTestExportData(t, filepath.Join(tmpDir, "pkg"), "ModulePkg/foo")
+
+	importer := &localImporter{
+		gcExportDataDir:   tmpDir,
+		moduleBaseDir:     ".", // root module
+		gcExporter:        GcExporter{},
+		importPathToOFile: make(map[string]string),
+	}
+	// Root module imports ModulePkg/foo — should find it via cross-module scan
+	pkg, err := importer.Import("ModulePkg/foo")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Equal(t, "ModulePkg/foo", pkg.Path())
+	assert.Greater(t, pkg.Scope().Len(), 0, "should find the .o via cross-module fallback")
+}
+
+func TestImport_rootModule_flatLookup(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Write .o at flat path: {tmpDir}/mymod/pkg/pkg.o
+	createTestExportData(t, tmpDir, "mymod/pkg")
+
+	importer := &localImporter{
+		gcExportDataDir:   tmpDir,
+		moduleBaseDir:     ".",
+		gcExporter:        GcExporter{},
+		importPathToOFile: make(map[string]string),
+	}
+	pkg, err := importer.Import("mymod/pkg")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Equal(t, "mymod/pkg", pkg.Path())
+	assert.Greater(t, pkg.Scope().Len(), 0, "should find the .o via flat lookup")
+}
+
+func TestImport_moduleBaseDir_prefersOwnModule(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Both service1 and service2 have poc/util — importer with moduleBaseDir=service1 should prefer service1's
+	createTestExportData(t, filepath.Join(tmpDir, "service1"), "poc/util")
+	createTestExportData(t, filepath.Join(tmpDir, "service2"), "poc/util")
+
+	importer := &localImporter{
+		gcExportDataDir:   tmpDir,
+		moduleBaseDir:     "service1",
+		gcExporter:        GcExporter{},
+		importPathToOFile: make(map[string]string),
+	}
+	pkg, err := importer.Import("poc/util")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Greater(t, pkg.Scope().Len(), 0, "should find the .o from own module")
+}
+
+func TestImport_subModule_findsRootModulePackage(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Root module (moduleBaseDir=".") stores data at flat path: {tmpDir}/rootapi/service/service.o
+	createTestExportData(t, tmpDir, "rootapi/service")
+	createTestExportData(t, filepath.Join(tmpDir, "sub"), "sub/internal")
+
+	importer := &localImporter{
+		gcExportDataDir:   tmpDir,
+		moduleBaseDir:     "sub",
+		gcExporter:        GcExporter{},
+		importPathToOFile: make(map[string]string),
+	}
+	pkg, err := importer.Import("rootapi/service")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Greater(t, pkg.Scope().Len(), 0,
+		"sub-module should find root module's package at flat path %s/rootapi/service/service.o",
+		tmpDir)
+}
+
+func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Two modules nested under "a/": a/b and a/c
+	createTestExportData(t, filepath.Join(tmpDir, "a/b"), "shared/lib")
+	createTestExportData(t, filepath.Join(tmpDir, "a/c"), "other/api")
+
+	importer := &localImporter{
+		gcExportDataDir:   tmpDir,
+		moduleBaseDir:     "a/b",
+		gcExporter:        GcExporter{},
+		importPathToOFile: make(map[string]string),
+	}
+	pkg, err := importer.Import("other/api")
+	assert.NoError(t, err)
+	assert.NotNil(t, pkg)
+	assert.Greater(t, pkg.Scope().Len(), 0,
+		"module a/b should find package from sibling module a/c at %s/a/c/other/api/api.o",
+		tmpDir)
 }

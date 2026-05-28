@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory;
 public class GoParseCommand extends DefaultCommand {
   private static final Logger LOG = LoggerFactory.getLogger(GoParseCommand.class);
   private final int moduleNameIndex;
+  private final int moduleBaseDirIndex;
   private final int gcExportDataDirIndex;
 
   public GoParseCommand(File workDir, String... extraArgs) {
@@ -34,14 +35,21 @@ public class GoParseCommand extends DefaultCommand {
   public GoParseCommand(File workDir, PlatformInfo platformInfo, String... extraArgs) {
     super(workDir, platformInfo, mergeArgs(extraArgs,
       "-module_name", "<module_name>",
+      "-module_base_dir", "<module_base_dir>",
       "-gc_export_data_dir", "<gc_export_data_dir>"));
     moduleNameIndex = command.indexOf("<module_name>");
+    moduleBaseDirIndex = command.indexOf("<module_base_dir>");
     gcExportDataDirIndex = command.indexOf("<gc_export_data_dir>");
+    command.set(moduleBaseDirIndex, ".");
     command.set(gcExportDataDirIndex, new File(workDir, "go").getAbsolutePath());
   }
 
   public void setGcExportDataDir(String gcExportDataDir) {
     command.set(gcExportDataDirIndex, gcExportDataDir);
+  }
+
+  public void setModuleBaseDir(String moduleBaseDir) {
+    command.set(moduleBaseDirIndex, moduleBaseDir);
   }
 
   private static String[] mergeArgs(String[] args, String... extraArgs) {

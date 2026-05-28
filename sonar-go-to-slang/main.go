@@ -28,6 +28,7 @@ type Params struct {
 	dumpGcExportData bool
 	gcExportDataDir  string
 	moduleName       string
+	moduleBaseDir    string
 	packagePath      string
 }
 
@@ -42,11 +43,12 @@ func parseArgs() Params {
 	dumpGcExportData := flag.Bool("dump_gc_export_data", false, "dump GC export data")
 	gcExportDataDir := flag.String("gc_export_data_dir", "", "directory where GC export data is located")
 	moduleName := flag.String("module_name", "", "specify module name (defined in go.mod)")
+	moduleBaseDir := flag.String("module_base_dir", ".", "relative path of the go.mod directory from the project root")
 	packagePath := flag.String("package_path", "", "specify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)")
 	flag.Parse()
 
-	fmt.Fprintf(os.Stderr, "Received parameters: dumpAst=%t, debugTypeCheck=%t, dumpGcExportData=%t, gcExportDataDir=\"%s\", moduleName=\"%s\", packagePath=\"%s\"\n",
-		*dumpAstFlag, *debugTypeCheckFlag, *dumpGcExportData, *gcExportDataDir, *moduleName, *packagePath)
+	fmt.Fprintf(os.Stderr, "Received parameters: dumpAst=%t, debugTypeCheck=%t, dumpGcExportData=%t, gcExportDataDir=\"%s\", moduleName=\"%s\", moduleBaseDir=\"%s\", packagePath=\"%s\"\n",
+		*dumpAstFlag, *debugTypeCheckFlag, *dumpGcExportData, *gcExportDataDir, *moduleName, *moduleBaseDir, *packagePath)
 
 	return Params{
 		dumpAst:          *dumpAstFlag,
@@ -54,6 +56,7 @@ func parseArgs() Params {
 		dumpGcExportData: *dumpGcExportData,
 		gcExportDataDir:  *gcExportDataDir,
 		moduleName:       *moduleName,
+		moduleBaseDir:    *moduleBaseDir,
 		packagePath:      *packagePath,
 	}
 }
@@ -70,7 +73,7 @@ func main() {
 
 	gcExporter := GcExporter{}
 	// Ignoring errors at this point, they are reported before if needed
-	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, gcExporter)
+	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, params.moduleBaseDir, gcExporter)
 
 	if params.dumpGcExportData {
 		if params.gcExportDataDir == "" {

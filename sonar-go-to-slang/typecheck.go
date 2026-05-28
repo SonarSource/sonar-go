@@ -21,6 +21,7 @@ import (
 	"go/ast"
 	"go/token"
 	"go/types"
+	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -35,42 +36,114 @@ const PackageExportDataDir = "packages"
 var packages embed.FS
 
 type localImporter struct {
-	gcExportDataDir string
-	moduleName      string
-	debugTypeCheck  bool
-	gcExporter      GcExporter
+	gcExportDataDir   string
+	moduleName        string
+	moduleBaseDir     string
+	debugTypeCheck    bool
+	gcExporter        GcExporter
+	importPathToOFile map[string]string
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
 	if exportDataFileName, ok := packageExportData[path]; ok {
 		// In embedded filesystem, the path separator is always '/', even on Windows.
 		return li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
-	} else {
-		return li.getPackageFromLocalCodeExportData(path)
 	}
+	return li.getPackageFromLocalCodeExportData(path)
 }
 
 func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, error) {
 	if li.debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	}
-	if li.gcExportDataDir != "" {
-		filePath := li.getGcExportDataFilesForPackage(path)
-		if _, err := os.Stat(filePath); !os.IsNotExist(err) {
-			file, err := os.Open(filePath)
-			if err != nil {
-				fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
-				return getEmptyPackage(path), nil
-			}
-			return li.gcExporter.getPackageFromFile(file, path)
-		}
+	if li.gcExportDataDir == "" {
+		return getEmptyPackage(path), nil
 	}
+
+	oFileName := getPackageName(path) + ".o"
+
+	sameModulePath := filepath.Join(li.gcExportDataDir, li.moduleBaseDir, path, oFileName)
+	if pkg, found := li.tryLoadExportData(sameModulePath, path); found {
+		return pkg, nil
+	}
+
+	if pkg, found := li.scanOtherModuleSubdirs(path, oFileName); found {
+		return pkg, nil
+	}
+
 	return getEmptyPackage(path), nil
 }
 
-func (li *localImporter) getGcExportDataFilesForPackage(packagePath string) string {
-	packageName := getPackageName(packagePath)
-	return filepath.Join(li.gcExportDataDir, packagePath, packageName+".o")
+// scanOtherModuleSubdirs searches gcExportDataDir recursively (excluding the current
+// module's own subtree) for a matching .o file. This resolves cross-module imports
+// where the imported package belongs to a different module in the same project.
+func (li *localImporter) scanOtherModuleSubdirs(path, oFileName string) (*types.Package, bool) {
+	cachedOFile, ok := li.importPathToOFile[path]
+	if ok {
+		return li.tryLoadExportData(cachedOFile, path)
+	}
+
+	targetRelPath := filepath.Join(path, oFileName)
+	ownBaseDir := filepath.FromSlash(li.moduleBaseDir)
+	if ownBaseDir == "." {
+		ownBaseDir = ""
+	}
+
+	var result *types.Package
+	_ = filepath.WalkDir(li.gcExportDataDir, func(walkPath string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return nil
+		}
+		if d.IsDir() {
+			return nil
+		}
+		relPath, relErr := filepath.Rel(li.gcExportDataDir, walkPath)
+		if relErr != nil {
+			return nil
+		}
+		var moduleBaseDir string
+		switch {
+		case relPath == targetRelPath:
+			moduleBaseDir = ""
+		case strings.HasSuffix(relPath, string(os.PathSeparator)+targetRelPath):
+			moduleBaseDir = relPath[:len(relPath)-len(targetRelPath)-1]
+		default:
+			return nil
+		}
+		if moduleBaseDir == ownBaseDir {
+			return nil
+		}
+		if pkg, found := li.tryLoadExportData(walkPath, path); found {
+			result = pkg
+			li.importPathToOFile[path] = walkPath
+			// Stop on first match. If multiple modules export the same package path this is
+			// ambiguous, but resolving it would require go.mod information that  the importer does not have.
+			return filepath.SkipAll
+		}
+		return nil
+	})
+
+	if result != nil {
+		return result, true
+	}
+	return nil, false
+}
+
+func (li *localImporter) tryLoadExportData(filePath, path string) (*types.Package, bool) {
+	if _, err := os.Stat(filePath); os.IsNotExist(err) {
+		return nil, false
+	}
+	file, err := os.Open(filePath)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
+		pkg := getEmptyPackage(path)
+		return pkg, true
+	}
+	pkg, err := li.gcExporter.getPackageFromFile(file, path)
+	if err != nil {
+		return getEmptyPackage(path), true
+	}
+	return pkg, true
 }
 
 func getPackageName(packagePath string) string {
@@ -97,7 +170,15 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, debugTypeCheck bool, gcExportDataDir string, moduleName string, gcExporter GcExporter) (*types.Info, []error) {
+func typeCheckAst(
+	fileSet *token.FileSet,
+	astFiles map[string]AstFileOrError,
+	debugTypeCheck bool,
+	gcExportDataDir string,
+	moduleName string,
+	moduleBaseDir string,
+	gcExporter GcExporter,
+) (*types.Info, []error) {
 	astFilesPerPackage := groupFilesPerPackageName(astFiles)
 	errors := make([]error, 0)
 
@@ -117,10 +198,12 @@ func typeCheckAst(fileSet *token.FileSet, astFiles map[string]AstFileOrError, de
 		fmt.Fprintf(os.Stderr, "Processing package: \"%s\"\n", packageName)
 		conf := types.Config{
 			Importer: &localImporter{
-				gcExportDataDir: gcExportDataDir,
-				moduleName:      moduleName,
-				debugTypeCheck:  debugTypeCheck,
-				gcExporter:      gcExporter,
+				gcExportDataDir:   gcExportDataDir,
+				moduleName:        moduleName,
+				moduleBaseDir:     moduleBaseDir,
+				debugTypeCheck:    debugTypeCheck,
+				gcExporter:        gcExporter,
+				importPathToOFile: make(map[string]string),
 			},
 			Error: func(err error) {
 				if debugTypeCheck {

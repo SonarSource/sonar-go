@@ -88,6 +88,12 @@ public class GoConverter implements ASTConverter {
     }
   }
 
+  public void setModuleBaseDir(String moduleBaseDir) {
+    if (command != null) {
+      command.setModuleBaseDir(moduleBaseDir);
+    }
+  }
+
   @Override
   public void debugTypeCheck() {
     command.debugTypeCheck();

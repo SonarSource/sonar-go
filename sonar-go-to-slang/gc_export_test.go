@@ -97,7 +97,7 @@ func exportGcData(files []string, name string, moduleName string, packagePath st
 
 	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
 	gc := GcExporter{}
-	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName, gc)
+	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName, ".", gc)
 	gc.ExportGcExportData(info, exportLocation, moduleName, packagePath, false)
 }
 
@@ -113,7 +113,7 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, GcExporter{})
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
 
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName)
@@ -136,7 +136,7 @@ func parseFileToJson(files []string, name string, moduleName string) map[string]
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, GcExporter{})
+	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
 
 	result := map[string]string{}
 

@@ -32,7 +32,7 @@ import (
 
 func slangFromString(filename, source, moduleName string) (*Node, []*Node, []*Token, *string) {
 	fileSet, astFileOrErrors := astFromString(filename, source)
-	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "ModuleNameForTest", GcExporter{})
+	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "ModuleNameForTest", ".", GcExporter{})
 	astFileOrError := astFileOrErrors[filename]
 	return toSlangTree(fileSet, &astFileOrError, source, info, moduleName)
 }
