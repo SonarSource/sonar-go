@@ -1083,8 +1083,7 @@ class GoSensorTest {
          fun y() {}\
         """, baseDir);
     context.fileSystem().add(inputFile);
-    CheckFactory checkFactory = checkFactory("S2260");
-    sensor(checkFactory).execute(context);
+    sensor("S2260").execute(context);
 
     Collection<Issue> issues = context.allIssues();
     assertThat(issues).hasSize(1);
@@ -1104,6 +1103,60 @@ class GoSensorTest {
     assertThat(textPointer).isEqualTo(new DefaultTextPointer(1, 2));
 
     assertThat(logTester.logs()).contains("Unable to parse file: file1.go. file1.go:1:2: expected 'package', found class");
+  }
+
+  @Test
+  void testParseFailureTelemetry() {
+    InputFile inputFile = createInputFile("file1.go",
+      """
+         class A {
+         fun x() {}
+         fun y() {}\
+        """, baseDir);
+    context.fileSystem().add(inputFile);
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.parse_failures_count", "1");
+  }
+
+  @Test
+  void testParseFailureTelemetryTwoFilesInSameDirectory() {
+    String invalidGoContent = """
+       class A {
+       fun x() {}
+       fun y() {}\
+      """;
+    context.fileSystem().add(createInputFile("file1.go", invalidGoContent, baseDir));
+    context.fileSystem().add(createInputFile("file2.go", invalidGoContent, baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.parse_failures_count", "2");
+  }
+
+  @Test
+  void testParseFailureTelemetryTwoFilesInDifferentDirectories() {
+    String invalidGoContent = """
+       class A {
+       fun x() {}
+       fun y() {}\
+      """;
+    context.fileSystem().add(createInputFile("dir1/file1.go", invalidGoContent, baseDir));
+    context.fileSystem().add(createInputFile("dir2/file2.go", invalidGoContent, baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.parse_failures_count", "2");
   }
 
   @Test

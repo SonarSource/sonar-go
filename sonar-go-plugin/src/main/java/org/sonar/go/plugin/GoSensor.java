@@ -225,7 +225,7 @@ public class GoSensor implements Sensor {
   }
 
   // visible for tests
-  static void analyseDirectory(ASTConverter converter,
+  void analyseDirectory(ASTConverter converter,
     List<InputFileContext> inputFileContextList,
     List<TreeVisitor<InputFileContext>> visitors,
     GoProgressReport goProgressReport,
@@ -255,7 +255,7 @@ public class GoSensor implements Sensor {
     visitTrees(visitors, statistics, treeOrErrorMap, filenameToCacheEntry);
   }
 
-  private static void handleParsingErrors(SensorContext sensorContext, Map<String, TreeOrError> treeOrErrorMap, Map<String, CacheHandler.CacheEntry> filenameToCacheResult) {
+  private void handleParsingErrors(SensorContext sensorContext, Map<String, TreeOrError> treeOrErrorMap, Map<String, CacheHandler.CacheEntry> filenameToCacheResult) {
     var isAnyError = false;
     for (Map.Entry<String, TreeOrError> filenameToTree : treeOrErrorMap.entrySet()) {
       var treeOrError = filenameToTree.getValue();
@@ -264,6 +264,7 @@ public class GoSensor implements Sensor {
         String fileName = filenameToTree.getKey();
         LOG.warn("Unable to parse file: {}. {}", fileName, treeOrError.error());
         filenameToCacheResult.get(fileName).fileContext().reportAnalysisParseError(GoRulesDefinition.REPOSITORY_KEY, treeOrError.error());
+        goProjectSensor.increaseParseFailuresCount();
       }
     }
     if (isAnyError && GoSensor.isFailFast(sensorContext)) {

@@ -36,6 +36,7 @@ public class GoProjectSensor implements ProjectSensor {
   private final Set<GoVersion> accumulatedGoVersions = new HashSet<>();
   private final FileResolutionStatistics accumulatedCoverageStatistics = new FileResolutionStatistics();
   private boolean hasCoverageData = false;
+  private int parseFailuresCount;
 
   public void addGoVersions(Set<GoVersion> versions) {
     accumulatedGoVersions.addAll(versions);
@@ -44,6 +45,10 @@ public class GoProjectSensor implements ProjectSensor {
   public void addCoverageStatistics(FileResolutionStatistics statistics) {
     accumulatedCoverageStatistics.accumulate(statistics);
     hasCoverageData = true;
+  }
+
+  public void increaseParseFailuresCount() {
+    parseFailuresCount++;
   }
 
   @Override
@@ -57,6 +62,7 @@ public class GoProjectSensor implements ProjectSensor {
       return;
     }
     sendGoVersionTelemetry(context);
+    sendParseFailuresCountTelemetry(context);
     if (hasCoverageData) {
       sendCoverageTelemetry(context);
     }
@@ -74,6 +80,10 @@ public class GoProjectSensor implements ProjectSensor {
         .collect(Collectors.joining(";"));
     }
     context.addTelemetryProperty("go.used_version", usedVersion);
+  }
+
+  private void sendParseFailuresCountTelemetry(SensorContext context) {
+    context.addTelemetryProperty("go.parse_failures_count", Integer.toString(parseFailuresCount));
   }
 
   private void sendCoverageTelemetry(SensorContext context) {

@@ -141,6 +141,30 @@ class GoProjectSensorTest {
   }
 
   @Test
+  void shouldSendParseFailuresCountTelemetry() {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.increaseParseFailuresCount();
+    goProjectSensor.increaseParseFailuresCount();
+    goProjectSensor.execute(context);
+
+    verify(context).addTelemetryProperty("go.parse_failures_count", "2");
+  }
+
+  @Test
+  void shouldSendZeroParseFailuresCountWhenNoFailures() {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.execute(context);
+
+    verify(context).addTelemetryProperty("go.parse_failures_count", "0");
+  }
+
+  @Test
   void shouldNotSendTelemetryWhenApiVersionNotSupported() {
     var context = spy(SensorContextTester.create(Path.of(".")));
     context.setRuntime(SQ_RUNTIME_NOT_SUPPORTING_TELEMETRY);

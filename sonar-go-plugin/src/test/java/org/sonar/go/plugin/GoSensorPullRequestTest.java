@@ -32,7 +32,11 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
+import org.sonar.api.config.internal.MapSettings;
+import org.sonar.api.issue.NoSonarFilter;
+import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
@@ -47,6 +51,7 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -71,6 +76,7 @@ class GoSensorPullRequestTest {
   private String hashKey;
   private GoProgressReport goProgressReport;
   private File baseDir;
+  private GoSensor sensor;
 
   @RegisterExtension
   public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
@@ -110,6 +116,8 @@ class GoSensorPullRequestTest {
     sensorContext.setNextCache(nextCache);
 
     converter = spy(TestGoConverterSingleFile.GO_CONVERTER);
+    sensor = new GoSensor(mock(CheckFactory.class), mock(FileLinesContextFactory.class), mock(NoSonarFilter.class),
+      new GoLanguage(new MapSettings().asConfig()), converter, new GoProjectSensor());
     visitor = spy(new SuccessfulReuseVisitor());
     goProgressReport = new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10));
     goFolders = List.of(new GoFolder("myFolder", List.of(inputFileContext)));
@@ -126,7 +134,7 @@ class GoSensorPullRequestTest {
   void shouldSkipsConversionForUnchangedFileWithCachedResults() {
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -149,7 +157,7 @@ class GoSensorPullRequestTest {
     visitor = spy(new GoSensorTest.FailingToReuseVisitor());
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -174,7 +182,7 @@ class GoSensorPullRequestTest {
     sensorContext.setCanSkipUnchangedFiles(false);
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -203,7 +211,7 @@ class GoSensorPullRequestTest {
     sensorContext.fileSystem().add(changedFile);
     goProgressReport.start(goFolders);
     // Execute analyzeFile
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -234,7 +242,7 @@ class GoSensorPullRequestTest {
     inputFileContext = new InputFileContext(sensorContext, changedFile);
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -256,7 +264,7 @@ class GoSensorPullRequestTest {
     sensorContext.setCacheEnabled(false);
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -280,7 +288,7 @@ class GoSensorPullRequestTest {
     sensorContext.setPreviousCache(new DummyReadCache());
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -313,7 +321,7 @@ class GoSensorPullRequestTest {
     sensorContext.setPreviousCache(corruptedCache);
     // Execute analyzeFile
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor),
@@ -335,7 +343,7 @@ class GoSensorPullRequestTest {
   void visitorShouldNotBeCalledToVisitTheAstAfterConversion() {
     GoSensorTest.FailingToReuseVisitor failing = spy(new GoSensorTest.FailingToReuseVisitor());
     goProgressReport.start(goFolders);
-    GoSensor.analyseDirectory(
+    sensor.analyseDirectory(
       converter,
       List.of(inputFileContext),
       List.of(visitor, failing),
