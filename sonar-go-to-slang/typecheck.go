@@ -42,36 +42,40 @@ type localImporter struct {
 	debugTypeCheck    bool
 	gcExporter        GcExporter
 	importPathToOFile map[string]string
+	importCache       map[string]*types.Package
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
+	if pkg, ok := li.importCache[path]; ok && pkg.Complete() {
+		return pkg, nil
+	}
 	if exportDataFileName, ok := packageExportData[path]; ok {
 		// In embedded filesystem, the path separator is always '/', even on Windows.
-		return li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
+		return li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path), nil
 	}
-	return li.getPackageFromLocalCodeExportData(path)
+	return li.getPackageFromLocalCodeExportData(path), nil
 }
 
-func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, error) {
+func (li *localImporter) getPackageFromLocalCodeExportData(path string) *types.Package {
 	if li.debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	}
 	if li.gcExportDataDir == "" {
-		return getEmptyPackage(path), nil
+		return getEmptyPackage(path)
 	}
 
 	oFileName := getPackageName(path) + ".o"
 
 	sameModulePath := filepath.Join(li.gcExportDataDir, li.moduleBaseDir, path, oFileName)
 	if pkg, found := li.tryLoadExportData(sameModulePath, path); found {
-		return pkg, nil
+		return pkg
 	}
 
 	if pkg, found := li.scanOtherModuleSubdirs(path, oFileName); found {
-		return pkg, nil
+		return pkg
 	}
 
-	return getEmptyPackage(path), nil
+	return getEmptyPackage(path)
 }
 
 // scanOtherModuleSubdirs searches gcExportDataDir recursively (excluding the current
@@ -139,9 +143,9 @@ func (li *localImporter) tryLoadExportData(filePath, path string) (*types.Packag
 		pkg := getEmptyPackage(path)
 		return pkg, true
 	}
-	pkg, err := li.gcExporter.getPackageFromFile(file, path)
-	if err != nil {
-		return getEmptyPackage(path), true
+	pkg := li.gcExporter.getPackageFromFile(file, path, li.importCache)
+	if li.debugTypeCheck {
+		fmt.Fprintf(os.Stderr, "Found Gc Export Data for \"%s\" package at %s\n", path, filePath)
 	}
 	return pkg, true
 }
@@ -155,13 +159,13 @@ func getPackageName(packagePath string) string {
 	return packageName
 }
 
-func (li *localImporter) getPackageFromExportData(exportDataFileName, path string) (*types.Package, error) {
+func (li *localImporter) getPackageFromExportData(exportDataFileName, path string) *types.Package {
 	file, err := packages.Open(exportDataFileName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", exportDataFileName, err)
-		return getEmptyPackage(path), nil
+		return getEmptyPackage(path)
 	}
-	return li.gcExporter.getPackageFromFile(file, path)
+	return li.gcExporter.getPackageFromFile(file, path, li.importCache)
 }
 
 func getEmptyPackage(path string) *types.Package {
@@ -204,6 +208,7 @@ func typeCheckAst(
 				debugTypeCheck:    debugTypeCheck,
 				gcExporter:        gcExporter,
 				importPathToOFile: make(map[string]string),
+				importCache:       make(map[string]*types.Package),
 			},
 			Error: func(err error) {
 				if debugTypeCheck {

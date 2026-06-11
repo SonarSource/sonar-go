@@ -135,11 +135,21 @@ func (gc *GcExporter) createDirs(path string) {
 	}
 }
 
-func (gc *GcExporter) getPackageFromFile(file fs.File, path string) (*types.Package, error) {
+// getPackageFromFile reads gc export data of a single package from file.
+//
+// The imports map acts as a shared cache of already-resolved packages: gcexportdata.Read
+// reuses any package it finds there. Callers that resolve several
+// packages belonging to the same type-check session MUST pass the same map across all calls,
+// otherwise the same import path ends up represented by multiple distinct *types.Package
+// objects. Writing such a package then produces an export data manifest with duplicate
+// PkgPaths, which makes a later read fail.
+func (gc *GcExporter) getPackageFromFile(file fs.File, path string, imports map[string]*types.Package) *types.Package {
 	defer func(file fs.File) {
 		_ = file.Close()
 	}(file)
-	imports := make(map[string]*types.Package)
+	if imports == nil {
+		imports = make(map[string]*types.Package)
+	}
 	pkg, err := gcexportdata.Read(file, nil, imports, path)
 	if err != nil {
 		msg := err.Error()
@@ -148,8 +158,8 @@ func (gc *GcExporter) getPackageFromFile(file fs.File, path string) (*types.Pack
 		} else {
 			fmt.Fprintf(os.Stderr, "Error while reading gcexportdata of %s error: %s\n", path, err)
 		}
-		return getEmptyPackage(path), nil
+		return getEmptyPackage(path)
 	}
 
-	return pkg, nil
+	return pkg
 }

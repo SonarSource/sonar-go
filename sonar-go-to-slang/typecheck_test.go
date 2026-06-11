@@ -53,10 +53,28 @@ func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
 	assert.Empty(t, buf.String())
 }
 
+func TestImport_notFoundPackageDoesNotPoisonLaterEmbeddedRead(t *testing.T) {
+	importer := &localImporter{importCache: make(map[string]*types.Package)}
+
+	// "sync/atomic" is not embedded and not on disk, so it resolves to a synthesized empty
+	// package whose name is only a guess from the path ("sync/atomic", not the real "atomic").
+	// Such empty packages must NOT enter the shared importCache: it is the same map handed to
+	// gcexportdata.Read, which reconciles it against export data manifests by package name.
+	// The embedded "runtime/debug" data references "sync/atomic" by its real name "atomic"; a
+	// wrong-named cached entry would abort that read and leave runtime/debug (hence PrintStack,
+	// rule S4507) unresolved.
+	_, err := importer.Import("sync/atomic")
+	assert.NoError(t, err)
+
+	debugPkg, err := importer.Import("runtime/debug")
+	assert.NoError(t, err)
+	assert.NotNil(t, debugPkg.Scope().Lookup("PrintStack"),
+		"runtime/debug must still expose PrintStack after a not-found package was imported")
+}
+
 func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
 	li := localImporter{}
-	pkg, err := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
-	assert.NoError(t, err)
+	pkg := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
 	assert.Greater(t, pkg.Scope().Len(), 0)
@@ -64,8 +82,7 @@ func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
 
 func TestGetPackageFromExportData_invalidFile_returnsEmptyPackage(t *testing.T) {
 	li := localImporter{}
-	pkg, err := li.getPackageFromExportData("invalid_file.o", "invalid/path")
-	assert.NoError(t, err)
+	pkg := li.getPackageFromExportData("invalid_file.o", "invalid/path")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "invalid/path", pkg.Path())
 	assert.Equal(t, 0, pkg.Scope().Len())
@@ -333,4 +350,49 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 	assert.Greater(t, pkg.Scope().Len(), 0,
 		"module a/b should find package from sibling module a/c at %s/a/c/other/api/api.o",
 		tmpDir)
+}
+
+func TestImport_sharedCacheDeduplicatesTransitiveDeps(t *testing.T) {
+	importer := &localImporter{
+		gcExporter:  GcExporter{},
+		importCache: make(map[string]*types.Package),
+	}
+
+	// Import net/url first so it populates the shared cache.
+	urlPkg, err := importer.Import("net/url")
+	assert.NoError(t, err)
+	assert.NotNil(t, urlPkg)
+
+	// Import net/http, whose manifest references net/url as a direct import.
+	// gcexportdata.Read must reuse the cached net/url object from the shared importCache.
+	httpPkg, err := importer.Import("net/http")
+	assert.NoError(t, err)
+	assert.NotNil(t, httpPkg)
+
+	var httpUrlDep *types.Package
+	for _, imp := range httpPkg.Imports() {
+		if imp.Path() == "net/url" {
+			httpUrlDep = imp
+			break
+		}
+	}
+	assert.NotNil(t, httpUrlDep, "net/http must import net/url")
+	assert.Same(t, urlPkg, httpUrlDep,
+		"shared importCache must return the identical *types.Package for net/url in both direct and transitive positions")
+
+	// Round-trip: write net/http then read it back.
+	// The shared importCache ensures no duplicate PkgPaths in the manifest, so both steps must succeed.
+	tmpDir := t.TempDir()
+	outFile, err := os.Create(filepath.Join(tmpDir, "net_http.o"))
+	assert.NoError(t, err)
+	err = gcexportdata.Write(outFile, nil, httpPkg)
+	outFile.Close()
+	assert.NoError(t, err)
+
+	inFile, err := os.Open(filepath.Join(tmpDir, "net_http.o"))
+	assert.NoError(t, err)
+	defer inFile.Close()
+	roundTrippedPkg, err := gcexportdata.Read(inFile, nil, make(map[string]*types.Package), "net/http")
+	assert.NoError(t, err, "round-trip read must succeed")
+	assert.Equal(t, "net/http", roundTrippedPkg.Path())
 }
