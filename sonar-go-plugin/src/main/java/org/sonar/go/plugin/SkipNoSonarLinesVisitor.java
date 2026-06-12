@@ -54,8 +54,11 @@ public class SkipNoSonarLinesVisitor extends TreeVisitor<InputFileContext> {
 
   private static Set<Integer> findNoSonarCommentLines(Comment comment, int firstTokenLine) {
     boolean isFileHeader = comment.textRange().end().line() < firstTokenLine;
+    if (isFileHeader) {
+      return Set.of();
+    }
 
-    if (!isFileHeader && CommentAnalysisUtils.isNosonarComment(comment)) {
+    if (CommentAnalysisUtils.isNosonarComment(comment) || CommentAnalysisUtils.isNolintDirective(comment)) {
       return CommentAnalysisUtils.findNonEmptyCommentLines(comment.contentRange(), comment.contentText());
     }
 
