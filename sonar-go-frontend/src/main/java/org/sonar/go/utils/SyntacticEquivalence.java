@@ -23,6 +23,7 @@ import javax.annotation.Nullable;
 import org.sonar.go.visitors.TreePrinter;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.JumpTree;
 import org.sonar.plugins.go.api.LiteralTree;
@@ -104,7 +105,10 @@ public class SyntacticEquivalence {
       && ((((LoopTree) first).kind() != ((LoopTree) second).kind()) || !(((LoopTree) first).keyword().text().equals(((LoopTree) second).keyword().text())));
     boolean modifierTreeCheck = (first instanceof ModifierTree) && (((ModifierTree) first).kind() != ((ModifierTree) second).kind());
     boolean jumpTreeCheck = (first instanceof JumpTree) && (((JumpTree) first).kind() != ((JumpTree) second).kind());
-    return nativeTreeCheck || unaryTreeCheck || binaryTreeCheck || assignTreeCheck || vardeclTreeCheck || loopTreeCheck || modifierTreeCheck || jumpTreeCheck;
+    boolean functionInvocationTreeCheck = (first instanceof FunctionInvocationTree functionInvocationTree)
+      && (functionInvocationTree.hasVariadicSpread() != ((FunctionInvocationTree) second).hasVariadicSpread());
+    return nativeTreeCheck || unaryTreeCheck || binaryTreeCheck || assignTreeCheck || vardeclTreeCheck || loopTreeCheck
+      || modifierTreeCheck || jumpTreeCheck || functionInvocationTreeCheck;
   }
 
   public static List<List<Tree>> findDuplicatedGroups(List<Tree> list) {

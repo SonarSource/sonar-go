@@ -28,6 +28,11 @@ public interface FunctionInvocationTree extends Tree {
   List<Tree> arguments();
 
   /**
+   * Returns true if this call uses the variadic spread operator (e.g. {@code f(args...)}).
+   */
+  boolean hasVariadicSpread();
+
+  /**
    * Return function invocation signature. This signature may be treated as unique id.
    * @return function invocation signature
    */

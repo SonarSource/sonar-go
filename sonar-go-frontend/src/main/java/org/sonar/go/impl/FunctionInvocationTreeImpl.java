@@ -113,6 +113,22 @@ public class FunctionInvocationTreeImpl extends BaseTreeImpl implements Function
   }
 
   @Override
+  public boolean hasVariadicSpread() {
+    var tokens = metaData().tokens();
+    // The "..." token sits just before the closing ")", possibly with a trailing "," in between (gofmt multi-line calls)
+    for (int i = tokens.size() - 2; i >= 0 && i >= tokens.size() - 3; i--) {
+      String text = tokens.get(i).text();
+      if ("...".equals(text)) {
+        return true;
+      }
+      if (!",".equals(text)) {
+        break;
+      }
+    }
+    return false;
+  }
+
+  @Override
   public Tree memberSelect() {
     return memberSelect;
   }
