@@ -2,8 +2,15 @@
 <p>Duplicated string literals make the process of refactoring complex and error-prone, as any change would need to be propagated on all
 occurrences.</p>
 <h3>Exceptions</h3>
-<p>To prevent generating some false-positives, literals having 5 or less characters are excluded as well as literals containing only letters, digits
-and '_'.</p>
+<p>No issue will be raised on:</p>
+<ul>
+  <li>literals having 5 or less characters</li>
+  <li>literals containing only letters, digits and '_'</li>
+  <li>literals passed to logging functions like: <code>log.Println</code>, <code>slog.Info</code>, <code>logrus.Info</code> etc. (standard and 3rd
+  party libraries are supported)</li>
+  <li>literals passed to error functions like: <code>fmt.Errorf</code>, <code>errors.New</code>, <code>xerrors.New</code>, etc. (standard and 3rd
+  party libraries are supported)</li>
+</ul>
 <h2>How to fix it</h2>
 <p>Use constants to replace the duplicated string literals. Constants can be referenced from many places, but only need to be updated in a single
 place.</p>
