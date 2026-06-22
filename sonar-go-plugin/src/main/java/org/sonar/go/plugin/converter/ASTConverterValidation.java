@@ -347,8 +347,8 @@ public class ASTConverterValidation implements ASTConverter {
     private String[] lines(String code) {
       return code
         .replace('\t', ' ')
-        .replaceFirst("[\r\n ]+$", "")
-        .split(" *(\r\n|\n|\r)", -1);
+        .replaceFirst("[\r\n ]++$", "")
+        .split(" *+(\r\n|\n|\r)", -1);
     }
   }
 
