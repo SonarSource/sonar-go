@@ -34,7 +34,7 @@ func slangFromString(filename, source, moduleName string) (*Node, []*Node, []*To
 	fileSet, astFileOrErrors := astFromString(filename, source)
 	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "ModuleNameForTest", ".", GcExporter{})
 	astFileOrError := astFileOrErrors[filename]
-	return toSlangTree(fileSet, &astFileOrError, source, info, moduleName)
+	return toSlangTree(fileSet, &astFileOrError, source, info, moduleName, buildUsesByPos(info))
 }
 
 func astFromString(filename, source string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {

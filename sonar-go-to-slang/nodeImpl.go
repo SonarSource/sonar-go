@@ -980,14 +980,13 @@ func (t *SlangMapper) findReturnTypes(expr *ast.CallExpr) []string {
 
 func (t *SlangMapper) findReturnTypesForIdentifier(identifier *ast.Ident) []string {
 	result := make([]string, 0)
-	for ident, obj := range t.info.Uses {
-		if ident.NamePos == identifier.NamePos {
-			signature, ok := obj.Type().(*types.Signature)
-			if ok {
-				result = make([]string, signature.Results().Len())
-				for i := 0; i < signature.Results().Len(); i++ {
-					result[i] = signature.Results().At(i).Origin().Type().String()
-				}
+	obj, ok := t.usesByPos[identifier.NamePos]
+	if ok {
+		signature, ok := obj.Type().(*types.Signature)
+		if ok {
+			result = make([]string, signature.Results().Len())
+			for i := 0; i < signature.Results().Len(); i++ {
+				result[i] = signature.Results().At(i).Origin().Type().String()
 			}
 		}
 	}

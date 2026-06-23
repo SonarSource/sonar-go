@@ -82,9 +82,12 @@ var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
 func toSlangJson(fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, moduleName string, indent string) string {
+	// The usesByPos info is shared across every file of the package, so the position-keyed index of
+	// type-checker "uses" is built once here and reused for all files.
+	usesByPos := buildUsesByPos(info)
 	fileNameToString := make(map[string]string)
 	for fileName, astFile := range astFiles {
-		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info, moduleName)
+		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info, moduleName, usesByPos)
 		jsonPart := toJsonSlang(slangTree, comments, tokens, errMgs, indent)
 		fileNameToString[fileName] = jsonPart
 	}
@@ -104,12 +107,12 @@ func toJson(fileNameToString map[string]string) string {
 	return buf.String()
 }
 
-func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string) (*Node, []*Node, []*Token, *string) {
+func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) (*Node, []*Node, []*Token, *string) {
 	if astFile.err != nil {
 		errMsg := astFile.err.Error()
 		return nil, nil, nil, &errMsg
 	}
-	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info, moduleName).toSlang()
+	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info, moduleName, usesByPos).toSlang()
 	return slangTree, comments, tokens, nil
 }
 
@@ -186,12 +189,13 @@ type SlangMapper struct {
 	tokens            []*Token
 	paranoiac         bool
 	info              *types.Info
+	usesByPos         map[token.Pos]types.Object
 	currentCfgId      int32
 	objectToCfgIds    map[any]int32
 	moduleName        string
 }
 
-func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info, moduleName string) *SlangMapper {
+func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) *SlangMapper {
 	t := &SlangMapper{
 		astFile:           astFile,
 		fileContent:       fileContent,
@@ -200,12 +204,24 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		tokens:            nil,
 		paranoiac:         true,
 		info:              info,
+		usesByPos:         usesByPos,
 		objectToCfgIds:    make(map[any]int32),
 		moduleName:        moduleName,
 	}
 	t.comments = t.mapAllComments()
 	t.commentPos = 0
 	return t
+}
+
+func buildUsesByPos(info *types.Info) map[token.Pos]types.Object {
+	if info == nil {
+		return make(map[token.Pos]types.Object)
+	}
+	usesByPos := make(map[token.Pos]types.Object, len(info.Uses))
+	for ident, obj := range info.Uses {
+		usesByPos[ident.NamePos] = obj
+	}
+	return usesByPos
 }
 
 func (t *SlangMapper) toSlang() (*Node, []*Node, []*Token) {
@@ -701,10 +717,11 @@ func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object)
 	var typeName string
 	var packageName = t.extractPackageName(obj)
 
-	if strings.HasSuffix((*obj).Type().String(), "invalid type") {
+	typeString := (*obj).Type().String()
+	if strings.HasSuffix(typeString, "invalid type") {
 		typeName = t.getTypeFromAst(ident)
 	} else {
-		typeName = (*obj).Type().String()
+		typeName = typeString
 	}
 
 	return &IdentifierInfo{

@@ -73,29 +73,33 @@ Creating the symbolic link by hand solves this problem:
 
 * (Eventually enable [developer mode in Windows](https://docs.microsoft.com/en-us/windows/uwp/get-started/enable-your-device-for-development))
 
-* Run (in `sonar-go-to-slang` folder):
-
-```shell
-     mklink /D ".gogradle\project_gopath\src\github.com\SonarSource\slang\sonar-go-to-slang" "Absolute\Path\To\slang\sonar-go-to-slang"
-```
-
 ## Running
 
-If you have `$GOPATH/bin` on your `PATH`, it's easy to run with `slang-generator-go`.
+Run with `-h`, `-help`, or `--help` to see usage.
 
-Run with `-h` or `-help` or `--help` to get usage help.
+### Input Format
 
-Print the SLANG Json tree for some `source.go`:
+⚠️ **Important**: sonar-go-to-slang expects **binary-encoded input on stdin**, not command-line file arguments.
 
-```shell
-sonar-go-to-slang source.go
+Input format (read from stdin, little-endian):
 ```
-
-Dump the native raw AST for some `source.go`:
-
-```shell
-sonar-go-to-slang -d source.go
+[For each file, in sequence]
+  N (4 bytes, little-endian)  — filename length
+  <filename> (N bytes)        — file path
+  M (4 bytes, little-endian)  — content length
+  <content> (M bytes)         — file content
 ```
+See `sonar-go-commons/src/main/java/org/sonar/go/converter/GoParseCommand.java` for implementation details.
+
+### Command-Line Options
+
+- `-d` - Dump native Go AST instead of SLANG JSON
+- `-debug_type_check` - Print type-checking errors/warnings to stderr
+- `-dump_gc_export_data` - dump GC (Go compiler) export data
+- `-gc_export_data_dir <dir>` - Directory containing `.o` files for cross-package type resolution
+- `-module_base_dir <dir>` - Relative path to go.mod directory (default: `.`)
+- `-module_name <name>` - Module name from go.mod (required for type checking)
+- `-package_path <name>` - Specify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)
 
 ## Testing
 
