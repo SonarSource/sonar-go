@@ -263,10 +263,9 @@ func TestImport_moduleBaseDir_crossModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "pkg"), "ModulePkg/foo")
 
 	importer := &localImporter{
-		gcExportDataDir:   tmpDir,
-		moduleBaseDir:     ".", // root module
-		gcExporter:        GcExporter{},
-		importPathToOFile: make(map[string]string),
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   ".", // root module
+		gcExporter:      GcExporter{},
 	}
 	// Root module imports ModulePkg/foo — should find it via cross-module scan
 	pkg, err := importer.Import("ModulePkg/foo")
@@ -282,10 +281,9 @@ func TestImport_rootModule_flatLookup(t *testing.T) {
 	createTestExportData(t, tmpDir, "mymod/pkg")
 
 	importer := &localImporter{
-		gcExportDataDir:   tmpDir,
-		moduleBaseDir:     ".",
-		gcExporter:        GcExporter{},
-		importPathToOFile: make(map[string]string),
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   ".",
+		gcExporter:      GcExporter{},
 	}
 	pkg, err := importer.Import("mymod/pkg")
 	assert.NoError(t, err)
@@ -301,10 +299,9 @@ func TestImport_moduleBaseDir_prefersOwnModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "service2"), "poc/util")
 
 	importer := &localImporter{
-		gcExportDataDir:   tmpDir,
-		moduleBaseDir:     "service1",
-		gcExporter:        GcExporter{},
-		importPathToOFile: make(map[string]string),
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   "service1",
+		gcExporter:      GcExporter{},
 	}
 	pkg, err := importer.Import("poc/util")
 	assert.NoError(t, err)
@@ -319,10 +316,9 @@ func TestImport_subModule_findsRootModulePackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "sub"), "sub/internal")
 
 	importer := &localImporter{
-		gcExportDataDir:   tmpDir,
-		moduleBaseDir:     "sub",
-		gcExporter:        GcExporter{},
-		importPathToOFile: make(map[string]string),
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   "sub",
+		gcExporter:      GcExporter{},
 	}
 	pkg, err := importer.Import("rootapi/service")
 	assert.NoError(t, err)
@@ -339,10 +335,9 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "a/c"), "other/api")
 
 	importer := &localImporter{
-		gcExportDataDir:   tmpDir,
-		moduleBaseDir:     "a/b",
-		gcExporter:        GcExporter{},
-		importPathToOFile: make(map[string]string),
+		gcExportDataDir: tmpDir,
+		moduleBaseDir:   "a/b",
+		gcExporter:      GcExporter{},
 	}
 	pkg, err := importer.Import("other/api")
 	assert.NoError(t, err)
@@ -395,4 +390,46 @@ func TestImport_sharedCacheDeduplicatesTransitiveDeps(t *testing.T) {
 	roundTrippedPkg, err := gcexportdata.Read(inFile, nil, make(map[string]*types.Package), "net/http")
 	assert.NoError(t, err, "round-trip read must succeed")
 	assert.Equal(t, "net/http", roundTrippedPkg.Path())
+}
+
+// This test simulates many packages resolving the same cross-module and unresolved-external imports
+// and asserts the tree is walked exactly once.
+func TestCrossModuleIndex_builtOncePerRun(t *testing.T) {
+	tmpDir := t.TempDir()
+	// Two sibling modules, each exporting a package that the other imports.
+	createTestExportData(t, filepath.Join(tmpDir, "service1"), "shared/alpha")
+	createTestExportData(t, filepath.Join(tmpDir, "service2"), "shared/beta")
+
+	// A single index shared by every per-package importer, exactly as typeCheckAst wires it.
+	sharedIndex := &crossModuleIndex{dir: tmpDir}
+
+	newImporter := func() *localImporter {
+		return &localImporter{
+			gcExportDataDir: tmpDir,
+			moduleBaseDir:   "service1",
+			gcExporter:      GcExporter{},
+			importCache:     make(map[string]*types.Package),
+			crossIndex:      sharedIndex,
+		}
+	}
+
+	// Mirror typeCheckAst's per-package loop: a fresh importer per package, resolving the same
+	// cross-module and unresolved-external imports over and over.
+	for i := 0; i < 50; i++ {
+		importer := newImporter()
+
+		// Genuine cross-module import: lives under the sibling module "service2".
+		pkg, err := importer.Import("shared/beta")
+		assert.NoError(t, err)
+		assert.Greater(t, pkg.Scope().Len(), 0, "cross-module import should resolve via the shared index")
+
+		// Unresolved external import (the common case for large projects): must not cause a re-walk.
+		external, err := importer.Import("github.com/not/in/this/project")
+		assert.NoError(t, err)
+		assert.Equal(t, 0, external.Scope().Len())
+	}
+
+	assert.Equal(t, 1, sharedIndex.builds,
+		"gcExportDataDir must be walked exactly once per run, regardless of the number of packages "+
+			"and unresolved imports")
 }

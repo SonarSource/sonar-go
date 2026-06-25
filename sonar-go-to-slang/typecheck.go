@@ -25,6 +25,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"sync"
 )
 
 // PackageExportDataDir is also hardcoded in the go:embed directive below.
@@ -36,13 +37,16 @@ const PackageExportDataDir = "packages"
 var packages embed.FS
 
 type localImporter struct {
-	gcExportDataDir   string
-	moduleName        string
-	moduleBaseDir     string
-	debugTypeCheck    bool
-	gcExporter        GcExporter
-	importPathToOFile map[string]string
-	importCache       map[string]*types.Package
+	gcExportDataDir string
+	moduleName      string
+	moduleBaseDir   string
+	debugTypeCheck  bool
+	gcExporter      GcExporter
+	importCache     map[string]*types.Package
+	// crossIndex is a shared, lazily-built index of gcExportDataDir used to resolve cross-module
+	// imports. It is shared across all per-package importers of a single run so the directory is
+	// walked at most once.
+	crossIndex *crossModuleIndex
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
@@ -71,66 +75,112 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) *types.P
 		return pkg
 	}
 
-	if pkg, found := li.scanOtherModuleSubdirs(path, oFileName); found {
+	if pkg, found := li.scanOtherModuleSubdirs(path); found {
 		return pkg
 	}
 
 	return getEmptyPackage(path)
 }
 
-// scanOtherModuleSubdirs searches gcExportDataDir recursively (excluding the current
-// module's own subtree) for a matching .o file. This resolves cross-module imports
-// where the imported package belongs to a different module in the same project.
-func (li *localImporter) scanOtherModuleSubdirs(path, oFileName string) (*types.Package, bool) {
-	cachedOFile, ok := li.importPathToOFile[path]
-	if ok {
-		return li.tryLoadExportData(cachedOFile, path)
+// scanOtherModuleSubdirs resolves a cross-module import: an imported package that belongs to a
+// different module in the same project. It looks the import path up in a shared, lazily-built
+// index of gcExportDataDir (see crossModuleIndex), excluding the current module's own subtree,
+// instead of walking the whole directory tree on every call.
+func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, bool) {
+	if li.crossIndex == nil {
+		// No shared index was injected (e.g. in unit tests): fall back to a per-importer one.
+		li.crossIndex = &crossModuleIndex{dir: li.gcExportDataDir}
 	}
 
-	targetRelPath := filepath.Join(path, oFileName)
 	ownBaseDir := filepath.FromSlash(li.moduleBaseDir)
 	if ownBaseDir == "." {
 		ownBaseDir = ""
 	}
 
-	var result *types.Package
-	_ = filepath.WalkDir(li.gcExportDataDir, func(walkPath string, d fs.DirEntry, err error) error {
-		if err != nil {
+	filePath, found := li.crossIndex.lookup(path, ownBaseDir)
+	if !found {
+		return nil, false
+	}
+	return li.tryLoadExportData(filePath, path)
+}
+
+// oFileCandidate is a single .o file found under gcExportDataDir that can satisfy an import path.
+type oFileCandidate struct {
+	// baseDir is the module base directory (OS-separator form), relative to gcExportDataDir, that
+	// the file lives under; "" for a root-level module. It is compared against the importing
+	// module's own base dir to skip the current module's own subtree.
+	baseDir string
+	// filePath is the path to the .o file, as produced by filepath.WalkDir.
+	filePath string
+}
+
+// crossModuleIndex is a one-time index of gcExportDataDir mapping an import path to every .o file
+// that can satisfy it. The tree is walked at most once per analysis run and shared across all packages,
+// making each cross-module lookup an O(1) map access.
+type crossModuleIndex struct {
+	dir  string
+	once sync.Once
+	// builds counts how many times the tree was walked; it must remain 1 per run and is asserted
+	// by the performance regression test.
+	builds int
+	byPath map[string][]oFileCandidate
+}
+
+// lookup returns the path of the first candidate .o file for importPath that does not belong to
+// ownBaseDir (the importing module's own subtree, which is resolved earlier via the same-module
+// path). The index is built on first use.
+func (idx *crossModuleIndex) lookup(importPath, ownBaseDir string) (string, bool) {
+	idx.once.Do(idx.build)
+	for _, candidate := range idx.byPath[importPath] {
+		if candidate.baseDir != ownBaseDir {
+			return candidate.filePath, true
+		}
+	}
+	return "", false
+}
+
+// build performs the single directory walk. For each .o file laid out as
+// <baseDir>/<importPath>/<packageName>.o (where packageName is the last segment of importPath), it
+// registers the file under every suffix of its directory as a candidate import path, recording the
+// stripped prefix as baseDir. Candidates are appended in WalkDir's lexical order, preserving the
+// previous "first match wins" behaviour for ambiguous cross-module clashes.
+func (idx *crossModuleIndex) build() {
+	idx.builds++
+	idx.byPath = make(map[string][]oFileCandidate)
+	if idx.dir == "" {
+		return
+	}
+	separator := string(os.PathSeparator)
+	_ = filepath.WalkDir(idx.dir, func(walkPath string, d fs.DirEntry, err error) error {
+		if err != nil || d.IsDir() {
 			return nil
 		}
-		if d.IsDir() {
+		name := d.Name()
+		if !strings.HasSuffix(name, ".o") {
 			return nil
 		}
-		relPath, relErr := filepath.Rel(li.gcExportDataDir, walkPath)
+		relPath, relErr := filepath.Rel(idx.dir, walkPath)
 		if relErr != nil {
 			return nil
 		}
-		var moduleBaseDir string
-		switch {
-		case relPath == targetRelPath:
-			moduleBaseDir = ""
-		case strings.HasSuffix(relPath, string(os.PathSeparator)+targetRelPath):
-			moduleBaseDir = relPath[:len(relPath)-len(targetRelPath)-1]
-		default:
+		dir := filepath.Dir(relPath)
+		if dir == "." {
+			// The file sits directly under gcExportDataDir, so no import path can match it.
 			return nil
 		}
-		if moduleBaseDir == ownBaseDir {
+		packageName := strings.TrimSuffix(name, ".o")
+		parts := strings.Split(dir, separator)
+		if parts[len(parts)-1] != packageName {
+			// Not the <importPath>/<packageName>.o layout, so it cannot satisfy any import path.
 			return nil
 		}
-		if pkg, found := li.tryLoadExportData(walkPath, path); found {
-			result = pkg
-			li.importPathToOFile[path] = walkPath
-			// Stop on first match. If multiple modules export the same package path this is
-			// ambiguous, but resolving it would require go.mod information that  the importer does not have.
-			return filepath.SkipAll
+		for j := range parts {
+			importPath := strings.Join(parts[j:], "/")
+			baseDir := strings.Join(parts[:j], separator)
+			idx.byPath[importPath] = append(idx.byPath[importPath], oFileCandidate{baseDir: baseDir, filePath: walkPath})
 		}
 		return nil
 	})
-
-	if result != nil {
-		return result, true
-	}
-	return nil, false
 }
 
 func (li *localImporter) tryLoadExportData(filePath, path string) (*types.Package, bool) {
@@ -186,6 +236,9 @@ func typeCheckAst(
 	astFilesPerPackage := groupFilesPerPackageName(astFiles)
 	errors := make([]error, 0)
 
+	// Shared across every per-package importer so gcExportDataDir is walked at most once per run.
+	crossIndex := &crossModuleIndex{dir: gcExportDataDir}
+
 	info := &types.Info{
 		Types:        make(map[ast.Expr]types.TypeAndValue),
 		Defs:         make(map[*ast.Ident]types.Object),
@@ -202,13 +255,13 @@ func typeCheckAst(
 		fmt.Fprintf(os.Stderr, "Processing package: \"%s\"\n", packageName)
 		conf := types.Config{
 			Importer: &localImporter{
-				gcExportDataDir:   gcExportDataDir,
-				moduleName:        moduleName,
-				moduleBaseDir:     moduleBaseDir,
-				debugTypeCheck:    debugTypeCheck,
-				gcExporter:        gcExporter,
-				importPathToOFile: make(map[string]string),
-				importCache:       make(map[string]*types.Package),
+				gcExportDataDir: gcExportDataDir,
+				moduleName:      moduleName,
+				moduleBaseDir:   moduleBaseDir,
+				debugTypeCheck:  debugTypeCheck,
+				gcExporter:      gcExporter,
+				importCache:     make(map[string]*types.Package),
+				crossIndex:      crossIndex,
 			},
 			Error: func(err error) {
 				if debugTypeCheck {
