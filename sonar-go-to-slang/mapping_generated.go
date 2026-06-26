@@ -17,6 +17,7 @@ var packageExportData = map[string]string{
 	"crypto/internal/boring": "crypto_internal_boring.o",
 	"crypto/internal/mlkem768": "crypto_internal_mlkem768.o",
 	"crypto/md5": "crypto_md5.o",
+	"crypto/mlkem": "crypto_mlkem.o",
 	"crypto/rand": "crypto_rand.o",
 	"crypto/rc4": "crypto_rc4.o",
 	"crypto/rsa": "crypto_rsa.o",
