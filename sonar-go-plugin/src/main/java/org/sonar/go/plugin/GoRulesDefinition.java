@@ -20,9 +20,6 @@ import java.util.List;
 import org.sonar.api.SonarRuntime;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.go.checks.GoCheckList;
-import org.sonar.go.externalreport.AbstractReportSensor;
-import org.sonar.go.externalreport.GoLintReportSensor;
-import org.sonar.go.externalreport.GoVetReportSensor;
 import org.sonarsource.analyzer.commons.RuleMetadataLoader;
 
 public class GoRulesDefinition implements RulesDefinition {
@@ -43,9 +40,6 @@ public class GoRulesDefinition implements RulesDefinition {
     loadRepository(GoPlugin.RESOURCE_FOLDER, GoProfileDefinition.PROFILE_PATH, repository, GoCheckList.allChecks());
 
     repository.done();
-
-    AbstractReportSensor.createExternalRuleRepository(context, GoVetReportSensor.LINTER_ID, GoVetReportSensor.LINTER_NAME);
-    AbstractReportSensor.createExternalRuleRepository(context, GoLintReportSensor.LINTER_ID, GoLintReportSensor.LINTER_NAME);
   }
 
   protected void loadRepository(String resourcePath, String defaultProfilePath, RulesDefinition.NewRepository repository, List<Class<?>> checkClasses) {
