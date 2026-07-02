@@ -1,5 +1,5 @@
 [versions]
-analyzer-commons = "2.25.0.4952"
+analyzer-commons = "2.25.0.4954"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "13.4.3.4290"
