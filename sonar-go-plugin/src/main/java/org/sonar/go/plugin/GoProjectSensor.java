@@ -19,6 +19,8 @@ package org.sonar.go.plugin;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.SensorDescriptor;
 import org.sonar.api.scanner.sensor.ProjectSensor;
@@ -33,10 +35,14 @@ import static org.sonar.go.coverage.GoCoverSensor.TELEMETRY_SUPPORTED_API_VERSIO
  */
 public class GoProjectSensor implements ProjectSensor {
 
+  private static final Logger LOG = LoggerFactory.getLogger(GoProjectSensor.class);
+
   private final Set<GoVersion> accumulatedGoVersions = new HashSet<>();
   private final FileResolutionStatistics accumulatedCoverageStatistics = new FileResolutionStatistics();
   private boolean hasCoverageData = false;
+  private int readFromCacheFilesCount;
   private int parseFailuresCount;
+  private int filesProcessedCount;
 
   public void addGoVersions(Set<GoVersion> versions) {
     accumulatedGoVersions.addAll(versions);
@@ -51,6 +57,14 @@ public class GoProjectSensor implements ProjectSensor {
     parseFailuresCount++;
   }
 
+  public void increaseFilesProcessedCount(int increaseBy) {
+    filesProcessedCount += increaseBy;
+  }
+
+  public void increaseReadFromCacheFilesCount(int increaseBy) {
+    readFromCacheFilesCount += increaseBy;
+  }
+
   @Override
   public void describe(SensorDescriptor descriptor) {
     descriptor.onlyOnLanguage(GoLanguage.KEY).name("GoProjectSensor");
@@ -62,7 +76,7 @@ public class GoProjectSensor implements ProjectSensor {
       return;
     }
     sendGoVersionTelemetry(context);
-    sendParseFailuresCountTelemetry(context);
+    sendFileCountTelemetry(context);
     if (hasCoverageData) {
       sendCoverageTelemetry(context);
     }
@@ -79,20 +93,27 @@ public class GoProjectSensor implements ProjectSensor {
         .distinct()
         .collect(Collectors.joining(";"));
     }
-    context.addTelemetryProperty("go.used_version", usedVersion);
+    sendTelemetryProperty(context, "go.used_version", usedVersion);
   }
 
-  private void sendParseFailuresCountTelemetry(SensorContext context) {
-    context.addTelemetryProperty("go.parse_failures_count", Integer.toString(parseFailuresCount));
+  private static void sendTelemetryProperty(SensorContext context, String property, String value) {
+    context.addTelemetryProperty(property, value);
+    LOG.debug("Telemetry property: {}={}", property, value);
+  }
+
+  private void sendFileCountTelemetry(SensorContext context) {
+    sendTelemetryProperty(context, "go.processed_files_count", Integer.toString(filesProcessedCount));
+    sendTelemetryProperty(context, "go.parse_failures_count", Integer.toString(parseFailuresCount));
+    sendTelemetryProperty(context, "go.read_from_cache_files_count", Integer.toString(readFromCacheFilesCount));
   }
 
   private void sendCoverageTelemetry(SensorContext context) {
-    context.addTelemetryProperty("go.coverage_absolute_path", Integer.toString(accumulatedCoverageStatistics.absolutePath()));
-    context.addTelemetryProperty("go.coverage_relative_no_module_in_go_mod_dir", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInGoModDir()));
-    context.addTelemetryProperty("go.coverage_absolute_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.absoluteNoModuleInReportPath()));
-    context.addTelemetryProperty("go.coverage_relative_path", Integer.toString(accumulatedCoverageStatistics.relativePath()));
-    context.addTelemetryProperty("go.coverage_relative_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInReportPath()));
-    context.addTelemetryProperty("go.coverage_relative_sub_paths", Integer.toString(accumulatedCoverageStatistics.relativeSubPaths()));
-    context.addTelemetryProperty("go.coverage_unresolved", Integer.toString(accumulatedCoverageStatistics.unresolved()));
+    sendTelemetryProperty(context, "go.coverage_absolute_path", Integer.toString(accumulatedCoverageStatistics.absolutePath()));
+    sendTelemetryProperty(context, "go.coverage_relative_no_module_in_go_mod_dir", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInGoModDir()));
+    sendTelemetryProperty(context, "go.coverage_absolute_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.absoluteNoModuleInReportPath()));
+    sendTelemetryProperty(context, "go.coverage_relative_path", Integer.toString(accumulatedCoverageStatistics.relativePath()));
+    sendTelemetryProperty(context, "go.coverage_relative_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInReportPath()));
+    sendTelemetryProperty(context, "go.coverage_relative_sub_paths", Integer.toString(accumulatedCoverageStatistics.relativeSubPaths()));
+    sendTelemetryProperty(context, "go.coverage_unresolved", Integer.toString(accumulatedCoverageStatistics.unresolved()));
   }
 }

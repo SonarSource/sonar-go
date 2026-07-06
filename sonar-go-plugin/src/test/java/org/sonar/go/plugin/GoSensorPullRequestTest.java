@@ -25,19 +25,27 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.event.Level;
+import org.sonar.api.SonarEdition;
+import org.sonar.api.SonarQubeSide;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.rule.CheckFactory;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.config.internal.MapSettings;
+import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.issue.NoSonarFilter;
 import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.api.utils.Version;
 import org.sonar.go.converter.GoConverter;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
@@ -358,6 +366,52 @@ class GoSensorPullRequestTest {
     verify(failing).scan(eq(inputFileContext), any(Tree.class));
     assertThat(logTester.logs(Level.DEBUG)).doesNotContain(
       "Skipping input file moduleKey:file1.go (status is unchanged).");
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldSendReadFromCacheAndProcessedFilesCountTelemetry(boolean includeChangedFile, String expectedReadFromCache, String expectedProcessed) {
+    List<InputFileContext> filesToAnalyse;
+    if (includeChangedFile) {
+      InputFile changedFile = createInputFile(
+        "file2.go",
+        "package main\nfunc other() {}\n",
+        baseDir,
+        InputFile.Status.CHANGED,
+        null);
+      sensorContext.fileSystem().add(changedFile);
+      filesToAnalyse = List.of(inputFileContext, new InputFileContext(sensorContext, changedFile));
+    } else {
+      // The only file is skipped entirely via cache reuse, leaving filenameToContentMap empty.
+      // Read-from-cache count must still be reported even in that case.
+      filesToAnalyse = List.of(inputFileContext);
+    }
+    sensorContext.setRuntime(SonarRuntimeImpl.forSonarQube(Version.create(10, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY));
+
+    var goProjectSensor = new GoProjectSensor();
+    var sensorWithCounter = new GoSensor(mock(CheckFactory.class), mock(FileLinesContextFactory.class), mock(NoSonarFilter.class),
+      new GoLanguage(new MapSettings().asConfig()), converter, goProjectSensor);
+
+    goProgressReport.start(goFolders);
+    sensorWithCounter.analyseDirectory(
+      converter,
+      filesToAnalyse,
+      List.of(visitor),
+      new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10)),
+      new DurationStatistics(sensorContext.config()),
+      sensorContext,
+      "MyModuleName");
+
+    var spyContext = spy(sensorContext);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.read_from_cache_files_count", expectedReadFromCache);
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", expectedProcessed);
+  }
+
+  static Stream<Arguments> shouldSendReadFromCacheAndProcessedFilesCountTelemetry() {
+    return Stream.of(
+      Arguments.of(true, "1", "1"),
+      Arguments.of(false, "1", "0"));
   }
 
   private static class SuccessfulReuseVisitor extends PullRequestAwareVisitor {

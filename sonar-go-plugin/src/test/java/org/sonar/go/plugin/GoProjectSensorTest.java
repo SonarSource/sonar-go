@@ -17,8 +17,13 @@
 package org.sonar.go.plugin;
 
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
@@ -50,40 +55,24 @@ class GoProjectSensorTest {
     assertThat(descriptor.name()).isEqualTo("GoProjectSensor");
   }
 
-  @Test
-  void shouldSendGoVersionTelemetry() {
+  @ParameterizedTest
+  @MethodSource
+  void shouldSendGoVersionTelemetry(List<Set<GoVersion>> versionSets, String expectedValue) {
     var context = spy(SensorContextTester.create(Path.of(".")));
     context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
 
     var goProjectSensor = new GoProjectSensor();
-    goProjectSensor.addGoVersions(Set.of(GoVersion.parse("1.21")));
+    versionSets.forEach(goProjectSensor::addGoVersions);
     goProjectSensor.execute(context);
 
-    verify(context).addTelemetryProperty("go.used_version", "1.21");
+    verify(context).addTelemetryProperty("go.used_version", expectedValue);
   }
 
-  @Test
-  void shouldSendNoGoModFileTelemetryWhenNoVersionsAccumulated() {
-    var context = spy(SensorContextTester.create(Path.of(".")));
-    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
-
-    var goProjectSensor = new GoProjectSensor();
-    goProjectSensor.execute(context);
-
-    verify(context).addTelemetryProperty("go.used_version", "noGoModFile");
-  }
-
-  @Test
-  void shouldSendAggregatedGoVersionsFromMultipleModules() {
-    var context = spy(SensorContextTester.create(Path.of(".")));
-    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
-
-    var goProjectSensor = new GoProjectSensor();
-    goProjectSensor.addGoVersions(Set.of(GoVersion.parse("1.21")));
-    goProjectSensor.addGoVersions(Set.of(GoVersion.parse("1.23")));
-    goProjectSensor.execute(context);
-
-    verify(context).addTelemetryProperty("go.used_version", "1.21;1.23");
+  static Stream<Arguments> shouldSendGoVersionTelemetry() {
+    return Stream.of(
+      Arguments.of(List.of(), "noGoModFile"),
+      Arguments.of(List.of(Set.of(GoVersion.parse("1.21"))), "1.21"),
+      Arguments.of(List.of(Set.of(GoVersion.parse("1.21")), Set.of(GoVersion.parse("1.23"))), "1.21;1.23"));
   }
 
   @Test
@@ -162,6 +151,49 @@ class GoProjectSensorTest {
     goProjectSensor.execute(context);
 
     verify(context).addTelemetryProperty("go.parse_failures_count", "0");
+  }
+
+  @Test
+  void shouldSendFilesProcessedCountTelemetry() {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.increaseFilesProcessedCount(2);
+    goProjectSensor.execute(context);
+
+    verify(context).addTelemetryProperty("go.processed_files_count", "2");
+  }
+
+  @Test
+  void shouldSendZeroFilesProcessedCountWhenNoFilesProcessed() {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.execute(context);
+
+    verify(context).addTelemetryProperty("go.processed_files_count", "0");
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldSendReadFromCacheFilesCountTelemetry(List<Integer> increases, String expectedValue) {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    increases.forEach(goProjectSensor::increaseReadFromCacheFilesCount);
+    goProjectSensor.execute(context);
+
+    verify(context).addTelemetryProperty("go.read_from_cache_files_count", expectedValue);
+  }
+
+  static Stream<Arguments> shouldSendReadFromCacheFilesCountTelemetry() {
+    return Stream.of(
+      Arguments.of(List.of(), "0"),
+      Arguments.of(List.of(3), "3"),
+      Arguments.of(List.of(2, 5), "7"));
   }
 
   @Test

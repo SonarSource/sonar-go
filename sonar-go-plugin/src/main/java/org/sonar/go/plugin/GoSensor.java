@@ -235,6 +235,7 @@ public class GoSensor implements Sensor {
 
     goProgressReport.setStep(GoProgressReport.Step.CACHING);
     Map<String, CacheHandler.CacheEntry> filenameToCacheEntry = CacheHandler.filterOutFilesFromCache(inputFileContextList, visitors);
+    goProjectSensor.increaseReadFromCacheFilesCount(inputFileContextList.size() - filenameToCacheEntry.size());
 
     Map<String, String> filenameToContentMap = filenameToCacheEntry.values().stream()
       .map(CacheHandler::convertCacheEntryToFilenameAndContent)
@@ -244,6 +245,8 @@ public class GoSensor implements Sensor {
     if (filenameToContentMap.isEmpty()) {
       return;
     }
+
+    goProjectSensor.increaseFilesProcessedCount(filenameToContentMap.size());
 
     goProgressReport.setStep(GoProgressReport.Step.PARSING);
     Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap, moduleName));

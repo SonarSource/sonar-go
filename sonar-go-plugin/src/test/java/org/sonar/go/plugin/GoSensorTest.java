@@ -1083,7 +1083,8 @@ class GoSensorTest {
          fun y() {}\
         """, baseDir);
     context.fileSystem().add(inputFile);
-    sensor("S2260").execute(context);
+    CheckFactory checkFactory = checkFactory("S2260");
+    sensor(checkFactory).execute(context);
 
     Collection<Issue> issues = context.allIssues();
     assertThat(issues).hasSize(1);
@@ -1121,6 +1122,7 @@ class GoSensorTest {
     var spyContext = spy(context);
     goProjectSensor.execute(spyContext);
     verify(spyContext).addTelemetryProperty("go.parse_failures_count", "1");
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", "1");
   }
 
   @Test
@@ -1139,6 +1141,7 @@ class GoSensorTest {
     var spyContext = spy(context);
     goProjectSensor.execute(spyContext);
     verify(spyContext).addTelemetryProperty("go.parse_failures_count", "2");
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", "2");
   }
 
   @Test
@@ -1157,6 +1160,58 @@ class GoSensorTest {
     var spyContext = spy(context);
     goProjectSensor.execute(spyContext);
     verify(spyContext).addTelemetryProperty("go.parse_failures_count", "2");
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", "2");
+  }
+
+  @Test
+  void testParseFailureTelemetryWithEmptyFile() {
+    context.fileSystem().add(createInputFile("file1.go", "   \n   ", baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.parse_failures_count", "0");
+  }
+
+  @Test
+  void testParseFailureTelemetryMixedDirectoryOneEmptyOneValid() {
+    context.fileSystem().add(createInputFile("file1.go", "   ", baseDir));
+    context.fileSystem().add(createInputFile("file2.go", "package main\n", baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.parse_failures_count", "0");
+  }
+
+  @Test
+  void testProcessedFilesCountTwoFilesInSameDirectory() {
+    context.fileSystem().add(createInputFile("file1.go", "package main\n", baseDir));
+    context.fileSystem().add(createInputFile("file2.go", "package main\n", baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", "2");
+  }
+
+  @Test
+  void testProcessedFilesCountTwoFilesInDifferentDirectories() {
+    context.fileSystem().add(createInputFile("dir1/file1.go", "package main\n", baseDir));
+    context.fileSystem().add(createInputFile("dir2/file2.go", "package main\n", baseDir));
+    context.setRuntime(SQ_LTS_RUNTIME);
+    var goProjectSensor = new GoProjectSensor();
+    sensorWithProjectSensor(goProjectSensor, "S2260").execute(context);
+
+    var spyContext = spy(context);
+    goProjectSensor.execute(spyContext);
+    verify(spyContext).addTelemetryProperty("go.processed_files_count", "2");
   }
 
   @Test
