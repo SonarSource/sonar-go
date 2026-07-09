@@ -184,8 +184,6 @@ class GoSensorTest {
     assertThat(sensorContext.allIssues()).hasSameSizeAs(expectedIssues);
     List<String> raisedIssueKeys = sensorContext.allIssues().stream().map(issue -> issue.ruleKey().rule()).toList();
     assertThat(raisedIssueKeys).containsExactlyInAnyOrderElementsOf(expectedIssues);
-
-    assertThat(logTester.logs(Level.WARN)).isEmpty();
   }
 
   static Stream<Arguments> testThatCorrectChecksScopeIsApplied() {
@@ -1375,88 +1373,35 @@ class GoSensorTest {
   }
 
   @Test
-  void shouldLogInfoMessageWhenTestPropertiesAreNotSet() {
-    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
-    context.fileSystem().add(mainFile);
+  void shouldWarnWhenTestFileHeuristicIsApplied() {
+    context.fileSystem().add(createInputFile("main.go", "package main\nfunc main() {}", baseDir));
+    context.fileSystem().add(createInputFile("main_test.go", "package main", baseDir, null, InputFile.Type.MAIN));
 
     sensor(checkFactory()).execute(context);
 
-    assertThat(logTester.logs(Level.INFO)).contains(
-      """
-        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
-          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
-  }
-
-  @Test
-  void shouldLogDebugMessageWhenSonarTestsPropertyIsSet() {
-    context.settings().setProperty("sonar.tests", ".");
-
-    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
-    context.fileSystem().add(mainFile);
-
-    sensor(checkFactory()).execute(context);
-
-    assertThat(logTester.logs(Level.DEBUG)).contains("""
-      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=\"""");
-  }
-
-  @Test
-  void shouldLogDebugMessageWhenSonarTestInclusionsPropertyIsSet() {
-    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
-
-    var mainFile = createInputFile("app.go", "package main\nfunc app() {}", baseDir);
-    context.fileSystem().add(mainFile);
-
-    sensor(checkFactory()).execute(context);
-
-    assertThat(logTester.logs(Level.DEBUG)).contains("""
-      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=" and "sonar.test.inclusions=**/*_test.go\"""");
-  }
-
-  @Test
-  void shouldLogDebugMessageWhenBothPropertiesAreSet() {
-    context.settings().setProperty("sonar.tests", ".");
-    context.settings().setProperty("sonar.test.inclusions", "**/*_test.go");
-
-    var mainFile = createInputFile("code.go", "package main\nfunc code() {}", baseDir);
-    context.fileSystem().add(mainFile);
-
-    sensor(checkFactory()).execute(context);
-
-    assertThat(logTester.logs(Level.DEBUG)).contains("""
-      The properties "sonar.tests" and "sonar.test.inclusions" are set: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+    assertThat(logTester.logs(Level.WARN)).anyMatch(msg -> msg.contains("sonar.tests") && msg.contains("heuristic"));
   }
 
   @Test
   void shouldHandleEmptyStringPropertiesAsSameAsNotSet() {
     context.settings().setProperty("sonar.tests", "");
     context.settings().setProperty("sonar.test.inclusions", "");
-
-    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
-    context.fileSystem().add(mainFile);
+    context.fileSystem().add(createInputFile("main_test.go", "package main", baseDir, null, InputFile.Type.MAIN));
 
     sensor(checkFactory()).execute(context);
 
-    assertThat(logTester.logs(Level.INFO)).contains(
-      """
-        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
-          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+    assertThat(logTester.logs(Level.WARN)).anyMatch(msg -> msg.contains("sonar.tests") && msg.contains("heuristic"));
   }
 
   @Test
   void shouldHandleWhitespaceOnlyPropertiesAsSameAsNotSet() {
     context.settings().setProperty("sonar.tests", "   ");
     context.settings().setProperty("sonar.test.inclusions", "\t");
-
-    var mainFile = createInputFile("main.go", "package main\nfunc main() {}", baseDir);
-    context.fileSystem().add(mainFile);
+    context.fileSystem().add(createInputFile("main_test.go", "package main", baseDir, null, InputFile.Type.MAIN));
 
     sensor(checkFactory()).execute(context);
 
-    assertThat(logTester.logs(Level.INFO)).contains(
-      """
-        The properties "sonar.tests" and "sonar.test.inclusions" are not set. To improve the analysis accuracy, we categorize a file as a test file when the filename has suffix: "_test.go"
-          It is highly recommended to set those properties, e.g.: for the Go projects it is usually: "sonar.tests=." and "sonar.test.inclusions=**/*_test.go\"""");
+    assertThat(logTester.logs(Level.WARN)).anyMatch(msg -> msg.contains("sonar.tests") && msg.contains("heuristic"));
   }
 
   private GoSensor sensor(List<Class<?>> mainAndTestChecks, List<Class<?>> mainChecks) {

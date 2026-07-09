@@ -50,7 +50,7 @@ class InputFileDiscoveryTest {
         print (1 == 1)
       }""";
     var inputFile1 = createInputFile("main.go", content, baseDir);
-    // when no sonar.tests & sonar.test.inclusions are set then all files are indexed as MAIN
+    // when sonar.tests is not set, scanner indexes all files as MAIN; the heuristic detects _test.go files
     var inputFile2 = createInputFile("main_test.go", content, baseDir, null, InputFile.Type.MAIN);
     context.fileSystem().add(inputFile1);
     context.fileSystem().add(inputFile2);
