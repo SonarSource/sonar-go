@@ -16,14 +16,18 @@
  */
 package org.sonar.go.plugin;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.MockedConstruction;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
@@ -35,8 +39,11 @@ import org.sonar.go.coverage.FileResolutionStatistics;
 import org.sonar.plugins.go.api.checks.GoVersion;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -73,6 +80,28 @@ class GoProjectSensorTest {
       Arguments.of(List.of(), "noGoModFile"),
       Arguments.of(List.of(Set.of(GoVersion.parse("1.21"))), "1.21"),
       Arguments.of(List.of(Set.of(GoVersion.parse("1.21")), Set.of(GoVersion.parse("1.23"))), "1.21;1.23"));
+  }
+
+  @ParameterizedTest
+  @MethodSource
+  void shouldSendPluginVersionTelemetry(boolean propertiesLoadFails, String expectedValue) {
+    var context = spy(SensorContextTester.create(Path.of(".")));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    try (MockedConstruction<Properties> ignored = propertiesLoadFails
+      ? mockConstruction(Properties.class,
+        (mock, mockContext) -> doThrow(new IOException("boom")).when(mock).load(any(InputStream.class)))
+      : null) {
+      new GoProjectSensor().execute(context);
+
+      verify(context).addTelemetryProperty("go.plugin_version", expectedValue);
+    }
+  }
+
+  static Stream<Arguments> shouldSendPluginVersionTelemetry() {
+    return Stream.of(
+      Arguments.of(false, "1.2.3-test"),
+      Arguments.of(true, "unknown"));
   }
 
   @Test

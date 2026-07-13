@@ -16,7 +16,10 @@
  */
 package org.sonar.go.plugin;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashSet;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -76,6 +79,7 @@ public class GoProjectSensor implements ProjectSensor {
       return;
     }
     sendGoVersionTelemetry(context);
+    sendPluginVersionTelemetry(context);
     sendFileCountTelemetry(context);
     if (hasCoverageData) {
       sendCoverageTelemetry(context);
@@ -99,6 +103,24 @@ public class GoProjectSensor implements ProjectSensor {
   private static void sendTelemetryProperty(SensorContext context, String property, String value) {
     context.addTelemetryProperty(property, value);
     LOG.debug("Telemetry property: {}={}", property, value);
+  }
+
+  private static void sendPluginVersionTelemetry(SensorContext context) {
+    sendTelemetryProperty(context, "go.plugin_version", resolvePluginVersion());
+  }
+
+  public static String resolvePluginVersion() {
+    try (InputStream is = GoProjectSensor.class.getClassLoader()
+      .getResourceAsStream("org/sonar/plugins/go/pluginVersion.properties")) {
+      if (is != null) {
+        var props = new Properties();
+        props.load(is);
+        return props.getProperty("plugin.version", "unknown");
+      }
+    } catch (IOException e) {
+      // fall through to fallback
+    }
+    return "unknown";
   }
 
   private void sendFileCountTelemetry(SensorContext context) {
