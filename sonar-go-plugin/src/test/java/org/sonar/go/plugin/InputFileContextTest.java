@@ -19,7 +19,6 @@ package org.sonar.go.plugin;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
-import org.mockito.Mockito;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.TextRange;
@@ -36,6 +35,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.anyInt;
 import static org.mockito.Mockito.anyString;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -110,7 +110,7 @@ class InputFileContextTest {
 
     inputFileContext.reportAnalysisError("msg", textPointer);
 
-    verify(analysisError, Mockito.never()).at(defaultTextPointer);
+    verify(analysisError, never()).at(defaultTextPointer);
     assertThat(logTester.logs(Level.DEBUG)).isNotEmpty().anyMatch(l -> l.startsWith("Invalid location"));
   }
 
