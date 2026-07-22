@@ -16,6 +16,8 @@
  */
 package org.sonar.go.plugin;
 
+import com.sonarsource.scanner.engine.sensor.test.fixtures.SensorContextTester;
+import com.sonarsource.scanner.engine.sensor.test.fixtures.TestInputFileBuilder;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
@@ -34,14 +36,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.batch.fs.internal.DefaultInputFile;
-import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.SensorContext;
 import org.sonar.api.batch.sensor.cache.ReadCache;
 import org.sonar.api.batch.sensor.cache.WriteCache;
-import org.sonar.api.batch.sensor.cpd.internal.TokensLine;
-import org.sonar.api.batch.sensor.internal.SensorContextTester;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
+import org.sonar.duplications.internal.pmd.TokensLine;
 import org.sonar.go.impl.TextRangeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.plugin.caching.DummyReadCache;
@@ -49,6 +48,7 @@ import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
+import org.sonar.scanner.plugin.api.impl.fs.DefaultInputFile;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;

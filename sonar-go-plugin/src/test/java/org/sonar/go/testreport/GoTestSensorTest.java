@@ -16,6 +16,9 @@
  */
 package org.sonar.go.testreport;
 
+import com.sonarsource.scanner.engine.sensor.test.fixtures.SensorContextTester;
+import com.sonarsource.scanner.engine.sensor.test.fixtures.TestFileSystem;
+import com.sonarsource.scanner.engine.sensor.test.fixtures.TestInputFileBuilder;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -26,16 +29,13 @@ import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.fs.InputFile.Type;
-import org.sonar.api.batch.fs.internal.DefaultFileSystem;
-import org.sonar.api.batch.fs.internal.DefaultInputFile;
-import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
-import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
-import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.config.internal.MapSettings;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.coverage.GoPathContext;
 import org.sonar.go.testreport.GoTestSensor.TestInfo;
+import org.sonar.scanner.plugin.api.impl.config.MapSettings;
+import org.sonar.scanner.plugin.api.impl.fs.DefaultInputFile;
+import org.sonar.scanner.plugin.api.impl.sensor.DefaultSensorDescriptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.spy;
@@ -64,7 +64,7 @@ class GoTestSensorTest {
     TestInfo testInfo = new TestInfo("pass", transformedPackageAbsPath, "TestFoo", 42.);
 
     SensorContextTester contextTester = SensorContextTester.create(packageAbsPath);
-    DefaultFileSystem fs = contextTester.fileSystem();
+    TestFileSystem fs = contextTester.fileSystem();
     DefaultInputFile testFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
 
     InputFile foundTestFile = goTestSensor.findTestFile(fs, testInfo);
@@ -80,7 +80,7 @@ class GoTestSensorTest {
 
     Path baseDir = goPath.resolve("src").resolve(packagePath);
     SensorContextTester contextTester = SensorContextTester.create(baseDir);
-    DefaultFileSystem fs = contextTester.fileSystem();
+    TestFileSystem fs = contextTester.fileSystem();
     DefaultInputFile testFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
 
     InputFile foundTestFile = goTestSensor.findTestFile(fs, testInfo);
@@ -100,7 +100,7 @@ class GoTestSensorTest {
     Path baseDir = Paths.get("src", "test", "resources", "myProject").toAbsolutePath();
     SensorContextTester contextTester = SensorContextTester.create(baseDir);
 
-    DefaultFileSystem fs = contextTester.fileSystem();
+    TestFileSystem fs = contextTester.fileSystem();
 
     DefaultInputFile topTestFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
     DefaultInputFile nestedTestFile = getTestInputFile(fs, "\nfunc   TestFoo (", "packageFoo/foo_test.go");
@@ -131,7 +131,7 @@ class GoTestSensorTest {
     Path baseDir = goPath.resolve("src").resolve(packagePath);
 
     SensorContextTester context = SensorContextTester.create(baseDir);
-    DefaultFileSystem fs = context.fileSystem();
+    TestFileSystem fs = context.fileSystem();
     DefaultInputFile fooTestFile = getTestInputFile(fs, "something  \nfunc TestFoo1( \nfunc TestFoo2(  ", "foo_test.go");
     DefaultInputFile barTestFile = getTestInputFile(fs, "func TestBar(", "bar_test.go");
 
@@ -192,7 +192,7 @@ class GoTestSensorTest {
     assertThat(logTester.logs(Level.WARN)).anyMatch(log -> log.startsWith("Failed to parse unit test report line"));
   }
 
-  private DefaultInputFile getTestInputFile(DefaultFileSystem fs, String content, String relativePath) {
+  private DefaultInputFile getTestInputFile(TestFileSystem fs, String content, String relativePath) {
     DefaultInputFile nestedTestFile = new TestInputFileBuilder("moduleKey", relativePath)
       .setLanguage("go")
       .setType(Type.TEST)
@@ -210,7 +210,7 @@ class GoTestSensorTest {
     Path baseDir = goPath.resolve("src").resolve(packagePath);
 
     SensorContextTester context = SensorContextTester.create(baseDir);
-    DefaultFileSystem fs = context.fileSystem();
+    TestFileSystem fs = context.fileSystem();
     DefaultInputFile mulTestFile = getTestInputFile(fs, new String(Files.readAllBytes(baseDir.resolve("mul_test.go"))), "mul_test.go");
 
     MapSettings settings = new MapSettings();
@@ -231,7 +231,7 @@ class GoTestSensorTest {
     Path baseDir = goPath.resolve("src").resolve(packagePath);
 
     SensorContextTester context = SensorContextTester.create(baseDir);
-    DefaultFileSystem fs = context.fileSystem();
+    TestFileSystem fs = context.fileSystem();
     DefaultInputFile mulTestFile = getTestInputFile(fs, new String(Files.readAllBytes(baseDir.resolve("mul_test.go"))), "mul_test.go");
 
     MapSettings settings = new MapSettings();

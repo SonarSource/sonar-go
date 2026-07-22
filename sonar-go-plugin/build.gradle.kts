@@ -46,8 +46,10 @@ dependencies {
     testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.sonar.plugin.api.impl)
+    testImplementation(libs.sonar.plugin.api.scanner.impl)
+    testImplementation(libs.sonar.sensor.test.fixtures)
     testImplementation(libs.sonar.plugin.api.test.fixtures)
+    testImplementation(libs.logback.classic)
     testImplementation(testFixtures(project(":sonar-go-commons")))
     testImplementation(libs.archunit) {
         // The logging dependencies of archunit are excluded to avoid conflicts.

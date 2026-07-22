@@ -16,6 +16,7 @@
  */
 package org.sonar.go.plugin;
 
+import com.sonarsource.scanner.engine.sensor.test.fixtures.SensorContextTester;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
@@ -31,12 +32,11 @@ import org.mockito.MockedConstruction;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
-import org.sonar.api.batch.sensor.internal.DefaultSensorDescriptor;
-import org.sonar.api.batch.sensor.internal.SensorContextTester;
-import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.utils.Version;
 import org.sonar.go.coverage.FileResolutionStatistics;
 import org.sonar.plugins.go.api.checks.GoVersion;
+import org.sonar.scanner.plugin.api.impl.internal.SonarRuntimeImpl;
+import org.sonar.scanner.plugin.api.impl.sensor.DefaultSensorDescriptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;

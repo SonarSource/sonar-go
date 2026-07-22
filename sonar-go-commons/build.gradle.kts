@@ -44,6 +44,7 @@ dependencies {
     testFixturesImplementation(libs.sonar.analyzer.test.commons)
     testFixturesImplementation(libs.classgraph)
     testFixturesImplementation(libs.junit.jupiter.api)
-    testFixturesImplementation(libs.sonar.plugin.api.impl)
+    testFixturesImplementation(libs.sonar.plugin.api.scanner.impl)
+    testFixturesImplementation(libs.sonar.sensor.test.fixtures)
     testFixturesImplementation(libs.sonar.plugin.api.test.fixtures)
 }

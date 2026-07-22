@@ -1,10 +1,11 @@
 [versions]
+sonar-scanner-engine = "13.4.1.4007"
 analyzer-commons = "2.27.0.5007"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "13.4.3.4290"
 license-api = "3.4"
-sonarqube = "26.3.0.120487"
+sonarqube = "26.7.0.124771"
 orchestrator = "6.1.0.3962"
 sonarlint = "10.47.0.84936"
 minimal-json = "0.9.5"
@@ -26,8 +27,14 @@ archunit = "1.4.1"
 sonar-scanner-gradle = "7.2.3.7755"
 sonar-scanner-integration-tester = "0.6.0.1271"
 wiremock = "3.13.2"
+commons-io = "2.22.0"
+logback = "1.5.38"
 
 [libraries]
+commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logback" }
+sonar-sensor-test-fixtures = { module = "org.sonarsource.scanner.engine:sensor-test-fixtures", version.ref = "sonar-scanner-engine" }
+sonar-plugin-api-scanner-impl = { module = "org.sonarsource.scanner.engine:plugin-api-scanner-impl", version.ref = "sonar-scanner-engine" }
 sonar-plugin-api = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api", version.ref = "plugin-api" }
 sonar-license-api = { module = "com.sonarsource.license:license-api", version.ref = "license-api" }
 sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-commons", version.ref = "analyzer-commons" }
@@ -35,7 +42,6 @@ sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name
 sonar-xml-parsing = {group = "org.sonarsource.analyzer-commons", name = "sonar-xml-parsing", version.ref = "analyzer-commons" }
 minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
 sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
-sonar-plugin-api-impl = { group = "org.sonarsource.sonarqube", name = "sonar-plugin-api-impl", version.ref = "sonarqube" }
 sonar-orchestrator-junit5 = { group = "org.sonarsource.orchestrator", name = "sonar-orchestrator-junit5", version.ref = "orchestrator" }
 sonarlint-core = { group = "org.sonarsource.sonarlint.core", name = "sonarlint-core", version.ref = "sonarlint" }
 sonar-lint-rpc-java-client = { module = "org.sonarsource.sonarlint.core:sonarlint-rpc-java-client", version.ref = "sonarlint" }

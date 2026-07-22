@@ -20,12 +20,12 @@ import org.junit.jupiter.api.Test;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
-import org.sonar.api.internal.SonarRuntimeImpl;
 import org.sonar.api.rules.RuleType;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.utils.Version;
 import org.sonar.go.checks.GoCheckList;
+import org.sonar.scanner.plugin.api.impl.internal.SonarRuntimeImpl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

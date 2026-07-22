@@ -16,11 +16,11 @@
  */
 package org.sonar.go.testing;
 
+import com.sonarsource.scanner.engine.sensor.test.fixtures.TestInputFileBuilder;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.fs.InputFile;
-import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 
 public class TestInputFileCreator {
   public static InputFile createInputFile(String relativePath, String content, File baseDir) {
