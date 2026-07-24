@@ -29,13 +29,16 @@ import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.CatchTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IfTree;
 import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.MatchTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 
+import static org.sonar.go.utils.ExpressionUtils.extractActualCondition;
 import static org.sonar.go.utils.ExpressionUtils.isLogicalBinaryExpression;
+import static org.sonar.go.utils.ExpressionUtils.isNilLiteral;
 
 public class CognitiveComplexity {
 
@@ -95,6 +98,9 @@ public class CognitiveComplexity {
       });
 
       register(IfTree.class, (ctx, tree) -> {
+        if (isErrorCheckGuard(tree)) {
+          return;
+        }
         Tree parent = ctx.ancestors().peek();
         boolean isElseIf = parent instanceof IfTree ifTree && tree == ifTree.elseBranch();
         if (!isElseIf) {
@@ -163,7 +169,7 @@ public class CognitiveComplexity {
             nestingLevel++;
           }
           isInsideFunction = true;
-        } else if ((t instanceof IfTree && !isElseIfBranch(parent, t)) || t instanceof MatchTree || t instanceof LoopTree || t instanceof CatchTree) {
+        } else if (increasesNesting(t, parent) || t instanceof MatchTree || t instanceof LoopTree || t instanceof CatchTree) {
           nestingLevel++;
         } else if (t instanceof ClassDeclarationTree) {
           nestingLevel = 0;
@@ -174,10 +180,40 @@ public class CognitiveComplexity {
       return nestingLevel;
     }
 
+    private boolean increasesNesting(Tree tree, @Nullable Tree parent) {
+      return tree instanceof IfTree ifTree && !isElseIfBranch(parent, tree) && !isErrorCheckGuard(ifTree);
+    }
+
     private boolean isElseIfBranch(@Nullable Tree parent, Tree tree) {
       return parent instanceof IfTree ifTree && ifTree.elseBranch() == tree;
     }
 
+    /**
+     * Go has no exceptions: functions signal failure by returning an {@code error}, and the idiomatic way
+     * to handle it is a guard clause such as {@code if err != nil { return err }}. This pattern is excluded
+     * from the complexity count so that conventional Go error handling doesn't inflate the score.
+     */
+    private boolean isErrorCheckGuard(IfTree tree) {
+      return tree.elseBranch() == null && isErrorCheckCondition(tree.condition());
+    }
+
+    private boolean isErrorCheckCondition(Tree condition) {
+      if (!(extractActualCondition(condition) instanceof BinaryExpressionTree binary)) {
+        return false;
+      }
+      BinaryExpressionTree.Operator operator = binary.operator();
+      if (operator != BinaryExpressionTree.Operator.EQUAL_TO && operator != BinaryExpressionTree.Operator.NOT_EQUAL_TO) {
+        return false;
+      }
+      return isErrorIdentifierComparedToNil(binary.leftOperand(), binary.rightOperand())
+        || isErrorIdentifierComparedToNil(binary.rightOperand(), binary.leftOperand());
+    }
+
+    private boolean isErrorIdentifierComparedToNil(Tree identifierCandidate, Tree nilCandidate) {
+      return identifierCandidate instanceof IdentifierTree identifier
+        && "error".equals(identifier.type())
+        && isNilLiteral(nilCandidate);
+    }
   }
 
 }

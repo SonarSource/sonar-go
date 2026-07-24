@@ -127,6 +127,128 @@ class CognitiveComplexityTest {
   }
 
   @Test
+  void error_check_guard_pattern() {
+    String packageCode = """
+      package main
+      func mayFail() error {
+        return nil
+      }
+      """;
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        err := mayFail()
+        if err != nil {
+          return
+        }
+      }""").value()).isZero();
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        err := mayFail()
+        if err == nil {
+          return
+        }
+      }""").value()).isZero();
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        if err := mayFail(); err != nil {
+          return
+        }
+      }""").value()).isZero();
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        err := mayFail()
+        if err != nil {
+          if err != nil {
+            return
+          }
+        }
+      }""").value()).isZero();
+  }
+
+  @Test
+  void error_check_guard_pattern_does_not_apply_with_else_or_unrelated_nil_checks() {
+    String packageCode = """
+      package main
+      func mayFail() error {
+        return nil
+      }
+      func getPointer() *int {
+        return nil
+      }
+      """;
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        err := mayFail()
+        if err != nil {
+          return
+        } else {
+          return
+        }
+      }""").value()).isEqualTo(2);
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        p := getPointer()
+        if p != nil {
+          return
+        }
+      }""").value()).isEqualTo(1);
+  }
+
+  @Test
+  void error_check_guard_pattern_with_multi_return_value() {
+    String packageCode = """
+      package main
+      func mayFail() (*int, error) {
+        return nil, nil
+      }
+      """;
+
+    // two error-check guards one after another, each on its own call result
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        p1, err := mayFail()
+        if err != nil {
+          return
+        }
+        p2, err := mayFail()
+        if err != nil {
+          return
+        }
+        _ = p1
+        _ = p2
+      }""").value()).isZero();
+
+    // error check combined with another condition is not a guard clause and counts normally
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        p, err := mayFail()
+        if err != nil || p == nil {
+          return
+        }
+      }""").value()).isEqualTo(2);
+  }
+
+  @Test
+  void error_check_guard_pattern_with_standard_library_function() {
+    assertThat(complexityFromFullSample("""
+      package main
+      import "strconv"
+      func foo() {
+        n, err := strconv.Atoi("42")
+        if err != nil {
+          return
+        }
+        _ = n
+      }""").value()).isZero();
+  }
+
+  @Test
   void nesting_with_functions() {
     String packageCode = "package main\n";
     assertThat(complexityFromFullSample(packageCode + "func foo() { if x { a && b; } }").value()).isEqualTo(2);
