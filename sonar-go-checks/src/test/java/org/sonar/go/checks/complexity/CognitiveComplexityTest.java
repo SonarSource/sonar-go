@@ -198,6 +198,18 @@ class CognitiveComplexityTest {
           return
         }
       }""").value()).isEqualTo(1);
+
+    assertThat(complexityFromFullSample(packageCode + """
+      func foo() {
+        err := mayFail()
+        if err != nil {
+          p := getPointer()
+          if p != nil {
+            return
+          }
+          return
+        }
+      }""").value()).isEqualTo(1);
   }
 
   @Test
