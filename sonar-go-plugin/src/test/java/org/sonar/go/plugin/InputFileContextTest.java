@@ -51,7 +51,8 @@ class InputFileContextTest {
     when(inputFile.lines()).thenReturn(5);
     when(inputFile.toString()).thenReturn("foo/bar.go");
     var sensorContext = mock(SensorContext.class);
-    when(sensorContext.config()).thenReturn(mock(Configuration.class));
+    var configuration = mock(Configuration.class);
+    when(sensorContext.config()).thenReturn(configuration);
     var inputFileContext = new InputFileContext(sensorContext, inputFile);
     var range = TextRanges.range(10, 1, 10, 5);
 
