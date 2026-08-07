@@ -17,7 +17,7 @@
     "github-actions",
     "gomod",
     "git-submodules",
-    "regex"
+    "custom.regex"
   ],
   "git-submodules": {
     "enabled": true
@@ -33,7 +33,7 @@
     {
       "customType": "regex",
       "managerFilePatterns": [
-        "^gradle.properties$"
+        "/^gradle\\.properties$/"
       ],
       "matchStrings": [
         "goVersion\\s*=\\s*(?<currentValue>[^\\s#]+)"
@@ -176,11 +176,12 @@
         "golang-version"
       ],
       "rangeStrategy": "bump",
+      "groupName": "go version",
       "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"
     },
     {
       "matchManagers": [
-        "regex"
+        "custom.regex"
       ],
       "matchDatasources": [
         "golang-version"
