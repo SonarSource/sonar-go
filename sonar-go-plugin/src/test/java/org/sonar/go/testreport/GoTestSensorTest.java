@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 import org.slf4j.event.Level;
@@ -32,13 +34,14 @@ import org.sonar.api.batch.fs.InputFile.Type;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.go.coverage.GoPathContext;
-import org.sonar.go.testreport.GoTestSensor.TestInfo;
 import org.sonar.scanner.plugin.api.impl.config.MapSettings;
 import org.sonar.scanner.plugin.api.impl.fs.DefaultInputFile;
 import org.sonar.scanner.plugin.api.impl.sensor.DefaultSensorDescriptor;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class GoTestSensorTest {
@@ -50,7 +53,7 @@ class GoTestSensorTest {
   private final Path packagePath = Paths.get("github.com", "myOrg", "myProject");
 
   @Test
-  void absolute_package_path_in_report() throws IOException {
+  void absolute_package_path_in_report() {
     Path packageAbsPath = goPath.resolve("src").resolve(packagePath);
 
     GoTestSensor goTestSensor = new GoTestSensor();
@@ -61,41 +64,34 @@ class GoTestSensorTest {
     } else {
       transformedPackageAbsPath = "_\\" + packageAbsPath.toString().replaceFirst(":", "_");
     }
-    TestInfo testInfo = new TestInfo("pass", transformedPackageAbsPath, "TestFoo", 42.);
-
     SensorContextTester contextTester = SensorContextTester.create(packageAbsPath);
     TestFileSystem fs = contextTester.fileSystem();
     DefaultInputFile testFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
 
-    InputFile foundTestFile = goTestSensor.findTestFile(fs, testInfo);
-    assertThat(foundTestFile).isEqualTo(testFile);
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, transformedPackageAbsPath, Set.of("TestFoo"));
+    assertThat(testFileByFuncName).containsEntry("TestFoo", testFile);
   }
 
   @Test
-  void relative_package_path_in_report() throws IOException {
+  void relative_package_path_in_report() {
     GoTestSensor goTestSensor = new GoTestSensor();
     goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
-
-    TestInfo testInfo = new TestInfo("pass", packagePath.toString(), "TestFoo", 42.);
 
     Path baseDir = goPath.resolve("src").resolve(packagePath);
     SensorContextTester contextTester = SensorContextTester.create(baseDir);
     TestFileSystem fs = contextTester.fileSystem();
     DefaultInputFile testFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
 
-    InputFile foundTestFile = goTestSensor.findTestFile(fs, testInfo);
-    assertThat(foundTestFile).isEqualTo(testFile);
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, packagePath.toString(), Set.of("TestFoo"));
+    assertThat(testFileByFuncName).containsEntry("TestFoo", testFile);
   }
 
   @Test
-  void invalid_package_path_in_report() throws IOException {
+  void invalid_package_path_in_report() {
     Path nestedPackagePath = packagePath.resolve("packageFoo");
 
     GoTestSensor goTestSensor = new GoTestSensor();
     goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, null);
-
-    TestInfo testInfoTop = new TestInfo("pass", packagePath.toString(), "TestFoo", 42.);
-    TestInfo testInfoNested = new TestInfo("pass", nestedPackagePath.toString(), "TestFoo", 42.);
 
     Path baseDir = Paths.get("src", "test", "resources", "myProject").toAbsolutePath();
     SensorContextTester contextTester = SensorContextTester.create(baseDir);
@@ -105,12 +101,12 @@ class GoTestSensorTest {
     DefaultInputFile topTestFile = getTestInputFile(fs, "func TestFoo(", "foo_test.go");
     DefaultInputFile nestedTestFile = getTestInputFile(fs, "\nfunc   TestFoo (", "packageFoo/foo_test.go");
 
-    InputFile foundTestFile;
-    foundTestFile = goTestSensor.findTestFile(fs, testInfoTop);
-    assertThat(foundTestFile).isEqualTo(topTestFile);
+    Map<String, InputFile> testFileByFuncName;
+    testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, packagePath.toString(), Set.of("TestFoo"));
+    assertThat(testFileByFuncName).containsEntry("TestFoo", topTestFile);
 
-    foundTestFile = goTestSensor.findTestFile(fs, testInfoNested);
-    assertThat(foundTestFile).isEqualTo(nestedTestFile);
+    testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, nestedPackagePath.toString(), Set.of("TestFoo"));
+    assertThat(testFileByFuncName).containsEntry("TestFoo", nestedTestFile);
   }
 
   @Test
@@ -245,5 +241,131 @@ class GoTestSensorTest {
     goTestSensor.execute(context);
 
     assertThat(context.measure(mulTestFile.key(), CoreMetrics.TESTS).value()).isEqualTo(4);
+  }
+
+  @Test
+  void indexesEachTestFileOnlyOnceRegardlessOfNumberOfTests() throws IOException {
+    Path earlyExitPackagePath = Paths.get("github.com", "myOrg", "earlyExit");
+
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+
+    Path baseDir = goPath.resolve("src").resolve(earlyExitPackagePath);
+    SensorContextTester contextTester = SensorContextTester.create(baseDir);
+    TestFileSystem fs = contextTester.fileSystem();
+
+    DefaultInputFile aTestFile = getSpyTestInputFile(fs, "func TestA1(t *testing.T) {}\nfunc TestA2(t *testing.T) {}", "a_test.go");
+    DefaultInputFile zTestFile = getSpyTestInputFile(fs, "func TestZ1(t *testing.T) {}", "z_extra_test.go");
+
+    Set<String> requiredFuncNames = Set.of("TestA1", "TestA2", "TestZ1");
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, earlyExitPackagePath.toString(), requiredFuncNames);
+
+    // Even though "a_test.go" declares two referenced functions, it is read only once.
+    assertThat(testFileByFuncName)
+      .containsEntry("TestA1", aTestFile)
+      .containsEntry("TestA2", aTestFile)
+      .containsEntry("TestZ1", zTestFile);
+    verify(aTestFile).contents();
+    verify(zTestFile).contents();
+  }
+
+  @Test
+  void stopsScanningTestFilesOnceAllReferencedFunctionsAreFound() throws IOException {
+    Path earlyExitPackagePath = Paths.get("github.com", "myOrg", "earlyExit");
+
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+
+    Path baseDir = goPath.resolve("src").resolve(earlyExitPackagePath);
+    SensorContextTester contextTester = SensorContextTester.create(baseDir);
+    TestFileSystem fs = contextTester.fileSystem();
+
+    // "a_test.go" sorts before "z_extra_test.go", and declares every function referenced below.
+    DefaultInputFile aTestFile = getSpyTestInputFile(fs, "func TestA1(t *testing.T) {}\nfunc TestA2(t *testing.T) {}", "a_test.go");
+    DefaultInputFile zTestFile = getSpyTestInputFile(fs, "func TestZ1(t *testing.T) {}", "z_extra_test.go");
+
+    // Only functions declared in "a_test.go" are referenced by the report.
+    Set<String> requiredFuncNames = Set.of("TestA1", "TestA2");
+
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, earlyExitPackagePath.toString(), requiredFuncNames);
+
+    assertThat(testFileByFuncName).containsEntry("TestA2", aTestFile);
+    verify(aTestFile).contents();
+    verify(zTestFile, never()).contents();
+  }
+
+  private DefaultInputFile getSpyTestInputFile(TestFileSystem fs, String content, String relativePath) {
+    DefaultInputFile inputFile = spy(new TestInputFileBuilder("moduleKey", relativePath)
+      .setLanguage("go")
+      .setType(Type.TEST)
+      .setContents(content)
+      .build());
+    fs.add(inputFile);
+    return inputFile;
+  }
+
+  @Test
+  void resolvesTestFunctionsWithNonAsciiNames() {
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+
+    Path baseDir = goPath.resolve("src").resolve(packagePath);
+    SensorContextTester contextTester = SensorContextTester.create(baseDir);
+    TestFileSystem fs = contextTester.fileSystem();
+    // "foo_test.go" is an existing file in the fixture's package directory; getTestFilesForPackage()
+    // lists that real directory on disk, so the registered InputFile's relative path must match
+    // a file that is physically present there.
+    DefaultInputFile testFile = getTestInputFile(fs, "func TestÜmlaut(t *testing.T) {}", "foo_test.go");
+
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(fs, packagePath.toString(), Set.of("TestÜmlaut"));
+
+    assertThat(testFileByFuncName).containsEntry("TestÜmlaut", testFile);
+  }
+
+  @Test
+  void indexesBenchmarkFuzzAndExampleFunctions() {
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+
+    Path baseDir = goPath.resolve("src").resolve(packagePath);
+    SensorContextTester contextTester = SensorContextTester.create(baseDir);
+    TestFileSystem fs = contextTester.fileSystem();
+    DefaultInputFile testFile = getTestInputFile(
+      fs,
+      "func BenchmarkFoo(b *testing.B) {}\nfunc FuzzFoo(f *testing.F) {}\nfunc ExampleFoo() {}",
+      "bar_test.go");
+
+    Map<String, InputFile> testFileByFuncName = goTestSensor.indexTestFunctionsForPackage(
+      fs, packagePath.toString(), Set.of("BenchmarkFoo", "FuzzFoo", "ExampleFoo"));
+
+    assertThat(testFileByFuncName)
+      .containsEntry("BenchmarkFoo", testFile)
+      .containsEntry("FuzzFoo", testFile)
+      .containsEntry("ExampleFoo", testFile);
+  }
+
+  @Test
+  void indexesFunctionsAcrossMultiplePackages() {
+    Path earlyExitPackagePath = Paths.get("github.com", "myOrg", "earlyExit");
+
+    GoTestSensor goTestSensor = new GoTestSensor();
+    goTestSensor.goPathContext = new GoPathContext(File.separatorChar, File.pathSeparator, goPath.toString());
+
+    // The fs baseDir must be a common ancestor of both package directories: InputFile lookup
+    // resolves each registered relative path against this single baseDir.
+    Path baseDir = goPath.resolve("src");
+    SensorContextTester contextTester = SensorContextTester.create(baseDir);
+    TestFileSystem fs = contextTester.fileSystem();
+    DefaultInputFile fooTestFile = getTestInputFile(fs, "func TestFoo(t *testing.T) {}", packagePath.resolve("foo_test.go").toString());
+    DefaultInputFile aTestFile = getTestInputFile(fs, "func TestA1(t *testing.T) {}", earlyExitPackagePath.resolve("a_test.go").toString());
+
+    Map<String, Set<String>> requiredFuncNamesByPackage = Map.of(
+      packagePath.toString(), Set.of("TestFoo"),
+      earlyExitPackagePath.toString(), Set.of("TestA1"));
+
+    Map<String, Map<String, InputFile>> testFileByFuncNameByPackage = goTestSensor.indexTestFunctions(fs, requiredFuncNamesByPackage);
+
+    assertThat(testFileByFuncNameByPackage.get(packagePath.toString())).containsEntry("TestFoo", fooTestFile);
+    assertThat(testFileByFuncNameByPackage.get(earlyExitPackagePath.toString())).containsEntry("TestA1", aTestFile);
   }
 }

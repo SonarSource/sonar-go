@@ -25,10 +25,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -54,8 +57,11 @@ public class GoTestSensor implements Sensor {
 
   GoPathContext goPathContext = GoPathContext.DEFAULT;
 
-  // caching package <-> test input files
-  private Map<String, List<InputFile>> testFilesByPackage = new HashMap<>();
+  // Matches every top-level test/benchmark/fuzz/example function declaration in a single pass.
+  // Go requires these functions to start with one of these prefixes, which is exactly what the
+  // "Test" field of a `go test -json` report references.
+  private static final Pattern FUNC_DECL = Pattern.compile(
+    "^func\\s+((?:Test|Benchmark|Fuzz|Example)\\w*)\\s*\\(", Pattern.MULTILINE | Pattern.UNICODE_CHARACTER_CLASS);
 
   @Override
   public void describe(SensorDescriptor descriptor) {
@@ -66,9 +72,36 @@ public class GoTestSensor implements Sensor {
 
   @Override
   public void execute(SensorContext context) {
-    Map<InputFile, List<TestInfo>> testInfoByFile = new HashMap<>();
+    List<TestInfo> testInfoList = getReportPaths(context).stream()
+      .flatMap(path -> parseReport(path).stream())
+      .toList();
 
-    getReportPaths(context).forEach(path -> parseReport(context, path, testInfoByFile));
+    // Knowing upfront every test function referenced across all reports, per package, lets
+    // indexTestFunctions stop reading files as soon as all of them have been located,
+    // instead of always scanning every test file in the package.
+    Map<String, Set<String>> requiredFuncNamesByPackage = new HashMap<>();
+    for (TestInfo testInfo : testInfoList) {
+      requiredFuncNamesByPackage
+        .computeIfAbsent(testInfo.pkg, key -> new HashSet<>())
+        .add(testInfo.testSanitized);
+    }
+
+    var testFileByFuncNameByPackage = indexTestFunctions(context.fileSystem(), requiredFuncNamesByPackage);
+
+    var testInfoByFile = new HashMap<InputFile, List<TestInfo>>();
+    for (TestInfo testInfo : testInfoList) {
+      var testFileByFuncName = testFileByFuncNameByPackage.getOrDefault(testInfo.pkg, Collections.emptyMap());
+      var testFile = testFileByFuncName.get(testInfo.testSanitized);
+
+      if (testFile != null) {
+        testInfoByFile
+          .computeIfAbsent(testFile, key -> new ArrayList<>())
+          .add(testInfo);
+      } else {
+        LOG.warn("Failed to find test file for package {} and test {}", testInfo.pkg, testInfo.testSanitized);
+      }
+    }
+
     testInfoByFile.forEach((key, value) -> saveTestMetrics(context, key, value));
   }
 
@@ -90,27 +123,16 @@ public class GoTestSensor implements Sensor {
     return result;
   }
 
-  private void parseReport(SensorContext context, Path reportPath, Map<InputFile, List<TestInfo>> testInfoByFile) {
+  private static List<TestInfo> parseReport(Path reportPath) {
     try {
-      List<TestInfo> testInfoList = Files.readAllLines(reportPath).stream()
+      return Files.readAllLines(reportPath).stream()
         .filter(line -> line.startsWith("{"))
         .map(line -> getRelevantTestInfo(line, reportPath))
         .filter(Objects::nonNull)
         .toList();
-
-      for (TestInfo testInfo : testInfoList) {
-        InputFile testFile = findTestFile(context.fileSystem(), testInfo);
-
-        if (testFile != null) {
-          testInfoByFile
-            .computeIfAbsent(testFile, key -> new ArrayList<>())
-            .add(testInfo);
-        } else {
-          LOG.warn("Failed to find test file for package {} and test {}", testInfo.pkg, testInfo.test);
-        }
-      }
     } catch (IOException e) {
       LOG.warn("Failed to read unit test report file " + reportPath, e);
+      return Collections.emptyList();
     }
   }
 
@@ -128,29 +150,42 @@ public class GoTestSensor implements Sensor {
     return null;
   }
 
-  @Nullable
-  InputFile findTestFile(FileSystem fileSystem, TestInfo testInfo) throws IOException {
-    List<InputFile> testInputFilesInPackage = testFilesByPackage.computeIfAbsent(
-      testInfo.pkg,
-      goPackage -> getTestFilesForPackage(fileSystem, goPackage));
+  // visible for testing purposes
+  Map<String, Map<String, InputFile>> indexTestFunctions(FileSystem fileSystem, Map<String, Set<String>> requiredFuncNamesByPackage) {
+    // Caching, per package, an index from test function name to the file that declares it.
+    // This ensures each test file is read and scanned only once, regardless of how many tests it contains.
+    var testFileByFuncNameByPackage = new HashMap<String, Map<String, InputFile>>();
 
-    // If the test was actually a sub-test, the name is of the form
-    // "TestFunc/Sub_Test_Name".
-    String testName = testInfo.test.split("/", 2)[0];
+    for (Map.Entry<String, Set<String>> functionsPerPackage : requiredFuncNamesByPackage.entrySet()) {
+      String packageName = functionsPerPackage.getKey();
+      Map<String, InputFile> stringInputFileMap = indexTestFunctionsForPackage(fileSystem, packageName, functionsPerPackage.getValue());
+      testFileByFuncNameByPackage.put(packageName, stringInputFileMap);
+    }
 
-    Pattern pattern = Pattern.compile("^func\\s+" + testName + "\\s*\\(", Pattern.MULTILINE);
-    for (InputFile testFile : testInputFilesInPackage) {
+    return testFileByFuncNameByPackage;
+  }
+
+  // visible for testing purposes
+  Map<String, InputFile> indexTestFunctionsForPackage(FileSystem fileSystem, String goPackage, Set<String> requiredFuncNames) {
+    Map<String, InputFile> testFileByFuncName = new HashMap<>();
+    for (InputFile testFile : getTestFilesForPackage(fileSystem, goPackage)) {
       try {
-        if (pattern.matcher(testFile.contents()).find()) {
-          return testFile;
+        var matcher = FUNC_DECL.matcher(testFile.contents());
+        while (matcher.find()) {
+          testFileByFuncName.putIfAbsent(matcher.group(1), testFile);
         }
       } catch (IOException ioe) {
         LOG.warn("Failed to read test file {}", testFile.uri());
         LOG.debug("Stacktrace:", ioe);
       }
-    }
 
-    return null;
+      // Once every test function referenced by the report has been located, there is no need
+      // to read and scan the remaining test files in this package.
+      if (testFileByFuncName.keySet().containsAll(requiredFuncNames)) {
+        break;
+      }
+    }
+    return testFileByFuncName;
   }
 
   private List<InputFile> getTestFilesForPackage(FileSystem fileSystem, String goPackage) {
@@ -165,9 +200,13 @@ public class GoTestSensor implements Sensor {
     }
 
     try (Stream<Path> stream = Files.list(Paths.get(packageDirectory))) {
+      // Files.list does not guarantee any particular order; sorting makes the early-termination
+      // behavior of indexTestFunctions deterministic. Go forbids duplicate top-level function
+      // names within a package, so the sort order never affects which file a test resolves to.
       return stream
         .map(path -> fileSystem.inputFile(testFilePredicate(predicates, path)))
         .filter(Objects::nonNull)
+        .sorted(Comparator.comparing(InputFile::filename))
         .toList();
 
     } catch (IOException e) {
@@ -222,13 +261,13 @@ public class GoTestSensor implements Sensor {
   static class TestInfo {
     final String action;
     final String pkg;
-    final String test;
+    final String testSanitized;
     final Double elapsed;
 
     public TestInfo(@Nullable String action, @Nullable String pkg, @Nullable String test, @Nullable Double elapsed) {
       this.action = action;
       this.pkg = pkg;
-      this.test = test;
+      this.testSanitized = stripSubTestSuffix(test);
       this.elapsed = elapsed;
     }
 
@@ -240,8 +279,16 @@ public class GoTestSensor implements Sensor {
     }
 
     boolean isRelevant() {
-      return action != null && test != null && pkg != null && elapsed != null &&
+      return action != null && testSanitized != null && pkg != null && elapsed != null &&
         (action.equals("pass") || action.equals("fail") || action.equals("skip"));
     }
+
+    /**
+     * If the test was actually a sub-test, the name is of the form "TestFunc/Sub_Test_Name".
+     */
+    private static String stripSubTestSuffix(@Nullable String testName) {
+      return testName != null ? testName.split("/", 2)[0] : null;
+    }
+
   }
 }
