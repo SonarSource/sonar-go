@@ -42,7 +42,8 @@
       "packageNameTemplate": "go",
       "depTypeTemplate": "golang",
       "datasourceTemplate": "golang-version",
-      "versioningTemplate": "go-mod-directive"
+      // Note: don't use go-mod-directive - it's treated as a range
+      "versioningTemplate": "semver-coerced"
     }
   ],
   "packageRules": [
@@ -178,15 +179,6 @@
       "rangeStrategy": "bump",
       "groupName": "go version",
       "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"
-    },
-    {
-      "matchManagers": [
-        "custom.regex"
-      ],
-      "matchDatasources": [
-        "golang-version"
-      ],
-      "versioning": "go-mod-directive"
     }
   ]
 }
