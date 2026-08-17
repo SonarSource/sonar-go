@@ -179,6 +179,16 @@
       "rangeStrategy": "bump",
       "groupName": "go version",
       "prHeader": "**Don't forget to run the package data generator to align the generated files with the new Go version.**"
+    },
+    {
+      // Overrides languages-team preset's blanket 4-component "regex" versioning, which can't parse Go's 3-component versions.
+      "matchManagers": [
+        "custom.regex"
+      ],
+      "matchDatasources": [
+        "golang-version"
+      ],
+      "versioning": "semver-coerced"
     }
   ]
 }
