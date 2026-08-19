@@ -39,7 +39,6 @@ import org.sonar.api.config.Configuration;
 public final class MemoryMonitor {
 
   private static final Logger LOG = LoggerFactory.getLogger(MemoryMonitor.class);
-  private static final String PROPERTY_KEY = "sonar.go.duration.statistics";
   private final boolean recordingEnabled;
   // Visible for testing
   final List<MemoryRecord> memoryRecords = new ArrayList<>();
@@ -48,7 +47,7 @@ public final class MemoryMonitor {
   private final NumberFormat format;
 
   public MemoryMonitor(Configuration config) {
-    recordingEnabled = config.getBoolean(PROPERTY_KEY).orElse(false) && LOG.isInfoEnabled();
+    recordingEnabled = config.getBoolean(DurationStatistics.DURATION_STATISTICS_PROPERTY_KEY).orElse(false) && LOG.isInfoEnabled();
     resetPeak();
     addRecord("Initial memory");
 

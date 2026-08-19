@@ -31,16 +31,16 @@ import org.sonar.api.config.Configuration;
 
 public class DurationStatistics {
 
-  private static final Logger LOG = LoggerFactory.getLogger(DurationStatistics.class);
+  public static final String DURATION_STATISTICS_PROPERTY_KEY = "sonar.go.duration.statistics";
 
-  private static final String PROPERTY_KEY = "sonar.go.duration.statistics";
+  private static final Logger LOG = LoggerFactory.getLogger(DurationStatistics.class);
 
   private final Map<String, AtomicLong> stats = new ConcurrentHashMap<>();
 
   private final boolean recordStat;
 
   public DurationStatistics(Configuration config) {
-    recordStat = config.getBoolean(PROPERTY_KEY).orElse(false);
+    recordStat = config.getBoolean(DURATION_STATISTICS_PROPERTY_KEY).orElse(false);
   }
 
   <C, T> BiConsumer<C, T> time(String id, BiConsumer<C, T> consumer) {

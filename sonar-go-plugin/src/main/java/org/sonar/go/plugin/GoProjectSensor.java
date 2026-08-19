@@ -78,15 +78,16 @@ public class GoProjectSensor implements ProjectSensor {
     if (!context.runtime().getApiVersion().isGreaterThanOrEqual(TELEMETRY_SUPPORTED_API_VERSION)) {
       return;
     }
-    sendGoVersionTelemetry(context);
-    sendPluginVersionTelemetry(context);
-    sendFileCountTelemetry(context);
+    boolean logTelemetry = context.config().getBoolean(DurationStatistics.DURATION_STATISTICS_PROPERTY_KEY).orElse(false);
+    sendGoVersionTelemetry(context, logTelemetry);
+    sendPluginVersionTelemetry(context, logTelemetry);
+    sendFileCountTelemetry(context, logTelemetry);
     if (hasCoverageData) {
-      sendCoverageTelemetry(context);
+      sendCoverageTelemetry(context, logTelemetry);
     }
   }
 
-  private void sendGoVersionTelemetry(SensorContext context) {
+  private void sendGoVersionTelemetry(SensorContext context, boolean logTelemetry) {
     String usedVersion;
     if (accumulatedGoVersions.isEmpty()) {
       usedVersion = "noGoModFile";
@@ -97,16 +98,18 @@ public class GoProjectSensor implements ProjectSensor {
         .distinct()
         .collect(Collectors.joining(";"));
     }
-    sendTelemetryProperty(context, "go.used_version", usedVersion);
+    sendTelemetryProperty(context, logTelemetry, "go.used_version", usedVersion);
   }
 
-  private static void sendTelemetryProperty(SensorContext context, String property, String value) {
+  private static void sendTelemetryProperty(SensorContext context, boolean logTelemetry, String property, String value) {
     context.addTelemetryProperty(property, value);
-    LOG.debug("Telemetry property: {}={}", property, value);
+    if (logTelemetry) {
+      LOG.debug("Telemetry property: {}={}", property, value);
+    }
   }
 
-  private static void sendPluginVersionTelemetry(SensorContext context) {
-    sendTelemetryProperty(context, "go.plugin_version", resolvePluginVersion());
+  private static void sendPluginVersionTelemetry(SensorContext context, boolean logTelemetry) {
+    sendTelemetryProperty(context, logTelemetry, "go.plugin_version", resolvePluginVersion());
   }
 
   public static String resolvePluginVersion() {
@@ -123,19 +126,19 @@ public class GoProjectSensor implements ProjectSensor {
     return "unknown";
   }
 
-  private void sendFileCountTelemetry(SensorContext context) {
-    sendTelemetryProperty(context, "go.processed_files_count", Integer.toString(filesProcessedCount));
-    sendTelemetryProperty(context, "go.parse_failures_count", Integer.toString(parseFailuresCount));
-    sendTelemetryProperty(context, "go.read_from_cache_files_count", Integer.toString(readFromCacheFilesCount));
+  private void sendFileCountTelemetry(SensorContext context, boolean logTelemetry) {
+    sendTelemetryProperty(context, logTelemetry, "go.processed_files_count", Integer.toString(filesProcessedCount));
+    sendTelemetryProperty(context, logTelemetry, "go.parse_failures_count", Integer.toString(parseFailuresCount));
+    sendTelemetryProperty(context, logTelemetry, "go.read_from_cache_files_count", Integer.toString(readFromCacheFilesCount));
   }
 
-  private void sendCoverageTelemetry(SensorContext context) {
-    sendTelemetryProperty(context, "go.coverage_absolute_path", Integer.toString(accumulatedCoverageStatistics.absolutePath()));
-    sendTelemetryProperty(context, "go.coverage_relative_no_module_in_go_mod_dir", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInGoModDir()));
-    sendTelemetryProperty(context, "go.coverage_absolute_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.absoluteNoModuleInReportPath()));
-    sendTelemetryProperty(context, "go.coverage_relative_path", Integer.toString(accumulatedCoverageStatistics.relativePath()));
-    sendTelemetryProperty(context, "go.coverage_relative_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInReportPath()));
-    sendTelemetryProperty(context, "go.coverage_relative_sub_paths", Integer.toString(accumulatedCoverageStatistics.relativeSubPaths()));
-    sendTelemetryProperty(context, "go.coverage_unresolved", Integer.toString(accumulatedCoverageStatistics.unresolved()));
+  private void sendCoverageTelemetry(SensorContext context, boolean logTelemetry) {
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_absolute_path", Integer.toString(accumulatedCoverageStatistics.absolutePath()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_relative_no_module_in_go_mod_dir", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInGoModDir()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_absolute_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.absoluteNoModuleInReportPath()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_relative_path", Integer.toString(accumulatedCoverageStatistics.relativePath()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_relative_no_module_in_report_path", Integer.toString(accumulatedCoverageStatistics.relativeNoModuleInReportPath()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_relative_sub_paths", Integer.toString(accumulatedCoverageStatistics.relativeSubPaths()));
+    sendTelemetryProperty(context, logTelemetry, "go.coverage_unresolved", Integer.toString(accumulatedCoverageStatistics.unresolved()));
   }
 }

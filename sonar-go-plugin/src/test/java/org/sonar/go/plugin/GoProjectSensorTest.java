@@ -25,13 +25,16 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.RegisterExtension;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.MockedConstruction;
+import org.slf4j.event.Level;
 import org.sonar.api.SonarEdition;
 import org.sonar.api.SonarQubeSide;
 import org.sonar.api.SonarRuntime;
+import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
 import org.sonar.go.coverage.FileResolutionStatistics;
 import org.sonar.plugins.go.api.checks.GoVersion;
@@ -54,6 +57,9 @@ class GoProjectSensorTest {
     Version.create(10, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
   private static final SonarRuntime SQ_RUNTIME_NOT_SUPPORTING_TELEMETRY = SonarRuntimeImpl.forSonarQube(
     Version.create(10, 8), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
+
+  @RegisterExtension
+  public LogTesterJUnit5 logTester = new LogTesterJUnit5().setLevel(Level.DEBUG);
 
   @Test
   void shouldDescribe() {
@@ -235,5 +241,33 @@ class GoProjectSensorTest {
     goProjectSensor.execute(context);
 
     verify(context, never()).addTelemetryProperty(anyString(), anyString());
+  }
+
+  @Test
+  void shouldLogTelemetryWhenDurationStatisticsEnabled() {
+    var context = SensorContextTester.create(Path.of("."));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+    context.settings().setProperty("sonar.go.duration.statistics", "true");
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.increaseFilesProcessedCount(1);
+    goProjectSensor.execute(context);
+
+    assertThat(logTester.logs(Level.DEBUG))
+      .contains("Telemetry property: go.processed_files_count=1");
+    assertThat(context.getTelemetryProperties()).containsEntry("go.processed_files_count", "1");
+  }
+
+  @Test
+  void shouldNotLogTelemetryWhenDurationStatisticsDisabled() {
+    var context = SensorContextTester.create(Path.of("."));
+    context.setRuntime(SQ_RUNTIME_SUPPORTING_TELEMETRY);
+
+    var goProjectSensor = new GoProjectSensor();
+    goProjectSensor.increaseFilesProcessedCount(1);
+    goProjectSensor.execute(context);
+
+    assertThat(logTester.getLogs(Level.DEBUG)).isEmpty();
+    assertThat(context.getTelemetryProperties()).containsEntry("go.processed_files_count", "1");
   }
 }
