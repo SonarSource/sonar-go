@@ -126,9 +126,9 @@ tasks.shadowJar {
     val logger = project.logger
     doLast {
         val (minSize, maxSize) = if (isCrossCompile) {
-            17_000_000L to 18_000_000L
+            19_000_000L to 20_000_000L
         } else {
-            4_000_000L to 5_500_000L
+            4_500_000L to 5_500_000L
         }
         enforceJarSize(pluginJar, minSize, maxSize, logger)
         checkJarEntriesPathUniqueness(pluginJar)

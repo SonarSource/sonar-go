@@ -27,6 +27,11 @@ class BadFunctionNameCheckTest {
   }
 
   @Test
+  void testGenericMethod() {
+    GoVerifier.verify("BadFunctionNameCheck/bad_function_name_generic_method.go", new BadFunctionNameCheck());
+  }
+
+  @Test
   void testUpperCase() {
     BadFunctionNameCheck check = new BadFunctionNameCheck();
     check.format = "^[A-Z]*$";

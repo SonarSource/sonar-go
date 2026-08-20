@@ -1,0 +1,19 @@
+package main
+
+type Container[T any] struct {
+	items []T
+}
+
+// Since Go 1.27, a method declaration may declare its own type parameters.
+func (c Container[T]) Map[U any](transform func(T) U) []U {
+	mapped := make([]U, 0, len(c.items))
+	for _, item := range c.items {
+		mapped = append(mapped, transform(item))
+	}
+	return mapped
+}
+
+func main() {
+	c := Container[int]{items: []int{1, 2, 3}}
+	_ = c.Map(func(i int) string { return "value" })
+}

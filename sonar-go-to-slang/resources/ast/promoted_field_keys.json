@@ -1,0 +1,146 @@
+{ 
+  "treeMetaData": {
+    "comments": [
+      {"text":"// Since Go 1.27, a struct literal key may be any valid field selector, so promoted fields are allowed.", "contentText":" Since Go 1.27, a struct literal key may be any valid field selector, so promoted fields are allowed.", "range":"18:1::104", "contentRange": "18:3::104"},
+      {"text":"// ID is promoted through two levels of embedding, Name through one, Active is declared on Outer itself.", "contentText":" ID is promoted through two levels of embedding, Name through one, Active is declared on Outer itself.", "range":"19:1::105", "contentRange": "19:3::105"}
+    ],
+    "tokens": [
+      {"text":"package","textRange":"1:0::7","type":"KEYWORD"},
+      {"text":"main","textRange":"1:8::12"},
+      {"text":"type","textRange":"3:0::4","type":"KEYWORD"},
+      {"text":"Base","textRange":"3:5::9"},
+      {"text":"struct","textRange":"3:10::16","type":"KEYWORD"},
+      {"text":"{","textRange":"3:17::18"},
+      {"text":"ID","textRange":"4:1::3"},
+      {"text":"int","textRange":"4:4::7"},
+      {"text":"}","textRange":"5:0::1"},
+      {"text":"type","textRange":"7:0::4","type":"KEYWORD"},
+      {"text":"Middle","textRange":"7:5::11"},
+      {"text":"struct","textRange":"7:12::18","type":"KEYWORD"},
+      {"text":"{","textRange":"7:19::20"},
+      {"text":"Base","textRange":"8:1::5"},
+      {"text":"Name","textRange":"9:1::5"},
+      {"text":"string","textRange":"9:6::12"},
+      {"text":"}","textRange":"10:0::1"},
+      {"text":"type","textRange":"12:0::4","type":"KEYWORD"},
+      {"text":"Outer","textRange":"12:5::10"},
+      {"text":"struct","textRange":"12:11::17","type":"KEYWORD"},
+      {"text":"{","textRange":"12:18::19"},
+      {"text":"Middle","textRange":"13:1::7"},
+      {"text":"Active","textRange":"14:1::7"},
+      {"text":"bool","textRange":"14:8::12"},
+      {"text":"}","textRange":"15:0::1"},
+      {"text":"func","textRange":"17:0::4","type":"KEYWORD"},
+      {"text":"main","textRange":"17:5::9"},
+      {"text":"(","textRange":"17:9::10"},
+      {"text":")","textRange":"17:10::11"},
+      {"text":"{","textRange":"17:12::13"},
+      {"text":"_","textRange":"20:1::2","type":"KEYWORD"},
+      {"text":"=","textRange":"20:3::4"},
+      {"text":"Outer","textRange":"20:5::10"},
+      {"text":"{","textRange":"20:10::11"},
+      {"text":"ID","textRange":"20:11::13"},
+      {"text":":","textRange":"20:13::14"},
+      {"text":"1","textRange":"20:15::16"},
+      {"text":"Name","textRange":"20:18::22"},
+      {"text":":","textRange":"20:22::23"},
+      {"text":"\"name\"","textRange":"20:24::30","type":"STRING_LITERAL"},
+      {"text":",","textRange":"20:16::17"},
+      {"text":"Active","textRange":"20:32::38"},
+      {"text":":","textRange":"20:38::39"},
+      {"text":"true","textRange":"20:40::44"},
+      {"text":",","textRange":"20:30::31"},
+      {"text":"}","textRange":"20:44::45"},
+      {"text":"}","textRange":"21:0::1"}
+    ]
+  },
+  "tree":
+    {"@type": "TopLevel", "metaData": "1:0:22:0","firstCpdToken":null,"declarations":[
+      {"@type": "PackageDeclaration", "metaData": "1:0::12","children":[
+        {"@type": "Native", "metaData": "1:0::7"},
+        {"@type": "Identifier", "metaData": "1:8::12","type":"UNKNOWN","package":"UNKNOWN","name":"main","id":0,"__cfgId":1}
+      ],"__cfgId":2},
+      {"@type": "ClassDeclaration", "metaData": "3:0:5:1","identifier":"3:5::9","classTree":
+        {"@type": "Native", "metaData": "3:0:5:1","nativeKind":"[0](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "3:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "3:5::9","type":"main.Base","package":"ModuleNameForTest/main","name":"Base","id":20,"__cfgId":3},
+          {"@type": "Native", "metaData": "3:10:5:1","nativeKind":"Type(StructType)","children":[
+            {"@type": "Native", "metaData": "3:10::16","nativeKind":"Struct"},
+            {"@type": "Native", "metaData": "3:17:5:1","nativeKind":"Fields(FieldList)","children":[
+              {"@type": "Native", "metaData": "3:17::18","nativeKind":"Opening"},
+              {"@type": "Native", "metaData": "4:1::7","nativeKind":"[0](Field)","children":[
+                {"@type": "Native", "metaData": "4:1::3","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "4:1::3","type":"int","package":"UNKNOWN","name":"ID","id":35,"__cfgId":4}
+                ]},
+                {"@type": "Identifier", "metaData": "4:4::7","type":"int","package":"UNKNOWN","name":"int","id":0,"__cfgId":5}
+              ],"__cfgId":6},
+              {"@type": "Native", "metaData": "5:0::1","nativeKind":"Closing"}
+            ],"__cfgId":7}
+          ],"__cfgId":8}
+        ],"__cfgId":9},"__cfgId":10},
+      {"@type": "ClassDeclaration", "metaData": "7:0:10:1","identifier":"7:5::11","classTree":
+        {"@type": "Native", "metaData": "7:0:10:1","nativeKind":"[1](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "7:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "7:5::11","type":"main.Middle","package":"ModuleNameForTest/main","name":"Middle","id":50,"__cfgId":11},
+          {"@type": "Native", "metaData": "7:12:10:1","nativeKind":"Type(StructType)","children":[
+            {"@type": "Native", "metaData": "7:12::18","nativeKind":"Struct"},
+            {"@type": "Native", "metaData": "7:19:10:1","nativeKind":"Fields(FieldList)","children":[
+              {"@type": "Native", "metaData": "7:19::20","nativeKind":"Opening"},
+              {"@type": "Native", "metaData": "8:1::5","nativeKind":"[0](Field)","children":[
+                {"@type": "Identifier", "metaData": "8:1::5","type":"main.Base","package":"UNKNOWN","name":"Base","id":67,"__cfgId":12}
+              ],"__cfgId":13},
+              {"@type": "Native", "metaData": "9:1::12","nativeKind":"[1](Field)","children":[
+                {"@type": "Native", "metaData": "9:1::5","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "9:1::5","type":"string","package":"UNKNOWN","name":"Name","id":73,"__cfgId":14}
+                ]},
+                {"@type": "Identifier", "metaData": "9:6::12","type":"string","package":"UNKNOWN","name":"string","id":0,"__cfgId":15}
+              ],"__cfgId":16},
+              {"@type": "Native", "metaData": "10:0::1","nativeKind":"Closing"}
+            ],"__cfgId":17}
+          ],"__cfgId":18}
+        ],"__cfgId":19},"__cfgId":20},
+      {"@type": "ClassDeclaration", "metaData": "12:0:15:1","identifier":"12:5::10","classTree":
+        {"@type": "Native", "metaData": "12:0:15:1","nativeKind":"[2](TypeSpecWrapped)","children":[
+          {"@type": "Native", "metaData": "12:0::4","nativeKind":"Tok"},
+          {"@type": "Identifier", "metaData": "12:5::10","type":"main.Outer","package":"ModuleNameForTest/main","name":"Outer","id":93,"__cfgId":21},
+          {"@type": "Native", "metaData": "12:11:15:1","nativeKind":"Type(StructType)","children":[
+            {"@type": "Native", "metaData": "12:11::17","nativeKind":"Struct"},
+            {"@type": "Native", "metaData": "12:18:15:1","nativeKind":"Fields(FieldList)","children":[
+              {"@type": "Native", "metaData": "12:18::19","nativeKind":"Opening"},
+              {"@type": "Native", "metaData": "13:1::7","nativeKind":"[0](Field)","children":[
+                {"@type": "Identifier", "metaData": "13:1::7","type":"main.Middle","package":"UNKNOWN","name":"Middle","id":109,"__cfgId":22}
+              ],"__cfgId":23},
+              {"@type": "Native", "metaData": "14:1::12","nativeKind":"[1](Field)","children":[
+                {"@type": "Native", "metaData": "14:1::7","nativeKind":"Names([]*Ident)","children":[
+                  {"@type": "Identifier", "metaData": "14:1::7","type":"bool","package":"UNKNOWN","name":"Active","id":117,"__cfgId":24}
+                ]},
+                {"@type": "Identifier", "metaData": "14:8::12","type":"bool","package":"UNKNOWN","name":"bool","id":0,"__cfgId":25}
+              ],"__cfgId":26},
+              {"@type": "Native", "metaData": "15:0::1","nativeKind":"Closing"}
+            ],"__cfgId":27}
+          ],"__cfgId":28}
+        ],"__cfgId":29},"__cfgId":30},
+      {"@type": "FunctionDeclaration", "metaData": "17:0:21:1","typeParameters":
+        null,"returnType":
+        null,"receiver":
+        null,"name":
+        {"@type": "Identifier", "metaData": "17:5::9","type":"func()","package":"ModuleNameForTest/main","name":"main","id":137,"__cfgId":31},"formalParameters":[],"cfg":{"Blocks":[{"Node":[43,0],"Successors":null}]},"body":
+        {"@type": "Block", "metaData": "17:12:21:1","statementOrExpressions":[
+          {"@type": "AssignmentExpression", "metaData": "20:1::45","statementOrExpression":
+            {"@type": "CompositeLiteral", "metaData": "20:5::45","type":
+              {"@type": "Identifier", "metaData": "20:5::10","type":"main.Outer","package":"ModuleNameForTest/main","name":"Outer","id":93,"__cfgId":34},"elements":[
+              {"@type": "KeyValue", "metaData": "20:11::16","value":
+                {"@type": "IntegerLiteral", "metaData": "20:15::16","value":"1"},"key":
+                {"@type": "Identifier", "metaData": "20:11::13","type":"int","package":"UNKNOWN","name":"ID","id":35,"__cfgId":35},"__cfgId":36},
+              {"@type": "KeyValue", "metaData": "20:18::30","value":
+                {"@type": "StringLiteral", "metaData": "20:24::30","value":"\"name\"","content":"name"},"key":
+                {"@type": "Identifier", "metaData": "20:18::22","type":"string","package":"UNKNOWN","name":"Name","id":73,"__cfgId":37},"__cfgId":38},
+              {"@type": "KeyValue", "metaData": "20:32::44","value":
+                {"@type": "Literal", "metaData": "20:40::44","value":"true","__cfgId":40},"key":
+                {"@type": "Identifier", "metaData": "20:32::38","type":"bool","package":"UNKNOWN","name":"Active","id":117,"__cfgId":39},"__cfgId":41}
+            ],"__cfgId":42},"operator":"EQUAL","leftHandSide":
+            {"@type": "PlaceHolder", "metaData": "20:1::2","placeHolderToken":"20:1::2","__cfgId":33},"__cfgId":43}
+        ],"__cfgId":44},"__cfgId":1}
+    ],"__cfgId":2}  ,
+  "error": null
+} 

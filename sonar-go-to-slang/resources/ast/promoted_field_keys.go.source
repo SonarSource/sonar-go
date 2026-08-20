@@ -1,0 +1,21 @@
+package main
+
+type Base struct {
+	ID int
+}
+
+type Middle struct {
+	Base
+	Name string
+}
+
+type Outer struct {
+	Middle
+	Active bool
+}
+
+func main() {
+	// Since Go 1.27, a struct literal key may be any valid field selector, so promoted fields are allowed.
+	// ID is promoted through two levels of embedding, Name through one, Active is declared on Outer itself.
+	_ = Outer{ID: 1, Name: "name", Active: true}
+}

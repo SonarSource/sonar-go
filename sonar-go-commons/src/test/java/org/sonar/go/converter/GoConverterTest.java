@@ -39,6 +39,7 @@ import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.ImportDeclarationTree;
 import org.sonar.plugins.go.api.ImportSpecificationTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.KeyValueTree;
 import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
 import org.sonar.plugins.go.api.NativeTree;
@@ -821,6 +822,119 @@ class GoConverterTest {
     var functionInvocation = (FunctionInvocationTree) returnList.get(0).expressions().get(0);
     assertThat(functionInvocation.returnTypes()).hasSize(1);
     assertThat(functionInvocation.returnTypes().get(0).isTypeOf("A")).isTrue();
+  }
+
+  @Test
+  void testParseGenericMethod() {
+    Tree tree = TestGoConverterSingleFile.parse("""
+      package main
+
+      type Container[T any] struct {
+        items []T
+      }
+
+      func (c Container[T]) Map[U any](f func(T) U) []U {
+        return nil
+      }
+      """);
+    var functionDeclarations = tree.descendants()
+      .filter(FunctionDeclarationTree.class::isInstance)
+      .map(FunctionDeclarationTree.class::cast)
+      .toList();
+    assertThat(functionDeclarations).hasSize(1);
+    var functionDeclaration = functionDeclarations.get(0);
+
+    assertThat(functionDeclaration.name().name()).isEqualTo("Map");
+    assertThat(functionDeclaration.name().type()).isEqualTo("func[U any](f func(T) U) []U");
+    assertThat(functionDeclaration.receiverType()).isEqualTo("main.Container[T]");
+    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
+    // The type parameters of the method itself, which is new in Go 1.27, are kept separate from the receiver's ones.
+    assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)")));
+  }
+
+  @Test
+  void testParseStructLiteralWithPromotedFieldKeys() {
+    Tree tree = TestGoConverterSingleFile.parse("""
+      package main
+
+      type Base struct {
+        ID int
+      }
+
+      type Middle struct {
+        Base
+        Name string
+      }
+
+      type Outer struct {
+        Middle
+        Active bool
+      }
+
+      func foo() {
+        _ = Outer{ID: 1, Name: "name", Active: true}
+      }
+      """);
+    var compositeLiterals = tree.descendants()
+      .filter(CompositeLiteralTree.class::isInstance)
+      .map(CompositeLiteralTree.class::cast)
+      .toList();
+    assertThat(compositeLiterals).hasSize(1);
+    var compositeLiteral = compositeLiterals.get(0);
+    assertThat(compositeLiteral.type()).isInstanceOfSatisfying(IdentifierTree.class,
+      identifier -> assertThat(identifier.name()).isEqualTo("Outer"));
+
+    // "ID" is promoted through two levels of embedding, "Name" through one, and "Active" is declared on "Outer" itself.
+    // All three are resolved to the type of the field they were declared with.
+    assertThat(compositeLiteral.elements()).hasSize(3);
+    assertKeyValue(compositeLiteral.elements().get(0), "ID", "int");
+    assertKeyValue(compositeLiteral.elements().get(1), "Name", "string");
+    assertKeyValue(compositeLiteral.elements().get(2), "Active", "bool");
+  }
+
+  @Test
+  void testParseGeneralizedFunctionTypeInference() {
+    Tree tree = TestGoConverterSingleFile.parse("""
+      package main
+
+      func identity[T any](value T) T {
+        return value
+      }
+
+      func foo() {
+        var toInt func(int) int = identity
+        _ = toInt
+      }
+      """);
+    // The inferred variable keeps the concrete function type it was declared with...
+    var toInt = getIdentifiersByName(tree, "toInt");
+    assertThat(toInt).isNotEmpty()
+      .allSatisfy(identifier -> assertThat(identifier.type()).isEqualTo("func(int) int"));
+
+    // ...while the generic function it is assigned from keeps its own generic signature.
+    var identity = getIdentifiersByName(tree, "identity");
+    assertThat(identity).hasSize(2)
+      .allSatisfy(identifier -> assertThat(identifier.type()).isEqualTo("func[T any](value T) T"));
+  }
+
+  private static void assertKeyValue(Tree element, String expectedKeyName, String expectedKeyType) {
+    assertThat(element).isInstanceOfSatisfying(KeyValueTree.class,
+      keyValue -> assertThat(keyValue.key()).isInstanceOfSatisfying(IdentifierTree.class, identifier -> {
+        assertThat(identifier.name()).isEqualTo(expectedKeyName);
+        assertThat(identifier.type()).isEqualTo(expectedKeyType);
+      }));
+  }
+
+  private static List<IdentifierTree> getIdentifiersByName(Tree tree, String name) {
+    return tree.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(t -> name.equals(t.name()))
+      .toList();
   }
 
   private Optional<String> getStringDescendant(Tree tree) {

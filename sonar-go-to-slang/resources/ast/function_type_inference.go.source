@@ -1,0 +1,12 @@
+package main
+
+func identity[T any](value T) T {
+	return value
+}
+
+func main() {
+	// Since Go 1.27, function type inference applies in every assignment and conversion context.
+	var toInt func(int) int = identity
+	_ = toInt
+	_ = (func(string) string)(identity)
+}
