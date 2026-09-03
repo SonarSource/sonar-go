@@ -55,6 +55,7 @@ public class GoCheckList {
     OctalValuesCheck.class,
     OneStatementPerLineGoCheck.class,
     ParsingErrorCheck.class,
+    PredeclaredIdentifierShadowedCheck.class,
     RedundantParenthesesCheck.class,
     SelfAssignmentCheck.class,
     TodoCommentCheck.class,

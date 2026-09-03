@@ -1,0 +1,72 @@
+<p>This rule raises an issue when a reserved identifier is shadowed by a definition or declaration.</p>
+<h2>Why is this an issue?</h2>
+<p>Go declares a set of identifiers in the universe block, the outermost scope of a program:</p>
+<ul>
+  <li>types: <code>any</code>, <code>bool</code>, <code>byte</code>, <code>comparable</code>, <code>complex64</code>, <code>complex128</code>,
+  <code>error</code>, <code>float32</code>, <code>float64</code>, <code>int</code>, <code>int8</code>, <code>int16</code>, <code>int32</code>,
+  <code>int64</code>, <code>rune</code>, <code>string</code>, <code>uint</code>, <code>uint8</code>, <code>uint16</code>, <code>uint32</code>,
+  <code>uint64</code>, and <code>uintptr</code></li>
+  <li>constants: <code>true</code>, <code>false</code>, and <code>iota</code></li>
+  <li>zero value: <code>nil</code></li>
+  <li>functions: <code>append</code>, <code>cap</code>, <code>clear</code>, <code>close</code>, <code>complex</code>, <code>copy</code>,
+  <code>delete</code>, <code>imag</code>, <code>len</code>, <code>make</code>, <code>max</code>, <code>min</code>, <code>new</code>,
+  <code>panic</code>, <code>print</code>, <code>println</code>, <code>real</code>, and <code>recover</code></li>
+</ul>
+<p>These are ordinary identifiers and not keywords, so any inner scope is free to declare its own identifier with one of those names. Such a
+declaration is valid Go, and it shadows the predeclared identifier for the rest of the enclosing scope. Nothing in the code that follows signals that
+the name no longer means what it usually means:</p>
+<pre>
+fmt.Println("true value:", true) // prints "true value: true"
+true := false                    // Noncompliant: "true" now names a local variable
+fmt.Println("true value:", true) // prints "true value: false"
+</pre>
+<p>Any declaration that binds a name can shadow a predeclared identifier, including short variable declarations, <code>var</code> and
+<code>const</code> declarations, function and type declarations, function parameters, named results, and <code>range</code> clauses.</p>
+<h3>What is the potential impact?</h3>
+<p>A reader has to notice the shadowing declaration to understand the code that follows it, and a reviewer reading a diff usually sees only a part of
+the scope. Code that behaves one way where it was written behaves differently once it is moved, copied, or extracted into a scope where the name is
+not shadowed, and the compiler reports nothing.</p>
+<p>The predeclared identifier also becomes unreachable for the rest of the scope. After <code>len := len(values)</code>, a later call to
+<code>len(other)</code> does not compile, and after <code>string := "values"</code>, a later <code>var s string</code> does not compile either. This
+forces either a workaround or a rename in the middle of unrelated work.</p>
+<h2>How to fix it</h2>
+<p>Rename the declaration to a name that does not collide with a predeclared identifier. The value being named usually suggests a good replacement: a
+variable holding <code>len(values)</code> is a <code>count</code> or a <code>size</code>, and a boolean is an <code>isEmpty</code> or a
+<code>found</code>.</p>
+<h3>Code examples</h3>
+<h4>Noncompliant code example</h4>
+<pre data-diff-id="1" data-diff-type="noncompliant">
+func describe(values []int) string {
+	len := len(values) // Noncompliant: "len" is a predeclared function
+	true := len == 0   // Noncompliant: "true" is a predeclared constant
+	string := "values" // Noncompliant: "string" is a predeclared type
+	if true {
+		return "no " + string
+	}
+	return fmt.Sprintf("%d %s", len, string)
+}
+</pre>
+<h4>Compliant solution</h4>
+<pre data-diff-id="1" data-diff-type="compliant">
+func describe(values []int) string {
+	count := len(values)
+	isEmpty := count == 0
+	label := "values"
+	if isEmpty {
+		return "no " + label
+	}
+	return fmt.Sprintf("%d %s", count, label)
+}
+</pre>
+<h2>Resources</h2>
+<h3>Documentation</h3>
+<ul>
+  <li>Go documentation - <a href="https://go.dev/ref/spec#Predeclared_identifiers">The Go Programming Language Specification: Predeclared
+  identifiers</a></li>
+  <li>Go documentation - <a href="https://go.dev/ref/spec#Declarations_and_scope">The Go Programming Language Specification: Declarations and
+  scope</a></li>
+</ul>
+<h3>Related rules</h3>
+<ul>
+  <li>{rule:go:S117} - Local variable and function parameter names should comply with a naming convention</li>
+</ul>

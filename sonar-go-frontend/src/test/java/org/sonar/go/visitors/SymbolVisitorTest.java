@@ -26,6 +26,7 @@ import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -694,6 +695,48 @@ class SymbolVisitorTest {
     assertThat(xSymbolAst2).isPresent();
     assertThat(xSymbolAst1.get().symbol().getUsages()).hasSize(1);
     assertThat(xSymbolAst2.get().symbol().getUsages()).hasSize(1);
+  }
+
+  @Test
+  void receiverAndNamedResultsShouldBeDeclaredLikeParameters() {
+    var ast = TestGoConverterSingleFile.parse("""
+      package main
+      type box struct{}
+      func parse(value int) (int, error) {
+        return value, nil
+      }
+      func (receiver *box) method() (max int, err error) {
+        max, other := parse(1)
+        err = other
+        return max, err
+      }
+      """);
+    new SymbolVisitor<>().scan(mock(), ast);
+
+    var receiver = identifierOnLine(ast, "receiver", 6);
+    assertThat(receiver.symbol()).isNotNull();
+    assertThat(receiver.symbol().getUsages()).extracting("type").containsExactly(Usage.UsageType.PARAMETER);
+
+    // The short declaration only assigns the named result, so both identifiers resolve to the same symbol
+    var namedResult = identifierOnLine(ast, "max", 6);
+    var shortDeclaration = identifierOnLine(ast, "max", 7);
+    assertThat(namedResult.symbol()).isNotNull().isSameAs(shortDeclaration.symbol());
+    assertThat(namedResult.symbol().getUsages()).extracting("type")
+      .containsExactly(Usage.UsageType.PARAMETER, Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
+
+    var namedError = identifierOnLine(ast, "err", 6);
+    assertThat(namedError.symbol()).isNotNull();
+    assertThat(namedError.symbol().getUsages()).extracting("type")
+      .containsExactly(Usage.UsageType.PARAMETER, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
+  }
+
+  private static IdentifierTree identifierOnLine(Tree ast, String name, int line) {
+    return ast.descendants()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(identifier -> name.equals(identifier.name()) && identifier.textRange().start().line() == line)
+      .findFirst()
+      .orElseThrow();
   }
 
   /**

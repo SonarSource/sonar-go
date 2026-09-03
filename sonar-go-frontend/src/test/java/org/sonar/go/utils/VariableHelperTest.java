@@ -20,6 +20,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.VariableDeclarationTreeImpl;
+import org.sonar.go.testing.TestGoConverterSingleFile;
+import org.sonar.plugins.go.api.FunctionDeclarationTree;
+import org.sonar.plugins.go.api.IdentifierTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -99,5 +102,57 @@ class VariableHelperTest {
     var variable2 = variables.get(1);
     assertThat(variable2.identifier()).isSameAs(identifier2);
     assertThat(variable2.value()).isSameAs(value);
+  }
+
+  @Test
+  void shouldProvideNothingWithoutFieldList() {
+    assertThat(VariableHelper.getFields(null)).isEmpty();
+    assertThat(VariableHelper.getFieldNames(null)).isEmpty();
+  }
+
+  @Test
+  void shouldProvideNamesOfReceiverAndNamedResults() {
+    var function = parseFunction("""
+      package main
+      type box struct{}
+      func (receiver *box) method(first int, second string) (result int, err error) {
+        return 0, nil
+      }
+      """);
+
+    assertThat(VariableHelper.getFields(function.receiver())).hasSize(1);
+    assertThat(VariableHelper.getFieldNames(function.receiver()).map(IdentifierTree::name)).containsExactly("receiver");
+    assertThat(VariableHelper.getFields(function.returnType())).hasSize(2);
+    assertThat(VariableHelper.getFieldNames(function.returnType()).map(IdentifierTree::name)).containsExactly("result", "err");
+  }
+
+  @Test
+  void shouldProvideNoNameForUnnamedResults() {
+    var function = parseFunction("""
+      package main
+      func method() (int, error) {
+        return 0, nil
+      }
+      """);
+
+    assertThat(VariableHelper.getFields(function.returnType())).hasSize(2);
+    assertThat(VariableHelper.getFieldNames(function.returnType())).isEmpty();
+  }
+
+  @Test
+  void shouldProvideEveryNameOfFieldDeclaringSeveralOnes() {
+    var function = parseFunction("""
+      package main
+      func method() (first, second int) {
+        return 0, 0
+      }
+      """);
+
+    assertThat(VariableHelper.getFields(function.returnType())).hasSize(1);
+    assertThat(VariableHelper.getFieldNames(function.returnType()).map(IdentifierTree::name)).containsExactly("first", "second");
+  }
+
+  private static FunctionDeclarationTree parseFunction(String code) {
+    return TestGoConverterSingleFile.parseAndRetrieve(FunctionDeclarationTree.class, code);
   }
 }
