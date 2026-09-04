@@ -27,6 +27,7 @@ archunit = "1.4.1"
 sonar-scanner-gradle = "7.2.3.7755"
 sonar-scanner-integration-tester = "1.2.0.1354"
 wiremock = "3.13.2"
+jackson = "2.22.2"
 commons-io = "2.22.0"
 logback = "1.5.38"
 
@@ -66,6 +67,7 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 archunit = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "archunit" }
 sonar-scanner-integration-tester = { group = "com.sonarsource.scanner.integrationtester", name = "sonar-scanner-integration-tester", version.ref = "sonar-scanner-integration-tester" }
 wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
+jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }
