@@ -77,8 +77,8 @@ class CpdVisitorTest {
       package main
       import "fmt"
       func main() {
-      	x := 1
-      	fmt.Println(x * 42)
+        x := 1
+        fmt.Println(x * 42)
       }""";
     SensorContextTester sensorContext = SensorContextTester.create(tempFolder);
     DefaultInputFile inputFile = new TestInputFileBuilder("moduleKey", file.getName())
@@ -213,7 +213,7 @@ class CpdVisitorTest {
      * - The previous cache contains an entry for the input file with properly serialized tokens
      * - The previous and next caches are bound together
      */
-    public void setup(@TempDir File tempFolder) throws IOException {
+    void setup(@TempDir File tempFolder) throws IOException {
       // Create file and set its status to something else than SAME
       File file = File.createTempFile("file", ".tmp", tempFolder);
       String content = "import hello;";
