@@ -35,8 +35,15 @@ jobs:
           curl --proto "=https" -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /home/runner/go/bin v${GOLANG_CI_LINT_VERSION}
           echo "/opt/go/bin:/opt/protoc/bin:/opt/musl/bin:/home/runner/go/bin" >> $GITHUB_PATH
       - name: Checkout build logic
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          git submodule update --init --depth 1 -- build-logic/common
+          # Authenticate the clone so it is not subject to GitHub's anonymous rate limits.
+          git \
+            -c credential.helper= \
+            -c 'credential.https://github.com.helper=!f() { if test "$1" = get; then echo username=x-access-token; echo "password=$GH_TOKEN"; fi; }; f' \
+            -c http.https://github.com/.proactiveAuth=auto \
+            submodule update --init --depth 1 -- build-logic/common
       - name: Create Gradle User Home
         shell: bash
         run: |
@@ -50,7 +57,7 @@ jobs:
           echo "GRADLE_CACHE_KEY=${GRADLE_CACHE_KEY}" >> $GITHUB_ENV
           rm gradle-md5-sums.txt
       - name: Cache Gradle Dependencies
-        uses: SonarSource/ci-github-actions/cache@v1
+        uses: SonarSource/ci-github-actions/cache@v2
         with:
           path: ${{ env.GRADLE_USER_HOME }}
           key: gradle-${{ env.GRADLE_CACHE_KEY }}
@@ -63,13 +70,13 @@ jobs:
           export GOCACHE_KEY=$(find ${GITHUB_WORKSPACE}/sonar-go-to-slang -name '*.go' -o -name 'go.mod' -o -name 'go.sum' -exec cat {} + | sha256sum | xargs echo $RUNNER_OS $RUNNER_ARCH | tr -s ' ' '-')
           echo "GOCACHE_KEY=${GOCACHE_KEY}" >> $GITHUB_ENV
       - name: Cache Go Build
-        uses: SonarSource/ci-github-actions/cache@v1
+        uses: SonarSource/ci-github-actions/cache@v2
         if: ${{ env.GO_CACHE_ENABLED }}
         with:
           path: ${{ env.GOCACHE }}
           key: ${{ env.GOCACHE_KEY }}
 
-      - uses: SonarSource/ci-github-actions/build-gradle@v1
+      - uses: SonarSource/ci-github-actions/build-gradle@v2
         env:
           GO_CROSS_COMPILE: 1
         with:
