@@ -67,7 +67,7 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
     defaultValue = "" + DEFAULT_THRESHOLD)
   public int threshold = DEFAULT_THRESHOLD;
 
-  private static final List<MethodMatchers> LOG_AND_ERROR_MATCHERS = buildLogAndErrorMatchers();
+  private static final List<MethodMatchers> LOG_AND_ERROR_MATCHERS = List.copyOf(buildLogAndErrorMatchers());
 
   private final Set<StringLiteralTree> excludedLiterals = new HashSet<>();
 

@@ -24,6 +24,7 @@ import org.sonar.check.RuleProperty;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.ParameterTree;
+import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 import org.sonar.plugins.go.api.checks.CheckContext;
 import org.sonar.plugins.go.api.checks.GeneratedCodeDetector;
@@ -43,8 +44,9 @@ public class VariableAndParameterNameCheck implements GoCheck {
 
   @Override
   public void initialize(InitContext init) {
-    generatedFiles.clear();
     var pattern = Pattern.compile(format);
+
+    init.register(TopLevelTree.class, (ctx, tree) -> generatedFiles.clear());
 
     init.register(VariableDeclarationTree.class, (ctx, tree) -> {
       if (ctx.ancestors().stream().anyMatch(FunctionDeclarationTree.class::isInstance) && !isGeneratedFile(ctx)) {

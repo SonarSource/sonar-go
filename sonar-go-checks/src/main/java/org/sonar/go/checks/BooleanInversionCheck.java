@@ -31,7 +31,7 @@ import static org.sonar.plugins.go.api.BinaryExpressionTree.*;
 @Rule(key = "S1940")
 public class BooleanInversionCheck implements GoCheck {
 
-  private static final Map<Operator, String> OPERATORS = createOperatorsMap();
+  private static final Map<Operator, String> OPERATORS = Map.copyOf(createOperatorsMap());
 
   private static Map<Operator, String> createOperatorsMap() {
     Map<Operator, String> operatorsMap = new EnumMap<>(Operator.class);

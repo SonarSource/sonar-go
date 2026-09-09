@@ -16,6 +16,7 @@
  */
 package org.sonar.go.checks;
 
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.Set;
 import org.sonar.check.Rule;
@@ -33,7 +34,7 @@ import static org.sonar.plugins.go.api.BinaryExpressionTree.*;
 public class IdenticalBinaryOperandCheck implements GoCheck {
 
   public static final String MESSAGE = "Correct one of the identical sub-expressions on both sides of this operator.";
-  private static final Set<Operator> EXCEPTIONS = EnumSet.of(Operator.PLUS, Operator.TIMES, Operator.BITWISE_SHL);
+  private static final Set<Operator> EXCEPTIONS = Collections.unmodifiableSet(EnumSet.of(Operator.PLUS, Operator.TIMES, Operator.BITWISE_SHL));
 
   @Override
   public void initialize(InitContext init) {
