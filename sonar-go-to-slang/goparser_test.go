@@ -116,3 +116,26 @@ func getAllGoFiles(folder string) []string {
 	}
 	return files
 }
+
+func TestReadAstStringParsesFilesInSortedOrder(t *testing.T) {
+	// More entries than a single map group, inserted in reverse order, so an unsorted map
+	// iteration cannot coincidentally yield sorted order.
+	fileNames := []string{"a.go", "b.go", "c.go", "d.go", "e.go", "f.go",
+		"g.go", "h.go", "i.go", "j.go", "k.go", "l.go"}
+	fileNameToContent := make(map[string]string)
+	for i := len(fileNames) - 1; i >= 0; i-- {
+		fileNameToContent[fileNames[i]] = "package main"
+	}
+
+	fileSet, astFileOrErrors := astFromStrings(fileNameToContent)
+
+	previousBase := 0
+	for _, fileName := range fileNames {
+		astFileOrError := astFileOrErrors[fileName]
+		if assert.NoError(t, astFileOrError.err) {
+			base := fileSet.File(astFileOrError.ast.Pos()).Base()
+			assert.Greater(t, base, previousBase, "positions of %s should follow the previous file in sorted order", fileName)
+			previousBase = base
+		}
+	}
+}

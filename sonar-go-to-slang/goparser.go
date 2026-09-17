@@ -27,6 +27,7 @@ import (
 	"go/token"
 	"go/types"
 	"io"
+	"sort"
 	"strings"
 	"unicode/utf8"
 )
@@ -163,7 +164,16 @@ func readFixedSizeText(bytesArray []byte, begin int) string {
 
 func readAstString(fileSet *token.FileSet, files map[string]string) map[string]AstFileOrError {
 	astFiles := map[string]AstFileOrError{}
-	for fileName, fileContent := range files {
+	// Parse in sorted file name order so that positions assigned in the shared fileSet, and therefore
+	// the type checker decisions that compare them, do not depend on the map iteration order.
+	fileNames := make([]string, 0, len(files))
+	for fileName := range files {
+		fileNames = append(fileNames, fileName)
+	}
+	sort.Strings(fileNames)
+
+	for _, fileName := range fileNames {
+		fileContent := files[fileName]
 		astFile, err := parser.ParseFile(fileSet, fileName, fileContent, parser.ParseComments)
 		if err != nil {
 			astFiles[fileName] = AstFileOrError{nil, err}
