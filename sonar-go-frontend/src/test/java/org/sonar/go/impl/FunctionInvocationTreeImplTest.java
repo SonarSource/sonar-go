@@ -109,6 +109,19 @@ class FunctionInvocationTreeImplTest {
         "net/http.ParseSetCookie"),
       arguments("s string", "http.ParseCookie(s)",
         "net/http.ParseCookie"),
+      // reflection methods reached through standard library factory functions
+      arguments("x any, name string", "reflect.New(reflect.TypeOf(x)).MethodByName(name)",
+        "reflect.Value.MethodByName"),
+      arguments("x any, name string", "reflect.ValueOf(x).FieldByName(name)",
+        "reflect.Value.FieldByName"),
+      arguments("x any, match func(string) bool", "reflect.ValueOf(x).FieldByNameFunc(match)",
+        "reflect.Value.FieldByNameFunc"),
+      arguments("x any, name string", "reflect.TypeOf(x).MethodByName(name)",
+        "reflect.Type.MethodByName"),
+      arguments("x any, name string", "reflect.TypeOf(x).FieldByName(name)",
+        "reflect.Type.FieldByName"),
+      arguments("x any, match func(string) bool", "reflect.TypeOf(x).FieldByNameFunc(match)",
+        "reflect.Type.FieldByNameFunc"),
       // sql.DB as a pointer
       arguments("db *sql.DB", "db.Query(fmt.Sprintf(\"SELECT * FROM user WHERE id = %s\", path))",
         "*database/sql.DB.Query"),
@@ -132,6 +145,7 @@ class FunctionInvocationTreeImplTest {
         "fmt"
         "github.com/beego/beego/v2/server/web"
         "net/http"
+        "reflect"
       )
       func foo(%s) {
         %s

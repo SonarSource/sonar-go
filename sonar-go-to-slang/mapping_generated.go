@@ -144,6 +144,7 @@ var packageExportData = map[string]string{
 	"os/user": "os_user.o",
 	"path": "path.o",
 	"path/filepath": "path_filepath.o",
+	"reflect": "reflect.o",
 	"regexp": "regexp.o",
 	"runtime/debug": "runtime_debug.o",
 	"runtime/pprof": "runtime_pprof.o",
