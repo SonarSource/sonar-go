@@ -24,6 +24,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 	"sync"
 )
@@ -277,7 +278,7 @@ func typeCheckAst(
 
 		// We pass the file name which correspond to the name of the package, in order to have local type/package
 		// named after this package names.
-		_, err := conf.Check(packageName, fileSet, mapToSlice(files), info)
+		_, err := conf.Check(packageName, fileSet, sortedAstFiles(files), info)
 		if err != nil {
 			errors = append(errors, err)
 		}
@@ -302,11 +303,18 @@ func groupFilesPerPackageName(astFiles map[string]AstFileOrError) map[string]map
 	return filesPerPackage
 }
 
-func mapToSlice(astFiles map[string]AstFileOrError) []*ast.File {
+// Sort by file path to make type-checking results deterministic when declarations conflict.
+func sortedAstFiles(astFiles map[string]AstFileOrError) []*ast.File {
+	fileNames := make([]string, 0, len(astFiles))
+	for fileName := range astFiles {
+		fileNames = append(fileNames, fileName)
+	}
+	sort.Strings(fileNames)
+
 	files := make([]*ast.File, 0, len(astFiles))
-	for _, v := range astFiles {
-		if v.ast != nil {
-			files = append(files, v.ast)
+	for _, fileName := range fileNames {
+		if astFile := astFiles[fileName].ast; astFile != nil {
+			files = append(files, astFile)
 		}
 	}
 	return files

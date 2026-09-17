@@ -197,6 +197,24 @@ func TestShouldIgnoreFileWithoutAst(t *testing.T) {
 	assert.Equal(t, file1AstOrError, package1Files["file1.go"])
 }
 
+func TestSortedAstFiles(t *testing.T) {
+	fileA := &ast.File{}
+	fileB := &ast.File{}
+	fileC := &ast.File{}
+	astFiles := map[string]AstFileOrError{
+		"c.go": {ast: fileC},
+		"a.go": {ast: fileA},
+		"b.go": {ast: fileB},
+	}
+
+	files := sortedAstFiles(astFiles)
+	if assert.Len(t, files, 3) {
+		assert.Same(t, fileA, files[0])
+		assert.Same(t, fileB, files[1])
+		assert.Same(t, fileC, files[2])
+	}
+}
+
 // This test checks that all files from the mapping are present in the packages directory.
 // It ensures that the mapping is up-to-date.
 func TestAllFilesFromMappingShouldBePresent(t *testing.T) {
