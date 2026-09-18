@@ -38,4 +38,9 @@ class StringLiteralDuplicatedCheckTest {
     GoVerifier.verifyNoIssue("StringLiteralDuplicatedCheck/string_literal_duplicated_third_party.go", new StringLiteralDuplicatedCheck());
   }
 
+  @Test
+  void test_http_routes() {
+    GoVerifier.verify("StringLiteralDuplicatedCheck/string_literal_duplicated_http_routes.go", new StringLiteralDuplicatedCheck());
+  }
+
 }

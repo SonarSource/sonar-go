@@ -16,6 +16,8 @@
  */
 package org.sonar.go.checks;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -61,6 +63,55 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
   private static final String[] XERRORS_FUNCTIONS = {"Errorf", "New"};
   private static final String[] PKG_ERRORS_FUNCTIONS = {"New", "Errorf", "Wrap", "Wrapf", "WithMessage", "WithMessagef"};
 
+  private static final String GIN_PACKAGE = "github.com/gin-gonic/gin";
+  private static final String NET_HTTP_PACKAGE = "net/http";
+  private static final String ECHO_PACKAGE = "github.com/labstack/echo/v4";
+  private static final String CHI_PACKAGE = "github.com/go-chi/chi/v5";
+  private static final String GORILLA_MUX_PACKAGE = "github.com/gorilla/mux";
+  private static final Collection<String> FIBER_PACKAGES = List.of("github.com/gofiber/fiber/v2", "github.com/gofiber/fiber/v3");
+  private static final String HTTPROUTER_PACKAGE = "github.com/julienschmidt/httprouter";
+  private static final String BEEGO_WEB_PACKAGE = "github.com/beego/beego/v2/server/web";
+
+  /** The route path is the first argument, e.g. {@code router.GET("/users/:id", handler)}. */
+  private static final int PATH_AT_FIRST_ARGUMENT = 0;
+  /** The route path is preceded by the HTTP method, e.g. {@code router.Handle("GET", "/users/:id", handler)}. */
+  private static final int PATH_AT_SECOND_ARGUMENT = 1;
+
+  // Names that several of the frameworks below share, so that each one is spelled out only once
+  private static final String HANDLE_FUNCTION = "Handle";
+  private static final String GROUP_NAME = "Group";
+  private static final String ROUTER_TYPE = "Router";
+  private static final List<String> UPPER_CASE_HTTP_METHOD_FUNCTIONS = List.of("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS");
+  private static final List<String> CAPITALIZED_HTTP_METHOD_FUNCTIONS = List.of("Get", "Post", "Put", "Delete", "Patch", "Head", "Options");
+  // Chi and Fiber also register routes for the two HTTP methods the other routers leave out
+  private static final List<String> EXTENDED_HTTP_METHOD_FUNCTIONS = union(CAPITALIZED_HTTP_METHOD_FUNCTIONS, List.of("Connect", "Trace"));
+  // Register a route matching every HTTP method
+  private static final List<String> HANDLE_ROUTE_FUNCTIONS = List.of(HANDLE_FUNCTION, "HandleFunc");
+  // Mount a sub-router under a path prefix
+  private static final List<String> SUB_ROUTER_FUNCTIONS = List.of("Route", "Mount");
+
+  // Gin and Echo expose the same set of route-defining functions, including "Group" for a sub-router prefix
+  private static final List<String> GIN_AND_ECHO_ROUTE_FUNCTIONS = union(UPPER_CASE_HTTP_METHOD_FUNCTIONS, List.of("Any", GROUP_NAME));
+  private static final String[] GIN_ROUTER_TYPES = typesIn(GIN_PACKAGE, "Engine", "RouterGroup", "IRouter", "IRoutes");
+  private static final List<String> GIN_ROUTE_FUNCTIONS_WITH_METHOD = List.of(HANDLE_FUNCTION, "Match");
+  private static final String[] NET_HTTP_ROUTER_TYPES = typesIn(NET_HTTP_PACKAGE, "ServeMux");
+  private static final String[] ECHO_ROUTER_TYPES = typesIn(ECHO_PACKAGE, "Echo", GROUP_NAME);
+  private static final List<String> ECHO_ROUTE_FUNCTIONS_WITH_METHOD = List.of("Add", "Match");
+  private static final String[] CHI_ROUTER_TYPES = typesIn(CHI_PACKAGE, "Mux", ROUTER_TYPE);
+  private static final List<String> CHI_ROUTE_FUNCTIONS = List.copyOf(union(EXTENDED_HTTP_METHOD_FUNCTIONS, HANDLE_ROUTE_FUNCTIONS, SUB_ROUTER_FUNCTIONS));
+  private static final List<String> CHI_ROUTE_FUNCTIONS_WITH_METHOD = List.of("Method", "MethodFunc");
+  // Path and PathPrefix are declared on both types, as in the dominant Gorilla Mux idiom r.Methods("GET").Path("/users/{id}")
+  private static final String[] GORILLA_MUX_ROUTER_TYPES = typesIn(GORILLA_MUX_PACKAGE, ROUTER_TYPE, "Route");
+  private static final List<String> GORILLA_MUX_ROUTE_FUNCTIONS = union(HANDLE_ROUTE_FUNCTIONS, List.of("Path", "PathPrefix"));
+  private static final String[] FIBER_ROUTER_TYPES = typesIn(FIBER_PACKAGES, "App", GROUP_NAME, ROUTER_TYPE);
+  private static final List<String> FIBER_ROUTE_FUNCTIONS = union(EXTENDED_HTTP_METHOD_FUNCTIONS, SUB_ROUTER_FUNCTIONS, List.of("All", GROUP_NAME));
+  private static final List<String> FIBER_ROUTE_FUNCTIONS_WITH_METHOD = List.of("Add");
+  private static final String[] HTTPROUTER_ROUTER_TYPES = typesIn(HTTPROUTER_PACKAGE, ROUTER_TYPE);
+  private static final List<String> HTTPROUTER_ROUTE_FUNCTIONS_WITH_METHOD = List.of(HANDLE_FUNCTION, "Handler", "HandlerFunc");
+  private static final String[] BEEGO_ROUTER_TYPES = typesIn(BEEGO_WEB_PACKAGE, "ControllerRegister", "HttpServer");
+  private static final List<String> BEEGO_ROUTE_FUNCTIONS = union(CAPITALIZED_HTTP_METHOD_FUNCTIONS, List.of("Any", "Router",
+    "CtrlGet", "CtrlPost", "CtrlPut", "CtrlDelete", "CtrlPatch", "CtrlHead", "CtrlOptions", "CtrlAny"));
+
   @RuleProperty(
     key = "threshold",
     description = "Number of times a literal must be duplicated to trigger an issue",
@@ -68,6 +119,7 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
   public int threshold = DEFAULT_THRESHOLD;
 
   private static final List<MethodMatchers> LOG_AND_ERROR_MATCHERS = List.copyOf(buildLogAndErrorMatchers());
+  private static final List<RouteMatcher> ROUTE_MATCHERS = List.copyOf(buildRouteMatchers());
 
   private final Set<StringLiteralTree> excludedLiterals = new HashSet<>();
 
@@ -169,6 +221,70 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
         .build());
   }
 
+  private static List<RouteMatcher> buildRouteMatchers() {
+    return List.of(
+      // Gin: router.GET("/users/:id", ...) and router.Handle("GET", "/users/:id", ...)
+      routeMatcherOnVariable(GIN_PACKAGE, GIN_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, GIN_AND_ECHO_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(GIN_PACKAGE, GIN_ROUTER_TYPES, PATH_AT_SECOND_ARGUMENT, GIN_ROUTE_FUNCTIONS_WITH_METHOD),
+      // Standard library: http.HandleFunc("/users/{id}", ...) and the same functions on a *http.ServeMux
+      packageLevelRouteMatcher(NET_HTTP_PACKAGE, PATH_AT_FIRST_ARGUMENT, HANDLE_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(NET_HTTP_PACKAGE, NET_HTTP_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, HANDLE_ROUTE_FUNCTIONS),
+      // Echo: e.GET("/users/:id", ...) and e.Add("GET", "/users/:id", ...)
+      routeMatcherOnVariable(ECHO_PACKAGE, ECHO_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, GIN_AND_ECHO_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(ECHO_PACKAGE, ECHO_ROUTER_TYPES, PATH_AT_SECOND_ARGUMENT, ECHO_ROUTE_FUNCTIONS_WITH_METHOD),
+      // Chi: r.Get("/users/{id}", ...) and r.Method("GET", "/users/{id}", ...)
+      routeMatcherOnVariable(CHI_PACKAGE, CHI_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, CHI_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(CHI_PACKAGE, CHI_ROUTER_TYPES, PATH_AT_SECOND_ARGUMENT, CHI_ROUTE_FUNCTIONS_WITH_METHOD),
+      // Gorilla Mux: r.HandleFunc("/users/{id}", ...) and r.Methods("GET").Path("/users/{id}")
+      routeMatcherOnVariable(GORILLA_MUX_PACKAGE, GORILLA_MUX_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, GORILLA_MUX_ROUTE_FUNCTIONS),
+      // Fiber: app.Get("/users/:id", ...) and app.Add("GET", "/users/:id", ...)
+      routeMatcherOnVariable(FIBER_PACKAGES, FIBER_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, FIBER_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(FIBER_PACKAGES, FIBER_ROUTER_TYPES, PATH_AT_SECOND_ARGUMENT, FIBER_ROUTE_FUNCTIONS_WITH_METHOD),
+      // httprouter: r.GET("/users/:id", ...) and r.Handle("GET", "/users/:id", ...)
+      routeMatcherOnVariable(HTTPROUTER_PACKAGE, HTTPROUTER_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, UPPER_CASE_HTTP_METHOD_FUNCTIONS),
+      routeMatcherOnVariable(HTTPROUTER_PACKAGE, HTTPROUTER_ROUTER_TYPES, PATH_AT_SECOND_ARGUMENT, HTTPROUTER_ROUTE_FUNCTIONS_WITH_METHOD),
+      // Beego: web.Get("/users/:id", ...) as a package-level function and on a *web.ControllerRegister or *web.HttpServer
+      packageLevelRouteMatcher(BEEGO_WEB_PACKAGE, PATH_AT_FIRST_ARGUMENT, BEEGO_ROUTE_FUNCTIONS),
+      routeMatcherOnVariable(BEEGO_WEB_PACKAGE, BEEGO_ROUTER_TYPES, PATH_AT_FIRST_ARGUMENT, BEEGO_ROUTE_FUNCTIONS));
+  }
+
+  @SafeVarargs
+  private static List<String> union(List<String>... nameLists) {
+    return Arrays.stream(nameLists).flatMap(List::stream).toList();
+  }
+
+  private static String[] typesIn(String importPath, String... typeNames) {
+    return typesIn(List.of(importPath), typeNames);
+  }
+
+  private static String[] typesIn(Collection<String> importPaths, String... typeNames) {
+    return importPaths.stream()
+      .flatMap(importPath -> Arrays.stream(typeNames).map(typeName -> importPath + "." + typeName))
+      .toArray(String[]::new);
+  }
+
+  private static RouteMatcher routeMatcherOnVariable(String importPath, String[] variableTypes, int pathArgumentIndex, Collection<String> names) {
+    return routeMatcherOnVariable(List.of(importPath), variableTypes, pathArgumentIndex, names);
+  }
+
+  private static RouteMatcher routeMatcherOnVariable(Collection<String> importPaths, String[] variableTypes, int pathArgumentIndex,
+    Collection<String> names) {
+    return new RouteMatcher(MethodMatchers.create()
+      .ofTypes(importPaths)
+      .withVariableTypeIn(variableTypes)
+      .withNames(names)
+      .withAnyParameters()
+      .build(), pathArgumentIndex);
+  }
+
+  private static RouteMatcher packageLevelRouteMatcher(String importPath, int pathArgumentIndex, Collection<String> names) {
+    return new RouteMatcher(MethodMatchers.create()
+      .ofType(importPath)
+      .withNames(names)
+      .withAnyParameters()
+      .build(), pathArgumentIndex);
+  }
+
   @Override
   public void initialize(InitContext init) {
     init.register(FunctionInvocationTree.class, (checkContext, functionInvocationTree) -> {
@@ -178,6 +294,7 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
           .map(StringLiteralTree.class::cast)
           .forEach(excludedLiterals::add);
       }
+      ROUTE_MATCHERS.forEach(routeMatcher -> routeMatcher.collectPathLiteral(functionInvocationTree, excludedLiterals));
     });
 
     init.registerOnLeave((ctx, tree) -> {
@@ -206,6 +323,15 @@ public class StringLiteralDuplicatedCheck implements GoCheck {
           .toList();
         var gap = size - 1.0;
         ctx.reportIssue(first, message, secondaryLocations, gap);
+      }
+    }
+  }
+
+  private record RouteMatcher(MethodMatchers methodMatchers, int pathArgumentIndex) {
+    private void collectPathLiteral(FunctionInvocationTree functionInvocation, Set<StringLiteralTree> excludedLiterals) {
+      if (methodMatchers.matches(functionInvocation).isPresent()
+        && MethodMatchers.getArg(functionInvocation, pathArgumentIndex) instanceof StringLiteralTree pathLiteral) {
+        excludedLiterals.add(pathLiteral);
       }
     }
   }
