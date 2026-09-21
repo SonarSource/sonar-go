@@ -59,11 +59,8 @@ class ExternalProcessStreamConsumerThreadTest {
     await().atMost(5, TimeUnit.SECONDS).until(() -> taskFinished.getCount() == 0);
     consumer.shutdown();
 
-    // Give some time for thread cleanup
-    await().pollDelay(10, TimeUnit.MILLISECONDS).atMost(100, TimeUnit.MILLISECONDS).until(() -> true);
-
-    var threadsAfterStop = getStreamConsumerThreadsName();
-    assertThat(threadsAfterStop).isEqualTo(threadsBefore);
+    await().atMost(5, TimeUnit.SECONDS)
+      .untilAsserted(() -> assertThat(getStreamConsumerThreadsName()).isEqualTo(threadsBefore));
   }
 
   private static List<String> getStreamConsumerThreadsName() {
