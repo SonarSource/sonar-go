@@ -7,6 +7,7 @@ import (
   "github.com/gin-gonic/gin"
   "github.com/go-chi/chi/v5"
   "github.com/gofiber/fiber/v2"
+  fiberv3 "github.com/gofiber/fiber/v3"
   "github.com/gorilla/mux"
   "github.com/julienschmidt/httprouter"
   "github.com/labstack/echo/v4"
@@ -45,6 +46,16 @@ func netHttpRoutes() {
   serveMux.HandleFunc("/mux/users/{id}", nil)
   serveMux.HandleFunc("/mux/users/{id}", nil)
   serveMux.Handle("/mux/users/{id}", nil) // Compliant - string literal used as a http.ServeMux route pattern
+}
+
+func netHttpRedirects(w http.ResponseWriter, r *http.Request) {
+  http.Redirect(w, r, "/http/redirect/target", http.StatusFound)
+  http.Redirect(w, r, "/http/redirect/target", http.StatusFound)
+  http.Redirect(w, r, "/http/redirect/target", http.StatusFound) // Compliant - string literal used as a net/http redirect location
+
+  http.RedirectHandler("/http/redirect/handler", http.StatusFound)
+  http.RedirectHandler("/http/redirect/handler", http.StatusFound)
+  http.RedirectHandler("/http/redirect/handler", http.StatusFound) // Compliant - string literal used as a net/http redirect location
 }
 
 func echoRoutes() {
@@ -160,6 +171,26 @@ func fiberSubRouters() {
   app.Mount("/api/v1/payments", nil) // Compliant - string literal used as a Fiber sub-router prefix
 }
 
+func fiberRedirects(c fiberv3.Ctx) {
+  c.Redirect().To("/fiber/redirect/target")
+  c.Redirect().To("/fiber/redirect/target")
+  c.Redirect().To("/fiber/redirect/target") // Compliant - string literal used as a Fiber redirect location
+
+  c.Redirect().Back("/fiber/redirect/fallback")
+  c.Redirect().Back("/fiber/redirect/fallback")
+  c.Redirect().Back("/fiber/redirect/fallback") // Compliant - string literal used as a Fiber redirect fallback location
+}
+
+func fiberV2Redirects(c *fiber.Ctx) {
+  c.Redirect("/fiber/v2/redirect/target")
+  c.Redirect("/fiber/v2/redirect/target")
+  c.Redirect("/fiber/v2/redirect/target") // Compliant - string literal used as a Fiber redirect location
+
+  c.RedirectBack("/fiber/v2/redirect/fallback")
+  c.RedirectBack("/fiber/v2/redirect/fallback")
+  c.RedirectBack("/fiber/v2/redirect/fallback") // Compliant - string literal used as a Fiber redirect fallback location
+}
+
 func httpRouterRoutes() {
   r := httprouter.New()
   r.GET("/httprouter/users/:id", nil)
@@ -202,6 +233,57 @@ func nonPathArgumentsAreNotExcluded() {
   //                   <^^^^^^^^^^^^^^^^^
   app.Static("/files", "./public/assets")
   //                  <^^^^^^^^^^^^^^^^^
+}
+
+func ginRedirects(c *gin.Context) {
+  c.Redirect(http.StatusFound, "/gin/redirect/target")
+  c.Redirect(http.StatusFound, "/gin/redirect/target")
+  c.Redirect(http.StatusFound, "/gin/redirect/target") // Compliant - string literal used as a Gin redirect location
+}
+
+func echoRedirects(c echo.Context) {
+  c.Redirect(http.StatusFound, "/echo/redirect/target")
+  c.Redirect(http.StatusFound, "/echo/redirect/target")
+  c.Redirect(http.StatusFound, "/echo/redirect/target") // Compliant - string literal used as an Echo redirect location
+}
+
+func absoluteUrlRedirectTargetsAreNotExcluded(w http.ResponseWriter, r *http.Request, gc *gin.Context, ec echo.Context,
+  f2 *fiber.Ctx, f3 fiberv3.Ctx) {
+  // A redirect to another host is not a location within this application, so it is still reported
+  http.Redirect(w, r, "https://example.com/login", http.StatusFound) // Noncompliant {{Define a constant instead of duplicating this literal "https://example.com/login" 3 times.}} [[effortToFix=2]]
+  //                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  http.Redirect(w, r, "https://example.com/login", http.StatusFound)
+  //                 <^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  http.Redirect(w, r, "https://example.com/login", http.StatusFound)
+  //                 <^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  gc.Redirect(http.StatusFound, "http://example.com/login") // Noncompliant {{Define a constant instead of duplicating this literal "http://example.com/login" 3 times.}} [[effortToFix=2]]
+  //                            ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  gc.Redirect(http.StatusFound, "http://example.com/login")
+  //                           <^^^^^^^^^^^^^^^^^^^^^^^^^^
+  gc.Redirect(http.StatusFound, "http://example.com/login")
+  //                           <^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  ec.Redirect(http.StatusFound, "//example.com/login") // Noncompliant {{Define a constant instead of duplicating this literal "//example.com/login" 3 times.}} [[effortToFix=2]]
+  //                            ^^^^^^^^^^^^^^^^^^^^^
+  ec.Redirect(http.StatusFound, "//example.com/login")
+  //                           <^^^^^^^^^^^^^^^^^^^^^
+  ec.Redirect(http.StatusFound, "//example.com/login")
+  //                           <^^^^^^^^^^^^^^^^^^^^^
+
+  f2.Redirect("https://example.com/v2/login") // Noncompliant {{Define a constant instead of duplicating this literal "https://example.com/v2/login" 3 times.}} [[effortToFix=2]]
+  //          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  f2.Redirect("https://example.com/v2/login")
+  //         <^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  f2.Redirect("https://example.com/v2/login")
+  //         <^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+  f3.Redirect().To("https://example.com/v3/login") // Noncompliant {{Define a constant instead of duplicating this literal "https://example.com/v3/login" 3 times.}} [[effortToFix=2]]
+  //               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  f3.Redirect().To("https://example.com/v3/login")
+  //              <^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  f3.Redirect().To("https://example.com/v3/login")
+  //              <^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 }
 
 type customRouter struct{}
