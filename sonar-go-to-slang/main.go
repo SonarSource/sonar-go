@@ -16,10 +16,12 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"go/token"
 	"os"
+	"path/filepath"
 )
 
 type Params struct {
@@ -61,32 +63,83 @@ func parseArgs() Params {
 	}
 }
 
+// laneLabel names this invocation's lane in the timeline.
+// The logic keeps the label stable across runs regardless of map iteration order.
+func laneLabel(params Params, fileContents map[string]string) string {
+	if params.packagePath != "" {
+		return params.packagePath
+	}
+	dir := ""
+	for name := range fileContents {
+		// `<` on strings compares them byte by byte, so this keeps the lexicographically first
+		// directory of the batch: an arbitrary pick, but the same one on every run.
+		if candidate := filepath.Dir(name); dir == "" || candidate < dir {
+			dir = candidate
+		}
+	}
+	if dir == "" || dir == "." {
+		return params.moduleName
+	}
+	return dir
+}
+
 func main() {
+	initTracing()
+	defer shutdownTracing()
+
 	params := parseArgs()
 
+	setTraceProcessLabel()
+	heapCounter("heap.start")
+
+	ctx, mainDone := span(context.Background(), "main",
+		"moduleName", params.moduleName,
+		"moduleBaseDir", params.moduleBaseDir,
+		"packagePath", params.packagePath,
+		"hasGcExportDataDir", params.gcExportDataDir != "",
+		"pid", os.Getpid())
+	// Called here, and not before the span above, because a trace viewer attaches a flow-finish event
+	// to the span that encloses it and drops the arrow entirely when no span does.
+	flowFinish()
+	fileCount, sourceBytes := 0, 0
+	// Deferred because the gc export data path returns early, and because the counts are only known
+	// once the input has been read.
+	defer func() {
+		mainDone("fileCount", fileCount, "sourceBytes", sourceBytes)
+		heapCounter("heap.end")
+	}()
+
 	fileSet := token.NewFileSet()
-	astFiles, fileContents, err := readAstFile(fileSet, os.Stdin)
+	astFiles, fileContents, err := readAstFile(ctx, fileSet, os.Stdin)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error reading AST file: %v\n", err)
 		panic(err)
 	}
+	fileCount = len(astFiles)
+	if tracingEnabled() {
+		for _, fileContent := range fileContents {
+			sourceBytes += len(fileContent)
+		}
+		setTraceLaneLabel(laneLabel(params, fileContents))
+	}
 
 	gcExporter := GcExporter{}
 	// Ignoring errors at this point, they are reported before if needed
-	info, _ := typeCheckAst(fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, params.moduleBaseDir, gcExporter)
+	info, _ := typeCheckAst(ctx, fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, params.moduleBaseDir, gcExporter)
+	heapCounter("heap.afterTypeCheck")
 
 	if params.dumpGcExportData {
 		if params.gcExportDataDir == "" {
 			panic("If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too")
 		}
-		gcExporter.ExportGcExportData(info, params.gcExportDataDir, params.moduleName, params.packagePath, params.debugTypeCheck)
+		gcExporter.ExportGcExportData(ctx, info, params.gcExportDataDir, params.moduleName, params.packagePath, params.debugTypeCheck)
 		return
 	}
 
 	if params.dumpAst {
 		fmt.Println(render(astFiles))
 	} else {
-		json := toSlangJson(fileSet, astFiles, fileContents, info, params.moduleName, "")
+		json := toSlangJson(ctx, fileSet, astFiles, fileContents, info, params.moduleName, "")
 		fmt.Println(json)
 	}
 	gcExporter.PrintExportIssues()

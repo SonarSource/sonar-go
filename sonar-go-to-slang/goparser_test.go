@@ -20,6 +20,7 @@
 package main
 
 import (
+	"context"
 	"encoding/json"
 	"go/token"
 	"os"
@@ -32,22 +33,23 @@ import (
 
 func slangFromString(filename, source, moduleName string) (*Node, []*Node, []*Token, *string) {
 	fileSet, astFileOrErrors := astFromString(filename, source)
-	info, _ := typeCheckAst(fileSet, astFileOrErrors, true, "", "ModuleNameForTest", ".", GcExporter{})
+	info, _ := typeCheckAst(context.Background(), fileSet, astFileOrErrors, true, "", "ModuleNameForTest", ".", GcExporter{})
 	astFileOrError := astFileOrErrors[filename]
-	return toSlangTree(fileSet, &astFileOrError, source, info, moduleName, buildUsesByPos(info))
+	slangTree, comments, tokens, errMsg, _ := toSlangTree(fileSet, &astFileOrError, source, info, moduleName, buildUsesByPos(info))
+	return slangTree, comments, tokens, errMsg
 }
 
 func astFromString(filename, source string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
 	fileSet = token.NewFileSet()
 	fileNameToContent := make(map[string]string)
 	fileNameToContent[filename] = source
-	astFileOrErrors = readAstString(fileSet, fileNameToContent)
+	astFileOrErrors = readAstString(context.Background(), fileSet, fileNameToContent)
 	return
 }
 
 func astFromStrings(fileNameToContent map[string]string) (fileSet *token.FileSet, astFileOrErrors map[string]AstFileOrError) {
 	fileSet = token.NewFileSet()
-	astFileOrErrors = readAstString(fileSet, fileNameToContent)
+	astFileOrErrors = readAstString(context.Background(), fileSet, fileNameToContent)
 	return
 }
 

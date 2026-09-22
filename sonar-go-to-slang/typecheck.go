@@ -16,6 +16,7 @@
 package main
 
 import (
+	"context"
 	"embed"
 	"fmt"
 	"go/ast"
@@ -38,6 +39,9 @@ const PackageExportDataDir = "packages"
 var packages embed.FS
 
 type localImporter struct {
+	// ctx carries the enclosing type-check span, because Import's signature is fixed by types.Importer
+	// and cannot take one.
+	ctx             context.Context
 	gcExportDataDir string
 	moduleName      string
 	moduleBaseDir   string
@@ -51,43 +55,54 @@ type localImporter struct {
 }
 
 func (li *localImporter) Import(path string) (*types.Package, error) {
+	_, done := span(li.ctx, "import.resolve", "importPath", path)
+	// gcexportdata.Read populates importCache with everything it reads transitively, so the growth
+	// across one resolution is how many packages this single import actually decoded.
+	cachedBefore := len(li.importCache)
 	if pkg, ok := li.importCache[path]; ok && pkg.Complete() {
+		done("source", "cache")
 		return pkg, nil
 	}
 	if exportDataFileName, ok := packageExportData[path]; ok {
 		// In embedded filesystem, the path separator is always '/', even on Windows.
-		return li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path), nil
+		pkg, oFileBytes := li.getPackageFromExportData(PackageExportDataDir+"/"+exportDataFileName, path)
+		done("source", "embedded", "oFileBytes", oFileBytes, "transitivePackages", len(li.importCache)-cachedBefore)
+		return pkg, nil
 	}
-	return li.getPackageFromLocalCodeExportData(path), nil
+	pkg, source, oFileBytes := li.getPackageFromLocalCodeExportData(path)
+	done("source", source, "oFileBytes", oFileBytes, "transitivePackages", len(li.importCache)-cachedBefore)
+	return pkg, nil
 }
 
-func (li *localImporter) getPackageFromLocalCodeExportData(path string) *types.Package {
+// getPackageFromLocalCodeExportData also reports which lookup produced the package and the size of the
+// .o file it was read from, so the caller can annotate its span without repeating the lookup.
+func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, string, int64) {
 	if li.debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	}
 	if li.gcExportDataDir == "" {
-		return getEmptyPackage(path)
+		return getEmptyPackage(path), "empty", 0
 	}
 
 	oFileName := getPackageName(path) + ".o"
 
 	sameModulePath := filepath.Join(li.gcExportDataDir, li.moduleBaseDir, path, oFileName)
-	if pkg, found := li.tryLoadExportData(sameModulePath, path); found {
-		return pkg
+	if pkg, oFileBytes, found := li.tryLoadExportData(sameModulePath, path); found {
+		return pkg, "same-module", oFileBytes
 	}
 
-	if pkg, found := li.scanOtherModuleSubdirs(path); found {
-		return pkg
+	if pkg, oFileBytes, found := li.scanOtherModuleSubdirs(path); found {
+		return pkg, "cross-module", oFileBytes
 	}
 
-	return getEmptyPackage(path)
+	return getEmptyPackage(path), "empty", 0
 }
 
 // scanOtherModuleSubdirs resolves a cross-module import: an imported package that belongs to a
 // different module in the same project. It looks the import path up in a shared, lazily-built
 // index of gcExportDataDir (see crossModuleIndex), excluding the current module's own subtree,
 // instead of walking the whole directory tree on every call.
-func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, bool) {
+func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, int64, bool) {
 	if li.crossIndex == nil {
 		// No shared index was injected (e.g. in unit tests): fall back to a per-importer one.
 		li.crossIndex = &crossModuleIndex{dir: li.gcExportDataDir}
@@ -98,9 +113,9 @@ func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, bo
 		ownBaseDir = ""
 	}
 
-	filePath, found := li.crossIndex.lookup(path, ownBaseDir)
+	filePath, found := li.crossIndex.lookup(li.ctx, path, ownBaseDir)
 	if !found {
-		return nil, false
+		return nil, 0, false
 	}
 	return li.tryLoadExportData(filePath, path)
 }
@@ -124,20 +139,31 @@ type crossModuleIndex struct {
 	// builds counts how many times the tree was walked; it must remain 1 per run and is asserted
 	// by the performance regression test.
 	builds int
+	// oFiles counts the .o files the walk registered, which is what makes its duration comparable
+	// across corpora.
+	oFiles int
 	byPath map[string][]oFileCandidate
 }
 
 // lookup returns the path of the first candidate .o file for importPath that does not belong to
 // ownBaseDir (the importing module's own subtree, which is resolved earlier via the same-module
 // path). The index is built on first use.
-func (idx *crossModuleIndex) lookup(importPath, ownBaseDir string) (string, bool) {
-	idx.once.Do(idx.build)
+func (idx *crossModuleIndex) lookup(ctx context.Context, importPath, ownBaseDir string) (string, bool) {
+	idx.once.Do(func() { idx.buildTraced(ctx) })
 	for _, candidate := range idx.byPath[importPath] {
 		if candidate.baseDir != ownBaseDir {
 			return candidate.filePath, true
 		}
 	}
 	return "", false
+}
+
+// buildTraced isolates the one-time directory walk, which is otherwise charged to whichever import
+// happens to trigger it and shows up as an outlier resolution rather than as the fixed cost it is.
+func (idx *crossModuleIndex) buildTraced(ctx context.Context) {
+	_, done := span(ctx, "crossindex.build", "dir", idx.dir)
+	idx.build()
+	done("oFiles", idx.oFiles, "importPaths", len(idx.byPath))
 }
 
 // build performs the single directory walk. For each .o file laid out as
@@ -170,6 +196,7 @@ func (idx *crossModuleIndex) build() {
 			return nil
 		}
 		packageName := strings.TrimSuffix(name, ".o")
+		idx.oFiles++
 		parts := strings.Split(dir, separator)
 		if parts[len(parts)-1] != packageName {
 			// Not the <importPath>/<packageName>.o layout, so it cannot satisfy any import path.
@@ -184,21 +211,27 @@ func (idx *crossModuleIndex) build() {
 	})
 }
 
-func (li *localImporter) tryLoadExportData(filePath, path string) (*types.Package, bool) {
-	if _, err := os.Stat(filePath); os.IsNotExist(err) {
-		return nil, false
+// tryLoadExportData also returns the size of the .o file it read, which the stat below yields for free.
+func (li *localImporter) tryLoadExportData(filePath, path string) (*types.Package, int64, bool) {
+	stat, err := os.Stat(filePath)
+	if os.IsNotExist(err) {
+		return nil, 0, false
+	}
+	var oFileBytes int64
+	if stat != nil {
+		oFileBytes = stat.Size()
 	}
 	file, err := os.Open(filePath)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file \"%s\": %s\n", filePath, err)
 		pkg := getEmptyPackage(path)
-		return pkg, true
+		return pkg, oFileBytes, true
 	}
 	pkg := li.gcExporter.getPackageFromFile(file, path, li.importCache)
 	if li.debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Found Gc Export Data for \"%s\" package at %s\n", path, filePath)
 	}
-	return pkg, true
+	return pkg, oFileBytes, true
 }
 
 func getPackageName(packagePath string) string {
@@ -210,13 +243,16 @@ func getPackageName(packagePath string) string {
 	return packageName
 }
 
-func (li *localImporter) getPackageFromExportData(exportDataFileName, path string) *types.Package {
+// getPackageFromExportData also returns the size of the embedded .o it read. Embedded lookups are the
+// most expensive resolution class in the corpus, so their byte counts are what make that cost divisible.
+func (li *localImporter) getPackageFromExportData(exportDataFileName, path string) (*types.Package, int64) {
 	file, err := packages.Open(exportDataFileName)
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error while opening file %s: %s\n", exportDataFileName, err)
-		return getEmptyPackage(path)
+		return getEmptyPackage(path), 0
 	}
-	return li.gcExporter.getPackageFromFile(file, path, li.importCache)
+	oFileBytes := fileSizeIfTracing(file)
+	return li.gcExporter.getPackageFromFile(file, path, li.importCache), oFileBytes
 }
 
 func getEmptyPackage(path string) *types.Package {
@@ -226,6 +262,7 @@ func getEmptyPackage(path string) *types.Package {
 }
 
 func typeCheckAst(
+	ctx context.Context,
 	fileSet *token.FileSet,
 	astFiles map[string]AstFileOrError,
 	debugTypeCheck bool,
@@ -254,8 +291,11 @@ func typeCheckAst(
 
 	for packageName, files := range astFilesPerPackage {
 		fmt.Fprintf(os.Stderr, "Processing package: \"%s\"\n", packageName)
+		packageCtx, packageDone := span(ctx, "typecheck.package", "packageName", packageName, "fileCount", len(files))
+		typeErrorCount := 0
 		conf := types.Config{
 			Importer: &localImporter{
+				ctx:             packageCtx,
 				gcExportDataDir: gcExportDataDir,
 				moduleName:      moduleName,
 				moduleBaseDir:   moduleBaseDir,
@@ -265,6 +305,7 @@ func typeCheckAst(
 				crossIndex:      crossIndex,
 			},
 			Error: func(err error) {
+				typeErrorCount++
 				if debugTypeCheck {
 					fmt.Fprintf(os.Stderr, "Warning while type checking for package: \"%s\": %s\n", packageName, err)
 				}
@@ -282,6 +323,7 @@ func typeCheckAst(
 		if err != nil {
 			errors = append(errors, err)
 		}
+		packageDone("typeErrorCount", typeErrorCount)
 	}
 
 	return info, errors

@@ -17,6 +17,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"go/ast"
 	"go/token"
 	"go/types"
@@ -26,11 +27,12 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"golang.org/x/tools/go/gcexportdata"
 )
 
 func TestImportExistingPackage_returnsPackage(t *testing.T) {
-	importer := &localImporter{}
+	importer := &localImporter{ctx: context.Background()}
 	pkg, err := importer.Import("net/http")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
@@ -39,7 +41,7 @@ func TestImportExistingPackage_returnsPackage(t *testing.T) {
 }
 
 func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
-	importer := &localImporter{}
+	importer := &localImporter{ctx: context.Background()}
 	pkg, err := importer.Import("non/supported")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
@@ -54,7 +56,7 @@ func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
 }
 
 func TestImport_notFoundPackageDoesNotPoisonLaterEmbeddedRead(t *testing.T) {
-	importer := &localImporter{importCache: make(map[string]*types.Package)}
+	importer := &localImporter{ctx: context.Background(), importCache: make(map[string]*types.Package)}
 
 	// "sync/atomic" is not embedded and not on disk, so it resolves to a synthesized empty
 	// package whose name is only a guess from the path ("sync/atomic", not the real "atomic").
@@ -73,19 +75,21 @@ func TestImport_notFoundPackageDoesNotPoisonLaterEmbeddedRead(t *testing.T) {
 }
 
 func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
-	li := localImporter{}
-	pkg := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
+	li := localImporter{ctx: context.Background()}
+	pkg, oFileBytes := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
 	assert.Greater(t, pkg.Scope().Len(), 0)
+	assert.Equal(t, int64(0), oFileBytes)
 }
 
 func TestGetPackageFromExportData_invalidFile_returnsEmptyPackage(t *testing.T) {
-	li := localImporter{}
-	pkg := li.getPackageFromExportData("invalid_file.o", "invalid/path")
+	li := localImporter{ctx: context.Background()}
+	pkg, oFileBytes := li.getPackageFromExportData("invalid_file.o", "invalid/path")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "invalid/path", pkg.Path())
 	assert.Equal(t, 0, pkg.Scope().Len())
+	assert.Equal(t, int64(0), oFileBytes)
 }
 
 func TestGetEmptyPackage_returnsEmptyPackage(t *testing.T) {
@@ -102,7 +106,7 @@ func TestTypeCheckAst(t *testing.T) {
 	}
 
 	fileSet, astFiles := astFromString("simple_file_with_packages.go", string(source))
-	info, _ := typeCheckAst(fileSet, astFiles, true, "", "", ".", GcExporter{})
+	info, _ := typeCheckAst(context.Background(), fileSet, astFiles, true, "", "", ".", GcExporter{})
 
 	assert.NotNil(t, info)
 	assert.NotEmpty(t, info.Types)
@@ -121,7 +125,7 @@ func TestTestOnlyFirstErrorIsReturned(t *testing.T) {
 
 	fileSet, astFiles := astFromString("file_with_many_errors.go", string(source))
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", ".", GcExporter{})
+	info, errors := typeCheckAst(context.Background(), fileSet, astFiles, false, "", "", ".", GcExporter{})
 	assert.Len(t, errors, 1)
 	assert.Equal(t, "file_with_many_errors.go:4:5: declared and not used: a1", errors[0].Error())
 	assert.NotNil(t, info)
@@ -143,7 +147,7 @@ func TestShouldReturnErrorForAllFailingFilesPerPackage(t *testing.T) {
 	}
 	fileSet, astFiles := astFromStrings(filenameToContent)
 
-	info, errors := typeCheckAst(fileSet, astFiles, false, "", "", ".", GcExporter{})
+	info, errors := typeCheckAst(context.Background(), fileSet, astFiles, false, "", "", ".", GcExporter{})
 	assert.ElementsMatch(t, []string{
 		"file_with_many_errors_1.go:4:5: declared and not used: a1",
 		"file_with_many_errors_2.go:4:5: declared and not used: a1",
@@ -264,6 +268,7 @@ func TestImport_moduleBaseDir_ownModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "service1"), "mymod/pkg")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "service1",
 		gcExporter:      GcExporter{},
@@ -281,6 +286,7 @@ func TestImport_moduleBaseDir_crossModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "pkg"), "ModulePkg/foo")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   ".", // root module
 		gcExporter:      GcExporter{},
@@ -299,6 +305,7 @@ func TestImport_rootModule_flatLookup(t *testing.T) {
 	createTestExportData(t, tmpDir, "mymod/pkg")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   ".",
 		gcExporter:      GcExporter{},
@@ -317,6 +324,7 @@ func TestImport_moduleBaseDir_prefersOwnModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "service2"), "poc/util")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "service1",
 		gcExporter:      GcExporter{},
@@ -334,6 +342,7 @@ func TestImport_subModule_findsRootModulePackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "sub"), "sub/internal")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "sub",
 		gcExporter:      GcExporter{},
@@ -353,6 +362,7 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "a/c"), "other/api")
 
 	importer := &localImporter{
+		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "a/b",
 		gcExporter:      GcExporter{},
@@ -367,6 +377,7 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 
 func TestImport_sharedCacheDeduplicatesTransitiveDeps(t *testing.T) {
 	importer := &localImporter{
+		ctx:         context.Background(),
 		gcExporter:  GcExporter{},
 		importCache: make(map[string]*types.Package),
 	}
@@ -423,6 +434,7 @@ func TestCrossModuleIndex_builtOncePerRun(t *testing.T) {
 
 	newImporter := func() *localImporter {
 		return &localImporter{
+			ctx:             context.Background(),
 			gcExportDataDir: tmpDir,
 			moduleBaseDir:   "service1",
 			gcExporter:      GcExporter{},
@@ -450,4 +462,96 @@ func TestCrossModuleIndex_builtOncePerRun(t *testing.T) {
 	assert.Equal(t, 1, sharedIndex.builds,
 		"gcExportDataDir must be walked exactly once per run, regardless of the number of packages "+
 			"and unresolved imports")
+}
+
+func TestImport_completeCachedPackageIsReturnedAsIs(t *testing.T) {
+	cached := types.NewPackage("cached/pkg", "pkg")
+	cached.Scope().Insert(types.NewVar(token.NoPos, cached, "TestMarker", types.Typ[types.Int]))
+	cached.MarkComplete()
+
+	importer := &localImporter{
+		ctx:         context.Background(),
+		importCache: map[string]*types.Package{"cached/pkg": cached},
+	}
+
+	pkg, err := importer.Import("cached/pkg")
+	assert.NoError(t, err)
+	// The identical object has to come back, because that is what makes a type declared in a shared
+	// dependency comparable across every per-package importer that reads from the same cache.
+	assert.Same(t, cached, pkg)
+}
+
+func TestImport_incompleteCachedPackageIsNotServedFromTheCache(t *testing.T) {
+	// An incomplete entry is a package gcexportdata.Read is still filling in, so it must not be
+	// handed to a type checker that would observe a half-populated scope.
+	incomplete := types.NewPackage("partial/pkg", "pkg")
+	importer := &localImporter{
+		ctx:         context.Background(),
+		importCache: map[string]*types.Package{"partial/pkg": incomplete},
+	}
+
+	pkg, err := importer.Import("partial/pkg")
+	assert.NoError(t, err)
+	assert.NotSame(t, incomplete, pkg)
+	assert.Equal(t, "partial/pkg", pkg.Path())
+}
+
+func TestCrossModuleIndex_lookupWithoutExportDataDirFindsNothing(t *testing.T) {
+	idx := &crossModuleIndex{}
+
+	_, found := idx.lookup(context.Background(), "any/pkg", "")
+
+	assert.False(t, found)
+	assert.Equal(t, 1, idx.builds, "the walk is still attempted once, it just has nothing to walk")
+	assert.Equal(t, 0, idx.oFiles)
+}
+
+func TestCrossModuleIndex_buildIgnoresFilesThatCanSatisfyNoImportPath(t *testing.T) {
+	dir := t.TempDir()
+	// Directly under gcExportDataDir, so no import path can name its directory.
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "rootlevel.o"), []byte("x"), 0644))
+	require.NoError(t, os.MkdirAll(filepath.Join(dir, "mod", "pkg"), 0755))
+	// Not export data at all.
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "mod", "pkg", "notes.txt"), []byte("x"), 0644))
+	// Export data whose base name is not the last segment of its directory, so it is not the
+	// <importPath>/<packageName>.o layout the index relies on.
+	require.NoError(t, os.WriteFile(filepath.Join(dir, "mod", "pkg", "other.o"), []byte("x"), 0644))
+	createTestExportData(t, dir, "mod/good")
+
+	idx := &crossModuleIndex{dir: dir}
+	// Resolving on behalf of a module rooted elsewhere, since lookup deliberately skips the
+	// importing module's own subtree.
+	const ownBaseDir = "othermod"
+
+	filePath, found := idx.lookup(context.Background(), "mod/good", ownBaseDir)
+	assert.True(t, found)
+	assert.Equal(t, filepath.Join(dir, "mod", "good", "good.o"), filePath)
+
+	_, found = idx.lookup(context.Background(), "mod/pkg", ownBaseDir)
+	assert.False(t, found, "other.o does not name its own directory, so it satisfies no import path")
+
+	_, found = idx.lookup(context.Background(), "rootlevel", ownBaseDir)
+	assert.False(t, found, "a root-level .o has no directory to derive an import path from")
+
+	// notes.txt and rootlevel.o are rejected before the counter, other.o after it.
+	assert.Equal(t, 2, idx.oFiles)
+}
+
+func TestTryLoadExportData_unreadableFileYieldsAnEmptyPackage(t *testing.T) {
+	// A self-referencing symlink exists as far as the lookup is concerned, yet neither stat nor open
+	// can resolve it. That must not be mistaken for "not found", which would send the resolution on
+	// to the next candidate and report the wrong source in the trace.
+	unreadable := filepath.Join(t.TempDir(), "loop.o")
+	if err := os.Symlink(unreadable, unreadable); err != nil {
+		t.Skipf("this platform does not allow creating the symlink: %v", err)
+	}
+
+	li := &localImporter{ctx: context.Background(), gcExporter: GcExporter{}}
+
+	pkg, oFileBytes, found := li.tryLoadExportData(unreadable, "broken/pkg")
+
+	assert.True(t, found)
+	assert.Equal(t, int64(0), oFileBytes, "an unstattable file reports no size rather than a wrong one")
+	assert.Equal(t, "broken/pkg", pkg.Path())
+	assert.Equal(t, 0, pkg.Scope().Len())
 }

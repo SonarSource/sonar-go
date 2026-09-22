@@ -134,8 +134,12 @@ generate_test_report() {
   # Install the proper go version
   local path_to_binary
   path_to_binary=$(install_go "${GO_VERSION}")
-  # Test
-  CGO_ENABLED=0 bash -c "${path_to_binary} test -timeout 5s -coverprofile=build/test-coverage.out -json > build/test-report.json"
+  # Build a combined test report for full coverage from tracing enabled and disabled
+  rm -rf build/coverdata
+  mkdir -p build/coverdata/default build/coverdata/sonartrace
+  CGO_ENABLED=0 bash -c "${path_to_binary} test -timeout 5s -cover -json -args -test.gocoverdir=${PWD}/build/coverdata/default > build/test-report.json"
+  CGO_ENABLED=0 bash -c "${path_to_binary} test -tags sonartrace -timeout 5s -cover -json -args -test.gocoverdir=${PWD}/build/coverdata/sonartrace > build/test-report-sonartrace.json"
+  bash -c "${path_to_binary} tool covdata textfmt -i=build/coverdata/default,build/coverdata/sonartrace -o=build/test-coverage.out"
 }
 
 main() {
@@ -157,8 +161,10 @@ main() {
       rm -f goparser_generated.go
       rm -f build/sonar-go-to-slang-*
       rm -f build/test-report.json
+      rm -f build/test-report-sonartrace.json
       rm -f build/executable/*
       rm -f build/test-coverage.out
+      rm -rf build/coverdata
       rm -rf build/main_test
       rm -rf build/cross-file-tests
       ;;

@@ -101,6 +101,96 @@ See `sonar-go-commons/src/main/java/org/sonar/go/converter/GoParseCommand.java` 
 - `-module_name <name>` - Module name from go.mod (required for type checking)
 - `-package_path <name>` - Specify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)
 
+## Tracing and profiling
+
+`sonar-go-to-slang` can emit a performance trace of the analysis pipeline — stdin decoding, parsing,
+type checking, import resolution, SLANG mapping and JSON encoding. It is used to profile the analyzer
+and to build a single cross-language timeline together with the events the Java side records.
+
+The instrumentation is behind the `sonartrace` build tag and is **not** compiled into released binaries:
+default builds get no-op stubs from `tracing_stub.go`, so there is no runtime cost and no extra
+dependency (`encoding/json`, `runtime/trace`) in production.
+
+### Building with tracing enabled
+
+```shell
+go generate
+go build -tags sonartrace
+```
+
+Without `-tags sonartrace` the two environment variables below are ignored, whatever their value.
+
+### Enabling a trace at runtime
+
+Two independent backends, each activated by an environment variable. Both are inert when unset, and a
+failure to enable either one is reported on stderr and left non-fatal — tracing must never break an
+analysis.
+
+| Variable | Value | Output |
+| --- | --- | --- |
+| `SONAR_GO_TRACE` | path to a file | Chrome trace events, one JSON object per line (NDJSON), appended |
+| `SONAR_GO_EXEC_TRACE` | path to a directory | one Go execution trace per process, `trace-<pid>.out`, for `go tool trace` |
+
+`SONAR_GO_TRACE` appends with `O_APPEND` and writes one line per event, so several concurrent
+invocations can safely share a single file — which is the point: the Java harness passes the same path
+to every spawned process and gets one merged trace back.
+
+`SONAR_GO_EXEC_TRACE` costs an initial runtime state dump, which is a large relative distortion on a
+process this short-lived. Use it to drill into a few packages, not to trace a whole corpus.
+
+Remember that `sonar-go-to-slang` reads its input from stdin in the binary format described above, so
+the environment has to be applied to the binary itself rather than to the producer of the pipe:
+
+```shell
+producer | env SONAR_GO_TRACE=/tmp/trace.ndjson /path/to/sonar-go-to-slang -module_name demo > /dev/null
+```
+
+### Reading the trace
+
+`SONAR_GO_TRACE` output is NDJSON, not a ready-made trace file. Wrap the lines into a
+`traceEvents` array before loading it into a trace viewer:
+
+```shell
+jq -s '{traceEvents: .}' /tmp/trace.ndjson > /tmp/chrome-trace.json
+```
+
+For the execution traces:
+
+```shell
+go tool trace /tmp/exectrace/trace-<pid>.out
+```
+
+### What gets emitted
+
+Duration spans (`ph: "X"`) follow the pipeline: reading stdin, decoding the batch, parsing each file,
+type checking and resolving imports, indexing uses, then mapping and encoding each tree. Read the names
+and the arguments they carry off a trace instead of from a list that would drift out of date:
+
+```shell
+# every span name that occurred, with the argument keys it recorded
+jq -r 'select(.ph == "X") | "\(.name)\t\(.args // {} | keys | join(", "))"' /tmp/trace.ndjson | sort -u
+```
+
+One span is not where its name suggests: `crossindex.build` covers the one-off walk of the GC export
+data directory, kept separate so the walk is not charged to whichever import happened to trigger it.
+
+Plus heap counters (`ph: "C"`) at phase boundaries — `heap.start`, `heap.afterTypeCheck`, `heap.end` —
+each carrying `heapAllocKB`, `heapSysKB`, `numGC` and `gcPauseUs`. They call `runtime.ReadMemStats`,
+which stops the world, so they are deliberately limited to phase boundaries and never emitted per file
+or per import.
+
+Two metadata events (`ph: "M"`) label the timeline: `process_name` groups every invocation under one
+`sonar-go-to-slang` process track, and `thread_name` names this invocation's lane (the package path
+under `-package_path`, otherwise the lowest directory among the batch's files). Every invocation is a
+thread of `pid` 2, because the Java harness owns `pid` 1.
+
+Finally, a `spawn` flow-finish event (`ph: "f"`) closes the arrow the Java side opens when it spawns the
+process. The OS pid is the shared flow id, so neither side has to agree on a counter or pass an id
+through the wire protocol.
+
+Span names are a contract with the tools that read the merged trace; `TestAnalysisPipelineEmitsExpectedSpans`
+in `tracing_test.go` fails on a rename rather than letting it silently produce an unreadable timeline.
+
 ## Testing
 
 To perform the tests, run:
@@ -110,6 +200,13 @@ go test
 ```
 
 To update expected test data, use the method `fix_all_go_files_test_automatically` in `goparser_test.go`.
+
+The tracing tests are behind the same build tag as the feature they cover, so a plain `go test` skips
+them. To run them:
+
+```shell
+go test -tags sonartrace
+```
 
 ## Tips and tricks
 

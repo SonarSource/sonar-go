@@ -19,6 +19,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"encoding/binary"
 	"errors"
 	"fmt"
@@ -82,17 +83,30 @@ const processLineDirective = false
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
-func toSlangJson(fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, moduleName string, indent string) string {
+func toSlangJson(ctx context.Context, fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, moduleName string, indent string) string {
 	// The usesByPos info is shared across every file of the package, so the position-keyed index of
 	// type-checker "uses" is built once here and reused for all files.
+	_, usesDone := span(ctx, "uses.index")
 	usesByPos := buildUsesByPos(info)
+	usesDone("usesCount", len(usesByPos))
+
 	fileNameToString := make(map[string]string)
 	for fileName, astFile := range astFiles {
-		slangTree, comments, tokens, errMgs := toSlangTree(fileSet, &astFile, fileContents[fileName], info, moduleName, usesByPos)
+		fileContent := fileContents[fileName]
+		_, mapDone := span(ctx, "tree.map", "fileName", fileName, "sourceBytes", len(fileContent))
+		slangTree, comments, tokens, errMgs, nodeCount := toSlangTree(fileSet, &astFile, fileContent, info, moduleName, usesByPos)
+		mapDone("tokenCount", len(tokens), "commentCount", len(comments), "nodeCount", nodeCount)
+
+		_, encodeDone := span(ctx, "tree.encode", "fileName", fileName, "format", "json")
 		jsonPart := toJsonSlang(slangTree, comments, tokens, errMgs, indent)
+		encodeDone("outputBytes", len(jsonPart))
 		fileNameToString[fileName] = jsonPart
 	}
-	return toJson(fileNameToString)
+
+	_, concatDone := span(ctx, "tree.concat")
+	json := toJson(fileNameToString)
+	concatDone("outputBytes", len(json))
+	return json
 }
 
 func toJson(fileNameToString map[string]string) string {
@@ -108,23 +122,26 @@ func toJson(fileNameToString map[string]string) string {
 	return buf.String()
 }
 
-func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) (*Node, []*Node, []*Token, *string) {
+func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) (*Node, []*Node, []*Token, *string, int) {
 	if astFile.err != nil {
 		errMsg := astFile.err.Error()
-		return nil, nil, nil, &errMsg
+		return nil, nil, nil, &errMsg, 0
 	}
-	slangTree, comments, tokens := NewSlangMapper(fileSet, astFile.ast, fileContent, info, moduleName, usesByPos).toSlang()
-	return slangTree, comments, tokens, nil
+	mapper := NewSlangMapper(fileSet, astFile.ast, fileContent, info, moduleName, usesByPos)
+	slangTree, comments, tokens := mapper.toSlang()
+	return slangTree, comments, tokens, nil, mapper.nodeCount
 }
 
-func readAstFile(fileSet *token.FileSet, reader io.Reader) (map[string]AstFileOrError, map[string]string, error) {
+func readAstFile(ctx context.Context, fileSet *token.FileSet, reader io.Reader) (map[string]AstFileOrError, map[string]string, error) {
+	_, readDone := span(ctx, "stdin.read")
 	var bytesArray []byte
 	bytesArray, err := io.ReadAll(reader)
+	readDone("bytesRead", len(bytesArray))
 	if err != nil {
 		return nil, nil, err
 	}
-	files := readBytesToFilenameContentMap(bytesArray)
-	astFiles := readAstString(fileSet, files)
+	files := readBytesToFilenameContentMap(ctx, bytesArray)
+	astFiles := readAstString(ctx, fileSet, files)
 	return astFiles, files, nil
 }
 
@@ -134,7 +151,8 @@ func readAstFile(fileSet *token.FileSet, reader io.Reader) (map[string]AstFileOr
 // M (4 bytes) file content length
 // <file content> (M bytes)
 // next files until the end of the byte array (EOF)
-func readBytesToFilenameContentMap(bytesArray []byte) map[string]string {
+func readBytesToFilenameContentMap(ctx context.Context, bytesArray []byte) map[string]string {
+	_, done := span(ctx, "batch.decode")
 	result := map[string]string{}
 	begin := 0
 	for {
@@ -148,6 +166,7 @@ func readBytesToFilenameContentMap(bytesArray []byte) map[string]string {
 			break
 		}
 	}
+	done("fileCount", len(result))
 	return result
 }
 
@@ -162,7 +181,9 @@ func readFixedSizeText(bytesArray []byte, begin int) string {
 	return string(bytesArray[begin+4 : begin+4+length])
 }
 
-func readAstString(fileSet *token.FileSet, files map[string]string) map[string]AstFileOrError {
+func readAstString(ctx context.Context, fileSet *token.FileSet, files map[string]string) map[string]AstFileOrError {
+	filesCtx, filesDone := span(ctx, "parse.files", "fileCount", len(files))
+	defer filesDone()
 	astFiles := map[string]AstFileOrError{}
 	// Parse in sorted file name order so that positions assigned in the shared fileSet, and therefore
 	// the type checker decisions that compare them, do not depend on the map iteration order.
@@ -174,9 +195,11 @@ func readAstString(fileSet *token.FileSet, files map[string]string) map[string]A
 
 	for _, fileName := range fileNames {
 		fileContent := files[fileName]
+		_, fileDone := span(filesCtx, "parse.file", "fileName", fileName, "sourceBytes", len(fileContent))
 		astFile, err := parser.ParseFile(fileSet, fileName, fileContent, parser.ParseComments)
 		if err != nil {
 			astFiles[fileName] = AstFileOrError{nil, err}
+			fileDone("parseError", true)
 			continue
 		}
 		fileSize := fileSet.File(astFile.Pos()).Size()
@@ -185,6 +208,7 @@ func readAstString(fileSet *token.FileSet, files map[string]string) map[string]A
 				len(fileContent), fileSize, fileName))
 		}
 		astFiles[fileName] = AstFileOrError{astFile, nil}
+		fileDone("parseError", false)
 	}
 	return astFiles
 }
@@ -204,6 +228,7 @@ type SlangMapper struct {
 	objectToCfgIds    map[any]int32
 	moduleName        string
 	isValBySpec       map[*ast.ValueSpec]bool
+	nodeCount         int
 }
 
 func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) *SlangMapper {
@@ -450,6 +475,7 @@ func (t *SlangMapper) createNodeWithChildren(originalNode ast.Node, children []*
 	if len(children) < 1 {
 		return nil
 	}
+	t.nodeCount++
 	node := &Node{
 		Children:  children,
 		offset:    children[0].offset,
@@ -669,6 +695,7 @@ func (t *SlangMapper) createLeafNode(originalNode ast.Node, offset, endOffset in
 	if isSlangType[tokenType] {
 		t.tokens = append(t.tokens, slangToken)
 	}
+	t.nodeCount++
 
 	node := &Node{
 		Token:     slangToken,

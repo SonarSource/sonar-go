@@ -66,7 +66,7 @@ sonar {
         property("sonar.tests", ".")
         property("sonar.test.inclusions", "**/*_test.go")
         property("sonar.test.exclusions", "**/build/**,**/vendor/**,**/.gogradle/**")
-        property("sonar.go.tests.reportPaths", "build/test-report.json")
+        property("sonar.go.tests.reportPaths", "build/test-report.json,build/test-report-sonartrace.json")
         property("sonar.go.coverage.reportPaths", "build/test-coverage.out")
         property("sonar.go.golangci-lint.reportPaths", "build/reports/golangci-lint-report.xml")
     }

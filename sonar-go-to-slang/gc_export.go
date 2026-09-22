@@ -16,6 +16,7 @@
 package main
 
 import (
+	"context"
 	"fmt"
 	"go/types"
 	"io/fs"
@@ -30,11 +31,11 @@ type GcExporter struct {
 	packagesImportIssueInvalidMemoryAddress []string
 }
 
-func (gc *GcExporter) ExportGcExportData(info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
 	packagesToExport := gc.findPackagesToExport(info, packagePath)
 
 	for _, pkgToExport := range packagesToExport {
-		gc.exportPackage(pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
+		gc.exportPackage(ctx, pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
 	}
 }
 
@@ -92,7 +93,7 @@ func (gc *GcExporter) findMultiplePackages(info *types.Info, packagesToExport []
 	return packagesToExport
 }
 
-func (gc *GcExporter) exportPackage(pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
 	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
 	if !strings.HasSuffix(fullExportDataDir, pkgToExport.Path()) {
 		fullExportDataDir = filepath.Join(fullExportDataDir, pkgToExport.Path())
@@ -114,7 +115,10 @@ func (gc *GcExporter) exportPackage(pkgToExport *types.Package, exportDataDir st
 	if debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Writing gcexportdata to file: \"%s\", num of exported elements: %d\n", exportDataFile, pkgToExport.Scope().Len())
 	}
+	_, done := span(ctx, "gcexport.write", "packagePath", pkgToExport.Path(), "outputPath", exportDataFile)
 	err = gcexportdata.Write(file, nil, pkgToExport)
+	// gcexportdata.Write does not report how much it wrote, so the size comes from the file itself.
+	done("outputBytes", fileSizeIfTracing(file))
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Error writing gcexportdata: %s\n", err)
 		panic("Error writing gcexportdata")

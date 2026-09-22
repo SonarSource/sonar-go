@@ -226,6 +226,60 @@ func TestShouldNotPanicWhenGenerateASTOneInvalidFile(t *testing.T) {
 	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"build/main_test/\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
+func TestLaneLabel(t *testing.T) {
+	files := map[string]string{"plumbing/format/idxfile/decoder.go": "", "plumbing/format/idxfile/encoder.go": ""}
+
+	assert.Equal(t, "given/path", laneLabel(Params{packagePath: "given/path", moduleName: "mod"}, files))
+	// The parse pass gets no package path, so the shared directory of the batch has to name the lane.
+	assert.Equal(t, "plumbing/format/idxfile", laneLabel(Params{moduleName: "mod"}, files))
+	assert.Equal(t, "mod", laneLabel(Params{moduleName: "mod"}, map[string]string{"main.go": ""}))
+	assert.Equal(t, "mod", laneLabel(Params{moduleName: "mod"}, nil))
+	// Stable across runs despite Go's randomised map iteration order.
+	spanning := map[string]string{"b/x.go": "", "a/y.go": ""}
+	for range 20 {
+		assert.Equal(t, "a", laneLabel(Params{moduleName: "mod"}, spanning))
+	}
+}
+
+func TestParseArgsInstallsUsageDocumentingThePositionalArgument(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd"}
+
+	captureStdOutAndStdErr()
+	parseArgs()
+	// flag.Usage is what the flag package calls on a parse error. It carries the synopsis line, which
+	// is the only place the "- | path" positional argument is documented; PrintDefaults knows only flags.
+	flag.Usage()
+	stdout, stderr := getStdOutAndStdErr()
+
+	assert.Contains(t, stdout, "Usage: cmd [options] [- | path]")
+	assert.Contains(t, stderr, "-gc_export_data_dir string", "the flag defaults have to be printed too")
+}
+
+func TestMainPanicsWhenStdinCannotBeRead(t *testing.T) {
+	resetCommandLineFlagsToDefault()
+	os.Args = []string{"cmd"}
+
+	// A closed pipe is the one way to make io.ReadAll fail, which is the only error readAstFile
+	// reports. Reading no input at all is a different case, already covered elsewhere.
+	reader, writer, err := os.Pipe()
+	assert.NoError(t, err)
+	assert.NoError(t, writer.Close())
+	assert.NoError(t, reader.Close())
+
+	oldStdin := os.Stdin
+	os.Stdin = reader
+	defer func() {
+		os.Stdin = oldStdin
+		_, stderr := getStdOutAndStdErr()
+		if recover() != nil {
+			assert.Contains(t, stderr, "Error reading AST file:")
+		}
+	}()
+	callMain()
+	assert.Fail(t, "The main() should throw panic when stdin cannot be read")
+}
+
 func getStandardOutput(w *os.File, old *os.File, outC chan string) string {
 	// Restore the original stdout
 	w.Close()

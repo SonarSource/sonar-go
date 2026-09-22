@@ -17,6 +17,7 @@ package main
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"go/ast"
 	"go/token"
@@ -95,10 +96,10 @@ func exportGcData(files []string, name string, moduleName string, packagePath st
 	fmt.Printf("Exporting GC data for: %s\n", files)
 	fileSet := token.NewFileSet()
 
-	astFiles, _, _ := readAstFile(fileSet, readFilesToReader(files))
+	astFiles, _, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
 	gc := GcExporter{}
-	info, _ := typeCheckAst(fileSet, astFiles, true, exportLocation, moduleName, ".", gc)
-	gc.ExportGcExportData(info, exportLocation, moduleName, packagePath, false)
+	info, _ := typeCheckAst(context.Background(), fileSet, astFiles, true, exportLocation, moduleName, ".", gc)
+	gc.ExportGcExportData(context.Background(), info, exportLocation, moduleName, packagePath, false)
 }
 
 func readFilesToReader(files []string) *bytes.Reader {
@@ -111,13 +112,13 @@ func readFilesToReader(files []string) *bytes.Reader {
 
 func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 	fileSet := token.NewFileSet()
-	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
+	astFiles, fileContents, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
+	info, _ := typeCheckAst(context.Background(), fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
 
 	usesByPos := buildUsesByPos(info)
 	for fileName, aFile := range astFiles {
-		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
+		slangTree, comments, tokens, errMsg, _ := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
 		if errMsg != nil {
 			panic(errMsg)
 		}
@@ -135,15 +136,15 @@ func parseFileToJsonAndSave(files []string, name string, moduleName string) {
 
 func parseFileToJson(files []string, name string, moduleName string) map[string]string {
 	fileSet := token.NewFileSet()
-	astFiles, fileContents, _ := readAstFile(fileSet, readFilesToReader(files))
+	astFiles, fileContents, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
 
-	info, _ := typeCheckAst(fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
+	info, _ := typeCheckAst(context.Background(), fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
 
 	result := map[string]string{}
 
 	usesByPos := buildUsesByPos(info)
 	for fileName, aFile := range astFiles {
-		slangTree, comments, tokens, errMsg := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
+		slangTree, comments, tokens, errMsg, _ := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
 		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
 		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
 		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
@@ -205,7 +206,7 @@ func Test_should_return_early_when_pkg_is_nil(t *testing.T) {
 	}
 
 	gc := GcExporter{}
-	gc.ExportGcExportData(&info, "export-pkg-is-nil.o", "", "", false)
+	gc.ExportGcExportData(context.Background(), &info, "export-pkg-is-nil.o", "", "", false)
 
 	_, err := os.ReadFile("export-pkg-is-nil.o")
 	if err == nil {
@@ -227,7 +228,7 @@ func Test_should_store_export_data(t *testing.T) {
 	}
 
 	gc := GcExporter{}
-	gc.ExportGcExportData(&info, "build/gc_export_test", "", "", false)
+	gc.ExportGcExportData(context.Background(), &info, "build/gc_export_test", "", "", false)
 
 	if _, err := os.Stat("build/gc_export_test/foo/foo.o"); os.IsNotExist(err) {
 		assert.Fail(t, "The file should have been created")
