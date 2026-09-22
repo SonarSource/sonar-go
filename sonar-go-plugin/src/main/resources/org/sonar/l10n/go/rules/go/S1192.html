@@ -10,7 +10,11 @@ occurrences.</p>
   party libraries are supported)</li>
   <li>literals passed to error functions like: <code>fmt.Errorf</code>, <code>errors.New</code>, <code>xerrors.New</code>, etc. (standard and 3rd
   party libraries are supported)</li>
+  <li>literals used as the path of an HTTP route, including the prefix of a route group or of a sub-router (standard and 3rd party libraries are
+  supported)</li>
 </ul>
+<p>Route paths are excluded because the same path is normally repeated across the registrations of one resource, and moving it into a constant hides
+the URL structure the code exposes.</p>
 <h2>How to fix it</h2>
 <p>Use constants to replace the duplicated string literals. Constants can be referenced from many places, but only need to be updated in a single
 place.</p>
