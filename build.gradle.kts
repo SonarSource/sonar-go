@@ -67,7 +67,17 @@ sonar {
                 "private/its/plugin/projects/**," +
                 "go/**," +
                 "private/go-custom-rules-plugin/**," +
-                "private/go-package-data-exporter/**"
+                "private/go-package-data-exporter/**" +
+                "private/benchmark/**"
+        )
+        // private/benchmark is a CLI tool whose whole point is a human-readable report on stdout, not a
+        // service with a logging story — System.out/System.err there is the intended output channel.
+        property("sonar.issue.ignore.multicriteria", "e1")
+        property("sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S106")
+        property("sonar.issue.ignore.multicriteria.e1.resourceKey", "private/benchmark/src/main/java/**/*.java")
+        property(
+            "sonar.coverage.exclusions",
+            "private/benchmark/**"
         )
     }
 }

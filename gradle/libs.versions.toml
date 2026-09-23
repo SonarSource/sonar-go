@@ -30,6 +30,8 @@ wiremock = "3.13.2"
 jackson = "2.22.2"
 commons-io = "2.22.0"
 logback = "1.6.3"
+jmh = "1.37"
+jmh-plugin = "0.7.2"
 
 [libraries]
 commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
@@ -68,7 +70,10 @@ archunit = { module = "com.tngtech.archunit:archunit-junit5", version.ref = "arc
 sonar-scanner-integration-tester = { group = "com.sonarsource.scanner.integrationtester", name = "sonar-scanner-integration-tester", version.ref = "sonar-scanner-integration-tester" }
 wiremock = { group = "org.wiremock", name = "wiremock", version.ref = "wiremock" }
 jackson-bom = { module = "com.fasterxml.jackson:jackson-bom", version.ref = "jackson" }
+jmh-core = { module = "org.openjdk.jmh:jmh-core", version.ref = "jmh" }
+jmh-generator-annprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess", version.ref = "jmh" }
 
 [plugins]
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-scanner-gradle" }
+jmh = { id = "me.champeau.jmh", version.ref = "jmh-plugin" }
