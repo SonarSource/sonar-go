@@ -39,9 +39,6 @@ const PackageExportDataDir = "packages"
 var packages embed.FS
 
 type localImporter struct {
-	// ctx carries the enclosing type-check span, because Import's signature is fixed by types.Importer
-	// and cannot take one.
-	ctx             context.Context
 	gcExportDataDir string
 	moduleName      string
 	moduleBaseDir   string
@@ -54,8 +51,22 @@ type localImporter struct {
 	crossIndex *crossModuleIndex
 }
 
-func (li *localImporter) Import(path string) (*types.Package, error) {
-	_, done := span(li.ctx, "import.resolve", "importPath", path)
+// importerFunc implements the single-method types.Importer interface with a function value,
+// so localImporter.Import can take a context that the fixed interface signature cannot take.
+type importerFunc func(path string) (*types.Package, error)
+
+func (f importerFunc) Import(path string) (*types.Package, error) { return f(path) }
+
+// typesImporter adapts li.Import to types.Importer, closing over ctx so every import resolved
+// while type-checking one package attaches to that package's tracing span.
+func (li *localImporter) typesImporter(ctx context.Context) types.Importer {
+	return importerFunc(func(path string) (*types.Package, error) {
+		return li.Import(ctx, path)
+	})
+}
+
+func (li *localImporter) Import(ctx context.Context, path string) (*types.Package, error) {
+	ctx, done := span(ctx, "import.resolve", "importPath", path)
 	// gcexportdata.Read populates importCache with everything it reads transitively, so the growth
 	// across one resolution is how many packages this single import actually decoded.
 	cachedBefore := len(li.importCache)
@@ -69,14 +80,14 @@ func (li *localImporter) Import(path string) (*types.Package, error) {
 		done("source", "embedded", "oFileBytes", oFileBytes, "transitivePackages", len(li.importCache)-cachedBefore)
 		return pkg, nil
 	}
-	pkg, source, oFileBytes := li.getPackageFromLocalCodeExportData(path)
+	pkg, source, oFileBytes := li.getPackageFromLocalCodeExportData(ctx, path)
 	done("source", source, "oFileBytes", oFileBytes, "transitivePackages", len(li.importCache)-cachedBefore)
 	return pkg, nil
 }
 
 // getPackageFromLocalCodeExportData also reports which lookup produced the package and the size of the
 // .o file it was read from, so the caller can annotate its span without repeating the lookup.
-func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.Package, string, int64) {
+func (li *localImporter) getPackageFromLocalCodeExportData(ctx context.Context, path string) (*types.Package, string, int64) {
 	if li.debugTypeCheck {
 		fmt.Fprintf(os.Stderr, "Search for local Gc Export Data for \"%s\" package\n", path)
 	}
@@ -91,7 +102,7 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 		return pkg, "same-module", oFileBytes
 	}
 
-	if pkg, oFileBytes, found := li.scanOtherModuleSubdirs(path); found {
+	if pkg, oFileBytes, found := li.scanOtherModuleSubdirs(ctx, path); found {
 		return pkg, "cross-module", oFileBytes
 	}
 
@@ -102,7 +113,7 @@ func (li *localImporter) getPackageFromLocalCodeExportData(path string) (*types.
 // different module in the same project. It looks the import path up in a shared, lazily-built
 // index of gcExportDataDir (see crossModuleIndex), excluding the current module's own subtree,
 // instead of walking the whole directory tree on every call.
-func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, int64, bool) {
+func (li *localImporter) scanOtherModuleSubdirs(ctx context.Context, path string) (*types.Package, int64, bool) {
 	if li.crossIndex == nil {
 		// No shared index was injected (e.g. in unit tests): fall back to a per-importer one.
 		li.crossIndex = &crossModuleIndex{dir: li.gcExportDataDir}
@@ -113,7 +124,7 @@ func (li *localImporter) scanOtherModuleSubdirs(path string) (*types.Package, in
 		ownBaseDir = ""
 	}
 
-	filePath, found := li.crossIndex.lookup(li.ctx, path, ownBaseDir)
+	filePath, found := li.crossIndex.lookup(ctx, path, ownBaseDir)
 	if !found {
 		return nil, 0, false
 	}
@@ -293,17 +304,17 @@ func typeCheckAst(
 		fmt.Fprintf(os.Stderr, "Processing package: \"%s\"\n", packageName)
 		packageCtx, packageDone := span(ctx, "typecheck.package", "packageName", packageName, "fileCount", len(files))
 		typeErrorCount := 0
+		importer := &localImporter{
+			gcExportDataDir: gcExportDataDir,
+			moduleName:      moduleName,
+			moduleBaseDir:   moduleBaseDir,
+			debugTypeCheck:  debugTypeCheck,
+			gcExporter:      gcExporter,
+			importCache:     make(map[string]*types.Package),
+			crossIndex:      crossIndex,
+		}
 		conf := types.Config{
-			Importer: &localImporter{
-				ctx:             packageCtx,
-				gcExportDataDir: gcExportDataDir,
-				moduleName:      moduleName,
-				moduleBaseDir:   moduleBaseDir,
-				debugTypeCheck:  debugTypeCheck,
-				gcExporter:      gcExporter,
-				importCache:     make(map[string]*types.Package),
-				crossIndex:      crossIndex,
-			},
+			Importer: importer.typesImporter(packageCtx),
 			Error: func(err error) {
 				typeErrorCount++
 				if debugTypeCheck {

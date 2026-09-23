@@ -32,8 +32,8 @@ import (
 )
 
 func TestImportExistingPackage_returnsPackage(t *testing.T) {
-	importer := &localImporter{ctx: context.Background()}
-	pkg, err := importer.Import("net/http")
+	importer := &localImporter{}
+	pkg, err := importer.Import(context.Background(), "net/http")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
@@ -41,8 +41,8 @@ func TestImportExistingPackage_returnsPackage(t *testing.T) {
 }
 
 func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
-	importer := &localImporter{ctx: context.Background()}
-	pkg, err := importer.Import("non/supported")
+	importer := &localImporter{}
+	pkg, err := importer.Import(context.Background(), "non/supported")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "non/supported", pkg.Path())
@@ -56,7 +56,7 @@ func TestImportNonSupportedPackage_returnsEmptyPackage(t *testing.T) {
 }
 
 func TestImport_notFoundPackageDoesNotPoisonLaterEmbeddedRead(t *testing.T) {
-	importer := &localImporter{ctx: context.Background(), importCache: make(map[string]*types.Package)}
+	importer := &localImporter{importCache: make(map[string]*types.Package)}
 
 	// "sync/atomic" is not embedded and not on disk, so it resolves to a synthesized empty
 	// package whose name is only a guess from the path ("sync/atomic", not the real "atomic").
@@ -65,17 +65,17 @@ func TestImport_notFoundPackageDoesNotPoisonLaterEmbeddedRead(t *testing.T) {
 	// The embedded "runtime/debug" data references "sync/atomic" by its real name "atomic"; a
 	// wrong-named cached entry would abort that read and leave runtime/debug (hence PrintStack,
 	// rule S4507) unresolved.
-	_, err := importer.Import("sync/atomic")
+	_, err := importer.Import(context.Background(), "sync/atomic")
 	assert.NoError(t, err)
 
-	debugPkg, err := importer.Import("runtime/debug")
+	debugPkg, err := importer.Import(context.Background(), "runtime/debug")
 	assert.NoError(t, err)
 	assert.NotNil(t, debugPkg.Scope().Lookup("PrintStack"),
 		"runtime/debug must still expose PrintStack after a not-found package was imported")
 }
 
 func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
-	li := localImporter{ctx: context.Background()}
+	li := localImporter{}
 	pkg, oFileBytes := li.getPackageFromExportData(PackageExportDataDir+"/"+"net_http.o", "net/http")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "net/http", pkg.Path())
@@ -84,7 +84,7 @@ func TestGetPackageFromExportData_validFile_returnsPackage(t *testing.T) {
 }
 
 func TestGetPackageFromExportData_invalidFile_returnsEmptyPackage(t *testing.T) {
-	li := localImporter{ctx: context.Background()}
+	li := localImporter{}
 	pkg, oFileBytes := li.getPackageFromExportData("invalid_file.o", "invalid/path")
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "invalid/path", pkg.Path())
@@ -268,12 +268,11 @@ func TestImport_moduleBaseDir_ownModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "service1"), "mymod/pkg")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "service1",
 		gcExporter:      GcExporter{},
 	}
-	pkg, err := importer.Import("mymod/pkg")
+	pkg, err := importer.Import(context.Background(), "mymod/pkg")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "mymod/pkg", pkg.Path())
@@ -286,13 +285,12 @@ func TestImport_moduleBaseDir_crossModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "pkg"), "ModulePkg/foo")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   ".", // root module
 		gcExporter:      GcExporter{},
 	}
 	// Root module imports ModulePkg/foo — should find it via cross-module scan
-	pkg, err := importer.Import("ModulePkg/foo")
+	pkg, err := importer.Import(context.Background(), "ModulePkg/foo")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "ModulePkg/foo", pkg.Path())
@@ -305,12 +303,11 @@ func TestImport_rootModule_flatLookup(t *testing.T) {
 	createTestExportData(t, tmpDir, "mymod/pkg")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   ".",
 		gcExporter:      GcExporter{},
 	}
-	pkg, err := importer.Import("mymod/pkg")
+	pkg, err := importer.Import(context.Background(), "mymod/pkg")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Equal(t, "mymod/pkg", pkg.Path())
@@ -324,12 +321,11 @@ func TestImport_moduleBaseDir_prefersOwnModule(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "service2"), "poc/util")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "service1",
 		gcExporter:      GcExporter{},
 	}
-	pkg, err := importer.Import("poc/util")
+	pkg, err := importer.Import(context.Background(), "poc/util")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Greater(t, pkg.Scope().Len(), 0, "should find the .o from own module")
@@ -342,12 +338,11 @@ func TestImport_subModule_findsRootModulePackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "sub"), "sub/internal")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "sub",
 		gcExporter:      GcExporter{},
 	}
-	pkg, err := importer.Import("rootapi/service")
+	pkg, err := importer.Import(context.Background(), "rootapi/service")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Greater(t, pkg.Scope().Len(), 0,
@@ -362,12 +357,11 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 	createTestExportData(t, filepath.Join(tmpDir, "a/c"), "other/api")
 
 	importer := &localImporter{
-		ctx:             context.Background(),
 		gcExportDataDir: tmpDir,
 		moduleBaseDir:   "a/b",
 		gcExporter:      GcExporter{},
 	}
-	pkg, err := importer.Import("other/api")
+	pkg, err := importer.Import(context.Background(), "other/api")
 	assert.NoError(t, err)
 	assert.NotNil(t, pkg)
 	assert.Greater(t, pkg.Scope().Len(), 0,
@@ -377,19 +371,18 @@ func TestImport_multiSegmentModuleBaseDir_findsSiblingPackage(t *testing.T) {
 
 func TestImport_sharedCacheDeduplicatesTransitiveDeps(t *testing.T) {
 	importer := &localImporter{
-		ctx:         context.Background(),
 		gcExporter:  GcExporter{},
 		importCache: make(map[string]*types.Package),
 	}
 
 	// Import net/url first so it populates the shared cache.
-	urlPkg, err := importer.Import("net/url")
+	urlPkg, err := importer.Import(context.Background(), "net/url")
 	assert.NoError(t, err)
 	assert.NotNil(t, urlPkg)
 
 	// Import net/http, whose manifest references net/url as a direct import.
 	// gcexportdata.Read must reuse the cached net/url object from the shared importCache.
-	httpPkg, err := importer.Import("net/http")
+	httpPkg, err := importer.Import(context.Background(), "net/http")
 	assert.NoError(t, err)
 	assert.NotNil(t, httpPkg)
 
@@ -434,7 +427,6 @@ func TestCrossModuleIndex_builtOncePerRun(t *testing.T) {
 
 	newImporter := func() *localImporter {
 		return &localImporter{
-			ctx:             context.Background(),
 			gcExportDataDir: tmpDir,
 			moduleBaseDir:   "service1",
 			gcExporter:      GcExporter{},
@@ -449,12 +441,12 @@ func TestCrossModuleIndex_builtOncePerRun(t *testing.T) {
 		importer := newImporter()
 
 		// Genuine cross-module import: lives under the sibling module "service2".
-		pkg, err := importer.Import("shared/beta")
+		pkg, err := importer.Import(context.Background(), "shared/beta")
 		assert.NoError(t, err)
 		assert.Greater(t, pkg.Scope().Len(), 0, "cross-module import should resolve via the shared index")
 
 		// Unresolved external import (the common case for large projects): must not cause a re-walk.
-		external, err := importer.Import("github.com/not/in/this/project")
+		external, err := importer.Import(context.Background(), "github.com/not/in/this/project")
 		assert.NoError(t, err)
 		assert.Equal(t, 0, external.Scope().Len())
 	}
@@ -470,11 +462,10 @@ func TestImport_completeCachedPackageIsReturnedAsIs(t *testing.T) {
 	cached.MarkComplete()
 
 	importer := &localImporter{
-		ctx:         context.Background(),
 		importCache: map[string]*types.Package{"cached/pkg": cached},
 	}
 
-	pkg, err := importer.Import("cached/pkg")
+	pkg, err := importer.Import(context.Background(), "cached/pkg")
 	assert.NoError(t, err)
 	// The identical object has to come back, because that is what makes a type declared in a shared
 	// dependency comparable across every per-package importer that reads from the same cache.
@@ -486,11 +477,10 @@ func TestImport_incompleteCachedPackageIsNotServedFromTheCache(t *testing.T) {
 	// handed to a type checker that would observe a half-populated scope.
 	incomplete := types.NewPackage("partial/pkg", "pkg")
 	importer := &localImporter{
-		ctx:         context.Background(),
 		importCache: map[string]*types.Package{"partial/pkg": incomplete},
 	}
 
-	pkg, err := importer.Import("partial/pkg")
+	pkg, err := importer.Import(context.Background(), "partial/pkg")
 	assert.NoError(t, err)
 	assert.NotSame(t, incomplete, pkg)
 	assert.Equal(t, "partial/pkg", pkg.Path())
@@ -546,7 +536,7 @@ func TestTryLoadExportData_unreadableFileYieldsAnEmptyPackage(t *testing.T) {
 		t.Skipf("this platform does not allow creating the symlink: %v", err)
 	}
 
-	li := &localImporter{ctx: context.Background(), gcExporter: GcExporter{}}
+	li := &localImporter{gcExporter: GcExporter{}}
 
 	pkg, oFileBytes, found := li.tryLoadExportData(unreadable, "broken/pkg")
 
