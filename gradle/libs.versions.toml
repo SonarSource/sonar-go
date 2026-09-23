@@ -1,6 +1,6 @@
 [versions]
 sonar-scanner-engine = "13.10.0.4657"
-analyzer-commons = "2.31.0.5284"
+analyzer-commons = "2.33.0.5369"
 # Before updating the plugin-api version, make sure to check the compatibility matrix and stick to the lowest denominator
 # https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#compatibility
 plugin-api = "13.4.3.4290"
