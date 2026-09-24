@@ -45,8 +45,14 @@ public final class MemoryMonitor {
   private long overallPeak;
 
   private final NumberFormat format;
+  private final MemoryTracer tracer;
 
   public MemoryMonitor(Configuration config) {
+    this(config, MemoryTracer.NOOP);
+  }
+
+  public MemoryMonitor(Configuration config, MemoryTracer tracer) {
+    this.tracer = tracer;
     recordingEnabled = config.getBoolean(DurationStatistics.DURATION_STATISTICS_PROPERTY_KEY).orElse(false) && LOG.isInfoEnabled();
     resetPeak();
     addRecord("Initial memory");
@@ -58,7 +64,10 @@ public final class MemoryMonitor {
 
   public void addRecord(String name) {
     if (recordingEnabled) {
-      memoryRecords.add(new MemoryRecord(name, getMemoryUsedInMB(), getPeakMemoryUsedInMB()));
+      long used = getMemoryUsedInMB();
+      long peak = getPeakMemoryUsedInMB();
+      memoryRecords.add(new MemoryRecord(name, used, peak));
+      tracer.onMemoryRecorded(name, used, peak);
       resetPeak();
     }
   }

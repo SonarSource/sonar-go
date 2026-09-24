@@ -58,6 +58,8 @@ junit-jupiter-engine = { group = "org.junit.jupiter", name = "junit-jupiter-engi
 # version of Junit Platform is taken from junit BOM that is imported by junit-jupiter-api
 junit-platform-launcher = { group = "org.junit.platform", name = "junit-platform-launcher" }
 slf4j-api = { group = "org.slf4j", name = "slf4j-api", version.ref = "slf4j-api" }
+# Runtime binding for the benchmark harness only — never for a shipped plugin, where the host provides one.
+slf4j-simple = { group = "org.slf4j", name = "slf4j-simple", version.ref = "slf4j-api" }
 xerces = { group = "xerces", name = "xercesImpl", version.ref = "xerces" }
 awaitility = { group = "org.awaitility", name = "awaitility", version.ref = "awaitility"}
 classgraph = { group = "io.github.classgraph", name = "classgraph", version.ref = "classgraph"}

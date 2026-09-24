@@ -72,7 +72,13 @@ public class GoConverter implements ASTConverter {
     }
     try {
       var json = command.executeGoParseCommand(filesToParse, moduleName);
-      result.putAll(JsonTree.fromJson(json));
+      // Deserializing the response is the last Java-side leg of the round trip, and on a large batch it
+      // is not a rounding error next to the parse itself, so it gets a span of its own.
+      try (var span = ConverterTracing.span("tree.decode", "format", "json", "chars", json.length())) {
+        var trees = JsonTree.fromJson(json);
+        span.arg("trees", trees.size());
+        result.putAll(trees);
+      }
     } catch (InterruptedException e) {
       Thread.currentThread().interrupt();
       throw new ParseException("Go executable interrupted: " + e.getMessage(), null, e);

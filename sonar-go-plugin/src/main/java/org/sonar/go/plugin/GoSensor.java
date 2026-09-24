@@ -16,6 +16,7 @@
  */
 package org.sonar.go.plugin;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -249,13 +250,32 @@ public class GoSensor implements Sensor {
     goProjectSensor.increaseFilesProcessedCount(filenameToContentMap.size());
 
     goProgressReport.setStep(GoProgressReport.Step.PARSING);
-    Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> converter.parse(filenameToContentMap, moduleName));
+    Map<String, TreeOrError> treeOrErrorMap = statistics.time("Parse", () -> parseDetail(filenameToContentMap), () -> converter.parse(filenameToContentMap, moduleName));
 
     goProgressReport.setStep(GoProgressReport.Step.HANDLING_PARSE_ERRORS);
     handleParsingErrors(sensorContext, treeOrErrorMap, filenameToCacheEntry);
 
     goProgressReport.setStep(GoProgressReport.Step.ANALYZING);
     visitTrees(visitors, statistics, treeOrErrorMap, filenameToCacheEntry);
+  }
+
+  /**
+   * The directory (every file in one batch shares it, so any key's parent identifies the whole batch)
+   * plus each file's own name — the per-file parse timing this can't show is already on the Go side's
+   * own {@code parse.file} spans, one per file in this same batch.
+   */
+  private static String parseDetail(Map<String, String> filenameToContentMap) {
+    var paths = filenameToContentMap.keySet().stream().sorted().map(Path::of).toList();
+    if (paths.isEmpty()) {
+      return "";
+    }
+    var parent = paths.get(0).getParent();
+    var directory = parent != null ? parent.toString() : ".";
+    var basenames = paths.stream()
+      .map(Path::getFileName)
+      .map(Path::toString)
+      .collect(Collectors.joining(", "));
+    return directory + ": " + basenames;
   }
 
   private void handleParsingErrors(SensorContext sensorContext, Map<String, TreeOrError> treeOrErrorMap, Map<String, CacheHandler.CacheEntry> filenameToCacheResult) {
@@ -297,7 +317,7 @@ public class GoSensor implements Sensor {
           continue;
         }
         String visitorId = visitor.getClass().getSimpleName();
-        statistics.time(visitorId, () -> visitor.scan(inputFileContext, tree));
+        statistics.time(visitorId, () -> inputFileContext.inputFile().toString(), () -> visitor.scan(inputFileContext, tree));
       } catch (RuntimeException e) {
         inputFileContext.reportAnalysisError(e.getMessage(), null);
         var message = "Cannot analyse '" + inputFileContext.inputFile() + "': " + e.getMessage();

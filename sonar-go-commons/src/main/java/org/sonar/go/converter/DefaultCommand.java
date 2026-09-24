@@ -64,26 +64,56 @@ public class DefaultCommand implements Command {
     return command;
   }
 
+  /**
+   * Every region below is wrapped in a {@link ConverterTracing} span so a benchmark can see the split
+   * between starting the process, feeding it the batch, reading its answer back and reaping it — the
+   * four costs that a long-lived server mode would change. The spans cost nothing when untraced, and
+   * every argument they carry is O(1) to produce for the same reason.
+   */
   @Override
   public String executeCommand(Map<String, String> filenameToContentMap) throws IOException, InterruptedException {
-    var byteBuffers = convertToBytesArray(filenameToContentMap);
+    List<ByteBuffer> byteBuffers;
+    try (var span = ConverterTracing.span("batch.encode", "files", filenameToContentMap.size())) {
+      byteBuffers = convertToBytesArray(filenameToContentMap);
+    }
 
     var processBuilder = new ProcessBuilder(getCommand());
     var errorConsumer = new ExternalProcessStreamConsumer();
 
-    var process = processBuilder.start();
+    Process process;
+    try (var span = ConverterTracing.span("spawn")) {
+      process = processBuilder.start();
+      // The spawned process closes the matching flow arrow using this same pid as the flow id.
+      span.arg("pid", process.pid());
+    }
     try {
       errorConsumer.consumeStream(process.getErrorStream(), LOG::debug);
-      try (var out = process.getOutputStream()) {
-        for (ByteBuffer byteBuffer : byteBuffers) {
-          out.write(byteBuffer.array());
+      try (var span = ConverterTracing.span("write.stdin")) {
+        long written = 0;
+        try (var out = process.getOutputStream()) {
+          for (ByteBuffer byteBuffer : byteBuffers) {
+            var bytes = byteBuffer.array();
+            out.write(bytes);
+            written += bytes.length;
+          }
         }
+        span.arg("bytes", written);
       }
       String output;
-      try (var in = process.getInputStream()) {
-        output = readAsString(in);
+      try (var span = ConverterTracing.span("drain.stdout")) {
+        try (var in = process.getInputStream()) {
+          output = readAsString(in);
+        }
+        span.arg("chars", output.length());
       }
-      boolean exited = process.waitFor(PROCESS_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+      boolean exited;
+      try (var span = ConverterTracing.span("waitFor")) {
+        exited = process.waitFor(PROCESS_TIMEOUT_MS, TimeUnit.MILLISECONDS);
+        if (exited) {
+          // Only meaningful once it has exited; exitValue() throws while the process is still alive.
+          span.arg("exitCode", process.exitValue());
+        }
+      }
       if (exited && process.exitValue() != 0) {
         throw new ParseException("Go executable returned non-zero exit value: " + process.exitValue());
       }
