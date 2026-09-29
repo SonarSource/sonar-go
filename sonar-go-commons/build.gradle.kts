@@ -31,8 +31,10 @@ dependencies {
     testImplementation(libs.awaitility)
     testImplementation(libs.junit.jupiter.api)
     testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.logback.classic)
     testImplementation(libs.mockito.core)
     testImplementation(libs.sonar.plugin.api)
+    testImplementation(libs.sonar.plugin.api.test.fixtures)
     testImplementation(project(":sonar-go-to-slang", configuration = "goBinaries"))
 
     testRuntimeOnly(libs.junit.jupiter.engine)

@@ -31,6 +31,20 @@ import (
 	"golang.org/x/tools/go/gcexportdata"
 )
 
+func typeCheckAst(
+	ctx context.Context,
+	fileSet *token.FileSet,
+	astFiles map[string]AstFileOrError,
+	debugTypeCheck bool,
+	gcExportDataDir string,
+	moduleName string,
+	moduleBaseDir string,
+	gcExporter GcExporter,
+) (*types.Info, []error) {
+	crossIndex := &crossModuleIndex{dir: gcExportDataDir}
+	return typeCheckAstWithCrossIndex(ctx, fileSet, astFiles, debugTypeCheck, gcExportDataDir, moduleName, moduleBaseDir, gcExporter, crossIndex)
+}
+
 func TestImportExistingPackage_returnsPackage(t *testing.T) {
 	importer := &localImporter{}
 	pkg, err := importer.Import(context.Background(), "net/http")
@@ -525,6 +539,29 @@ func TestCrossModuleIndex_buildIgnoresFilesThatCanSatisfyNoImportPath(t *testing
 
 	// notes.txt and rootlevel.o are rejected before the counter, other.o after it.
 	assert.Equal(t, 2, idx.oFiles)
+}
+
+func TestCrossModuleIndex_addedExportsKeepWalkDirOrderForAmbiguousImports(t *testing.T) {
+	dir := t.TempDir()
+	createTestExportData(t, filepath.Join(dir, "lib"), "util")
+	createTestExportData(t, filepath.Join(dir, "lib-v2"), "util")
+	idx := &crossModuleIndex{dir: dir}
+	_, found := idx.lookup(context.Background(), "util", "other")
+	require.True(t, found)
+
+	newExport := filepath.Join(dir, "lib-1", "util", "util.o")
+	createTestExportData(t, filepath.Join(dir, "lib-1"), "util")
+	idx.addExportedFile(newExport)
+
+	fresh := &crossModuleIndex{dir: dir}
+	_, found = fresh.lookup(context.Background(), "util", "other")
+	require.True(t, found)
+	require.Len(t, idx.byPath["util"], 3)
+	assert.Equal(t, []string{"lib", "lib-1", "lib-v2"}, []string{
+		idx.byPath["util"][0].baseDir, idx.byPath["util"][1].baseDir, idx.byPath["util"][2].baseDir,
+	}, "ambiguous imports must keep the first match that WalkDir would visit")
+	assert.Equal(t, fresh.byPath["util"], idx.byPath["util"], "incremental insertion must match a fresh WalkDir")
+	assert.Equal(t, 1, idx.builds, "adding export data must not walk the tree again")
 }
 
 func TestTryLoadExportData_unreadableFileYieldsAnEmptyPackage(t *testing.T) {

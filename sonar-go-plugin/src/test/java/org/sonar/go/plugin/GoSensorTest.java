@@ -30,6 +30,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.function.BiConsumer;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
@@ -63,7 +67,7 @@ import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
 import org.sonar.check.Rule;
 import org.sonar.go.converter.GoConverter;
-import org.sonar.go.converter.GoParseCommand;
+import org.sonar.go.converter.GoServerProcess;
 import org.sonar.go.testing.TestInputFileCreator;
 import org.sonar.go.testing.TextRangeAssert;
 import org.sonar.plugins.go.api.ParseException;
@@ -100,6 +104,8 @@ class GoSensorTest {
   private static final SonarRuntime SONAR_LINT_RUNTIME = SonarRuntimeImpl.forSonarLint(Version.create(13, 0));
   public static final SonarRuntime SQ_TELEMETRY_NOT_SUPPORTING_RUNTIME = SonarRuntimeImpl.forSonarQube(Version.create(9, 9), SonarQubeSide.SCANNER, SonarEdition.COMMUNITY);
   private GoConverter singleInstanceGoConverter;
+  // The process the plugin injects into the sensor and the converter
+  private GoServerProcess goProcess;
   private Path projectDir;
   private File baseDir;
   private SensorContextTester context;
@@ -118,7 +124,8 @@ class GoSensorTest {
 
     var workDir = Files.createTempDirectory("gotest");
     workDir.toFile().deleteOnExit();
-    singleInstanceGoConverter = new GoConverter(workDir.toFile());
+    goProcess = new GoServerProcess(workDir.toFile());
+    singleInstanceGoConverter = new GoConverter(workDir.toFile(), goProcess);
     projectDir = Files.createTempDirectory("gotestProject");
     projectDir.toFile().deleteOnExit();
     sensorContext = SensorContextTester.create(workDir);
@@ -136,6 +143,47 @@ class GoSensorTest {
     sensor("S1110").describe(descriptor);
     assertThat(descriptor.name()).isEqualTo("Code Quality and Security for Go");
     assertThat(descriptor.languages()).containsOnly("go");
+  }
+
+  @Test
+  void overlappingExecutionsKeepTheirOwnMetrics() throws Exception {
+    var secondContext = SensorContextTester.create(projectDir);
+    secondContext.setRuntime(SQ_LTS_RUNTIME);
+    var initialized = new CountDownLatch(2);
+    var createdMetrics = new ConcurrentHashMap<Thread, GoSensor.AnalysisMetrics>();
+    var processedMetrics = new ConcurrentHashMap<Thread, GoSensor.AnalysisMetrics>();
+    var sharedSensor = new GoSensor(checkFactory(), fileLinesContextFactory, new DefaultNoSonarFilter(),
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProcess, new GoProjectSensor()) {
+      @Override
+      protected AnalysisMetrics initialize(org.sonar.api.batch.sensor.SensorContext context) {
+        var metrics = super.initialize(context);
+        createdMetrics.put(Thread.currentThread(), metrics);
+        initialized.countDown();
+        try {
+          assertThat(initialized.await(10, TimeUnit.SECONDS)).isTrue();
+        } catch (InterruptedException e) {
+          Thread.currentThread().interrupt();
+          throw new IllegalStateException(e);
+        }
+        return metrics;
+      }
+
+      @Override
+      protected void processMetrics(AnalysisMetrics metrics) {
+        processedMetrics.put(Thread.currentThread(), metrics);
+        super.processMetrics(metrics);
+      }
+    };
+
+    try (var executor = Executors.newFixedThreadPool(2)) {
+      var first = executor.submit(() -> sharedSensor.execute(sensorContext));
+      var second = executor.submit(() -> sharedSensor.execute(secondContext));
+      first.get(30, TimeUnit.SECONDS);
+      second.get(30, TimeUnit.SECONDS);
+    }
+
+    assertThat(createdMetrics).hasSize(2);
+    assertThat(processedMetrics).containsExactlyInAnyOrderEntriesOf(createdMetrics);
   }
 
   @Test
@@ -672,7 +720,7 @@ class GoSensorTest {
     when(fileLinesContextFactory.createFor(any(InputFile.class))).thenReturn(fileLinesContext);
     var goProjectSensor = new GoProjectSensor();
     new GoSensor(checkFactory("S1135"), fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProjectSensor).execute(multiModContext);
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProcess, goProjectSensor).execute(multiModContext);
     goProjectSensor.execute(multiModContext);
 
     verify(multiModContext).addTelemetryProperty("go.used_version", "1.21;1.23");
@@ -819,14 +867,13 @@ class GoSensorTest {
 
   @Test
   void shouldSetDebugTypeCheck() {
-    var command = mock(GoParseCommand.class);
-    singleInstanceGoConverter = new GoConverter(command);
+    singleInstanceGoConverter = spy(singleInstanceGoConverter);
     sensorContext.settings().setProperty("sonar.go.internal.debugTypeCheck", true);
 
     GoSensor sensor = sensor();
     sensor.execute(sensorContext);
 
-    verify(command, times(1)).debugTypeCheck();
+    verify(singleInstanceGoConverter, times(1)).debugTypeCheck();
   }
 
   @Test
@@ -1358,18 +1405,55 @@ class GoSensorTest {
   }
 
   @Test
-  void shouldSkipExecutionIfGoConverterNotInitialized() {
-    var goConverterMock = mock(GoConverter.class);
-    when(goConverterMock.isInitialized()).thenReturn(false);
-    var sensor = new GoSensor(checkFactory(), fileLinesContextFactory, new DefaultNoSonarFilter(), new GoLanguage(new MapSettings().asConfig()), goConverterMock,
-      new GoProjectSensor());
+  void shouldSkipExecutionWithoutGoExecutableInSonarLint() {
     context.setRuntime(SONAR_LINT_RUNTIME);
+    context.fileSystem().add(createInputFile("main.go", "package main\n\nfunc main() {}\n", baseDir));
 
-    sensor.execute(context);
+    withUnsupportedArchitecture(() -> sensor(checkFactory()).execute(context));
 
     assertThat(context.allIssues()).isEmpty();
     assertThat(logTester.logs(Level.INFO))
-      .contains("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
+      .anyMatch(log -> log.startsWith("Skipping the Go analysis, parsing is not possible without the Go executable: Unsupported OS/architecture: "));
+    assertThat(logTester.logs(Level.ERROR)).isEmpty();
+  }
+
+  @Test
+  void shouldParseAllDirectoriesInOneGoProcessStoppedAtTheEndOfTheAnalysis() {
+    for (var directory : List.of("a", "b", "c")) {
+      sensorContext.fileSystem().add(createInputFile(directory + "/main.go", "package " + directory + "\n\nfunc main() {}\n", baseDir));
+    }
+
+    sensor().execute(sensorContext);
+
+    var debugLogs = logTester.logs(Level.DEBUG);
+    assertThat(debugLogs.stream().filter(log -> log.startsWith("Parse directory"))).hasSize(3);
+    assertThat(debugLogs.stream().filter("Starting in server mode"::equals)).hasSize(1);
+    assertThat(sensorContext.allAnalysisErrors()).isEmpty();
+    // Closed at the end of the analysis, until the next one starts it again
+    assertThatThrownBy(() -> goProcess.execute(List.of(), Map.of()))
+      .isInstanceOf(IllegalStateException.class)
+      .hasMessage("The Go process is not started");
+  }
+
+  @Test
+  void shouldFailTheAnalysisWithoutGoExecutable() {
+    context.fileSystem().add(createInputFile("main.go", "package main\n\nfunc main() {}\n", baseDir));
+
+    withUnsupportedArchitecture(() -> sensor(checkFactory()).execute(context));
+
+    assertThat(context.allIssues()).isEmpty();
+    assertThat(logTester.logs(Level.ERROR)).containsExactly("An error occurred during the analysis of the Go language:");
+    assertThat(logTester.logs(Level.DEBUG)).noneMatch(log -> log.startsWith("Parse directory"));
+  }
+
+  private static void withUnsupportedArchitecture(Runnable runnable) {
+    var currentArch = System.getProperty("os.arch");
+    try {
+      System.setProperty("os.arch", "unsupported-arch");
+      runnable.run();
+    } finally {
+      System.setProperty("os.arch", currentArch);
+    }
   }
 
   @Test
@@ -1420,7 +1504,7 @@ class GoSensorTest {
     ActiveRules activeRules = rulesBuilder.build();
     CheckFactory checkFactory = new CheckFactory(activeRules);
     return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, new GoProjectSensor()) {
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProcess, new GoProjectSensor()) {
       @Override
       protected GoChecks mainAndTestChecks() {
         return initializeChecks(mainAndTestChecks);
@@ -1440,12 +1524,12 @@ class GoSensorTest {
 
   private GoSensor sensor(CheckFactory checkFactory) {
     return new GoSensor(checkFactory, fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, new GoProjectSensor());
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProcess, new GoProjectSensor());
   }
 
   private GoSensor sensorWithProjectSensor(GoProjectSensor goProjectSensor, String... ruleKeys) {
     return new GoSensor(checkFactory(ruleKeys), fileLinesContextFactory, new DefaultNoSonarFilter(),
-      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProjectSensor);
+      new GoLanguage(new MapSettings().asConfig()), singleInstanceGoConverter, goProcess, goProjectSensor);
   }
 
   protected CheckFactory checkFactory(String... ruleKeys) {

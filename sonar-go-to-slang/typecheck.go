@@ -141,12 +141,13 @@ type oFileCandidate struct {
 	filePath string
 }
 
-// crossModuleIndex is a one-time index of gcExportDataDir mapping an import path to every .o file
-// that can satisfy it. The tree is walked at most once per analysis run and shared across all packages,
+// crossModuleIndex indexes one gcExportDataDir, mapping an import path to every .o file
+// that can satisfy it. The tree is walked at most once per directory in the process and shared across requests,
 // making each cross-module lookup an O(1) map access.
 type crossModuleIndex struct {
-	dir  string
-	once sync.Once
+	dir   string
+	once  sync.Once
+	ready bool
 	// builds counts how many times the tree was walked; it must remain 1 per run and is asserted
 	// by the performance regression test.
 	builds int
@@ -185,41 +186,76 @@ func (idx *crossModuleIndex) buildTraced(ctx context.Context) {
 func (idx *crossModuleIndex) build() {
 	idx.builds++
 	idx.byPath = make(map[string][]oFileCandidate)
+	defer func() { idx.ready = true }()
 	if idx.dir == "" {
 		return
 	}
-	separator := string(os.PathSeparator)
 	_ = filepath.WalkDir(idx.dir, func(walkPath string, d fs.DirEntry, err error) error {
 		if err != nil || d.IsDir() {
 			return nil
 		}
-		name := d.Name()
-		if !strings.HasSuffix(name, ".o") {
-			return nil
-		}
-		relPath, relErr := filepath.Rel(idx.dir, walkPath)
-		if relErr != nil {
-			return nil
-		}
-		dir := filepath.Dir(relPath)
-		if dir == "." {
-			// The file sits directly under gcExportDataDir, so no import path can match it.
-			return nil
-		}
-		packageName := strings.TrimSuffix(name, ".o")
-		idx.oFiles++
-		parts := strings.Split(dir, separator)
-		if parts[len(parts)-1] != packageName {
-			// Not the <importPath>/<packageName>.o layout, so it cannot satisfy any import path.
-			return nil
-		}
-		for j := range parts {
-			importPath := strings.Join(parts[j:], "/")
-			baseDir := strings.Join(parts[:j], separator)
-			idx.byPath[importPath] = append(idx.byPath[importPath], oFileCandidate{baseDir: baseDir, filePath: walkPath})
-		}
+		idx.registerFile(walkPath)
 		return nil
 	})
+}
+
+// addExportedFile updates an index that was already built before an export. A lazy index will see the file
+// in its first directory walk instead. Requests are served sequentially, so this needs no separate lock.
+func (idx *crossModuleIndex) addExportedFile(path string) {
+	if idx.ready {
+		idx.registerFile(path)
+	}
+}
+
+func (idx *crossModuleIndex) registerFile(path string) {
+	name := filepath.Base(path)
+	if !strings.HasSuffix(name, ".o") {
+		return
+	}
+	relPath, err := filepath.Rel(idx.dir, path)
+	if err != nil || relPath == ".." || strings.HasPrefix(relPath, ".."+string(os.PathSeparator)) {
+		return
+	}
+	dir := filepath.Dir(relPath)
+	if dir == "." {
+		return
+	}
+	parts := strings.Split(dir, string(os.PathSeparator))
+	if parts[len(parts)-1] != strings.TrimSuffix(name, ".o") {
+		idx.oFiles++
+		return
+	}
+	// A package may be exported again; retain one candidate per file.
+	fullPath := strings.Join(parts, "/")
+	for _, candidate := range idx.byPath[fullPath] {
+		if candidate.filePath == path {
+			return
+		}
+	}
+	idx.oFiles++
+	for j := range parts {
+		importPath := strings.Join(parts[j:], "/")
+		candidate := oFileCandidate{baseDir: strings.Join(parts[:j], string(os.PathSeparator)), filePath: path}
+		// WalkDir uses lexical order. Keep the same first-match behavior when adding exports later.
+		candidates := idx.byPath[importPath]
+		position := sort.Search(len(candidates), func(i int) bool { return !walkOrderLess(candidates[i].filePath, path) })
+		candidates = append(candidates, oFileCandidate{})
+		copy(candidates[position+1:], candidates[position:])
+		candidates[position] = candidate
+		idx.byPath[importPath] = candidates
+	}
+}
+
+// walkOrderLess compares path components in the order filepath.WalkDir visits them.
+func walkOrderLess(a, b string) bool {
+	aParts := strings.Split(a, string(os.PathSeparator))
+	bParts := strings.Split(b, string(os.PathSeparator))
+	for i := 0; i < len(aParts) && i < len(bParts); i++ {
+		if aParts[i] != bParts[i] {
+			return aParts[i] < bParts[i]
+		}
+	}
+	return len(aParts) < len(bParts)
 }
 
 // tryLoadExportData also returns the size of the .o file it read, which the stat below yields for free.
@@ -272,7 +308,9 @@ func getEmptyPackage(path string) *types.Package {
 	return pkg
 }
 
-func typeCheckAst(
+// typeCheckAstWithCrossIndex resolves cross-module imports with an index the caller can reuse as long as the
+// GC export data directory does not change.
+func typeCheckAstWithCrossIndex(
 	ctx context.Context,
 	fileSet *token.FileSet,
 	astFiles map[string]AstFileOrError,
@@ -281,12 +319,11 @@ func typeCheckAst(
 	moduleName string,
 	moduleBaseDir string,
 	gcExporter GcExporter,
+	// Shared across every per-package importer so gcExportDataDir is walked at most once per run.
+	crossIndex *crossModuleIndex,
 ) (*types.Info, []error) {
 	astFilesPerPackage := groupFilesPerPackageName(astFiles)
 	errors := make([]error, 0)
-
-	// Shared across every per-package importer so gcExportDataDir is walked at most once per run.
-	crossIndex := &crossModuleIndex{dir: gcExportDataDir}
 
 	info := &types.Info{
 		Types:        make(map[ast.Expr]types.TypeAndValue),

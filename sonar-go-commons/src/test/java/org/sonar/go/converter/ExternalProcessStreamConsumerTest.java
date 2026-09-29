@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.Test;
 
@@ -157,7 +158,7 @@ class ExternalProcessStreamConsumerTest {
   }
 
   @Test
-  void shouldHandleInterruptedExceptionDuringShutdown() {
+  void shouldHandleInterruptedExceptionDuringShutdown() throws InterruptedException {
     var consumer = new ExternalProcessStreamConsumer();
     var input = "test line";
     var inputStream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
@@ -170,17 +171,16 @@ class ExternalProcessStreamConsumerTest {
 
     await().atMost(5, TimeUnit.SECONDS).until(() -> taskStarted.getCount() == 0);
 
-    Thread currentThread = Thread.currentThread();
-    var interrupterThread = new Thread(() -> {
-      await().pollDelay(50, TimeUnit.MILLISECONDS).atMost(100, TimeUnit.MILLISECONDS).until(() -> true);
-      currentThread.interrupt();
+    var interruptRestored = new AtomicBoolean();
+    var shutdownThread = new Thread(() -> {
+      Thread.currentThread().interrupt();
+      consumer.shutdown();
+      interruptRestored.set(Thread.currentThread().isInterrupted());
     });
+    shutdownThread.start();
+    shutdownThread.join(TimeUnit.SECONDS.toMillis(5));
 
-    interrupterThread.start();
-    consumer.shutdown();
-
-    assertThat(Thread.interrupted()).isTrue();
-
-    interrupterThread.interrupt();
+    assertThat(shutdownThread.isAlive()).isFalse();
+    assertThat(interruptRestored).isTrue();
   }
 }

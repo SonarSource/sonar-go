@@ -17,32 +17,26 @@
 package org.sonar.go.converter;
 
 import java.io.ByteArrayInputStream;
-import java.lang.management.ManagementFactory;
-import java.lang.management.ThreadInfo;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 import javax.annotation.Nonnull;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Isolated;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 
-@Isolated
 class ExternalProcessStreamConsumerThreadTest {
 
   @Test
   void shouldNotLeakThreads() {
-    var threadsBefore = getStreamConsumerThreadsName();
-
     var consumer = new ExternalProcessStreamConsumer();
     var input = "test line";
     var inputStream = new ByteArrayInputStream(input.getBytes(StandardCharsets.UTF_8));
 
     var taskFinished = new CountDownLatch(1);
+    var worker = new AtomicReference<Thread>();
     var streamConsumer = new ExternalProcessStreamConsumer.StreamConsumer() {
       @Override
       public void consumeLine(@Nonnull String line) {
@@ -51,27 +45,17 @@ class ExternalProcessStreamConsumerThreadTest {
 
       @Override
       public void finished() {
+        worker.set(Thread.currentThread());
         taskFinished.countDown();
       }
     };
 
     consumer.consumeStream(inputStream, streamConsumer);
     await().atMost(5, TimeUnit.SECONDS).until(() -> taskFinished.getCount() == 0);
+    assertThat(worker.get().getName()).isEqualTo("stream-consumer");
     consumer.shutdown();
 
     await().atMost(5, TimeUnit.SECONDS)
-      .untilAsserted(() -> assertThat(getStreamConsumerThreadsName()).isEqualTo(threadsBefore));
-  }
-
-  private static List<String> getStreamConsumerThreadsName() {
-    var result = new ArrayList<String>();
-    var threadMXBean = ManagementFactory.getThreadMXBean();
-    var threads = threadMXBean.dumpAllThreads(true, true);
-    for (ThreadInfo threadInfo : threads) {
-      if (threadInfo.getThreadName().contains("stream-consumer")) {
-        result.add(threadInfo.getThreadName());
-      }
-    }
-    return result;
+      .untilAsserted(() -> assertThat(worker.get().isAlive()).isFalse());
   }
 }

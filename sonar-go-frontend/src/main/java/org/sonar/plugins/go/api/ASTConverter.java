@@ -39,6 +39,12 @@ public interface ASTConverter {
     // Nothing to do by default
   }
 
+  /**
+   * Kept for compatibility with external implementations. Process availability is managed by the sensor.
+   *
+   * @deprecated the sensor starts the Go process before parsing
+   */
+  @Deprecated(since = "1.47", forRemoval = true)
   default boolean isInitialized() {
     return true;
   }

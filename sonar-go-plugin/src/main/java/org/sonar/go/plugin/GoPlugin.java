@@ -50,6 +50,7 @@ public class GoPlugin implements Plugin {
 
     context.addExtensions(
       GoLanguage.class,
+      InstanceScopeGoServerProcess.class,
       InstanceScopeGoConverter.class,
       GoProjectSensor.class,
       sensor(),

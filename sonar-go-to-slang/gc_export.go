@@ -31,12 +31,14 @@ type GcExporter struct {
 	packagesImportIssueInvalidMemoryAddress []string
 }
 
-func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) []string {
 	packagesToExport := gc.findPackagesToExport(info, packagePath)
 
+	exportedFiles := make([]string, 0, len(packagesToExport))
 	for _, pkgToExport := range packagesToExport {
-		gc.exportPackage(ctx, pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck)
+		exportedFiles = append(exportedFiles, gc.exportPackage(ctx, pkgToExport, exportDataDir, moduleName, packagePath, debugTypeCheck))
 	}
+	return exportedFiles
 }
 
 func (gc *GcExporter) PrintExportIssues() {
@@ -93,7 +95,7 @@ func (gc *GcExporter) findMultiplePackages(info *types.Info, packagesToExport []
 	return packagesToExport
 }
 
-func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) {
+func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) string {
 	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
 	if !strings.HasSuffix(fullExportDataDir, pkgToExport.Path()) {
 		fullExportDataDir = filepath.Join(fullExportDataDir, pkgToExport.Path())
@@ -123,6 +125,7 @@ func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Pack
 		fmt.Fprintf(os.Stderr, "Error writing gcexportdata: %s\n", err)
 		panic("Error writing gcexportdata")
 	}
+	return exportDataFile
 }
 
 func (gc *GcExporter) isBlank(text string) bool {

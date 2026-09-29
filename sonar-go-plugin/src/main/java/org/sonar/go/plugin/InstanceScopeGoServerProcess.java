@@ -14,14 +14,20 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.go.converter;
+package org.sonar.go.plugin;
 
-import java.io.IOException;
-import java.util.List;
-import java.util.Map;
+import org.sonar.api.scanner.ScannerSide;
+import org.sonar.api.utils.TempFolder;
+import org.sonar.go.converter.GoServerProcess;
+import org.sonarsource.api.sonarlint.SonarLintSide;
 
-public interface Command {
-  List<String> getCommand();
-
-  String executeCommand(Map<String, String> filenameToContentMap) throws IOException, InterruptedException;
+/**
+ * The Go process of the plugin, which every analysis starts and closes. Its directory holds the Go executable.
+ */
+@ScannerSide
+@SonarLintSide(lifespan = SonarLintSide.INSTANCE)
+public class InstanceScopeGoServerProcess extends GoServerProcess {
+  public InstanceScopeGoServerProcess(TempFolder tempFolder) {
+    super(tempFolder.newDir());
+  }
 }

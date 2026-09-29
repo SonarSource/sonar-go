@@ -155,9 +155,9 @@ func TestAnalysisPipelineEmitsExpectedSpans(t *testing.T) {
 	t.Setenv(TraceEnvVar, tracePath)
 	t.Setenv(ExecTraceEnvVar, "")
 
-	resetCommandLineFlagsToDefault()
-	os.Args = []string{"cmd"}
-	callMainStdinFromFile("resources/simple_file_with_packages.go.source")
+	initTracing()
+	serveRequests(t, &server{}, encodeRequest(nil, resourceFiles(t, "resources/simple_file_with_packages.go.source")))
+	shutdownTracing()
 
 	events := readTraceEvents(t, tracePath)
 	for _, name := range []string{
@@ -204,9 +204,10 @@ func TestGcExportEmitsWriteSpan(t *testing.T) {
 	t.Setenv(TraceEnvVar, tracePath)
 	t.Setenv(ExecTraceEnvVar, "")
 
-	resetCommandLineFlagsToDefault()
-	os.Args = []string{"cmd", "-dump_gc_export_data", "-gc_export_data_dir", t.TempDir()}
-	callMainStdinFromFile("resources/simple_file_with_packages.go.source")
+	initTracing()
+	serveRequests(t, &server{}, encodeRequest([]string{"-dump_gc_export_data", "-gc_export_data_dir", t.TempDir()},
+		resourceFiles(t, "resources/simple_file_with_packages.go.source")))
+	shutdownTracing()
 
 	events := readTraceEvents(t, tracePath)
 	gcEvent := eventNamed(events, "gcexport.write")
@@ -386,4 +387,53 @@ func TestWriteEventDropsAnEventItCannotSerialise(t *testing.T) {
 	events := readTraceEvents(t, tracePath)
 	assert.Nil(t, eventNamed(events, "unserialisable"))
 	assert.NotNil(t, eventNamed(events, "serialisable"), "a dropped event must not stop the ones after it")
+}
+
+func TestServerEmitsOneMainSpanPerRequestWithinTheServerSpan(t *testing.T) {
+	tracePath := filepath.Join(t.TempDir(), "trace.ndjson")
+	t.Setenv(TraceEnvVar, tracePath)
+	t.Setenv(ExecTraceEnvVar, "")
+	initTracing()
+	defer shutdownTracing()
+
+	serveRequests(t, &server{},
+		encodeRequest([]string{"-module_name", "example.com/mod"}, map[string]string{"a/main.go": simpleMain}),
+		encodeRequest([]string{"-module_name", "example.com/mod"}, map[string]string{"b/main.go": simpleMain}))
+
+	events := readTraceEvents(t, tracePath)
+	var mainSpans []map[string]any
+	for _, event := range events {
+		if event["name"] == "main" {
+			mainSpans = append(mainSpans, event)
+		}
+	}
+	require.Len(t, mainSpans, 2)
+	assert.Equal(t, "a", mainSpans[0]["args"].(map[string]any)["lane"])
+	assert.Equal(t, float64(1), mainSpans[1]["args"].(map[string]any)["fileCount"])
+
+	server := eventNamed(events, "server")
+	require.NotNil(t, server)
+	assert.Equal(t, float64(2), server["args"].(map[string]any)["requestCount"])
+	serverStart, serverEnd := server["ts"].(float64), server["ts"].(float64)+server["dur"].(float64)
+	flow := eventNamed(events, "spawn")
+	require.NotNil(t, flow, "the arrow from the spawning JVM must be closed once per process")
+	assert.GreaterOrEqual(t, flow["ts"].(float64), serverStart)
+	for _, mainSpan := range mainSpans {
+		assert.GreaterOrEqual(t, mainSpan["ts"].(float64), serverStart)
+		assert.LessOrEqual(t, mainSpan["ts"].(float64)+mainSpan["dur"].(float64), serverEnd)
+	}
+	lane := eventWhere(events, func(event map[string]any) bool { return event["name"] == "thread_name" })
+	assert.Equal(t, "server", lane["args"].(map[string]any)["name"])
+}
+
+// resourceFiles maps each of the given files to its content, named by its path like the Java side does.
+func resourceFiles(t *testing.T, filePaths ...string) map[string]string {
+	t.Helper()
+	files := make(map[string]string, len(filePaths))
+	for _, filePath := range filePaths {
+		content, err := os.ReadFile(filePath)
+		require.NoError(t, err)
+		files[filePath] = string(content)
+	}
+	return files
 }

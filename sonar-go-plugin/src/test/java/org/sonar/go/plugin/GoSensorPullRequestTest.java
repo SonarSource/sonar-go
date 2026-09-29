@@ -45,6 +45,7 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.testfixtures.log.LogTesterJUnit5;
 import org.sonar.api.utils.Version;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.converter.GoServerProcess;
 import org.sonar.go.plugin.caching.DummyReadCache;
 import org.sonar.go.plugin.caching.DummyWriteCache;
 import org.sonar.go.report.GoProgressReport;
@@ -124,8 +125,9 @@ class GoSensorPullRequestTest {
     sensorContext.setNextCache(nextCache);
 
     converter = spy(TestGoConverterSingleFile.GO_CONVERTER);
+    // The converter runs in the process shared by the tests of the JVM, which the sensor must not stop
     sensor = new GoSensor(mock(CheckFactory.class), mock(FileLinesContextFactory.class), mock(NoSonarFilter.class),
-      new GoLanguage(new MapSettings().asConfig()), converter, new GoProjectSensor());
+      new GoLanguage(new MapSettings().asConfig()), converter, mock(GoServerProcess.class), new GoProjectSensor());
     visitor = spy(new SuccessfulReuseVisitor());
     goProgressReport = new GoProgressReport("Analysis progress", TimeUnit.SECONDS.toMillis(10));
     goFolders = List.of(new GoFolder("myFolder", List.of(inputFileContext)));
@@ -390,7 +392,7 @@ class GoSensorPullRequestTest {
 
     var goProjectSensor = new GoProjectSensor();
     var sensorWithCounter = new GoSensor(mock(CheckFactory.class), mock(FileLinesContextFactory.class), mock(NoSonarFilter.class),
-      new GoLanguage(new MapSettings().asConfig()), converter, goProjectSensor);
+      new GoLanguage(new MapSettings().asConfig()), converter, mock(GoServerProcess.class), goProjectSensor);
 
     goProgressReport.start(goFolders);
     sensorWithCounter.analyseDirectory(

@@ -19,14 +19,15 @@ package org.sonar.go.plugin;
 import org.sonar.api.scanner.ScannerSide;
 import org.sonar.api.utils.TempFolder;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.converter.GoServerProcess;
 import org.sonarsource.api.sonarlint.SonarLintSide;
 
 @ScannerSide
 @SonarLintSide(lifespan = SonarLintSide.INSTANCE)
 public class InstanceScopeGoConverter extends GoConverter {
 
-  public InstanceScopeGoConverter(TempFolder tempFolder) {
-    super(tempFolder.newDir());
+  public InstanceScopeGoConverter(TempFolder tempFolder, GoServerProcess goProcess) {
+    super(tempFolder.newDir(), goProcess);
   }
 
 }

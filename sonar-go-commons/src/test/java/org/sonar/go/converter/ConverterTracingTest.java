@@ -16,12 +16,14 @@
  */
 package org.sonar.go.converter;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
-import org.sonar.go.testing.TestGoConverterSingleFile;
+import org.junit.jupiter.api.io.TempDir;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -96,14 +98,23 @@ class ConverterTracingTest {
   }
 
   @Test
-  void should_report_every_leg_of_a_real_round_trip_in_order() {
-    ConverterTracing.install(recording);
+  void should_report_every_leg_of_real_round_trips_in_order(@TempDir File tempDir) {
+    try (var process = new GoServerProcess(tempDir)) {
+      var converter = new GoConverter(tempDir, process);
+      ConverterTracing.install(recording);
+      process.start();
+      converter.parse(Map.of("foo.go", "package main\nfunc foo() {return 42}"), "example.com/mod");
+      converter.parse(Map.of("bar.go", "package main\nfunc bar() {}"), "example.com/mod");
+    }
 
-    TestGoConverterSingleFile.parse("package main\nfunc foo() {return 42}");
-
-    // The order is the round trip itself: build the payload, start the process, feed it, read it back,
-    // reap it, deserialize. A regression that moved work between legs would reorder or drop one.
-    assertThat(names).containsExactly("batch.encode", "spawn", "write.stdin", "drain.stdout", "waitFor", "tree.decode");
+    // The order is the round trip itself: build the payload, feed the process, read its answer back,
+    // deserialize. Both round trips share one process, started before them and reaped once closed. A
+    // regression that moved work between legs, or started a process per round trip, would reorder or add one.
+    assertThat(names).containsExactly(
+      "spawn",
+      "batch.encode", "write.stdin", "drain.stdout", "tree.decode",
+      "batch.encode", "write.stdin", "drain.stdout", "tree.decode",
+      "waitFor");
     assertThat(argOf("spawn", "pid")).isInstanceOf(Long.class);
     assertThat((Long) argOf("write.stdin", "bytes")).isPositive();
     assertThat((Integer) argOf("drain.stdout", "chars")).isPositive();

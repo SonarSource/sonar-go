@@ -18,9 +18,10 @@ package org.sonar.go.converter;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicBoolean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.go.persistence.JsonTree;
@@ -31,34 +32,40 @@ import org.sonar.plugins.go.api.TreeOrError;
 public class GoConverter implements ASTConverter {
   private static final Logger LOG = LoggerFactory.getLogger(GoConverter.class);
   public static final long MAX_SUPPORTED_SOURCE_FILE_SIZE = 1_500_000L;
-  private final GoParseCommand command;
-  private final AtomicBoolean isInitialized = new AtomicBoolean(false);
+  private String gcExportDataDir;
+  private String moduleBaseDir = ".";
+  private boolean debugTypeCheck;
+  private final GoServerProcess process;
 
+  /**
+   * Parses in a Go process of its own, extracted to the given directory and started right away. The process is never
+   * closed: it stops when the JVM exits, as its stdin is then closed. For callers that parse outside of an analysis, such
+   * as the tests of other analyzers; an analysis injects the process that its sensor starts and closes instead.
+   *
+   * @throws InitializationException when the Go executable cannot be extracted or started
+   */
   public GoConverter(File workDir) {
-    this(workDir, new SystemPlatformInfo());
+    this(workDir, startedProcess(workDir));
   }
 
-  public GoConverter(File workDir, PlatformInfo platformInfo) {
-    GoParseCommand commandOrNull;
-    try {
-      commandOrNull = new GoParseCommand(workDir, platformInfo);
-      isInitialized.set(true);
-    } catch (InitializationException e) {
-      LOG.warn("Go converter initialization failed: {}", e.getMessage());
-      commandOrNull = null;
-    }
-    this.command = commandOrNull;
+  /**
+   * @param workDir the directory whose "go" subdirectory holds the GC export data by default
+   * @param process the Go process to parse in, which the analysis starts and closes
+   */
+  public GoConverter(File workDir, GoServerProcess process) {
+    this.gcExportDataDir = new File(workDir, "go").getAbsolutePath();
+    this.process = process;
   }
 
-  // Visible for testing
-  public GoConverter(GoParseCommand command) {
-    this.command = command;
-    this.isInitialized.set(true);
+  private static GoServerProcess startedProcess(File workDir) {
+    var process = new GoServerProcess(workDir);
+    process.start();
+    return process;
   }
 
   @Override
   public Map<String, TreeOrError> parse(Map<String, String> filenameToContentMap, String moduleName) {
-    Map<String, TreeOrError> result = new HashMap<>(filenameToContentMap.size());
+    Map<String, TreeOrError> result = HashMap.newHashMap(filenameToContentMap.size());
     Map<String, String> filesToParse = new HashMap<>();
     for (Map.Entry<String, String> entry : filenameToContentMap.entrySet()) {
       String filename = entry.getKey();
@@ -70,8 +77,18 @@ public class GoConverter implements ASTConverter {
         filesToParse.put(filename, content);
       }
     }
+    if (filesToParse.isEmpty()) {
+      return result;
+    }
+    var arguments = new ArrayList<>(List.of("-module_name", moduleName, "-module_base_dir", moduleBaseDir, "-gc_export_data_dir", gcExportDataDir));
+    if (debugTypeCheck) {
+      arguments.add("-debug_type_check");
+    }
+    if (LOG.isDebugEnabled()) {
+      LOG.debug("Executing Go parse data command: {}", String.join(" ", arguments));
+    }
     try {
-      var json = command.executeGoParseCommand(filesToParse, moduleName);
+      var json = process.execute(arguments, filesToParse);
       // Deserializing the response is the last Java-side leg of the round trip, and on a large batch it
       // is not a rounding error next to the parse itself, so it gets a span of its own.
       try (var span = ConverterTracing.span("tree.decode", "format", "json", "chars", json.length())) {
@@ -79,9 +96,6 @@ public class GoConverter implements ASTConverter {
         span.arg("trees", trees.size());
         result.putAll(trees);
       }
-    } catch (InterruptedException e) {
-      Thread.currentThread().interrupt();
-      throw new ParseException("Go executable interrupted: " + e.getMessage(), null, e);
     } catch (IOException e) {
       throw new ParseException(e.getMessage(), null, e);
     }
@@ -89,24 +103,15 @@ public class GoConverter implements ASTConverter {
   }
 
   public void setGcExportDataDir(String gcExportDataDir) {
-    if (command != null) {
-      command.setGcExportDataDir(gcExportDataDir);
-    }
+    this.gcExportDataDir = gcExportDataDir;
   }
 
   public void setModuleBaseDir(String moduleBaseDir) {
-    if (command != null) {
-      command.setModuleBaseDir(moduleBaseDir);
-    }
+    this.moduleBaseDir = moduleBaseDir;
   }
 
   @Override
   public void debugTypeCheck() {
-    command.debugTypeCheck();
-  }
-
-  @Override
-  public boolean isInitialized() {
-    return isInitialized.get();
+    debugTypeCheck = true;
   }
 }

@@ -17,6 +17,7 @@
 package org.sonar.go.converter;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -27,6 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.mockito.ArgumentCaptor;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
@@ -58,10 +60,15 @@ import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.Assertions.from;
 import static org.assertj.core.api.Assertions.tuple;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class GoConverterTest {
   @TempDir
@@ -517,10 +524,69 @@ class GoConverterTest {
   }
 
   @Test
-  void shouldFailOnInvalidCommand() {
-    var command = new GoParseCommand(tempDir);
-    command.getCommand().set(0, "invalid-command");
-    GoConverter converter = new GoConverter(command);
+  void shouldParseInAProcessOfItsOwnOutsideOfAnAnalysis() {
+    // As in sonar-security's GoParseUtils. The process is never closed, so not in a temporary directory: Windows could
+    // not delete the running executable.
+    var converter = new GoConverter(TestGoConverterSingleFile.CONVERTER_DIR);
+    converter.debugTypeCheck();
+
+    var trees = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}"), "TestModuleName");
+
+    assertThat(trees.get("foo.go").tree()).isInstanceOf(TopLevelTree.class);
+  }
+
+  @Test
+  void shouldFailToCreateAConverterOfItsOwnWithoutGoExecutable() {
+    var currentArch = System.getProperty("os.arch");
+    try {
+      System.setProperty("os.arch", "unsupported-arch");
+
+      assertThatThrownBy(() -> new GoConverter(tempDir))
+        .isInstanceOf(InitializationException.class)
+        .hasMessageMatching("Unsupported OS/architecture: .+/unsupported-arch");
+    } finally {
+      System.setProperty("os.arch", currentArch);
+    }
+  }
+
+  @Test
+  void shouldFailWhenTheGoProcessIsNotStarted() {
+    var converter = new GoConverter(tempDir, new GoServerProcess(tempDir));
+    var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
+
+    assertThatThrownBy(() -> converter.parse(filenameToContentMap, "moduleName"))
+      .isInstanceOf(IllegalStateException.class)
+      .hasMessage("The Go process is not started");
+  }
+
+  @Test
+  void shouldNotSendAnEmptyParseRequest() throws IOException {
+    var process = mock(GoServerProcess.class);
+    var converter = new GoConverter(tempDir, process);
+    var tooLarge = "x".repeat((int) GoConverter.MAX_SUPPORTED_SOURCE_FILE_SIZE + 1);
+
+    assertThat(converter.parse(Map.of("large.go", tooLarge), "moduleName")).containsKey("large.go");
+    assertThat(converter.parse(Map.of(), "moduleName")).isEmpty();
+    verify(process, times(0)).execute(any(), any());
+  }
+
+  @Test
+  void shouldParseInTheGivenGoProcess() {
+    try (var process = new GoServerProcess(tempDir)) {
+      process.start();
+      var converter = new GoConverter(tempDir, process);
+
+      var trees = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}"), "moduleName");
+
+      assertThat(trees.get("foo.go").tree()).isInstanceOf(TopLevelTree.class);
+    }
+  }
+
+  @Test
+  void shouldFailOnInvalidCommand() throws IOException {
+    var process = mock(GoServerProcess.class);
+    when(process.execute(any(), any())).thenThrow(new IOException("Cannot run program \"invalid-command\""));
+    var converter = new GoConverter(tempDir, process);
     var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
     ParseException e = assertThrows(ParseException.class,
       () -> converter.parse(filenameToContentMap, "moduleName"));
@@ -550,13 +616,6 @@ class GoConverterTest {
     TreeOrError treeOrError = TestGoConverterSingleFile.parseAndReturnTreeOrError(bigCode);
     assertThat(treeOrError.isError()).isTrue();
     assertThat(treeOrError.error()).isEqualTo("The file size is too big and should be excluded, its size is 1500028 (maximum allowed is 1500000 bytes)");
-  }
-
-  @Test
-  void shouldThrowExceptionOnInvalidExecutablePath() {
-    assertThatThrownBy(() -> DefaultCommand.getBytesFromResource("invalid-exe-path"))
-      .isInstanceOf(InitializationException.class)
-      .hasMessage("invalid-exe-path binary not found on class path");
   }
 
   @Test
@@ -858,31 +917,26 @@ class GoConverterTest {
   }
 
   @Test
-  void shouldCallDebugTypeCheckOnCommand() {
-    var command = new GoParseCommand(tempDir);
-    var converter = new GoConverter(command);
+  void shouldSendItsCurrentOptionsWithEachParse() throws IOException {
+    var process = mock(GoServerProcess.class);
+    when(process.execute(any(), any())).thenReturn("{}");
+    var converter = new GoConverter(tempDir, process);
+    var files = Map.of("foo.go", "package main");
 
+    converter.parse(files, "example.com/first");
+    converter.setModuleBaseDir("service");
+    converter.setGcExportDataDir("precomputed");
+    // Called by every analysis, which must not add the option more than once
     converter.debugTypeCheck();
+    converter.debugTypeCheck();
+    converter.parse(files, "example.com/second");
 
-    assertThat(command.command).contains("-debug_type_check");
-  }
-
-  @Test
-  void shouldBeInitializedIfCommandCreated() {
-    var converter = new GoConverter(new GoParseCommand(tempDir));
-
-    assertThat(converter.isInitialized()).isTrue();
-  }
-
-  @Test
-  void shouldBeNotInitializedIfUnsupportedPlatform() {
-    var unsupportedPlatform = new TestPlatformInfo("unsupported-os", "unsupported-arch");
-
-    var converter = new GoConverter(tempDir, unsupportedPlatform);
-
-    assertThat(converter)
-      .isNotNull()
-      .returns(false, from(GoConverter::isInitialized));
+    var arguments = ArgumentCaptor.forClass(List.class);
+    verify(process, times(2)).execute(arguments.capture(), eq(files));
+    assertThat(arguments.getAllValues().get(0)).containsExactly(
+      "-module_name", "example.com/first", "-module_base_dir", ".", "-gc_export_data_dir", new File(tempDir, "go").getAbsolutePath());
+    assertThat(arguments.getAllValues().get(1)).containsExactly(
+      "-module_name", "example.com/second", "-module_base_dir", "service", "-gc_export_data_dir", "precomputed", "-debug_type_check");
   }
 
   @Test

@@ -75,13 +75,24 @@ Creating the symbolic link by hand solves this problem:
 
 ## Running
 
-Run with `-h`, `-help`, or `--help` to see usage.
+`sonar-go-to-slang` takes no command-line argument; given any, it prints its usage and exits. It reads
+requests from stdin until stdin is closed, and answers each of them on stdout, in order. The analyzer
+starts a single process per scan, which exports the GC export data of every directory and then parses
+every directory, and stops it at the end of the scan (see `GoSensor.java` and `GoServerProcess.java`).
 
-### Input Format
+### Protocol
 
-⚠️ **Important**: sonar-go-to-slang expects **binary-encoded input on stdin**, not command-line file arguments.
+All lengths are little-endian int32:
 
-Input format (read from stdin, little-endian):
+```
+request:  [argument count] ([length] [argument])* [length] [payload]
+response: [status] [length] [body]
+```
+
+Requests are limited to 1 GiB and responses to 256 MiB. An oversized response is returned as a short error frame.
+
+The arguments are the options listed below. The payload holds the files to analyze:
+
 ```
 [For each file, in sequence]
   N (4 bytes, little-endian)  — filename length
@@ -89,9 +100,13 @@ Input format (read from stdin, little-endian):
   M (4 bytes, little-endian)  — content length
   <content> (M bytes)         — file content
 ```
-See `sonar-go-commons/src/main/java/org/sonar/go/converter/GoParseCommand.java` for implementation details.
 
-### Command-Line Options
+With status 0, the body is the Slang JSON of the files, or the Go AST with `-d`, and is empty when
+GC export data is written. A request that fails, for instance on a panic, is answered with status 1 and
+the reason as body, and the process carries on. `server.go` has the details. On the Java side, a
+command fails when the process crashes or stops responding, and the next command starts a new process.
+
+### Request options
 
 - `-d` - Dump native Go AST instead of SLANG JSON
 - `-debug_type_check` - Print type-checking errors/warnings to stderr
@@ -100,6 +115,30 @@ See `sonar-go-commons/src/main/java/org/sonar/go/converter/GoParseCommand.java` 
 - `-module_base_dir <dir>` - Relative path to go.mod directory (default: `.`)
 - `-module_name <name>` - Module name from go.mod (required for type checking)
 - `-package_path <name>` - Specify package path (e.g. foo/bar for files located in ${projectDir}/foo/bar)
+
+### Sending a request by hand
+
+This script sends a single request and prints the body of the response; the stderr of the binary, which
+carries `-debug_type_check` output, is left on the terminal:
+
+```python
+# request.py: python3 request.py /path/to/sonar-go-to-slang [option ...] -- file.go ...
+import struct, subprocess, sys
+
+binary, rest = sys.argv[1], sys.argv[2:]
+options, files = rest[:rest.index("--")], rest[rest.index("--") + 1:]
+frame = lambda data: struct.pack("<i", len(data)) + data
+payload = b"".join(frame(f.encode()) + frame(open(f, "rb").read()) for f in files)
+request = struct.pack("<i", len(options)) + b"".join(frame(o.encode()) for o in options) + frame(payload)
+response = subprocess.run([binary], input=request, stdout=subprocess.PIPE).stdout
+length = struct.unpack("<i", response[1:5])[0]
+print(f"status {response[0]}", file=sys.stderr)
+sys.stdout.write(response[5:5 + length].decode())
+```
+
+```shell
+python3 request.py build/executable/sonar-go-to-slang-darwin-arm64 -d -- main.go
+```
 
 ## Tracing and profiling
 
@@ -132,17 +171,16 @@ analysis.
 | `SONAR_GO_EXEC_TRACE` | path to a directory | one Go execution trace per process, `trace-<pid>.out`, for `go tool trace` |
 
 `SONAR_GO_TRACE` appends with `O_APPEND` and writes one line per event, so several concurrent
-invocations can safely share a single file — which is the point: the Java harness passes the same path
+processes can safely share a single file — which is the point: the Java harness passes the same path
 to every spawned process and gets one merged trace back.
 
 `SONAR_GO_EXEC_TRACE` costs an initial runtime state dump, which is a large relative distortion on a
 process this short-lived. Use it to drill into a few packages, not to trace a whole corpus.
 
-Remember that `sonar-go-to-slang` reads its input from stdin in the binary format described above, so
-the environment has to be applied to the binary itself rather than to the producer of the pipe:
+The environment has to reach the binary itself. The script above passes its own environment on:
 
 ```shell
-producer | env SONAR_GO_TRACE=/tmp/trace.ndjson /path/to/sonar-go-to-slang -module_name demo > /dev/null
+SONAR_GO_TRACE=/tmp/trace.ndjson python3 request.py /path/to/sonar-go-to-slang -module_name demo -- main.go > /dev/null
 ```
 
 ### Reading the trace
@@ -179,14 +217,17 @@ each carrying `heapAllocKB`, `heapSysKB`, `numGC` and `gcPauseUs`. They call `ru
 which stops the world, so they are deliberately limited to phase boundaries and never emitted per file
 or per import.
 
-Two metadata events (`ph: "M"`) label the timeline: `process_name` groups every invocation under one
-`sonar-go-to-slang` process track, and `thread_name` names this invocation's lane (the package path
-under `-package_path`, otherwise the lowest directory among the batch's files). Every invocation is a
-thread of `pid` 2, because the Java harness owns `pid` 1.
+Each request is a `main` span, within a `server` span that covers the whole lifetime of the process.
+The `lane` argument of a `main` span names its batch: the package path under `-package_path`, otherwise
+the lowest directory among the batch's files.
 
-Finally, a `spawn` flow-finish event (`ph: "f"`) closes the arrow the Java side opens when it spawns the
-process. The OS pid is the shared flow id, so neither side has to agree on a counter or pass an id
-through the wire protocol.
+Two metadata events (`ph: "M"`) label the timeline: `process_name` groups every process under one
+`sonar-go-to-slang` process track, and `thread_name` names the lane of each process `server`. Every
+process is a thread of `pid` 2, because the Java harness owns `pid` 1.
+
+Finally, a `spawn` flow-finish event (`ph: "f"`), within the `server` span, closes the arrow the Java
+side opens when it spawns the process. The OS pid is the shared flow id, so neither side has to agree on
+a counter or pass an id through the wire protocol.
 
 Span names are a contract with the tools that read the merged trace; `TestAnalysisPipelineEmitsExpectedSpans`
 in `tracing_test.go` fails on a rename rather than letting it silently produce an unreadable timeline.

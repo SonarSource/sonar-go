@@ -37,6 +37,8 @@ import org.sonar.api.measures.FileLinesContextFactory;
 import org.sonar.api.resources.Language;
 import org.sonar.go.checks.GoCheckList;
 import org.sonar.go.converter.GoConverter;
+import org.sonar.go.converter.GoServerProcess;
+import org.sonar.go.converter.InitializationException;
 import org.sonar.go.plugin.caching.CacheHandler;
 import org.sonar.go.plugin.converter.ASTConverterValidation;
 import org.sonar.go.report.GoProgressReport;
@@ -76,20 +78,31 @@ public class GoSensor implements Sensor {
   private final FileLinesContextFactory fileLinesContextFactory;
   private final Language language;
   private final ASTConverter goConverter;
+  private final GoServerProcess goProcess;
   private final InputFileDiscovery inputFileDiscovery;
   private final GoProjectSensor goProjectSensor;
 
-  protected DurationStatistics durationStatistics;
-  protected MemoryMonitor memoryMonitor;
   protected final CheckFactory checkFactory;
 
+  protected record AnalysisMetrics(DurationStatistics statistics, MemoryMonitor memoryMonitor) {
+  }
+
+  protected static AnalysisMetrics analysisMetrics(DurationStatistics statistics, MemoryMonitor memoryMonitor) {
+    return new AnalysisMetrics(statistics, memoryMonitor);
+  }
+
+  /**
+   * @param goProcess the Go process that the converter, and any other command of the sensor, runs in: the sensor starts
+   *   it for each analysis and closes it at the end
+   */
   public GoSensor(CheckFactory checkFactory, FileLinesContextFactory fileLinesContextFactory,
-    NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter, GoProjectSensor goProjectSensor) {
+    NoSonarFilter noSonarFilter, GoLanguage language, GoConverter goConverter, GoServerProcess goProcess, GoProjectSensor goProjectSensor) {
     this.checkFactory = checkFactory;
     this.noSonarFilter = noSonarFilter;
     this.fileLinesContextFactory = fileLinesContextFactory;
     this.language = language;
     this.goConverter = goConverter;
+    this.goProcess = goProcess;
     this.inputFileDiscovery = new InputFileDiscovery(language);
     this.goProjectSensor = goProjectSensor;
   }
@@ -106,12 +119,13 @@ public class GoSensor implements Sensor {
       return;
     }
     try {
-      if (!goConverter.isInitialized() && sensorContext.runtime().getProduct() == SonarProduct.SONARLINT) {
-        LOG.info("Skipping the Go analysis, parsing is not possible with uninitialized Go converter.");
+      if (!startGoProcess(goProcess, sensorContext)) {
         return;
       }
-
-      executeLogic(sensorContext);
+      // Closed before the catch block below runs, so even when the analysis fails.
+      try (goProcess) {
+        executeLogic(sensorContext);
+      }
     } catch (RuntimeException e) {
       if (GoSensor.isFailFast(sensorContext)) {
         throw e;
@@ -121,8 +135,25 @@ public class GoSensor implements Sensor {
     }
   }
 
+  /**
+   * Starts the Go process that runs all the Go executable commands of the analysis. Returns false when the analysis has
+   * to be skipped instead, as SonarQube for IDE does when the Go executable cannot run.
+   */
+  private static boolean startGoProcess(GoServerProcess goProcess, SensorContext sensorContext) {
+    try {
+      goProcess.start();
+      return true;
+    } catch (InitializationException e) {
+      if (sensorContext.runtime().getProduct() != SonarProduct.SONARLINT) {
+        throw e;
+      }
+      LOG.info("Skipping the Go analysis, parsing is not possible without the Go executable: {}", e.getMessage());
+      return false;
+    }
+  }
+
   private void executeLogic(SensorContext sensorContext) {
-    initialize(sensorContext);
+    var metrics = initialize(sensorContext);
 
     List<InputFileContext> inputFileContexts = inputFileDiscovery.findAllInputFiles(sensorContext);
     var goProgressReport = new GoProgressReport("Progress of the " + language.getName() + " analysis", TimeUnit.SECONDS.toMillis(PROGRESS_REPORT_INTERVAL_SECOND));
@@ -131,8 +162,8 @@ public class GoSensor implements Sensor {
     var goModFileDataStore = new GoModFileAnalyzer(sensorContext).analyzeGoModFiles();
     goProjectSensor.addGoVersions(goModFileDataStore.collectGoVersions());
     try {
-      var visitors = visitors(sensorContext, durationStatistics, goModFileDataStore);
-      success = analyseFiles(converter, sensorContext, inputFileContexts, goProgressReport, visitors, durationStatistics, goModFileDataStore);
+      var visitors = visitors(sensorContext, metrics.statistics(), goModFileDataStore);
+      success = analyseFiles(converter, sensorContext, inputFileContexts, goProgressReport, visitors, metrics, goModFileDataStore);
     } finally {
       if (success) {
         goProgressReport.stop();
@@ -142,16 +173,15 @@ public class GoSensor implements Sensor {
       converter.terminate();
     }
 
-    processMetrics();
-    cleanUp();
+    processMetrics(metrics);
   }
 
-  protected void initialize(SensorContext sensorContext) {
-    durationStatistics = new DurationStatistics(sensorContext.config());
-    memoryMonitor = new MemoryMonitor(sensorContext.config());
+  protected AnalysisMetrics initialize(SensorContext sensorContext) {
+    var metrics = new AnalysisMetrics(new DurationStatistics(sensorContext.config()), new MemoryMonitor(sensorContext.config()));
     if (debugTypeCheck(sensorContext)) {
       goConverter.debugTypeCheck();
     }
+    return metrics;
   }
 
   private List<TreeVisitor<InputFileContext>> visitors(SensorContext sensorContext, DurationStatistics statistics, GoModFileDataStore goModFileDataStore) {
@@ -180,14 +210,14 @@ public class GoSensor implements Sensor {
     List<InputFileContext> inputFileContexts,
     GoProgressReport goProgressReport,
     List<TreeVisitor<InputFileContext>> visitors,
-    DurationStatistics statistics,
+    AnalysisMetrics metrics,
     GoModFileDataStore goModFileDataStore) {
     if (sensorContext.canSkipUnchangedFiles()) {
       LOG.info("The {} analyzer is running in a context where unchanged files can be skipped.", this.language);
     }
     var filesByDirectory = InputFileDiscovery.groupFilesByDirectory(inputFileContexts);
     goProgressReport.start(filesByDirectory);
-    beforeAnalyzeFiles(sensorContext, filesByDirectory, goModFileDataStore);
+    beforeAnalyzeFiles(sensorContext, filesByDirectory, goModFileDataStore, metrics);
 
     for (var goFolder : filesByDirectory) {
       if (sensorContext.isCancelled()) {
@@ -204,7 +234,7 @@ public class GoSensor implements Sensor {
 
       beforeAnalyzeDirectory(sensorContext, goFolder, goModFileDataStore);
       try {
-        analyseDirectory(converter, filesToAnalyse, visitors, goProgressReport, statistics, sensorContext, moduleName);
+        analyseDirectory(converter, filesToAnalyse, visitors, goProgressReport, metrics.statistics(), sensorContext, moduleName);
       } catch (RuntimeException e) {
         LOG.warn("Unable to parse directory '{}'.", goFolder.name(), e);
         reportParseException(e, filesToAnalyse);
@@ -217,7 +247,8 @@ public class GoSensor implements Sensor {
     return true;
   }
 
-  protected void beforeAnalyzeFiles(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore) {
+  protected void beforeAnalyzeFiles(SensorContext sensorContext, List<GoFolder> inputFilesByFolder, GoModFileDataStore goModFileDataStore,
+    AnalysisMetrics metrics) {
     // the default implementation does nothing
   }
 
@@ -344,15 +375,10 @@ public class GoSensor implements Sensor {
     }
   }
 
-  protected void processMetrics() {
-    durationStatistics.log();
-    memoryMonitor.addRecord("End of the sensor");
-    memoryMonitor.logMemory();
-  }
-
-  protected void cleanUp() {
-    durationStatistics = null;
-    memoryMonitor = null;
+  protected void processMetrics(AnalysisMetrics metrics) {
+    metrics.statistics().log();
+    metrics.memoryMonitor().addRecord("End of the sensor");
+    metrics.memoryMonitor().logMemory();
   }
 
   private static boolean isActive(SensorContext sensorContext) {
