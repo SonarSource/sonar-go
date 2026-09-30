@@ -63,11 +63,10 @@ sonar {
         property(
             "sonar.sca.exclusions",
             "private/its/sources/**," +
-                "private/its/ruling/src/integrationTest/resources/sources/**," +
                 "private/its/plugin/projects/**," +
                 "go/**," +
                 "private/go-custom-rules-plugin/**," +
-                "private/go-package-data-exporter/**" +
+                "private/go-package-data-exporter/**," +
                 "private/benchmark/**"
         )
         // private/benchmark is a CLI tool whose whole point is a human-readable report on stdout, not a
