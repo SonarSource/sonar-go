@@ -1,0 +1,510 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "foo"
+  text_range: "3:5::8"
+}
+tokens: {
+  text: "("
+  text_range: "3:8::9"
+}
+tokens: {
+  text: "value"
+  text_range: "3:9::14"
+}
+tokens: {
+  text: "*"
+  text_range: "3:15::16"
+}
+tokens: {
+  text: "Person"
+  text_range: "3:16::22"
+}
+tokens: {
+  text: ")"
+  text_range: "3:22::23"
+}
+tokens: {
+  text: "{"
+  text_range: "3:24::25"
+}
+tokens: {
+  text: "var"
+  text_range: "4:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x1"
+  text_range: "4:5::7"
+}
+tokens: {
+  text: "int"
+  text_range: "4:8::11"
+}
+tokens: {
+  text: "var"
+  text_range: "5:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x2"
+  text_range: "5:5::7"
+}
+tokens: {
+  text: "int"
+  text_range: "5:8::11"
+}
+tokens: {
+  text: "1"
+  text_range: "5:14::15"
+}
+tokens: {
+  text: "="
+  text_range: "5:12::13"
+}
+tokens: {
+  text: "var"
+  text_range: "6:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x3"
+  text_range: "6:5::7"
+}
+tokens: {
+  text: "1"
+  text_range: "6:10::11"
+}
+tokens: {
+  text: "="
+  text_range: "6:8::9"
+}
+tokens: {
+  text: "x4"
+  text_range: "7:1::3"
+}
+tokens: {
+  text: ":="
+  text_range: "7:4::6"
+}
+tokens: {
+  text: "1"
+  text_range: "7:7::8"
+}
+tokens: {
+  text: "var"
+  text_range: "8:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x5"
+  text_range: "8:5::7"
+}
+tokens: {
+  text: "x6"
+  text_range: "8:9::11"
+}
+tokens: {
+  text: ","
+  text_range: "8:7::8"
+}
+tokens: {
+  text: "int"
+  text_range: "8:12::15"
+}
+tokens: {
+  text: "var"
+  text_range: "9:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x7"
+  text_range: "9:5::7"
+}
+tokens: {
+  text: "x8"
+  text_range: "9:9::11"
+}
+tokens: {
+  text: ","
+  text_range: "9:7::8"
+}
+tokens: {
+  text: "1"
+  text_range: "9:14::15"
+}
+tokens: {
+  text: "="
+  text_range: "9:12::13"
+}
+tokens: {
+  text: "2"
+  text_range: "9:17::18"
+}
+tokens: {
+  text: ","
+  text_range: "9:15::16"
+}
+tokens: {
+  text: "var"
+  text_range: "10:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x9"
+  text_range: "10:5::7"
+}
+tokens: {
+  text: "x10"
+  text_range: "10:9::12"
+}
+tokens: {
+  text: ","
+  text_range: "10:7::8"
+}
+tokens: {
+  text: "int"
+  text_range: "10:13::16"
+}
+tokens: {
+  text: "1"
+  text_range: "10:19::20"
+}
+tokens: {
+  text: "="
+  text_range: "10:17::18"
+}
+tokens: {
+  text: "2"
+  text_range: "10:22::23"
+}
+tokens: {
+  text: ","
+  text_range: "10:20::21"
+}
+tokens: {
+  text: "}"
+  text_range: "11:0::1"
+}
+root: {
+  text_range: "1:0:12:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:11:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::8"
+          cfg_id: 3
+          identifier: {
+            name: "foo"
+            type: "func(value invalid type)"
+            package: "ModuleNameForTest/main"
+            id: 20
+          }
+        }
+        formal_parameters: {
+          text_range: "3:9::22"
+          cfg_id: 7
+          parameter: {
+            identifier: {
+              text_range: "3:9::14"
+              cfg_id: 4
+              identifier: {
+                name: "value"
+                type: "*Person"
+                package: "UNKNOWN"
+                id: 24
+              }
+            }
+            type: {
+              text_range: "3:15::22"
+              cfg_id: 6
+              star_expression: {
+                expression: {
+                  text_range: "3:16::22"
+                  cfg_id: 5
+                  identifier: {
+                    name: "Person"
+                    type: "UNKNOWN"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "3:24:11:1"
+          cfg_id: 31
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::11"
+              cfg_id: 12
+              variable_declaration: {
+                identifiers: {
+                  text_range: "4:5::7"
+                  cfg_id: 10
+                  identifier: {
+                    name: "x1"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 46
+                  }
+                }
+                type: {
+                  text_range: "4:8::11"
+                  cfg_id: 11
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "5:1::15"
+              cfg_id: 15
+              variable_declaration: {
+                identifiers: {
+                  text_range: "5:5::7"
+                  cfg_id: 13
+                  identifier: {
+                    name: "x2"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 58
+                  }
+                }
+                type: {
+                  text_range: "5:8::11"
+                  cfg_id: 14
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+                initializers: {
+                  text_range: "5:14::15"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "6:1::11"
+              cfg_id: 17
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:5::7"
+                  cfg_id: 16
+                  identifier: {
+                    name: "x3"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 74
+                  }
+                }
+                initializers: {
+                  text_range: "6:10::11"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:1::8"
+              cfg_id: 19
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:1::3"
+                  cfg_id: 18
+                  identifier: {
+                    name: "x4"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 82
+                  }
+                }
+                initializers: {
+                  text_range: "7:7::8"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "8:1::15"
+              cfg_id: 23
+              variable_declaration: {
+                identifiers: {
+                  text_range: "8:5::7"
+                  cfg_id: 20
+                  identifier: {
+                    name: "x5"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 95
+                  }
+                }
+                identifiers: {
+                  text_range: "8:9::11"
+                  cfg_id: 21
+                  identifier: {
+                    name: "x6"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 99
+                  }
+                }
+                type: {
+                  text_range: "8:12::15"
+                  cfg_id: 22
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "9:1::18"
+              cfg_id: 26
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:5::7"
+                  cfg_id: 24
+                  identifier: {
+                    name: "x7"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 111
+                  }
+                }
+                identifiers: {
+                  text_range: "9:9::11"
+                  cfg_id: 25
+                  identifier: {
+                    name: "x8"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 115
+                  }
+                }
+                initializers: {
+                  text_range: "9:14::15"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+                initializers: {
+                  text_range: "9:17::18"
+                  integer_literal: {
+                    value: "2"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "10:1::23"
+              cfg_id: 30
+              variable_declaration: {
+                identifiers: {
+                  text_range: "10:5::7"
+                  cfg_id: 27
+                  identifier: {
+                    name: "x9"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 130
+                  }
+                }
+                identifiers: {
+                  text_range: "10:9::12"
+                  cfg_id: 28
+                  identifier: {
+                    name: "x10"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 134
+                  }
+                }
+                type: {
+                  text_range: "10:13::16"
+                  cfg_id: 29
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+                initializers: {
+                  text_range: "10:19::20"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+                initializers: {
+                  text_range: "10:22::23"
+                  integer_literal: {
+                    value: "2"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 12
+            node_ids: 15
+            node_ids: 17
+            node_ids: 19
+            node_ids: 23
+            node_ids: 26
+            node_ids: 30
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -9,6 +9,8 @@ sonarqube = "26.9.0.129388"
 orchestrator = "6.4.3.4676"
 sonarlint = "11.10.0.86299"
 minimal-json = "0.9.5"
+protobuf = "4.36.2"
+protobuf-plugin = "0.9.5"
 mockito-core = "5.23.0"
 assertj-core = "3.27.7"
 junit-jupiter = "6.1.3"
@@ -44,6 +46,8 @@ sonar-analyzer-commons = { group = "org.sonarsource.analyzer-commons", name = "s
 sonar-analyzer-test-commons = { group = "org.sonarsource.analyzer-commons", name = "sonar-analyzer-test-commons", version.ref = "analyzer-commons" }
 sonar-xml-parsing = {group = "org.sonarsource.analyzer-commons", name = "sonar-xml-parsing", version.ref = "analyzer-commons" }
 minimal-json = { group = "com.eclipsesource.minimal-json", name = "minimal-json", version.ref = "minimal-json" }
+protobuf-java = { module = "com.google.protobuf:protobuf-java", version.ref = "protobuf" }
+protoc = { module = "com.google.protobuf:protoc", version.ref = "protobuf" }
 sonar-plugin-api-test-fixtures = { group = "org.sonarsource.api.plugin", name = "sonar-plugin-api-test-fixtures", version.ref = "plugin-api" }
 sonar-orchestrator-junit5 = { group = "org.sonarsource.orchestrator", name = "sonar-orchestrator-junit5", version.ref = "orchestrator" }
 sonarlint-core = { group = "org.sonarsource.sonarlint.core", name = "sonarlint-core", version.ref = "sonarlint" }
@@ -79,3 +83,4 @@ jmh-generator-annprocess = { module = "org.openjdk.jmh:jmh-generator-annprocess"
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin-serialization-plugin" }
 sonarqube = { id = "org.sonarqube", version.ref = "sonar-scanner-gradle" }
 jmh = { id = "me.champeau.jmh", version.ref = "jmh-plugin" }
+protobuf = { id = "com.google.protobuf", version.ref = "protobuf-plugin" }

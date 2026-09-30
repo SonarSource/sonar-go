@@ -1,0 +1,3402 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "3:7::12"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "type"
+  text_range: "5:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "Container"
+  text_range: "5:5::14"
+}
+tokens: {
+  text: "["
+  text_range: "5:14::15"
+}
+tokens: {
+  text: "T"
+  text_range: "5:15::16"
+}
+tokens: {
+  text: "any"
+  text_range: "5:17::20"
+}
+tokens: {
+  text: "]"
+  text_range: "5:20::21"
+}
+tokens: {
+  text: "struct"
+  text_range: "5:22::28"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "5:29::30"
+}
+tokens: {
+  text: "Value"
+  text_range: "6:1::6"
+}
+tokens: {
+  text: "T"
+  text_range: "6:7::8"
+}
+tokens: {
+  text: "}"
+  text_range: "7:0::1"
+}
+tokens: {
+  text: "type"
+  text_range: "9:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "Container2"
+  text_range: "9:5::15"
+}
+tokens: {
+  text: "["
+  text_range: "9:15::16"
+}
+tokens: {
+  text: "T"
+  text_range: "9:16::17"
+}
+tokens: {
+  text: "any"
+  text_range: "9:18::21"
+}
+tokens: {
+  text: "]"
+  text_range: "9:21::22"
+}
+tokens: {
+  text: "="
+  text_range: "9:23::24"
+}
+tokens: {
+  text: "Container"
+  text_range: "9:25::34"
+}
+tokens: {
+  text: "["
+  text_range: "9:34::35"
+}
+tokens: {
+  text: "T"
+  text_range: "9:35::36"
+}
+tokens: {
+  text: "]"
+  text_range: "9:36::37"
+}
+tokens: {
+  text: "type"
+  text_range: "11:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "Vector"
+  text_range: "11:5::11"
+}
+tokens: {
+  text: "["
+  text_range: "11:12::13"
+}
+tokens: {
+  text: "float64"
+  text_range: "11:14::21"
+}
+tokens: {
+  text: "]"
+  text_range: "11:13::14"
+}
+tokens: {
+  text: "type"
+  text_range: "13:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "VectorAlias"
+  text_range: "13:5::16"
+}
+tokens: {
+  text: "="
+  text_range: "13:17::18"
+}
+tokens: {
+  text: "Vector"
+  text_range: "13:19::25"
+}
+tokens: {
+  text: "func"
+  text_range: "15:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "doSomething"
+  text_range: "15:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "15:16::17"
+}
+tokens: {
+  text: "v"
+  text_range: "15:17::18"
+}
+tokens: {
+  text: "Vector"
+  text_range: "15:19::25"
+}
+tokens: {
+  text: ")"
+  text_range: "15:25::26"
+}
+tokens: {
+  text: "{"
+  text_range: "15:27::28"
+}
+tokens: {
+  text: "fmt"
+  text_range: "16:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "16:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "16:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "16:12::13"
+}
+tokens: {
+  text: "v"
+  text_range: "16:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "16:14::15"
+}
+tokens: {
+  text: "}"
+  text_range: "17:0::1"
+}
+tokens: {
+  text: "type"
+  text_range: "19:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "A"
+  text_range: "19:5::6"
+}
+tokens: {
+  text: "["
+  text_range: "19:6::7"
+}
+tokens: {
+  text: "T"
+  text_range: "19:7::8"
+}
+tokens: {
+  text: "any"
+  text_range: "19:9::12"
+}
+tokens: {
+  text: "]"
+  text_range: "19:12::13"
+}
+tokens: {
+  text: "int"
+  text_range: "19:14::17"
+}
+tokens: {
+  text: "type"
+  text_range: "20:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "B"
+  text_range: "20:5::6"
+}
+tokens: {
+  text: "["
+  text_range: "20:6::7"
+}
+tokens: {
+  text: "U"
+  text_range: "20:7::8"
+}
+tokens: {
+  text: "comparable"
+  text_range: "20:9::19"
+}
+tokens: {
+  text: "]"
+  text_range: "20:19::20"
+}
+tokens: {
+  text: "="
+  text_range: "20:21::22"
+}
+tokens: {
+  text: "A"
+  text_range: "20:23::24"
+}
+tokens: {
+  text: "["
+  text_range: "20:24::25"
+}
+tokens: {
+  text: "U"
+  text_range: "20:25::26"
+}
+tokens: {
+  text: "]"
+  text_range: "20:26::27"
+}
+tokens: {
+  text: "func"
+  text_range: "22:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "F"
+  text_range: "22:5::6"
+}
+tokens: {
+  text: "("
+  text_range: "22:6::7"
+}
+tokens: {
+  text: "x"
+  text_range: "22:7::8"
+}
+tokens: {
+  text: "int"
+  text_range: "22:9::12"
+}
+tokens: {
+  text: ")"
+  text_range: "22:12::13"
+}
+tokens: {
+  text: "{"
+  text_range: "22:14::15"
+}
+tokens: {
+  text: "}"
+  text_range: "22:15::16"
+}
+tokens: {
+  text: "var"
+  text_range: "24:0::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "G"
+  text_range: "24:4::5"
+}
+tokens: {
+  text: "F"
+  text_range: "24:8::9"
+}
+tokens: {
+  text: "="
+  text_range: "24:6::7"
+}
+tokens: {
+  text: "type"
+  text_range: "26:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "NamedMap"
+  text_range: "26:5::13"
+}
+tokens: {
+  text: "["
+  text_range: "26:13::14"
+}
+tokens: {
+  text: "T"
+  text_range: "26:14::15"
+}
+tokens: {
+  text: "any"
+  text_range: "26:16::19"
+}
+tokens: {
+  text: "]"
+  text_range: "26:19::20"
+}
+tokens: {
+  text: "="
+  text_range: "26:21::22"
+}
+tokens: {
+  text: "map"
+  text_range: "26:23::26"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "26:27::33"
+}
+tokens: {
+  text: "["
+  text_range: "26:26::27"
+}
+tokens: {
+  text: "T"
+  text_range: "26:34::35"
+}
+tokens: {
+  text: "]"
+  text_range: "26:33::34"
+}
+tokens: {
+  text: "type"
+  text_range: "28:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "T"
+  text_range: "28:5::6"
+}
+tokens: {
+  text: "["
+  text_range: "28:6::7"
+}
+tokens: {
+  text: "P"
+  text_range: "28:7::8"
+}
+tokens: {
+  text: "any"
+  text_range: "28:9::12"
+}
+tokens: {
+  text: "]"
+  text_range: "28:12::13"
+}
+tokens: {
+  text: "struct"
+  text_range: "28:14::20"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "28:20::21"
+}
+tokens: {
+  text: "}"
+  text_range: "28:21::22"
+}
+tokens: {
+  text: "func"
+  text_range: "30:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "30:5::6"
+}
+tokens: {
+  text: "T"
+  text_range: "30:6::7"
+}
+tokens: {
+  text: "["
+  text_range: "30:7::8"
+}
+tokens: {
+  text: "P"
+  text_range: "30:8::9"
+}
+tokens: {
+  text: "]"
+  text_range: "30:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "30:10::11"
+}
+tokens: {
+  text: "m"
+  text_range: "30:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "30:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "30:14::15"
+}
+tokens: {
+  text: "{"
+  text_range: "30:16::17"
+}
+tokens: {
+  text: "}"
+  text_range: "30:17::18"
+}
+tokens: {
+  text: "type"
+  text_range: "32:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "A0"
+  text_range: "32:5::7"
+}
+tokens: {
+  text: "="
+  text_range: "32:8::9"
+}
+tokens: {
+  text: "T"
+  text_range: "32:10::11"
+}
+tokens: {
+  text: "["
+  text_range: "32:11::12"
+}
+tokens: {
+  text: "int"
+  text_range: "32:12::15"
+}
+tokens: {
+  text: "]"
+  text_range: "32:15::16"
+}
+tokens: {
+  text: "func"
+  text_range: "34:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "34:5::6"
+}
+tokens: {
+  text: "A0"
+  text_range: "34:6::8"
+}
+tokens: {
+  text: ")"
+  text_range: "34:8::9"
+}
+tokens: {
+  text: "m0"
+  text_range: "34:10::12"
+}
+tokens: {
+  text: "("
+  text_range: "34:12::13"
+}
+tokens: {
+  text: ")"
+  text_range: "34:13::14"
+}
+tokens: {
+  text: "{"
+  text_range: "34:15::16"
+}
+tokens: {
+  text: "}"
+  text_range: "34:16::17"
+}
+tokens: {
+  text: "type"
+  text_range: "36:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "A1"
+  text_range: "36:5::7"
+}
+tokens: {
+  text: "["
+  text_range: "36:7::8"
+}
+tokens: {
+  text: "P"
+  text_range: "36:8::9"
+}
+tokens: {
+  text: "int"
+  text_range: "36:10::13"
+}
+tokens: {
+  text: "]"
+  text_range: "36:13::14"
+}
+tokens: {
+  text: "="
+  text_range: "36:15::16"
+}
+tokens: {
+  text: "T"
+  text_range: "36:17::18"
+}
+tokens: {
+  text: "["
+  text_range: "36:18::19"
+}
+tokens: {
+  text: "P"
+  text_range: "36:19::20"
+}
+tokens: {
+  text: "]"
+  text_range: "36:20::21"
+}
+tokens: {
+  text: "func"
+  text_range: "38:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "38:5::6"
+}
+tokens: {
+  text: "A1"
+  text_range: "38:6::8"
+}
+tokens: {
+  text: "["
+  text_range: "38:8::9"
+}
+tokens: {
+  text: "P"
+  text_range: "38:9::10"
+}
+tokens: {
+  text: "]"
+  text_range: "38:10::11"
+}
+tokens: {
+  text: ")"
+  text_range: "38:11::12"
+}
+tokens: {
+  text: "m1"
+  text_range: "38:13::15"
+}
+tokens: {
+  text: "("
+  text_range: "38:15::16"
+}
+tokens: {
+  text: "x"
+  text_range: "38:16::17"
+}
+tokens: {
+  text: "P"
+  text_range: "38:18::19"
+}
+tokens: {
+  text: ")"
+  text_range: "38:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "38:21::22"
+}
+tokens: {
+  text: "}"
+  text_range: "38:22::23"
+}
+tokens: {
+  text: "type"
+  text_range: "40:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "A2"
+  text_range: "40:5::7"
+}
+tokens: {
+  text: "["
+  text_range: "40:7::8"
+}
+tokens: {
+  text: "P"
+  text_range: "40:8::9"
+}
+tokens: {
+  text: "int32"
+  text_range: "40:10::15"
+}
+tokens: {
+  text: "Q"
+  text_range: "40:17::18"
+}
+tokens: {
+  text: "int64"
+  text_range: "40:19::24"
+}
+tokens: {
+  text: ","
+  text_range: "40:15::16"
+}
+tokens: {
+  text: "]"
+  text_range: "40:24::25"
+}
+tokens: {
+  text: "="
+  text_range: "40:26::27"
+}
+tokens: {
+  text: "T"
+  text_range: "40:28::29"
+}
+tokens: {
+  text: "["
+  text_range: "40:29::30"
+}
+tokens: {
+  text: "P"
+  text_range: "40:30::31"
+}
+tokens: {
+  text: "]"
+  text_range: "40:31::32"
+}
+tokens: {
+  text: "func"
+  text_range: "42:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "42:5::6"
+}
+tokens: {
+  text: "A2"
+  text_range: "42:6::8"
+}
+tokens: {
+  text: "["
+  text_range: "42:8::9"
+}
+tokens: {
+  text: "P"
+  text_range: "42:9::10"
+}
+tokens: {
+  text: "Q"
+  text_range: "42:12::13"
+}
+tokens: {
+  text: ","
+  text_range: "42:10::11"
+}
+tokens: {
+  text: "]"
+  text_range: "42:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "42:14::15"
+}
+tokens: {
+  text: "m2"
+  text_range: "42:16::18"
+}
+tokens: {
+  text: "("
+  text_range: "42:18::19"
+}
+tokens: {
+  text: "x"
+  text_range: "42:19::20"
+}
+tokens: {
+  text: "P"
+  text_range: "42:21::22"
+}
+tokens: {
+  text: "y"
+  text_range: "42:24::25"
+}
+tokens: {
+  text: "Q"
+  text_range: "42:26::27"
+}
+tokens: {
+  text: ","
+  text_range: "42:22::23"
+}
+tokens: {
+  text: ")"
+  text_range: "42:27::28"
+}
+tokens: {
+  text: "{"
+  text_range: "42:29::30"
+}
+tokens: {
+  text: "}"
+  text_range: "42:30::31"
+}
+tokens: {
+  text: "func"
+  text_range: "44:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "genericTypesAliasesTests"
+  text_range: "44:5::29"
+}
+tokens: {
+  text: "("
+  text_range: "44:29::30"
+}
+tokens: {
+  text: ")"
+  text_range: "44:30::31"
+}
+tokens: {
+  text: "{"
+  text_range: "44:32::33"
+}
+tokens: {
+  text: "intContainer"
+  text_range: "45:1::13"
+}
+tokens: {
+  text: ":="
+  text_range: "45:14::16"
+}
+tokens: {
+  text: "Container"
+  text_range: "45:17::26"
+}
+tokens: {
+  text: "["
+  text_range: "45:26::27"
+}
+tokens: {
+  text: "int"
+  text_range: "45:27::30"
+}
+tokens: {
+  text: "]"
+  text_range: "45:30::31"
+}
+tokens: {
+  text: "{"
+  text_range: "45:31::32"
+}
+tokens: {
+  text: "Value"
+  text_range: "45:32::37"
+}
+tokens: {
+  text: ":"
+  text_range: "45:37::38"
+}
+tokens: {
+  text: "42"
+  text_range: "45:39::41"
+}
+tokens: {
+  text: "}"
+  text_range: "45:41::42"
+}
+tokens: {
+  text: "fmt"
+  text_range: "46:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "46:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "46:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "46:12::13"
+}
+tokens: {
+  text: "intContainer"
+  text_range: "46:13::25"
+}
+tokens: {
+  text: "Value"
+  text_range: "46:26::31"
+}
+tokens: {
+  text: "."
+  text_range: "46:25::26"
+}
+tokens: {
+  text: ")"
+  text_range: "46:31::32"
+}
+tokens: {
+  text: "v"
+  text_range: "48:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "48:3::5"
+}
+tokens: {
+  text: "Vector"
+  text_range: "48:6::12"
+}
+tokens: {
+  text: "{"
+  text_range: "48:12::13"
+}
+tokens: {
+  text: "3.14"
+  text_range: "48:13::17"
+}
+tokens: {
+  text: "}"
+  text_range: "48:17::18"
+}
+tokens: {
+  text: "doSomething"
+  text_range: "49:1::12"
+}
+tokens: {
+  text: "("
+  text_range: "49:12::13"
+}
+tokens: {
+  text: "v"
+  text_range: "49:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "49:14::15"
+}
+tokens: {
+  text: "va"
+  text_range: "51:1::3"
+}
+tokens: {
+  text: ":="
+  text_range: "51:4::6"
+}
+tokens: {
+  text: "VectorAlias"
+  text_range: "51:7::18"
+}
+tokens: {
+  text: "{"
+  text_range: "51:18::19"
+}
+tokens: {
+  text: "2.71"
+  text_range: "51:19::23"
+}
+tokens: {
+  text: "}"
+  text_range: "51:23::24"
+}
+tokens: {
+  text: "doSomething"
+  text_range: "52:1::12"
+}
+tokens: {
+  text: "("
+  text_range: "52:12::13"
+}
+tokens: {
+  text: "va"
+  text_range: "52:13::15"
+}
+tokens: {
+  text: ")"
+  text_range: "52:15::16"
+}
+tokens: {
+  text: "b"
+  text_range: "54:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "54:3::5"
+}
+tokens: {
+  text: "B"
+  text_range: "54:6::7"
+}
+tokens: {
+  text: "["
+  text_range: "54:7::8"
+}
+tokens: {
+  text: "int"
+  text_range: "54:8::11"
+}
+tokens: {
+  text: "]"
+  text_range: "54:11::12"
+}
+tokens: {
+  text: "("
+  text_range: "54:12::13"
+}
+tokens: {
+  text: "5"
+  text_range: "54:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "54:14::15"
+}
+tokens: {
+  text: "fmt"
+  text_range: "55:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "55:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "55:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "55:12::13"
+}
+tokens: {
+  text: "b"
+  text_range: "55:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "55:14::15"
+}
+tokens: {
+  text: "G"
+  text_range: "57:1::2"
+}
+tokens: {
+  text: "("
+  text_range: "57:2::3"
+}
+tokens: {
+  text: "10"
+  text_range: "57:3::5"
+}
+tokens: {
+  text: ")"
+  text_range: "57:5::6"
+}
+tokens: {
+  text: "nm"
+  text_range: "59:1::3"
+}
+tokens: {
+  text: ":="
+  text_range: "59:4::6"
+}
+tokens: {
+  text: "NamedMap"
+  text_range: "59:7::15"
+}
+tokens: {
+  text: "["
+  text_range: "59:15::16"
+}
+tokens: {
+  text: "int"
+  text_range: "59:16::19"
+}
+tokens: {
+  text: "]"
+  text_range: "59:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "59:20::21"
+}
+tokens: {
+  text: "\"one\""
+  text_range: "59:21::26"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "59:26::27"
+}
+tokens: {
+  text: "1"
+  text_range: "59:28::29"
+}
+tokens: {
+  text: "\"two\""
+  text_range: "59:31::36"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "59:36::37"
+}
+tokens: {
+  text: "2"
+  text_range: "59:38::39"
+}
+tokens: {
+  text: ","
+  text_range: "59:29::30"
+}
+tokens: {
+  text: "}"
+  text_range: "59:39::40"
+}
+tokens: {
+  text: "fmt"
+  text_range: "60:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "60:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "60:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "60:12::13"
+}
+tokens: {
+  text: "nm"
+  text_range: "60:13::15"
+}
+tokens: {
+  text: ")"
+  text_range: "60:15::16"
+}
+tokens: {
+  text: "}"
+  text_range: "61:0::1"
+}
+root: {
+  text_range: "1:0:62:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0::12"
+      cfg_id: 4
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::12"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "3:7::12"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "5:0:7:1"
+      cfg_id: 16
+      class_declaration: {
+        identifier: "5:5::14"
+        class_tree: {
+          text_range: "5:0:7:1"
+          cfg_id: 15
+          native: {
+            native_kind: "[1](TypeSpecWrapped)"
+            children: {
+              text_range: "5:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "5:5::14"
+              cfg_id: 5
+              identifier: {
+                name: "Container"
+                type: "main.Container[T any]"
+                package: "ModuleNameForTest/main"
+                id: 34
+              }
+            }
+            children: {
+              text_range: "5:14::21"
+              cfg_id: 9
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "5:14::15"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "5:15::20"
+                  cfg_id: 8
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "5:15::16"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "5:15::16"
+                          cfg_id: 6
+                          identifier: {
+                            name: "T"
+                            type: "T"
+                            package: "ModuleNameForTest/main"
+                            id: 44
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "5:17::20"
+                      cfg_id: 7
+                      identifier: {
+                        name: "any"
+                        type: "any"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "5:20::21"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "5:22:7:1"
+              cfg_id: 14
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "5:22::28"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "5:29:7:1"
+                  cfg_id: 13
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "5:29::30"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "6:1::8"
+                      cfg_id: 12
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "6:1::6"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "6:1::6"
+                              cfg_id: 10
+                              identifier: {
+                                name: "Value"
+                                type: "T"
+                                package: "UNKNOWN"
+                                id: 61
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "6:7::8"
+                          cfg_id: 11
+                          identifier: {
+                            name: "T"
+                            type: "T"
+                            package: "ModuleNameForTest/main"
+                            id: 44
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "7:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "9:0::37"
+      cfg_id: 26
+      class_declaration: {
+        identifier: "9:5::15"
+        class_tree: {
+          text_range: "9:0::37"
+          cfg_id: 25
+          native: {
+            native_kind: "[2](TypeSpecWrapped)"
+            children: {
+              text_range: "9:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "9:5::15"
+              cfg_id: 17
+              identifier: {
+                name: "Container2"
+                type: "main.Container2[T any]"
+                package: "ModuleNameForTest/main"
+                id: 77
+              }
+            }
+            children: {
+              text_range: "9:15::22"
+              cfg_id: 21
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "9:15::16"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "9:16::21"
+                  cfg_id: 20
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "9:16::17"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "9:16::17"
+                          cfg_id: 18
+                          identifier: {
+                            name: "T"
+                            type: "T"
+                            package: "ModuleNameForTest/main"
+                            id: 88
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "9:18::21"
+                      cfg_id: 19
+                      identifier: {
+                        name: "any"
+                        type: "any"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "9:21::22"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "9:23::24"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "9:25::37"
+              cfg_id: 24
+              index_expression: {
+                expression: {
+                  text_range: "9:25::34"
+                  cfg_id: 22
+                  identifier: {
+                    name: "Container"
+                    type: "main.Container[T any]"
+                    package: "ModuleNameForTest/main"
+                    id: 34
+                  }
+                }
+                index: {
+                  text_range: "9:35::36"
+                  cfg_id: 23
+                  identifier: {
+                    name: "T"
+                    type: "T"
+                    package: "ModuleNameForTest/main"
+                    id: 88
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "11:0::21"
+      cfg_id: 31
+      class_declaration: {
+        identifier: "11:5::11"
+        class_tree: {
+          text_range: "11:0::21"
+          cfg_id: 30
+          native: {
+            native_kind: "[3](TypeSpecWrapped)"
+            children: {
+              text_range: "11:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "11:5::11"
+              cfg_id: 27
+              identifier: {
+                name: "Vector"
+                type: "main.Vector"
+                package: "ModuleNameForTest/main"
+                id: 116
+              }
+            }
+            children: {
+              text_range: "11:12::21"
+              cfg_id: 29
+              array_type: {
+                element: {
+                  text_range: "11:14::21"
+                  cfg_id: 28
+                  identifier: {
+                    name: "float64"
+                    type: "float64"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "13:0::25"
+      cfg_id: 35
+      class_declaration: {
+        identifier: "13:5::16"
+        class_tree: {
+          text_range: "13:0::25"
+          cfg_id: 34
+          native: {
+            native_kind: "[4](TypeSpecWrapped)"
+            children: {
+              text_range: "13:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "13:5::16"
+              cfg_id: 32
+              identifier: {
+                name: "VectorAlias"
+                type: "main.VectorAlias"
+                package: "ModuleNameForTest/main"
+                id: 139
+              }
+            }
+            children: {
+              text_range: "13:17::18"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "13:19::25"
+              cfg_id: 33
+              identifier: {
+                name: "Vector"
+                type: "main.Vector"
+                package: "ModuleNameForTest/main"
+                id: 116
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "15:0:17:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "15:5::16"
+          cfg_id: 36
+          identifier: {
+            name: "doSomething"
+            type: "func(v main.Vector)"
+            package: "ModuleNameForTest/main"
+            id: 166
+          }
+        }
+        formal_parameters: {
+          text_range: "15:17::25"
+          cfg_id: 39
+          parameter: {
+            identifier: {
+              text_range: "15:17::18"
+              cfg_id: 37
+              identifier: {
+                name: "v"
+                type: "main.Vector"
+                package: "UNKNOWN"
+                id: 178
+              }
+            }
+            type: {
+              text_range: "15:19::25"
+              cfg_id: 38
+              identifier: {
+                name: "Vector"
+                type: "main.Vector"
+                package: "ModuleNameForTest/main"
+                id: 116
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "15:27:17:1"
+          cfg_id: 48
+          block: {
+            statement_or_expressions: {
+              text_range: "16:1::15"
+              cfg_id: 47
+              expression_statement: {
+                expression: {
+                  text_range: "16:1::15"
+                  cfg_id: 46
+                  function_invocation: {
+                    member_select: {
+                      text_range: "16:1::12"
+                      cfg_id: 44
+                      member_select: {
+                        expression: {
+                          text_range: "16:1::4"
+                          cfg_id: 42
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 22
+                          }
+                        }
+                        identifier: {
+                          text_range: "16:5::12"
+                          cfg_id: 43
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "16:13::14"
+                      cfg_id: 45
+                      identifier: {
+                        name: "v"
+                        type: "main.Vector"
+                        package: "UNKNOWN"
+                        id: 178
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 47
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "19:0::17"
+      cfg_id: 9
+      class_declaration: {
+        identifier: "19:5::6"
+        class_tree: {
+          text_range: "19:0::17"
+          cfg_id: 8
+          native: {
+            native_kind: "[6](TypeSpecWrapped)"
+            children: {
+              text_range: "19:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "19:5::6"
+              cfg_id: 2
+              identifier: {
+                name: "A"
+                type: "main.A[T any]"
+                package: "ModuleNameForTest/main"
+                id: 214
+              }
+            }
+            children: {
+              text_range: "19:6::13"
+              cfg_id: 6
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "19:6::7"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "19:7::12"
+                  cfg_id: 5
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "19:7::8"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "19:7::8"
+                          cfg_id: 3
+                          identifier: {
+                            name: "T"
+                            type: "T"
+                            package: "ModuleNameForTest/main"
+                            id: 216
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "19:9::12"
+                      cfg_id: 4
+                      identifier: {
+                        name: "any"
+                        type: "any"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "19:12::13"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "19:14::17"
+              cfg_id: 7
+              identifier: {
+                name: "int"
+                type: "int"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "20:0::27"
+      cfg_id: 19
+      class_declaration: {
+        identifier: "20:5::6"
+        class_tree: {
+          text_range: "20:0::27"
+          cfg_id: 18
+          native: {
+            native_kind: "[7](TypeSpecWrapped)"
+            children: {
+              text_range: "20:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "20:5::6"
+              cfg_id: 10
+              identifier: {
+                name: "B"
+                type: "main.B[U comparable]"
+                package: "ModuleNameForTest/main"
+                id: 232
+              }
+            }
+            children: {
+              text_range: "20:6::20"
+              cfg_id: 14
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "20:6::7"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "20:7::19"
+                  cfg_id: 13
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "20:7::8"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "20:7::8"
+                          cfg_id: 11
+                          identifier: {
+                            name: "U"
+                            type: "U"
+                            package: "ModuleNameForTest/main"
+                            id: 234
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "20:9::19"
+                      cfg_id: 12
+                      identifier: {
+                        name: "comparable"
+                        type: "comparable"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "20:19::20"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "20:21::22"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "20:23::27"
+              cfg_id: 17
+              index_expression: {
+                expression: {
+                  text_range: "20:23::24"
+                  cfg_id: 15
+                  identifier: {
+                    name: "A"
+                    type: "main.A[T any]"
+                    package: "ModuleNameForTest/main"
+                    id: 214
+                  }
+                }
+                index: {
+                  text_range: "20:25::26"
+                  cfg_id: 16
+                  identifier: {
+                    name: "U"
+                    type: "U"
+                    package: "ModuleNameForTest/main"
+                    id: 234
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "22:0::16"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "22:5::6"
+          cfg_id: 20
+          identifier: {
+            name: "F"
+            type: "func(x int)"
+            package: "ModuleNameForTest/main"
+            id: 261
+          }
+        }
+        formal_parameters: {
+          text_range: "22:7::12"
+          cfg_id: 23
+          parameter: {
+            identifier: {
+              text_range: "22:7::8"
+              cfg_id: 21
+              identifier: {
+                name: "x"
+                type: "int"
+                package: "UNKNOWN"
+                id: 263
+              }
+            }
+            type: {
+              text_range: "22:9::12"
+              cfg_id: 22
+              identifier: {
+                name: "int"
+                type: "int"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "22:14::16"
+          cfg_id: 26
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "24:0::9"
+      cfg_id: 4
+      variable_declaration: {
+        identifiers: {
+          text_range: "24:4::5"
+          cfg_id: 2
+          identifier: {
+            name: "G"
+            type: "func(x int)"
+            package: "UNKNOWN"
+            id: 278
+          }
+        }
+        initializers: {
+          text_range: "24:8::9"
+          cfg_id: 3
+          identifier: {
+            name: "F"
+            type: "func(x int)"
+            package: "ModuleNameForTest/main"
+            id: 261
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "26:0::35"
+      cfg_id: 14
+      class_declaration: {
+        identifier: "26:5::13"
+        class_tree: {
+          text_range: "26:0::35"
+          cfg_id: 13
+          native: {
+            native_kind: "[10](TypeSpecWrapped)"
+            children: {
+              text_range: "26:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "26:5::13"
+              cfg_id: 5
+              identifier: {
+                name: "NamedMap"
+                type: "main.NamedMap[T any]"
+                package: "ModuleNameForTest/main"
+                id: 290
+              }
+            }
+            children: {
+              text_range: "26:13::20"
+              cfg_id: 9
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "26:13::14"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "26:14::19"
+                  cfg_id: 8
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "26:14::15"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "26:14::15"
+                          cfg_id: 6
+                          identifier: {
+                            name: "T"
+                            type: "T"
+                            package: "ModuleNameForTest/main"
+                            id: 299
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "26:16::19"
+                      cfg_id: 7
+                      identifier: {
+                        name: "any"
+                        type: "any"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "26:19::20"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "26:21::22"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "26:23::35"
+              cfg_id: 12
+              map_type: {
+                key: {
+                  text_range: "26:27::33"
+                  cfg_id: 10
+                  identifier: {
+                    name: "string"
+                    type: "string"
+                    package: "UNKNOWN"
+                  }
+                }
+                value: {
+                  text_range: "26:34::35"
+                  cfg_id: 11
+                  identifier: {
+                    name: "T"
+                    type: "T"
+                    package: "ModuleNameForTest/main"
+                    id: 299
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "28:0::22"
+      cfg_id: 23
+      class_declaration: {
+        identifier: "28:5::6"
+        class_tree: {
+          text_range: "28:0::22"
+          cfg_id: 22
+          native: {
+            native_kind: "[11](TypeSpecWrapped)"
+            children: {
+              text_range: "28:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "28:5::6"
+              cfg_id: 15
+              identifier: {
+                name: "T"
+                type: "main.T[P any]"
+                package: "ModuleNameForTest/main"
+                id: 327
+              }
+            }
+            children: {
+              text_range: "28:6::13"
+              cfg_id: 19
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "28:6::7"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "28:7::12"
+                  cfg_id: 18
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "28:7::8"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "28:7::8"
+                          cfg_id: 16
+                          identifier: {
+                            name: "P"
+                            type: "P"
+                            package: "ModuleNameForTest/main"
+                            id: 329
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "28:9::12"
+                      cfg_id: 17
+                      identifier: {
+                        name: "any"
+                        type: "any"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "28:12::13"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "28:14::22"
+              cfg_id: 21
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "28:14::20"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "28:20::22"
+                  cfg_id: 20
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "28:20::21"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "28:21::22"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "30:0::18"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "30:5::11"
+          cfg_id: 28
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "30:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "30:6::10"
+              cfg_id: 27
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "30:6::10"
+                  cfg_id: 26
+                  index_expression: {
+                    expression: {
+                      text_range: "30:6::7"
+                      cfg_id: 24
+                      identifier: {
+                        name: "T"
+                        type: "main.T[P any]"
+                        package: "ModuleNameForTest/main"
+                        id: 327
+                      }
+                    }
+                    index: {
+                      text_range: "30:8::9"
+                      cfg_id: 25
+                      identifier: {
+                        name: "P"
+                        type: "P"
+                        package: "ModuleNameForTest/main"
+                        id: 354
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "30:10::11"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "30:12::13"
+          cfg_id: 29
+          identifier: {
+            name: "m"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 358
+          }
+        }
+        body: {
+          text_range: "30:16::18"
+          cfg_id: 31
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "32:0::16"
+      cfg_id: 7
+      class_declaration: {
+        identifier: "32:5::7"
+        class_tree: {
+          text_range: "32:0::16"
+          cfg_id: 6
+          native: {
+            native_kind: "[13](TypeSpecWrapped)"
+            children: {
+              text_range: "32:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "32:5::7"
+              cfg_id: 2
+              identifier: {
+                name: "A0"
+                type: "main.A0"
+                package: "ModuleNameForTest/main"
+                id: 371
+              }
+            }
+            children: {
+              text_range: "32:8::9"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "32:10::16"
+              cfg_id: 5
+              index_expression: {
+                expression: {
+                  text_range: "32:10::11"
+                  cfg_id: 3
+                  identifier: {
+                    name: "T"
+                    type: "main.T[P any]"
+                    package: "ModuleNameForTest/main"
+                    id: 327
+                  }
+                }
+                index: {
+                  text_range: "32:12::15"
+                  cfg_id: 4
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "34:0::17"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "34:5::9"
+          cfg_id: 10
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "34:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "34:6::8"
+              cfg_id: 9
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "34:6::8"
+                  cfg_id: 8
+                  identifier: {
+                    name: "A0"
+                    type: "main.A0"
+                    package: "ModuleNameForTest/main"
+                    id: 371
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "34:8::9"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "34:10::12"
+          cfg_id: 11
+          identifier: {
+            name: "m0"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 394
+          }
+        }
+        body: {
+          text_range: "34:15::17"
+          cfg_id: 13
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "36:0::21"
+      cfg_id: 11
+      class_declaration: {
+        identifier: "36:5::7"
+        class_tree: {
+          text_range: "36:0::21"
+          cfg_id: 10
+          native: {
+            native_kind: "[15](TypeSpecWrapped)"
+            children: {
+              text_range: "36:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "36:5::7"
+              cfg_id: 2
+              identifier: {
+                name: "A1"
+                type: "main.A1[P int]"
+                package: "ModuleNameForTest/main"
+                id: 408
+              }
+            }
+            children: {
+              text_range: "36:7::14"
+              cfg_id: 6
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "36:7::8"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "36:8::13"
+                  cfg_id: 5
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "36:8::9"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "36:8::9"
+                          cfg_id: 3
+                          identifier: {
+                            name: "P"
+                            type: "P"
+                            package: "ModuleNameForTest/main"
+                            id: 411
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "36:10::13"
+                      cfg_id: 4
+                      identifier: {
+                        name: "int"
+                        type: "int"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "36:13::14"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "36:15::16"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "36:17::21"
+              cfg_id: 9
+              index_expression: {
+                expression: {
+                  text_range: "36:17::18"
+                  cfg_id: 7
+                  identifier: {
+                    name: "T"
+                    type: "main.T[P any]"
+                    package: "ModuleNameForTest/main"
+                    id: 327
+                  }
+                }
+                index: {
+                  text_range: "36:19::20"
+                  cfg_id: 8
+                  identifier: {
+                    name: "P"
+                    type: "P"
+                    package: "ModuleNameForTest/main"
+                    id: 411
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "38:0::23"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "38:5::12"
+          cfg_id: 16
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "38:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "38:6::11"
+              cfg_id: 15
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "38:6::11"
+                  cfg_id: 14
+                  index_expression: {
+                    expression: {
+                      text_range: "38:6::8"
+                      cfg_id: 12
+                      identifier: {
+                        name: "A1"
+                        type: "main.A1[P int]"
+                        package: "ModuleNameForTest/main"
+                        id: 408
+                      }
+                    }
+                    index: {
+                      text_range: "38:9::10"
+                      cfg_id: 13
+                      identifier: {
+                        name: "P"
+                        type: "P"
+                        package: "ModuleNameForTest/main"
+                        id: 435
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "38:11::12"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "38:13::15"
+          cfg_id: 17
+          identifier: {
+            name: "m1"
+            type: "func(x P)"
+            package: "ModuleNameForTest/main"
+            id: 439
+          }
+        }
+        formal_parameters: {
+          text_range: "38:16::19"
+          cfg_id: 20
+          parameter: {
+            identifier: {
+              text_range: "38:16::17"
+              cfg_id: 18
+              identifier: {
+                name: "x"
+                type: "P"
+                package: "UNKNOWN"
+                id: 442
+              }
+            }
+            type: {
+              text_range: "38:18::19"
+              cfg_id: 19
+              identifier: {
+                name: "P"
+                type: "P"
+                package: "ModuleNameForTest/main"
+                id: 435
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "38:21::23"
+          cfg_id: 23
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "40:0::32"
+      cfg_id: 14
+      class_declaration: {
+        identifier: "40:5::7"
+        class_tree: {
+          text_range: "40:0::32"
+          cfg_id: 13
+          native: {
+            native_kind: "[17](TypeSpecWrapped)"
+            children: {
+              text_range: "40:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "40:5::7"
+              cfg_id: 2
+              identifier: {
+                name: "A2"
+                type: "main.A2[P int32, Q int64]"
+                package: "ModuleNameForTest/main"
+                id: 456
+              }
+            }
+            children: {
+              text_range: "40:7::25"
+              cfg_id: 9
+              native: {
+                native_kind: "TypeParams(FieldList)"
+                children: {
+                  text_range: "40:7::8"
+                  native: {
+                    native_kind: "Opening"
+                  }
+                }
+                children: {
+                  text_range: "40:8::15"
+                  cfg_id: 5
+                  native: {
+                    native_kind: "[0](Field)"
+                    children: {
+                      text_range: "40:8::9"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "40:8::9"
+                          cfg_id: 3
+                          identifier: {
+                            name: "P"
+                            type: "P"
+                            package: "ModuleNameForTest/main"
+                            id: 459
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "40:10::15"
+                      cfg_id: 4
+                      identifier: {
+                        name: "int32"
+                        type: "int32"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "40:15::16"
+                  native: {}
+                }
+                children: {
+                  text_range: "40:17::24"
+                  cfg_id: 8
+                  native: {
+                    native_kind: "[1](Field)"
+                    children: {
+                      text_range: "40:17::18"
+                      native: {
+                        native_kind: "Names([]*Ident)"
+                        children: {
+                          text_range: "40:17::18"
+                          cfg_id: 6
+                          identifier: {
+                            name: "Q"
+                            type: "Q"
+                            package: "ModuleNameForTest/main"
+                            id: 468
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "40:19::24"
+                      cfg_id: 7
+                      identifier: {
+                        name: "int64"
+                        type: "int64"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "40:24::25"
+                  native: {
+                    native_kind: "Closing"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "40:26::27"
+              native: {
+                native_kind: "Assign"
+              }
+            }
+            children: {
+              text_range: "40:28::32"
+              cfg_id: 12
+              index_expression: {
+                expression: {
+                  text_range: "40:28::29"
+                  cfg_id: 10
+                  identifier: {
+                    name: "T"
+                    type: "main.T[P any]"
+                    package: "ModuleNameForTest/main"
+                    id: 327
+                  }
+                }
+                index: {
+                  text_range: "40:30::31"
+                  cfg_id: 11
+                  identifier: {
+                    name: "P"
+                    type: "P"
+                    package: "ModuleNameForTest/main"
+                    id: 459
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "42:0::31"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "42:5::15"
+          cfg_id: 20
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "42:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "42:6::14"
+              cfg_id: 19
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "42:6::14"
+                  cfg_id: 18
+                  index_list_expression: {
+                    expression: {
+                      text_range: "42:6::8"
+                      cfg_id: 15
+                      identifier: {
+                        name: "A2"
+                        type: "main.A2[P int32, Q int64]"
+                        package: "ModuleNameForTest/main"
+                        id: 456
+                      }
+                    }
+                    indices: {
+                      text_range: "42:9::10"
+                      cfg_id: 16
+                      identifier: {
+                        name: "P"
+                        type: "P"
+                        package: "ModuleNameForTest/main"
+                        id: 494
+                      }
+                    }
+                    indices: {
+                      text_range: "42:12::13"
+                      cfg_id: 17
+                      identifier: {
+                        name: "Q"
+                        type: "Q"
+                        package: "ModuleNameForTest/main"
+                        id: 497
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "42:14::15"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "42:16::18"
+          cfg_id: 21
+          identifier: {
+            name: "m2"
+            type: "func(x P, y Q)"
+            package: "ModuleNameForTest/main"
+            id: 501
+          }
+        }
+        formal_parameters: {
+          text_range: "42:19::22"
+          cfg_id: 24
+          parameter: {
+            identifier: {
+              text_range: "42:19::20"
+              cfg_id: 22
+              identifier: {
+                name: "x"
+                type: "P"
+                package: "UNKNOWN"
+                id: 504
+              }
+            }
+            type: {
+              text_range: "42:21::22"
+              cfg_id: 23
+              identifier: {
+                name: "P"
+                type: "P"
+                package: "ModuleNameForTest/main"
+                id: 494
+              }
+            }
+          }
+        }
+        formal_parameters: {
+          text_range: "42:24::27"
+          cfg_id: 28
+          parameter: {
+            identifier: {
+              text_range: "42:24::25"
+              cfg_id: 26
+              identifier: {
+                name: "y"
+                type: "Q"
+                package: "UNKNOWN"
+                id: 509
+              }
+            }
+            type: {
+              text_range: "42:26::27"
+              cfg_id: 27
+              identifier: {
+                name: "Q"
+                type: "Q"
+                package: "ModuleNameForTest/main"
+                id: 497
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "42:29::31"
+          cfg_id: 31
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "44:0:61:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "44:5::29"
+          cfg_id: 2
+          identifier: {
+            name: "genericTypesAliasesTests"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 523
+          }
+        }
+        body: {
+          text_range: "44:32:61:1"
+          cfg_id: 65
+          block: {
+            statement_or_expressions: {
+              text_range: "45:1::42"
+              cfg_id: 11
+              variable_declaration: {
+                identifiers: {
+                  text_range: "45:1::13"
+                  cfg_id: 4
+                  identifier: {
+                    name: "intContainer"
+                    type: "main.Container[int]"
+                    package: "UNKNOWN"
+                    id: 553
+                  }
+                }
+                initializers: {
+                  text_range: "45:17::42"
+                  cfg_id: 10
+                  composite_literal: {
+                    type: {
+                      text_range: "45:17::31"
+                      cfg_id: 7
+                      index_expression: {
+                        expression: {
+                          text_range: "45:17::26"
+                          cfg_id: 5
+                          identifier: {
+                            name: "Container"
+                            type: "main.Container[T any]"
+                            package: "ModuleNameForTest/main"
+                            id: 34
+                          }
+                        }
+                        index: {
+                          text_range: "45:27::30"
+                          cfg_id: 6
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "45:32::41"
+                      cfg_id: 9
+                      key_value: {
+                        key: {
+                          text_range: "45:32::37"
+                          cfg_id: 8
+                          identifier: {
+                            name: "Value"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: 61
+                          }
+                        }
+                        value: {
+                          text_range: "45:39::41"
+                          integer_literal: {
+                            value: "42"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "46:1::32"
+              cfg_id: 19
+              expression_statement: {
+                expression: {
+                  text_range: "46:1::32"
+                  cfg_id: 18
+                  function_invocation: {
+                    member_select: {
+                      text_range: "46:1::12"
+                      cfg_id: 14
+                      member_select: {
+                        expression: {
+                          text_range: "46:1::4"
+                          cfg_id: 12
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 22
+                          }
+                        }
+                        identifier: {
+                          text_range: "46:5::12"
+                          cfg_id: 13
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "46:13::31"
+                      cfg_id: 17
+                      member_select: {
+                        expression: {
+                          text_range: "46:13::25"
+                          cfg_id: 15
+                          identifier: {
+                            name: "intContainer"
+                            type: "main.Container[int]"
+                            package: "UNKNOWN"
+                            id: 553
+                          }
+                        }
+                        identifier: {
+                          text_range: "46:26::31"
+                          cfg_id: 16
+                          identifier: {
+                            name: "Value"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: 61
+                          }
+                        }
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "48:1::18"
+              cfg_id: 23
+              variable_declaration: {
+                identifiers: {
+                  text_range: "48:1::2"
+                  cfg_id: 20
+                  identifier: {
+                    name: "v"
+                    type: "main.Vector"
+                    package: "UNKNOWN"
+                    id: 630
+                  }
+                }
+                initializers: {
+                  text_range: "48:6::18"
+                  cfg_id: 22
+                  composite_literal: {
+                    type: {
+                      text_range: "48:6::12"
+                      cfg_id: 21
+                      identifier: {
+                        name: "Vector"
+                        type: "main.Vector"
+                        package: "ModuleNameForTest/main"
+                        id: 116
+                      }
+                    }
+                    elements: {
+                      text_range: "48:13::17"
+                      float_literal: {
+                        value: "3.14"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "49:1::15"
+              cfg_id: 27
+              expression_statement: {
+                expression: {
+                  text_range: "49:1::15"
+                  cfg_id: 26
+                  function_invocation: {
+                    member_select: {
+                      text_range: "49:1::12"
+                      cfg_id: 24
+                      identifier: {
+                        name: "doSomething"
+                        type: "func(v main.Vector)"
+                        package: "ModuleNameForTest/main"
+                        id: 166
+                      }
+                    }
+                    arguments: {
+                      text_range: "49:13::14"
+                      cfg_id: 25
+                      identifier: {
+                        name: "v"
+                        type: "main.Vector"
+                        package: "UNKNOWN"
+                        id: 630
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "51:1::24"
+              cfg_id: 31
+              variable_declaration: {
+                identifiers: {
+                  text_range: "51:1::3"
+                  cfg_id: 28
+                  identifier: {
+                    name: "va"
+                    type: "main.VectorAlias"
+                    package: "UNKNOWN"
+                    id: 666
+                  }
+                }
+                initializers: {
+                  text_range: "51:7::24"
+                  cfg_id: 30
+                  composite_literal: {
+                    type: {
+                      text_range: "51:7::18"
+                      cfg_id: 29
+                      identifier: {
+                        name: "VectorAlias"
+                        type: "main.VectorAlias"
+                        package: "ModuleNameForTest/main"
+                        id: 139
+                      }
+                    }
+                    elements: {
+                      text_range: "51:19::23"
+                      float_literal: {
+                        value: "2.71"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "52:1::16"
+              cfg_id: 35
+              expression_statement: {
+                expression: {
+                  text_range: "52:1::16"
+                  cfg_id: 34
+                  function_invocation: {
+                    member_select: {
+                      text_range: "52:1::12"
+                      cfg_id: 32
+                      identifier: {
+                        name: "doSomething"
+                        type: "func(v main.Vector)"
+                        package: "ModuleNameForTest/main"
+                        id: 166
+                      }
+                    }
+                    arguments: {
+                      text_range: "52:13::15"
+                      cfg_id: 33
+                      identifier: {
+                        name: "va"
+                        type: "main.VectorAlias"
+                        package: "UNKNOWN"
+                        id: 666
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "54:1::15"
+              cfg_id: 41
+              variable_declaration: {
+                identifiers: {
+                  text_range: "54:1::2"
+                  cfg_id: 36
+                  identifier: {
+                    name: "b"
+                    type: "main.B[int]"
+                    package: "UNKNOWN"
+                    id: 709
+                  }
+                }
+                initializers: {
+                  text_range: "54:6::15"
+                  cfg_id: 40
+                  function_invocation: {
+                    member_select: {
+                      text_range: "54:6::12"
+                      cfg_id: 39
+                      index_expression: {
+                        expression: {
+                          text_range: "54:6::7"
+                          cfg_id: 37
+                          identifier: {
+                            name: "B"
+                            type: "main.B[U comparable]"
+                            package: "ModuleNameForTest/main"
+                            id: 232
+                          }
+                        }
+                        index: {
+                          text_range: "54:8::11"
+                          cfg_id: 38
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "54:13::14"
+                      integer_literal: {
+                        value: "5"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "55:1::15"
+              cfg_id: 47
+              expression_statement: {
+                expression: {
+                  text_range: "55:1::15"
+                  cfg_id: 46
+                  function_invocation: {
+                    member_select: {
+                      text_range: "55:1::12"
+                      cfg_id: 44
+                      member_select: {
+                        expression: {
+                          text_range: "55:1::4"
+                          cfg_id: 42
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 22
+                          }
+                        }
+                        identifier: {
+                          text_range: "55:5::12"
+                          cfg_id: 43
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "55:13::14"
+                      cfg_id: 45
+                      identifier: {
+                        name: "b"
+                        type: "main.B[int]"
+                        package: "UNKNOWN"
+                        id: 709
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "57:1::6"
+              cfg_id: 50
+              expression_statement: {
+                expression: {
+                  text_range: "57:1::6"
+                  cfg_id: 49
+                  function_invocation: {
+                    member_select: {
+                      text_range: "57:1::2"
+                      cfg_id: 48
+                      identifier: {
+                        name: "G"
+                        type: "func(x int)"
+                        package: "UNKNOWN"
+                        id: 278
+                      }
+                    }
+                    arguments: {
+                      text_range: "57:3::5"
+                      integer_literal: {
+                        value: "10"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "59:1::40"
+              cfg_id: 58
+              variable_declaration: {
+                identifiers: {
+                  text_range: "59:1::3"
+                  cfg_id: 51
+                  identifier: {
+                    name: "nm"
+                    type: "main.NamedMap[int]"
+                    package: "UNKNOWN"
+                    id: 750
+                  }
+                }
+                initializers: {
+                  text_range: "59:7::40"
+                  cfg_id: 57
+                  composite_literal: {
+                    type: {
+                      text_range: "59:7::20"
+                      cfg_id: 54
+                      index_expression: {
+                        expression: {
+                          text_range: "59:7::15"
+                          cfg_id: 52
+                          identifier: {
+                            name: "NamedMap"
+                            type: "main.NamedMap[T any]"
+                            package: "ModuleNameForTest/main"
+                            id: 290
+                          }
+                        }
+                        index: {
+                          text_range: "59:16::19"
+                          cfg_id: 53
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "59:21::29"
+                      cfg_id: 55
+                      key_value: {
+                        key: {
+                          text_range: "59:21::26"
+                          string_literal: {
+                            value: "\"one\""
+                            content: "one"
+                          }
+                        }
+                        value: {
+                          text_range: "59:28::29"
+                          integer_literal: {
+                            value: "1"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "59:31::39"
+                      cfg_id: 56
+                      key_value: {
+                        key: {
+                          text_range: "59:31::36"
+                          string_literal: {
+                            value: "\"two\""
+                            content: "two"
+                          }
+                        }
+                        value: {
+                          text_range: "59:38::39"
+                          integer_literal: {
+                            value: "2"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "60:1::16"
+              cfg_id: 64
+              expression_statement: {
+                expression: {
+                  text_range: "60:1::16"
+                  cfg_id: 63
+                  function_invocation: {
+                    member_select: {
+                      text_range: "60:1::12"
+                      cfg_id: 61
+                      member_select: {
+                        expression: {
+                          text_range: "60:1::4"
+                          cfg_id: 59
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 22
+                          }
+                        }
+                        identifier: {
+                          text_range: "60:5::12"
+                          cfg_id: 60
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "60:13::15"
+                      cfg_id: 62
+                      identifier: {
+                        name: "nm"
+                        type: "main.NamedMap[int]"
+                        package: "UNKNOWN"
+                        id: 750
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 11
+            node_ids: 19
+            node_ids: 23
+            node_ids: 27
+            node_ids: 31
+            node_ids: 35
+            node_ids: 41
+            node_ids: 47
+            node_ids: 50
+            node_ids: 58
+            node_ids: 64
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

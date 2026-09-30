@@ -154,7 +154,7 @@ public class GoServerProcess implements AutoCloseable {
    * @throws ParseException when the executable failed on this input
    * @throws IllegalStateException when the process is not started
    */
-  public synchronized String execute(List<String> arguments, Map<String, String> filenameToContentMap) throws IOException {
+  public synchronized byte[] execute(List<String> arguments, Map<String, String> filenameToContentMap) throws IOException {
     if (activeAnalyses.get() == 0) {
       throw new IllegalStateException("The Go process is not started");
     }
@@ -178,7 +178,7 @@ public class GoServerProcess implements AutoCloseable {
         // Unblocks the read of the response, which then fails.
         destroyedProcess.destroyForcibly();
       }, effectiveTimeoutMs, TimeUnit.MILLISECONDS);
-      String response;
+      byte[] response;
       try {
         try (var span = ConverterTracing.span("write.stdin")) {
           span.arg("bytes", writeRequest(process.stdin(), arguments, payload, (int) payloadLength));
@@ -186,7 +186,7 @@ public class GoServerProcess implements AutoCloseable {
         try (var span = ConverterTracing.span("drain.stdout")) {
           response = readResponse(process.stdout());
           responseComplete = true;
-          span.arg("chars", response.length());
+          span.arg("bytes", response.length);
         }
       } finally {
         if (!timeout.cancel(false)) {
@@ -344,7 +344,7 @@ public class GoServerProcess implements AutoCloseable {
     return buffers;
   }
 
-  private static String readResponse(DataInputStream in) throws IOException {
+  private static byte[] readResponse(DataInputStream in) throws IOException {
     byte status = in.readByte();
     if (status != STATUS_OK && status != STATUS_ERROR) {
       throw new IOException("Invalid response status from the Go executable: " + status);
@@ -355,11 +355,10 @@ public class GoServerProcess implements AutoCloseable {
     }
     var body = new byte[length];
     in.readFully(body);
-    var response = new String(body, UTF_8);
     if (status == STATUS_ERROR) {
-      throw new ParseException("Go executable failed: " + response);
+      throw new ParseException("Go executable failed: " + new String(body, UTF_8));
     }
-    return response;
+    return body;
   }
 
   /**

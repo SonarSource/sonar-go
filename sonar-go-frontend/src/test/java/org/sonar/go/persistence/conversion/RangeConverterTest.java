@@ -16,11 +16,13 @@
  */
 package org.sonar.go.persistence.conversion;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.impl.LiteralTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
-import org.sonar.go.persistence.JsonTestHelper;
+import org.sonar.go.impl.TokenImpl;
+import org.sonar.go.impl.TreeMetaDataProvider;
 import org.sonar.plugins.go.api.TextRange;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
@@ -29,7 +31,20 @@ import org.sonar.plugins.go.api.TreeMetaData;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class RangeConverterTest extends JsonTestHelper {
+class RangeConverterTest {
+
+  private final TreeMetaDataProvider metaDataProvider = new TreeMetaDataProvider(List.of(), List.of());
+
+  private Token otherToken(int line, int lineOffset, String text) {
+    var token = new TokenImpl(new TextRangeImpl(line, lineOffset, line, lineOffset + text.length()), text, Token.Type.OTHER);
+    metaDataProvider.allTokens().add(token);
+    metaDataProvider.allTokens().sort(TreeMetaDataProvider.COMPARATOR);
+    return token;
+  }
+
+  private TreeMetaData metaData(Token token) {
+    return metaDataProvider.metaData(token.textRange());
+  }
 
   @Test
   void format() {

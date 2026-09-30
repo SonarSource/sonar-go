@@ -1,0 +1,323 @@
+comments: {
+  text: "// +build ignore"
+  content_text: " +build ignore"
+  range: "1:0::16"
+  content_range: "1:2::16"
+}
+comments: {
+  text: "// Single import"
+  content_text: " Single import"
+  range: "5:0::16"
+  content_range: "5:2::16"
+}
+comments: {
+  text: "// Renamed import"
+  content_text: " Renamed import"
+  range: "8:0::17"
+  content_range: "8:2::17"
+}
+comments: {
+  text: "// Dot import"
+  content_text: " Dot import"
+  range: "11:0::13"
+  content_range: "11:2::13"
+}
+comments: {
+  text: "// Blank import"
+  content_text: " Blank import"
+  range: "14:0::15"
+  content_range: "14:2::15"
+}
+comments: {
+  text: "// Grouped imports"
+  content_text: " Grouped imports"
+  range: "17:0::18"
+  content_range: "17:2::18"
+}
+tokens: {
+  text: "package"
+  text_range: "3:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "3:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "6:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"math\""
+  text_range: "6:7::13"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "import"
+  text_range: "9:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "m"
+  text_range: "9:7::8"
+}
+tokens: {
+  text: "\"math\""
+  text_range: "9:9::15"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "import"
+  text_range: "12:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "."
+  text_range: "12:7::8"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "12:9::14"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "import"
+  text_range: "15:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "15:7::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"net/http\""
+  text_range: "15:9::19"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "import"
+  text_range: "18:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "18:7::8"
+}
+tokens: {
+  text: "\"io\""
+  text_range: "19:1::5"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"log\""
+  text_range: "20:1::6"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "21:0::1"
+}
+root: {
+  text_range: "1:0:22:0"
+  cfg_id: 17
+  top_level: {
+    declarations: {
+      text_range: "1:0:3:12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "3:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "3:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "6:0::13"
+      cfg_id: 4
+      import_declaration: {
+        children: {
+          text_range: "6:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "6:7::13"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "6:7::13"
+              string_literal: {
+                value: "\"math\""
+                content: "math"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "9:0::15"
+      cfg_id: 7
+      import_declaration: {
+        children: {
+          text_range: "9:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "9:7::15"
+          cfg_id: 6
+          import_specification: {
+            name: {
+              text_range: "9:7::8"
+              cfg_id: 5
+              identifier: {
+                name: "m"
+                type: "UNKNOWN"
+                package: "math"
+                id: 90
+              }
+            }
+            path: {
+              text_range: "9:9::15"
+              string_literal: {
+                value: "\"math\""
+                content: "math"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "12:0::14"
+      cfg_id: 10
+      import_declaration: {
+        children: {
+          text_range: "12:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "12:7::14"
+          cfg_id: 9
+          import_specification: {
+            name: {
+              text_range: "12:7::8"
+              cfg_id: 8
+              identifier: {
+                name: "."
+                type: "UNKNOWN"
+                package: "fmt"
+                id: 121
+              }
+            }
+            path: {
+              text_range: "12:9::14"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "15:0::19"
+      cfg_id: 13
+      import_declaration: {
+        children: {
+          text_range: "15:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "15:7::19"
+          cfg_id: 12
+          import_specification: {
+            name: {
+              text_range: "15:7::8"
+              cfg_id: 11
+              place_holder: {
+                place_holder_token: "15:7::8"
+              }
+            }
+            path: {
+              text_range: "15:9::19"
+              string_literal: {
+                value: "\"net/http\""
+                content: "net/http"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "18:0:21:1"
+      cfg_id: 16
+      import_declaration: {
+        children: {
+          text_range: "18:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "18:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "19:1::5"
+          cfg_id: 14
+          import_specification: {
+            path: {
+              text_range: "19:1::5"
+              string_literal: {
+                value: "\"io\""
+                content: "io"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "20:1::6"
+          cfg_id: 15
+          import_specification: {
+            path: {
+              text_range: "20:1::6"
+              string_literal: {
+                value: "\"log\""
+                content: "log"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "21:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+  }
+}

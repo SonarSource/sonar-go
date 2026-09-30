@@ -1,0 +1,1965 @@
+comments: {
+  text: "// \"true\", \"false\" and \"nil\" are predeclared identifiers Go lets a program redeclare. Where they name something"
+  content_text: " \"true\", \"false\" and \"nil\" are predeclared identifiers Go lets a program redeclare. Where they name something"
+  range: "3:0::111"
+  content_range: "3:2::111"
+}
+comments: {
+  text: "// they are identifiers, and so is a read of a redeclared name; only a read of the predeclared value is a literal."
+  content_text: " they are identifiers, and so is a read of a redeclared name; only a read of the predeclared value is a literal."
+  range: "4:0::114"
+  content_range: "4:2::114"
+}
+comments: {
+  text: "// They live in their own file: declaring them at package scope would change the meaning of every case sharing it."
+  content_text: " They live in their own file: declaring them at package scope would change the meaning of every case sharing it."
+  range: "5:0::114"
+  content_range: "5:2::114"
+}
+comments: {
+  text: "// A grouped type specification stays native, unlike a single \"type X int\" or a grouped const or var"
+  content_text: " A grouped type specification stays native, unlike a single \"type X int\" or a grouped const or var"
+  range: "19:0::100"
+  content_range: "19:2::100"
+}
+comments: {
+  text: "// specification; only its name goes through mapName."
+  content_text: " specification; only its name goes through mapName."
+  range: "20:0::53"
+  content_range: "20:2::53"
+}
+comments: {
+  text: "// \"iota\" is an identifier wherever it appears, mapIdentImpl never mapped it to a literal. Declaring it"
+  content_text: " \"iota\" is an identifier wherever it appears, mapIdentImpl never mapped it to a literal. Declaring it"
+  range: "30:0::103"
+  content_range: "30:2::103"
+}
+comments: {
+  text: "// stays inside a function: at package scope the const block below could no longer count with it."
+  content_text: " stays inside a function: at package scope the const block below could no longer count with it."
+  range: "31:0::97"
+  content_range: "31:2::97"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "const"
+  text_range: "7:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "7:6::7"
+}
+tokens: {
+  text: "nil"
+  text_range: "8:1::4"
+}
+tokens: {
+  text: "1"
+  text_range: "8:9::10"
+}
+tokens: {
+  text: "="
+  text_range: "8:7::8"
+}
+tokens: {
+  text: "false"
+  text_range: "9:1::6"
+}
+tokens: {
+  text: "2"
+  text_range: "9:9::10"
+}
+tokens: {
+  text: "="
+  text_range: "9:7::8"
+}
+tokens: {
+  text: ")"
+  text_range: "10:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "12:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "true"
+  text_range: "12:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "12:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "12:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "12:12::13"
+}
+tokens: {
+  text: "}"
+  text_range: "12:13::14"
+}
+tokens: {
+  text: "type"
+  text_range: "14:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "shadowedFields"
+  text_range: "14:5::19"
+}
+tokens: {
+  text: "struct"
+  text_range: "14:20::26"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "14:27::28"
+}
+tokens: {
+  text: "nil"
+  text_range: "15:1::4"
+}
+tokens: {
+  text: "int"
+  text_range: "15:7::10"
+}
+tokens: {
+  text: "false"
+  text_range: "16:1::6"
+}
+tokens: {
+  text: "string"
+  text_range: "16:7::13"
+}
+tokens: {
+  text: "}"
+  text_range: "17:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "21:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "groupedTypeNames"
+  text_range: "21:5::21"
+}
+tokens: {
+  text: "("
+  text_range: "21:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "21:22::23"
+}
+tokens: {
+  text: "{"
+  text_range: "21:24::25"
+}
+tokens: {
+  text: "type"
+  text_range: "22:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "22:6::7"
+}
+tokens: {
+  text: "nil"
+  text_range: "23:2::5"
+}
+tokens: {
+  text: "int"
+  text_range: "23:8::11"
+}
+tokens: {
+  text: "false"
+  text_range: "24:2::7"
+}
+tokens: {
+  text: "string"
+  text_range: "24:8::14"
+}
+tokens: {
+  text: ")"
+  text_range: "25:1::2"
+}
+tokens: {
+  text: "var"
+  text_range: "26:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "value"
+  text_range: "26:5::10"
+}
+tokens: {
+  text: "nil"
+  text_range: "26:11::14"
+}
+tokens: {
+  text: "_"
+  text_range: "27:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "27:3::4"
+}
+tokens: {
+  text: "value"
+  text_range: "27:5::10"
+}
+tokens: {
+  text: "}"
+  text_range: "28:0::1"
+}
+tokens: {
+  text: "const"
+  text_range: "32:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "32:6::7"
+}
+tokens: {
+  text: "iotaFirst"
+  text_range: "33:1::10"
+}
+tokens: {
+  text: "iota"
+  text_range: "33:13::17"
+}
+tokens: {
+  text: "="
+  text_range: "33:11::12"
+}
+tokens: {
+  text: "iotaSecond"
+  text_range: "34:1::11"
+}
+tokens: {
+  text: ")"
+  text_range: "35:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "37:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "shadowedIota"
+  text_range: "37:5::17"
+}
+tokens: {
+  text: "("
+  text_range: "37:17::18"
+}
+tokens: {
+  text: ")"
+  text_range: "37:18::19"
+}
+tokens: {
+  text: "{"
+  text_range: "37:20::21"
+}
+tokens: {
+  text: "var"
+  text_range: "38:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "iota"
+  text_range: "38:5::9"
+}
+tokens: {
+  text: "5"
+  text_range: "38:12::13"
+}
+tokens: {
+  text: "="
+  text_range: "38:10::11"
+}
+tokens: {
+  text: "_"
+  text_range: "39:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "39:3::4"
+}
+tokens: {
+  text: "iota"
+  text_range: "39:5::9"
+}
+tokens: {
+  text: "}"
+  text_range: "40:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "42:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "shadowedIotaShortDeclaration"
+  text_range: "42:5::33"
+}
+tokens: {
+  text: "("
+  text_range: "42:33::34"
+}
+tokens: {
+  text: ")"
+  text_range: "42:34::35"
+}
+tokens: {
+  text: "{"
+  text_range: "42:36::37"
+}
+tokens: {
+  text: "iota"
+  text_range: "43:1::5"
+}
+tokens: {
+  text: ":="
+  text_range: "43:6::8"
+}
+tokens: {
+  text: "7"
+  text_range: "43:9::10"
+}
+tokens: {
+  text: "_"
+  text_range: "44:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "44:3::4"
+}
+tokens: {
+  text: "iota"
+  text_range: "44:5::9"
+}
+tokens: {
+  text: "}"
+  text_range: "45:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "47:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "rangedNames"
+  text_range: "47:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "47:16::17"
+}
+tokens: {
+  text: "s"
+  text_range: "47:17::18"
+}
+tokens: {
+  text: "["
+  text_range: "47:19::20"
+}
+tokens: {
+  text: "int"
+  text_range: "47:21::24"
+}
+tokens: {
+  text: "]"
+  text_range: "47:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "47:24::25"
+}
+tokens: {
+  text: "{"
+  text_range: "47:26::27"
+}
+tokens: {
+  text: "for"
+  text_range: "48:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "nil"
+  text_range: "48:5::8"
+}
+tokens: {
+  text: ":="
+  text_range: "48:9::11"
+}
+tokens: {
+  text: "s"
+  text_range: "48:18::19"
+}
+tokens: {
+  text: "range"
+  text_range: "48:12::17"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "48:20::21"
+}
+tokens: {
+  text: "_"
+  text_range: "49:2::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "49:4::5"
+}
+tokens: {
+  text: "nil"
+  text_range: "49:6::9"
+}
+tokens: {
+  text: "}"
+  text_range: "50:1::2"
+}
+tokens: {
+  text: "for"
+  text_range: "51:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "nil"
+  text_range: "51:5::8"
+}
+tokens: {
+  text: "false"
+  text_range: "51:10::15"
+}
+tokens: {
+  text: ","
+  text_range: "51:8::9"
+}
+tokens: {
+  text: ":="
+  text_range: "51:16::18"
+}
+tokens: {
+  text: "s"
+  text_range: "51:25::26"
+}
+tokens: {
+  text: "range"
+  text_range: "51:19::24"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "51:27::28"
+}
+tokens: {
+  text: "_"
+  text_range: "52:2::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "52:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "52:3::4"
+}
+tokens: {
+  text: "="
+  text_range: "52:7::8"
+}
+tokens: {
+  text: "nil"
+  text_range: "52:9::12"
+}
+tokens: {
+  text: "false"
+  text_range: "52:14::19"
+}
+tokens: {
+  text: ","
+  text_range: "52:12::13"
+}
+tokens: {
+  text: "}"
+  text_range: "53:1::2"
+}
+tokens: {
+  text: "}"
+  text_range: "54:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "56:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "namedResult"
+  text_range: "56:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "56:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "56:17::18"
+}
+tokens: {
+  text: "("
+  text_range: "56:19::20"
+}
+tokens: {
+  text: "nil"
+  text_range: "56:20::23"
+}
+tokens: {
+  text: "int"
+  text_range: "56:24::27"
+}
+tokens: {
+  text: ")"
+  text_range: "56:27::28"
+}
+tokens: {
+  text: "{"
+  text_range: "56:29::30"
+}
+tokens: {
+  text: "return"
+  text_range: "57:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "0"
+  text_range: "57:8::9"
+}
+tokens: {
+  text: "}"
+  text_range: "58:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "60:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "shadowedNames"
+  text_range: "60:5::18"
+}
+tokens: {
+  text: "("
+  text_range: "60:18::19"
+}
+tokens: {
+  text: "nil"
+  text_range: "60:19::22"
+}
+tokens: {
+  text: "int"
+  text_range: "60:23::26"
+}
+tokens: {
+  text: "false"
+  text_range: "60:28::33"
+}
+tokens: {
+  text: "string"
+  text_range: "60:34::40"
+}
+tokens: {
+  text: ","
+  text_range: "60:26::27"
+}
+tokens: {
+  text: ")"
+  text_range: "60:40::41"
+}
+tokens: {
+  text: "{"
+  text_range: "60:42::43"
+}
+tokens: {
+  text: "var"
+  text_range: "61:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "true"
+  text_range: "61:5::9"
+}
+tokens: {
+  text: "3"
+  text_range: "61:12::13"
+}
+tokens: {
+  text: "="
+  text_range: "61:10::11"
+}
+tokens: {
+  text: "_"
+  text_range: "62:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "62:3::4"
+}
+tokens: {
+  text: "true"
+  text_range: "62:5::9"
+}
+tokens: {
+  text: "{"
+  text_range: "63:1::2"
+}
+tokens: {
+  text: "nil"
+  text_range: "64:2::5"
+}
+tokens: {
+  text: ":="
+  text_range: "64:6::8"
+}
+tokens: {
+  text: "4"
+  text_range: "64:9::10"
+}
+tokens: {
+  text: "_"
+  text_range: "65:2::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "65:4::5"
+}
+tokens: {
+  text: "nil"
+  text_range: "65:6::9"
+}
+tokens: {
+  text: "}"
+  text_range: "66:1::2"
+}
+tokens: {
+  text: "false"
+  text_range: "67:0::5"
+}
+tokens: {
+  text: ":"
+  text_range: "67:5::6"
+}
+tokens: {
+  text: "for"
+  text_range: "68:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "68:5::6"
+}
+tokens: {
+  text: "break"
+  text_range: "69:2::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "false"
+  text_range: "69:8::13"
+}
+tokens: {
+  text: "}"
+  text_range: "70:1::2"
+}
+tokens: {
+  text: "}"
+  text_range: "71:0::1"
+}
+root: {
+  text_range: "1:0:72:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "7:0:10:1"
+      cfg_id: 7
+      native: {
+        native_kind: "[0](GenDecl)"
+        children: {
+          text_range: "7:0::5"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "7:6::7"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "8:1:9:10"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "8:1::10"
+              cfg_id: 4
+              variable_declaration: {
+                identifiers: {
+                  text_range: "8:1::4"
+                  cfg_id: 3
+                  identifier: {
+                    name: "nil"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 366
+                  }
+                }
+                initializers: {
+                  text_range: "8:9::10"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "9:1::10"
+              cfg_id: 6
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:1::6"
+                  cfg_id: 5
+                  identifier: {
+                    name: "false"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 377
+                  }
+                }
+                initializers: {
+                  text_range: "9:9::10"
+                  integer_literal: {
+                    value: "2"
+                  }
+                }
+                is_val: true
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "10:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "12:0::14"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "12:5::9"
+          cfg_id: 8
+          identifier: {
+            name: "true"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 395
+          }
+        }
+        body: {
+          text_range: "12:12::14"
+          cfg_id: 10
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "14:0:17:1"
+      cfg_id: 12
+      class_declaration: {
+        identifier: "14:5::19"
+        class_tree: {
+          text_range: "14:0:17:1"
+          cfg_id: 11
+          native: {
+            native_kind: "[2](TypeSpecWrapped)"
+            children: {
+              text_range: "14:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "14:5::19"
+              cfg_id: 2
+              identifier: {
+                name: "shadowedFields"
+                type: "ast.shadowedFields"
+                package: "ModuleNameForTest/ast"
+                id: 411
+              }
+            }
+            children: {
+              text_range: "14:20:17:1"
+              cfg_id: 10
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "14:20::26"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "14:27:17:1"
+                  cfg_id: 9
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "14:27::28"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "15:1::10"
+                      cfg_id: 5
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "15:1::4"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "15:1::4"
+                              cfg_id: 3
+                              identifier: {
+                                name: "nil"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 436
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "15:7::10"
+                          cfg_id: 4
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "16:1::13"
+                      cfg_id: 8
+                      native: {
+                        native_kind: "[1](Field)"
+                        children: {
+                          text_range: "16:1::6"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "16:1::6"
+                              cfg_id: 6
+                              identifier: {
+                                name: "false"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 447
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "16:7::13"
+                          cfg_id: 7
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "17:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "21:0:28:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "21:5::21"
+          cfg_id: 13
+          identifier: {
+            name: "groupedTypeNames"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 623
+          }
+        }
+        body: {
+          text_range: "21:24:28:1"
+          cfg_id: 28
+          block: {
+            statement_or_expressions: {
+              text_range: "22:1:25:2"
+              cfg_id: 21
+              native: {
+                native_kind: "[0](GenDecl)"
+                children: {
+                  text_range: "22:1::5"
+                  native: {
+                    native_kind: "Tok"
+                  }
+                }
+                children: {
+                  text_range: "22:6::7"
+                  native: {
+                    native_kind: "Lparen"
+                  }
+                }
+                children: {
+                  text_range: "23:2:24:14"
+                  native: {
+                    native_kind: "Specs([]Spec)"
+                    children: {
+                      text_range: "23:2::11"
+                      cfg_id: 17
+                      native: {
+                        native_kind: "[0](TypeSpec)"
+                        children: {
+                          text_range: "23:2::5"
+                          cfg_id: 15
+                          identifier: {
+                            name: "nil"
+                            type: "ast.nil"
+                            package: "ModuleNameForTest/ast"
+                            id: 654
+                          }
+                        }
+                        children: {
+                          text_range: "23:8::11"
+                          cfg_id: 16
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "24:2::14"
+                      cfg_id: 20
+                      native: {
+                        native_kind: "[1](TypeSpec)"
+                        children: {
+                          text_range: "24:2::7"
+                          cfg_id: 18
+                          identifier: {
+                            name: "false"
+                            type: "ast.false"
+                            package: "ModuleNameForTest/ast"
+                            id: 666
+                          }
+                        }
+                        children: {
+                          text_range: "24:8::14"
+                          cfg_id: 19
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "25:1::2"
+                  native: {
+                    native_kind: "Rparen"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "26:1::14"
+              cfg_id: 24
+              variable_declaration: {
+                identifiers: {
+                  text_range: "26:5::10"
+                  cfg_id: 22
+                  identifier: {
+                    name: "value"
+                    type: "ast.nil"
+                    package: "UNKNOWN"
+                    id: 687
+                  }
+                }
+                type: {
+                  text_range: "26:11::14"
+                  cfg_id: 23
+                  identifier: {
+                    name: "nil"
+                    type: "ast.nil"
+                    package: "ModuleNameForTest/ast"
+                    id: 654
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "27:1::10"
+              cfg_id: 27
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "27:1::2"
+                  cfg_id: 25
+                  place_holder: {
+                    place_holder_token: "27:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "27:5::10"
+                  cfg_id: 26
+                  identifier: {
+                    name: "value"
+                    type: "ast.nil"
+                    package: "UNKNOWN"
+                    id: 687
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 24
+            node_ids: 27
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "32:0:35:1"
+      cfg_id: 7
+      native: {
+        native_kind: "[4](GenDecl)"
+        children: {
+          text_range: "32:0::5"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "32:6::7"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "33:1:34:11"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "33:1::17"
+              cfg_id: 4
+              variable_declaration: {
+                identifiers: {
+                  text_range: "33:1::10"
+                  cfg_id: 2
+                  identifier: {
+                    name: "iotaFirst"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 922
+                  }
+                }
+                initializers: {
+                  text_range: "33:13::17"
+                  cfg_id: 3
+                  identifier: {
+                    name: "iota"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "34:1::11"
+              cfg_id: 6
+              variable_declaration: {
+                identifiers: {
+                  text_range: "34:1::11"
+                  cfg_id: 5
+                  identifier: {
+                    name: "iotaSecond"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 940
+                  }
+                }
+                is_val: true
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "35:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "37:0:40:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "37:5::17"
+          cfg_id: 8
+          identifier: {
+            name: "shadowedIota"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 959
+          }
+        }
+        body: {
+          text_range: "37:20:40:1"
+          cfg_id: 15
+          block: {
+            statement_or_expressions: {
+              text_range: "38:1::13"
+              cfg_id: 11
+              variable_declaration: {
+                identifiers: {
+                  text_range: "38:5::9"
+                  cfg_id: 10
+                  identifier: {
+                    name: "iota"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 981
+                  }
+                }
+                initializers: {
+                  text_range: "38:12::13"
+                  integer_literal: {
+                    value: "5"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "39:1::9"
+              cfg_id: 14
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "39:1::2"
+                  cfg_id: 12
+                  place_holder: {
+                    place_holder_token: "39:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "39:5::9"
+                  cfg_id: 13
+                  identifier: {
+                    name: "iota"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 981
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 11
+            node_ids: 14
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "42:0:45:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "42:5::33"
+          cfg_id: 2
+          identifier: {
+            name: "shadowedIotaShortDeclaration"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 1008
+          }
+        }
+        body: {
+          text_range: "42:36:45:1"
+          cfg_id: 9
+          block: {
+            statement_or_expressions: {
+              text_range: "43:1::10"
+              cfg_id: 5
+              variable_declaration: {
+                identifiers: {
+                  text_range: "43:1::5"
+                  cfg_id: 4
+                  identifier: {
+                    name: "iota"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 1042
+                  }
+                }
+                initializers: {
+                  text_range: "43:9::10"
+                  integer_literal: {
+                    value: "7"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "44:1::9"
+              cfg_id: 8
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "44:1::2"
+                  cfg_id: 6
+                  place_holder: {
+                    place_holder_token: "44:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "44:5::9"
+                  cfg_id: 7
+                  identifier: {
+                    name: "iota"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 1042
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 5
+            node_ids: 8
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "47:0:54:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "47:5::16"
+          cfg_id: 2
+          identifier: {
+            name: "rangedNames"
+            type: "func(s []int)"
+            package: "ModuleNameForTest/ast"
+            id: 1070
+          }
+        }
+        formal_parameters: {
+          text_range: "47:17::24"
+          cfg_id: 6
+          parameter: {
+            identifier: {
+              text_range: "47:17::18"
+              cfg_id: 3
+              identifier: {
+                name: "s"
+                type: "[]int"
+                package: "UNKNOWN"
+                id: 1082
+              }
+            }
+            type: {
+              text_range: "47:19::24"
+              cfg_id: 5
+              array_type: {
+                element: {
+                  text_range: "47:21::24"
+                  cfg_id: 4
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "47:26:54:1"
+          cfg_id: 26
+          block: {
+            statement_or_expressions: {
+              text_range: "48:1:50:2"
+              cfg_id: 15
+              loop: {
+                condition: {
+                  text_range: "48:5::19"
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
+                      text_range: "48:5::8"
+                      cfg_id: 9
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1098
+                      }
+                    }
+                    children: {
+                      text_range: "48:9::11"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "48:12::17"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "48:18::19"
+                      cfg_id: 10
+                      identifier: {
+                        name: "s"
+                        type: "[]int"
+                        package: "UNKNOWN"
+                        id: 1082
+                      }
+                    }
+                  }
+                }
+                body: {
+                  text_range: "48:20:50:2"
+                  cfg_id: 14
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "49:2::9"
+                      cfg_id: 13
+                      assignment_expression: {
+                        operator: "EQUAL"
+                        left_hand_side: {
+                          text_range: "49:2::3"
+                          cfg_id: 11
+                          place_holder: {
+                            place_holder_token: "49:2::3"
+                          }
+                        }
+                        statement_or_expression: {
+                          text_range: "49:6::9"
+                          cfg_id: 12
+                          identifier: {
+                            name: "nil"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: 1098
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                kind: "FOR"
+                keyword: "48:1::4"
+              }
+            }
+            statement_or_expressions: {
+              text_range: "51:1:53:2"
+              cfg_id: 25
+              loop: {
+                condition: {
+                  text_range: "51:5::26"
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
+                      text_range: "51:5::8"
+                      cfg_id: 16
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1133
+                      }
+                    }
+                    children: {
+                      text_range: "51:8::9"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "51:10::15"
+                      cfg_id: 17
+                      identifier: {
+                        name: "false"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1138
+                      }
+                    }
+                    children: {
+                      text_range: "51:16::18"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "51:19::24"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "51:25::26"
+                      cfg_id: 18
+                      identifier: {
+                        name: "s"
+                        type: "[]int"
+                        package: "UNKNOWN"
+                        id: 1082
+                      }
+                    }
+                  }
+                }
+                body: {
+                  text_range: "51:27:53:2"
+                  cfg_id: 24
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "52:2::19"
+                      cfg_id: 23
+                      assignment_expression: {
+                        operator: "EQUAL"
+                        left_hand_side: {
+                          text_range: "52:2::6"
+                          left_right_hand_side: {
+                            children: {
+                              text_range: "52:2::3"
+                              cfg_id: 19
+                              place_holder: {
+                                place_holder_token: "52:2::3"
+                              }
+                            }
+                            children: {
+                              text_range: "52:3::4"
+                              native: {}
+                            }
+                            children: {
+                              text_range: "52:5::6"
+                              cfg_id: 20
+                              place_holder: {
+                                place_holder_token: "52:5::6"
+                              }
+                            }
+                          }
+                        }
+                        statement_or_expression: {
+                          text_range: "52:9::19"
+                          left_right_hand_side: {
+                            children: {
+                              text_range: "52:9::12"
+                              cfg_id: 21
+                              identifier: {
+                                name: "nil"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 1133
+                              }
+                            }
+                            children: {
+                              text_range: "52:12::13"
+                              native: {}
+                            }
+                            children: {
+                              text_range: "52:14::19"
+                              cfg_id: 22
+                              identifier: {
+                                name: "false"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 1138
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                kind: "FOR"
+                keyword: "51:1::4"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 10
+            node_ids: 9
+            successors: 1
+          }
+          blocks: {
+            successors: 2
+            successors: 3
+          }
+          blocks: {
+            node_ids: 13
+            successors: 1
+          }
+          blocks: {
+            node_ids: 18
+            node_ids: 16
+            node_ids: 17
+            successors: 4
+          }
+          blocks: {
+            successors: 5
+            successors: 6
+          }
+          blocks: {
+            node_ids: 23
+            successors: 4
+          }
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "56:0:58:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "56:19::28"
+          cfg_id: 7
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "56:19::20"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "56:20::27"
+              cfg_id: 6
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "56:20::23"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "56:20::23"
+                      cfg_id: 4
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1203
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "56:24::27"
+                  cfg_id: 5
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "56:27::28"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "56:5::16"
+          cfg_id: 2
+          identifier: {
+            name: "namedResult"
+            type: "func() (nil int)"
+            package: "ModuleNameForTest/ast"
+            id: 1188
+          }
+        }
+        body: {
+          text_range: "56:29:58:1"
+          cfg_id: 9
+          block: {
+            statement_or_expressions: {
+              text_range: "57:1::9"
+              cfg_id: 8
+              return_statement: {
+                expressions: {
+                  text_range: "57:8::9"
+                  integer_literal: {
+                    value: "0"
+                  }
+                }
+                keyword: "57:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 8
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "60:0:71:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "60:5::18"
+          cfg_id: 2
+          identifier: {
+            name: "shadowedNames"
+            type: "func(nil int, false string)"
+            package: "ModuleNameForTest/ast"
+            id: 1232
+          }
+        }
+        formal_parameters: {
+          text_range: "60:19::26"
+          cfg_id: 5
+          parameter: {
+            identifier: {
+              text_range: "60:19::22"
+              cfg_id: 3
+              identifier: {
+                name: "nil"
+                type: "int"
+                package: "UNKNOWN"
+                id: 1246
+              }
+            }
+            type: {
+              text_range: "60:23::26"
+              cfg_id: 4
+              identifier: {
+                name: "int"
+                type: "int"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+        formal_parameters: {
+          text_range: "60:28::40"
+          cfg_id: 9
+          parameter: {
+            identifier: {
+              text_range: "60:28::33"
+              cfg_id: 7
+              identifier: {
+                name: "false"
+                type: "string"
+                package: "UNKNOWN"
+                id: 1255
+              }
+            }
+            type: {
+              text_range: "60:34::40"
+              cfg_id: 8
+              identifier: {
+                name: "string"
+                type: "string"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "60:42:71:1"
+          cfg_id: 29
+          block: {
+            statement_or_expressions: {
+              text_range: "61:1::13"
+              cfg_id: 13
+              variable_declaration: {
+                identifiers: {
+                  text_range: "61:5::9"
+                  cfg_id: 12
+                  identifier: {
+                    name: "true"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 1276
+                  }
+                }
+                initializers: {
+                  text_range: "61:12::13"
+                  integer_literal: {
+                    value: "3"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "62:1::9"
+              cfg_id: 16
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "62:1::2"
+                  cfg_id: 14
+                  place_holder: {
+                    place_holder_token: "62:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "62:5::9"
+                  cfg_id: 15
+                  identifier: {
+                    name: "true"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 1276
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "63:1:66:2"
+              cfg_id: 22
+              block: {
+                statement_or_expressions: {
+                  text_range: "64:2::10"
+                  cfg_id: 18
+                  variable_declaration: {
+                    identifiers: {
+                      text_range: "64:2::5"
+                      cfg_id: 17
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1300
+                      }
+                    }
+                    initializers: {
+                      text_range: "64:9::10"
+                      integer_literal: {
+                        value: "4"
+                      }
+                    }
+                  }
+                }
+                statement_or_expressions: {
+                  text_range: "65:2::9"
+                  cfg_id: 21
+                  assignment_expression: {
+                    operator: "EQUAL"
+                    left_hand_side: {
+                      text_range: "65:2::3"
+                      cfg_id: 19
+                      place_holder: {
+                        place_holder_token: "65:2::3"
+                      }
+                    }
+                    statement_or_expression: {
+                      text_range: "65:6::9"
+                      cfg_id: 20
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1300
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "67:0:70:2"
+              cfg_id: 28
+              native: {
+                native_kind: "[3](LabeledStmt)"
+                children: {
+                  text_range: "67:0::5"
+                  cfg_id: 23
+                  identifier: {
+                    name: "false"
+                    type: "UNKNOWN"
+                    package: "UNKNOWN"
+                    id: 1322
+                  }
+                }
+                children: {
+                  text_range: "67:5::6"
+                  native: {
+                    native_kind: "Colon"
+                  }
+                }
+                children: {
+                  text_range: "68:1:70:2"
+                  cfg_id: 27
+                  loop: {
+                    body: {
+                      text_range: "68:5:70:2"
+                      cfg_id: 26
+                      block: {
+                        statement_or_expressions: {
+                          text_range: "69:2::13"
+                          cfg_id: 25
+                          jump: {
+                            label: {
+                              text_range: "69:8::13"
+                              cfg_id: 24
+                              identifier: {
+                                name: "false"
+                                type: "UNKNOWN"
+                                package: "UNKNOWN"
+                                id: 1322
+                              }
+                            }
+                            keyword: "69:2::7"
+                            kind: "BREAK"
+                          }
+                        }
+                      }
+                    }
+                    kind: "WHILE"
+                    keyword: "68:1::4"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 13
+            node_ids: 16
+            node_ids: 18
+            node_ids: 21
+            successors: 1
+          }
+          blocks: {
+            successors: 2
+          }
+          blocks: {
+            successors: 3
+          }
+          blocks: {
+            node_ids: 0
+          }
+          blocks: {
+            successors: 2
+          }
+        }
+      }
+    }
+  }
+}

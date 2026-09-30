@@ -1,0 +1,634 @@
+comments: {
+  text: "// Since Go 1.27, function type inference applies in every assignment and conversion context."
+  content_text: " Since Go 1.27, function type inference applies in every assignment and conversion context."
+  range: "8:1::94"
+  content_range: "8:3::94"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "identity"
+  text_range: "3:5::13"
+}
+tokens: {
+  text: "["
+  text_range: "3:13::14"
+}
+tokens: {
+  text: "T"
+  text_range: "3:14::15"
+}
+tokens: {
+  text: "any"
+  text_range: "3:16::19"
+}
+tokens: {
+  text: "]"
+  text_range: "3:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "3:20::21"
+}
+tokens: {
+  text: "value"
+  text_range: "3:21::26"
+}
+tokens: {
+  text: "T"
+  text_range: "3:27::28"
+}
+tokens: {
+  text: ")"
+  text_range: "3:28::29"
+}
+tokens: {
+  text: "T"
+  text_range: "3:30::31"
+}
+tokens: {
+  text: "{"
+  text_range: "3:32::33"
+}
+tokens: {
+  text: "return"
+  text_range: "4:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "value"
+  text_range: "4:8::13"
+}
+tokens: {
+  text: "}"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "7:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "7:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "7:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "7:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "7:12::13"
+}
+tokens: {
+  text: "var"
+  text_range: "9:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "toInt"
+  text_range: "9:5::10"
+}
+tokens: {
+  text: "func"
+  text_range: "9:11::15"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "9:15::16"
+}
+tokens: {
+  text: "int"
+  text_range: "9:16::19"
+}
+tokens: {
+  text: ")"
+  text_range: "9:19::20"
+}
+tokens: {
+  text: "int"
+  text_range: "9:21::24"
+}
+tokens: {
+  text: "identity"
+  text_range: "9:27::35"
+}
+tokens: {
+  text: "="
+  text_range: "9:25::26"
+}
+tokens: {
+  text: "_"
+  text_range: "10:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "10:3::4"
+}
+tokens: {
+  text: "toInt"
+  text_range: "10:5::10"
+}
+tokens: {
+  text: "_"
+  text_range: "11:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "11:3::4"
+}
+tokens: {
+  text: "("
+  text_range: "11:5::6"
+}
+tokens: {
+  text: "func"
+  text_range: "11:6::10"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "11:10::11"
+}
+tokens: {
+  text: "string"
+  text_range: "11:11::17"
+}
+tokens: {
+  text: ")"
+  text_range: "11:17::18"
+}
+tokens: {
+  text: "string"
+  text_range: "11:19::25"
+}
+tokens: {
+  text: ")"
+  text_range: "11:25::26"
+}
+tokens: {
+  text: "("
+  text_range: "11:26::27"
+}
+tokens: {
+  text: "identity"
+  text_range: "11:27::35"
+}
+tokens: {
+  text: ")"
+  text_range: "11:35::36"
+}
+tokens: {
+  text: "}"
+  text_range: "12:0::1"
+}
+root: {
+  text_range: "1:0:13:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:5:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "3:30::31"
+          cfg_id: 15
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "3:30::31"
+              cfg_id: 14
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "3:30::31"
+                  cfg_id: 13
+                  identifier: {
+                    name: "T"
+                    type: "T"
+                    package: "ModuleNameForTest/main"
+                    id: 29
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "3:5::13"
+          cfg_id: 3
+          identifier: {
+            name: "identity"
+            type: "func[T any](value T) T"
+            package: "ModuleNameForTest/main"
+            id: 20
+          }
+        }
+        formal_parameters: {
+          text_range: "3:21::28"
+          cfg_id: 10
+          parameter: {
+            identifier: {
+              text_range: "3:21::26"
+              cfg_id: 8
+              identifier: {
+                name: "value"
+                type: "T"
+                package: "UNKNOWN"
+                id: 36
+              }
+            }
+            type: {
+              text_range: "3:27::28"
+              cfg_id: 9
+              identifier: {
+                name: "T"
+                type: "T"
+                package: "ModuleNameForTest/main"
+                id: 29
+              }
+            }
+          }
+        }
+        type_parameters: {
+          text_range: "3:13::20"
+          cfg_id: 7
+          native: {
+            native_kind: "TypeParams(FieldList)"
+            children: {
+              text_range: "3:13::14"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "3:14::19"
+              cfg_id: 6
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "3:14::15"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "3:14::15"
+                      cfg_id: 4
+                      identifier: {
+                        name: "T"
+                        type: "T"
+                        package: "ModuleNameForTest/main"
+                        id: 29
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "3:16::19"
+                  cfg_id: 5
+                  identifier: {
+                    name: "any"
+                    type: "any"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "3:19::20"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "3:32:5:1"
+          cfg_id: 18
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::13"
+              cfg_id: 17
+              return_statement: {
+                expressions: {
+                  text_range: "4:8::13"
+                  cfg_id: 16
+                  identifier: {
+                    name: "value"
+                    type: "T"
+                    package: "UNKNOWN"
+                    id: 36
+                  }
+                }
+                keyword: "4:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 17
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "7:0:12:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "7:5::9"
+          cfg_id: 2
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 71
+          }
+        }
+        body: {
+          text_range: "7:12:12:1"
+          cfg_id: 29
+          block: {
+            statement_or_expressions: {
+              text_range: "9:1::35"
+              cfg_id: 13
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:5::10"
+                  cfg_id: 4
+                  identifier: {
+                    name: "toInt"
+                    type: "func(int) int"
+                    package: "UNKNOWN"
+                    id: 180
+                  }
+                }
+                type: {
+                  text_range: "9:11::24"
+                  cfg_id: 11
+                  native: {
+                    native_kind: "Type(FuncType)"
+                    children: {
+                      text_range: "9:11::15"
+                      native: {
+                        native_kind: "Func"
+                      }
+                    }
+                    children: {
+                      text_range: "9:15::20"
+                      cfg_id: 7
+                      native: {
+                        native_kind: "Params(FieldList)"
+                        children: {
+                          text_range: "9:15::16"
+                          native: {
+                            native_kind: "Opening"
+                          }
+                        }
+                        children: {
+                          text_range: "9:16::19"
+                          cfg_id: 6
+                          native: {
+                            native_kind: "[0](Field)"
+                            children: {
+                              text_range: "9:16::19"
+                              cfg_id: 5
+                              identifier: {
+                                name: "int"
+                                type: "int"
+                                package: "UNKNOWN"
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "9:19::20"
+                          native: {
+                            native_kind: "Closing"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "9:21::24"
+                      cfg_id: 10
+                      native: {
+                        native_kind: "Results(FieldList)"
+                        children: {
+                          text_range: "9:21::24"
+                          cfg_id: 9
+                          native: {
+                            native_kind: "[0](Field)"
+                            children: {
+                              text_range: "9:21::24"
+                              cfg_id: 8
+                              identifier: {
+                                name: "int"
+                                type: "int"
+                                package: "UNKNOWN"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                initializers: {
+                  text_range: "9:27::35"
+                  cfg_id: 12
+                  identifier: {
+                    name: "identity"
+                    type: "func[T any](value T) T"
+                    package: "ModuleNameForTest/main"
+                    id: 20
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "10:1::10"
+              cfg_id: 16
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "10:1::2"
+                  cfg_id: 14
+                  place_holder: {
+                    place_holder_token: "10:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "10:5::10"
+                  cfg_id: 15
+                  identifier: {
+                    name: "toInt"
+                    type: "func(int) int"
+                    package: "UNKNOWN"
+                    id: 180
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:1::36"
+              cfg_id: 28
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "11:1::2"
+                  cfg_id: 17
+                  place_holder: {
+                    place_holder_token: "11:1::2"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "11:5::36"
+                  cfg_id: 27
+                  function_invocation: {
+                    member_select: {
+                      text_range: "11:5::26"
+                      cfg_id: 25
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "11:6::25"
+                          cfg_id: 24
+                          native: {
+                            native_kind: "X(FuncType)"
+                            children: {
+                              text_range: "11:6::10"
+                              native: {
+                                native_kind: "Func"
+                              }
+                            }
+                            children: {
+                              text_range: "11:10::18"
+                              cfg_id: 20
+                              native: {
+                                native_kind: "Params(FieldList)"
+                                children: {
+                                  text_range: "11:10::11"
+                                  native: {
+                                    native_kind: "Opening"
+                                  }
+                                }
+                                children: {
+                                  text_range: "11:11::17"
+                                  cfg_id: 19
+                                  native: {
+                                    native_kind: "[0](Field)"
+                                    children: {
+                                      text_range: "11:11::17"
+                                      cfg_id: 18
+                                      identifier: {
+                                        name: "string"
+                                        type: "string"
+                                        package: "UNKNOWN"
+                                      }
+                                    }
+                                  }
+                                }
+                                children: {
+                                  text_range: "11:17::18"
+                                  native: {
+                                    native_kind: "Closing"
+                                  }
+                                }
+                              }
+                            }
+                            children: {
+                              text_range: "11:19::25"
+                              cfg_id: 23
+                              native: {
+                                native_kind: "Results(FieldList)"
+                                children: {
+                                  text_range: "11:19::25"
+                                  cfg_id: 22
+                                  native: {
+                                    native_kind: "[0](Field)"
+                                    children: {
+                                      text_range: "11:19::25"
+                                      cfg_id: 21
+                                      identifier: {
+                                        name: "string"
+                                        type: "string"
+                                        package: "UNKNOWN"
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "11:5::6"
+                        right_parenthesis: "11:25::26"
+                      }
+                    }
+                    arguments: {
+                      text_range: "11:27::35"
+                      cfg_id: 26
+                      identifier: {
+                        name: "identity"
+                        type: "func[T any](value T) T"
+                        package: "ModuleNameForTest/main"
+                        id: 20
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 13
+            node_ids: 16
+            node_ids: 28
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

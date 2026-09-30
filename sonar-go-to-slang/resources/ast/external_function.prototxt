@@ -1,0 +1,160 @@
+comments: {
+  text: "//go:noescape"
+  content_text: "go:noescape"
+  range: "3:0::13"
+  content_range: "3:2::13"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "4:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "externalFunction"
+  text_range: "4:5::21"
+}
+tokens: {
+  text: "("
+  text_range: "4:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "4:22::23"
+}
+tokens: {
+  text: "func"
+  text_range: "6:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "6:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "6:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "6:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "6:12::13"
+}
+tokens: {
+  text: "externalFunction"
+  text_range: "7:4::20"
+}
+tokens: {
+  text: "("
+  text_range: "7:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "7:21::22"
+}
+tokens: {
+  text: "}"
+  text_range: "8:0::1"
+}
+root: {
+  text_range: "1:0:9:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "4:0::23"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "4:5::21"
+          cfg_id: 3
+          identifier: {
+            name: "externalFunction"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 34
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "6:0:8:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "6:5::9"
+          cfg_id: 2
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 59
+          }
+        }
+        body: {
+          text_range: "6:12:8:1"
+          cfg_id: 7
+          block: {
+            statement_or_expressions: {
+              text_range: "7:4::22"
+              cfg_id: 6
+              expression_statement: {
+                expression: {
+                  text_range: "7:4::22"
+                  cfg_id: 5
+                  function_invocation: {
+                    member_select: {
+                      text_range: "7:4::20"
+                      cfg_id: 4
+                      identifier: {
+                        name: "externalFunction"
+                        type: "func()"
+                        package: "ModuleNameForTest/main"
+                        id: 34
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 6
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

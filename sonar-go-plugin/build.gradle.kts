@@ -113,6 +113,9 @@ tasks.shadowJar {
         exclude(dependency("org.codehaus.staxmate:.*"))
         exclude(dependency("com.google.code.findbugs:jsr305"))
     }
+    // The scanner engine has a protobuf runtime of its own, and the analyzers embedding this plugin as a
+    // library may have yet another one: relocating keeps the classes of ours apart from both.
+    relocate("com.google.protobuf", "org.sonar.go.shaded.com.google.protobuf")
     exclude("license/**")
     exclude("libs/**")
     exclude("META-INF/maven/**")
@@ -126,9 +129,9 @@ tasks.shadowJar {
     val logger = project.logger
     doLast {
         val (minSize, maxSize) = if (isCrossCompile) {
-            19_500_000L to 20_500_000L
+            23_000_000L to 24_000_000L
         } else {
-            4_500_000L to 5_500_000L
+            7_000_000L to 8_500_000L
         }
         enforceJarSize(pluginJar, minSize, maxSize, logger)
         checkJarEntriesPathUniqueness(pluginJar)

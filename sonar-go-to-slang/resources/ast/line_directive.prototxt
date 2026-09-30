@@ -1,0 +1,219 @@
+comments: {
+  text: "//line line_directive_changed_file.go:1000"
+  content_text: "line line_directive_changed_file.go:1000"
+  range: "7:0::42"
+  content_range: "7:2::42"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "3:7::8"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "4:1::6"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "9:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "9:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "9:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "9:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "9:12::13"
+}
+tokens: {
+  text: "fmt"
+  text_range: "10:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "10:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "10:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "10:12::13"
+}
+tokens: {
+  text: "\"Hello World\""
+  text_range: "10:13::26"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "10:26::27"
+}
+tokens: {
+  text: "}"
+  text_range: "11:0::1"
+}
+root: {
+  text_range: "1:0:12:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:5:1"
+      cfg_id: 4
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "4:1::6"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "4:1::6"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "5:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "9:0:11:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "9:5::9"
+          cfg_id: 5
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 83
+          }
+        }
+        body: {
+          text_range: "9:12:11:1"
+          cfg_id: 12
+          block: {
+            statement_or_expressions: {
+              text_range: "10:1::27"
+              cfg_id: 11
+              expression_statement: {
+                expression: {
+                  text_range: "10:1::27"
+                  cfg_id: 10
+                  function_invocation: {
+                    member_select: {
+                      text_range: "10:1::12"
+                      cfg_id: 9
+                      member_select: {
+                        expression: {
+                          text_range: "10:1::4"
+                          cfg_id: 7
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 25
+                          }
+                        }
+                        identifier: {
+                          text_range: "10:5::12"
+                          cfg_id: 8
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:13::26"
+                      string_literal: {
+                        value: "\"Hello World\""
+                        content: "Hello World"
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 11
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

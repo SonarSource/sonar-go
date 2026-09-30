@@ -16,22 +16,23 @@
  */
 package org.sonar.plugins.go.api.checks;
 
+import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.sonar.go.impl.IdentifierTreeImpl;
 import org.sonar.go.impl.TextRangeImpl;
-import org.sonar.go.persistence.JsonTree;
+import org.sonar.go.impl.TokenImpl;
+import org.sonar.go.impl.TreeMetaDataProvider;
+import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 class SecondaryLocationTest {
 
-  private static final Tree IDENTIFIER = JsonTree.fromJson("""
-    {
-      "foo.go": {
-        "treeMetaData": {"tokens": [{"textRange": "1:0:1:3", "text": "foo", "type": "OTHER"}]},
-        "tree": {"@type": "Identifier", "metaData": "1:0:1:3", "name": "foo", "type": "UNKNOWN", "package": "UNKNOWN", "id": 0}
-      }
-    }""").get("foo.go").tree();
+  private static final TextRangeImpl RANGE = new TextRangeImpl(1, 0, 1, 3);
+  private static final Tree IDENTIFIER = new IdentifierTreeImpl(
+    new TreeMetaDataProvider(List.of(), List.of(new TokenImpl(RANGE, "foo", Token.Type.OTHER))).metaData(RANGE),
+    "foo", "UNKNOWN", "UNKNOWN", 0);
 
   @Test
   void constructor_with_tree() {

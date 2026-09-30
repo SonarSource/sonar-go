@@ -1,0 +1,315 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "typeAssertion"
+  text_range: "3:5::18"
+}
+tokens: {
+  text: "("
+  text_range: "3:18::19"
+}
+tokens: {
+  text: ")"
+  text_range: "3:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "3:21::22"
+}
+tokens: {
+  text: "var"
+  text_range: "4:4::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "x"
+  text_range: "4:8::9"
+}
+tokens: {
+  text: "interface"
+  text_range: "4:10::19"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "4:19::20"
+}
+tokens: {
+  text: "}"
+  text_range: "4:20::21"
+}
+tokens: {
+  text: "y"
+  text_range: "5:4::5"
+}
+tokens: {
+  text: ":="
+  text_range: "5:6::8"
+}
+tokens: {
+  text: "x"
+  text_range: "5:9::10"
+}
+tokens: {
+  text: "("
+  text_range: "5:11::12"
+}
+tokens: {
+  text: "."
+  text_range: "5:10::11"
+}
+tokens: {
+  text: "int"
+  text_range: "5:12::15"
+}
+tokens: {
+  text: ")"
+  text_range: "5:15::16"
+}
+tokens: {
+  text: "z"
+  text_range: "7:4::5"
+}
+tokens: {
+  text: "ok"
+  text_range: "7:7::9"
+}
+tokens: {
+  text: ","
+  text_range: "7:5::6"
+}
+tokens: {
+  text: ":="
+  text_range: "7:10::12"
+}
+tokens: {
+  text: "x"
+  text_range: "7:13::14"
+}
+tokens: {
+  text: "("
+  text_range: "7:15::16"
+}
+tokens: {
+  text: "."
+  text_range: "7:14::15"
+}
+tokens: {
+  text: "int"
+  text_range: "7:16::19"
+}
+tokens: {
+  text: ")"
+  text_range: "7:19::20"
+}
+tokens: {
+  text: "}"
+  text_range: "8:0::1"
+}
+root: {
+  text_range: "1:0:9:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:8:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::18"
+          cfg_id: 3
+          identifier: {
+            name: "typeAssertion"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 19
+          }
+        }
+        body: {
+          text_range: "3:21:8:1"
+          cfg_id: 20
+          block: {
+            statement_or_expressions: {
+              text_range: "4:4::21"
+              cfg_id: 8
+              variable_declaration: {
+                identifiers: {
+                  text_range: "4:8::9"
+                  cfg_id: 5
+                  identifier: {
+                    name: "x"
+                    type: "interface{}"
+                    package: "UNKNOWN"
+                    id: 45
+                  }
+                }
+                type: {
+                  text_range: "4:10::21"
+                  cfg_id: 7
+                  native: {
+                    native_kind: "Type(InterfaceType)"
+                    children: {
+                      text_range: "4:10::19"
+                      native: {
+                        native_kind: "Interface"
+                      }
+                    }
+                    children: {
+                      text_range: "4:19::21"
+                      cfg_id: 6
+                      native: {
+                        native_kind: "Methods(FieldList)"
+                        children: {
+                          text_range: "4:19::20"
+                          native: {
+                            native_kind: "Opening"
+                          }
+                        }
+                        children: {
+                          text_range: "4:20::21"
+                          native: {
+                            native_kind: "Closing"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "5:4::16"
+              cfg_id: 13
+              variable_declaration: {
+                identifiers: {
+                  text_range: "5:4::5"
+                  cfg_id: 9
+                  identifier: {
+                    name: "y"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 63
+                  }
+                }
+                initializers: {
+                  text_range: "5:9::16"
+                  cfg_id: 12
+                  type_assertion_expression: {
+                    expression: {
+                      text_range: "5:9::10"
+                      cfg_id: 10
+                      identifier: {
+                        name: "x"
+                        type: "interface{}"
+                        package: "UNKNOWN"
+                        id: 45
+                      }
+                    }
+                    type: {
+                      text_range: "5:12::15"
+                      cfg_id: 11
+                      identifier: {
+                        name: "int"
+                        type: "int"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:4::20"
+              cfg_id: 19
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:4::5"
+                  cfg_id: 14
+                  identifier: {
+                    name: "z"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 81
+                  }
+                }
+                identifiers: {
+                  text_range: "7:7::9"
+                  cfg_id: 15
+                  identifier: {
+                    name: "ok"
+                    type: "bool"
+                    package: "UNKNOWN"
+                    id: 84
+                  }
+                }
+                initializers: {
+                  text_range: "7:13::20"
+                  cfg_id: 18
+                  type_assertion_expression: {
+                    expression: {
+                      text_range: "7:13::14"
+                      cfg_id: 16
+                      identifier: {
+                        name: "x"
+                        type: "interface{}"
+                        package: "UNKNOWN"
+                        id: 45
+                      }
+                    }
+                    type: {
+                      text_range: "7:16::19"
+                      cfg_id: 17
+                      identifier: {
+                        name: "int"
+                        type: "int"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 8
+            node_ids: 13
+            node_ids: 19
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

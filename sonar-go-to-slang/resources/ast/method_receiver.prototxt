@@ -1,0 +1,988 @@
+comments: {
+  text: "// Method with a value receiver"
+  content_text: " Method with a value receiver"
+  range: "12:0::31"
+  content_range: "12:2::31"
+}
+comments: {
+  text: "// Method with a pointer receiver"
+  content_text: " Method with a pointer receiver"
+  range: "17:0::33"
+  content_range: "17:2::33"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "3:7::8"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "4:4::9"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"github.com/beego/beego/v2/server/web\""
+  text_range: "5:4::42"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "6:0::1"
+}
+tokens: {
+  text: "type"
+  text_range: "8:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "MyStruct"
+  text_range: "8:5::13"
+}
+tokens: {
+  text: "struct"
+  text_range: "8:14::20"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "8:21::22"
+}
+tokens: {
+  text: "value"
+  text_range: "9:4::9"
+}
+tokens: {
+  text: "int"
+  text_range: "9:10::13"
+}
+tokens: {
+  text: "}"
+  text_range: "10:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "13:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "13:5::6"
+}
+tokens: {
+  text: "m"
+  text_range: "13:6::7"
+}
+tokens: {
+  text: "MyStruct"
+  text_range: "13:8::16"
+}
+tokens: {
+  text: ")"
+  text_range: "13:16::17"
+}
+tokens: {
+  text: "PrintValue"
+  text_range: "13:18::28"
+}
+tokens: {
+  text: "("
+  text_range: "13:28::29"
+}
+tokens: {
+  text: ")"
+  text_range: "13:29::30"
+}
+tokens: {
+  text: "{"
+  text_range: "13:31::32"
+}
+tokens: {
+  text: "fmt"
+  text_range: "14:4::7"
+}
+tokens: {
+  text: "Println"
+  text_range: "14:8::15"
+}
+tokens: {
+  text: "."
+  text_range: "14:7::8"
+}
+tokens: {
+  text: "("
+  text_range: "14:15::16"
+}
+tokens: {
+  text: "\"Value receiver:\""
+  text_range: "14:16::33"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "m"
+  text_range: "14:35::36"
+}
+tokens: {
+  text: "value"
+  text_range: "14:37::42"
+}
+tokens: {
+  text: "."
+  text_range: "14:36::37"
+}
+tokens: {
+  text: ","
+  text_range: "14:33::34"
+}
+tokens: {
+  text: ")"
+  text_range: "14:42::43"
+}
+tokens: {
+  text: "}"
+  text_range: "15:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "18:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "18:5::6"
+}
+tokens: {
+  text: "m"
+  text_range: "18:6::7"
+}
+tokens: {
+  text: "*"
+  text_range: "18:8::9"
+}
+tokens: {
+  text: "MyStruct"
+  text_range: "18:9::17"
+}
+tokens: {
+  text: ")"
+  text_range: "18:17::18"
+}
+tokens: {
+  text: "IncrementValue"
+  text_range: "18:19::33"
+}
+tokens: {
+  text: "("
+  text_range: "18:33::34"
+}
+tokens: {
+  text: ")"
+  text_range: "18:34::35"
+}
+tokens: {
+  text: "{"
+  text_range: "18:36::37"
+}
+tokens: {
+  text: "m"
+  text_range: "19:4::5"
+}
+tokens: {
+  text: "value"
+  text_range: "19:6::11"
+}
+tokens: {
+  text: "."
+  text_range: "19:5::6"
+}
+tokens: {
+  text: "++"
+  text_range: "19:11::13"
+}
+tokens: {
+  text: "}"
+  text_range: "20:0::1"
+}
+tokens: {
+  text: "type"
+  text_range: "22:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "MainController"
+  text_range: "22:5::19"
+}
+tokens: {
+  text: "struct"
+  text_range: "22:20::26"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "22:27::28"
+}
+tokens: {
+  text: "web"
+  text_range: "23:4::7"
+}
+tokens: {
+  text: "Controller"
+  text_range: "23:8::18"
+}
+tokens: {
+  text: "."
+  text_range: "23:7::8"
+}
+tokens: {
+  text: "}"
+  text_range: "24:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "26:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "26:5::6"
+}
+tokens: {
+  text: "ctrl"
+  text_range: "26:6::10"
+}
+tokens: {
+  text: "*"
+  text_range: "26:11::12"
+}
+tokens: {
+  text: "MainController"
+  text_range: "26:12::26"
+}
+tokens: {
+  text: ")"
+  text_range: "26:26::27"
+}
+tokens: {
+  text: "hello"
+  text_range: "26:28::33"
+}
+tokens: {
+  text: "("
+  text_range: "26:33::34"
+}
+tokens: {
+  text: ")"
+  text_range: "26:34::35"
+}
+tokens: {
+  text: "{"
+  text_range: "26:36::37"
+}
+tokens: {
+  text: "fmt"
+  text_range: "27:4::7"
+}
+tokens: {
+  text: "Println"
+  text_range: "27:8::15"
+}
+tokens: {
+  text: "."
+  text_range: "27:7::8"
+}
+tokens: {
+  text: "("
+  text_range: "27:15::16"
+}
+tokens: {
+  text: "\"Hello\""
+  text_range: "27:16::23"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "27:23::24"
+}
+tokens: {
+  text: "}"
+  text_range: "28:0::1"
+}
+root: {
+  text_range: "1:0:29:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:6:1"
+      cfg_id: 5
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "4:4::9"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "4:4::9"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "5:4::42"
+          cfg_id: 4
+          import_specification: {
+            path: {
+              text_range: "5:4::42"
+              string_literal: {
+                value: "\"github.com/beego/beego/v2/server/web\""
+                content: "github.com/beego/beego/v2/server/web"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "6:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "8:0:10:1"
+      cfg_id: 13
+      class_declaration: {
+        identifier: "8:5::13"
+        class_tree: {
+          text_range: "8:0:10:1"
+          cfg_id: 12
+          native: {
+            native_kind: "[1](TypeSpecWrapped)"
+            children: {
+              text_range: "8:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "8:5::13"
+              cfg_id: 6
+              identifier: {
+                name: "MyStruct"
+                type: "main.MyStruct"
+                package: "ModuleNameForTest/main"
+                id: 85
+              }
+            }
+            children: {
+              text_range: "8:14:10:1"
+              cfg_id: 11
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "8:14::20"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "8:21:10:1"
+                  cfg_id: 10
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "8:21::22"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "9:4::13"
+                      cfg_id: 9
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "9:4::9"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "9:4::9"
+                              cfg_id: 7
+                              identifier: {
+                                name: "value"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 107
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "9:10::13"
+                          cfg_id: 8
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "10:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "13:0:15:1"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "13:5::17"
+          cfg_id: 17
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "13:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "13:6::16"
+              cfg_id: 16
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "13:6::7"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "13:6::7"
+                      cfg_id: 14
+                      identifier: {
+                        name: "m"
+                        type: "main.MyStruct"
+                        package: "UNKNOWN"
+                        id: 158
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "13:8::16"
+                  cfg_id: 15
+                  identifier: {
+                    name: "MyStruct"
+                    type: "main.MyStruct"
+                    package: "ModuleNameForTest/main"
+                    id: 85
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "13:16::17"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "13:18::28"
+          cfg_id: 18
+          identifier: {
+            name: "PrintValue"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 170
+          }
+        }
+        body: {
+          text_range: "13:31:15:1"
+          cfg_id: 28
+          block: {
+            statement_or_expressions: {
+              text_range: "14:4::43"
+              cfg_id: 27
+              expression_statement: {
+                expression: {
+                  text_range: "14:4::43"
+                  cfg_id: 26
+                  function_invocation: {
+                    member_select: {
+                      text_range: "14:4::15"
+                      cfg_id: 22
+                      member_select: {
+                        expression: {
+                          text_range: "14:4::7"
+                          cfg_id: 20
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 28
+                          }
+                        }
+                        identifier: {
+                          text_range: "14:8::15"
+                          cfg_id: 21
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "14:16::33"
+                      string_literal: {
+                        value: "\"Value receiver:\""
+                        content: "Value receiver:"
+                      }
+                    }
+                    arguments: {
+                      text_range: "14:35::42"
+                      cfg_id: 25
+                      member_select: {
+                        expression: {
+                          text_range: "14:35::36"
+                          cfg_id: 23
+                          identifier: {
+                            name: "m"
+                            type: "main.MyStruct"
+                            package: "UNKNOWN"
+                            id: 158
+                          }
+                        }
+                        identifier: {
+                          text_range: "14:37::42"
+                          cfg_id: 24
+                          identifier: {
+                            name: "value"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: 107
+                          }
+                        }
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 27
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "18:0:20:1"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "18:5::18"
+          cfg_id: 6
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "18:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "18:6::17"
+              cfg_id: 5
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "18:6::7"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "18:6::7"
+                      cfg_id: 2
+                      identifier: {
+                        name: "m"
+                        type: "*main.MyStruct"
+                        package: "UNKNOWN"
+                        id: 272
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "18:8::17"
+                  cfg_id: 4
+                  star_expression: {
+                    expression: {
+                      text_range: "18:9::17"
+                      cfg_id: 3
+                      identifier: {
+                        name: "MyStruct"
+                        type: "main.MyStruct"
+                        package: "ModuleNameForTest/main"
+                        id: 85
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "18:17::18"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "18:19::33"
+          cfg_id: 7
+          identifier: {
+            name: "IncrementValue"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 285
+          }
+        }
+        body: {
+          text_range: "18:36:20:1"
+          cfg_id: 13
+          block: {
+            statement_or_expressions: {
+              text_range: "19:4::13"
+              cfg_id: 12
+              unary_expression: {
+                operator: "INCREMENT"
+                operand: {
+                  text_range: "19:4::11"
+                  cfg_id: 11
+                  member_select: {
+                    expression: {
+                      text_range: "19:4::5"
+                      cfg_id: 9
+                      identifier: {
+                        name: "m"
+                        type: "*main.MyStruct"
+                        package: "UNKNOWN"
+                        id: 272
+                      }
+                    }
+                    identifier: {
+                      text_range: "19:6::11"
+                      cfg_id: 10
+                      identifier: {
+                        name: "value"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 107
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 12
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "22:0:24:1"
+      cfg_id: 10
+      class_declaration: {
+        identifier: "22:5::19"
+        class_tree: {
+          text_range: "22:0:24:1"
+          cfg_id: 9
+          native: {
+            native_kind: "[4](TypeSpecWrapped)"
+            children: {
+              text_range: "22:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "22:5::19"
+              cfg_id: 2
+              identifier: {
+                name: "MainController"
+                type: "main.MainController"
+                package: "ModuleNameForTest/main"
+                id: 326
+              }
+            }
+            children: {
+              text_range: "22:20:24:1"
+              cfg_id: 8
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "22:20::26"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "22:27:24:1"
+                  cfg_id: 7
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "22:27::28"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "23:4::18"
+                      cfg_id: 6
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "23:4::18"
+                          cfg_id: 5
+                          member_select: {
+                            expression: {
+                              text_range: "23:4::7"
+                              cfg_id: 3
+                              identifier: {
+                                name: "web"
+                                type: "UNKNOWN"
+                                package: "github.com/beego/beego/v2/server/web"
+                                id: 38
+                              }
+                            }
+                            identifier: {
+                              text_range: "23:8::18"
+                              cfg_id: 4
+                              identifier: {
+                                name: "Controller"
+                                type: "github.com/beego/beego/v2/server/web.Controller"
+                                package: "UNKNOWN"
+                                id: 358
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "24:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "26:0:28:1"
+      cfg_id: 1
+      function_declaration: {
+        receiver: {
+          text_range: "26:5::27"
+          cfg_id: 15
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "26:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "26:6::26"
+              cfg_id: 14
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "26:6::10"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "26:6::10"
+                      cfg_id: 11
+                      identifier: {
+                        name: "ctrl"
+                        type: "*main.MainController"
+                        package: "UNKNOWN"
+                        id: 378
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "26:11::26"
+                  cfg_id: 13
+                  star_expression: {
+                    expression: {
+                      text_range: "26:12::26"
+                      cfg_id: 12
+                      identifier: {
+                        name: "MainController"
+                        type: "main.MainController"
+                        package: "ModuleNameForTest/main"
+                        id: 326
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "26:26::27"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "26:28::33"
+          cfg_id: 16
+          identifier: {
+            name: "hello"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 400
+          }
+        }
+        body: {
+          text_range: "26:36:28:1"
+          cfg_id: 23
+          block: {
+            statement_or_expressions: {
+              text_range: "27:4::24"
+              cfg_id: 22
+              expression_statement: {
+                expression: {
+                  text_range: "27:4::24"
+                  cfg_id: 21
+                  function_invocation: {
+                    member_select: {
+                      text_range: "27:4::15"
+                      cfg_id: 20
+                      member_select: {
+                        expression: {
+                          text_range: "27:4::7"
+                          cfg_id: 18
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 28
+                          }
+                        }
+                        identifier: {
+                          text_range: "27:8::15"
+                          cfg_id: 19
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "27:16::23"
+                      string_literal: {
+                        value: "\"Hello\""
+                        content: "Hello"
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 22
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

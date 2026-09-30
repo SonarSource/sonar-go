@@ -1,0 +1,786 @@
+comments: {
+  text: "// This is not a VariableDeclaration"
+  content_text: " This is not a VariableDeclaration"
+  range: "3:15::51"
+  content_range: "3:17::51"
+}
+comments: {
+  text: "// _ := \"42\" is a compilation error"
+  content_text: " _ := \"42\" is a compilation error"
+  range: "8:5::40"
+  content_range: "8:7::40"
+}
+comments: {
+  text: "// These are not two parameters"
+  content_text: " These are not two parameters"
+  range: "13:28::59"
+  content_range: "13:30::59"
+}
+comments: {
+  text: "// Empty"
+  content_text: " Empty"
+  range: "22:4::12"
+  content_range: "22:6::12"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "var"
+  text_range: "3:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "3:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "int"
+  text_range: "3:7::10"
+}
+tokens: {
+  text: "1"
+  text_range: "3:13::14"
+}
+tokens: {
+  text: "="
+  text_range: "3:11::12"
+}
+tokens: {
+  text: "func"
+  text_range: "5:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "bar"
+  text_range: "5:6::9"
+}
+tokens: {
+  text: "("
+  text_range: "5:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "5:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "5:12::13"
+}
+tokens: {
+  text: "_"
+  text_range: "6:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "s"
+  text_range: "6:8::9"
+}
+tokens: {
+  text: ","
+  text_range: "6:6::7"
+}
+tokens: {
+  text: ":="
+  text_range: "6:10::12"
+}
+tokens: {
+  text: "foo"
+  text_range: "6:13::16"
+}
+tokens: {
+  text: "("
+  text_range: "6:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "6:17::18"
+}
+tokens: {
+  text: "i"
+  text_range: "7:5::6"
+}
+tokens: {
+  text: "_"
+  text_range: "7:8::9"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "7:6::7"
+}
+tokens: {
+  text: ":="
+  text_range: "7:10::12"
+}
+tokens: {
+  text: "foo"
+  text_range: "7:13::16"
+}
+tokens: {
+  text: "("
+  text_range: "7:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "7:17::18"
+}
+tokens: {
+  text: "_"
+  text_range: "9:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "9:8::9"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "9:6::7"
+}
+tokens: {
+  text: "="
+  text_range: "9:10::11"
+}
+tokens: {
+  text: "foo"
+  text_range: "9:12::15"
+}
+tokens: {
+  text: "("
+  text_range: "9:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "9:16::17"
+}
+tokens: {
+  text: "_"
+  text_range: "10:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "="
+  text_range: "10:7::8"
+}
+tokens: {
+  text: "22"
+  text_range: "10:9::11"
+}
+tokens: {
+  text: "}"
+  text_range: "11:1::2"
+}
+tokens: {
+  text: "func"
+  text_range: "13:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "bar2"
+  text_range: "13:6::10"
+}
+tokens: {
+  text: "("
+  text_range: "13:10::11"
+}
+tokens: {
+  text: "_"
+  text_range: "13:11::12"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "13:14::15"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "int"
+  text_range: "13:16::19"
+}
+tokens: {
+  text: ","
+  text_range: "13:12::13"
+}
+tokens: {
+  text: ")"
+  text_range: "13:19::20"
+}
+tokens: {
+  text: "bool"
+  text_range: "13:21::25"
+}
+tokens: {
+  text: "{"
+  text_range: "13:26::27"
+}
+tokens: {
+  text: "return"
+  text_range: "14:4::10"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "false"
+  text_range: "14:11::16"
+}
+tokens: {
+  text: "}"
+  text_range: "15:1::2"
+}
+tokens: {
+  text: "func"
+  text_range: "17:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "foo"
+  text_range: "17:6::9"
+}
+tokens: {
+  text: "("
+  text_range: "17:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "17:10::11"
+}
+tokens: {
+  text: "("
+  text_range: "17:12::13"
+}
+tokens: {
+  text: "int"
+  text_range: "17:13::16"
+}
+tokens: {
+  text: "string"
+  text_range: "17:18::24"
+}
+tokens: {
+  text: ","
+  text_range: "17:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "17:24::25"
+}
+tokens: {
+  text: "{"
+  text_range: "17:26::27"
+}
+tokens: {
+  text: "return"
+  text_range: "18:5::11"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "42"
+  text_range: "18:12::14"
+}
+tokens: {
+  text: "\"42\""
+  text_range: "18:16::20"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "18:14::15"
+}
+tokens: {
+  text: "}"
+  text_range: "19:1::2"
+}
+tokens: {
+  text: "func"
+  text_range: "21:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "21:6::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "21:7::8"
+}
+tokens: {
+  text: ")"
+  text_range: "21:8::9"
+}
+tokens: {
+  text: "{"
+  text_range: "21:10::11"
+}
+tokens: {
+  text: "}"
+  text_range: "23:1::2"
+}
+root: {
+  text_range: "1:0:24:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:1::14"
+      cfg_id: 5
+      variable_declaration: {
+        identifiers: {
+          text_range: "3:5::6"
+          cfg_id: 3
+          place_holder: {
+            place_holder_token: "3:5::6"
+          }
+        }
+        type: {
+          text_range: "3:7::10"
+          cfg_id: 4
+          identifier: {
+            name: "int"
+            type: "int"
+            package: "UNKNOWN"
+          }
+        }
+        initializers: {
+          text_range: "3:13::14"
+          integer_literal: {
+            value: "1"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "5:1:11:2"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "5:6::9"
+          cfg_id: 6
+          identifier: {
+            name: "bar"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 73
+          }
+        }
+        body: {
+          text_range: "5:12:11:2"
+          cfg_id: 25
+          block: {
+            statement_or_expressions: {
+              text_range: "6:5::18"
+              cfg_id: 12
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:5::6"
+                  cfg_id: 8
+                  place_holder: {
+                    place_holder_token: "6:5::6"
+                  }
+                }
+                identifiers: {
+                  text_range: "6:8::9"
+                  cfg_id: 9
+                  identifier: {
+                    name: "s"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 89
+                  }
+                }
+                initializers: {
+                  text_range: "6:13::18"
+                  cfg_id: 11
+                  function_invocation: {
+                    member_select: {
+                      text_range: "6:13::16"
+                      cfg_id: 10
+                      identifier: {
+                        name: "foo"
+                        type: "func() (int, string)"
+                        package: "ModuleNameForTest/ast"
+                        id: 281
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:5::18"
+              cfg_id: 17
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:5::6"
+                  cfg_id: 13
+                  identifier: {
+                    name: "i"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 105
+                  }
+                }
+                identifiers: {
+                  text_range: "7:8::9"
+                  cfg_id: 14
+                  place_holder: {
+                    place_holder_token: "7:8::9"
+                  }
+                }
+                initializers: {
+                  text_range: "7:13::18"
+                  cfg_id: 16
+                  function_invocation: {
+                    member_select: {
+                      text_range: "7:13::16"
+                      cfg_id: 15
+                      identifier: {
+                        name: "foo"
+                        type: "func() (int, string)"
+                        package: "ModuleNameForTest/ast"
+                        id: 281
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "9:5::17"
+              cfg_id: 22
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "9:5::9"
+                  left_right_hand_side: {
+                    children: {
+                      text_range: "9:5::6"
+                      cfg_id: 18
+                      place_holder: {
+                        place_holder_token: "9:5::6"
+                      }
+                    }
+                    children: {
+                      text_range: "9:6::7"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "9:8::9"
+                      cfg_id: 19
+                      place_holder: {
+                        place_holder_token: "9:8::9"
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "9:12::17"
+                  cfg_id: 21
+                  function_invocation: {
+                    member_select: {
+                      text_range: "9:12::15"
+                      cfg_id: 20
+                      identifier: {
+                        name: "foo"
+                        type: "func() (int, string)"
+                        package: "ModuleNameForTest/ast"
+                        id: 281
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "10:5::11"
+              cfg_id: 24
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "10:5::6"
+                  cfg_id: 23
+                  place_holder: {
+                    place_holder_token: "10:5::6"
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "10:9::11"
+                  integer_literal: {
+                    value: "22"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 12
+            node_ids: 17
+            node_ids: 22
+            node_ids: 24
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "13:1:15:2"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "13:21::25"
+          cfg_id: 12
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "13:21::25"
+              cfg_id: 11
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "13:21::25"
+                  cfg_id: 10
+                  identifier: {
+                    name: "bool"
+                    type: "bool"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "13:6::10"
+          cfg_id: 2
+          identifier: {
+            name: "bar2"
+            type: "func(_ int, _ int) bool"
+            package: "ModuleNameForTest/ast"
+            id: 200
+          }
+        }
+        formal_parameters: {
+          text_range: "13:11::12"
+          cfg_id: 4
+          parameter: {
+            identifier: {
+              text_range: "13:11::12"
+              cfg_id: 3
+              place_holder: {
+                place_holder_token: "13:11::12"
+              }
+            }
+          }
+        }
+        formal_parameters: {
+          text_range: "13:14::19"
+          cfg_id: 7
+          parameter: {
+            identifier: {
+              text_range: "13:14::15"
+              cfg_id: 5
+              place_holder: {
+                place_holder_token: "13:14::15"
+              }
+            }
+            type: {
+              text_range: "13:16::19"
+              cfg_id: 6
+              identifier: {
+                name: "int"
+                type: "int"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "13:26:15:2"
+          cfg_id: 15
+          block: {
+            statement_or_expressions: {
+              text_range: "14:4::16"
+              cfg_id: 14
+              return_statement: {
+                expressions: {
+                  text_range: "14:11::16"
+                  cfg_id: 13
+                  literal: {
+                    value: "false"
+                  }
+                }
+                keyword: "14:4::10"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 14
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "17:1:19:2"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "17:12::25"
+          cfg_id: 8
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "17:12::13"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "17:13::16"
+              cfg_id: 5
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "17:13::16"
+                  cfg_id: 4
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "17:16::17"
+              native: {}
+            }
+            children: {
+              text_range: "17:18::24"
+              cfg_id: 7
+              native: {
+                native_kind: "[1](Field)"
+                children: {
+                  text_range: "17:18::24"
+                  cfg_id: 6
+                  identifier: {
+                    name: "string"
+                    type: "string"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "17:24::25"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "17:6::9"
+          cfg_id: 2
+          identifier: {
+            name: "foo"
+            type: "func() (int, string)"
+            package: "ModuleNameForTest/ast"
+            id: 281
+          }
+        }
+        body: {
+          text_range: "17:26:19:2"
+          cfg_id: 10
+          block: {
+            statement_or_expressions: {
+              text_range: "18:5::20"
+              cfg_id: 9
+              return_statement: {
+                expressions: {
+                  text_range: "18:12::14"
+                  integer_literal: {
+                    value: "42"
+                  }
+                }
+                expressions: {
+                  text_range: "18:16::20"
+                  string_literal: {
+                    value: "\"42\""
+                    content: "42"
+                  }
+                }
+                keyword: "18:5::11"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 9
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "21:1:23:2"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "21:6::7"
+          cfg_id: 2
+          place_holder: {
+            place_holder_token: "21:6::7"
+          }
+        }
+        body: {
+          text_range: "21:10:23:2"
+          cfg_id: 4
+          block: {}
+        }
+        cfg: {
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

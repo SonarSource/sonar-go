@@ -42,20 +42,20 @@ func Test_exportGcExportData(t *testing.T) {
 			}
 
 			files := getGoFilesIgnoreSubDirs(projectDir)
-			filesToJson := parseFileToJson(files, name, moduleName)
+			filesToProtoText := parseFilesToProtoText(files, name, moduleName)
 
-			for file, json := range filesToJson {
+			for file, protoText := range filesToProtoText {
 				expected, err := os.ReadFile(file)
 				if err != nil {
 					t.Fatalf("failed to read file %s: %v", file, err)
 				}
-				assert.Equal(t, string(expected), json)
+				assert.Equal(t, string(expected), protoText)
 			}
 		})
 	}
 }
 
-// Update all .json files in resources/cross-file from all .go.source files (ignoring sub directories)
+// Update all .prototxt files in resources/cross-file from all .go.source files (ignoring sub directories)
 // Add "Test_" before to run in IDE
 func fixExportGcExportData(t *testing.T) {
 	for _, name := range getSubDirs("resources/cross-file") {
@@ -69,7 +69,7 @@ func fixExportGcExportData(t *testing.T) {
 			}
 
 			filesIgnoreSubDirs := getGoFilesIgnoreSubDirs(projectDir)
-			parseFileToJsonAndSave(filesIgnoreSubDirs, name, moduleName)
+			parseFilesToProtoTextAndSave(filesIgnoreSubDirs, name, moduleName)
 		})
 	}
 	t.Fatal("This test is only for local development and should not run in CI build.")
@@ -110,31 +110,17 @@ func readFilesToReader(files []string) *bytes.Reader {
 	return bytes.NewReader(slice)
 }
 
-func parseFileToJsonAndSave(files []string, name string, moduleName string) {
-	fileSet := token.NewFileSet()
-	astFiles, fileContents, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
-
-	info, _ := typeCheckAst(context.Background(), fileSet, astFiles, true, "build/cross-file-tests/"+name, moduleName, ".", GcExporter{})
-
-	usesByPos := buildUsesByPos(info)
-	for fileName, aFile := range astFiles {
-		slangTree, comments, tokens, errMsg, _ := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
-		if errMsg != nil {
-			panic(errMsg)
-		}
-		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
-		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
-
-		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
-		fmt.Printf("Writing %s\n", jsonFile)
-		err := os.WriteFile(jsonFile, []byte(actual), 0644)
+func parseFilesToProtoTextAndSave(files []string, name string, moduleName string) {
+	for protoTextFile, protoText := range parseFilesToProtoText(files, name, moduleName) {
+		fmt.Printf("Writing %s\n", protoTextFile)
+		err := os.WriteFile(protoTextFile, []byte(protoText), 0644)
 		if err != nil {
-			panic(fmt.Sprintf("failed to write file %s: %v", jsonFile, err))
+			panic(fmt.Sprintf("failed to write file %s: %v", protoTextFile, err))
 		}
 	}
 }
 
-func parseFileToJson(files []string, name string, moduleName string) map[string]string {
+func parseFilesToProtoText(files []string, name string, moduleName string) map[string]string {
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
 
@@ -146,18 +132,21 @@ func parseFileToJson(files []string, name string, moduleName string) map[string]
 	for fileName, aFile := range astFiles {
 		slangTree, comments, tokens, errMsg, _ := toSlangTree(fileSet, &aFile, fileContents[fileName], info, moduleName, usesByPos)
 		slangTreeWithPlaceholders := slangTreeWithIdPlaceholders(slangTree)
-		actual := toJsonSlang(slangTreeWithPlaceholders, comments, tokens, errMsg, "  ")
-		jsonFile := strings.Replace(fileName, ".source", ".json", 1)
-		result[jsonFile] = actual
+		result[strings.Replace(fileName, ".source", ".prototxt", 1)] = protoTextOfTree(slangTreeWithPlaceholders, comments, tokens, errMsg)
 	}
 	return result
 }
+
+// idPlaceholder stands in for the symbol ids in the snapshots. It is a value no real id can take, so
+// that a snapshot cannot record one by accident, and an int because that is what the schema declares
+// the field as.
+const idPlaceholder = -1
 
 // We need to replace all "id" values with placeholders because the actual IDs may change between different runs.
 func slangTreeWithIdPlaceholders(slangTree *Node) *Node {
 	if slangTree.SlangField != nil {
 		if _, ok := slangTree.SlangField["id"]; ok {
-			slangTree.SlangField["id"] = "__id_placeholder__"
+			slangTree.SlangField["id"] = idPlaceholder
 		}
 	}
 

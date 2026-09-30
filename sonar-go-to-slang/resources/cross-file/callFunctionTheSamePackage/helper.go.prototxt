@@ -1,0 +1,241 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "privateFunction"
+  text_range: "3:5::20"
+}
+tokens: {
+  text: "("
+  text_range: "3:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "3:21::22"
+}
+tokens: {
+  text: "int"
+  text_range: "3:23::26"
+}
+tokens: {
+  text: "{"
+  text_range: "3:27::28"
+}
+tokens: {
+  text: "return"
+  text_range: "4:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "1"
+  text_range: "4:8::9"
+}
+tokens: {
+  text: "}"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "7:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "PublicFunction"
+  text_range: "7:5::19"
+}
+tokens: {
+  text: "("
+  text_range: "7:19::20"
+}
+tokens: {
+  text: ")"
+  text_range: "7:20::21"
+}
+tokens: {
+  text: "float32"
+  text_range: "7:22::29"
+}
+tokens: {
+  text: "{"
+  text_range: "7:30::31"
+}
+tokens: {
+  text: "return"
+  text_range: "8:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "1.0"
+  text_range: "8:8::11"
+}
+tokens: {
+  text: "}"
+  text_range: "9:0::1"
+}
+root: {
+  text_range: "1:0:10:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+            id: -1
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:5:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "3:23::26"
+          cfg_id: 7
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "3:23::26"
+              cfg_id: 6
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "3:23::26"
+                  cfg_id: 5
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "3:5::20"
+          cfg_id: 3
+          identifier: {
+            name: "privateFunction"
+            type: "func() int"
+            package: "example.com/company/sub-modules/module1/main"
+            id: -1
+          }
+        }
+        body: {
+          text_range: "3:27:5:1"
+          cfg_id: 9
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::9"
+              cfg_id: 8
+              return_statement: {
+                expressions: {
+                  text_range: "4:8::9"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+                keyword: "4:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 8
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "7:0:9:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "7:22::29"
+          cfg_id: 6
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "7:22::29"
+              cfg_id: 5
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "7:22::29"
+                  cfg_id: 4
+                  identifier: {
+                    name: "float32"
+                    type: "float32"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "7:5::19"
+          cfg_id: 2
+          identifier: {
+            name: "PublicFunction"
+            type: "func() float32"
+            package: "example.com/company/sub-modules/module1/main"
+            id: -1
+          }
+        }
+        body: {
+          text_range: "7:30:9:1"
+          cfg_id: 8
+          block: {
+            statement_or_expressions: {
+              text_range: "8:1::11"
+              cfg_id: 7
+              return_statement: {
+                expressions: {
+                  text_range: "8:8::11"
+                  float_literal: {
+                    value: "1.0"
+                  }
+                }
+                keyword: "8:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 7
+          }
+          blocks: {}
+        }
+      }
+    }
+  }
+}

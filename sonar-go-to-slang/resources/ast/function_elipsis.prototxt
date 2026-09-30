@@ -1,0 +1,732 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "2:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "2:7::12"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "declarationWithEllipsis"
+  text_range: "3:5::28"
+}
+tokens: {
+  text: "("
+  text_range: "3:28::29"
+}
+tokens: {
+  text: "args"
+  text_range: "3:29::33"
+}
+tokens: {
+  text: "..."
+  text_range: "3:34::37"
+}
+tokens: {
+  text: "interface"
+  text_range: "3:37::46"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "3:46::47"
+}
+tokens: {
+  text: "}"
+  text_range: "3:47::48"
+}
+tokens: {
+  text: ")"
+  text_range: "3:48::49"
+}
+tokens: {
+  text: "{"
+  text_range: "3:50::51"
+}
+tokens: {
+  text: "for"
+  text_range: "4:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "4:5::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "arg"
+  text_range: "4:8::11"
+}
+tokens: {
+  text: ","
+  text_range: "4:6::7"
+}
+tokens: {
+  text: ":="
+  text_range: "4:12::14"
+}
+tokens: {
+  text: "args"
+  text_range: "4:21::25"
+}
+tokens: {
+  text: "range"
+  text_range: "4:15::20"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "4:26::27"
+}
+tokens: {
+  text: "fmt"
+  text_range: "5:2::5"
+}
+tokens: {
+  text: "Println"
+  text_range: "5:6::13"
+}
+tokens: {
+  text: "."
+  text_range: "5:5::6"
+}
+tokens: {
+  text: "("
+  text_range: "5:13::14"
+}
+tokens: {
+  text: "arg"
+  text_range: "5:14::17"
+}
+tokens: {
+  text: ")"
+  text_range: "5:17::18"
+}
+tokens: {
+  text: "}"
+  text_range: "6:1::2"
+}
+tokens: {
+  text: "}"
+  text_range: "7:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "9:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "callWithElipsis"
+  text_range: "9:5::20"
+}
+tokens: {
+  text: "("
+  text_range: "9:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "9:21::22"
+}
+tokens: {
+  text: "{"
+  text_range: "9:23::24"
+}
+tokens: {
+  text: "declarationWithEllipsis"
+  text_range: "10:1::24"
+}
+tokens: {
+  text: "("
+  text_range: "10:24::25"
+}
+tokens: {
+  text: "1"
+  text_range: "10:25::26"
+}
+tokens: {
+  text: "\"example\""
+  text_range: "10:28::37"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "10:26::27"
+}
+tokens: {
+  text: "3.14"
+  text_range: "10:39::43"
+}
+tokens: {
+  text: ","
+  text_range: "10:37::38"
+}
+tokens: {
+  text: "true"
+  text_range: "10:45::49"
+}
+tokens: {
+  text: ","
+  text_range: "10:43::44"
+}
+tokens: {
+  text: ")"
+  text_range: "10:49::50"
+}
+tokens: {
+  text: "values"
+  text_range: "11:1::7"
+}
+tokens: {
+  text: ":="
+  text_range: "11:8::10"
+}
+tokens: {
+  text: "["
+  text_range: "11:11::12"
+}
+tokens: {
+  text: "interface"
+  text_range: "11:13::22"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "11:22::23"
+}
+tokens: {
+  text: "}"
+  text_range: "11:23::24"
+}
+tokens: {
+  text: "]"
+  text_range: "11:12::13"
+}
+tokens: {
+  text: "{"
+  text_range: "11:24::25"
+}
+tokens: {
+  text: "2"
+  text_range: "11:25::26"
+}
+tokens: {
+  text: "\"test\""
+  text_range: "11:28::34"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "11:26::27"
+}
+tokens: {
+  text: "4.56"
+  text_range: "11:36::40"
+}
+tokens: {
+  text: ","
+  text_range: "11:34::35"
+}
+tokens: {
+  text: "false"
+  text_range: "11:42::47"
+}
+tokens: {
+  text: ","
+  text_range: "11:40::41"
+}
+tokens: {
+  text: "}"
+  text_range: "11:47::48"
+}
+tokens: {
+  text: "declarationWithEllipsis"
+  text_range: "12:1::24"
+}
+tokens: {
+  text: "("
+  text_range: "12:24::25"
+}
+tokens: {
+  text: "values"
+  text_range: "12:25::31"
+}
+tokens: {
+  text: "..."
+  text_range: "12:31::34"
+}
+tokens: {
+  text: ")"
+  text_range: "12:34::35"
+}
+tokens: {
+  text: "}"
+  text_range: "13:0::1"
+}
+root: {
+  text_range: "1:0:14:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "2:0::12"
+      cfg_id: 4
+      import_declaration: {
+        children: {
+          text_range: "2:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "2:7::12"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "2:7::12"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:7:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::28"
+          cfg_id: 5
+          identifier: {
+            name: "declarationWithEllipsis"
+            type: "func(args ...interface{})"
+            package: "ModuleNameForTest/main"
+            id: 32
+          }
+        }
+        formal_parameters: {
+          text_range: "3:29::48"
+          cfg_id: 10
+          parameter: {
+            identifier: {
+              text_range: "3:29::33"
+              cfg_id: 6
+              identifier: {
+                name: "args"
+                type: "[]interface{}"
+                package: "UNKNOWN"
+                id: 56
+              }
+            }
+            type: {
+              text_range: "3:34::48"
+              cfg_id: 9
+              ellipsis: {
+                ellipsis: "3:34::37"
+                element: {
+                  text_range: "3:37::48"
+                  cfg_id: 8
+                  native: {
+                    native_kind: "Elt(InterfaceType)"
+                    children: {
+                      text_range: "3:37::46"
+                      native: {
+                        native_kind: "Interface"
+                      }
+                    }
+                    children: {
+                      text_range: "3:46::48"
+                      cfg_id: 7
+                      native: {
+                        native_kind: "Methods(FieldList)"
+                        children: {
+                          text_range: "3:46::47"
+                          native: {
+                            native_kind: "Opening"
+                          }
+                        }
+                        children: {
+                          text_range: "3:47::48"
+                          native: {
+                            native_kind: "Closing"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "3:50:7:1"
+          cfg_id: 24
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1:6:2"
+              cfg_id: 23
+              loop: {
+                condition: {
+                  text_range: "4:5::25"
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
+                      text_range: "4:5::6"
+                      cfg_id: 13
+                      place_holder: {
+                        place_holder_token: "4:5::6"
+                      }
+                    }
+                    children: {
+                      text_range: "4:6::7"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "4:8::11"
+                      cfg_id: 14
+                      identifier: {
+                        name: "arg"
+                        type: "interface{}"
+                        package: "UNKNOWN"
+                        id: 87
+                      }
+                    }
+                    children: {
+                      text_range: "4:12::14"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "4:15::20"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "4:21::25"
+                      cfg_id: 15
+                      identifier: {
+                        name: "args"
+                        type: "[]interface{}"
+                        package: "UNKNOWN"
+                        id: 56
+                      }
+                    }
+                  }
+                }
+                body: {
+                  text_range: "4:26:6:2"
+                  cfg_id: 22
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "5:2::18"
+                      cfg_id: 21
+                      expression_statement: {
+                        expression: {
+                          text_range: "5:2::18"
+                          cfg_id: 20
+                          function_invocation: {
+                            member_select: {
+                              text_range: "5:2::13"
+                              cfg_id: 18
+                              member_select: {
+                                expression: {
+                                  text_range: "5:2::5"
+                                  cfg_id: 16
+                                  identifier: {
+                                    name: "fmt"
+                                    type: "UNKNOWN"
+                                    package: "fmt"
+                                    id: 21
+                                  }
+                                }
+                                identifier: {
+                                  text_range: "5:6::13"
+                                  cfg_id: 17
+                                  identifier: {
+                                    name: "Println"
+                                    type: "func(a ...any) (n int, err error)"
+                                    package: "fmt"
+                                  }
+                                }
+                              }
+                            }
+                            arguments: {
+                              text_range: "5:14::17"
+                              cfg_id: 19
+                              identifier: {
+                                name: "arg"
+                                type: "interface{}"
+                                package: "UNKNOWN"
+                                id: 87
+                              }
+                            }
+                            return_type: "int"
+                            return_type: "error"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                kind: "FOR"
+                keyword: "4:1::4"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 15
+            node_ids: 13
+            node_ids: 14
+            successors: 1
+          }
+          blocks: {
+            successors: 2
+            successors: 3
+          }
+          blocks: {
+            node_ids: 21
+            successors: 1
+          }
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "9:0:13:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "9:5::20"
+          cfg_id: 2
+          identifier: {
+            name: "callWithElipsis"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 137
+          }
+        }
+        body: {
+          text_range: "9:23:13:1"
+          cfg_id: 19
+          block: {
+            statement_or_expressions: {
+              text_range: "10:1::50"
+              cfg_id: 7
+              expression_statement: {
+                expression: {
+                  text_range: "10:1::50"
+                  cfg_id: 6
+                  function_invocation: {
+                    member_select: {
+                      text_range: "10:1::24"
+                      cfg_id: 4
+                      identifier: {
+                        name: "declarationWithEllipsis"
+                        type: "func(args ...interface{})"
+                        package: "ModuleNameForTest/main"
+                        id: 32
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:25::26"
+                      integer_literal: {
+                        value: "1"
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:28::37"
+                      string_literal: {
+                        value: "\"example\""
+                        content: "example"
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:39::43"
+                      float_literal: {
+                        value: "3.14"
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:45::49"
+                      cfg_id: 5
+                      literal: {
+                        value: "true"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:1::48"
+              cfg_id: 14
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:1::7"
+                  cfg_id: 8
+                  identifier: {
+                    name: "values"
+                    type: "[]interface{}"
+                    package: "UNKNOWN"
+                    id: 209
+                  }
+                }
+                initializers: {
+                  text_range: "11:11::48"
+                  cfg_id: 13
+                  composite_literal: {
+                    type: {
+                      text_range: "11:11::24"
+                      cfg_id: 11
+                      array_type: {
+                        element: {
+                          text_range: "11:13::24"
+                          cfg_id: 10
+                          native: {
+                            native_kind: "Elt(InterfaceType)"
+                            children: {
+                              text_range: "11:13::22"
+                              native: {
+                                native_kind: "Interface"
+                              }
+                            }
+                            children: {
+                              text_range: "11:22::24"
+                              cfg_id: 9
+                              native: {
+                                native_kind: "Methods(FieldList)"
+                                children: {
+                                  text_range: "11:22::23"
+                                  native: {
+                                    native_kind: "Opening"
+                                  }
+                                }
+                                children: {
+                                  text_range: "11:23::24"
+                                  native: {
+                                    native_kind: "Closing"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "11:25::26"
+                      integer_literal: {
+                        value: "2"
+                      }
+                    }
+                    elements: {
+                      text_range: "11:28::34"
+                      string_literal: {
+                        value: "\"test\""
+                        content: "test"
+                      }
+                    }
+                    elements: {
+                      text_range: "11:36::40"
+                      float_literal: {
+                        value: "4.56"
+                      }
+                    }
+                    elements: {
+                      text_range: "11:42::47"
+                      cfg_id: 12
+                      literal: {
+                        value: "false"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:1::35"
+              cfg_id: 18
+              expression_statement: {
+                expression: {
+                  text_range: "12:1::35"
+                  cfg_id: 17
+                  function_invocation: {
+                    member_select: {
+                      text_range: "12:1::24"
+                      cfg_id: 15
+                      identifier: {
+                        name: "declarationWithEllipsis"
+                        type: "func(args ...interface{})"
+                        package: "ModuleNameForTest/main"
+                        id: 32
+                      }
+                    }
+                    arguments: {
+                      text_range: "12:25::31"
+                      cfg_id: 16
+                      identifier: {
+                        name: "values"
+                        type: "[]interface{}"
+                        package: "UNKNOWN"
+                        id: 209
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 7
+            node_ids: 14
+            node_ids: 18
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

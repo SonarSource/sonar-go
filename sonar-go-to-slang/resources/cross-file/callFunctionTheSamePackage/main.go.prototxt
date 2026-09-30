@@ -1,0 +1,159 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "3:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "3:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "3:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "3:12::13"
+}
+tokens: {
+  text: "privateFunction"
+  text_range: "4:1::16"
+}
+tokens: {
+  text: "("
+  text_range: "4:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "4:17::18"
+}
+tokens: {
+  text: "PublicFunction"
+  text_range: "5:1::15"
+}
+tokens: {
+  text: "("
+  text_range: "5:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "5:16::17"
+}
+tokens: {
+  text: "}"
+  text_range: "6:0::1"
+}
+root: {
+  text_range: "1:0:7:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+            id: -1
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:6:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::9"
+          cfg_id: 3
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "example.com/company/sub-modules/module1/main"
+            id: -1
+          }
+        }
+        body: {
+          text_range: "3:12:6:1"
+          cfg_id: 11
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::18"
+              cfg_id: 7
+              expression_statement: {
+                expression: {
+                  text_range: "4:1::18"
+                  cfg_id: 6
+                  function_invocation: {
+                    member_select: {
+                      text_range: "4:1::16"
+                      cfg_id: 5
+                      identifier: {
+                        name: "privateFunction"
+                        type: "func() int"
+                        package: "example.com/company/sub-modules/module1/main"
+                        id: -1
+                      }
+                    }
+                    return_type: "int"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "5:1::17"
+              cfg_id: 10
+              expression_statement: {
+                expression: {
+                  text_range: "5:1::17"
+                  cfg_id: 9
+                  function_invocation: {
+                    member_select: {
+                      text_range: "5:1::15"
+                      cfg_id: 8
+                      identifier: {
+                        name: "PublicFunction"
+                        type: "func() float32"
+                        package: "example.com/company/sub-modules/module1/main"
+                        id: -1
+                      }
+                    }
+                    return_type: "float32"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 7
+            node_ids: 10
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

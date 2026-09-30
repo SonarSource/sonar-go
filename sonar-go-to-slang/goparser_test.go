@@ -21,15 +21,45 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"go/token"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"google.golang.org/protobuf/encoding/prototext"
 )
+
+// goldenProtoText is how every snapshot under resources/ is written. The trees are rendered from the
+// protobuf messages the executable sends, so that a snapshot cannot describe an AST the analyzer
+// never receives. Indent is pinned rather than left to prototext, which picks its own.
+var goldenProtoText = prototext.MarshalOptions{Multiline: true, Indent: "  "}
+
+// fieldSeparator matches the colon that ends a field name at the start of a line, with the spaces
+// that follow it. Anchoring it there keeps it off the ": " of a string value, which is written on
+// the same line, escaped, after the separator this matches.
+var fieldSeparator = regexp.MustCompile(`(?m)^(\s*[a-z0-9_]+:) +`)
+
+// protoTextOfTree renders the tree of one file the way the golden files hold it.
+//
+// prototext writes either one or two spaces after a field name, picked once per build of the
+// program from a hash of the binary, on purpose, to discourage depending on its exact output. A
+// golden file needs exactly that, so the separator is normalized to one space here: without it
+// every snapshot would differ between, say, a plain build and a -tags sonartrace one.
+func protoTextOfTree(node *Node, comments []*Node, tokens []*Token, errMsg *string) string {
+	text, err := goldenProtoText.Marshal(buildProtoTree(node, comments, tokens, errMsg))
+	if err != nil {
+		panic(err)
+	}
+	return fieldSeparator.ReplaceAllString(string(text), "$1 ")
+}
+
+// goldenFileOf names the snapshot of a .go.source file.
+func goldenFileOf(sourceFile string) string {
+	return strings.Replace(sourceFile, "go.source", "prototxt", 1)
+}
 
 func slangFromString(filename, source, moduleName string) (*Node, []*Node, []*Token, *string) {
 	fileSet, astFileOrErrors := astFromString(filename, source)
@@ -53,7 +83,7 @@ func astFromStrings(fileNameToContent map[string]string) (fileSet *token.FileSet
 	return
 }
 
-// Update all .json files in resources/ast from all .go.source files
+// Update all .prototxt files in resources/ast from all .go.source files
 // Add "Test_" before to run in IDE
 func fix_all_go_files_test_automatically(t *testing.T) {
 	for _, file := range getAllGoFiles("resources/ast") {
@@ -63,9 +93,8 @@ func fix_all_go_files_test_automatically(t *testing.T) {
 		}
 		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
 		node, comment, tokens, errMsg := slangFromString(filename, string(source), "ModuleNameForTest")
-		actual := toJsonSlang(node, comment, tokens, errMsg, "  ")
-		d1 := []byte(actual)
-		errWrite := os.WriteFile(strings.Replace(file, "go.source", "json", 1), d1, 0644)
+		actual := protoTextOfTree(node, comment, tokens, errMsg)
+		errWrite := os.WriteFile(goldenFileOf(file), []byte(actual), 0644)
 		if errWrite != nil {
 			panic(errWrite)
 		}
@@ -81,23 +110,11 @@ func Test_all_go_files(t *testing.T) {
 		}
 		filename := strings.Replace(filepath.Base(file), ".source", "", 1)
 		node, comment, tokens, errMsg := slangFromString(filename, string(source), "ModuleNameForTest")
-		actual := toJsonSlang(node, comment, tokens, errMsg, "  ")
+		actual := protoTextOfTree(node, comment, tokens, errMsg)
 
-		var jsonActual interface{}
-		err1 := json.Unmarshal([]byte(actual), &jsonActual)
-		if err1 != nil {
-			panic(err1)
-		}
-
-		expectedData, err := os.ReadFile(strings.Replace(file, "go.source", "json", 1))
+		expectedData, err := os.ReadFile(goldenFileOf(file))
 		if err != nil {
 			panic(err)
-		}
-		var jsonExpected map[string]interface{}
-
-		err2 := json.Unmarshal(expectedData, &jsonExpected)
-		if err2 != nil {
-			panic(err2)
 		}
 
 		assert.Equal(t, string(expectedData), actual, "Failed to match expected results for file: %#v\n", file)

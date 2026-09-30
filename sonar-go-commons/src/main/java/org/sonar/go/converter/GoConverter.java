@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sonar.go.persistence.JsonTree;
+import org.sonar.go.persistence.ProtoTree;
 import org.sonar.plugins.go.api.ASTConverter;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.TreeOrError;
@@ -88,18 +88,30 @@ public class GoConverter implements ASTConverter {
       LOG.debug("Executing Go parse data command: {}", String.join(" ", arguments));
     }
     try {
-      var json = process.execute(arguments, filesToParse);
-      // Deserializing the response is the last Java-side leg of the round trip, and on a large batch it
-      // is not a rounding error next to the parse itself, so it gets a span of its own.
-      try (var span = ConverterTracing.span("tree.decode", "format", "json", "chars", json.length())) {
-        var trees = JsonTree.fromJson(json);
-        span.arg("trees", trees.size());
-        result.putAll(trees);
-      }
+      result.putAll(decode(process.execute(arguments, filesToParse)));
     } catch (IOException e) {
       throw new ParseException(e.getMessage(), null, e);
     }
     return result;
+  }
+
+  /**
+   * Rebuilds the trees of one batch. Deserializing the response is the last Java-side leg of the round
+   * trip, and on a large batch it is not a rounding error next to the parse itself, so it gets a span
+   * of its own.
+   *
+   * <p>A tree the analyzer cannot rebuild is an error for its own file, but a broken framing is what no
+   * single file can cause, so {@link ProtoTree#fromProto} throws on it. Failing this batch, the way a
+   * response the process could not send does, keeps that from aborting the whole analysis.
+   */
+  private static Map<String, TreeOrError> decode(byte[] response) {
+    try (var span = ConverterTracing.span("tree.decode", "bytes", response.length)) {
+      var trees = ProtoTree.fromProto(response);
+      span.arg("trees", trees.size());
+      return trees;
+    } catch (IllegalStateException e) {
+      throw new ParseException(e.getMessage(), null, e);
+    }
   }
 
   public void setGcExportDataDir(String gcExportDataDir) {

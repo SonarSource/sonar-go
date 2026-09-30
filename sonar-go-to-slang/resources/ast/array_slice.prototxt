@@ -1,0 +1,1866 @@
+comments: {
+  text: "// a1[0] == s[1]"
+  content_text: " a1[0] == s[1]"
+  range: "7:29::45"
+  content_range: "7:31::45"
+}
+comments: {
+  text: "// a2[0] == s[0]"
+  content_text: " a2[0] == s[0]"
+  range: "8:29::45"
+  content_range: "8:31::45"
+}
+comments: {
+  text: "// panics: len([4]byte) > len(s)"
+  content_text: " panics: len([4]byte) > len(s)"
+  range: "9:29::61"
+  content_range: "9:31::61"
+}
+comments: {
+  text: "// s0 != nil"
+  content_text: " s0 != nil"
+  range: "11:29::41"
+  content_range: "11:31::41"
+}
+comments: {
+  text: "// &s1[0] == &s[1]"
+  content_text: " &s1[0] == &s[1]"
+  range: "12:29::47"
+  content_range: "12:31::47"
+}
+comments: {
+  text: "// &s2[0] == &s[0]"
+  content_text: " &s2[0] == &s[0]"
+  range: "13:29::47"
+  content_range: "13:31::47"
+}
+comments: {
+  text: "// panics: len([4]byte) > len(s)"
+  content_text: " panics: len([4]byte) > len(s)"
+  range: "14:29::61"
+  content_range: "14:31::61"
+}
+comments: {
+  text: "// ok for nil slice t"
+  content_text: " ok for nil slice t"
+  range: "17:29::50"
+  content_range: "17:31::50"
+}
+comments: {
+  text: "// t1 == nil"
+  content_text: " t1 == nil"
+  range: "18:29::41"
+  content_range: "18:31::41"
+}
+comments: {
+  text: "// panics: len([1]string) > len(t)"
+  content_text: " panics: len([1]string) > len(t)"
+  range: "19:29::63"
+  content_range: "19:31::63"
+}
+comments: {
+  text: "// u0 != nil"
+  content_text: " u0 != nil"
+  range: "22:29::41"
+  content_range: "22:31::41"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "allLiterals"
+  text_range: "3:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "3:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "3:17::18"
+}
+tokens: {
+  text: "{"
+  text_range: "3:19::20"
+}
+tokens: {
+  text: "s"
+  text_range: "4:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "4:3::5"
+}
+tokens: {
+  text: "make"
+  text_range: "4:6::10"
+}
+tokens: {
+  text: "("
+  text_range: "4:10::11"
+}
+tokens: {
+  text: "["
+  text_range: "4:11::12"
+}
+tokens: {
+  text: "byte"
+  text_range: "4:13::17"
+}
+tokens: {
+  text: "]"
+  text_range: "4:12::13"
+}
+tokens: {
+  text: "2"
+  text_range: "4:19::20"
+}
+tokens: {
+  text: ","
+  text_range: "4:17::18"
+}
+tokens: {
+  text: "4"
+  text_range: "4:22::23"
+}
+tokens: {
+  text: ","
+  text_range: "4:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "4:23::24"
+}
+tokens: {
+  text: "a0"
+  text_range: "6:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "6:7::9"
+}
+tokens: {
+  text: "["
+  text_range: "6:10::11"
+}
+tokens: {
+  text: "0"
+  text_range: "6:11::12"
+}
+tokens: {
+  text: "byte"
+  text_range: "6:13::17"
+}
+tokens: {
+  text: "]"
+  text_range: "6:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "6:17::18"
+}
+tokens: {
+  text: "s"
+  text_range: "6:18::19"
+}
+tokens: {
+  text: ")"
+  text_range: "6:19::20"
+}
+tokens: {
+  text: "a1"
+  text_range: "7:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "7:7::9"
+}
+tokens: {
+  text: "["
+  text_range: "7:10::11"
+}
+tokens: {
+  text: "1"
+  text_range: "7:11::12"
+}
+tokens: {
+  text: "byte"
+  text_range: "7:13::17"
+}
+tokens: {
+  text: "]"
+  text_range: "7:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "7:17::18"
+}
+tokens: {
+  text: "s"
+  text_range: "7:18::19"
+}
+tokens: {
+  text: "["
+  text_range: "7:19::20"
+}
+tokens: {
+  text: "1"
+  text_range: "7:20::21"
+}
+tokens: {
+  text: "]"
+  text_range: "7:22::23"
+}
+tokens: {
+  text: ":"
+  text_range: "7:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "7:23::24"
+}
+tokens: {
+  text: "a2"
+  text_range: "8:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "8:7::9"
+}
+tokens: {
+  text: "["
+  text_range: "8:10::11"
+}
+tokens: {
+  text: "2"
+  text_range: "8:11::12"
+}
+tokens: {
+  text: "byte"
+  text_range: "8:13::17"
+}
+tokens: {
+  text: "]"
+  text_range: "8:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "8:17::18"
+}
+tokens: {
+  text: "s"
+  text_range: "8:18::19"
+}
+tokens: {
+  text: ")"
+  text_range: "8:19::20"
+}
+tokens: {
+  text: "a4"
+  text_range: "9:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "9:7::9"
+}
+tokens: {
+  text: "["
+  text_range: "9:10::11"
+}
+tokens: {
+  text: "4"
+  text_range: "9:11::12"
+}
+tokens: {
+  text: "byte"
+  text_range: "9:13::17"
+}
+tokens: {
+  text: "]"
+  text_range: "9:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "9:17::18"
+}
+tokens: {
+  text: "s"
+  text_range: "9:18::19"
+}
+tokens: {
+  text: ")"
+  text_range: "9:19::20"
+}
+tokens: {
+  text: "s0"
+  text_range: "11:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "11:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "11:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "11:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "11:12::13"
+}
+tokens: {
+  text: "0"
+  text_range: "11:13::14"
+}
+tokens: {
+  text: "byte"
+  text_range: "11:15::19"
+}
+tokens: {
+  text: "]"
+  text_range: "11:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "11:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "11:20::21"
+}
+tokens: {
+  text: "s"
+  text_range: "11:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "11:22::23"
+}
+tokens: {
+  text: "s1"
+  text_range: "12:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "12:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "12:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "12:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "12:12::13"
+}
+tokens: {
+  text: "1"
+  text_range: "12:13::14"
+}
+tokens: {
+  text: "byte"
+  text_range: "12:15::19"
+}
+tokens: {
+  text: "]"
+  text_range: "12:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "12:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "12:20::21"
+}
+tokens: {
+  text: "s"
+  text_range: "12:21::22"
+}
+tokens: {
+  text: "["
+  text_range: "12:22::23"
+}
+tokens: {
+  text: "1"
+  text_range: "12:23::24"
+}
+tokens: {
+  text: "]"
+  text_range: "12:25::26"
+}
+tokens: {
+  text: ":"
+  text_range: "12:24::25"
+}
+tokens: {
+  text: ")"
+  text_range: "12:26::27"
+}
+tokens: {
+  text: "s2"
+  text_range: "13:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "13:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "13:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "13:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "13:12::13"
+}
+tokens: {
+  text: "2"
+  text_range: "13:13::14"
+}
+tokens: {
+  text: "byte"
+  text_range: "13:15::19"
+}
+tokens: {
+  text: "]"
+  text_range: "13:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "13:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "13:20::21"
+}
+tokens: {
+  text: "s"
+  text_range: "13:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "13:22::23"
+}
+tokens: {
+  text: "s4"
+  text_range: "14:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "14:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "14:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "14:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "14:12::13"
+}
+tokens: {
+  text: "4"
+  text_range: "14:13::14"
+}
+tokens: {
+  text: "byte"
+  text_range: "14:15::19"
+}
+tokens: {
+  text: "]"
+  text_range: "14:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "14:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "14:20::21"
+}
+tokens: {
+  text: "s"
+  text_range: "14:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "14:22::23"
+}
+tokens: {
+  text: "var"
+  text_range: "16:4::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "t"
+  text_range: "16:8::9"
+}
+tokens: {
+  text: "["
+  text_range: "16:10::11"
+}
+tokens: {
+  text: "string"
+  text_range: "16:12::18"
+}
+tokens: {
+  text: "]"
+  text_range: "16:11::12"
+}
+tokens: {
+  text: "t0"
+  text_range: "17:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "17:7::9"
+}
+tokens: {
+  text: "["
+  text_range: "17:10::11"
+}
+tokens: {
+  text: "0"
+  text_range: "17:11::12"
+}
+tokens: {
+  text: "string"
+  text_range: "17:13::19"
+}
+tokens: {
+  text: "]"
+  text_range: "17:12::13"
+}
+tokens: {
+  text: "("
+  text_range: "17:19::20"
+}
+tokens: {
+  text: "t"
+  text_range: "17:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "17:21::22"
+}
+tokens: {
+  text: "t1"
+  text_range: "18:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "18:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "18:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "18:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "18:12::13"
+}
+tokens: {
+  text: "0"
+  text_range: "18:13::14"
+}
+tokens: {
+  text: "string"
+  text_range: "18:15::21"
+}
+tokens: {
+  text: "]"
+  text_range: "18:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "18:21::22"
+}
+tokens: {
+  text: "("
+  text_range: "18:22::23"
+}
+tokens: {
+  text: "t"
+  text_range: "18:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "18:24::25"
+}
+tokens: {
+  text: "t2"
+  text_range: "19:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "19:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "19:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "19:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "19:12::13"
+}
+tokens: {
+  text: "1"
+  text_range: "19:13::14"
+}
+tokens: {
+  text: "string"
+  text_range: "19:15::21"
+}
+tokens: {
+  text: "]"
+  text_range: "19:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "19:21::22"
+}
+tokens: {
+  text: "("
+  text_range: "19:22::23"
+}
+tokens: {
+  text: "t"
+  text_range: "19:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "19:24::25"
+}
+tokens: {
+  text: "u"
+  text_range: "21:4::5"
+}
+tokens: {
+  text: ":="
+  text_range: "21:6::8"
+}
+tokens: {
+  text: "make"
+  text_range: "21:9::13"
+}
+tokens: {
+  text: "("
+  text_range: "21:13::14"
+}
+tokens: {
+  text: "["
+  text_range: "21:14::15"
+}
+tokens: {
+  text: "byte"
+  text_range: "21:16::20"
+}
+tokens: {
+  text: "]"
+  text_range: "21:15::16"
+}
+tokens: {
+  text: "0"
+  text_range: "21:22::23"
+}
+tokens: {
+  text: ","
+  text_range: "21:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "21:23::24"
+}
+tokens: {
+  text: "u0"
+  text_range: "22:4::6"
+}
+tokens: {
+  text: ":="
+  text_range: "22:7::9"
+}
+tokens: {
+  text: "("
+  text_range: "22:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "22:11::12"
+}
+tokens: {
+  text: "["
+  text_range: "22:12::13"
+}
+tokens: {
+  text: "0"
+  text_range: "22:13::14"
+}
+tokens: {
+  text: "byte"
+  text_range: "22:15::19"
+}
+tokens: {
+  text: "]"
+  text_range: "22:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "22:19::20"
+}
+tokens: {
+  text: "("
+  text_range: "22:20::21"
+}
+tokens: {
+  text: "u"
+  text_range: "22:21::22"
+}
+tokens: {
+  text: ")"
+  text_range: "22:22::23"
+}
+tokens: {
+  text: "numbers"
+  text_range: "24:4::11"
+}
+tokens: {
+  text: ":="
+  text_range: "24:12::14"
+}
+tokens: {
+  text: "["
+  text_range: "24:15::16"
+}
+tokens: {
+  text: "..."
+  text_range: "24:16::19"
+}
+tokens: {
+  text: "int"
+  text_range: "24:20::23"
+}
+tokens: {
+  text: "]"
+  text_range: "24:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "24:23::24"
+}
+tokens: {
+  text: "1"
+  text_range: "24:24::25"
+}
+tokens: {
+  text: "2"
+  text_range: "24:27::28"
+}
+tokens: {
+  text: ","
+  text_range: "24:25::26"
+}
+tokens: {
+  text: "3"
+  text_range: "24:30::31"
+}
+tokens: {
+  text: ","
+  text_range: "24:28::29"
+}
+tokens: {
+  text: "4"
+  text_range: "24:33::34"
+}
+tokens: {
+  text: ","
+  text_range: "24:31::32"
+}
+tokens: {
+  text: "5"
+  text_range: "24:36::37"
+}
+tokens: {
+  text: ","
+  text_range: "24:34::35"
+}
+tokens: {
+  text: "}"
+  text_range: "24:37::38"
+}
+tokens: {
+  text: "}"
+  text_range: "25:0::1"
+}
+root: {
+  text_range: "1:0:26:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:25:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::16"
+          cfg_id: 3
+          identifier: {
+            name: "allLiterals"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 19
+          }
+        }
+        body: {
+          text_range: "3:19:25:1"
+          cfg_id: 115
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::24"
+              cfg_id: 10
+              variable_declaration: {
+                identifiers: {
+                  text_range: "4:1::2"
+                  cfg_id: 5
+                  identifier: {
+                    name: "s"
+                    type: "[]byte"
+                    package: "UNKNOWN"
+                    id: 36
+                  }
+                }
+                initializers: {
+                  text_range: "4:6::24"
+                  cfg_id: 9
+                  function_invocation: {
+                    member_select: {
+                      text_range: "4:6::10"
+                      cfg_id: 6
+                      identifier: {
+                        name: "make"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                      }
+                    }
+                    arguments: {
+                      text_range: "4:11::17"
+                      cfg_id: 8
+                      array_type: {
+                        element: {
+                          text_range: "4:13::17"
+                          cfg_id: 7
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "4:19::20"
+                      integer_literal: {
+                        value: "2"
+                      }
+                    }
+                    arguments: {
+                      text_range: "4:22::23"
+                      integer_literal: {
+                        value: "4"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "6:4::20"
+              cfg_id: 16
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:4::6"
+                  cfg_id: 11
+                  identifier: {
+                    name: "a0"
+                    type: "[0]byte"
+                    package: "UNKNOWN"
+                    id: 65
+                  }
+                }
+                initializers: {
+                  text_range: "6:10::20"
+                  cfg_id: 15
+                  function_invocation: {
+                    member_select: {
+                      text_range: "6:10::17"
+                      cfg_id: 13
+                      array_type: {
+                        element: {
+                          text_range: "6:13::17"
+                          cfg_id: 12
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "6:11::12"
+                          integer_literal: {
+                            value: "0"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "6:18::19"
+                      cfg_id: 14
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:4::24"
+              cfg_id: 23
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:4::6"
+                  cfg_id: 17
+                  identifier: {
+                    name: "a1"
+                    type: "[1]byte"
+                    package: "UNKNOWN"
+                    id: 86
+                  }
+                }
+                initializers: {
+                  text_range: "7:10::24"
+                  cfg_id: 22
+                  function_invocation: {
+                    member_select: {
+                      text_range: "7:10::17"
+                      cfg_id: 19
+                      array_type: {
+                        element: {
+                          text_range: "7:13::17"
+                          cfg_id: 18
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "7:11::12"
+                          integer_literal: {
+                            value: "1"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "7:18::23"
+                      cfg_id: 21
+                      slice: {
+                        expression: {
+                          text_range: "7:18::19"
+                          cfg_id: 20
+                          identifier: {
+                            name: "s"
+                            type: "[]byte"
+                            package: "UNKNOWN"
+                            id: 36
+                          }
+                        }
+                        low: {
+                          text_range: "7:20::21"
+                          integer_literal: {
+                            value: "1"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "8:4::20"
+              cfg_id: 29
+              variable_declaration: {
+                identifiers: {
+                  text_range: "8:4::6"
+                  cfg_id: 24
+                  identifier: {
+                    name: "a2"
+                    type: "[2]byte"
+                    package: "UNKNOWN"
+                    id: 132
+                  }
+                }
+                initializers: {
+                  text_range: "8:10::20"
+                  cfg_id: 28
+                  function_invocation: {
+                    member_select: {
+                      text_range: "8:10::17"
+                      cfg_id: 26
+                      array_type: {
+                        element: {
+                          text_range: "8:13::17"
+                          cfg_id: 25
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "8:11::12"
+                          integer_literal: {
+                            value: "2"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "8:18::19"
+                      cfg_id: 27
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "9:4::20"
+              cfg_id: 35
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:4::6"
+                  cfg_id: 30
+                  identifier: {
+                    name: "a4"
+                    type: "[4]byte"
+                    package: "UNKNOWN"
+                    id: 178
+                  }
+                }
+                initializers: {
+                  text_range: "9:10::20"
+                  cfg_id: 34
+                  function_invocation: {
+                    member_select: {
+                      text_range: "9:10::17"
+                      cfg_id: 32
+                      array_type: {
+                        element: {
+                          text_range: "9:13::17"
+                          cfg_id: 31
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "9:11::12"
+                          integer_literal: {
+                            value: "4"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "9:18::19"
+                      cfg_id: 33
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:4::23"
+              cfg_id: 43
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:4::6"
+                  cfg_id: 36
+                  identifier: {
+                    name: "s0"
+                    type: "*[0]byte"
+                    package: "UNKNOWN"
+                    id: 241
+                  }
+                }
+                initializers: {
+                  text_range: "11:10::23"
+                  cfg_id: 42
+                  function_invocation: {
+                    member_select: {
+                      text_range: "11:10::20"
+                      cfg_id: 40
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "11:11::19"
+                          cfg_id: 39
+                          star_expression: {
+                            expression: {
+                              text_range: "11:12::19"
+                              cfg_id: 38
+                              array_type: {
+                                element: {
+                                  text_range: "11:15::19"
+                                  cfg_id: 37
+                                  identifier: {
+                                    name: "byte"
+                                    type: "byte"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "11:13::14"
+                                  integer_literal: {
+                                    value: "0"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "11:10::11"
+                        right_parenthesis: "11:19::20"
+                      }
+                    }
+                    arguments: {
+                      text_range: "11:21::22"
+                      cfg_id: 41
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:4::27"
+              cfg_id: 52
+              variable_declaration: {
+                identifiers: {
+                  text_range: "12:4::6"
+                  cfg_id: 44
+                  identifier: {
+                    name: "s1"
+                    type: "*[1]byte"
+                    package: "UNKNOWN"
+                    id: 283
+                  }
+                }
+                initializers: {
+                  text_range: "12:10::27"
+                  cfg_id: 51
+                  function_invocation: {
+                    member_select: {
+                      text_range: "12:10::20"
+                      cfg_id: 48
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "12:11::19"
+                          cfg_id: 47
+                          star_expression: {
+                            expression: {
+                              text_range: "12:12::19"
+                              cfg_id: 46
+                              array_type: {
+                                element: {
+                                  text_range: "12:15::19"
+                                  cfg_id: 45
+                                  identifier: {
+                                    name: "byte"
+                                    type: "byte"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "12:13::14"
+                                  integer_literal: {
+                                    value: "1"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "12:10::11"
+                        right_parenthesis: "12:19::20"
+                      }
+                    }
+                    arguments: {
+                      text_range: "12:21::26"
+                      cfg_id: 50
+                      slice: {
+                        expression: {
+                          text_range: "12:21::22"
+                          cfg_id: 49
+                          identifier: {
+                            name: "s"
+                            type: "[]byte"
+                            package: "UNKNOWN"
+                            id: 36
+                          }
+                        }
+                        low: {
+                          text_range: "12:23::24"
+                          integer_literal: {
+                            value: "1"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "13:4::23"
+              cfg_id: 60
+              variable_declaration: {
+                identifiers: {
+                  text_range: "13:4::6"
+                  cfg_id: 53
+                  identifier: {
+                    name: "s2"
+                    type: "*[2]byte"
+                    package: "UNKNOWN"
+                    id: 331
+                  }
+                }
+                initializers: {
+                  text_range: "13:10::23"
+                  cfg_id: 59
+                  function_invocation: {
+                    member_select: {
+                      text_range: "13:10::20"
+                      cfg_id: 57
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "13:11::19"
+                          cfg_id: 56
+                          star_expression: {
+                            expression: {
+                              text_range: "13:12::19"
+                              cfg_id: 55
+                              array_type: {
+                                element: {
+                                  text_range: "13:15::19"
+                                  cfg_id: 54
+                                  identifier: {
+                                    name: "byte"
+                                    type: "byte"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "13:13::14"
+                                  integer_literal: {
+                                    value: "2"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "13:10::11"
+                        right_parenthesis: "13:19::20"
+                      }
+                    }
+                    arguments: {
+                      text_range: "13:21::22"
+                      cfg_id: 58
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "14:4::23"
+              cfg_id: 68
+              variable_declaration: {
+                identifiers: {
+                  text_range: "14:4::6"
+                  cfg_id: 61
+                  identifier: {
+                    name: "s4"
+                    type: "*[4]byte"
+                    package: "UNKNOWN"
+                    id: 379
+                  }
+                }
+                initializers: {
+                  text_range: "14:10::23"
+                  cfg_id: 67
+                  function_invocation: {
+                    member_select: {
+                      text_range: "14:10::20"
+                      cfg_id: 65
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "14:11::19"
+                          cfg_id: 64
+                          star_expression: {
+                            expression: {
+                              text_range: "14:12::19"
+                              cfg_id: 63
+                              array_type: {
+                                element: {
+                                  text_range: "14:15::19"
+                                  cfg_id: 62
+                                  identifier: {
+                                    name: "byte"
+                                    type: "byte"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "14:13::14"
+                                  integer_literal: {
+                                    value: "4"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "14:10::11"
+                        right_parenthesis: "14:19::20"
+                      }
+                    }
+                    arguments: {
+                      text_range: "14:21::22"
+                      cfg_id: 66
+                      identifier: {
+                        name: "s"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 36
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "16:4::18"
+              cfg_id: 72
+              variable_declaration: {
+                identifiers: {
+                  text_range: "16:8::9"
+                  cfg_id: 69
+                  identifier: {
+                    name: "t"
+                    type: "[]string"
+                    package: "UNKNOWN"
+                    id: 446
+                  }
+                }
+                type: {
+                  text_range: "16:10::18"
+                  cfg_id: 71
+                  array_type: {
+                    element: {
+                      text_range: "16:12::18"
+                      cfg_id: 70
+                      identifier: {
+                        name: "string"
+                        type: "string"
+                        package: "UNKNOWN"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "17:4::22"
+              cfg_id: 78
+              variable_declaration: {
+                identifiers: {
+                  text_range: "17:4::6"
+                  cfg_id: 73
+                  identifier: {
+                    name: "t0"
+                    type: "[0]string"
+                    package: "UNKNOWN"
+                    id: 461
+                  }
+                }
+                initializers: {
+                  text_range: "17:10::22"
+                  cfg_id: 77
+                  function_invocation: {
+                    member_select: {
+                      text_range: "17:10::19"
+                      cfg_id: 75
+                      array_type: {
+                        element: {
+                          text_range: "17:13::19"
+                          cfg_id: 74
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "17:11::12"
+                          integer_literal: {
+                            value: "0"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "17:20::21"
+                      cfg_id: 76
+                      identifier: {
+                        name: "t"
+                        type: "[]string"
+                        package: "UNKNOWN"
+                        id: 446
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "18:4::25"
+              cfg_id: 86
+              variable_declaration: {
+                identifiers: {
+                  text_range: "18:4::6"
+                  cfg_id: 79
+                  identifier: {
+                    name: "t1"
+                    type: "*[0]string"
+                    package: "UNKNOWN"
+                    id: 512
+                  }
+                }
+                initializers: {
+                  text_range: "18:10::25"
+                  cfg_id: 85
+                  function_invocation: {
+                    member_select: {
+                      text_range: "18:10::22"
+                      cfg_id: 83
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "18:11::21"
+                          cfg_id: 82
+                          star_expression: {
+                            expression: {
+                              text_range: "18:12::21"
+                              cfg_id: 81
+                              array_type: {
+                                element: {
+                                  text_range: "18:15::21"
+                                  cfg_id: 80
+                                  identifier: {
+                                    name: "string"
+                                    type: "string"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "18:13::14"
+                                  integer_literal: {
+                                    value: "0"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "18:10::11"
+                        right_parenthesis: "18:21::22"
+                      }
+                    }
+                    arguments: {
+                      text_range: "18:23::24"
+                      cfg_id: 84
+                      identifier: {
+                        name: "t"
+                        type: "[]string"
+                        package: "UNKNOWN"
+                        id: 446
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "19:4::25"
+              cfg_id: 94
+              variable_declaration: {
+                identifiers: {
+                  text_range: "19:4::6"
+                  cfg_id: 87
+                  identifier: {
+                    name: "t2"
+                    type: "*[1]string"
+                    package: "UNKNOWN"
+                    id: 554
+                  }
+                }
+                initializers: {
+                  text_range: "19:10::25"
+                  cfg_id: 93
+                  function_invocation: {
+                    member_select: {
+                      text_range: "19:10::22"
+                      cfg_id: 91
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "19:11::21"
+                          cfg_id: 90
+                          star_expression: {
+                            expression: {
+                              text_range: "19:12::21"
+                              cfg_id: 89
+                              array_type: {
+                                element: {
+                                  text_range: "19:15::21"
+                                  cfg_id: 88
+                                  identifier: {
+                                    name: "string"
+                                    type: "string"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "19:13::14"
+                                  integer_literal: {
+                                    value: "1"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "19:10::11"
+                        right_parenthesis: "19:21::22"
+                      }
+                    }
+                    arguments: {
+                      text_range: "19:23::24"
+                      cfg_id: 92
+                      identifier: {
+                        name: "t"
+                        type: "[]string"
+                        package: "UNKNOWN"
+                        id: 446
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:4::24"
+              cfg_id: 100
+              variable_declaration: {
+                identifiers: {
+                  text_range: "21:4::5"
+                  cfg_id: 95
+                  identifier: {
+                    name: "u"
+                    type: "[]byte"
+                    package: "UNKNOWN"
+                    id: 619
+                  }
+                }
+                initializers: {
+                  text_range: "21:9::24"
+                  cfg_id: 99
+                  function_invocation: {
+                    member_select: {
+                      text_range: "21:9::13"
+                      cfg_id: 96
+                      identifier: {
+                        name: "make"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                      }
+                    }
+                    arguments: {
+                      text_range: "21:14::20"
+                      cfg_id: 98
+                      array_type: {
+                        element: {
+                          text_range: "21:16::20"
+                          cfg_id: 97
+                          identifier: {
+                            name: "byte"
+                            type: "byte"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "21:22::23"
+                      integer_literal: {
+                        value: "0"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "22:4::23"
+              cfg_id: 108
+              variable_declaration: {
+                identifiers: {
+                  text_range: "22:4::6"
+                  cfg_id: 101
+                  identifier: {
+                    name: "u0"
+                    type: "*[0]byte"
+                    package: "UNKNOWN"
+                    id: 644
+                  }
+                }
+                initializers: {
+                  text_range: "22:10::23"
+                  cfg_id: 107
+                  function_invocation: {
+                    member_select: {
+                      text_range: "22:10::20"
+                      cfg_id: 105
+                      parenthesized_expression: {
+                        expression: {
+                          text_range: "22:11::19"
+                          cfg_id: 104
+                          star_expression: {
+                            expression: {
+                              text_range: "22:12::19"
+                              cfg_id: 103
+                              array_type: {
+                                element: {
+                                  text_range: "22:15::19"
+                                  cfg_id: 102
+                                  identifier: {
+                                    name: "byte"
+                                    type: "byte"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                                length: {
+                                  text_range: "22:13::14"
+                                  integer_literal: {
+                                    value: "0"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        left_parenthesis: "22:10::11"
+                        right_parenthesis: "22:19::20"
+                      }
+                    }
+                    arguments: {
+                      text_range: "22:21::22"
+                      cfg_id: 106
+                      identifier: {
+                        name: "u"
+                        type: "[]byte"
+                        package: "UNKNOWN"
+                        id: 619
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "24:4::38"
+              cfg_id: 114
+              variable_declaration: {
+                identifiers: {
+                  text_range: "24:4::11"
+                  cfg_id: 109
+                  identifier: {
+                    name: "numbers"
+                    type: "[5]int"
+                    package: "UNKNOWN"
+                    id: 687
+                  }
+                }
+                initializers: {
+                  text_range: "24:15::38"
+                  cfg_id: 113
+                  composite_literal: {
+                    type: {
+                      text_range: "24:15::23"
+                      cfg_id: 112
+                      array_type: {
+                        element: {
+                          text_range: "24:20::23"
+                          cfg_id: 111
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        length: {
+                          text_range: "24:16::19"
+                          cfg_id: 110
+                          ellipsis: {
+                            ellipsis: "24:16::19"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "24:24::25"
+                      integer_literal: {
+                        value: "1"
+                      }
+                    }
+                    elements: {
+                      text_range: "24:27::28"
+                      integer_literal: {
+                        value: "2"
+                      }
+                    }
+                    elements: {
+                      text_range: "24:30::31"
+                      integer_literal: {
+                        value: "3"
+                      }
+                    }
+                    elements: {
+                      text_range: "24:33::34"
+                      integer_literal: {
+                        value: "4"
+                      }
+                    }
+                    elements: {
+                      text_range: "24:36::37"
+                      integer_literal: {
+                        value: "5"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 10
+            node_ids: 16
+            node_ids: 23
+            node_ids: 29
+            node_ids: 35
+            node_ids: 43
+            node_ids: 52
+            node_ids: 60
+            node_ids: 68
+            node_ids: 72
+            node_ids: 78
+            node_ids: 86
+            node_ids: 94
+            node_ids: 100
+            node_ids: 108
+            node_ids: 114
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

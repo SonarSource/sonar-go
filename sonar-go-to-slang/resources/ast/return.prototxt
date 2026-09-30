@@ -1,0 +1,656 @@
+comments: {
+  text: "// Expressions are wrapped in a native node, and this node is used as body of the return tree"
+  content_text: " Expressions are wrapped in a native node, and this node is used as body of the return tree"
+  range: "21:18::111"
+  content_range: "21:20::111"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "returnTrue"
+  text_range: "3:5::15"
+}
+tokens: {
+  text: "("
+  text_range: "3:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "3:16::17"
+}
+tokens: {
+  text: "bool"
+  text_range: "3:18::22"
+}
+tokens: {
+  text: "{"
+  text_range: "3:23::24"
+}
+tokens: {
+  text: "return"
+  text_range: "4:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "true"
+  text_range: "4:8::12"
+}
+tokens: {
+  text: "}"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "7:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "emptyReturn"
+  text_range: "7:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "7:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "7:17::18"
+}
+tokens: {
+  text: "{"
+  text_range: "7:19::20"
+}
+tokens: {
+  text: "return"
+  text_range: "8:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "}"
+  text_range: "9:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "11:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "twoReturn"
+  text_range: "11:5::14"
+}
+tokens: {
+  text: "("
+  text_range: "11:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "11:15::16"
+}
+tokens: {
+  text: "string"
+  text_range: "11:17::23"
+}
+tokens: {
+  text: "{"
+  text_range: "11:24::25"
+}
+tokens: {
+  text: "if"
+  text_range: "12:1::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "true"
+  text_range: "12:4::8"
+}
+tokens: {
+  text: "{"
+  text_range: "12:9::10"
+}
+tokens: {
+  text: "return"
+  text_range: "13:2::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"true\""
+  text_range: "13:9::15"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "}"
+  text_range: "14:1::2"
+}
+tokens: {
+  text: "{"
+  text_range: "14:8::9"
+}
+tokens: {
+  text: "return"
+  text_range: "15:2::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"false\""
+  text_range: "15:9::16"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "}"
+  text_range: "16:1::2"
+}
+tokens: {
+  text: "else"
+  text_range: "14:3::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "}"
+  text_range: "17:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "19:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "multipleReturnValue"
+  text_range: "19:5::24"
+}
+tokens: {
+  text: "("
+  text_range: "19:24::25"
+}
+tokens: {
+  text: ")"
+  text_range: "19:25::26"
+}
+tokens: {
+  text: "("
+  text_range: "19:27::28"
+}
+tokens: {
+  text: "string"
+  text_range: "19:28::34"
+}
+tokens: {
+  text: "int"
+  text_range: "19:36::39"
+}
+tokens: {
+  text: ","
+  text_range: "19:34::35"
+}
+tokens: {
+  text: "string"
+  text_range: "19:41::47"
+}
+tokens: {
+  text: ","
+  text_range: "19:39::40"
+}
+tokens: {
+  text: ")"
+  text_range: "19:47::48"
+}
+tokens: {
+  text: "{"
+  text_range: "19:49::50"
+}
+tokens: {
+  text: "b"
+  text_range: "20:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "20:3::5"
+}
+tokens: {
+  text: "\"b\""
+  text_range: "20:6::9"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "return"
+  text_range: "21:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "b"
+  text_range: "21:8::9"
+}
+tokens: {
+  text: "2"
+  text_range: "21:11::12"
+}
+tokens: {
+  text: ","
+  text_range: "21:9::10"
+}
+tokens: {
+  text: "\"c\""
+  text_range: "21:14::17"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "21:12::13"
+}
+tokens: {
+  text: "}"
+  text_range: "22:0::1"
+}
+root: {
+  text_range: "1:0:23:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:5:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "3:18::22"
+          cfg_id: 7
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "3:18::22"
+              cfg_id: 6
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "3:18::22"
+                  cfg_id: 5
+                  identifier: {
+                    name: "bool"
+                    type: "bool"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "3:5::15"
+          cfg_id: 3
+          identifier: {
+            name: "returnTrue"
+            type: "func() bool"
+            package: "ModuleNameForTest/main"
+            id: 20
+          }
+        }
+        body: {
+          text_range: "3:23:5:1"
+          cfg_id: 10
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::12"
+              cfg_id: 9
+              return_statement: {
+                expressions: {
+                  text_range: "4:8::12"
+                  cfg_id: 8
+                  literal: {
+                    value: "true"
+                  }
+                }
+                keyword: "4:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 9
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "7:0:9:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "7:5::16"
+          cfg_id: 2
+          identifier: {
+            name: "emptyReturn"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 61
+          }
+        }
+        body: {
+          text_range: "7:19:9:1"
+          cfg_id: 5
+          block: {
+            statement_or_expressions: {
+              text_range: "8:1::7"
+              cfg_id: 4
+              return_statement: {
+                keyword: "8:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 4
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "11:0:17:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "11:17::23"
+          cfg_id: 6
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "11:17::23"
+              cfg_id: 5
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "11:17::23"
+                  cfg_id: 4
+                  identifier: {
+                    name: "string"
+                    type: "string"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "11:5::14"
+          cfg_id: 2
+          identifier: {
+            name: "twoReturn"
+            type: "func() string"
+            package: "ModuleNameForTest/main"
+            id: 93
+          }
+        }
+        body: {
+          text_range: "11:24:17:1"
+          cfg_id: 13
+          block: {
+            statement_or_expressions: {
+              text_range: "12:1:16:2"
+              cfg_id: 12
+              if_statement: {
+                condition: {
+                  text_range: "12:4::8"
+                  cfg_id: 7
+                  literal: {
+                    value: "true"
+                  }
+                }
+                then_branch: {
+                  text_range: "12:9:14:2"
+                  cfg_id: 9
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "13:2::15"
+                      cfg_id: 8
+                      return_statement: {
+                        expressions: {
+                          text_range: "13:9::15"
+                          string_literal: {
+                            value: "\"true\""
+                            content: "true"
+                          }
+                        }
+                        keyword: "13:2::8"
+                      }
+                    }
+                  }
+                }
+                else_branch: {
+                  text_range: "14:8:16:2"
+                  cfg_id: 11
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "15:2::16"
+                      cfg_id: 10
+                      return_statement: {
+                        expressions: {
+                          text_range: "15:9::16"
+                          string_literal: {
+                            value: "\"false\""
+                            content: "false"
+                          }
+                        }
+                        keyword: "15:2::8"
+                      }
+                    }
+                  }
+                }
+                if_keyword: "12:1::3"
+                else_keyword: "14:3::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 7
+            successors: 1
+            successors: 3
+          }
+          blocks: {
+            node_ids: 8
+          }
+          blocks: {}
+          blocks: {
+            node_ids: 10
+          }
+          blocks: {
+            successors: 2
+          }
+          blocks: {
+            successors: 2
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "19:0:22:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "19:27::48"
+          cfg_id: 10
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "19:27::28"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "19:28::34"
+              cfg_id: 5
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "19:28::34"
+                  cfg_id: 4
+                  identifier: {
+                    name: "string"
+                    type: "string"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "19:34::35"
+              native: {}
+            }
+            children: {
+              text_range: "19:36::39"
+              cfg_id: 7
+              native: {
+                native_kind: "[1](Field)"
+                children: {
+                  text_range: "19:36::39"
+                  cfg_id: 6
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "19:39::40"
+              native: {}
+            }
+            children: {
+              text_range: "19:41::47"
+              cfg_id: 9
+              native: {
+                native_kind: "[2](Field)"
+                children: {
+                  text_range: "19:41::47"
+                  cfg_id: 8
+                  identifier: {
+                    name: "string"
+                    type: "string"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "19:47::48"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "19:5::24"
+          cfg_id: 2
+          identifier: {
+            name: "multipleReturnValue"
+            type: "func() (string, int, string)"
+            package: "ModuleNameForTest/main"
+            id: 179
+          }
+        }
+        body: {
+          text_range: "19:49:22:1"
+          cfg_id: 15
+          block: {
+            statement_or_expressions: {
+              text_range: "20:1::9"
+              cfg_id: 12
+              variable_declaration: {
+                identifiers: {
+                  text_range: "20:1::2"
+                  cfg_id: 11
+                  identifier: {
+                    name: "b"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 226
+                  }
+                }
+                initializers: {
+                  text_range: "20:6::9"
+                  string_literal: {
+                    value: "\"b\""
+                    content: "b"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:1::17"
+              cfg_id: 14
+              return_statement: {
+                expressions: {
+                  text_range: "21:8::9"
+                  cfg_id: 13
+                  identifier: {
+                    name: "b"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 226
+                  }
+                }
+                expressions: {
+                  text_range: "21:11::12"
+                  integer_literal: {
+                    value: "2"
+                  }
+                }
+                expressions: {
+                  text_range: "21:14::17"
+                  string_literal: {
+                    value: "\"c\""
+                    content: "c"
+                  }
+                }
+                keyword: "21:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 12
+            node_ids: 14
+          }
+          blocks: {}
+        }
+      }
+    }
+  }
+}

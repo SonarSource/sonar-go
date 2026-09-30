@@ -1,0 +1,342 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "2:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "2:7::8"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "3:4::9"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"net/http\""
+  text_range: "4:4::14"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "6:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "printCookie"
+  text_range: "6:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "6:16::17"
+}
+tokens: {
+  text: "id"
+  text_range: "6:17::19"
+}
+tokens: {
+  text: "int"
+  text_range: "6:20::23"
+}
+tokens: {
+  text: ")"
+  text_range: "6:23::24"
+}
+tokens: {
+  text: "{"
+  text_range: "6:25::26"
+}
+tokens: {
+  text: "cookie"
+  text_range: "7:4::10"
+}
+tokens: {
+  text: ":="
+  text_range: "7:11::13"
+}
+tokens: {
+  text: "http"
+  text_range: "7:14::18"
+}
+tokens: {
+  text: "Cookie"
+  text_range: "7:19::25"
+}
+tokens: {
+  text: "."
+  text_range: "7:18::19"
+}
+tokens: {
+  text: "{"
+  text_range: "7:25::26"
+}
+tokens: {
+  text: "}"
+  text_range: "7:26::27"
+}
+tokens: {
+  text: "fmt"
+  text_range: "8:4::7"
+}
+tokens: {
+  text: "Println"
+  text_range: "8:8::15"
+}
+tokens: {
+  text: "."
+  text_range: "8:7::8"
+}
+tokens: {
+  text: "("
+  text_range: "8:15::16"
+}
+tokens: {
+  text: "cookie"
+  text_range: "8:16::22"
+}
+tokens: {
+  text: ")"
+  text_range: "8:22::23"
+}
+tokens: {
+  text: "}"
+  text_range: "9:0::1"
+}
+root: {
+  text_range: "1:0:10:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "2:0:5:1"
+      cfg_id: 5
+      import_declaration: {
+        children: {
+          text_range: "2:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "2:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "3:4::9"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "3:4::9"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "4:4::14"
+          cfg_id: 4
+          import_specification: {
+            path: {
+              text_range: "4:4::14"
+              string_literal: {
+                value: "\"net/http\""
+                content: "net/http"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "5:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "6:0:9:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "6:5::16"
+          cfg_id: 6
+          identifier: {
+            name: "printCookie"
+            type: "func(id int)"
+            package: "ModuleNameForTest/main"
+            id: 55
+          }
+        }
+        formal_parameters: {
+          text_range: "6:17::23"
+          cfg_id: 9
+          parameter: {
+            identifier: {
+              text_range: "6:17::19"
+              cfg_id: 7
+              identifier: {
+                name: "id"
+                type: "int"
+                package: "UNKNOWN"
+                id: 67
+              }
+            }
+            type: {
+              text_range: "6:20::23"
+              cfg_id: 8
+              identifier: {
+                name: "int"
+                type: "int"
+                package: "UNKNOWN"
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "6:25:9:1"
+          cfg_id: 24
+          block: {
+            statement_or_expressions: {
+              text_range: "7:4::27"
+              cfg_id: 17
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:4::10"
+                  cfg_id: 12
+                  identifier: {
+                    name: "cookie"
+                    type: "net/http.Cookie"
+                    package: "UNKNOWN"
+                    id: 81
+                  }
+                }
+                initializers: {
+                  text_range: "7:14::27"
+                  cfg_id: 16
+                  composite_literal: {
+                    type: {
+                      text_range: "7:14::25"
+                      cfg_id: 15
+                      member_select: {
+                        expression: {
+                          text_range: "7:14::18"
+                          cfg_id: 13
+                          identifier: {
+                            name: "http"
+                            type: "UNKNOWN"
+                            package: "net/http"
+                            id: 37
+                          }
+                        }
+                        identifier: {
+                          text_range: "7:19::25"
+                          cfg_id: 14
+                          identifier: {
+                            name: "Cookie"
+                            type: "net/http.Cookie"
+                            package: "net/http"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "8:4::23"
+              cfg_id: 23
+              expression_statement: {
+                expression: {
+                  text_range: "8:4::23"
+                  cfg_id: 22
+                  function_invocation: {
+                    member_select: {
+                      text_range: "8:4::15"
+                      cfg_id: 20
+                      member_select: {
+                        expression: {
+                          text_range: "8:4::7"
+                          cfg_id: 18
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 27
+                          }
+                        }
+                        identifier: {
+                          text_range: "8:8::15"
+                          cfg_id: 19
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "8:16::22"
+                      cfg_id: 21
+                      identifier: {
+                        name: "cookie"
+                        type: "net/http.Cookie"
+                        package: "UNKNOWN"
+                        id: 81
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 17
+            node_ids: 23
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

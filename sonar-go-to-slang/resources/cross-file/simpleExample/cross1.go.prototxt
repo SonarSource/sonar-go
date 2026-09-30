@@ -1,0 +1,586 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "3:7::8"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "4:1::6"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"simpleExample/foo\""
+  text_range: "5:1::20"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "6:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "8:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mainX"
+  text_range: "8:5::10"
+}
+tokens: {
+  text: "("
+  text_range: "8:10::11"
+}
+tokens: {
+  text: ")"
+  text_range: "8:11::12"
+}
+tokens: {
+  text: "{"
+  text_range: "8:13::14"
+}
+tokens: {
+  text: "a"
+  text_range: "9:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "9:3::5"
+}
+tokens: {
+  text: "foo"
+  text_range: "9:6::9"
+}
+tokens: {
+  text: "Calculate"
+  text_range: "9:10::19"
+}
+tokens: {
+  text: "."
+  text_range: "9:9::10"
+}
+tokens: {
+  text: "("
+  text_range: "9:19::20"
+}
+tokens: {
+  text: "foo"
+  text_range: "9:20::23"
+}
+tokens: {
+  text: "MagicNumber"
+  text_range: "9:24::35"
+}
+tokens: {
+  text: "."
+  text_range: "9:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "9:35::36"
+}
+tokens: {
+  text: "fmt"
+  text_range: "10:1::4"
+}
+tokens: {
+  text: "Print"
+  text_range: "10:5::10"
+}
+tokens: {
+  text: "."
+  text_range: "10:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "10:10::11"
+}
+tokens: {
+  text: "a"
+  text_range: "10:11::12"
+}
+tokens: {
+  text: ")"
+  text_range: "10:12::13"
+}
+tokens: {
+  text: "my"
+  text_range: "11:1::3"
+}
+tokens: {
+  text: ":="
+  text_range: "11:4::6"
+}
+tokens: {
+  text: "new"
+  text_range: "11:7::10"
+}
+tokens: {
+  text: "("
+  text_range: "11:10::11"
+}
+tokens: {
+  text: "foo"
+  text_range: "11:11::14"
+}
+tokens: {
+  text: "MyType"
+  text_range: "11:15::21"
+}
+tokens: {
+  text: "."
+  text_range: "11:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "11:21::22"
+}
+tokens: {
+  text: "my"
+  text_range: "12:1::3"
+}
+tokens: {
+  text: "Hello"
+  text_range: "12:4::9"
+}
+tokens: {
+  text: "."
+  text_range: "12:3::4"
+}
+tokens: {
+  text: "("
+  text_range: "12:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "12:10::11"
+}
+tokens: {
+  text: "foo"
+  text_range: "13:1::4"
+}
+tokens: {
+  text: "GlobalMyType"
+  text_range: "13:5::17"
+}
+tokens: {
+  text: "."
+  text_range: "13:4::5"
+}
+tokens: {
+  text: "Hello"
+  text_range: "13:18::23"
+}
+tokens: {
+  text: "."
+  text_range: "13:17::18"
+}
+tokens: {
+  text: "("
+  text_range: "13:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "13:24::25"
+}
+tokens: {
+  text: "}"
+  text_range: "14:0::1"
+}
+root: {
+  text_range: "1:0:15:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+            id: -1
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:6:1"
+      cfg_id: 5
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "4:1::6"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "4:1::6"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "5:1::20"
+          cfg_id: 4
+          import_specification: {
+            path: {
+              text_range: "5:1::20"
+              string_literal: {
+                value: "\"simpleExample/foo\""
+                content: "simpleExample/foo"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "6:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "8:0:14:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "8:5::10"
+          cfg_id: 6
+          identifier: {
+            name: "mainX"
+            type: "func()"
+            package: "simpleExample/main"
+            id: -1
+          }
+        }
+        body: {
+          text_range: "8:13:14:1"
+          cfg_id: 42
+          block: {
+            statement_or_expressions: {
+              text_range: "9:1::36"
+              cfg_id: 16
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:1::2"
+                  cfg_id: 8
+                  identifier: {
+                    name: "a"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+                initializers: {
+                  text_range: "9:6::36"
+                  cfg_id: 15
+                  function_invocation: {
+                    member_select: {
+                      text_range: "9:6::19"
+                      cfg_id: 11
+                      member_select: {
+                        expression: {
+                          text_range: "9:6::9"
+                          cfg_id: 9
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "9:10::19"
+                          cfg_id: 10
+                          identifier: {
+                            name: "Calculate"
+                            type: "func(x int) int"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "9:20::35"
+                      cfg_id: 14
+                      member_select: {
+                        expression: {
+                          text_range: "9:20::23"
+                          cfg_id: 12
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "9:24::35"
+                          cfg_id: 13
+                          identifier: {
+                            name: "MagicNumber"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "int"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "10:1::13"
+              cfg_id: 22
+              expression_statement: {
+                expression: {
+                  text_range: "10:1::13"
+                  cfg_id: 21
+                  function_invocation: {
+                    member_select: {
+                      text_range: "10:1::10"
+                      cfg_id: 19
+                      member_select: {
+                        expression: {
+                          text_range: "10:1::4"
+                          cfg_id: 17
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "10:5::10"
+                          cfg_id: 18
+                          identifier: {
+                            name: "Print"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:11::12"
+                      cfg_id: 20
+                      identifier: {
+                        name: "a"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: -1
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:1::22"
+              cfg_id: 29
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:1::3"
+                  cfg_id: 23
+                  identifier: {
+                    name: "my"
+                    type: "*simpleExample/foo.MyType"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+                initializers: {
+                  text_range: "11:7::22"
+                  cfg_id: 28
+                  function_invocation: {
+                    member_select: {
+                      text_range: "11:7::10"
+                      cfg_id: 24
+                      identifier: {
+                        name: "new"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                        id: -1
+                      }
+                    }
+                    arguments: {
+                      text_range: "11:11::21"
+                      cfg_id: 27
+                      member_select: {
+                        expression: {
+                          text_range: "11:11::14"
+                          cfg_id: 25
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "11:15::21"
+                          cfg_id: 26
+                          identifier: {
+                            name: "MyType"
+                            type: "simpleExample/foo.MyType"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:1::11"
+              cfg_id: 34
+              expression_statement: {
+                expression: {
+                  text_range: "12:1::11"
+                  cfg_id: 33
+                  function_invocation: {
+                    member_select: {
+                      text_range: "12:1::9"
+                      cfg_id: 32
+                      member_select: {
+                        expression: {
+                          text_range: "12:1::3"
+                          cfg_id: 30
+                          identifier: {
+                            name: "my"
+                            type: "*simpleExample/foo.MyType"
+                            package: "UNKNOWN"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "12:4::9"
+                          cfg_id: 31
+                          identifier: {
+                            name: "Hello"
+                            type: "func() string"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "13:1::25"
+              cfg_id: 41
+              expression_statement: {
+                expression: {
+                  text_range: "13:1::25"
+                  cfg_id: 40
+                  function_invocation: {
+                    member_select: {
+                      text_range: "13:1::23"
+                      cfg_id: 39
+                      member_select: {
+                        expression: {
+                          text_range: "13:1::17"
+                          cfg_id: 37
+                          member_select: {
+                            expression: {
+                              text_range: "13:1::4"
+                              cfg_id: 35
+                              identifier: {
+                                name: "foo"
+                                type: "UNKNOWN"
+                                package: "simpleExample/foo"
+                                id: -1
+                              }
+                            }
+                            identifier: {
+                              text_range: "13:5::17"
+                              cfg_id: 36
+                              identifier: {
+                                name: "GlobalMyType"
+                                type: "simpleExample/foo.MyType"
+                                package: "UNKNOWN"
+                                id: -1
+                              }
+                            }
+                          }
+                        }
+                        identifier: {
+                          text_range: "13:18::23"
+                          cfg_id: 38
+                          identifier: {
+                            name: "Hello"
+                            type: "func() string"
+                            package: "simpleExample/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 16
+            node_ids: 22
+            node_ids: 29
+            node_ids: 34
+            node_ids: 41
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

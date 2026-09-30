@@ -117,7 +117,7 @@ class ConverterTracingTest {
       "waitFor");
     assertThat(argOf("spawn", "pid")).isInstanceOf(Long.class);
     assertThat((Long) argOf("write.stdin", "bytes")).isPositive();
-    assertThat((Integer) argOf("drain.stdout", "chars")).isPositive();
+    assertThat((Integer) argOf("drain.stdout", "bytes")).isPositive();
     assertThat(argOf("waitFor", "exitCode")).isEqualTo(0);
     assertThat(argOf("tree.decode", "trees")).isEqualTo(1);
   }

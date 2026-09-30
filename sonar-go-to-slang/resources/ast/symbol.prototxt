@@ -1,0 +1,183 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "3:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "3:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "3:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "3:12::13"
+}
+tokens: {
+  text: "x"
+  text_range: "4:4::5"
+}
+tokens: {
+  text: ":="
+  text_range: "4:6::8"
+}
+tokens: {
+  text: "1"
+  text_range: "4:9::10"
+}
+tokens: {
+  text: "x"
+  text_range: "5:4::5"
+}
+tokens: {
+  text: "="
+  text_range: "5:6::7"
+}
+tokens: {
+  text: "x"
+  text_range: "5:8::9"
+}
+tokens: {
+  text: "+"
+  text_range: "5:10::11"
+}
+tokens: {
+  text: "3"
+  text_range: "5:12::13"
+}
+tokens: {
+  text: "}"
+  text_range: "6:0::1"
+}
+root: {
+  text_range: "1:0:7:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:6:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::9"
+          cfg_id: 3
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 20
+          }
+        }
+        body: {
+          text_range: "3:12:6:1"
+          cfg_id: 11
+          block: {
+            statement_or_expressions: {
+              text_range: "4:4::10"
+              cfg_id: 6
+              variable_declaration: {
+                identifiers: {
+                  text_range: "4:4::5"
+                  cfg_id: 5
+                  identifier: {
+                    name: "x"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 33
+                  }
+                }
+                initializers: {
+                  text_range: "4:9::10"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "5:4::13"
+              cfg_id: 10
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "5:4::5"
+                  cfg_id: 7
+                  identifier: {
+                    name: "x"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 33
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "5:8::13"
+                  cfg_id: 9
+                  binary_expression: {
+                    operator: "PLUS"
+                    operator_token: "5:10::11"
+                    left_operand: {
+                      text_range: "5:8::9"
+                      cfg_id: 8
+                      identifier: {
+                        name: "x"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 33
+                      }
+                    }
+                    right_operand: {
+                      text_range: "5:12::13"
+                      integer_literal: {
+                        value: "3"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 6
+            node_ids: 10
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

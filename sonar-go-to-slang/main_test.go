@@ -52,7 +52,7 @@ func TestMainRejectsArguments(t *testing.T) {
 	assert.Equal(t, 2, exitCode)
 	assert.Contains(t, stderr, "Usage: cmd\n")
 	assert.Contains(t, stderr, "serves the requests read from stdin")
-	assert.Contains(t, stderr, "-d\tdump ast (instead of JSON)")
+	assert.Contains(t, stderr, "-d\tdump ast (instead of the Slang AST)")
 	assert.Contains(t, stderr, "\tprint errors logs from type checking")
 	assert.Contains(t, stderr, "\tdump GC export data")
 	assert.Contains(t, stderr, "-gc_export_data_dir string")
@@ -83,7 +83,7 @@ func TestMainServesStdin(t *testing.T) {
 	responses := decodeResponses(t, []byte(stdout))
 	require.Len(t, responses, 1)
 	assert.Equal(t, statusOK, responses[0].status)
-	assert.Contains(t, responses[0].body, "\"main.go\"")
+	assert.Contains(t, decodeTrees(t, responses[0].body), "main.go")
 }
 
 func TestAnalyzeWithDumpAstFlag(t *testing.T) {
@@ -96,48 +96,45 @@ func TestAnalyzeWithDumpAstFlag(t *testing.T) {
 func TestAnalyzeSimpleFile(t *testing.T) {
 	output, stderr := analyzeFiles(t, nil, "resources/simple_file.go.source")
 
-	assert.Contains(t, output, "\"@type\": \"PackageDeclaration\", \"metaData\": \"1:0::17\"")
+	trees := decodeTrees(t, output)
+	require.Len(t, trees, 1)
+	declarations := trees["resources/simple_file.go.source"].GetRoot().GetTopLevel().GetDeclarations()
+	require.Len(t, declarations, 1)
+	assert.NotNil(t, declarations[0].GetPackageDeclaration())
+	assert.Equal(t, "1:0::17", declarations[0].GetTextRange())
 	assert.Contains(t, stderr, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n")
 }
 
 func TestAnalyzeWithPackageResolution(t *testing.T) {
 	output, _ := analyzeFiles(t, nil, "resources/simple_file_with_packages.go.source")
 
-	assert.Contains(t, output, "\"type\":\"github.com/beego/beego/v2/server/web/session.Store\"")
+	assert.Contains(t, identifierTypes(t, output), "github.com/beego/beego/v2/server/web/session.Store")
 }
 
 func TestAnalyzeFillsIdentifierWithInfo(t *testing.T) {
 	output, _ := analyzeFiles(t, nil, "resources/simple_file_with_static_packages.go.source")
 
-	assert.Contains(t, output, "\"id\":66")
-	assert.Contains(t, output, "\"type\":\"*database/sql.DB\"")
-	assert.Contains(t, output, "\"package\":\"database/sql\"")
+	facts := identifierFacts(t, output)
+	assert.Contains(t, facts, identifierFact{"session", "*database/sql.DB", "UNKNOWN", 66})
+	assert.Contains(t, facts, identifierFact{"my_sql", "UNKNOWN", "database/sql", 25})
 }
 
 func TestAnalyzeWithDotImport(t *testing.T) {
 	output, _ := analyzeFiles(t, nil, "resources/simple_file_with_dot_import.go.source")
 
-	assert.Contains(t, output, "\"package\":\"math/rand\",\"name\":\"Intn\"")
+	assert.Contains(t, identifierFacts(t, output), identifierFact{"Intn", "func(n int) int", "math/rand", 0})
 }
 
 func TestAnalyzeInvalidFile(t *testing.T) {
 	output, stderr := analyzeFiles(t, nil, "resources/invalid_file.go.source")
 
-	assert.Equal(t, `{
-  "resources/invalid_file.go.source": { 
-"treeMetaData": {
-"comments": [
-],
-"tokens": [
-]
-},
-"tree":
-null,
-"error": "resources/invalid_file.go.source:1:1: expected 'package', found xpackage"
-} 
-
-}
-`, output)
+	trees := decodeTrees(t, output)
+	require.Len(t, trees, 1)
+	tree := trees["resources/invalid_file.go.source"]
+	assert.Equal(t, "resources/invalid_file.go.source:1:1: expected 'package', found xpackage", tree.GetError())
+	assert.Nil(t, tree.GetRoot(), "a file that does not parse has no tree")
+	assert.Empty(t, tree.GetTokens())
+	assert.Empty(t, tree.GetComments())
 	assert.Equal(t, "Received parameters: dumpAst=false, debugTypeCheck=false, dumpGcExportData=false, gcExportDataDir=\"\", moduleName=\"\", moduleBaseDir=\".\", packagePath=\"\"\n", stderr)
 }
 
@@ -160,8 +157,14 @@ func TestShouldNotPanicWhenGenerateASTOneInvalidFile(t *testing.T) {
 	output, _ := analyzeFiles(t, []string{"-gc_export_data_dir", "build/main_test/"},
 		"resources/invalid_file.go.source", "resources/simple_file_with_packages.go.source")
 
-	assert.Contains(t, output, "\"tree\":\nnull,\n\"error\": \"resources/invalid_file.go.source:1:1: expected 'package', found xpackage\"")
-	assert.Contains(t, output, "\"__cfgId\":2},\n\"error\": null")
+	trees := decodeTrees(t, output)
+	require.Len(t, trees, 2, "the file that does not parse must not cost the batch the other one")
+	invalid := trees["resources/invalid_file.go.source"]
+	assert.Equal(t, "resources/invalid_file.go.source:1:1: expected 'package', found xpackage", invalid.GetError())
+	assert.Nil(t, invalid.GetRoot())
+	valid := trees["resources/simple_file_with_packages.go.source"]
+	assert.Nil(t, valid.Error)
+	assert.NotNil(t, valid.GetRoot())
 }
 
 func TestAnalyzePanicsWhenInputCannotBeRead(t *testing.T) {

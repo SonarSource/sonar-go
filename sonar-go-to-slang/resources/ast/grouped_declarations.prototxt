@@ -1,0 +1,1610 @@
+comments: {
+  text: "// A specification whose value holds a declaration of its own: the inner block must not disturb the"
+  content_text: " A specification whose value holds a declaration of its own: the inner block must not disturb the"
+  range: "47:0::99"
+  content_range: "47:2::99"
+}
+comments: {
+  text: "// outer one, whose remaining specifications are mapped after it."
+  content_text: " outer one, whose remaining specifications are mapped after it."
+  range: "48:0::65"
+  content_range: "48:2::65"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "const"
+  text_range: "3:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "singleConst"
+  text_range: "3:6::17"
+}
+tokens: {
+  text: "\"a\""
+  text_range: "3:20::23"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "3:18::19"
+}
+tokens: {
+  text: "const"
+  text_range: "5:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "5:6::7"
+}
+tokens: {
+  text: "oneEntryGroup"
+  text_range: "6:1::14"
+}
+tokens: {
+  text: "\"b\""
+  text_range: "6:17::20"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "6:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "7:0::1"
+}
+tokens: {
+  text: "const"
+  text_range: "9:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "9:6::7"
+}
+tokens: {
+  text: "firstOfTwo"
+  text_range: "10:1::11"
+}
+tokens: {
+  text: "\"c\""
+  text_range: "10:15::18"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "10:13::14"
+}
+tokens: {
+  text: "secondOfTwo"
+  text_range: "11:1::12"
+}
+tokens: {
+  text: "\"d\""
+  text_range: "11:15::18"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "11:13::14"
+}
+tokens: {
+  text: ")"
+  text_range: "12:0::1"
+}
+tokens: {
+  text: "const"
+  text_range: "14:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "14:6::7"
+}
+tokens: {
+  text: "firstIota"
+  text_range: "15:1::10"
+}
+tokens: {
+  text: "iota"
+  text_range: "15:13::17"
+}
+tokens: {
+  text: "="
+  text_range: "15:11::12"
+}
+tokens: {
+  text: "secondIota"
+  text_range: "16:1::11"
+}
+tokens: {
+  text: "thirdIota"
+  text_range: "17:1::10"
+}
+tokens: {
+  text: ")"
+  text_range: "18:0::1"
+}
+tokens: {
+  text: "const"
+  text_range: "20:0::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "20:6::7"
+}
+tokens: {
+  text: "typedConst"
+  text_range: "21:1::11"
+}
+tokens: {
+  text: "float64"
+  text_range: "21:14::21"
+}
+tokens: {
+  text: "1.5"
+  text_range: "21:24::27"
+}
+tokens: {
+  text: "="
+  text_range: "21:22::23"
+}
+tokens: {
+  text: "twoNames"
+  text_range: "22:1::9"
+}
+tokens: {
+  text: "ok"
+  text_range: "22:11::13"
+}
+tokens: {
+  text: ","
+  text_range: "22:9::10"
+}
+tokens: {
+  text: "2"
+  text_range: "22:24::25"
+}
+tokens: {
+  text: "="
+  text_range: "22:22::23"
+}
+tokens: {
+  text: "true"
+  text_range: "22:27::31"
+}
+tokens: {
+  text: ","
+  text_range: "22:25::26"
+}
+tokens: {
+  text: ")"
+  text_range: "23:0::1"
+}
+tokens: {
+  text: "var"
+  text_range: "25:0::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "25:4::5"
+}
+tokens: {
+  text: "varFirst"
+  text_range: "26:1::9"
+}
+tokens: {
+  text: "\"e\""
+  text_range: "26:13::16"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "26:11::12"
+}
+tokens: {
+  text: "varSecond"
+  text_range: "27:1::10"
+}
+tokens: {
+  text: "\"f\""
+  text_range: "27:13::16"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "27:11::12"
+}
+tokens: {
+  text: ")"
+  text_range: "28:0::1"
+}
+tokens: {
+  text: "var"
+  text_range: "30:0::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "30:4::5"
+}
+tokens: {
+  text: "varWithoutValue"
+  text_range: "31:1::16"
+}
+tokens: {
+  text: "int"
+  text_range: "31:20::23"
+}
+tokens: {
+  text: "varTwoNames"
+  text_range: "32:1::12"
+}
+tokens: {
+  text: "varOk"
+  text_range: "32:14::19"
+}
+tokens: {
+  text: ","
+  text_range: "32:12::13"
+}
+tokens: {
+  text: "3"
+  text_range: "32:22::23"
+}
+tokens: {
+  text: "="
+  text_range: "32:20::21"
+}
+tokens: {
+  text: "false"
+  text_range: "32:25::30"
+}
+tokens: {
+  text: ","
+  text_range: "32:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "33:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "35:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "groupedInFunction"
+  text_range: "35:5::22"
+}
+tokens: {
+  text: "("
+  text_range: "35:22::23"
+}
+tokens: {
+  text: ")"
+  text_range: "35:23::24"
+}
+tokens: {
+  text: "{"
+  text_range: "35:25::26"
+}
+tokens: {
+  text: "const"
+  text_range: "36:1::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "36:7::8"
+}
+tokens: {
+  text: "localFirst"
+  text_range: "37:2::12"
+}
+tokens: {
+  text: "\"g\""
+  text_range: "37:16::19"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "37:14::15"
+}
+tokens: {
+  text: "localSecond"
+  text_range: "38:2::13"
+}
+tokens: {
+  text: "\"h\""
+  text_range: "38:16::19"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "38:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "39:1::2"
+}
+tokens: {
+  text: "var"
+  text_range: "40:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "40:5::6"
+}
+tokens: {
+  text: "localVarFirst"
+  text_range: "41:2::15"
+}
+tokens: {
+  text: "\"i\""
+  text_range: "41:19::22"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "41:17::18"
+}
+tokens: {
+  text: "localVarSecond"
+  text_range: "42:2::16"
+}
+tokens: {
+  text: "\"j\""
+  text_range: "42:19::22"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "="
+  text_range: "42:17::18"
+}
+tokens: {
+  text: ")"
+  text_range: "43:1::2"
+}
+tokens: {
+  text: "_"
+  text_range: "44:1::2"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "_"
+  text_range: "44:4::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "44:2::3"
+}
+tokens: {
+  text: "_"
+  text_range: "44:7::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "44:5::6"
+}
+tokens: {
+  text: "_"
+  text_range: "44:10::11"
+  type: "KEYWORD"
+}
+tokens: {
+  text: ","
+  text_range: "44:8::9"
+}
+tokens: {
+  text: "="
+  text_range: "44:12::13"
+}
+tokens: {
+  text: "localFirst"
+  text_range: "44:14::24"
+}
+tokens: {
+  text: "localSecond"
+  text_range: "44:26::37"
+}
+tokens: {
+  text: ","
+  text_range: "44:24::25"
+}
+tokens: {
+  text: "localVarFirst"
+  text_range: "44:39::52"
+}
+tokens: {
+  text: ","
+  text_range: "44:37::38"
+}
+tokens: {
+  text: "localVarSecond"
+  text_range: "44:54::68"
+}
+tokens: {
+  text: ","
+  text_range: "44:52::53"
+}
+tokens: {
+  text: "}"
+  text_range: "45:0::1"
+}
+tokens: {
+  text: "var"
+  text_range: "49:0::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "49:4::5"
+}
+tokens: {
+  text: "nestedOuter"
+  text_range: "50:1::12"
+}
+tokens: {
+  text: "func"
+  text_range: "50:15::19"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "50:19::20"
+}
+tokens: {
+  text: ")"
+  text_range: "50:20::21"
+}
+tokens: {
+  text: "int"
+  text_range: "50:22::25"
+}
+tokens: {
+  text: "{"
+  text_range: "50:26::27"
+}
+tokens: {
+  text: "const"
+  text_range: "51:2::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "51:8::9"
+}
+tokens: {
+  text: "nestedFirst"
+  text_range: "52:3::14"
+}
+tokens: {
+  text: "1"
+  text_range: "52:18::19"
+}
+tokens: {
+  text: "="
+  text_range: "52:16::17"
+}
+tokens: {
+  text: "nestedSecond"
+  text_range: "53:3::15"
+}
+tokens: {
+  text: "2"
+  text_range: "53:18::19"
+}
+tokens: {
+  text: "="
+  text_range: "53:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "54:2::3"
+}
+tokens: {
+  text: "return"
+  text_range: "55:2::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "nestedFirst"
+  text_range: "55:9::20"
+}
+tokens: {
+  text: "+"
+  text_range: "55:21::22"
+}
+tokens: {
+  text: "nestedSecond"
+  text_range: "55:23::35"
+}
+tokens: {
+  text: "}"
+  text_range: "56:1::2"
+}
+tokens: {
+  text: "("
+  text_range: "56:2::3"
+}
+tokens: {
+  text: ")"
+  text_range: "56:3::4"
+}
+tokens: {
+  text: "="
+  text_range: "50:13::14"
+}
+tokens: {
+  text: "nestedSibling"
+  text_range: "57:1::14"
+}
+tokens: {
+  text: "3"
+  text_range: "57:17::18"
+}
+tokens: {
+  text: "="
+  text_range: "57:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "58:0::1"
+}
+root: {
+  text_range: "1:0:59:0"
+  cfg_id: 23
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0::23"
+      cfg_id: 4
+      variable_declaration: {
+        identifiers: {
+          text_range: "3:6::17"
+          cfg_id: 3
+          identifier: {
+            name: "singleConst"
+            type: "untyped string"
+            package: "UNKNOWN"
+            id: 20
+          }
+        }
+        initializers: {
+          text_range: "3:20::23"
+          string_literal: {
+            value: "\"a\""
+            content: "a"
+          }
+        }
+        is_val: true
+      }
+    }
+    declarations: {
+      text_range: "5:0:7:1"
+      cfg_id: 6
+      variable_declaration: {
+        identifiers: {
+          text_range: "6:1::14"
+          cfg_id: 5
+          identifier: {
+            name: "oneEntryGroup"
+            type: "untyped string"
+            package: "UNKNOWN"
+            id: 48
+          }
+        }
+        initializers: {
+          text_range: "6:17::20"
+          string_literal: {
+            value: "\"b\""
+            content: "b"
+          }
+        }
+        is_val: true
+      }
+    }
+    declarations: {
+      text_range: "9:0:12:1"
+      cfg_id: 11
+      native: {
+        native_kind: "[2](GenDecl)"
+        children: {
+          text_range: "9:0::5"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "9:6::7"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "10:1:11:18"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "10:1::18"
+              cfg_id: 8
+              variable_declaration: {
+                identifiers: {
+                  text_range: "10:1::11"
+                  cfg_id: 7
+                  identifier: {
+                    name: "firstOfTwo"
+                    type: "untyped string"
+                    package: "UNKNOWN"
+                    id: 80
+                  }
+                }
+                initializers: {
+                  text_range: "10:15::18"
+                  string_literal: {
+                    value: "\"c\""
+                    content: "c"
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "11:1::18"
+              cfg_id: 10
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:1::12"
+                  cfg_id: 9
+                  identifier: {
+                    name: "secondOfTwo"
+                    type: "untyped string"
+                    package: "UNKNOWN"
+                    id: 99
+                  }
+                }
+                initializers: {
+                  text_range: "11:15::18"
+                  string_literal: {
+                    value: "\"d\""
+                    content: "d"
+                  }
+                }
+                is_val: true
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "12:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "14:0:18:1"
+      cfg_id: 19
+      native: {
+        native_kind: "[3](GenDecl)"
+        children: {
+          text_range: "14:0::5"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "14:6::7"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "15:1:17:10"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "15:1::17"
+              cfg_id: 14
+              variable_declaration: {
+                identifiers: {
+                  text_range: "15:1::10"
+                  cfg_id: 12
+                  identifier: {
+                    name: "firstIota"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 129
+                  }
+                }
+                initializers: {
+                  text_range: "15:13::17"
+                  cfg_id: 13
+                  identifier: {
+                    name: "iota"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "16:1::11"
+              cfg_id: 16
+              variable_declaration: {
+                identifiers: {
+                  text_range: "16:1::11"
+                  cfg_id: 15
+                  identifier: {
+                    name: "secondIota"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 147
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "17:1::10"
+              cfg_id: 18
+              variable_declaration: {
+                identifiers: {
+                  text_range: "17:1::10"
+                  cfg_id: 17
+                  identifier: {
+                    name: "thirdIota"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 159
+                  }
+                }
+                is_val: true
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "18:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "20:0:23:1"
+      cfg_id: 27
+      native: {
+        native_kind: "[4](GenDecl)"
+        children: {
+          text_range: "20:0::5"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "20:6::7"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "21:1:22:31"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "21:1::27"
+              cfg_id: 22
+              variable_declaration: {
+                identifiers: {
+                  text_range: "21:1::11"
+                  cfg_id: 20
+                  identifier: {
+                    name: "typedConst"
+                    type: "float64"
+                    package: "UNKNOWN"
+                    id: 181
+                  }
+                }
+                type: {
+                  text_range: "21:14::21"
+                  cfg_id: 21
+                  identifier: {
+                    name: "float64"
+                    type: "float64"
+                    package: "UNKNOWN"
+                  }
+                }
+                initializers: {
+                  text_range: "21:24::27"
+                  float_literal: {
+                    value: "1.5"
+                  }
+                }
+                is_val: true
+              }
+            }
+            children: {
+              text_range: "22:1::31"
+              cfg_id: 26
+              variable_declaration: {
+                identifiers: {
+                  text_range: "22:1::9"
+                  cfg_id: 23
+                  identifier: {
+                    name: "twoNames"
+                    type: "untyped int"
+                    package: "UNKNOWN"
+                    id: 209
+                  }
+                }
+                identifiers: {
+                  text_range: "22:11::13"
+                  cfg_id: 24
+                  identifier: {
+                    name: "ok"
+                    type: "untyped bool"
+                    package: "UNKNOWN"
+                    id: 219
+                  }
+                }
+                initializers: {
+                  text_range: "22:24::25"
+                  integer_literal: {
+                    value: "2"
+                  }
+                }
+                initializers: {
+                  text_range: "22:27::31"
+                  cfg_id: 25
+                  literal: {
+                    value: "true"
+                  }
+                }
+                is_val: true
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "23:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "25:0:28:1"
+      cfg_id: 32
+      native: {
+        native_kind: "[5](GenDecl)"
+        children: {
+          text_range: "25:0::3"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "25:4::5"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "26:1:27:16"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "26:1::16"
+              cfg_id: 29
+              variable_declaration: {
+                identifiers: {
+                  text_range: "26:1::9"
+                  cfg_id: 28
+                  identifier: {
+                    name: "varFirst"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 250
+                  }
+                }
+                initializers: {
+                  text_range: "26:13::16"
+                  string_literal: {
+                    value: "\"e\""
+                    content: "e"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "27:1::16"
+              cfg_id: 31
+              variable_declaration: {
+                identifiers: {
+                  text_range: "27:1::10"
+                  cfg_id: 30
+                  identifier: {
+                    name: "varSecond"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 267
+                  }
+                }
+                initializers: {
+                  text_range: "27:13::16"
+                  string_literal: {
+                    value: "\"f\""
+                    content: "f"
+                  }
+                }
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "28:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "30:0:33:1"
+      cfg_id: 40
+      native: {
+        native_kind: "[6](GenDecl)"
+        children: {
+          text_range: "30:0::3"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "30:4::5"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "31:1:32:30"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "31:1::23"
+              cfg_id: 35
+              variable_declaration: {
+                identifiers: {
+                  text_range: "31:1::16"
+                  cfg_id: 33
+                  identifier: {
+                    name: "varWithoutValue"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 293
+                  }
+                }
+                type: {
+                  text_range: "31:20::23"
+                  cfg_id: 34
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "32:1::30"
+              cfg_id: 39
+              variable_declaration: {
+                identifiers: {
+                  text_range: "32:1::12"
+                  cfg_id: 36
+                  identifier: {
+                    name: "varTwoNames"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 317
+                  }
+                }
+                identifiers: {
+                  text_range: "32:14::19"
+                  cfg_id: 37
+                  identifier: {
+                    name: "varOk"
+                    type: "bool"
+                    package: "UNKNOWN"
+                    id: 330
+                  }
+                }
+                initializers: {
+                  text_range: "32:22::23"
+                  integer_literal: {
+                    value: "3"
+                  }
+                }
+                initializers: {
+                  text_range: "32:25::30"
+                  cfg_id: 38
+                  literal: {
+                    value: "false"
+                  }
+                }
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "33:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "35:0:45:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "35:5::22"
+          cfg_id: 41
+          identifier: {
+            name: "groupedInFunction"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 355
+          }
+        }
+        body: {
+          text_range: "35:25:45:1"
+          cfg_id: 62
+          block: {
+            statement_or_expressions: {
+              text_range: "36:1:39:2"
+              cfg_id: 47
+              native: {
+                native_kind: "[0](GenDecl)"
+                children: {
+                  text_range: "36:1::6"
+                  native: {
+                    native_kind: "Tok"
+                  }
+                }
+                children: {
+                  text_range: "36:7::8"
+                  native: {
+                    native_kind: "Lparen"
+                  }
+                }
+                children: {
+                  text_range: "37:2:38:19"
+                  native: {
+                    native_kind: "Specs([]Spec)"
+                    children: {
+                      text_range: "37:2::19"
+                      cfg_id: 44
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "37:2::12"
+                          cfg_id: 43
+                          identifier: {
+                            name: "localFirst"
+                            type: "untyped string"
+                            package: "UNKNOWN"
+                            id: 388
+                          }
+                        }
+                        initializers: {
+                          text_range: "37:16::19"
+                          string_literal: {
+                            value: "\"g\""
+                            content: "g"
+                          }
+                        }
+                        is_val: true
+                      }
+                    }
+                    children: {
+                      text_range: "38:2::19"
+                      cfg_id: 46
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "38:2::13"
+                          cfg_id: 45
+                          identifier: {
+                            name: "localSecond"
+                            type: "untyped string"
+                            package: "UNKNOWN"
+                            id: 408
+                          }
+                        }
+                        initializers: {
+                          text_range: "38:16::19"
+                          string_literal: {
+                            value: "\"h\""
+                            content: "h"
+                          }
+                        }
+                        is_val: true
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "39:1::2"
+                  native: {
+                    native_kind: "Rparen"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "40:1:43:2"
+              cfg_id: 52
+              native: {
+                native_kind: "[1](GenDecl)"
+                children: {
+                  text_range: "40:1::4"
+                  native: {
+                    native_kind: "Tok"
+                  }
+                }
+                children: {
+                  text_range: "40:5::6"
+                  native: {
+                    native_kind: "Lparen"
+                  }
+                }
+                children: {
+                  text_range: "41:2:42:22"
+                  native: {
+                    native_kind: "Specs([]Spec)"
+                    children: {
+                      text_range: "41:2::22"
+                      cfg_id: 49
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "41:2::15"
+                          cfg_id: 48
+                          identifier: {
+                            name: "localVarFirst"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 438
+                          }
+                        }
+                        initializers: {
+                          text_range: "41:19::22"
+                          string_literal: {
+                            value: "\"i\""
+                            content: "i"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "42:2::22"
+                      cfg_id: 51
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "42:2::16"
+                          cfg_id: 50
+                          identifier: {
+                            name: "localVarSecond"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 461
+                          }
+                        }
+                        initializers: {
+                          text_range: "42:19::22"
+                          string_literal: {
+                            value: "\"j\""
+                            content: "j"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "43:1::2"
+                  native: {
+                    native_kind: "Rparen"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "44:1::68"
+              cfg_id: 61
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "44:1::11"
+                  left_right_hand_side: {
+                    children: {
+                      text_range: "44:1::2"
+                      cfg_id: 53
+                      place_holder: {
+                        place_holder_token: "44:1::2"
+                      }
+                    }
+                    children: {
+                      text_range: "44:2::3"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:4::5"
+                      cfg_id: 54
+                      place_holder: {
+                        place_holder_token: "44:4::5"
+                      }
+                    }
+                    children: {
+                      text_range: "44:5::6"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:7::8"
+                      cfg_id: 55
+                      place_holder: {
+                        place_holder_token: "44:7::8"
+                      }
+                    }
+                    children: {
+                      text_range: "44:8::9"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:10::11"
+                      cfg_id: 56
+                      place_holder: {
+                        place_holder_token: "44:10::11"
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "44:14::68"
+                  left_right_hand_side: {
+                    children: {
+                      text_range: "44:14::24"
+                      cfg_id: 57
+                      identifier: {
+                        name: "localFirst"
+                        type: "untyped string"
+                        package: "UNKNOWN"
+                        id: 388
+                      }
+                    }
+                    children: {
+                      text_range: "44:24::25"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:26::37"
+                      cfg_id: 58
+                      identifier: {
+                        name: "localSecond"
+                        type: "untyped string"
+                        package: "UNKNOWN"
+                        id: 408
+                      }
+                    }
+                    children: {
+                      text_range: "44:37::38"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:39::52"
+                      cfg_id: 59
+                      identifier: {
+                        name: "localVarFirst"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 438
+                      }
+                    }
+                    children: {
+                      text_range: "44:52::53"
+                      native: {}
+                    }
+                    children: {
+                      text_range: "44:54::68"
+                      cfg_id: 60
+                      identifier: {
+                        name: "localVarSecond"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 461
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 49
+            node_ids: 51
+            node_ids: 61
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "49:0:58:1"
+      cfg_id: 22
+      native: {
+        native_kind: "[8](GenDecl)"
+        children: {
+          text_range: "49:0::3"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "49:4::5"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "50:1:57:18"
+          native: {
+            native_kind: "Specs([]Spec)"
+            children: {
+              text_range: "50:1:56:4"
+              cfg_id: 19
+              variable_declaration: {
+                identifiers: {
+                  text_range: "50:1::12"
+                  cfg_id: 2
+                  identifier: {
+                    name: "nestedOuter"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 730
+                  }
+                }
+                initializers: {
+                  text_range: "50:15:56:4"
+                  cfg_id: 18
+                  function_invocation: {
+                    member_select: {
+                      text_range: "50:15:56:2"
+                      cfg_id: 17
+                      function_declaration: {
+                        return_type: {
+                          text_range: "50:22::25"
+                          cfg_id: 6
+                          native: {
+                            native_kind: "Results(FieldList)"
+                            children: {
+                              text_range: "50:22::25"
+                              cfg_id: 5
+                              native: {
+                                native_kind: "[0](Field)"
+                                children: {
+                                  text_range: "50:22::25"
+                                  cfg_id: 4
+                                  identifier: {
+                                    name: "int"
+                                    type: "int"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        body: {
+                          text_range: "50:26:56:2"
+                          cfg_id: 16
+                          block: {
+                            statement_or_expressions: {
+                              text_range: "51:2:54:3"
+                              cfg_id: 11
+                              native: {
+                                native_kind: "[0](GenDecl)"
+                                children: {
+                                  text_range: "51:2::7"
+                                  native: {
+                                    native_kind: "Tok"
+                                  }
+                                }
+                                children: {
+                                  text_range: "51:8::9"
+                                  native: {
+                                    native_kind: "Lparen"
+                                  }
+                                }
+                                children: {
+                                  text_range: "52:3:53:19"
+                                  native: {
+                                    native_kind: "Specs([]Spec)"
+                                    children: {
+                                      text_range: "52:3::19"
+                                      cfg_id: 8
+                                      variable_declaration: {
+                                        identifiers: {
+                                          text_range: "52:3::14"
+                                          cfg_id: 7
+                                          identifier: {
+                                            name: "nestedFirst"
+                                            type: "untyped int"
+                                            package: "UNKNOWN"
+                                            id: 770
+                                          }
+                                        }
+                                        initializers: {
+                                          text_range: "52:18::19"
+                                          integer_literal: {
+                                            value: "1"
+                                          }
+                                        }
+                                        is_val: true
+                                      }
+                                    }
+                                    children: {
+                                      text_range: "53:3::19"
+                                      cfg_id: 10
+                                      variable_declaration: {
+                                        identifiers: {
+                                          text_range: "53:3::15"
+                                          cfg_id: 9
+                                          identifier: {
+                                            name: "nestedSecond"
+                                            type: "untyped int"
+                                            package: "UNKNOWN"
+                                            id: 790
+                                          }
+                                        }
+                                        initializers: {
+                                          text_range: "53:18::19"
+                                          integer_literal: {
+                                            value: "2"
+                                          }
+                                        }
+                                        is_val: true
+                                      }
+                                    }
+                                  }
+                                }
+                                children: {
+                                  text_range: "54:2::3"
+                                  native: {
+                                    native_kind: "Rparen"
+                                  }
+                                }
+                              }
+                            }
+                            statement_or_expressions: {
+                              text_range: "55:2::35"
+                              cfg_id: 15
+                              return_statement: {
+                                expressions: {
+                                  text_range: "55:9::35"
+                                  cfg_id: 14
+                                  binary_expression: {
+                                    operator: "PLUS"
+                                    operator_token: "55:21::22"
+                                    left_operand: {
+                                      text_range: "55:9::20"
+                                      cfg_id: 12
+                                      identifier: {
+                                        name: "nestedFirst"
+                                        type: "untyped int"
+                                        package: "UNKNOWN"
+                                        id: 770
+                                      }
+                                    }
+                                    right_operand: {
+                                      text_range: "55:23::35"
+                                      cfg_id: 13
+                                      identifier: {
+                                        name: "nestedSecond"
+                                        type: "untyped int"
+                                        package: "UNKNOWN"
+                                        id: 790
+                                      }
+                                    }
+                                  }
+                                }
+                                keyword: "55:2::8"
+                              }
+                            }
+                          }
+                        }
+                        cfg: {
+                          blocks: {
+                            node_ids: 15
+                          }
+                          blocks: {}
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "57:1::18"
+              cfg_id: 21
+              variable_declaration: {
+                identifiers: {
+                  text_range: "57:1::14"
+                  cfg_id: 20
+                  identifier: {
+                    name: "nestedSibling"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 853
+                  }
+                }
+                initializers: {
+                  text_range: "57:17::18"
+                  integer_literal: {
+                    value: "3"
+                  }
+                }
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "58:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+  }
+}

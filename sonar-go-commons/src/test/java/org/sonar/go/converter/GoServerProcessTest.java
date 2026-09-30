@@ -27,6 +27,8 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.awaitility.Awaitility;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
@@ -60,10 +63,38 @@ class GoServerProcessTest {
 
   private String executable;
   private final List<Process> startedProcesses = new ArrayList<>();
+  // Every executable a test extracted, so that all of them are unlocked before @TempDir deletes the
+  // directories holding them, and not only the one of the tempDir field.
+  private final List<Path> extractedExecutables = new ArrayList<>();
 
   @BeforeEach
   void setUp() {
     executable = GoExecutableExtractor.extract(tempDir, new SystemPlatformInfo());
+    extractedExecutables.add(Path.of(executable));
+  }
+
+  /**
+   * Deletes the extracted executables before {@link TempDir} does, retrying while they are still locked.
+   */
+  @AfterEach
+  void deleteTheExtractedExecutables() {
+    extractedExecutables.forEach(GoServerProcessTest::deleteWhenUnlocked);
+  }
+
+  /**
+   * On Windows the image of a process stays locked for a moment after it exits, and {@link TempDir} deletes
+   * once: without this retry a test that stopped its process exactly as it should still fails, on cleanup.
+   */
+  private static void deleteWhenUnlocked(Path path) {
+    Awaitility.await("the Go executable to be unlocked")
+      .atMost(Duration.ofSeconds(10))
+      .pollDelay(Duration.ZERO)
+      .pollInterval(Duration.ofMillis(50))
+      .ignoreExceptionsInstanceOf(IOException.class)
+      .until(() -> {
+        Files.deleteIfExists(path);
+        return true;
+      });
   }
 
   private static GoServerProcess started(GoServerProcess server) {
@@ -86,7 +117,7 @@ class GoServerProcessTest {
       server.start();
       server.close();
 
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
       assertThat(startedProcesses).hasSize(1);
       assertThat(startedProcesses.get(0).isAlive()).isTrue();
     }
@@ -110,9 +141,9 @@ class GoServerProcessTest {
       var second = server.execute(PARSE_ARGUMENTS, Map.of("utils.go", "package main\n\nfunc helper() {}\n"));
       var ast = server.execute(List.of("-d"), MAIN_FILE);
 
-      assertThat(first).contains("\"main.go\"").contains("\"error\": null");
-      assertThat(second).contains("\"utils.go\"").doesNotContain("\"main.go\"");
-      assertThat(ast).contains("Package: token.Pos(1)");
+      assertThat(text(first)).contains("main.go");
+      assertThat(text(second)).contains("utils.go").doesNotContain("main.go");
+      assertThat(text(ast)).contains("Package: token.Pos(1)");
       assertThat(startedProcesses).hasSize(1);
     } finally {
       server.close();
@@ -128,7 +159,7 @@ class GoServerProcessTest {
         .isInstanceOf(ParseException.class)
         .hasMessage("Go executable failed: If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too");
 
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
       assertThat(startedProcesses).hasSize(1);
     } finally {
       server.close();
@@ -142,7 +173,7 @@ class GoServerProcessTest {
       server.execute(PARSE_ARGUMENTS, MAIN_FILE);
       startedProcesses.get(0).destroyForcibly().waitFor();
 
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
       assertThat(startedProcesses).hasSize(2);
       assertThat(logTester.logs(Level.DEBUG)).anyMatch(log -> log.startsWith("The Go executable exited with value"));
     } finally {
@@ -160,7 +191,7 @@ class GoServerProcessTest {
       assertThat(startedProcesses).hasSize(1);
       assertThat(startedProcesses.get(0).isAlive()).isTrue();
       server.close();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
       assertThat(startedProcesses.get(0).isAlive()).isTrue();
     } finally {
       server.close();
@@ -188,7 +219,7 @@ class GoServerProcessTest {
     // As the next analysis does
     try {
       server.start();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
       assertThat(startedProcesses).hasSize(2);
     } finally {
       server.close();
@@ -234,13 +265,14 @@ class GoServerProcessTest {
   void shouldExtractTheExecutableOfThePlatformWhenStarted(@TempDir File otherDir) throws IOException {
     var platform = new SystemPlatformInfo();
     var extracted = new File(otherDir, GoExecutableExtractor.getExecutableForCurrentOS(platform.osName(), platform.osArch()));
+    extractedExecutables.add(extracted.toPath());
     try (var server = new GoServerProcess(otherDir, platform)) {
       assertThat(extracted).as("nothing is extracted before start()").doesNotExist();
 
       server.start();
 
       assertThat(extracted).exists();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).contains("\"main.go\"");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).contains("main.go");
     }
   }
 
@@ -257,7 +289,7 @@ class GoServerProcessTest {
   void shouldSendTheArgumentsAndTheFilesOfTheCommand() throws IOException {
     var process = FakeProcess.answering(response((byte) 0, "output"));
     try (var server = started(new GoServerProcess(() -> process))) {
-      assertThat(server.execute(List.of("-module_name", "mod"), Map.of("a.go", "package a"))).isEqualTo("output");
+      assertThat(text(server.execute(List.of("-module_name", "mod"), Map.of("a.go", "package a")))).isEqualTo("output");
     }
 
     var request = ByteBuffer.wrap(process.stdin.toByteArray()).order(ByteOrder.LITTLE_ENDIAN);
@@ -281,7 +313,7 @@ class GoServerProcessTest {
         .isInstanceOf(IOException.class)
         .hasMessage("The Go executable did not respond within 100 ms");
       assertThat(hanging.isAlive()).isFalse();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).as("the next command starts a new process").isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).as("the next command starts a new process").isEqualTo("output");
     }
   }
 
@@ -315,7 +347,7 @@ class GoServerProcessTest {
     };
     var process = new FakeProcess(delayed, released::countDown);
     try (var server = started(new GoServerProcess(() -> process, 25))) {
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).isEqualTo("output");
       assertThat(process.isAlive()).isFalse();
     }
   }
@@ -336,7 +368,7 @@ class GoServerProcessTest {
         .isInstanceOf(IllegalStateException.class)
         .hasMessage("Reader failed");
       assertThat(broken.isAlive()).isFalse();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).isEqualTo("output");
     }
   }
 
@@ -370,7 +402,7 @@ class GoServerProcessTest {
         .isInstanceOf(AssertionError.class)
         .hasMessage("Reader failed");
       assertThat(broken.isAlive()).isFalse();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).isEqualTo("output");
     }
   }
 
@@ -382,7 +414,7 @@ class GoServerProcessTest {
     try (var server = started(new GoServerProcess(() -> processes.remove(0)))) {
       assertThatThrownBy(() -> server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isInstanceOf(EOFException.class);
       assertThat(crashing.isAlive()).isFalse();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).as("the next command starts a new process").isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).as("the next command starts a new process").isEqualTo("output");
     }
   }
 
@@ -399,7 +431,7 @@ class GoServerProcessTest {
     var process = new FakeProcess(output, () -> {
     });
     try (var server = started(new GoServerProcess(() -> process))) {
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).isEqualTo("output");
     }
     assertThat(outputClosed).isTrue();
   }
@@ -447,8 +479,16 @@ class GoServerProcessTest {
         .hasMessage("Invalid response length from the Go executable: " + (GoServerProcess.MAX_RESPONSE_LENGTH + 1));
       assertThat(tooLarge.isAlive()).isFalse();
       assertThat(tooLarge.waitsWhileAlive).as("an incomplete response must skip the graceful wait").isZero();
-      assertThat(server.execute(PARSE_ARGUMENTS, MAIN_FILE)).isEqualTo("output");
+      assertThat(text(server.execute(PARSE_ARGUMENTS, MAIN_FILE))).isEqualTo("output");
     }
+  }
+
+  /**
+   * The tests that assert on a response either check it names the file it was given, which is the
+   * first frame of the real binary's answer, or compare it to a body a fake process was told to send.
+   */
+  private static String text(byte[] response) {
+    return new String(response, UTF_8);
   }
 
   private static String readFrame(ByteBuffer buffer) {

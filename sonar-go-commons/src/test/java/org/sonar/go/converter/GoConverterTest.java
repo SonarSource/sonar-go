@@ -583,6 +583,20 @@ class GoConverterTest {
   }
 
   @Test
+  void shouldFailTheBatchWhenTheResponseFramingIsBroken() throws IOException {
+    var process = mock(GoServerProcess.class);
+    // One byte where a frame length is expected: a broken framing is what no single file can cause, so
+    // ProtoTree.fromProto throws instead of returning an error, and parse must still fail only this batch.
+    when(process.execute(any(), any())).thenReturn(new byte[] {0x0a});
+    var converter = new GoConverter(tempDir, process);
+    var filenameToContentMap = Map.of("foo.go", "package main\nfunc foo() {}");
+
+    assertThatThrownBy(() -> converter.parse(filenameToContentMap, "moduleName"))
+      .isInstanceOf(ParseException.class)
+      .hasMessage("Truncated response from the Go executable: no frame length at offset 0");
+  }
+
+  @Test
   void shouldFailOnInvalidCommand() throws IOException {
     var process = mock(GoServerProcess.class);
     when(process.execute(any(), any())).thenThrow(new IOException("Cannot run program \"invalid-command\""));
@@ -919,7 +933,7 @@ class GoConverterTest {
   @Test
   void shouldSendItsCurrentOptionsWithEachParse() throws IOException {
     var process = mock(GoServerProcess.class);
-    when(process.execute(any(), any())).thenReturn("{}");
+    when(process.execute(any(), any())).thenReturn(new byte[0]);
     var converter = new GoConverter(tempDir, process);
     var files = Map.of("foo.go", "package main");
 

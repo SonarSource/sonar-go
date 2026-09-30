@@ -1,0 +1,755 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "3:7::8"
+}
+tokens: {
+  text: "\"example.com/company/sub-modules/impTwoPack/bar\""
+  text_range: "4:1::49"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"example.com/company/sub-modules/impTwoPack/foo\""
+  text_range: "5:1::49"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "6:1::6"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "7:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "9:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mainX"
+  text_range: "9:5::10"
+}
+tokens: {
+  text: "("
+  text_range: "9:10::11"
+}
+tokens: {
+  text: ")"
+  text_range: "9:11::12"
+}
+tokens: {
+  text: "{"
+  text_range: "9:13::14"
+}
+tokens: {
+  text: "a"
+  text_range: "10:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "10:3::5"
+}
+tokens: {
+  text: "foo"
+  text_range: "10:6::9"
+}
+tokens: {
+  text: "Calculate"
+  text_range: "10:10::19"
+}
+tokens: {
+  text: "."
+  text_range: "10:9::10"
+}
+tokens: {
+  text: "("
+  text_range: "10:19::20"
+}
+tokens: {
+  text: "foo"
+  text_range: "10:20::23"
+}
+tokens: {
+  text: "MagicNumber"
+  text_range: "10:24::35"
+}
+tokens: {
+  text: "."
+  text_range: "10:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "10:35::36"
+}
+tokens: {
+  text: "fmt"
+  text_range: "11:1::4"
+}
+tokens: {
+  text: "Print"
+  text_range: "11:5::10"
+}
+tokens: {
+  text: "."
+  text_range: "11:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "11:10::11"
+}
+tokens: {
+  text: "a"
+  text_range: "11:11::12"
+}
+tokens: {
+  text: ")"
+  text_range: "11:12::13"
+}
+tokens: {
+  text: "my"
+  text_range: "12:1::3"
+}
+tokens: {
+  text: ":="
+  text_range: "12:4::6"
+}
+tokens: {
+  text: "new"
+  text_range: "12:7::10"
+}
+tokens: {
+  text: "("
+  text_range: "12:10::11"
+}
+tokens: {
+  text: "foo"
+  text_range: "12:11::14"
+}
+tokens: {
+  text: "MyType"
+  text_range: "12:15::21"
+}
+tokens: {
+  text: "."
+  text_range: "12:14::15"
+}
+tokens: {
+  text: ")"
+  text_range: "12:21::22"
+}
+tokens: {
+  text: "my"
+  text_range: "13:1::3"
+}
+tokens: {
+  text: "Hello"
+  text_range: "13:4::9"
+}
+tokens: {
+  text: "."
+  text_range: "13:3::4"
+}
+tokens: {
+  text: "("
+  text_range: "13:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "13:10::11"
+}
+tokens: {
+  text: "foo"
+  text_range: "14:1::4"
+}
+tokens: {
+  text: "GlobalMyType"
+  text_range: "14:5::17"
+}
+tokens: {
+  text: "."
+  text_range: "14:4::5"
+}
+tokens: {
+  text: "Hello"
+  text_range: "14:18::23"
+}
+tokens: {
+  text: "."
+  text_range: "14:17::18"
+}
+tokens: {
+  text: "("
+  text_range: "14:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "14:24::25"
+}
+tokens: {
+  text: "my2"
+  text_range: "16:1::4"
+}
+tokens: {
+  text: ":="
+  text_range: "16:5::7"
+}
+tokens: {
+  text: "new"
+  text_range: "16:8::11"
+}
+tokens: {
+  text: "("
+  text_range: "16:11::12"
+}
+tokens: {
+  text: "bar"
+  text_range: "16:12::15"
+}
+tokens: {
+  text: "MyType"
+  text_range: "16:16::22"
+}
+tokens: {
+  text: "."
+  text_range: "16:15::16"
+}
+tokens: {
+  text: ")"
+  text_range: "16:22::23"
+}
+tokens: {
+  text: "my2"
+  text_range: "17:1::4"
+}
+tokens: {
+  text: "Hello"
+  text_range: "17:5::10"
+}
+tokens: {
+  text: "."
+  text_range: "17:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "17:10::11"
+}
+tokens: {
+  text: ")"
+  text_range: "17:11::12"
+}
+tokens: {
+  text: "}"
+  text_range: "18:0::1"
+}
+root: {
+  text_range: "1:0:19:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+            id: -1
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:7:1"
+      cfg_id: 6
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::8"
+          native: {
+            native_kind: "Lparen"
+          }
+        }
+        children: {
+          text_range: "4:1::49"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "4:1::49"
+              string_literal: {
+                value: "\"example.com/company/sub-modules/impTwoPack/bar\""
+                content: "example.com/company/sub-modules/impTwoPack/bar"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "5:1::49"
+          cfg_id: 4
+          import_specification: {
+            path: {
+              text_range: "5:1::49"
+              string_literal: {
+                value: "\"example.com/company/sub-modules/impTwoPack/foo\""
+                content: "example.com/company/sub-modules/impTwoPack/foo"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "6:1::6"
+          cfg_id: 5
+          import_specification: {
+            path: {
+              text_range: "6:1::6"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+        children: {
+          text_range: "7:0::1"
+          native: {
+            native_kind: "Rparen"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "9:0:18:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "9:5::10"
+          cfg_id: 7
+          identifier: {
+            name: "mainX"
+            type: "func()"
+            package: "example.com/company/sub-modules/impTwoPack/main"
+            id: -1
+          }
+        }
+        body: {
+          text_range: "9:13:18:1"
+          cfg_id: 55
+          block: {
+            statement_or_expressions: {
+              text_range: "10:1::36"
+              cfg_id: 17
+              variable_declaration: {
+                identifiers: {
+                  text_range: "10:1::2"
+                  cfg_id: 9
+                  identifier: {
+                    name: "a"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+                initializers: {
+                  text_range: "10:6::36"
+                  cfg_id: 16
+                  function_invocation: {
+                    member_select: {
+                      text_range: "10:6::19"
+                      cfg_id: 12
+                      member_select: {
+                        expression: {
+                          text_range: "10:6::9"
+                          cfg_id: 10
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "10:10::19"
+                          cfg_id: 11
+                          identifier: {
+                            name: "Calculate"
+                            type: "func(x int) int"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:20::35"
+                      cfg_id: 15
+                      member_select: {
+                        expression: {
+                          text_range: "10:20::23"
+                          cfg_id: 13
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "10:24::35"
+                          cfg_id: 14
+                          identifier: {
+                            name: "MagicNumber"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "int"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:1::13"
+              cfg_id: 23
+              expression_statement: {
+                expression: {
+                  text_range: "11:1::13"
+                  cfg_id: 22
+                  function_invocation: {
+                    member_select: {
+                      text_range: "11:1::10"
+                      cfg_id: 20
+                      member_select: {
+                        expression: {
+                          text_range: "11:1::4"
+                          cfg_id: 18
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "11:5::10"
+                          cfg_id: 19
+                          identifier: {
+                            name: "Print"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "11:11::12"
+                      cfg_id: 21
+                      identifier: {
+                        name: "a"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: -1
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:1::22"
+              cfg_id: 30
+              variable_declaration: {
+                identifiers: {
+                  text_range: "12:1::3"
+                  cfg_id: 24
+                  identifier: {
+                    name: "my"
+                    type: "*example.com/company/sub-modules/impTwoPack/foo.MyType"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+                initializers: {
+                  text_range: "12:7::22"
+                  cfg_id: 29
+                  function_invocation: {
+                    member_select: {
+                      text_range: "12:7::10"
+                      cfg_id: 25
+                      identifier: {
+                        name: "new"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                        id: -1
+                      }
+                    }
+                    arguments: {
+                      text_range: "12:11::21"
+                      cfg_id: 28
+                      member_select: {
+                        expression: {
+                          text_range: "12:11::14"
+                          cfg_id: 26
+                          identifier: {
+                            name: "foo"
+                            type: "UNKNOWN"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "12:15::21"
+                          cfg_id: 27
+                          identifier: {
+                            name: "MyType"
+                            type: "example.com/company/sub-modules/impTwoPack/foo.MyType"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "13:1::11"
+              cfg_id: 35
+              expression_statement: {
+                expression: {
+                  text_range: "13:1::11"
+                  cfg_id: 34
+                  function_invocation: {
+                    member_select: {
+                      text_range: "13:1::9"
+                      cfg_id: 33
+                      member_select: {
+                        expression: {
+                          text_range: "13:1::3"
+                          cfg_id: 31
+                          identifier: {
+                            name: "my"
+                            type: "*example.com/company/sub-modules/impTwoPack/foo.MyType"
+                            package: "UNKNOWN"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "13:4::9"
+                          cfg_id: 32
+                          identifier: {
+                            name: "Hello"
+                            type: "func() string"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "14:1::25"
+              cfg_id: 42
+              expression_statement: {
+                expression: {
+                  text_range: "14:1::25"
+                  cfg_id: 41
+                  function_invocation: {
+                    member_select: {
+                      text_range: "14:1::23"
+                      cfg_id: 40
+                      member_select: {
+                        expression: {
+                          text_range: "14:1::17"
+                          cfg_id: 38
+                          member_select: {
+                            expression: {
+                              text_range: "14:1::4"
+                              cfg_id: 36
+                              identifier: {
+                                name: "foo"
+                                type: "UNKNOWN"
+                                package: "example.com/company/sub-modules/impTwoPack/foo"
+                                id: -1
+                              }
+                            }
+                            identifier: {
+                              text_range: "14:5::17"
+                              cfg_id: 37
+                              identifier: {
+                                name: "GlobalMyType"
+                                type: "example.com/company/sub-modules/impTwoPack/foo.MyType"
+                                package: "UNKNOWN"
+                                id: -1
+                              }
+                            }
+                          }
+                        }
+                        identifier: {
+                          text_range: "14:18::23"
+                          cfg_id: 39
+                          identifier: {
+                            name: "Hello"
+                            type: "func() string"
+                            package: "example.com/company/sub-modules/impTwoPack/foo"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "string"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "16:1::23"
+              cfg_id: 49
+              variable_declaration: {
+                identifiers: {
+                  text_range: "16:1::4"
+                  cfg_id: 43
+                  identifier: {
+                    name: "my2"
+                    type: "*example.com/company/sub-modules/impTwoPack/bar.MyType"
+                    package: "UNKNOWN"
+                    id: -1
+                  }
+                }
+                initializers: {
+                  text_range: "16:8::23"
+                  cfg_id: 48
+                  function_invocation: {
+                    member_select: {
+                      text_range: "16:8::11"
+                      cfg_id: 44
+                      identifier: {
+                        name: "new"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                        id: -1
+                      }
+                    }
+                    arguments: {
+                      text_range: "16:12::22"
+                      cfg_id: 47
+                      member_select: {
+                        expression: {
+                          text_range: "16:12::15"
+                          cfg_id: 45
+                          identifier: {
+                            name: "bar"
+                            type: "UNKNOWN"
+                            package: "example.com/company/sub-modules/impTwoPack/bar"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "16:16::22"
+                          cfg_id: 46
+                          identifier: {
+                            name: "MyType"
+                            type: "example.com/company/sub-modules/impTwoPack/bar.MyType"
+                            package: "example.com/company/sub-modules/impTwoPack/bar"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "17:1::12"
+              cfg_id: 54
+              expression_statement: {
+                expression: {
+                  text_range: "17:1::12"
+                  cfg_id: 53
+                  function_invocation: {
+                    member_select: {
+                      text_range: "17:1::10"
+                      cfg_id: 52
+                      member_select: {
+                        expression: {
+                          text_range: "17:1::4"
+                          cfg_id: 50
+                          identifier: {
+                            name: "my2"
+                            type: "*example.com/company/sub-modules/impTwoPack/bar.MyType"
+                            package: "UNKNOWN"
+                            id: -1
+                          }
+                        }
+                        identifier: {
+                          text_range: "17:5::10"
+                          cfg_id: 51
+                          identifier: {
+                            name: "Hello"
+                            type: "func() int"
+                            package: "example.com/company/sub-modules/impTwoPack/bar"
+                            id: -1
+                          }
+                        }
+                      }
+                    }
+                    return_type: "int"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 17
+            node_ids: 23
+            node_ids: 30
+            node_ids: 35
+            node_ids: 42
+            node_ids: 49
+            node_ids: 54
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

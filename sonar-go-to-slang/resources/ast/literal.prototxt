@@ -1,0 +1,410 @@
+comments: {
+  text: "//mapped to native node"
+  content_text: "mapped to native node"
+  range: "12:20::43"
+  content_range: "12:22::43"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "ast"
+  text_range: "1:8::11"
+}
+tokens: {
+  text: "func"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "allLiterals"
+  text_range: "3:5::16"
+}
+tokens: {
+  text: "("
+  text_range: "3:16::17"
+}
+tokens: {
+  text: ")"
+  text_range: "3:17::18"
+}
+tokens: {
+  text: "{"
+  text_range: "3:19::20"
+}
+tokens: {
+  text: "stringLit"
+  text_range: "4:1::10"
+}
+tokens: {
+  text: ":="
+  text_range: "4:11::13"
+}
+tokens: {
+  text: "\"hello, world\""
+  text_range: "4:14::28"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "multiLineStringLit"
+  text_range: "5:1::19"
+}
+tokens: {
+  text: ":="
+  text_range: "5:20::22"
+}
+tokens: {
+  text: "`hello world`"
+  text_range: "5:23::36"
+}
+tokens: {
+  text: "boolLit"
+  text_range: "6:1::8"
+}
+tokens: {
+  text: ":="
+  text_range: "6:9::11"
+}
+tokens: {
+  text: "true"
+  text_range: "6:12::16"
+}
+tokens: {
+  text: "intLit"
+  text_range: "7:1::7"
+}
+tokens: {
+  text: ":="
+  text_range: "7:8::10"
+}
+tokens: {
+  text: "42"
+  text_range: "7:11::13"
+}
+tokens: {
+  text: "hexLit"
+  text_range: "8:1::7"
+}
+tokens: {
+  text: ":="
+  text_range: "8:8::10"
+}
+tokens: {
+  text: "0xFF42"
+  text_range: "8:11::17"
+}
+tokens: {
+  text: "octalLit"
+  text_range: "9:1::9"
+}
+tokens: {
+  text: ":="
+  text_range: "9:10::12"
+}
+tokens: {
+  text: "042"
+  text_range: "9:13::16"
+}
+tokens: {
+  text: "floatLit"
+  text_range: "10:1::9"
+}
+tokens: {
+  text: ":="
+  text_range: "10:10::12"
+}
+tokens: {
+  text: "4.2"
+  text_range: "10:13::16"
+}
+tokens: {
+  text: "charLit"
+  text_range: "11:1::8"
+}
+tokens: {
+  text: ":="
+  text_range: "11:9::11"
+}
+tokens: {
+  text: "'c'"
+  text_range: "11:12::15"
+}
+tokens: {
+  text: "imagLit"
+  text_range: "12:1::8"
+}
+tokens: {
+  text: ":="
+  text_range: "12:9::11"
+}
+tokens: {
+  text: "123.45i"
+  text_range: "12:12::19"
+}
+tokens: {
+  text: "}"
+  text_range: "13:0::1"
+}
+root: {
+  text_range: "1:0:14:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::11"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::11"
+          cfg_id: 1
+          identifier: {
+            name: "ast"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:13:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "3:5::16"
+          cfg_id: 3
+          identifier: {
+            name: "allLiterals"
+            type: "func()"
+            package: "ModuleNameForTest/ast"
+            id: 19
+          }
+        }
+        body: {
+          text_range: "3:19:13:1"
+          cfg_id: 24
+          block: {
+            statement_or_expressions: {
+              text_range: "4:1::28"
+              cfg_id: 6
+              variable_declaration: {
+                identifiers: {
+                  text_range: "4:1::10"
+                  cfg_id: 5
+                  identifier: {
+                    name: "stringLit"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 36
+                  }
+                }
+                initializers: {
+                  text_range: "4:14::28"
+                  string_literal: {
+                    value: "\"hello, world\""
+                    content: "hello, world"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "5:1::36"
+              cfg_id: 8
+              variable_declaration: {
+                identifiers: {
+                  text_range: "5:1::19"
+                  cfg_id: 7
+                  identifier: {
+                    name: "multiLineStringLit"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 65
+                  }
+                }
+                initializers: {
+                  text_range: "5:23::36"
+                  native: {
+                    native_kind: "[0](BasicLit)"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "6:1::16"
+              cfg_id: 11
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:1::8"
+                  cfg_id: 9
+                  identifier: {
+                    name: "boolLit"
+                    type: "bool"
+                    package: "UNKNOWN"
+                    id: 102
+                  }
+                }
+                initializers: {
+                  text_range: "6:12::16"
+                  cfg_id: 10
+                  literal: {
+                    value: "true"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:1::13"
+              cfg_id: 13
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:1::7"
+                  cfg_id: 12
+                  identifier: {
+                    name: "intLit"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 119
+                  }
+                }
+                initializers: {
+                  text_range: "7:11::13"
+                  integer_literal: {
+                    value: "42"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "8:1::17"
+              cfg_id: 15
+              variable_declaration: {
+                identifiers: {
+                  text_range: "8:1::7"
+                  cfg_id: 14
+                  identifier: {
+                    name: "hexLit"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 133
+                  }
+                }
+                initializers: {
+                  text_range: "8:11::17"
+                  integer_literal: {
+                    value: "0xFF42"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "9:1::16"
+              cfg_id: 17
+              variable_declaration: {
+                identifiers: {
+                  text_range: "9:1::9"
+                  cfg_id: 16
+                  identifier: {
+                    name: "octalLit"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 151
+                  }
+                }
+                initializers: {
+                  text_range: "9:13::16"
+                  integer_literal: {
+                    value: "042"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "10:1::16"
+              cfg_id: 19
+              variable_declaration: {
+                identifiers: {
+                  text_range: "10:1::9"
+                  cfg_id: 18
+                  identifier: {
+                    name: "floatLit"
+                    type: "float64"
+                    package: "UNKNOWN"
+                    id: 168
+                  }
+                }
+                initializers: {
+                  text_range: "10:13::16"
+                  float_literal: {
+                    value: "4.2"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "11:1::15"
+              cfg_id: 21
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:1::8"
+                  cfg_id: 20
+                  identifier: {
+                    name: "charLit"
+                    type: "rune"
+                    package: "UNKNOWN"
+                    id: 185
+                  }
+                }
+                initializers: {
+                  text_range: "11:12::15"
+                  native: {
+                    native_kind: "[0](BasicLit)"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:1::19"
+              cfg_id: 23
+              variable_declaration: {
+                identifiers: {
+                  text_range: "12:1::8"
+                  cfg_id: 22
+                  identifier: {
+                    name: "imagLit"
+                    type: "complex128"
+                    package: "UNKNOWN"
+                    id: 201
+                  }
+                }
+                initializers: {
+                  text_range: "12:12::19"
+                  imaginary_literal: {
+                    value: "123.45i"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 6
+            node_ids: 8
+            node_ids: 11
+            node_ids: 13
+            node_ids: 15
+            node_ids: 17
+            node_ids: 19
+            node_ids: 21
+            node_ids: 23
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

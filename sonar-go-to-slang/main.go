@@ -39,7 +39,7 @@ type Params struct {
 // defineFlags registers the options of a request on flagSet and returns a function reading their values once
 // flagSet is parsed.
 func defineFlags(flagSet *flag.FlagSet) func() Params {
-	dumpAstFlag := flagSet.Bool("d", false, "dump ast (instead of JSON)")
+	dumpAstFlag := flagSet.Bool("d", false, "dump ast (instead of the Slang AST)")
 	debugTypeCheckFlag := flagSet.Bool("debug_type_check", false, "print errors logs from type checking")
 	dumpGcExportData := flagSet.Bool("dump_gc_export_data", false, "dump GC export data")
 	gcExportDataDir := flagSet.String("gc_export_data_dir", "", "directory where GC export data is located")
@@ -136,8 +136,8 @@ type analysisStats struct {
 }
 
 // analyze reads the files from in, type checks them, and then either writes the GC export data to disk or writes
-// the Slang JSON (or the Go AST) to out. It is the whole work of one request. It panics on an invalid input, which
-// the server recovers from to fail only that request.
+// the Slang AST (or the Go AST) to out. It is the whole work of one request.
+// It panics on an invalid input, which the server recovers from to fail only that request.
 //
 // crossIndex is the index of the GC export data directory to resolve cross-module imports with; nil means that a
 // new one is built, lazily, for this analysis only.
@@ -172,18 +172,19 @@ func analyze(ctx context.Context, params Params, in io.Reader, out io.Writer, cr
 		return
 	}
 
-	var output string
 	if params.dumpAst {
-		output = render(astFiles)
+		writeOutput(out, []byte(render(astFiles)))
 	} else {
-		output = toSlangJson(ctx, fileSet, astFiles, fileContents, info, params.moduleName, "")
-	}
-	if _, err := io.WriteString(out, output); err != nil {
-		panic(fmt.Sprintf("cannot write the output: %v", err))
-	}
-	if _, err := out.Write([]byte{'\n'}); err != nil {
-		// A truncated output must fail the analysis rather than pass for a complete one.
-		panic(fmt.Sprintf("cannot write the output: %v", err))
+		// The frames are written straight to out, rather than returned, to keep one copy of a large
+		// batch rather than two.
+		toSlangProto(ctx, fileSet, astFiles, fileContents, info, params.moduleName, out)
 	}
 	gcExporter.PrintExportIssues()
+}
+
+func writeOutput(out io.Writer, output []byte) {
+	// A truncated output must fail the analysis rather than pass for a complete one.
+	if _, err := out.Write(output); err != nil {
+		panic(fmt.Sprintf("cannot write the output: %v", err))
+	}
 }

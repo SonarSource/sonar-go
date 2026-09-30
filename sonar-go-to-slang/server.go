@@ -37,8 +37,8 @@ import (
 //	response: [status] [length] [body]
 //
 // The arguments are options defined by defineFlags, and the payload holds the files to analyze, as read by
-// readAstFile. With statusOK, the body is the Slang JSON or the Go AST, and is empty when GC export data is written;
-// with statusError, it is the reason why the request failed.
+// readAstFile. With statusOK, the body is the Slang AST in the format the request asked for, or the Go AST, and is
+// empty when GC export data is written; with statusError, it is the reason why the request failed.
 const (
 	statusOK    byte = 0
 	statusError byte = 1

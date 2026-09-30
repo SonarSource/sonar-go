@@ -1,6 +1,6 @@
 # sonar-go-to-slang
 
-Generate slang serialized AST in JSON from a go source file.
+Generate the serialized SLANG AST of a Go source file, as protobuf for the analyzer.
 
 ## Requirements
 * Docker (specifically, Docker Buildx)
@@ -101,14 +101,27 @@ The arguments are the options listed below. The payload holds the files to analy
   <content> (M bytes)         — file content
 ```
 
-With status 0, the body is the Slang JSON of the files, or the Go AST with `-d`, and is empty when
+With status 0, the body is the SLANG AST of the files, or the Go AST with `-d`, and is empty when
 GC export data is written. A request that fails, for instance on a panic, is answered with status 1 and
 the reason as body, and the process carries on. `server.go` has the details. On the Java side, a
 command fails when the process crashes or stops responding, and the next command starts a new process.
 
+The SLANG AST is written in one format, the one the analyzer reads: one framed `File` message of
+`proto/slang/slang.proto` per file, which carries the name of the file along with its `Tree`:
+
+```
+[For each file, in sequence]
+  N (4 bytes, little-endian)  — message length
+  <file> (N bytes)            — the serialized sonargo.slang.File of that file
+```
+
+To read a tree by hand, decode the frames and run the `File` messages through `protoc --decode` or
+`prototext`; the golden files of the tests hold the `Tree` of each message on its own
+(`resources/ast/*.prototxt`).
+
 ### Request options
 
-- `-d` - Dump native Go AST instead of SLANG JSON
+- `-d` - Dump native Go AST instead of the SLANG AST
 - `-debug_type_check` - Print type-checking errors/warnings to stderr
 - `-dump_gc_export_data` - dump GC (Go compiler) export data
 - `-gc_export_data_dir <dir>` - Directory containing `.o` files for cross-package type resolution
@@ -133,17 +146,19 @@ request = struct.pack("<i", len(options)) + b"".join(frame(o.encode()) for o in 
 response = subprocess.run([binary], input=request, stdout=subprocess.PIPE).stdout
 length = struct.unpack("<i", response[1:5])[0]
 print(f"status {response[0]}", file=sys.stderr)
-sys.stdout.write(response[5:5 + length].decode())
+sys.stdout.buffer.write(response[5:5 + length])
 ```
 
 ```shell
 python3 request.py build/executable/sonar-go-to-slang-darwin-arm64 -d -- main.go
 ```
 
+The body is written out as it is, so it prints the binary frames; pipe them into a decoder to read the AST.
+
 ## Tracing and profiling
 
 `sonar-go-to-slang` can emit a performance trace of the analysis pipeline — stdin decoding, parsing,
-type checking, import resolution, SLANG mapping and JSON encoding. It is used to profile the analyzer
+type checking, import resolution, SLANG mapping and AST encoding. It is used to profile the analyzer
 and to build a single cross-language timeline together with the events the Java side records.
 
 The instrumentation is behind the `sonartrace` build tag and is **not** compiled into released binaries:
@@ -241,6 +256,23 @@ go test
 ```
 
 To update expected test data, use the method `fix_all_go_files_test_automatically` in `goparser_test.go`.
+
+### Regenerating the protobuf bindings
+
+`proto/slang/slang.pb.go` is generated from `proto/slang/slang.proto` and committed, so that a plain
+`go build` needs no protobuf toolchain. The Java classes are generated at build time instead, by the
+`protobuf` Gradle plugin of `sonar-go-frontend`, from the very same file. After editing the schema:
+
+```shell
+go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.36.12
+protoc --proto_path=proto/slang --go_out=. \
+  --go_opt=module=github.com/SonarSource/slang/sonar-go-to-slang \
+  --go_opt=Mslang.proto=github.com/SonarSource/slang/sonar-go-to-slang/proto/slang \
+  slang.proto
+```
+
+Keep the `protoc-gen-go` version and the `google.golang.org/protobuf` requirement of `go.mod` in step
+with each other, and the `protobuf` version of `gradle/libs.versions.toml` with both.
 
 The tracing tests are behind the same build tag as the feature they cover, so a plain `go test` skips
 them. To run them:

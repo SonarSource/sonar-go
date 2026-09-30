@@ -96,11 +96,13 @@ func TestServerAnswersSequentialRequests(t *testing.T) {
 		encodeRequest([]string{"-d"}, map[string]string{"main.go": simpleMain}))
 
 	assert.Equal(t, statusOK, responses[0].status)
-	assert.Contains(t, responses[0].body, "\"main.go\"")
-	assert.Contains(t, responses[0].body, "\"error\": null")
+	first := decodeTrees(t, responses[0].body)
+	require.Contains(t, first, "main.go")
+	assert.Nil(t, first["main.go"].Error)
 	assert.Equal(t, statusOK, responses[1].status)
-	assert.Contains(t, responses[1].body, "\"utils.go\"")
-	assert.NotContains(t, responses[1].body, "\"main.go\"", "a request must not see the files of a previous one")
+	second := decodeTrees(t, responses[1].body)
+	assert.Contains(t, second, "utils.go")
+	assert.NotContains(t, second, "main.go", "a request must not see the files of a previous one")
 	// Each request is parsed with its own flags.
 	assert.Equal(t, statusOK, responses[2].status)
 	assert.Contains(t, responses[2].body, "Package: token.Pos(1)")
@@ -110,7 +112,8 @@ func TestServerResolvesGcExportDataWrittenByAPreviousRequest(t *testing.T) {
 	gcExportDataDir := t.TempDir()
 	libFiles := map[string]string{"lib/util/util.go": "package util\n\ntype Thing struct{}\n"}
 	appFiles := map[string]string{"app/main.go": "package main\n\nimport \"example.com/lib/util\"\n\nvar thing util.Thing\n"}
-	parseApp := encodeRequest([]string{"-gc_export_data_dir", gcExportDataDir, "-module_name", "example.com/app", "-module_base_dir", "app"}, appFiles)
+	parseApp := encodeRequest([]string{"-gc_export_data_dir", gcExportDataDir, "-module_name", "example.com/app", "-module_base_dir", "app"},
+		appFiles)
 	// The GC export data of each module is written under its own base directory, and the other modules find it
 	// through the cross-module index.
 	exportLib := encodeRequest([]string{"-dump_gc_export_data", "-gc_export_data_dir", filepath.Join(gcExportDataDir, "lib"),
@@ -120,11 +123,11 @@ func TestServerResolvesGcExportDataWrittenByAPreviousRequest(t *testing.T) {
 	responses := serveRequests(t, s, parseApp, exportLib, parseApp)
 
 	assert.Equal(t, statusOK, responses[0].status)
-	assert.NotContains(t, responses[0].body, "\"type\":\"example.com/lib/util.Thing\"", "nothing is exported yet")
+	assert.NotContains(t, identifierTypes(t, responses[0].body), "example.com/lib/util.Thing", "nothing is exported yet")
 	assert.Equal(t, response{statusOK, ""}, responses[1], "exporting writes to disk only")
 	assert.FileExists(t, filepath.Join(gcExportDataDir, "lib", "example.com", "lib", "util", "util.o"))
 	assert.Equal(t, statusOK, responses[2].status)
-	assert.Contains(t, responses[2].body, "\"type\":\"example.com/lib/util.Thing\"",
+	assert.Contains(t, identifierTypes(t, responses[2].body), "example.com/lib/util.Thing",
 		"the index built by the first request must include new GC export data")
 	assert.Equal(t, 1, s.crossIndexes[gcExportDataDir].builds, "the project index must not be walked again after the export")
 }
@@ -188,7 +191,7 @@ func TestServerAnswersFailedRequestsWithAnErrorAndCarriesOn(t *testing.T) {
 	assert.Contains(t, responses[2].body, "slice bounds out of range")
 	assert.Equal(t, response{statusError, "If the dump_gc_export_data flag is set then the gc_export_data_dir flag must be set too"}, responses[3])
 	assert.Equal(t, statusOK, responses[4].status, "the server must survive the failed requests")
-	assert.Contains(t, responses[4].body, "\"error\": null")
+	assert.Nil(t, decodeTrees(t, responses[4].body)["main.go"].Error)
 }
 
 func TestServerStopsWhenInputEndsBetweenRequests(t *testing.T) {
@@ -283,7 +286,7 @@ func TestRunServerKeepsStdoutForResponses(t *testing.T) {
 		_, err = io.ReadFull(responses, body)
 		require.NoError(t, err)
 		assert.Equal(t, statusOK, status)
-		assert.Contains(t, string(body), "\""+file+"\"")
+		assert.Contains(t, decodeTrees(t, string(body)), file)
 	}
 	require.NoError(t, stdinWriter.Close())
 	<-done
@@ -369,7 +372,8 @@ func liveHeapAfterGC() uint64 {
 }
 
 func TestParseRequestArgs(t *testing.T) {
-	params, err := parseRequestArgs([]string{"-module_name", "example.com/mod", "-module_base_dir", "service", "-gc_export_data_dir", "dir", "-debug_type_check"})
+	params, err := parseRequestArgs([]string{"-module_name", "example.com/mod", "-module_base_dir", "service", "-gc_export_data_dir", "dir",
+		"-debug_type_check"})
 
 	require.NoError(t, err)
 	assert.Equal(t, Params{moduleName: "example.com/mod", moduleBaseDir: "service", gcExportDataDir: "dir", debugTypeCheck: true}, params)

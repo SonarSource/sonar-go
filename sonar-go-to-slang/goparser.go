@@ -28,27 +28,28 @@ import (
 	"go/token"
 	"go/types"
 	"io"
+	"os"
 	"sort"
 	"strings"
 	"unicode/utf8"
 )
 
 type Token struct {
-	Value     string     `json:"text"`
-	TextRange *TextRange `json:"textRange"`
-	TokenType string     `json:"type"`
+	Value     string
+	TextRange *TextRange
+	TokenType string
 }
 
 type Node struct {
-	Token    *Token  `json:"-"`
-	Children []*Node `json:"-"`
+	Token    *Token
+	Children []*Node
 	// internal fields
 	offset    int // position of first character belonging to the node
 	endOffset int // position of first character immediately after the node
 	//Slang fields
-	SlangType  string                 `json:"@type"`
-	TextRange  *TextRange             `json:"metaData"`
-	SlangField map[string]interface{} `json:"slangF"`
+	SlangType  string
+	TextRange  *TextRange
+	SlangField map[string]interface{}
 }
 
 type TextRange struct {
@@ -83,43 +84,90 @@ const processLineDirective = false
 var isSlangType = map[string]bool{
 	other: true, keywordKind: true, "STRING_LITERAL": true}
 
-func toSlangJson(ctx context.Context, fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string, info *types.Info, moduleName string, indent string) string {
+// mapFiles maps every file of the batch to its Slang tree and encodes it. Each encoded file carries
+// its own name, so the batch needs nothing but the messages themselves.
+func mapFiles(ctx context.Context, fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string,
+	info *types.Info, moduleName string) [][]byte {
 	// The usesByPos info is shared across every file of the package, so the position-keyed index of
 	// type-checker "uses" is built once here and reused for all files.
 	_, usesDone := span(ctx, "uses.index")
 	usesByPos := buildUsesByPos(info)
 	usesDone("usesCount", len(usesByPos))
 
-	fileNameToString := make(map[string]string)
+	encodedFiles := make([][]byte, 0, len(astFiles))
 	for fileName, astFile := range astFiles {
 		fileContent := fileContents[fileName]
 		_, mapDone := span(ctx, "tree.map", "fileName", fileName, "sourceBytes", len(fileContent))
 		slangTree, comments, tokens, errMgs, nodeCount := toSlangTree(fileSet, &astFile, fileContent, info, moduleName, usesByPos)
 		mapDone("tokenCount", len(tokens), "commentCount", len(comments), "nodeCount", nodeCount)
 
-		_, encodeDone := span(ctx, "tree.encode", "fileName", fileName, "format", "json")
-		jsonPart := toJsonSlang(slangTree, comments, tokens, errMgs, indent)
-		encodeDone("outputBytes", len(jsonPart))
-		fileNameToString[fileName] = jsonPart
+		_, encodeDone := span(ctx, "tree.encode", "fileName", fileName)
+		encodedFile := encodeFile(fileName, slangTree, comments, tokens, errMgs)
+		encodeDone("outputBytes", len(encodedFile))
+		encodedFiles = append(encodedFiles, encodedFile)
 	}
-
-	_, concatDone := span(ctx, "tree.concat")
-	json := toJson(fileNameToString)
-	concatDone("outputBytes", len(json))
-	return json
+	return encodedFiles
 }
 
-func toJson(fileNameToString map[string]string) string {
-	var buf bytes.Buffer
-	buf.WriteString("{\n")
-	for fileName, jsonPart := range fileNameToString {
-		buf.WriteString(fmt.Sprintf("  \"%s\": %s,\n", fileName, jsonPart))
+// encodeFile encodes the tree of one file, turning a panic of the encoder into the error of that file.
+// A node the encoder cannot write still fails loudly, but it fails the file it belongs to rather than
+// the whole batch, which is how the analyzer reports a tree it cannot rebuild too.
+func encodeFile(fileName string, node *Node, comments []*Node, tokens []*Token, errMsg *string) (encoded []byte) {
+	defer func() {
+		if r := recover(); r != nil {
+			message := fmt.Sprintf("cannot encode the tree of %s: %v", fileName, r)
+			fmt.Fprintln(os.Stderr, message)
+			encoded = toProtoSlang(fileName, nil, nil, nil, &message)
+		}
+	}()
+	return toProtoSlang(fileName, node, comments, tokens, errMsg)
+}
+
+// toSlangProto writes the batch to out in the format the analyzer reads. One frame per file, as the
+// schema of a file covers one file only:
+//
+//	N (4 bytes, little-endian) message length
+//	<serialized slang.File> (N bytes)
+//
+// The frames go straight to out, which is the buffer the response is sent from, rather than to a
+// buffer of their own: on a large batch that intermediate buffer was a second copy of the whole
+// output, held at the same time as the per-file trees it was filled from.
+func toSlangProto(ctx context.Context, fileSet *token.FileSet, astFiles map[string]AstFileOrError, fileContents map[string]string,
+	info *types.Info, moduleName string, out io.Writer) {
+	encodedFiles := mapFiles(ctx, fileSet, astFiles, fileContents, info, moduleName)
+
+	_, concatDone := span(ctx, "tree.concat")
+	size := framedSize(encodedFiles)
+	// The size of the whole batch is known, so the buffer of the response is allocated once instead of
+	// growing by doubling, which would copy the trees written so far over and over on a large batch.
+	if buf, isBuffer := out.(*bytes.Buffer); isBuffer {
+		buf.Grow(size)
 	}
-	if len(fileNameToString) > 0 {
-		buf.Truncate(buf.Len() - 2) // Remove the last comma
+	for _, encodedFile := range encodedFiles {
+		writeFrame(out, encodedFile)
 	}
-	buf.WriteString("\n}")
-	return buf.String()
+	concatDone("outputBytes", size)
+}
+
+// frameLengthBytes is the width of the length prefix of a frame.
+const frameLengthBytes = 4
+
+func framedSize(encodedFiles [][]byte) int {
+	size := 0
+	for _, encodedFile := range encodedFiles {
+		size += frameLengthBytes + len(encodedFile)
+	}
+	return size
+}
+
+func writeFrame(out io.Writer, data []byte) {
+	// A truncated output must fail the analysis rather than pass for a complete one.
+	if err := binary.Write(out, binary.LittleEndian, int32(len(data))); err != nil {
+		panic(fmt.Sprintf("cannot write the output: %v", err))
+	}
+	if _, err := out.Write(data); err != nil {
+		panic(fmt.Sprintf("cannot write the output: %v", err))
+	}
 }
 
 func toSlangTree(fileSet *token.FileSet, astFile *AstFileOrError, fileContent string, info *types.Info, moduleName string, usesByPos map[token.Pos]types.Object) (*Node, []*Node, []*Token, *string, int) {

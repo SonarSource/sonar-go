@@ -1,0 +1,1009 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "import"
+  text_range: "3:0::6"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"fmt\""
+  text_range: "3:7::12"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "func"
+  text_range: "5:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "5:5::9"
+}
+tokens: {
+  text: "("
+  text_range: "5:9::10"
+}
+tokens: {
+  text: ")"
+  text_range: "5:10::11"
+}
+tokens: {
+  text: "{"
+  text_range: "5:12::13"
+}
+tokens: {
+  text: "var"
+  text_range: "6:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "counter"
+  text_range: "6:5::12"
+}
+tokens: {
+  text: "int"
+  text_range: "6:13::16"
+}
+tokens: {
+  text: "1"
+  text_range: "6:19::20"
+}
+tokens: {
+  text: "="
+  text_range: "6:17::18"
+}
+tokens: {
+  text: "func"
+  text_range: "8:1::5"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "8:5::6"
+}
+tokens: {
+  text: "str"
+  text_range: "8:6::9"
+}
+tokens: {
+  text: "string"
+  text_range: "8:10::16"
+}
+tokens: {
+  text: ")"
+  text_range: "8:16::17"
+}
+tokens: {
+  text: "{"
+  text_range: "8:18::19"
+}
+tokens: {
+  text: "fmt"
+  text_range: "9:2::5"
+}
+tokens: {
+  text: "Println"
+  text_range: "9:6::13"
+}
+tokens: {
+  text: "."
+  text_range: "9:5::6"
+}
+tokens: {
+  text: "("
+  text_range: "9:13::14"
+}
+tokens: {
+  text: "\"Hi\""
+  text_range: "9:14::18"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "str"
+  text_range: "9:20::23"
+}
+tokens: {
+  text: ","
+  text_range: "9:18::19"
+}
+tokens: {
+  text: "\"I'm an anonymous function\""
+  text_range: "9:25::52"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "9:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "9:52::53"
+}
+tokens: {
+  text: "}"
+  text_range: "10:1::2"
+}
+tokens: {
+  text: "("
+  text_range: "10:2::3"
+}
+tokens: {
+  text: "\"Ricky\""
+  text_range: "10:3::10"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "10:10::11"
+}
+tokens: {
+  text: "funcVar"
+  text_range: "12:1::8"
+}
+tokens: {
+  text: ":="
+  text_range: "12:9::11"
+}
+tokens: {
+  text: "func"
+  text_range: "12:12::16"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "12:16::17"
+}
+tokens: {
+  text: "str"
+  text_range: "12:17::20"
+}
+tokens: {
+  text: "string"
+  text_range: "12:21::27"
+}
+tokens: {
+  text: ")"
+  text_range: "12:27::28"
+}
+tokens: {
+  text: "{"
+  text_range: "12:29::30"
+}
+tokens: {
+  text: "fmt"
+  text_range: "13:2::5"
+}
+tokens: {
+  text: "Println"
+  text_range: "13:6::13"
+}
+tokens: {
+  text: "."
+  text_range: "13:5::6"
+}
+tokens: {
+  text: "("
+  text_range: "13:13::14"
+}
+tokens: {
+  text: "\"Hi\""
+  text_range: "13:14::18"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "str"
+  text_range: "13:20::23"
+}
+tokens: {
+  text: ","
+  text_range: "13:18::19"
+}
+tokens: {
+  text: "\"I'm an anonymous function assigned to a variable.\""
+  text_range: "13:25::76"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "13:23::24"
+}
+tokens: {
+  text: ")"
+  text_range: "13:76::77"
+}
+tokens: {
+  text: "}"
+  text_range: "14:1::2"
+}
+tokens: {
+  text: "funcVar"
+  text_range: "16:1::8"
+}
+tokens: {
+  text: "("
+  text_range: "16:8::9"
+}
+tokens: {
+  text: "\"Bob\""
+  text_range: "16:9::14"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "+"
+  text_range: "16:15::16"
+}
+tokens: {
+  text: "fmt"
+  text_range: "16:17::20"
+}
+tokens: {
+  text: "Sprint"
+  text_range: "16:21::27"
+}
+tokens: {
+  text: "."
+  text_range: "16:20::21"
+}
+tokens: {
+  text: "("
+  text_range: "16:27::28"
+}
+tokens: {
+  text: "counter"
+  text_range: "16:28::35"
+}
+tokens: {
+  text: ")"
+  text_range: "16:35::36"
+}
+tokens: {
+  text: ")"
+  text_range: "16:36::37"
+}
+tokens: {
+  text: "msg"
+  text_range: "18:1::4"
+}
+tokens: {
+  text: ":="
+  text_range: "18:5::7"
+}
+tokens: {
+  text: "func"
+  text_range: "18:8::12"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "18:12::13"
+}
+tokens: {
+  text: "str"
+  text_range: "18:13::16"
+}
+tokens: {
+  text: "string"
+  text_range: "18:17::23"
+}
+tokens: {
+  text: ")"
+  text_range: "18:23::24"
+}
+tokens: {
+  text: "string"
+  text_range: "18:25::31"
+}
+tokens: {
+  text: "{"
+  text_range: "18:32::33"
+}
+tokens: {
+  text: "return"
+  text_range: "19:2::8"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "\"Hi \""
+  text_range: "19:9::14"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "+"
+  text_range: "19:15::16"
+}
+tokens: {
+  text: "str"
+  text_range: "19:17::20"
+}
+tokens: {
+  text: "+"
+  text_range: "19:21::22"
+}
+tokens: {
+  text: "\" I'm an anonymous function returning a string.\""
+  text_range: "19:23::71"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "}"
+  text_range: "20:1::2"
+}
+tokens: {
+  text: "("
+  text_range: "20:2::3"
+}
+tokens: {
+  text: "\"Ricky\""
+  text_range: "20:3::10"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ")"
+  text_range: "20:10::11"
+}
+tokens: {
+  text: "fmt"
+  text_range: "21:1::4"
+}
+tokens: {
+  text: "Println"
+  text_range: "21:5::12"
+}
+tokens: {
+  text: "."
+  text_range: "21:4::5"
+}
+tokens: {
+  text: "("
+  text_range: "21:12::13"
+}
+tokens: {
+  text: "msg"
+  text_range: "21:13::16"
+}
+tokens: {
+  text: ")"
+  text_range: "21:16::17"
+}
+tokens: {
+  text: "}"
+  text_range: "22:0::1"
+}
+root: {
+  text_range: "1:0:23:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0::12"
+      cfg_id: 4
+      import_declaration: {
+        children: {
+          text_range: "3:0::6"
+          native: {
+            native_kind: "Tok"
+          }
+        }
+        children: {
+          text_range: "3:7::12"
+          cfg_id: 3
+          import_specification: {
+            path: {
+              text_range: "3:7::12"
+              string_literal: {
+                value: "\"fmt\""
+                content: "fmt"
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "5:0:22:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "5:5::9"
+          cfg_id: 5
+          identifier: {
+            name: "main"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 34
+          }
+        }
+        body: {
+          text_range: "5:12:22:1"
+          cfg_id: 72
+          block: {
+            statement_or_expressions: {
+              text_range: "6:1::20"
+              cfg_id: 9
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:5::12"
+                  cfg_id: 7
+                  identifier: {
+                    name: "counter"
+                    type: "int"
+                    package: "UNKNOWN"
+                    id: 48
+                  }
+                }
+                type: {
+                  text_range: "6:13::16"
+                  cfg_id: 8
+                  identifier: {
+                    name: "int"
+                    type: "int"
+                    package: "UNKNOWN"
+                  }
+                }
+                initializers: {
+                  text_range: "6:19::20"
+                  integer_literal: {
+                    value: "1"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "8:1:10:11"
+              cfg_id: 24
+              expression_statement: {
+                expression: {
+                  text_range: "8:1:10:11"
+                  cfg_id: 23
+                  function_invocation: {
+                    member_select: {
+                      text_range: "8:1:10:2"
+                      cfg_id: 22
+                      function_declaration: {
+                        formal_parameters: {
+                          text_range: "8:6::16"
+                          cfg_id: 12
+                          parameter: {
+                            identifier: {
+                              text_range: "8:6::9"
+                              cfg_id: 10
+                              identifier: {
+                                name: "str"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 71
+                              }
+                            }
+                            type: {
+                              text_range: "8:10::16"
+                              cfg_id: 11
+                              identifier: {
+                                name: "string"
+                                type: "string"
+                                package: "UNKNOWN"
+                              }
+                            }
+                          }
+                        }
+                        body: {
+                          text_range: "8:18:10:2"
+                          cfg_id: 21
+                          block: {
+                            statement_or_expressions: {
+                              text_range: "9:2::53"
+                              cfg_id: 20
+                              expression_statement: {
+                                expression: {
+                                  text_range: "9:2::53"
+                                  cfg_id: 19
+                                  function_invocation: {
+                                    member_select: {
+                                      text_range: "9:2::13"
+                                      cfg_id: 17
+                                      member_select: {
+                                        expression: {
+                                          text_range: "9:2::5"
+                                          cfg_id: 15
+                                          identifier: {
+                                            name: "fmt"
+                                            type: "UNKNOWN"
+                                            package: "fmt"
+                                            id: 22
+                                          }
+                                        }
+                                        identifier: {
+                                          text_range: "9:6::13"
+                                          cfg_id: 16
+                                          identifier: {
+                                            name: "Println"
+                                            type: "func(a ...any) (n int, err error)"
+                                            package: "fmt"
+                                          }
+                                        }
+                                      }
+                                    }
+                                    arguments: {
+                                      text_range: "9:14::18"
+                                      string_literal: {
+                                        value: "\"Hi\""
+                                        content: "Hi"
+                                      }
+                                    }
+                                    arguments: {
+                                      text_range: "9:20::23"
+                                      cfg_id: 18
+                                      identifier: {
+                                        name: "str"
+                                        type: "string"
+                                        package: "UNKNOWN"
+                                        id: 71
+                                      }
+                                    }
+                                    arguments: {
+                                      text_range: "9:25::52"
+                                      string_literal: {
+                                        value: "\"I'm an anonymous function\""
+                                        content: "I'm an anonymous function"
+                                      }
+                                    }
+                                    return_type: "int"
+                                    return_type: "error"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        cfg: {
+                          blocks: {
+                            node_ids: 20
+                            node_ids: 0
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "10:3::10"
+                      string_literal: {
+                        value: "\"Ricky\""
+                        content: "Ricky"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "12:1:14:2"
+              cfg_id: 39
+              variable_declaration: {
+                identifiers: {
+                  text_range: "12:1::8"
+                  cfg_id: 25
+                  identifier: {
+                    name: "funcVar"
+                    type: "func(str string)"
+                    package: "UNKNOWN"
+                    id: 153
+                  }
+                }
+                initializers: {
+                  text_range: "12:12:14:2"
+                  cfg_id: 38
+                  function_declaration: {
+                    formal_parameters: {
+                      text_range: "12:17::27"
+                      cfg_id: 28
+                      parameter: {
+                        identifier: {
+                          text_range: "12:17::20"
+                          cfg_id: 26
+                          identifier: {
+                            name: "str"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 169
+                          }
+                        }
+                        type: {
+                          text_range: "12:21::27"
+                          cfg_id: 27
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    body: {
+                      text_range: "12:29:14:2"
+                      cfg_id: 37
+                      block: {
+                        statement_or_expressions: {
+                          text_range: "13:2::77"
+                          cfg_id: 36
+                          expression_statement: {
+                            expression: {
+                              text_range: "13:2::77"
+                              cfg_id: 35
+                              function_invocation: {
+                                member_select: {
+                                  text_range: "13:2::13"
+                                  cfg_id: 33
+                                  member_select: {
+                                    expression: {
+                                      text_range: "13:2::5"
+                                      cfg_id: 31
+                                      identifier: {
+                                        name: "fmt"
+                                        type: "UNKNOWN"
+                                        package: "fmt"
+                                        id: 22
+                                      }
+                                    }
+                                    identifier: {
+                                      text_range: "13:6::13"
+                                      cfg_id: 32
+                                      identifier: {
+                                        name: "Println"
+                                        type: "func(a ...any) (n int, err error)"
+                                        package: "fmt"
+                                      }
+                                    }
+                                  }
+                                }
+                                arguments: {
+                                  text_range: "13:14::18"
+                                  string_literal: {
+                                    value: "\"Hi\""
+                                    content: "Hi"
+                                  }
+                                }
+                                arguments: {
+                                  text_range: "13:20::23"
+                                  cfg_id: 34
+                                  identifier: {
+                                    name: "str"
+                                    type: "string"
+                                    package: "UNKNOWN"
+                                    id: 169
+                                  }
+                                }
+                                arguments: {
+                                  text_range: "13:25::76"
+                                  string_literal: {
+                                    value: "\"I'm an anonymous function assigned to a variable.\""
+                                    content: "I'm an anonymous function assigned to a variable."
+                                  }
+                                }
+                                return_type: "int"
+                                return_type: "error"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    cfg: {
+                      blocks: {
+                        node_ids: 36
+                        node_ids: 0
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "16:1::37"
+              cfg_id: 48
+              expression_statement: {
+                expression: {
+                  text_range: "16:1::37"
+                  cfg_id: 47
+                  function_invocation: {
+                    member_select: {
+                      text_range: "16:1::8"
+                      cfg_id: 40
+                      identifier: {
+                        name: "funcVar"
+                        type: "func(str string)"
+                        package: "UNKNOWN"
+                        id: 153
+                      }
+                    }
+                    arguments: {
+                      text_range: "16:9::36"
+                      cfg_id: 46
+                      binary_expression: {
+                        operator: "PLUS"
+                        operator_token: "16:15::16"
+                        left_operand: {
+                          text_range: "16:9::14"
+                          string_literal: {
+                            value: "\"Bob\""
+                            content: "Bob"
+                          }
+                        }
+                        right_operand: {
+                          text_range: "16:17::36"
+                          cfg_id: 45
+                          function_invocation: {
+                            member_select: {
+                              text_range: "16:17::27"
+                              cfg_id: 43
+                              member_select: {
+                                expression: {
+                                  text_range: "16:17::20"
+                                  cfg_id: 41
+                                  identifier: {
+                                    name: "fmt"
+                                    type: "UNKNOWN"
+                                    package: "fmt"
+                                    id: 22
+                                  }
+                                }
+                                identifier: {
+                                  text_range: "16:21::27"
+                                  cfg_id: 42
+                                  identifier: {
+                                    name: "Sprint"
+                                    type: "func(a ...any) string"
+                                    package: "fmt"
+                                  }
+                                }
+                              }
+                            }
+                            arguments: {
+                              text_range: "16:28::35"
+                              cfg_id: 44
+                              identifier: {
+                                name: "counter"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 48
+                              }
+                            }
+                            return_type: "string"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "18:1:20:11"
+              cfg_id: 65
+              variable_declaration: {
+                identifiers: {
+                  text_range: "18:1::4"
+                  cfg_id: 49
+                  identifier: {
+                    name: "msg"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 305
+                  }
+                }
+                initializers: {
+                  text_range: "18:8:20:11"
+                  cfg_id: 64
+                  function_invocation: {
+                    member_select: {
+                      text_range: "18:8:20:2"
+                      cfg_id: 63
+                      function_declaration: {
+                        return_type: {
+                          text_range: "18:25::31"
+                          cfg_id: 57
+                          native: {
+                            native_kind: "Results(FieldList)"
+                            children: {
+                              text_range: "18:25::31"
+                              cfg_id: 56
+                              native: {
+                                native_kind: "[0](Field)"
+                                children: {
+                                  text_range: "18:25::31"
+                                  cfg_id: 55
+                                  identifier: {
+                                    name: "string"
+                                    type: "string"
+                                    package: "UNKNOWN"
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                        formal_parameters: {
+                          text_range: "18:13::23"
+                          cfg_id: 52
+                          parameter: {
+                            identifier: {
+                              text_range: "18:13::16"
+                              cfg_id: 50
+                              identifier: {
+                                name: "str"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 317
+                              }
+                            }
+                            type: {
+                              text_range: "18:17::23"
+                              cfg_id: 51
+                              identifier: {
+                                name: "string"
+                                type: "string"
+                                package: "UNKNOWN"
+                              }
+                            }
+                          }
+                        }
+                        body: {
+                          text_range: "18:32:20:2"
+                          cfg_id: 62
+                          block: {
+                            statement_or_expressions: {
+                              text_range: "19:2::71"
+                              cfg_id: 61
+                              return_statement: {
+                                expressions: {
+                                  text_range: "19:9::71"
+                                  cfg_id: 60
+                                  binary_expression: {
+                                    operator: "PLUS"
+                                    operator_token: "19:21::22"
+                                    left_operand: {
+                                      text_range: "19:9::20"
+                                      cfg_id: 59
+                                      binary_expression: {
+                                        operator: "PLUS"
+                                        operator_token: "19:15::16"
+                                        left_operand: {
+                                          text_range: "19:9::14"
+                                          string_literal: {
+                                            value: "\"Hi \""
+                                            content: "Hi "
+                                          }
+                                        }
+                                        right_operand: {
+                                          text_range: "19:17::20"
+                                          cfg_id: 58
+                                          identifier: {
+                                            name: "str"
+                                            type: "string"
+                                            package: "UNKNOWN"
+                                            id: 317
+                                          }
+                                        }
+                                      }
+                                    }
+                                    right_operand: {
+                                      text_range: "19:23::71"
+                                      string_literal: {
+                                        value: "\" I'm an anonymous function returning a string.\""
+                                        content: " I'm an anonymous function returning a string."
+                                      }
+                                    }
+                                  }
+                                }
+                                keyword: "19:2::8"
+                              }
+                            }
+                          }
+                        }
+                        cfg: {
+                          blocks: {
+                            node_ids: 61
+                          }
+                          blocks: {}
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "20:3::10"
+                      string_literal: {
+                        value: "\"Ricky\""
+                        content: "Ricky"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:1::17"
+              cfg_id: 71
+              expression_statement: {
+                expression: {
+                  text_range: "21:1::17"
+                  cfg_id: 70
+                  function_invocation: {
+                    member_select: {
+                      text_range: "21:1::12"
+                      cfg_id: 68
+                      member_select: {
+                        expression: {
+                          text_range: "21:1::4"
+                          cfg_id: 66
+                          identifier: {
+                            name: "fmt"
+                            type: "UNKNOWN"
+                            package: "fmt"
+                            id: 22
+                          }
+                        }
+                        identifier: {
+                          text_range: "21:5::12"
+                          cfg_id: 67
+                          identifier: {
+                            name: "Println"
+                            type: "func(a ...any) (n int, err error)"
+                            package: "fmt"
+                          }
+                        }
+                      }
+                    }
+                    arguments: {
+                      text_range: "21:13::16"
+                      cfg_id: 69
+                      identifier: {
+                        name: "msg"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 305
+                      }
+                    }
+                    return_type: "int"
+                    return_type: "error"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 9
+            node_ids: 24
+            node_ids: 39
+            node_ids: 48
+            node_ids: 65
+            node_ids: 71
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

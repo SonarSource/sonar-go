@@ -197,6 +197,9 @@ func TestAnalysisPipelineEmitsExpectedSpans(t *testing.T) {
 	assert.NotNil(t, heapArgs["gcPauseUs"])
 
 	assert.Positive(t, eventNamed(events, "tree.concat")["args"].(map[string]any)["outputBytes"])
+	encodeArgs := eventNamed(events, "tree.encode")["args"].(map[string]any)
+	assert.Equal(t, "resources/simple_file_with_packages.go.source", encodeArgs["fileName"])
+	assert.Positive(t, encodeArgs["outputBytes"])
 }
 
 func TestGcExportEmitsWriteSpan(t *testing.T) {

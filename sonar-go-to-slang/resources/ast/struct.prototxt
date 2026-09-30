@@ -1,0 +1,268 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "type"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "AccessRequest"
+  text_range: "3:5::18"
+}
+tokens: {
+  text: "struct"
+  text_range: "3:19::25"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "3:26::27"
+}
+tokens: {
+  text: "Id"
+  text_range: "4:1::3"
+}
+tokens: {
+  text: "string"
+  text_range: "4:4::10"
+}
+tokens: {
+  text: "\"id\""
+  text_range: "4:11::15"
+}
+tokens: {
+  text: "Name"
+  text_range: "5:1::5"
+}
+tokens: {
+  text: "string"
+  text_range: "5:6::12"
+}
+tokens: {
+  text: "\"name\""
+  text_range: "5:13::19"
+}
+tokens: {
+  text: "Status"
+  text_range: "6:1::7"
+}
+tokens: {
+  text: "string"
+  text_range: "6:8::14"
+}
+tokens: {
+  text: "\"status\""
+  text_range: "6:15::23"
+}
+tokens: {
+  text: "}"
+  text_range: "7:0::1"
+}
+root: {
+  text_range: "1:0:7:1"
+  cfg_id: 17
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:7:1"
+      cfg_id: 16
+      class_declaration: {
+        identifier: "3:5::18"
+        class_tree: {
+          text_range: "3:0:7:1"
+          cfg_id: 15
+          native: {
+            native_kind: "[0](TypeSpecWrapped)"
+            children: {
+              text_range: "3:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "3:5::18"
+              cfg_id: 3
+              identifier: {
+                name: "AccessRequest"
+                type: "main.AccessRequest"
+                package: "ModuleNameForTest/main"
+                id: 20
+              }
+            }
+            children: {
+              text_range: "3:19:7:1"
+              cfg_id: 14
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "3:19::25"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "3:26:7:1"
+                  cfg_id: 13
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "3:26::27"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "4:1::15"
+                      cfg_id: 6
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "4:1::3"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "4:1::3"
+                              cfg_id: 4
+                              identifier: {
+                                name: "Id"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 44
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "4:4::10"
+                          cfg_id: 5
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        children: {
+                          text_range: "4:11::15"
+                          native: {
+                            native_kind: "Tag(BasicLit)"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "5:1::19"
+                      cfg_id: 9
+                      native: {
+                        native_kind: "[1](Field)"
+                        children: {
+                          text_range: "5:1::5"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "5:1::5"
+                              cfg_id: 7
+                              identifier: {
+                                name: "Name"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 60
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "5:6::12"
+                          cfg_id: 8
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        children: {
+                          text_range: "5:13::19"
+                          native: {
+                            native_kind: "Tag(BasicLit)"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "6:1::23"
+                      cfg_id: 12
+                      native: {
+                        native_kind: "[2](Field)"
+                        children: {
+                          text_range: "6:1::7"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "6:1::7"
+                              cfg_id: 10
+                              identifier: {
+                                name: "Status"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 80
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "6:8::14"
+                          cfg_id: 11
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        children: {
+                          text_range: "6:15::23"
+                          native: {
+                            native_kind: "Tag(BasicLit)"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "7:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1518 @@
+comments: {
+  text: "// https://go.dev/doc/effective_go#maps"
+  content_text: " https://go.dev/doc/effective_go#maps"
+  range: "3:0::39"
+  content_range: "3:2::39"
+}
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "func"
+  text_range: "5:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mapCreatedAtInitialization"
+  text_range: "5:5::31"
+}
+tokens: {
+  text: "("
+  text_range: "5:31::32"
+}
+tokens: {
+  text: ")"
+  text_range: "5:32::33"
+}
+tokens: {
+  text: "{"
+  text_range: "5:34::35"
+}
+tokens: {
+  text: "var"
+  text_range: "6:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "m"
+  text_range: "6:5::6"
+}
+tokens: {
+  text: "map"
+  text_range: "6:9::12"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "6:13::19"
+}
+tokens: {
+  text: "["
+  text_range: "6:12::13"
+}
+tokens: {
+  text: "string"
+  text_range: "6:20::26"
+}
+tokens: {
+  text: "]"
+  text_range: "6:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "6:26::27"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "6:27::32"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "6:32::33"
+}
+tokens: {
+  text: "\"value\""
+  text_range: "6:34::41"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "}"
+  text_range: "6:41::42"
+}
+tokens: {
+  text: "="
+  text_range: "6:7::8"
+}
+tokens: {
+  text: "b"
+  text_range: "7:1::2"
+}
+tokens: {
+  text: ":="
+  text_range: "7:3::5"
+}
+tokens: {
+  text: "m"
+  text_range: "7:6::7"
+}
+tokens: {
+  text: "["
+  text_range: "7:7::8"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "7:8::13"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "]"
+  text_range: "7:13::14"
+}
+tokens: {
+  text: "}"
+  text_range: "8:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "10:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mapCreatedAtInitializationMultiplesValues"
+  text_range: "10:5::46"
+}
+tokens: {
+  text: "("
+  text_range: "10:46::47"
+}
+tokens: {
+  text: ")"
+  text_range: "10:47::48"
+}
+tokens: {
+  text: "{"
+  text_range: "10:49::50"
+}
+tokens: {
+  text: "var"
+  text_range: "11:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "m"
+  text_range: "11:5::6"
+}
+tokens: {
+  text: "map"
+  text_range: "11:9::12"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "11:13::19"
+}
+tokens: {
+  text: "["
+  text_range: "11:12::13"
+}
+tokens: {
+  text: "string"
+  text_range: "11:20::26"
+}
+tokens: {
+  text: "]"
+  text_range: "11:19::20"
+}
+tokens: {
+  text: "{"
+  text_range: "11:26::27"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "11:27::32"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "11:32::33"
+}
+tokens: {
+  text: "\"value\""
+  text_range: "11:34::41"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "\"key2\""
+  text_range: "11:43::49"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "11:49::50"
+}
+tokens: {
+  text: "\"value2\""
+  text_range: "11:51::59"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ","
+  text_range: "11:41::42"
+}
+tokens: {
+  text: "}"
+  text_range: "11:59::60"
+}
+tokens: {
+  text: "="
+  text_range: "11:7::8"
+}
+tokens: {
+  text: "}"
+  text_range: "12:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "14:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mapFilledWithOneElement"
+  text_range: "14:5::28"
+}
+tokens: {
+  text: "("
+  text_range: "14:28::29"
+}
+tokens: {
+  text: ")"
+  text_range: "14:29::30"
+}
+tokens: {
+  text: "{"
+  text_range: "14:31::32"
+}
+tokens: {
+  text: "var"
+  text_range: "15:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "m"
+  text_range: "15:5::6"
+}
+tokens: {
+  text: "make"
+  text_range: "15:9::13"
+}
+tokens: {
+  text: "("
+  text_range: "15:13::14"
+}
+tokens: {
+  text: "map"
+  text_range: "15:14::17"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "15:18::24"
+}
+tokens: {
+  text: "["
+  text_range: "15:17::18"
+}
+tokens: {
+  text: "string"
+  text_range: "15:25::31"
+}
+tokens: {
+  text: "]"
+  text_range: "15:24::25"
+}
+tokens: {
+  text: ")"
+  text_range: "15:31::32"
+}
+tokens: {
+  text: "="
+  text_range: "15:7::8"
+}
+tokens: {
+  text: "m"
+  text_range: "16:1::2"
+}
+tokens: {
+  text: "["
+  text_range: "16:2::3"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "16:3::8"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "]"
+  text_range: "16:8::9"
+}
+tokens: {
+  text: "="
+  text_range: "16:10::11"
+}
+tokens: {
+  text: "\"value\""
+  text_range: "16:12::19"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "}"
+  text_range: "17:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "19:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mapCommaOkIdiom"
+  text_range: "19:5::20"
+}
+tokens: {
+  text: "("
+  text_range: "19:20::21"
+}
+tokens: {
+  text: ")"
+  text_range: "19:21::22"
+}
+tokens: {
+  text: "{"
+  text_range: "19:23::24"
+}
+tokens: {
+  text: "var"
+  text_range: "20:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "m"
+  text_range: "20:5::6"
+}
+tokens: {
+  text: "make"
+  text_range: "20:9::13"
+}
+tokens: {
+  text: "("
+  text_range: "20:13::14"
+}
+tokens: {
+  text: "map"
+  text_range: "20:14::17"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "20:18::24"
+}
+tokens: {
+  text: "["
+  text_range: "20:17::18"
+}
+tokens: {
+  text: "string"
+  text_range: "20:25::31"
+}
+tokens: {
+  text: "]"
+  text_range: "20:24::25"
+}
+tokens: {
+  text: ")"
+  text_range: "20:31::32"
+}
+tokens: {
+  text: "="
+  text_range: "20:7::8"
+}
+tokens: {
+  text: "m"
+  text_range: "21:1::2"
+}
+tokens: {
+  text: "["
+  text_range: "21:2::3"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "21:3::8"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "]"
+  text_range: "21:8::9"
+}
+tokens: {
+  text: "="
+  text_range: "21:10::11"
+}
+tokens: {
+  text: "\"value\""
+  text_range: "21:12::19"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "if"
+  text_range: "22:1::3"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "v"
+  text_range: "22:4::5"
+}
+tokens: {
+  text: "ok"
+  text_range: "22:7::9"
+}
+tokens: {
+  text: ","
+  text_range: "22:5::6"
+}
+tokens: {
+  text: ":="
+  text_range: "22:10::12"
+}
+tokens: {
+  text: "m"
+  text_range: "22:13::14"
+}
+tokens: {
+  text: "["
+  text_range: "22:14::15"
+}
+tokens: {
+  text: "\"key\""
+  text_range: "22:15::20"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "]"
+  text_range: "22:20::21"
+}
+tokens: {
+  text: "ok"
+  text_range: "22:23::25"
+}
+tokens: {
+  text: ";"
+  text_range: "22:21::22"
+}
+tokens: {
+  text: "{"
+  text_range: "22:26::27"
+}
+tokens: {
+  text: "b"
+  text_range: "23:2::3"
+}
+tokens: {
+  text: ":="
+  text_range: "23:4::6"
+}
+tokens: {
+  text: "v"
+  text_range: "23:7::8"
+}
+tokens: {
+  text: "}"
+  text_range: "24:1::2"
+}
+tokens: {
+  text: "}"
+  text_range: "25:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "27:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "mapsTimeZoneExample"
+  text_range: "27:5::24"
+}
+tokens: {
+  text: "("
+  text_range: "27:24::25"
+}
+tokens: {
+  text: ")"
+  text_range: "27:25::26"
+}
+tokens: {
+  text: "{"
+  text_range: "27:27::28"
+}
+tokens: {
+  text: "var"
+  text_range: "28:1::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "timeZone"
+  text_range: "28:5::13"
+}
+tokens: {
+  text: "map"
+  text_range: "28:16::19"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "28:20::26"
+}
+tokens: {
+  text: "["
+  text_range: "28:19::20"
+}
+tokens: {
+  text: "int"
+  text_range: "28:27::30"
+}
+tokens: {
+  text: "]"
+  text_range: "28:26::27"
+}
+tokens: {
+  text: "{"
+  text_range: "28:30::31"
+}
+tokens: {
+  text: "\"UTC\""
+  text_range: "29:2::7"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "29:7::8"
+}
+tokens: {
+  text: "0"
+  text_range: "29:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "29:11::12"
+}
+tokens: {
+  text: "60"
+  text_range: "29:12::14"
+}
+tokens: {
+  text: "*"
+  text_range: "29:14::15"
+}
+tokens: {
+  text: "60"
+  text_range: "29:15::17"
+}
+tokens: {
+  text: "\"EST\""
+  text_range: "30:2::7"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "30:7::8"
+}
+tokens: {
+  text: "-"
+  text_range: "30:9::10"
+}
+tokens: {
+  text: "5"
+  text_range: "30:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "30:11::12"
+}
+tokens: {
+  text: "60"
+  text_range: "30:12::14"
+}
+tokens: {
+  text: "*"
+  text_range: "30:14::15"
+}
+tokens: {
+  text: "60"
+  text_range: "30:15::17"
+}
+tokens: {
+  text: ","
+  text_range: "29:17::18"
+}
+tokens: {
+  text: "\"CST\""
+  text_range: "31:2::7"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ":"
+  text_range: "31:7::8"
+}
+tokens: {
+  text: "-"
+  text_range: "31:9::10"
+}
+tokens: {
+  text: "6"
+  text_range: "31:10::11"
+}
+tokens: {
+  text: "*"
+  text_range: "31:11::12"
+}
+tokens: {
+  text: "60"
+  text_range: "31:12::14"
+}
+tokens: {
+  text: "*"
+  text_range: "31:14::15"
+}
+tokens: {
+  text: "60"
+  text_range: "31:15::17"
+}
+tokens: {
+  text: ","
+  text_range: "30:17::18"
+}
+tokens: {
+  text: "}"
+  text_range: "32:1::2"
+}
+tokens: {
+  text: ","
+  text_range: "31:17::18"
+}
+tokens: {
+  text: "="
+  text_range: "28:14::15"
+}
+tokens: {
+  text: "}"
+  text_range: "33:0::1"
+}
+root: {
+  text_range: "1:0:34:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "5:0:8:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "5:5::31"
+          cfg_id: 3
+          identifier: {
+            name: "mapCreatedAtInitialization"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 61
+          }
+        }
+        body: {
+          text_range: "5:34:8:1"
+          cfg_id: 16
+          block: {
+            statement_or_expressions: {
+              text_range: "6:1::42"
+              cfg_id: 11
+              variable_declaration: {
+                identifiers: {
+                  text_range: "6:5::6"
+                  cfg_id: 5
+                  identifier: {
+                    name: "m"
+                    type: "map[string]string"
+                    package: "UNKNOWN"
+                    id: 97
+                  }
+                }
+                initializers: {
+                  text_range: "6:9::42"
+                  cfg_id: 10
+                  composite_literal: {
+                    type: {
+                      text_range: "6:9::26"
+                      cfg_id: 8
+                      map_type: {
+                        key: {
+                          text_range: "6:13::19"
+                          cfg_id: 6
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        value: {
+                          text_range: "6:20::26"
+                          cfg_id: 7
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "6:27::41"
+                      cfg_id: 9
+                      key_value: {
+                        key: {
+                          text_range: "6:27::32"
+                          string_literal: {
+                            value: "\"key\""
+                            content: "key"
+                          }
+                        }
+                        value: {
+                          text_range: "6:34::41"
+                          string_literal: {
+                            value: "\"value\""
+                            content: "value"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "7:1::14"
+              cfg_id: 15
+              variable_declaration: {
+                identifiers: {
+                  text_range: "7:1::2"
+                  cfg_id: 12
+                  identifier: {
+                    name: "b"
+                    type: "string"
+                    package: "UNKNOWN"
+                    id: 136
+                  }
+                }
+                initializers: {
+                  text_range: "7:6::14"
+                  cfg_id: 14
+                  index_expression: {
+                    expression: {
+                      text_range: "7:6::7"
+                      cfg_id: 13
+                      identifier: {
+                        name: "m"
+                        type: "map[string]string"
+                        package: "UNKNOWN"
+                        id: 97
+                      }
+                    }
+                    index: {
+                      text_range: "7:8::13"
+                      string_literal: {
+                        value: "\"key\""
+                        content: "key"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 11
+            node_ids: 15
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "10:0:12:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "10:5::46"
+          cfg_id: 2
+          identifier: {
+            name: "mapCreatedAtInitializationMultiplesValues"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 158
+          }
+        }
+        body: {
+          text_range: "10:49:12:1"
+          cfg_id: 12
+          block: {
+            statement_or_expressions: {
+              text_range: "11:1::60"
+              cfg_id: 11
+              variable_declaration: {
+                identifiers: {
+                  text_range: "11:5::6"
+                  cfg_id: 4
+                  identifier: {
+                    name: "m"
+                    type: "map[string]string"
+                    package: "UNKNOWN"
+                    id: 209
+                  }
+                }
+                initializers: {
+                  text_range: "11:9::60"
+                  cfg_id: 10
+                  composite_literal: {
+                    type: {
+                      text_range: "11:9::26"
+                      cfg_id: 7
+                      map_type: {
+                        key: {
+                          text_range: "11:13::19"
+                          cfg_id: 5
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        value: {
+                          text_range: "11:20::26"
+                          cfg_id: 6
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "11:27::41"
+                      cfg_id: 8
+                      key_value: {
+                        key: {
+                          text_range: "11:27::32"
+                          string_literal: {
+                            value: "\"key\""
+                            content: "key"
+                          }
+                        }
+                        value: {
+                          text_range: "11:34::41"
+                          string_literal: {
+                            value: "\"value\""
+                            content: "value"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "11:43::59"
+                      cfg_id: 9
+                      key_value: {
+                        key: {
+                          text_range: "11:43::49"
+                          string_literal: {
+                            value: "\"key2\""
+                            content: "key2"
+                          }
+                        }
+                        value: {
+                          text_range: "11:51::59"
+                          string_literal: {
+                            value: "\"value2\""
+                            content: "value2"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 11
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "14:0:17:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "14:5::28"
+          cfg_id: 2
+          identifier: {
+            name: "mapFilledWithOneElement"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 273
+          }
+        }
+        body: {
+          text_range: "14:31:17:1"
+          cfg_id: 14
+          block: {
+            statement_or_expressions: {
+              text_range: "15:1::32"
+              cfg_id: 10
+              variable_declaration: {
+                identifiers: {
+                  text_range: "15:5::6"
+                  cfg_id: 4
+                  identifier: {
+                    name: "m"
+                    type: "map[string]string"
+                    package: "UNKNOWN"
+                    id: 306
+                  }
+                }
+                initializers: {
+                  text_range: "15:9::32"
+                  cfg_id: 9
+                  function_invocation: {
+                    member_select: {
+                      text_range: "15:9::13"
+                      cfg_id: 5
+                      identifier: {
+                        name: "make"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                      }
+                    }
+                    arguments: {
+                      text_range: "15:14::31"
+                      cfg_id: 8
+                      map_type: {
+                        key: {
+                          text_range: "15:18::24"
+                          cfg_id: 6
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        value: {
+                          text_range: "15:25::31"
+                          cfg_id: 7
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "16:1::19"
+              cfg_id: 13
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "16:1::9"
+                  cfg_id: 12
+                  index_expression: {
+                    expression: {
+                      text_range: "16:1::2"
+                      cfg_id: 11
+                      identifier: {
+                        name: "m"
+                        type: "map[string]string"
+                        package: "UNKNOWN"
+                        id: 306
+                      }
+                    }
+                    index: {
+                      text_range: "16:3::8"
+                      string_literal: {
+                        value: "\"key\""
+                        content: "key"
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "16:12::19"
+                  string_literal: {
+                    value: "\"value\""
+                    content: "value"
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 10
+            node_ids: 13
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "19:0:25:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "19:5::20"
+          cfg_id: 2
+          identifier: {
+            name: "mapCommaOkIdiom"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 362
+          }
+        }
+        body: {
+          text_range: "19:23:25:1"
+          cfg_id: 25
+          block: {
+            statement_or_expressions: {
+              text_range: "20:1::32"
+              cfg_id: 10
+              variable_declaration: {
+                identifiers: {
+                  text_range: "20:5::6"
+                  cfg_id: 4
+                  identifier: {
+                    name: "m"
+                    type: "map[string]string"
+                    package: "UNKNOWN"
+                    id: 387
+                  }
+                }
+                initializers: {
+                  text_range: "20:9::32"
+                  cfg_id: 9
+                  function_invocation: {
+                    member_select: {
+                      text_range: "20:9::13"
+                      cfg_id: 5
+                      identifier: {
+                        name: "make"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                      }
+                    }
+                    arguments: {
+                      text_range: "20:14::31"
+                      cfg_id: 8
+                      map_type: {
+                        key: {
+                          text_range: "20:18::24"
+                          cfg_id: 6
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        value: {
+                          text_range: "20:25::31"
+                          cfg_id: 7
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:1::19"
+              cfg_id: 13
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "21:1::9"
+                  cfg_id: 12
+                  index_expression: {
+                    expression: {
+                      text_range: "21:1::2"
+                      cfg_id: 11
+                      identifier: {
+                        name: "m"
+                        type: "map[string]string"
+                        package: "UNKNOWN"
+                        id: 387
+                      }
+                    }
+                    index: {
+                      text_range: "21:3::8"
+                      string_literal: {
+                        value: "\"key\""
+                        content: "key"
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "21:12::19"
+                  string_literal: {
+                    value: "\"value\""
+                    content: "value"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "22:1:24:2"
+              cfg_id: 24
+              if_statement: {
+                condition: {
+                  text_range: "22:4::25"
+                  native: {
+                    native_kind: "InitAndCond"
+                    children: {
+                      text_range: "22:4::21"
+                      cfg_id: 18
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "22:4::5"
+                          cfg_id: 14
+                          identifier: {
+                            name: "v"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 439
+                          }
+                        }
+                        identifiers: {
+                          text_range: "22:7::9"
+                          cfg_id: 15
+                          identifier: {
+                            name: "ok"
+                            type: "bool"
+                            package: "UNKNOWN"
+                            id: 442
+                          }
+                        }
+                        initializers: {
+                          text_range: "22:13::21"
+                          cfg_id: 17
+                          index_expression: {
+                            expression: {
+                              text_range: "22:13::14"
+                              cfg_id: 16
+                              identifier: {
+                                name: "m"
+                                type: "map[string]string"
+                                package: "UNKNOWN"
+                                id: 387
+                              }
+                            }
+                            index: {
+                              text_range: "22:15::20"
+                              string_literal: {
+                                value: "\"key\""
+                                content: "key"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "22:21::22"
+                      native: {
+                        native_kind: "Semicolon"
+                      }
+                    }
+                    children: {
+                      text_range: "22:23::25"
+                      cfg_id: 19
+                      identifier: {
+                        name: "ok"
+                        type: "bool"
+                        package: "UNKNOWN"
+                        id: 442
+                      }
+                    }
+                  }
+                }
+                then_branch: {
+                  text_range: "22:26:24:2"
+                  cfg_id: 23
+                  block: {
+                    statement_or_expressions: {
+                      text_range: "23:2::8"
+                      cfg_id: 22
+                      variable_declaration: {
+                        identifiers: {
+                          text_range: "23:2::3"
+                          cfg_id: 20
+                          identifier: {
+                            name: "b"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 465
+                          }
+                        }
+                        initializers: {
+                          text_range: "23:7::8"
+                          cfg_id: 21
+                          identifier: {
+                            name: "v"
+                            type: "string"
+                            package: "UNKNOWN"
+                            id: 439
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+                if_keyword: "22:1::3"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 10
+            node_ids: 13
+            node_ids: 18
+            node_ids: 19
+            successors: 1
+            successors: 2
+          }
+          blocks: {
+            node_ids: 22
+            successors: 2
+          }
+          blocks: {
+            node_ids: 0
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "27:0:33:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "27:5::24"
+          cfg_id: 2
+          identifier: {
+            name: "mapsTimeZoneExample"
+            type: "func()"
+            package: "ModuleNameForTest/main"
+            id: 483
+          }
+        }
+        body: {
+          text_range: "27:27:33:1"
+          cfg_id: 21
+          block: {
+            statement_or_expressions: {
+              text_range: "28:1:32:2"
+              cfg_id: 20
+              variable_declaration: {
+                identifiers: {
+                  text_range: "28:5::13"
+                  cfg_id: 4
+                  identifier: {
+                    name: "timeZone"
+                    type: "map[string]int"
+                    package: "UNKNOWN"
+                    id: 512
+                  }
+                }
+                initializers: {
+                  text_range: "28:16:32:2"
+                  cfg_id: 19
+                  composite_literal: {
+                    type: {
+                      text_range: "28:16::30"
+                      cfg_id: 7
+                      map_type: {
+                        key: {
+                          text_range: "28:20::26"
+                          cfg_id: 5
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                        value: {
+                          text_range: "28:27::30"
+                          cfg_id: 6
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "29:2::17"
+                      cfg_id: 10
+                      key_value: {
+                        key: {
+                          text_range: "29:2::7"
+                          string_literal: {
+                            value: "\"UTC\""
+                            content: "UTC"
+                          }
+                        }
+                        value: {
+                          text_range: "29:10::17"
+                          cfg_id: 9
+                          binary_expression: {
+                            operator: "TIMES"
+                            operator_token: "29:14::15"
+                            left_operand: {
+                              text_range: "29:10::14"
+                              cfg_id: 8
+                              binary_expression: {
+                                operator: "TIMES"
+                                operator_token: "29:11::12"
+                                left_operand: {
+                                  text_range: "29:10::11"
+                                  integer_literal: {
+                                    value: "0"
+                                  }
+                                }
+                                right_operand: {
+                                  text_range: "29:12::14"
+                                  integer_literal: {
+                                    value: "60"
+                                  }
+                                }
+                              }
+                            }
+                            right_operand: {
+                              text_range: "29:15::17"
+                              integer_literal: {
+                                value: "60"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "30:2::17"
+                      cfg_id: 14
+                      key_value: {
+                        key: {
+                          text_range: "30:2::7"
+                          string_literal: {
+                            value: "\"EST\""
+                            content: "EST"
+                          }
+                        }
+                        value: {
+                          text_range: "30:9::17"
+                          cfg_id: 13
+                          binary_expression: {
+                            operator: "TIMES"
+                            operator_token: "30:14::15"
+                            left_operand: {
+                              text_range: "30:9::14"
+                              cfg_id: 12
+                              binary_expression: {
+                                operator: "TIMES"
+                                operator_token: "30:11::12"
+                                left_operand: {
+                                  text_range: "30:9::11"
+                                  cfg_id: 11
+                                  unary_expression: {
+                                    operator: "MINUS"
+                                    operand: {
+                                      text_range: "30:10::11"
+                                      integer_literal: {
+                                        value: "5"
+                                      }
+                                    }
+                                  }
+                                }
+                                right_operand: {
+                                  text_range: "30:12::14"
+                                  integer_literal: {
+                                    value: "60"
+                                  }
+                                }
+                              }
+                            }
+                            right_operand: {
+                              text_range: "30:15::17"
+                              integer_literal: {
+                                value: "60"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                    elements: {
+                      text_range: "31:2::17"
+                      cfg_id: 18
+                      key_value: {
+                        key: {
+                          text_range: "31:2::7"
+                          string_literal: {
+                            value: "\"CST\""
+                            content: "CST"
+                          }
+                        }
+                        value: {
+                          text_range: "31:9::17"
+                          cfg_id: 17
+                          binary_expression: {
+                            operator: "TIMES"
+                            operator_token: "31:14::15"
+                            left_operand: {
+                              text_range: "31:9::14"
+                              cfg_id: 16
+                              binary_expression: {
+                                operator: "TIMES"
+                                operator_token: "31:11::12"
+                                left_operand: {
+                                  text_range: "31:9::11"
+                                  cfg_id: 15
+                                  unary_expression: {
+                                    operator: "MINUS"
+                                    operand: {
+                                      text_range: "31:10::11"
+                                      integer_literal: {
+                                        value: "6"
+                                      }
+                                    }
+                                  }
+                                }
+                                right_operand: {
+                                  text_range: "31:12::14"
+                                  integer_literal: {
+                                    value: "60"
+                                  }
+                                }
+                              }
+                            }
+                            right_operand: {
+                              text_range: "31:15::17"
+                              integer_literal: {
+                                value: "60"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 20
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,1029 @@
+tokens: {
+  text: "package"
+  text_range: "1:0::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "main"
+  text_range: "1:8::12"
+}
+tokens: {
+  text: "type"
+  text_range: "3:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "Address"
+  text_range: "3:5::12"
+}
+tokens: {
+  text: "struct"
+  text_range: "3:13::19"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "3:20::21"
+}
+tokens: {
+  text: "street"
+  text_range: "4:1::7"
+}
+tokens: {
+  text: "string"
+  text_range: "4:8::14"
+}
+tokens: {
+  text: "}"
+  text_range: "5:0::1"
+}
+tokens: {
+  text: "type"
+  text_range: "7:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "Person"
+  text_range: "7:5::11"
+}
+tokens: {
+  text: "struct"
+  text_range: "7:12::18"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "{"
+  text_range: "7:19::20"
+}
+tokens: {
+  text: "name"
+  text_range: "8:1::5"
+}
+tokens: {
+  text: "string"
+  text_range: "8:6::12"
+}
+tokens: {
+  text: "age"
+  text_range: "9:1::4"
+}
+tokens: {
+  text: "int"
+  text_range: "9:6::9"
+}
+tokens: {
+  text: "address"
+  text_range: "10:1::8"
+}
+tokens: {
+  text: "Address"
+  text_range: "10:9::16"
+}
+tokens: {
+  text: "}"
+  text_range: "11:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "13:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "("
+  text_range: "13:5::6"
+}
+tokens: {
+  text: "p"
+  text_range: "13:6::7"
+}
+tokens: {
+  text: "*"
+  text_range: "13:8::9"
+}
+tokens: {
+  text: "Person"
+  text_range: "13:9::15"
+}
+tokens: {
+  text: ")"
+  text_range: "13:15::16"
+}
+tokens: {
+  text: "getAddress"
+  text_range: "13:17::27"
+}
+tokens: {
+  text: "("
+  text_range: "13:27::28"
+}
+tokens: {
+  text: ")"
+  text_range: "13:28::29"
+}
+tokens: {
+  text: "Address"
+  text_range: "13:30::37"
+}
+tokens: {
+  text: "{"
+  text_range: "13:38::39"
+}
+tokens: {
+  text: "return"
+  text_range: "14:1::7"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "p"
+  text_range: "14:8::9"
+}
+tokens: {
+  text: "address"
+  text_range: "14:10::17"
+}
+tokens: {
+  text: "."
+  text_range: "14:9::10"
+}
+tokens: {
+  text: "}"
+  text_range: "15:0::1"
+}
+tokens: {
+  text: "func"
+  text_range: "17:0::4"
+  type: "KEYWORD"
+}
+tokens: {
+  text: "foo"
+  text_range: "17:5::8"
+}
+tokens: {
+  text: "("
+  text_range: "17:8::9"
+}
+tokens: {
+  text: "value"
+  text_range: "17:9::14"
+}
+tokens: {
+  text: "*"
+  text_range: "17:15::16"
+}
+tokens: {
+  text: "Person"
+  text_range: "17:16::22"
+}
+tokens: {
+  text: ")"
+  text_range: "17:22::23"
+}
+tokens: {
+  text: "{"
+  text_range: "17:24::25"
+}
+tokens: {
+  text: "value"
+  text_range: "18:1::6"
+}
+tokens: {
+  text: "name"
+  text_range: "18:7::11"
+}
+tokens: {
+  text: "."
+  text_range: "18:6::7"
+}
+tokens: {
+  text: "="
+  text_range: "18:12::13"
+}
+tokens: {
+  text: "\"a\""
+  text_range: "18:14::17"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: "panic"
+  text_range: "19:1::6"
+}
+tokens: {
+  text: "("
+  text_range: "19:6::7"
+}
+tokens: {
+  text: "value"
+  text_range: "19:7::12"
+}
+tokens: {
+  text: "age"
+  text_range: "19:13::16"
+}
+tokens: {
+  text: "."
+  text_range: "19:12::13"
+}
+tokens: {
+  text: ")"
+  text_range: "19:16::17"
+}
+tokens: {
+  text: ";"
+  text_range: "18:17::18"
+}
+tokens: {
+  text: "value"
+  text_range: "20:1::6"
+}
+tokens: {
+  text: "address"
+  text_range: "20:7::14"
+}
+tokens: {
+  text: "."
+  text_range: "20:6::7"
+}
+tokens: {
+  text: "street"
+  text_range: "20:15::21"
+}
+tokens: {
+  text: "."
+  text_range: "20:14::15"
+}
+tokens: {
+  text: "="
+  text_range: "20:22::23"
+}
+tokens: {
+  text: "\"b\""
+  text_range: "20:24::27"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ";"
+  text_range: "19:17::18"
+}
+tokens: {
+  text: "value"
+  text_range: "21:1::6"
+}
+tokens: {
+  text: "getAddress"
+  text_range: "21:7::17"
+}
+tokens: {
+  text: "."
+  text_range: "21:6::7"
+}
+tokens: {
+  text: "("
+  text_range: "21:17::18"
+}
+tokens: {
+  text: ")"
+  text_range: "21:18::19"
+}
+tokens: {
+  text: "street"
+  text_range: "21:20::26"
+}
+tokens: {
+  text: "."
+  text_range: "21:19::20"
+}
+tokens: {
+  text: "="
+  text_range: "21:27::28"
+}
+tokens: {
+  text: "\"b\""
+  text_range: "21:29::32"
+  type: "STRING_LITERAL"
+}
+tokens: {
+  text: ";"
+  text_range: "20:27::28"
+}
+tokens: {
+  text: "}"
+  text_range: "22:0::1"
+}
+tokens: {
+  text: ";"
+  text_range: "21:32::33"
+}
+root: {
+  text_range: "1:0:23:0"
+  cfg_id: 2
+  top_level: {
+    declarations: {
+      text_range: "1:0::12"
+      cfg_id: 2
+      package_declaration: {
+        children: {
+          text_range: "1:0::7"
+          native: {}
+        }
+        children: {
+          text_range: "1:8::12"
+          cfg_id: 1
+          identifier: {
+            name: "main"
+            type: "UNKNOWN"
+            package: "UNKNOWN"
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "3:0:5:1"
+      cfg_id: 10
+      class_declaration: {
+        identifier: "3:5::12"
+        class_tree: {
+          text_range: "3:0:5:1"
+          cfg_id: 9
+          native: {
+            native_kind: "[0](TypeSpecWrapped)"
+            children: {
+              text_range: "3:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "3:5::12"
+              cfg_id: 3
+              identifier: {
+                name: "Address"
+                type: "main.Address"
+                package: "ModuleNameForTest/main"
+                id: 20
+              }
+            }
+            children: {
+              text_range: "3:13:5:1"
+              cfg_id: 8
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "3:13::19"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "3:20:5:1"
+                  cfg_id: 7
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "3:20::21"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "4:1::14"
+                      cfg_id: 6
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "4:1::7"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "4:1::7"
+                              cfg_id: 4
+                              identifier: {
+                                name: "street"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 38
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "4:8::14"
+                          cfg_id: 5
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "5:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "7:0:11:1"
+      cfg_id: 24
+      class_declaration: {
+        identifier: "7:5::11"
+        class_tree: {
+          text_range: "7:0:11:1"
+          cfg_id: 23
+          native: {
+            native_kind: "[1](TypeSpecWrapped)"
+            children: {
+              text_range: "7:0::4"
+              native: {
+                native_kind: "Tok"
+              }
+            }
+            children: {
+              text_range: "7:5::11"
+              cfg_id: 11
+              identifier: {
+                name: "Person"
+                type: "main.Person"
+                package: "ModuleNameForTest/main"
+                id: 60
+              }
+            }
+            children: {
+              text_range: "7:12:11:1"
+              cfg_id: 22
+              native: {
+                native_kind: "Type(StructType)"
+                children: {
+                  text_range: "7:12::18"
+                  native: {
+                    native_kind: "Struct"
+                  }
+                }
+                children: {
+                  text_range: "7:19:11:1"
+                  cfg_id: 21
+                  native: {
+                    native_kind: "Fields(FieldList)"
+                    children: {
+                      text_range: "7:19::20"
+                      native: {
+                        native_kind: "Opening"
+                      }
+                    }
+                    children: {
+                      text_range: "8:1::12"
+                      cfg_id: 14
+                      native: {
+                        native_kind: "[0](Field)"
+                        children: {
+                          text_range: "8:1::5"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "8:1::5"
+                              cfg_id: 12
+                              identifier: {
+                                name: "name"
+                                type: "string"
+                                package: "UNKNOWN"
+                                id: 77
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "8:6::12"
+                          cfg_id: 13
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "9:1::9"
+                      cfg_id: 17
+                      native: {
+                        native_kind: "[1](Field)"
+                        children: {
+                          text_range: "9:1::4"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "9:1::4"
+                              cfg_id: 15
+                              identifier: {
+                                name: "age"
+                                type: "int"
+                                package: "UNKNOWN"
+                                id: 90
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "9:6::9"
+                          cfg_id: 16
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "10:1::16"
+                      cfg_id: 20
+                      native: {
+                        native_kind: "[2](Field)"
+                        children: {
+                          text_range: "10:1::8"
+                          native: {
+                            native_kind: "Names([]*Ident)"
+                            children: {
+                              text_range: "10:1::8"
+                              cfg_id: 18
+                              identifier: {
+                                name: "address"
+                                type: "main.Address"
+                                package: "UNKNOWN"
+                                id: 100
+                              }
+                            }
+                          }
+                        }
+                        children: {
+                          text_range: "10:9::16"
+                          cfg_id: 19
+                          identifier: {
+                            name: "Address"
+                            type: "main.Address"
+                            package: "ModuleNameForTest/main"
+                            id: 20
+                          }
+                        }
+                      }
+                    }
+                    children: {
+                      text_range: "11:0::1"
+                      native: {
+                        native_kind: "Closing"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    declarations: {
+      text_range: "13:0:15:1"
+      cfg_id: 1
+      function_declaration: {
+        return_type: {
+          text_range: "13:30::37"
+          cfg_id: 34
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "13:30::37"
+              cfg_id: 33
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "13:30::37"
+                  cfg_id: 32
+                  identifier: {
+                    name: "Address"
+                    type: "main.Address"
+                    package: "ModuleNameForTest/main"
+                    id: 20
+                  }
+                }
+              }
+            }
+          }
+        }
+        receiver: {
+          text_range: "13:5::16"
+          cfg_id: 29
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "13:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
+              text_range: "13:6::15"
+              cfg_id: 28
+              native: {
+                native_kind: "[0](Field)"
+                children: {
+                  text_range: "13:6::7"
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "13:6::7"
+                      cfg_id: 25
+                      identifier: {
+                        name: "p"
+                        type: "*main.Person"
+                        package: "UNKNOWN"
+                        id: 125
+                      }
+                    }
+                  }
+                }
+                children: {
+                  text_range: "13:8::15"
+                  cfg_id: 27
+                  star_expression: {
+                    expression: {
+                      text_range: "13:9::15"
+                      cfg_id: 26
+                      identifier: {
+                        name: "Person"
+                        type: "main.Person"
+                        package: "ModuleNameForTest/main"
+                        id: 60
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            children: {
+              text_range: "13:15::16"
+              native: {
+                native_kind: "Closing"
+              }
+            }
+          }
+        }
+        name: {
+          text_range: "13:17::27"
+          cfg_id: 30
+          identifier: {
+            name: "getAddress"
+            type: "func() main.Address"
+            package: "ModuleNameForTest/main"
+            id: 136
+          }
+        }
+        body: {
+          text_range: "13:38:15:1"
+          cfg_id: 39
+          block: {
+            statement_or_expressions: {
+              text_range: "14:1::17"
+              cfg_id: 38
+              return_statement: {
+                expressions: {
+                  text_range: "14:8::17"
+                  cfg_id: 37
+                  member_select: {
+                    expression: {
+                      text_range: "14:8::9"
+                      cfg_id: 35
+                      identifier: {
+                        name: "p"
+                        type: "*main.Person"
+                        package: "UNKNOWN"
+                        id: 125
+                      }
+                    }
+                    identifier: {
+                      text_range: "14:10::17"
+                      cfg_id: 36
+                      identifier: {
+                        name: "address"
+                        type: "main.Address"
+                        package: "UNKNOWN"
+                        id: 100
+                      }
+                    }
+                  }
+                }
+                keyword: "14:1::7"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 38
+          }
+          blocks: {}
+        }
+      }
+    }
+    declarations: {
+      text_range: "17:0:22:1"
+      cfg_id: 1
+      function_declaration: {
+        name: {
+          text_range: "17:5::8"
+          cfg_id: 2
+          identifier: {
+            name: "foo"
+            type: "func(value *main.Person)"
+            package: "ModuleNameForTest/main"
+            id: 185
+          }
+        }
+        formal_parameters: {
+          text_range: "17:9::22"
+          cfg_id: 6
+          parameter: {
+            identifier: {
+              text_range: "17:9::14"
+              cfg_id: 3
+              identifier: {
+                name: "value"
+                type: "*main.Person"
+                package: "UNKNOWN"
+                id: 189
+              }
+            }
+            type: {
+              text_range: "17:15::22"
+              cfg_id: 5
+              star_expression: {
+                expression: {
+                  text_range: "17:16::22"
+                  cfg_id: 4
+                  identifier: {
+                    name: "Person"
+                    type: "main.Person"
+                    package: "ModuleNameForTest/main"
+                    id: 60
+                  }
+                }
+              }
+            }
+          }
+        }
+        body: {
+          text_range: "17:24:22:1"
+          cfg_id: 32
+          block: {
+            statement_or_expressions: {
+              text_range: "18:1::17"
+              cfg_id: 12
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "18:1::11"
+                  cfg_id: 11
+                  member_select: {
+                    expression: {
+                      text_range: "18:1::6"
+                      cfg_id: 9
+                      identifier: {
+                        name: "value"
+                        type: "*main.Person"
+                        package: "UNKNOWN"
+                        id: 189
+                      }
+                    }
+                    identifier: {
+                      text_range: "18:7::11"
+                      cfg_id: 10
+                      identifier: {
+                        name: "name"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 77
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "18:14::17"
+                  string_literal: {
+                    value: "\"a\""
+                    content: "a"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "18:17::18"
+              native: {
+                native_kind: "Semicolon"
+              }
+            }
+            statement_or_expressions: {
+              text_range: "19:1::17"
+              cfg_id: 18
+              expression_statement: {
+                expression: {
+                  text_range: "19:1::17"
+                  cfg_id: 17
+                  function_invocation: {
+                    member_select: {
+                      text_range: "19:1::6"
+                      cfg_id: 13
+                      identifier: {
+                        name: "panic"
+                        type: "UNKNOWN"
+                        package: "UNKNOWN"
+                      }
+                    }
+                    arguments: {
+                      text_range: "19:7::16"
+                      cfg_id: 16
+                      member_select: {
+                        expression: {
+                          text_range: "19:7::12"
+                          cfg_id: 14
+                          identifier: {
+                            name: "value"
+                            type: "*main.Person"
+                            package: "UNKNOWN"
+                            id: 189
+                          }
+                        }
+                        identifier: {
+                          text_range: "19:13::16"
+                          cfg_id: 15
+                          identifier: {
+                            name: "age"
+                            type: "int"
+                            package: "UNKNOWN"
+                            id: 90
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "19:17::18"
+              native: {
+                native_kind: "Semicolon"
+              }
+            }
+            statement_or_expressions: {
+              text_range: "20:1::27"
+              cfg_id: 24
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "20:1::21"
+                  cfg_id: 23
+                  member_select: {
+                    expression: {
+                      text_range: "20:1::14"
+                      cfg_id: 21
+                      member_select: {
+                        expression: {
+                          text_range: "20:1::6"
+                          cfg_id: 19
+                          identifier: {
+                            name: "value"
+                            type: "*main.Person"
+                            package: "UNKNOWN"
+                            id: 189
+                          }
+                        }
+                        identifier: {
+                          text_range: "20:7::14"
+                          cfg_id: 20
+                          identifier: {
+                            name: "address"
+                            type: "main.Address"
+                            package: "UNKNOWN"
+                            id: 100
+                          }
+                        }
+                      }
+                    }
+                    identifier: {
+                      text_range: "20:15::21"
+                      cfg_id: 22
+                      identifier: {
+                        name: "street"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 38
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "20:24::27"
+                  string_literal: {
+                    value: "\"b\""
+                    content: "b"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "20:27::28"
+              native: {
+                native_kind: "Semicolon"
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:1::32"
+              cfg_id: 31
+              assignment_expression: {
+                operator: "EQUAL"
+                left_hand_side: {
+                  text_range: "21:1::26"
+                  cfg_id: 30
+                  member_select: {
+                    expression: {
+                      text_range: "21:1::19"
+                      cfg_id: 28
+                      function_invocation: {
+                        member_select: {
+                          text_range: "21:1::17"
+                          cfg_id: 27
+                          member_select: {
+                            expression: {
+                              text_range: "21:1::6"
+                              cfg_id: 25
+                              identifier: {
+                                name: "value"
+                                type: "*main.Person"
+                                package: "UNKNOWN"
+                                id: 189
+                              }
+                            }
+                            identifier: {
+                              text_range: "21:7::17"
+                              cfg_id: 26
+                              identifier: {
+                                name: "getAddress"
+                                type: "func() main.Address"
+                                package: "ModuleNameForTest/main"
+                                id: 136
+                              }
+                            }
+                          }
+                        }
+                        return_type: "main.Address"
+                      }
+                    }
+                    identifier: {
+                      text_range: "21:20::26"
+                      cfg_id: 29
+                      identifier: {
+                        name: "street"
+                        type: "string"
+                        package: "UNKNOWN"
+                        id: 38
+                      }
+                    }
+                  }
+                }
+                statement_or_expression: {
+                  text_range: "21:29::32"
+                  string_literal: {
+                    value: "\"b\""
+                    content: "b"
+                  }
+                }
+              }
+            }
+            statement_or_expressions: {
+              text_range: "21:32::33"
+              native: {
+                native_kind: "Semicolon"
+              }
+            }
+          }
+        }
+        cfg: {
+          blocks: {
+            node_ids: 12
+            node_ids: 18
+            node_ids: 24
+            node_ids: 31
+            node_ids: 0
+          }
+        }
+      }
+    }
+  }
+}

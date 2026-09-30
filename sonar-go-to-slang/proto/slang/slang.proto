@@ -1,0 +1,387 @@
+// SonarSource Go
+// Copyright (C) SonarSource Sàrl
+// mailto:info AT sonarsource DOT com
+//
+// You can redistribute and/or modify this program under the terms of
+// the Sonar Source-Available License Version 1, as published by SonarSource Sàrl.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+// See the Sonar Source-Available License for more details.
+//
+// You should have received a copy of the Sonar Source-Available License
+// along with this program; if not, see https://sonarsource.com/license/ssal/
+
+syntax = "proto3";
+
+// The SLANG AST as it travels from sonar-go-to-slang to the analyzer: one message per SLANG node
+// type, dispatched through a single oneof, so that every field is typed at compile time on both
+// sides instead of going through a string-keyed map.
+//
+// The messages mirror the Java Tree interfaces of org.sonar.plugins.go.api, which ProtoTree.java
+// rebuilds from them; the Go encoder is protoSlang.go. A field added here has to be filled on the
+// Go side and read on the Java side to carry anything.
+//
+// Positions are the compact text range format of RangeConverter, "startLine:startColumn:endLine:
+// endColumn" with the end line left out when it is the start line. A field holding one is a
+// reference, resolved against the tokens of the enclosing Tree rather than duplicating their
+// value; an empty one means that there is no such token.
+package sonargo.slang;
+
+option go_package = "github.com/SonarSource/slang/sonar-go-to-slang/proto/slang";
+option java_package = "org.sonarsource.go.proto";
+option java_outer_classname = "SlangProto";
+
+// One file of the response: its tree, under the name the analyzer looks it up by. The name travels
+// inside the message rather than beside it, so that reading a response is one parse per file.
+message File {
+  string name = 1;
+  Tree tree = 2;
+}
+
+// The AST of one source file, with the comments and the tokens its nodes resolve their positions
+// against. A file that could not be parsed carries only error.
+message Tree {
+  repeated Comment comments = 1;
+  repeated Token tokens = 2;
+  Node root = 3;
+  optional string error = 4;
+}
+
+message Comment {
+  string text = 1;
+  string content_text = 2;
+  string range = 3;
+  string content_range = 4;
+}
+
+message Token {
+  string text = 1;
+  string text_range = 2;
+  // The Token.Type name, empty for OTHER, which is by far the most frequent one.
+  string type = 3;
+}
+
+// Every node carries its own position and exactly one payload, which the oneof case identifies: no
+// separate type tag is needed. The field numbers of the payloads are ordered by how often each kind
+// occurs in Go code, so that the most frequent ones get a single-byte tag (numbers 1 to 15).
+message Node {
+  string text_range = 1;
+  // Identifies this node among the ones a Cfg of the enclosing function refers to; 0 when the node
+  // has none, which is the case for the nodes that no Go AST node maps to.
+  int32 cfg_id = 2;
+
+  oneof kind {
+    Identifier identifier = 3;
+    Native native = 4;
+    IntegerLiteral integer_literal = 5;
+    VariableDeclaration variable_declaration = 6;
+    StringLiteral string_literal = 7;
+    Block block = 8;
+    FunctionInvocation function_invocation = 9;
+    FunctionDeclaration function_declaration = 10;
+    MemberSelect member_select = 11;
+    ExpressionStatement expression_statement = 12;
+    BinaryExpression binary_expression = 13;
+    Parameter parameter = 14;
+    AssignmentExpression assignment_expression = 15;
+
+    ArrayType array_type = 16;
+    TopLevel top_level = 17;
+    PackageDeclaration package_declaration = 18;
+    CompositeLiteral composite_literal = 19;
+    ClassDeclaration class_declaration = 20;
+    PlaceHolder place_holder = 21;
+    IndexExpression index_expression = 22;
+    ImportSpecification import_specification = 23;
+    KeyValue key_value = 24;
+    Return return_statement = 25;
+    StarExpression star_expression = 26;
+    Literal literal = 27;
+    ImportDeclaration import_declaration = 28;
+    UnaryExpression unary_expression = 29;
+    Loop loop = 30;
+    MapType map_type = 31;
+    MatchCase match_case = 32;
+    ParenthesizedExpression parenthesized_expression = 33;
+    LeftRightHandSide left_right_hand_side = 34;
+    FloatLiteral float_literal = 35;
+    If if_statement = 36;
+    Match match = 37;
+    Jump jump = 38;
+    Slice slice = 39;
+    IndexListExpression index_list_expression = 40;
+    GoStatement go_statement = 41;
+    TypeAssertionExpression type_assertion_expression = 42;
+    Ellipsis ellipsis = 43;
+    ImaginaryLiteral imaginary_literal = 44;
+
+    // The kinds below have no Go counterpart, and so are never emitted today. They complete the
+    // Java Tree hierarchy, which other analyzers share, and are decoded like any other kind.
+    Catch catch_clause = 45;
+    ExceptionHandling exception_handling = 46;
+    Modifier modifier = 47;
+    Throw throw_statement = 48;
+  }
+}
+
+message Identifier {
+  string name = 1;
+  string type = 2;
+  string package = 3;
+  int32 id = 4;
+}
+
+message Native {
+  string native_kind = 1;
+  repeated Node children = 2;
+}
+
+message IntegerLiteral {
+  string value = 1;
+}
+
+message VariableDeclaration {
+  repeated Node identifiers = 1;
+  Node type = 2;
+  repeated Node initializers = 3;
+  bool is_val = 4;
+}
+
+message StringLiteral {
+  string value = 1;
+  string content = 2;
+}
+
+message Block {
+  repeated Node statement_or_expressions = 1;
+}
+
+message FunctionInvocation {
+  Node member_select = 1;
+  repeated Node arguments = 2;
+  repeated string return_type = 3;
+}
+
+message FunctionDeclaration {
+  Node return_type = 1;
+  Node receiver = 2;
+  Node name = 3;
+  repeated Node formal_parameters = 4;
+  Node type_parameters = 5;
+  Node body = 6;
+  Cfg cfg = 7;
+}
+
+// The control flow graph of the body of a function. The first block is the entry point, and the
+// successors of a block are indices into blocks.
+message Cfg {
+  repeated CfgBlock blocks = 1;
+}
+
+message CfgBlock {
+  // The cfg_id of each node of the block, in execution order. An id the enclosing function stamped
+  // on none of its nodes is 0, and is dropped when the graph is rebuilt.
+  repeated int32 node_ids = 1;
+  repeated int32 successors = 2;
+}
+
+message MemberSelect {
+  Node expression = 1;
+  Node identifier = 2;
+}
+
+message ExpressionStatement {
+  Node expression = 1;
+}
+
+message BinaryExpression {
+  string operator = 1;
+  string operator_token = 2;
+  Node left_operand = 3;
+  Node right_operand = 4;
+}
+
+message Parameter {
+  Node identifier = 1;
+  Node type = 2;
+}
+
+message AssignmentExpression {
+  string operator = 1;
+  Node left_hand_side = 2;
+  Node statement_or_expression = 3;
+}
+
+message ArrayType {
+  Node element = 1;
+  Node length = 2;
+}
+
+message TopLevel {
+  repeated Node declarations = 1;
+  string first_cpd_token = 2;
+}
+
+message PackageDeclaration {
+  repeated Node children = 1;
+}
+
+message CompositeLiteral {
+  Node type = 1;
+  repeated Node elements = 2;
+}
+
+message ClassDeclaration {
+  // Resolved against class_tree instead of being a node of its own, as the identifier is one of its
+  // descendants.
+  string identifier = 1;
+  Node class_tree = 2;
+}
+
+message PlaceHolder {
+  string place_holder_token = 1;
+}
+
+message IndexExpression {
+  Node expression = 1;
+  Node index = 2;
+}
+
+message ImportSpecification {
+  Node name = 1;
+  Node path = 2;
+}
+
+message KeyValue {
+  Node key = 1;
+  Node value = 2;
+}
+
+message Return {
+  repeated Node expressions = 1;
+  string keyword = 2;
+}
+
+message StarExpression {
+  Node expression = 1;
+}
+
+message Literal {
+  string value = 1;
+}
+
+message ImportDeclaration {
+  repeated Node children = 1;
+}
+
+message UnaryExpression {
+  string operator = 1;
+  Node operand = 2;
+}
+
+message Loop {
+  Node condition = 1;
+  Node body = 2;
+  string kind = 3;
+  string keyword = 4;
+}
+
+message MapType {
+  Node key = 1;
+  Node value = 2;
+}
+
+message MatchCase {
+  Node expression = 1;
+  Node body = 2;
+}
+
+message ParenthesizedExpression {
+  Node expression = 1;
+  string left_parenthesis = 2;
+  string right_parenthesis = 3;
+}
+
+message LeftRightHandSide {
+  repeated Node children = 1;
+}
+
+message FloatLiteral {
+  string value = 1;
+}
+
+message If {
+  Node condition = 1;
+  Node then_branch = 2;
+  Node else_branch = 3;
+  string if_keyword = 4;
+  string else_keyword = 5;
+}
+
+message Match {
+  Node expression = 1;
+  repeated Node cases = 2;
+  string keyword = 3;
+}
+
+message Jump {
+  Node label = 1;
+  string keyword = 2;
+  string kind = 3;
+}
+
+message Slice {
+  Node expression = 1;
+  Node low = 2;
+  Node high = 3;
+  Node max = 4;
+  bool slice3 = 5;
+}
+
+message IndexListExpression {
+  Node expression = 1;
+  repeated Node indices = 2;
+}
+
+message GoStatement {
+  string go_token = 1;
+  Node function_invocation = 2;
+}
+
+message TypeAssertionExpression {
+  Node expression = 1;
+  Node type = 2;
+}
+
+message Ellipsis {
+  string ellipsis = 1;
+  Node element = 2;
+}
+
+message ImaginaryLiteral {
+  string value = 1;
+}
+
+message Catch {
+  Node catch_parameter = 1;
+  Node catch_block = 2;
+  string keyword = 3;
+}
+
+message ExceptionHandling {
+  Node try_block = 1;
+  string try_keyword = 2;
+  repeated Node catch_blocks = 3;
+  Node finally_block = 4;
+}
+
+message Modifier {
+  string kind = 1;
+}
+
+message Throw {
+  string keyword = 1;
+  Node body = 2;
+}
