@@ -29,6 +29,7 @@ const identifiersField = "identifiers"
 const operatorField = "operator"
 const operandField = "operand"
 const conditionField = "condition"
+const typeParametersField = "typeParameters"
 const expressionField = "expression"
 const expressionsField = "expressions"
 const lParentKind = "Lparen"
@@ -266,24 +267,38 @@ func (t *SlangMapper) mapGenDeclType(decl *ast.GenDecl, fieldName string) *Node 
 		return nil
 	}
 
+	// The "type" token belongs to the declaration rather than to the specification, but a declaration
+	// holding a single specification has nothing else to hold it, so it lends it to the class tree.
+	typeToken := t.createTokenFromPosAstToken(decl.TokPos, decl.Tok, "Tok")
+	return t.mapTypeSpecToClassDeclaration(spec, typeToken, fieldName)
+}
+
+// Maps a type specification to a ClassDeclaration. "typeToken" is the "type" token of the declaration
+// holding the specification, and is nil for a specification of a parenthesized declaration, which holds
+// the token itself.
+func (t *SlangMapper) mapTypeSpecToClassDeclaration(spec *ast.TypeSpec, typeToken *Node, fieldName string) *Node {
 	var children []*Node
 	slangField := make(map[string]interface{})
 
-	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.TokPos, decl.Tok, "Tok"))
-	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.Lparen, token.LPAREN, lParentKind))
+	children = t.appendNode(children, typeToken)
 
 	specName := t.mapName(spec.Name, "Name")
 	children = t.appendNode(children, specName)
 	slangField[identifierField] = specName.TextRange
 
-	children = t.appendNode(children, t.mapFieldListTypeParams(spec.TypeParams, "TypeParams"))
+	typeParameters := t.mapFieldListTypeParams(spec.TypeParams, "TypeParams")
+	children = t.appendNode(children, typeParameters)
+	// The type parameters are part of the class tree, so they are referenced by their range rather than
+	// mapped a second time, like the identifier
+	if typeParameters != nil {
+		slangField[typeParametersField] = typeParameters.TextRange
+	}
+
 	children = t.appendNode(children, t.createTokenFromPosAstToken(spec.Assign, token.ASSIGN, "Assign"))
 	children = t.appendNode(children, t.mapExpr(spec.Type, "Type"))
 
 	//ClassTree in SLang contains everything (including identifier), we create a new node for this purpose
 	classTree := t.createNativeNode(spec, children, fieldName+"(TypeSpecWrapped)")
-
-	children = t.appendNode(children, t.createTokenFromPosAstToken(decl.Rparen, token.RPAREN, rParentKind))
 
 	slangField["classTree"] = classTree
 	return t.createNode(spec, []*Node{classTree}, fieldName+"(TypeSpec)", "ClassDeclaration", slangField)
@@ -301,8 +316,8 @@ func (t *SlangMapper) mapGenDeclImpl(decl *ast.GenDecl, fieldName string) *Node 
 		if decl.Lparen == token.NoPos {
 			return t.mapGenDeclType(decl, fieldName)
 		} else {
-			// a parenthesized type declaration has no identifier of its own, it stays native and each of its
-			// specifications is mapped by the generated mapTypeSpec
+			// A parenthesized type declaration has no identifier of its own, so it stays native and each of
+			// its specifications is mapped to its own ClassDeclaration by mapTypeSpecImpl.
 			return nil
 		}
 	case token.IMPORT:
@@ -371,11 +386,60 @@ func (t *SlangMapper) mapFieldListParamsImpl(list *ast.FieldList, fieldName stri
 }
 
 func (t *SlangMapper) mapFieldListResultsImpl(list *ast.FieldList, fieldName string) *Node {
-	return nil
+	return t.mapFieldListDeclaringNames(list, fieldName, token.LPAREN, token.RPAREN)
 }
 
 func (t *SlangMapper) mapFieldListReceiverImpl(list *ast.FieldList, fieldName string) *Node {
-	return nil
+	return t.mapFieldListDeclaringNames(list, fieldName, token.LPAREN, token.RPAREN)
+}
+
+// Maps a field list holding a name and a type per field: the receiver, the results and the type parameters
+// of a function or of a function type, and the type parameters of a type declaration. Reached from
+// mapFuncDecl and mapFuncLit, and from the generated mapFuncType for a bare function type, whose names
+// belong to no function body. The parameters keep mapFieldListParams, which maps one Parameter per name,
+// and the fields of a struct or of an interface stay native. "opening" and "closing" delimit the list.
+func (t *SlangMapper) mapFieldListDeclaringNames(list *ast.FieldList, fieldName string, opening, closing token.Token) *Node {
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(list.Opening, opening, "Opening"))
+
+	var fields []*Node
+	for i := 0; i < len(list.List); i++ {
+		field := t.mapFieldDeclaringNames(list.List[i], "["+strconv.Itoa(i)+"]")
+		if field != nil {
+			fields = append(fields, field)
+		}
+		children = t.appendNode(children, field)
+	}
+	slangField["fields"] = fields
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(list.Closing, closing, "Closing"))
+
+	return t.createNode(list, children, fieldName+"(FieldList)", "FieldList", slangField)
+}
+
+// Maps a field of a list mapped by mapFieldListDeclaringNames: the names it declares, if any, and their
+// type. A tag is not mapped, only a field of a struct can hold one.
+func (t *SlangMapper) mapFieldDeclaringNames(field *ast.Field, fieldName string) *Node {
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	var names []*Node
+	for i := 0; i < len(field.Names); i++ {
+		name := t.mapName(field.Names[i], "["+strconv.Itoa(i)+"]")
+		if name != nil {
+			names = append(names, name)
+		}
+		children = t.appendNode(children, name)
+	}
+	slangField["names"] = names
+
+	fieldType := t.mapExpr(field.Type, "Type")
+	children = t.appendNode(children, fieldType)
+	slangField["type"] = fieldType
+
+	return t.createNode(field, children, fieldName+"(Field)", "Field", slangField)
 }
 
 func (t *SlangMapper) mapFieldListBraceImpl(list *ast.FieldList, fieldName string) *Node {
@@ -387,7 +451,7 @@ func (t *SlangMapper) mapFuncTypeImpl(funcType *ast.FuncType, fieldName string) 
 }
 
 func (t *SlangMapper) mapFieldListTypeParamsImpl(list *ast.FieldList, fieldName string) *Node {
-	return nil
+	return t.mapFieldListDeclaringNames(list, fieldName, token.LBRACK, token.RBRACK)
 }
 
 func (t *SlangMapper) mapFuncTypeDeclImpl(funcType *ast.FuncType, fieldName string) *Node {
@@ -477,7 +541,10 @@ func (t *SlangMapper) mapImportSpecImpl(spec *ast.ImportSpec, fieldName string) 
 }
 
 func (t *SlangMapper) mapTypeSpecImpl(spec *ast.TypeSpec, fieldName string) *Node {
-	return nil
+	// A TypeSpec is only reached from a parenthesized type declaration: the single specification of a
+	// declaration without parentheses is mapped by mapGenDeclType, which holds the "type" token this one
+	// does not own.
+	return t.mapTypeSpecToClassDeclaration(spec, nil, fieldName)
 }
 
 func (t *SlangMapper) mapValueSpecImpl(spec *ast.ValueSpec, fieldName string) *Node {
@@ -838,21 +905,7 @@ func (t *SlangMapper) mapRangeStmtImpl(stmt *ast.RangeStmt, fieldName string) *N
 	children = t.appendNode(children, forToken)
 	slangField[keywordField] = forToken.TextRange
 
-	var rangeHeaderList []*Node
-
-	if stmt.Tok == token.DEFINE {
-		// the key and the value of a ":=" range only hold names
-		rangeHeaderList = t.appendNode(rangeHeaderList, t.mapShortDeclarationName(stmt.Key, "Key"))
-		rangeHeaderList = t.appendNode(rangeHeaderList, t.mapShortDeclarationName(stmt.Value, "Value"))
-	} else {
-		rangeHeaderList = t.appendNode(rangeHeaderList, t.mapExpr(stmt.Key, "Key"))
-		rangeHeaderList = t.appendNode(rangeHeaderList, t.mapExpr(stmt.Value, "Value"))
-	}
-	rangeHeaderList = t.appendNode(rangeHeaderList, t.createTokenFromPosAstToken(stmt.TokPos, stmt.Tok, "Tok"))
-	rangeHeaderList = t.appendNode(rangeHeaderList, t.mapExpr(stmt.X, "X"))
-
-	//Wrap all element of the range loop into one single node
-	condition := t.createNativeNodeWithChildren(rangeHeaderList, "RangeHeader")
+	condition := t.mapRangeClause(stmt)
 	children = t.appendNode(children, condition)
 	slangField[conditionField] = condition
 
@@ -863,6 +916,41 @@ func (t *SlangMapper) mapRangeStmtImpl(stmt *ast.RangeStmt, fieldName string) *N
 	slangField["kind"] = "FOR"
 
 	return t.createNode(stmt, children, fieldName+"(RangeStmt)", "Loop", slangField)
+}
+
+// Maps the clause of a "range" loop: the key and the value it iterates with, both optional, the expression
+// it ranges over, and whether ":=" makes the key and the value declarations rather than assignments to
+// already declared variables.
+func (t *SlangMapper) mapRangeClause(stmt *ast.RangeStmt) *Node {
+	var children []*Node
+	slangField := make(map[string]interface{})
+
+	isDeclaration := stmt.Tok == token.DEFINE
+
+	var key, value *Node
+	if isDeclaration {
+		// the key and the value of a ":=" range only hold names
+		key = t.mapShortDeclarationName(stmt.Key, "Key")
+		value = t.mapShortDeclarationName(stmt.Value, "Value")
+	} else {
+		key = t.mapExpr(stmt.Key, "Key")
+		value = t.mapExpr(stmt.Value, "Value")
+	}
+	children = t.appendNode(children, key)
+	children = t.appendNode(children, value)
+	slangField["key"] = key
+	slangField["value"] = value
+
+	children = t.appendNode(children, t.createTokenFromPosAstToken(stmt.TokPos, stmt.Tok, "Tok"))
+
+	rangedExpression := t.mapExpr(stmt.X, "X")
+	children = t.appendNode(children, rangedExpression)
+	slangField["rangedExpression"] = rangedExpression
+
+	slangField["isDeclaration"] = isDeclaration
+
+	// At this point, we are creating an "artificial" node, the clause has no node of its own in the Go AST.
+	return t.createNodeWithChildren(nil, children, "RangeClause", slangField)
 }
 
 func (t *SlangMapper) mapSelectStmtImpl(stmt *ast.SelectStmt, fieldName string) *Node {

@@ -14,21 +14,30 @@
  * You should have received a copy of the Sonar Source-Available License
  * along with this program; if not, see https://sonarsource.com/license/ssal/
  */
-package org.sonar.plugins.go.api;
+package org.sonar.go.impl;
 
-import javax.annotation.CheckForNull;
+import java.util.List;
+import org.sonar.plugins.go.api.FieldListTree;
+import org.sonar.plugins.go.api.FieldTree;
+import org.sonar.plugins.go.api.Tree;
+import org.sonar.plugins.go.api.TreeMetaData;
 
-public interface ClassDeclarationTree extends Tree {
+public class FieldListTreeImpl extends BaseTreeImpl implements FieldListTree {
 
-  @CheckForNull
-  IdentifierTree identifier();
+  private final List<FieldTree> fields;
 
-  /**
-   * The type parameters of the declared type, or null when it declares none.
-   */
-  @CheckForNull
-  FieldListTree typeParameters();
+  public FieldListTreeImpl(TreeMetaData metaData, List<FieldTree> fields) {
+    super(metaData);
+    this.fields = fields;
+  }
 
-  Tree classTree();
+  @Override
+  public List<FieldTree> fields() {
+    return fields;
+  }
 
+  @Override
+  public List<Tree> children() {
+    return List.copyOf(fields);
+  }
 }

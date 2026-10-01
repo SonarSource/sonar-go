@@ -20,13 +20,9 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
-import org.sonar.go.testing.TestGoConverterSingleFile;
-import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.NativeKind;
-import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
 import static java.util.Collections.emptyList;
@@ -90,31 +86,6 @@ class NativeKindsTest {
     assertThat(result).isFalse();
   }
 
-  @Test
-  void shouldReturnMethodReceiver() {
-    var tree = (TopLevelTree) TestGoConverterSingleFile.parse("""
-      package main
-      func (ctrl *MyController) users() {}
-      """);
-    var methodReceiver = tree.descendants()
-      .filter(NativeKinds::isMethodReceiverTreeIdentifier)
-      .findFirst()
-      .get();
-    assertThat(((IdentifierTree) methodReceiver.children().get(0)).name()).isEqualTo("ctrl");
-  }
-
-  @Test
-  void shouldNotFindMethodReceiver() {
-    var tree = (TopLevelTree) TestGoConverterSingleFile.parse("""
-      package main
-      func users() {}
-      """);
-    var methodReceiver = tree.descendants()
-      .filter(NativeKinds::isMethodReceiverTreeIdentifier)
-      .findFirst();
-    assertThat(methodReceiver).isEmpty();
-  }
-
   @ParameterizedTest
   @CsvSource(textBlock = """
     (CompositeLit),true
@@ -147,37 +118,5 @@ class NativeKindsTest {
     var kind = mock(NativeKind.class);
     var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
     assertThat(isKeyValueExpr(tree)).isFalse();
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {
-    "Type([]Subtype)",
-    "Type([12]Subtype)",
-  })
-  void shouldFindStringNativeKind(String stringKind) {
-    var kind = new StringNativeKind(stringKind);
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
-    assertThat(result).isTrue();
-  }
-
-  @ParameterizedTest
-  @ValueSource(strings = {
-    "Other([]Subtype)",
-    "Type([]Other)",
-    "Other([]Other)",
-  })
-  void shouldNotFindStringNativeKindWithDifferentTypeSubtype(String stringKind) {
-    var kind = new StringNativeKind(stringKind);
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), kind, List.of());
-    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
-    assertThat(result).isFalse();
-  }
-
-  @Test
-  void shouldNotFindStringNativeKind() {
-    var tree = new NativeTreeImpl(mock(TreeMetaData.class), mock(), List.of());
-    var result = NativeKinds.isStringNativeKindOfType(tree, "Type", "Subtype");
-    assertThat(result).isFalse();
   }
 }

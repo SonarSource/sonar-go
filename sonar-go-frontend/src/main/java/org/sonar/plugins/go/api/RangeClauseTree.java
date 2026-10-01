@@ -18,17 +18,26 @@ package org.sonar.plugins.go.api;
 
 import javax.annotation.CheckForNull;
 
-public interface ClassDeclarationTree extends Tree {
+/**
+ * The clause of a {@code range} loop, the {@link LoopTree#condition()} of such a loop. Both the key and the value are
+ * optional: {@code for range x} has neither, {@code for k := range x} has no value.
+ */
+public interface RangeClauseTree extends Tree {
 
   @CheckForNull
-  IdentifierTree identifier();
+  Tree key();
+
+  @CheckForNull
+  Tree value();
 
   /**
-   * The type parameters of the declared type, or null when it declares none.
+   * The expression the loop ranges over.
    */
-  @CheckForNull
-  FieldListTree typeParameters();
+  Tree rangedExpression();
 
-  Tree classTree();
-
+  /**
+   * Whether the clause declares its key and its value, as {@code for k, v := range x} does, rather than assigning to
+   * already declared variables, as {@code for k, v = range x} does.
+   */
+  boolean isDeclaration();
 }

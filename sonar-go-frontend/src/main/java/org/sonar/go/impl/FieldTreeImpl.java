@@ -16,49 +16,43 @@
  */
 package org.sonar.go.impl;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.plugins.go.api.ClassDeclarationTree;
-import org.sonar.plugins.go.api.FieldListTree;
+import org.sonar.go.utils.TreeUtils;
+import org.sonar.plugins.go.api.FieldTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
-public class ClassDeclarationTreeImpl extends BaseTreeImpl implements ClassDeclarationTree {
+public class FieldTreeImpl extends BaseTreeImpl implements FieldTree {
 
-  private final IdentifierTree identifier;
-  private final FieldListTree typeParameters;
-  private final Tree classTree;
+  private final List<IdentifierTree> names;
+  @Nullable
+  private final Tree type;
 
-  public ClassDeclarationTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, @Nullable FieldListTree typeParameters, Tree classTree) {
+  public FieldTreeImpl(TreeMetaData metaData, List<IdentifierTree> names, @Nullable Tree type) {
     super(metaData);
-    this.identifier = identifier;
-    this.typeParameters = typeParameters;
-    this.classTree = classTree;
+    this.names = names;
+    this.type = type;
+  }
+
+  @Override
+  public List<IdentifierTree> names() {
+    return names;
   }
 
   @CheckForNull
   @Override
-  public IdentifierTree identifier() {
-    return identifier;
-  }
-
-  @CheckForNull
-  @Override
-  public FieldListTree typeParameters() {
-    return typeParameters;
-  }
-
-  @Override
-  public Tree classTree() {
-    return classTree;
+  public Tree type() {
+    return type;
   }
 
   @Override
   public List<Tree> children() {
-    // identifier and typeParameters are not added to the children as they are already part of this classTree structure
-    return Collections.singletonList(classTree);
+    List<Tree> children = new ArrayList<>(names);
+    TreeUtils.addToListIfNotNull(children, type);
+    return children;
   }
 }

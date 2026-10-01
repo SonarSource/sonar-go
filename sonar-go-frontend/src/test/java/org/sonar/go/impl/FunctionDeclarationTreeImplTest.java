@@ -25,12 +25,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.sonar.go.impl.cfg.BlockImpl;
 import org.sonar.go.impl.cfg.ControlFlowGraphImpl;
-import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.go.utils.TreeCreationUtils;
 import org.sonar.plugins.go.api.BlockTree;
+import org.sonar.plugins.go.api.FieldListTree;
 import org.sonar.plugins.go.api.IdentifierTree;
-import org.sonar.plugins.go.api.NativeKind;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -44,34 +43,30 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.sonar.go.impl.TextRanges.range;
 import static org.sonar.go.symbols.GoNativeType.UNKNOWN;
-import static org.sonar.go.utils.TreeCreationUtils.simpleNative;
 
 class FunctionDeclarationTreeImplTest {
-  private static final NativeKind SIMPLE_KIND = new NativeKind() {
-  };
-  private static final NativeKind METHOD_RECEIVER = new StringNativeKind("Names([]*Ident)");
 
   @Test
   void test() {
     TreeMetaData meta = null;
-    Tree returnType = TreeCreationUtils.identifier("int");
-    Tree receiver = simpleNative(METHOD_RECEIVER, List.of(TreeCreationUtils.identifier("r", "*main.MyReceiverType", "receiverPackage")));
-    Tree receiverWrapper = simpleNative(SIMPLE_KIND, List.of(receiver));
+    FieldListTree returnType = TreeCreationUtils.fieldList(TreeCreationUtils.field(emptyList(), TreeCreationUtils.identifier("int")));
+    FieldListTree receiver = TreeCreationUtils.fieldList(
+      TreeCreationUtils.field(List.of(TreeCreationUtils.identifier("r", "*main.MyReceiverType", "receiverPackage")), null));
     IdentifierTree name = TreeCreationUtils.identifier("foo", UNKNOWN, "fooPackage");
     IdentifierTree paramName = TreeCreationUtils.identifier("p1");
     ParameterTree param = new ParameterTreeImpl(meta, paramName, null);
     List<Tree> params = List.of(param);
-    Tree typeParameters = simpleNative(SIMPLE_KIND, List.of(TreeCreationUtils.identifier("T")));
+    FieldListTree typeParameters = TreeCreationUtils.fieldList(TreeCreationUtils.field(List.of(TreeCreationUtils.identifier("T")), null));
     BlockTree body = new BlockTreeImpl(meta, emptyList());
     ControlFlowGraph cfg = new ControlFlowGraphImpl(List.of(new BlockImpl(List.of())));
 
-    FunctionDeclarationTreeImpl tree = new FunctionDeclarationTreeImpl(meta, returnType, receiverWrapper, name, params, typeParameters, body, cfg);
-    assertThat(tree.children()).containsExactly(returnType, receiverWrapper, name, param, typeParameters, body);
+    FunctionDeclarationTreeImpl tree = new FunctionDeclarationTreeImpl(meta, returnType, receiver, name, params, typeParameters, body, cfg);
+    assertThat(tree.children()).containsExactly(returnType, receiver, name, param, typeParameters, body);
     assertThat(tree.returnType()).isEqualTo(returnType);
     assertThat(tree.name()).isEqualTo(name);
     assertThat(tree.formalParameters()).isEqualTo(params);
     assertThat(tree.body()).isEqualTo(body);
-    assertThat(tree.receiver()).isSameAs(receiverWrapper);
+    assertThat(tree.receiver()).isSameAs(receiver);
     assertThat(tree.receiverName()).isEqualTo("r");
     // second call of receiverName for coverage (lazy calculation)
     assertThat(tree.receiverName()).isEqualTo("r");

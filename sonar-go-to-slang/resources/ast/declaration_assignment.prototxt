@@ -1929,20 +1929,12 @@ root: {
         return_type: {
           text_range: "51:11::24"
           cfg_id: 8
-          native: {
-            native_kind: "Results(FieldList)"
-            children: {
-              text_range: "51:11::12"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "51:12::15"
               cfg_id: 5
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                type: {
                   text_range: "51:12::15"
                   cfg_id: 4
                   identifier: {
@@ -1953,16 +1945,11 @@ root: {
                 }
               }
             }
-            children: {
-              text_range: "51:15::16"
-              native: {}
-            }
-            children: {
+            fields: {
               text_range: "51:17::23"
               cfg_id: 7
-              native: {
-                native_kind: "[1](Field)"
-                children: {
+              field: {
+                type: {
                   text_range: "51:17::23"
                   cfg_id: 6
                   identifier: {
@@ -1971,12 +1958,6 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "51:23::24"
-              native: {
-                native_kind: "Closing"
               }
             }
           }

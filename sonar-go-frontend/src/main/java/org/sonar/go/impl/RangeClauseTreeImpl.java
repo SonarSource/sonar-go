@@ -21,62 +21,55 @@ import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.go.utils.TreeUtils;
-import org.sonar.plugins.go.api.SliceTree;
+import org.sonar.plugins.go.api.RangeClauseTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
 
-public class SliceTreeImpl extends BaseTreeImpl implements SliceTree {
+public class RangeClauseTreeImpl extends BaseTreeImpl implements RangeClauseTree {
 
-  private final Tree expression;
-  private final Tree low;
-  private final Tree high;
-  private final Tree max;
-  private final boolean slice3;
+  @Nullable
+  private final Tree key;
+  @Nullable
+  private final Tree value;
+  private final Tree rangedExpression;
+  private final boolean isDeclaration;
 
-  public SliceTreeImpl(TreeMetaData metaData, Tree expression, @Nullable Tree low, @Nullable Tree high, @Nullable Tree max, boolean slice3) {
+  public RangeClauseTreeImpl(TreeMetaData metaData, @Nullable Tree key, @Nullable Tree value, Tree rangedExpression, boolean isDeclaration) {
     super(metaData);
-    this.expression = expression;
-    this.low = low;
-    this.high = high;
-    this.max = max;
-    this.slice3 = slice3;
-  }
-
-  @Override
-  public Tree expression() {
-    return expression;
+    this.key = key;
+    this.value = value;
+    this.rangedExpression = rangedExpression;
+    this.isDeclaration = isDeclaration;
   }
 
   @CheckForNull
   @Override
-  public Tree low() {
-    return low;
+  public Tree key() {
+    return key;
   }
 
   @CheckForNull
   @Override
-  public Tree high() {
-    return high;
-  }
-
-  @CheckForNull
-  @Override
-  public Tree max() {
-    return max;
+  public Tree value() {
+    return value;
   }
 
   @Override
-  public boolean slice3() {
-    return slice3;
+  public Tree rangedExpression() {
+    return rangedExpression;
+  }
+
+  @Override
+  public boolean isDeclaration() {
+    return isDeclaration;
   }
 
   @Override
   public List<Tree> children() {
     List<Tree> children = new ArrayList<>();
-    children.add(expression);
-    TreeUtils.addToListIfNotNull(children, low);
-    TreeUtils.addToListIfNotNull(children, high);
-    TreeUtils.addToListIfNotNull(children, max);
+    TreeUtils.addToListIfNotNull(children, key);
+    TreeUtils.addToListIfNotNull(children, value);
+    children.add(rangedExpression);
     return children;
   }
 }

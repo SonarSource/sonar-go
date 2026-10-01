@@ -253,8 +253,9 @@ func setProtoStatementKind(result *slang.Node, slangType string, f map[string]in
 		}}
 	case "ClassDeclaration":
 		result.Kind = &slang.Node_ClassDeclaration{ClassDeclaration: &slang.ClassDeclaration{
-			Identifier: textRangeField(f, identifierField),
-			ClassTree:  buildProtoNode(nodeField(f, "classTree")),
+			Identifier:     textRangeField(f, identifierField),
+			ClassTree:      buildProtoNode(nodeField(f, "classTree")),
+			TypeParameters: textRangeField(f, typeParametersField),
 		}}
 	case "ImportSpecification":
 		result.Kind = &slang.Node_ImportSpecification{ImportSpecification: &slang.ImportSpecification{
@@ -276,6 +277,22 @@ func setProtoStatementKind(result *slang.Node, slangType string, f map[string]in
 			Body:      buildProtoNode(nodeField(f, "body")),
 			Kind:      stringField(f, "kind"),
 			Keyword:   textRangeField(f, keywordField),
+		}}
+	case "RangeClause":
+		result.Kind = &slang.Node_RangeClause{RangeClause: &slang.RangeClause{
+			Key:              buildProtoNode(nodeField(f, "key")),
+			Value:            buildProtoNode(nodeField(f, "value")),
+			RangedExpression: buildProtoNode(nodeField(f, "rangedExpression")),
+			IsDeclaration:    boolField(f, "isDeclaration"),
+		}}
+	case "FieldList":
+		result.Kind = &slang.Node_FieldList{FieldList: &slang.FieldList{
+			Fields: buildProtoNodes(nodeListField(f, "fields")),
+		}}
+	case "Field":
+		result.Kind = &slang.Node_Field{Field: &slang.Field{
+			Names: buildProtoNodes(nodeListField(f, "names")),
+			Type:  buildProtoNode(nodeField(f, "type")),
 		}}
 	case "MapType":
 		result.Kind = &slang.Node_MapType{MapType: &slang.MapType{

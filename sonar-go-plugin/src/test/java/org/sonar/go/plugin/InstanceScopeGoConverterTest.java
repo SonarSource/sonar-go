@@ -17,11 +17,18 @@
 package org.sonar.go.plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.time.Duration;
 import java.util.Map;
+import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.sonar.api.utils.TempFolder;
+import org.sonar.go.converter.GoExecutableExtractor;
 import org.sonar.go.converter.GoServerProcess;
+import org.sonar.go.converter.SystemPlatformInfo;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
@@ -42,5 +49,17 @@ class InstanceScopeGoConverterTest {
       Tree tree = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}"), "moduleName").get("foo.go").tree();
       assertThat(tree).isInstanceOf(TopLevelTree.class);
     }
+    // Windows can keep the exited process image locked briefly. Delete it with a retry before JUnit
+    // tries to remove the temporary directory in one pass.
+    Path executable = Path.of(GoExecutableExtractor.extract(tempDir, new SystemPlatformInfo()));
+    Awaitility.await("the Go executable to be unlocked")
+      .atMost(Duration.ofSeconds(10))
+      .pollDelay(Duration.ZERO)
+      .pollInterval(Duration.ofMillis(50))
+      .ignoreExceptionsInstanceOf(IOException.class)
+      .until(() -> {
+        Files.deleteIfExists(executable);
+        return true;
+      });
   }
 }

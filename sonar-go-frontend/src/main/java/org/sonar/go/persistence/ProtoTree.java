@@ -39,6 +39,8 @@ import org.sonar.go.impl.CompositeLiteralTreeImpl;
 import org.sonar.go.impl.EllipsisTreeImpl;
 import org.sonar.go.impl.ExceptionHandlingTreeImpl;
 import org.sonar.go.impl.ExpressionStatementTreeImpl;
+import org.sonar.go.impl.FieldListTreeImpl;
+import org.sonar.go.impl.FieldTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
@@ -66,6 +68,7 @@ import org.sonar.go.impl.PackageDeclarationTreeImpl;
 import org.sonar.go.impl.ParameterTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
+import org.sonar.go.impl.RangeClauseTreeImpl;
 import org.sonar.go.impl.ReturnTreeImpl;
 import org.sonar.go.impl.SliceTreeImpl;
 import org.sonar.go.impl.StarExpressionTreeImpl;
@@ -87,6 +90,8 @@ import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.CatchTree;
 import org.sonar.plugins.go.api.Comment;
+import org.sonar.plugins.go.api.FieldListTree;
+import org.sonar.plugins.go.api.FieldTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.JumpTree;
@@ -251,6 +256,9 @@ public final class ProtoTree {
         case IMPORT_DECLARATION -> new ImportDeclarationTreeImpl(metaData, trees(node.getImportDeclaration().getChildrenList()));
         case UNARY_EXPRESSION -> unaryExpression(metaData, node.getUnaryExpression());
         case LOOP -> loop(metaData, node.getLoop());
+        case RANGE_CLAUSE -> rangeClause(metaData, node.getRangeClause());
+        case FIELD_LIST -> new FieldListTreeImpl(metaData, trees(node.getFieldList().getFieldsList(), FieldTree.class));
+        case FIELD -> field(metaData, node.getField());
         case MAP_TYPE -> mapType(metaData, node.getMapType());
         case MATCH_CASE -> matchCase(metaData, node.getMatchCase());
         case PARENTHESIZED_EXPRESSION -> parenthesizedExpression(metaData, node.getParenthesizedExpression());
@@ -338,11 +346,11 @@ public final class ProtoTree {
     }
 
     private Tree functionDeclaration(TreeMetaData metaData, SlangProto.FunctionDeclaration function) {
-      var returnType = nullableTree(function.hasReturnType(), function.getReturnType());
-      var receiver = nullableTree(function.hasReceiver(), function.getReceiver());
+      var returnType = nullableTree(function.hasReturnType(), function.getReturnType(), FieldListTree.class);
+      var receiver = nullableTree(function.hasReceiver(), function.getReceiver(), FieldListTree.class);
       var name = nullableTree(function.hasName(), function.getName(), IdentifierTree.class);
       var formalParameters = trees(function.getFormalParametersList());
-      var typeParameters = nullableTree(function.hasTypeParameters(), function.getTypeParameters());
+      var typeParameters = nullableTree(function.hasTypeParameters(), function.getTypeParameters(), FieldListTree.class);
       var body = nullableTree(function.hasBody(), function.getBody(), BlockTree.class);
       // Every child has to be built before the graph is resolved, as the graph refers to them by the
       // ids they registered while being built.
@@ -431,7 +439,10 @@ public final class ProtoTree {
       var classTree = tree(classDeclaration.getClassTree());
       var reference = classDeclaration.getIdentifier();
       var identifier = RangeConverter.resolveNullableTree(classTree, reference.isEmpty() ? null : reference, IdentifierTree.class);
-      return new ClassDeclarationTreeImpl(metaData, identifier, classTree);
+      var typeParametersReference = classDeclaration.getTypeParameters();
+      var typeParameters = RangeConverter.resolveNullableTree(classTree,
+        typeParametersReference.isEmpty() ? null : typeParametersReference, FieldListTree.class);
+      return new ClassDeclarationTreeImpl(metaData, identifier, typeParameters, classTree);
     }
 
     private Tree indexExpression(TreeMetaData metaData, SlangProto.IndexExpression indexExpression) {
@@ -465,6 +476,20 @@ public final class ProtoTree {
         tree(loop.getBody()),
         LoopTree.LoopKind.valueOf(loop.getKind()),
         token(loop.getKeyword()));
+    }
+
+    private Tree rangeClause(TreeMetaData metaData, SlangProto.RangeClause clause) {
+      return new RangeClauseTreeImpl(metaData,
+        nullableTree(clause.hasKey(), clause.getKey()),
+        nullableTree(clause.hasValue(), clause.getValue()),
+        tree(clause.getRangedExpression()),
+        clause.getIsDeclaration());
+    }
+
+    private Tree field(TreeMetaData metaData, SlangProto.Field field) {
+      return new FieldTreeImpl(metaData,
+        trees(field.getNamesList(), IdentifierTree.class),
+        nullableTree(field.hasType(), field.getType()));
     }
 
     private Tree mapType(TreeMetaData metaData, SlangProto.MapType mapType) {

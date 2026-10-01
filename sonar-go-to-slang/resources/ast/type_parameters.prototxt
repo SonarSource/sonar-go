@@ -99,14 +99,12 @@ root: {
         return_type: {
           text_range: "3:32::35"
           cfg_id: 15
-          native: {
-            native_kind: "Results(FieldList)"
-            children: {
+          field_list: {
+            fields: {
               text_range: "3:32::35"
               cfg_id: 14
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                type: {
                   text_range: "3:32::35"
                   cfg_id: 13
                   identifier: {
@@ -158,36 +156,22 @@ root: {
         type_parameters: {
           text_range: "3:15::22"
           cfg_id: 7
-          native: {
-            native_kind: "TypeParams(FieldList)"
-            children: {
-              text_range: "3:15::16"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "3:16::21"
               cfg_id: 6
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                names: {
                   text_range: "3:16::17"
-                  native: {
-                    native_kind: "Names([]*Ident)"
-                    children: {
-                      text_range: "3:16::17"
-                      cfg_id: 4
-                      identifier: {
-                        name: "T"
-                        type: "T"
-                        package: "ModuleNameForTest/main"
-                        id: 31
-                      }
-                    }
+                  cfg_id: 4
+                  identifier: {
+                    name: "T"
+                    type: "T"
+                    package: "ModuleNameForTest/main"
+                    id: 31
                   }
                 }
-                children: {
+                type: {
                   text_range: "3:18::21"
                   cfg_id: 5
                   identifier: {
@@ -196,12 +180,6 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "3:21::22"
-              native: {
-                native_kind: "Closing"
               }
             }
           }

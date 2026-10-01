@@ -1566,9 +1566,8 @@ root: {
               loop: {
                 condition: {
                   text_range: "24:5::21"
-                  native: {
-                    native_kind: "RangeHeader"
-                    children: {
+                  range_clause: {
+                    key: {
                       text_range: "24:5::6"
                       cfg_id: 9
                       identifier: {
@@ -1578,11 +1577,7 @@ root: {
                         id: 371
                       }
                     }
-                    children: {
-                      text_range: "24:6::7"
-                      native: {}
-                    }
-                    children: {
+                    value: {
                       text_range: "24:8::9"
                       cfg_id: 10
                       identifier: {
@@ -1592,17 +1587,7 @@ root: {
                         id: 374
                       }
                     }
-                    children: {
-                      text_range: "24:10::12"
-                      native: {
-                        native_kind: "Tok"
-                      }
-                    }
-                    children: {
-                      text_range: "24:13::18"
-                      native: {}
-                    }
-                    children: {
+                    ranged_expression: {
                       text_range: "24:19::21"
                       cfg_id: 11
                       identifier: {
@@ -1612,6 +1597,7 @@ root: {
                         id: 341
                       }
                     }
+                    is_declaration: true
                   }
                 }
                 body: {

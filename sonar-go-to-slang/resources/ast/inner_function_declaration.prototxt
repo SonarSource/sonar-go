@@ -824,14 +824,12 @@ root: {
                         return_type: {
                           text_range: "18:25::31"
                           cfg_id: 57
-                          native: {
-                            native_kind: "Results(FieldList)"
-                            children: {
+                          field_list: {
+                            fields: {
                               text_range: "18:25::31"
                               cfg_id: 56
-                              native: {
-                                native_kind: "[0](Field)"
-                                children: {
+                              field: {
+                                type: {
                                   text_range: "18:25::31"
                                   cfg_id: 55
                                   identifier: {

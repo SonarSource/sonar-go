@@ -493,36 +493,22 @@ root: {
         receiver: {
           text_range: "13:5::17"
           cfg_id: 17
-          native: {
-            native_kind: "Recv(FieldList)"
-            children: {
-              text_range: "13:5::6"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "13:6::16"
               cfg_id: 16
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                names: {
                   text_range: "13:6::7"
-                  native: {
-                    native_kind: "Names([]*Ident)"
-                    children: {
-                      text_range: "13:6::7"
-                      cfg_id: 14
-                      identifier: {
-                        name: "m"
-                        type: "main.MyStruct"
-                        package: "UNKNOWN"
-                        id: 158
-                      }
-                    }
+                  cfg_id: 14
+                  identifier: {
+                    name: "m"
+                    type: "main.MyStruct"
+                    package: "UNKNOWN"
+                    id: 158
                   }
                 }
-                children: {
+                type: {
                   text_range: "13:8::16"
                   cfg_id: 15
                   identifier: {
@@ -532,12 +518,6 @@ root: {
                     id: 85
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "13:16::17"
-              native: {
-                native_kind: "Closing"
               }
             }
           }
@@ -645,36 +625,22 @@ root: {
         receiver: {
           text_range: "18:5::18"
           cfg_id: 6
-          native: {
-            native_kind: "Recv(FieldList)"
-            children: {
-              text_range: "18:5::6"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "18:6::17"
               cfg_id: 5
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                names: {
                   text_range: "18:6::7"
-                  native: {
-                    native_kind: "Names([]*Ident)"
-                    children: {
-                      text_range: "18:6::7"
-                      cfg_id: 2
-                      identifier: {
-                        name: "m"
-                        type: "*main.MyStruct"
-                        package: "UNKNOWN"
-                        id: 272
-                      }
-                    }
+                  cfg_id: 2
+                  identifier: {
+                    name: "m"
+                    type: "*main.MyStruct"
+                    package: "UNKNOWN"
+                    id: 272
                   }
                 }
-                children: {
+                type: {
                   text_range: "18:8::17"
                   cfg_id: 4
                   star_expression: {
@@ -690,12 +656,6 @@ root: {
                     }
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "18:17::18"
-              native: {
-                native_kind: "Closing"
               }
             }
           }
@@ -859,36 +819,22 @@ root: {
         receiver: {
           text_range: "26:5::27"
           cfg_id: 15
-          native: {
-            native_kind: "Recv(FieldList)"
-            children: {
-              text_range: "26:5::6"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "26:6::26"
               cfg_id: 14
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                names: {
                   text_range: "26:6::10"
-                  native: {
-                    native_kind: "Names([]*Ident)"
-                    children: {
-                      text_range: "26:6::10"
-                      cfg_id: 11
-                      identifier: {
-                        name: "ctrl"
-                        type: "*main.MainController"
-                        package: "UNKNOWN"
-                        id: 378
-                      }
-                    }
+                  cfg_id: 11
+                  identifier: {
+                    name: "ctrl"
+                    type: "*main.MainController"
+                    package: "UNKNOWN"
+                    id: 378
                   }
                 }
-                children: {
+                type: {
                   text_range: "26:11::26"
                   cfg_id: 13
                   star_expression: {
@@ -904,12 +850,6 @@ root: {
                     }
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "26:26::27"
-              native: {
-                native_kind: "Closing"
               }
             }
           }

@@ -35,8 +35,6 @@ public final class NativeKinds {
   public static final String SEMICOLON = "Semicolon";
   public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
-  public static final String METHOD_RECEIVER_SUFFIX = "]*Ident)";
-
   private NativeKinds() {
   }
 
@@ -50,10 +48,6 @@ public final class NativeKinds {
     return isStringNativeKind(tree, type::equals);
   }
 
-  public static boolean isStringNativeKindOfType(Tree tree, String type, String subtype) {
-    return isStringNativeKind(tree, s -> s.startsWith(type + "(") && s.endsWith(subtype + ")"));
-  }
-
   public static boolean isCompositeLit(Tree tree) {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
@@ -64,20 +58,5 @@ public final class NativeKinds {
     return tree instanceof NativeTree nativeTree
       && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
       && stringNativeKind.kind().contains("KeyValueExpr");
-  }
-
-  /**
-   * For following Go code:
-   * <pre>
-   *   {@code
-   *   func (ctrl *MyController) users() {}
-   *   }
-   * </pre>
-   * the {@code ctrl} is method receiver
-   */
-  public static boolean isMethodReceiverTreeIdentifier(Tree tree) {
-    return tree instanceof NativeTree nativeTree
-      && nativeTree.nativeKind() instanceof StringNativeKind stringNativeKind
-      && stringNativeKind.kind().endsWith(METHOD_RECEIVER_SUFFIX);
   }
 }

@@ -16,8 +16,8 @@ type shadowedFields struct {
 	false string
 }
 
-// A grouped type specification stays native, unlike a single "type X int" or a grouped const or var
-// specification; only its name goes through mapName.
+// A grouped type specification is a class declaration of its own, like a single "type X int"; only its
+// name goes through mapName.
 func groupedTypeNames() {
 	type (
 		nil   int

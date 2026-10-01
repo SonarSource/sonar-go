@@ -35,6 +35,15 @@ public class TreeUtils {
   public static final Predicate<Tree> IS_NOT_SEMICOLON = Predicate.not(tree -> NativeKinds.isStringNativeKindOfType(tree, "Semicolon"));
   public static final Predicate<Tree> IS_NOT_EMPTY_NATIVE_TREE = Predicate.not(tree -> NativeKinds.isStringNativeKindOfType(tree, ""));
 
+  /**
+   * Adds {@code tree} to {@code children} when it is not null, to build the children of a tree whose parts are optional.
+   */
+  public static void addToListIfNotNull(List<Tree> children, @Nullable Tree tree) {
+    if (tree != null) {
+      children.add(tree);
+    }
+  }
+
   public static <T extends Tree> List<String> getIdentifierNames(List<T> trees) {
     return trees.stream().filter(IdentifierTree.class::isInstance)
       .map(IdentifierTree.class::cast)

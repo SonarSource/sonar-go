@@ -16,19 +16,20 @@
  */
 package org.sonar.plugins.go.api;
 
+import java.util.List;
 import javax.annotation.CheckForNull;
 
-public interface ClassDeclarationTree extends Tree {
-
-  @CheckForNull
-  IdentifierTree identifier();
+/**
+ * A field of a {@link FieldListTree}: the names it declares, if any, and their type. The parameters of a function are
+ * {@link ParameterTree} instead, one per name, and the fields of a struct or of an interface stay native.
+ */
+public interface FieldTree extends Tree {
 
   /**
-   * The type parameters of the declared type, or null when it declares none.
+   * The names this field declares, which is empty for a field holding a type alone, such as an unnamed result.
    */
+  List<IdentifierTree> names();
+
   @CheckForNull
-  FieldListTree typeParameters();
-
-  Tree classTree();
-
+  Tree type();
 }

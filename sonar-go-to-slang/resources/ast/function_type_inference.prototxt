@@ -231,14 +231,12 @@ root: {
         return_type: {
           text_range: "3:30::31"
           cfg_id: 15
-          native: {
-            native_kind: "Results(FieldList)"
-            children: {
+          field_list: {
+            fields: {
               text_range: "3:30::31"
               cfg_id: 14
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                type: {
                   text_range: "3:30::31"
                   cfg_id: 13
                   identifier: {
@@ -291,36 +289,22 @@ root: {
         type_parameters: {
           text_range: "3:13::20"
           cfg_id: 7
-          native: {
-            native_kind: "TypeParams(FieldList)"
-            children: {
-              text_range: "3:13::14"
-              native: {
-                native_kind: "Opening"
-              }
-            }
-            children: {
+          field_list: {
+            fields: {
               text_range: "3:14::19"
               cfg_id: 6
-              native: {
-                native_kind: "[0](Field)"
-                children: {
+              field: {
+                names: {
                   text_range: "3:14::15"
-                  native: {
-                    native_kind: "Names([]*Ident)"
-                    children: {
-                      text_range: "3:14::15"
-                      cfg_id: 4
-                      identifier: {
-                        name: "T"
-                        type: "T"
-                        package: "ModuleNameForTest/main"
-                        id: 29
-                      }
-                    }
+                  cfg_id: 4
+                  identifier: {
+                    name: "T"
+                    type: "T"
+                    package: "ModuleNameForTest/main"
+                    id: 29
                   }
                 }
-                children: {
+                type: {
                   text_range: "3:16::19"
                   cfg_id: 5
                   identifier: {
@@ -329,12 +313,6 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
-              }
-            }
-            children: {
-              text_range: "3:19::20"
-              native: {
-                native_kind: "Closing"
               }
             }
           }
@@ -451,14 +429,12 @@ root: {
                     children: {
                       text_range: "9:21::24"
                       cfg_id: 10
-                      native: {
-                        native_kind: "Results(FieldList)"
-                        children: {
+                      field_list: {
+                        fields: {
                           text_range: "9:21::24"
                           cfg_id: 9
-                          native: {
-                            native_kind: "[0](Field)"
-                            children: {
+                          field: {
+                            type: {
                               text_range: "9:21::24"
                               cfg_id: 8
                               identifier: {
@@ -578,14 +554,12 @@ root: {
                             children: {
                               text_range: "11:19::25"
                               cfg_id: 23
-                              native: {
-                                native_kind: "Results(FieldList)"
-                                children: {
+                              field_list: {
+                                fields: {
                                   text_range: "11:19::25"
                                   cfg_id: 22
-                                  native: {
-                                    native_kind: "[0](Field)"
-                                    children: {
+                                  field: {
+                                    type: {
                                       text_range: "11:19::25"
                                       cfg_id: 21
                                       identifier: {

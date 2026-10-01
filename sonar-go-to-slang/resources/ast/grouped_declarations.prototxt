@@ -1424,14 +1424,12 @@ root: {
                         return_type: {
                           text_range: "50:22::25"
                           cfg_id: 6
-                          native: {
-                            native_kind: "Results(FieldList)"
-                            children: {
+                          field_list: {
+                            fields: {
                               text_range: "50:22::25"
                               cfg_id: 5
-                              native: {
-                                native_kind: "[0](Field)"
-                                children: {
+                              field: {
+                                type: {
                                   text_range: "50:22::25"
                                   cfg_id: 4
                                   identifier: {
