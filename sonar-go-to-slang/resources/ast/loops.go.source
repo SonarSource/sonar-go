@@ -65,16 +65,4 @@ OUTER:
     for k, v := range maps.All(m) {
     	fmt.Println("Key:", k, "Value:", v)
     }
-
-    // "=" range: the key and the value are assignments to already declared variables, not declarations
-    var key int
-    var value string
-    for key, value = range m {
-    	fmt.Println("Key:", key, "Value:", value)
-    }
-
-    // a range without a key nor a value
-    for range m {
-    	fmt.Println("An entry")
-    }
 }

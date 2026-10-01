@@ -33,11 +33,3 @@ func bar(x int) {
 type (
 	RrsType string
 )
-
-// A parenthesized declaration of several specifications: each one is a class declaration of its own,
-// the declaration itself holds no name.
-type (
-	groupedFirst         string
-	groupedSecond[T any] struct{ value T }
-	groupedAlias         = groupedFirst
-)

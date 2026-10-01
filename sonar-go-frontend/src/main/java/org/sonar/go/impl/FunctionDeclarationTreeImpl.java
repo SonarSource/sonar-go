@@ -17,12 +17,14 @@
 package org.sonar.go.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
+import java.util.stream.Stream;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
+import org.sonar.go.utils.NativeKinds;
 import org.sonar.plugins.go.api.BlockTree;
-import org.sonar.plugins.go.api.FieldListTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.TextRange;
@@ -34,14 +36,14 @@ import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements FunctionDeclarationTree {
 
   @Nullable
-  private final FieldListTree returnType;
+  private final Tree returnType;
   @Nullable
-  private final FieldListTree receiver;
+  private final Tree receiver;
   @Nullable
   private final IdentifierTree name;
   private final List<Tree> formalParameters;
   @Nullable
-  private final FieldListTree typeParameters;
+  private final Tree typeParameters;
   @Nullable
   private final BlockTree body;
   private final List<Tree> children = new ArrayList<>();
@@ -54,11 +56,11 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   public FunctionDeclarationTreeImpl(
     TreeMetaData metaData,
-    @Nullable FieldListTree returnType,
-    @Nullable FieldListTree receiver,
+    @Nullable Tree returnType,
+    @Nullable Tree receiver,
     @Nullable IdentifierTree name,
     List<Tree> formalParameters,
-    @Nullable FieldListTree typeParameters,
+    @Nullable Tree typeParameters,
     @Nullable BlockTree body,
     @Nullable ControlFlowGraph cfg) {
     super(metaData);
@@ -91,7 +93,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   @CheckForNull
   @Override
-  public FieldListTree returnType() {
+  public Tree returnType() {
     return returnType;
   }
 
@@ -108,7 +110,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   @CheckForNull
   @Override
-  public FieldListTree typeParameters() {
+  public Tree typeParameters() {
     return typeParameters;
   }
 
@@ -120,7 +122,7 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
 
   @CheckForNull
   @Override
-  public FieldListTree receiver() {
+  public Tree receiver() {
     return receiver;
   }
 
@@ -128,7 +130,17 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public String receiverName() {
     if (!isReceiverNameCalculated) {
-      receiverName = receiverIdentifier().map(IdentifierTree::name).orElse(null);
+      receiverName = Stream.of(receiver)
+        .filter(Objects::nonNull)
+        .flatMap(Tree::descendants)
+        .filter(NativeKinds::isMethodReceiverTreeIdentifier)
+        .map(Tree::children)
+        .flatMap(Collection::stream)
+        .filter(IdentifierTree.class::isInstance)
+        .map(IdentifierTree.class::cast)
+        .map(IdentifierTree::name)
+        .findFirst()
+        .orElse(null);
       isReceiverNameCalculated = true;
     }
     return receiverName;
@@ -138,17 +150,20 @@ public class FunctionDeclarationTreeImpl extends BaseTreeImpl implements Functio
   @Override
   public String receiverType() {
     if (!isReceiverTypeCalculated) {
-      receiverType = receiverIdentifier().map(IdentifierTree::type).orElse(null);
+      receiverType = Stream.of(receiver)
+        .filter(Objects::nonNull)
+        .flatMap(Tree::descendants)
+        .filter(NativeKinds::isMethodReceiverTreeIdentifier)
+        .map(Tree::children)
+        .flatMap(Collection::stream)
+        .filter(IdentifierTree.class::isInstance)
+        .map(IdentifierTree.class::cast)
+        .map(IdentifierTree::type)
+        .findFirst()
+        .orElse(null);
       isReceiverTypeCalculated = true;
     }
     return receiverType;
-  }
-
-  /**
-   * The name the receiver declares, absent for a method declared with an unnamed receiver.
-   */
-  private Optional<IdentifierTree> receiverIdentifier() {
-    return receiver == null ? Optional.empty() : receiver.names().stream().findFirst();
   }
 
   @Override

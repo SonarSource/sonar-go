@@ -2168,12 +2168,14 @@ root: {
                             children: {
                               text_range: "36:23::30"
                               cfg_id: 113
-                              field_list: {
-                                fields: {
+                              native: {
+                                native_kind: "Results(FieldList)"
+                                children: {
                                   text_range: "36:23::30"
                                   cfg_id: 112
-                                  field: {
-                                    type: {
+                                  native: {
+                                    native_kind: "[0](Field)"
+                                    children: {
                                       text_range: "36:23::30"
                                       cfg_id: 111
                                       identifier: {
@@ -2684,12 +2686,14 @@ root: {
         return_type: {
           text_range: "52:9::12"
           cfg_id: 6
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "52:9::12"
               cfg_id: 5
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "52:9::12"
                   cfg_id: 4
                   identifier: {

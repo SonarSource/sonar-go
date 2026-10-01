@@ -35,8 +35,6 @@ import org.sonar.plugins.go.api.CompositeLiteralTree;
 import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.ExceptionHandlingTree;
 import org.sonar.plugins.go.api.ExpressionStatementTree;
-import org.sonar.plugins.go.api.FieldListTree;
-import org.sonar.plugins.go.api.FieldTree;
 import org.sonar.plugins.go.api.FloatLiteralTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
@@ -64,7 +62,6 @@ import org.sonar.plugins.go.api.PackageDeclarationTree;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.ParenthesizedExpressionTree;
 import org.sonar.plugins.go.api.PlaceHolderTree;
-import org.sonar.plugins.go.api.RangeClauseTree;
 import org.sonar.plugins.go.api.ReturnTree;
 import org.sonar.plugins.go.api.SliceTree;
 import org.sonar.plugins.go.api.StarExpressionTree;
@@ -346,9 +343,9 @@ class ProtoTreeTest {
   void shouldDecodeAFunctionDeclarationWithAllItsParts() {
     var tree = decode(node(KindCase.FUNCTION_DECLARATION, SlangProto.FunctionDeclaration.newBuilder()
       .setName(identifierNode("main"))
-      .setReceiver(fieldListNode("receiver"))
-      .setReturnType(fieldListNode("int"))
-      .setTypeParameters(fieldListNode("T"))
+      .setReceiver(identifierNode("receiver").setTextRange(SECOND_RANGE))
+      .setReturnType(identifierNode("int").setTextRange(SECOND_RANGE))
+      .setTypeParameters(identifierNode("T").setTextRange(SECOND_RANGE))
       .addFormalParameters(node(KindCase.PARAMETER, SlangProto.Parameter.newBuilder()
         .setIdentifier(identifierNode("arg").setTextRange(SECOND_RANGE))
         .setType(identifierNode("int").setTextRange(SECOND_RANGE))))
@@ -356,9 +353,9 @@ class ProtoTreeTest {
 
     assertThat(tree).isInstanceOfSatisfying(FunctionDeclarationTree.class, function -> {
       assertThat(function.name().name()).isEqualTo("main");
-      assertThat(function.receiver()).isInstanceOf(FieldListTree.class);
-      assertThat(function.returnType()).isInstanceOf(FieldListTree.class);
-      assertThat(function.typeParameters()).isInstanceOf(FieldListTree.class);
+      assertThat(function.receiver()).isInstanceOf(IdentifierTree.class);
+      assertThat(function.returnType()).isInstanceOf(IdentifierTree.class);
+      assertThat(function.typeParameters()).isInstanceOf(IdentifierTree.class);
       assertThat(function.formalParameters()).hasSize(1);
       assertThat(function.formalParameters().get(0)).isInstanceOfSatisfying(ParameterTree.class,
         parameter -> assertThat(parameter.typeTree()).isInstanceOf(IdentifierTree.class));
@@ -562,34 +559,6 @@ class ProtoTreeTest {
   }
 
   @Test
-  void shouldDecodeRangeClauseWithAndWithoutNames() {
-    var clause = node(KindCase.RANGE_CLAUSE, SlangProto.RangeClause.newBuilder()
-      .setKey(identifierNode("key"))
-      .setValue(identifierNode("value"))
-      .setRangedExpression(identifierNode("items"))
-      .setIsDeclaration(true));
-    assertThat(decode(clause)).isInstanceOfSatisfying(RangeClauseTree.class, range -> {
-      assertThat(range.key()).isInstanceOf(IdentifierTree.class);
-      assertThat(range.value()).isInstanceOf(IdentifierTree.class);
-      assertThat(range.isDeclaration()).isTrue();
-    });
-    assertThat(decode(node(KindCase.RANGE_CLAUSE, SlangProto.RangeClause.newBuilder()
-      .setRangedExpression(identifierNode("items")))))
-        .isInstanceOfSatisfying(RangeClauseTree.class, range -> {
-          assertThat(range.key()).isNull();
-          assertThat(range.value()).isNull();
-        });
-  }
-
-  @Test
-  void shouldDecodeFieldListAndFields() {
-    assertThat(decode(fieldListNode("T"))).isInstanceOfSatisfying(FieldListTree.class, fields -> {
-      assertThat(fields.fields()).hasSize(1);
-      assertThat(fields.fields().get(0)).isInstanceOf(FieldTree.class);
-    });
-  }
-
-  @Test
   void shouldDecodeAPlaceHolder() {
     var tree = decode(node(KindCase.PLACE_HOLDER, SlangProto.PlaceHolder.newBuilder().setPlaceHolderToken(RANGE)));
 
@@ -753,12 +722,6 @@ class ProtoTreeTest {
   private static Node.Builder node(KindCase kind, Message.Builder payload) {
     var field = Node.getDescriptor().findFieldByNumber(kind.getNumber());
     return Node.newBuilder().setTextRange(RANGE).setField(field, payload.build());
-  }
-
-  private static Node.Builder fieldListNode(String name) {
-    return node(KindCase.FIELD_LIST, SlangProto.FieldList.newBuilder()
-      .addFields(node(KindCase.FIELD, SlangProto.Field.newBuilder()
-        .addNames(identifierNode(name).setTextRange(SECOND_RANGE)))));
   }
 
   private static SlangProto.Token.Builder otherToken(String text, String textRange) {

@@ -596,12 +596,14 @@ root: {
         return_type: {
           text_range: "13:30::37"
           cfg_id: 34
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "13:30::37"
               cfg_id: 33
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "13:30::37"
                   cfg_id: 32
                   identifier: {
@@ -618,22 +620,36 @@ root: {
         receiver: {
           text_range: "13:5::16"
           cfg_id: 29
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Recv(FieldList)"
+            children: {
+              text_range: "13:5::6"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
               text_range: "13:6::15"
               cfg_id: 28
-              field: {
-                names: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "13:6::7"
-                  cfg_id: 25
-                  identifier: {
-                    name: "p"
-                    type: "*main.Person"
-                    package: "UNKNOWN"
-                    id: 125
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "13:6::7"
+                      cfg_id: 25
+                      identifier: {
+                        name: "p"
+                        type: "*main.Person"
+                        package: "UNKNOWN"
+                        id: 125
+                      }
+                    }
                   }
                 }
-                type: {
+                children: {
                   text_range: "13:8::15"
                   cfg_id: 27
                   star_expression: {
@@ -649,6 +665,12 @@ root: {
                     }
                   }
                 }
+              }
+            }
+            children: {
+              text_range: "13:15::16"
+              native: {
+                native_kind: "Closing"
               }
             }
           }

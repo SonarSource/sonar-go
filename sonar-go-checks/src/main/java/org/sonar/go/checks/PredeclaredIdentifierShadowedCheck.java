@@ -17,22 +17,21 @@
 package org.sonar.go.checks;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import javax.annotation.Nullable;
 import org.sonar.check.Rule;
 import org.sonar.go.symbols.Usage;
+import org.sonar.go.utils.NativeKinds;
+import org.sonar.go.utils.VariableHelper;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
-import org.sonar.plugins.go.api.FieldListTree;
-import org.sonar.plugins.go.api.FieldTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.ImportSpecificationTree;
 import org.sonar.plugins.go.api.IndexExpressionTree;
 import org.sonar.plugins.go.api.IndexListExpressionTree;
 import org.sonar.plugins.go.api.LoopTree;
+import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.ParameterTree;
-import org.sonar.plugins.go.api.RangeClauseTree;
 import org.sonar.plugins.go.api.StarExpressionTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
@@ -59,6 +58,13 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
     "append", "cap", "clear", "close", "complex", "copy", "delete", "imag", "len",
     "make", "max", "min", "new", "panic", "print", "println", "real", "recover");
 
+  private static final String TYPE_SPECIFICATION_KIND_SUFFIX = "(TypeSpec)";
+  private static final String TYPE_PARAMETERS_KIND = "TypeParams";
+  private static final String FIELD_LIST_KIND = "FieldList";
+  private static final String RANGE_HEADER_KIND = "RangeHeader";
+  private static final String TOKEN_KIND = "Tok";
+  private static final String DEFINE_TOKEN = ":=";
+
   @Override
   public void initialize(InitContext init) {
     // "var" and "const" declarations, short variable declarations, "if"/"for"/"switch" initializers, type switch
@@ -70,6 +76,7 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
     init.register(ClassDeclarationTree.class, PredeclaredIdentifierShadowedCheck::checkTypeDeclaration);
     init.register(ImportSpecificationTree.class, (ctx, tree) -> checkIdentifier(ctx, tree.name()));
     init.register(LoopTree.class, PredeclaredIdentifierShadowedCheck::checkRangeClause);
+    init.register(NativeTree.class, PredeclaredIdentifierShadowedCheck::checkTypeSpecification);
   }
 
   private static void checkFunctionDeclaration(CheckContext ctx, FunctionDeclarationTree tree) {
@@ -87,16 +94,15 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
     checkReceiver(ctx, tree.receiver());
   }
 
-  private static void checkReceiver(CheckContext ctx, @Nullable FieldListTree receiver) {
+  private static void checkReceiver(CheckContext ctx, @Nullable Tree receiver) {
     if (receiver == null) {
       return;
     }
     checkFieldNames(ctx, receiver);
     // The type arguments of a receiver, as in "func (p *pair[key]) get()", are always identifiers declaring the type
     // parameters of the method, so they shadow for the whole method scope
-    receiver.fields().stream()
-      .map(FieldTree::type)
-      .filter(Objects::nonNull)
+    VariableHelper.getFields(receiver)
+      .flatMap(field -> field.children().stream())
       .map(type -> type instanceof StarExpressionTree pointer ? pointer.operand() : type)
       .forEach(type -> checkTypeArguments(ctx, type));
   }
@@ -111,7 +117,31 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
 
   private static void checkTypeDeclaration(CheckContext ctx, ClassDeclarationTree tree) {
     checkIdentifier(ctx, tree.identifier());
-    checkFieldNames(ctx, tree.typeParameters());
+    checkTypeParameters(ctx, tree.classTree().children());
+  }
+
+  /**
+   * A parenthesized {@code type} declaration holds no identifier of its own, so the converter leaves it native and
+   * maps each of its specifications to a {@code (TypeSpec)} native tree, which starts with the declared name and can
+   * be followed by the type parameters. Unlike a single {@code type} declaration, which is a
+   * {@link ClassDeclarationTree} wrapping a {@code (TypeSpecWrapped)} native tree.
+   */
+  private static void checkTypeSpecification(CheckContext ctx, NativeTree tree) {
+    if (!NativeKinds.isStringNativeKind(tree, kind -> kind.endsWith(TYPE_SPECIFICATION_KIND_SUFFIX))) {
+      return;
+    }
+    var children = tree.children();
+    children.stream()
+      .filter(IdentifierTree.class::isInstance)
+      .findFirst()
+      .ifPresent(name -> checkIdentifier(ctx, name));
+    checkTypeParameters(ctx, children);
+  }
+
+  private static void checkTypeParameters(CheckContext ctx, List<Tree> children) {
+    children.stream()
+      .filter(child -> NativeKinds.isStringNativeKindOfType(child, TYPE_PARAMETERS_KIND, FIELD_LIST_KIND))
+      .forEach(typeParameters -> checkFieldNames(ctx, typeParameters));
   }
 
   /**
@@ -119,20 +149,28 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
    * {@code range} clause using {@code =}, which assign to already declared variables.
    */
   private static void checkRangeClause(CheckContext ctx, LoopTree tree) {
-    if (tree.condition() instanceof RangeClauseTree clause && clause.isDeclaration()) {
-      checkIdentifier(ctx, clause.key());
-      checkIdentifier(ctx, clause.value());
+    var header = tree.condition();
+    if (header == null || !NativeKinds.isStringNativeKindOfType(header, RANGE_HEADER_KIND)) {
+      return;
+    }
+    // The children before the assignment token are the key and the value of the clause, the ones after it are the ranged expression
+    var children = header.children();
+    for (var i = 0; i < children.size(); i++) {
+      if (NativeKinds.isStringNativeKindOfType(children.get(i), TOKEN_KIND)) {
+        if (isDefineToken(children.get(i))) {
+          checkIdentifiers(ctx, children.subList(0, i));
+        }
+        return;
+      }
     }
   }
 
   /**
-   * Reports the names declared by the fields of a field list: the named results, the receiver or the type parameters
-   * of a function, or the type parameters of a type declaration.
+   * Reports the names declared by the fields of a {@code FieldList} native tree: the parameters, the named results,
+   * the receiver or the type parameters of a function, or the type parameters of a type declaration.
    */
-  private static void checkFieldNames(CheckContext ctx, @Nullable FieldListTree fieldList) {
-    if (fieldList != null) {
-      fieldList.names().forEach(identifier -> checkIdentifier(ctx, identifier));
-    }
+  private static void checkFieldNames(CheckContext ctx, @Nullable Tree fieldList) {
+    VariableHelper.getFieldNames(fieldList).forEach(identifier -> checkIdentifier(ctx, identifier));
   }
 
   /**
@@ -162,5 +200,9 @@ public class PredeclaredIdentifierShadowedCheck implements GoCheck {
     if (tree instanceof IdentifierTree identifier && PREDECLARED_IDENTIFIERS.contains(identifier.name())) {
       ctx.reportIssue(identifier, "Rename this identifier, \"" + identifier.name() + "\" shadows a predeclared identifier.");
     }
+  }
+
+  private static boolean isDefineToken(Tree tree) {
+    return tree.metaData().tokens().stream().anyMatch(token -> DEFINE_TOKEN.equals(token.text()));
   }
 }

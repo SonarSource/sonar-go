@@ -282,12 +282,14 @@ root: {
         return_type: {
           text_range: "3:18::22"
           cfg_id: 7
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "3:18::22"
               cfg_id: 6
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "3:18::22"
                   cfg_id: 5
                   identifier: {
@@ -380,12 +382,14 @@ root: {
         return_type: {
           text_range: "11:17::23"
           cfg_id: 6
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "11:17::23"
               cfg_id: 5
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "11:17::23"
                   cfg_id: 4
                   identifier: {
@@ -498,12 +502,20 @@ root: {
         return_type: {
           text_range: "19:27::48"
           cfg_id: 10
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "19:27::28"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
               text_range: "19:28::34"
               cfg_id: 5
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "19:28::34"
                   cfg_id: 4
                   identifier: {
@@ -514,11 +526,16 @@ root: {
                 }
               }
             }
-            fields: {
+            children: {
+              text_range: "19:34::35"
+              native: {}
+            }
+            children: {
               text_range: "19:36::39"
               cfg_id: 7
-              field: {
-                type: {
+              native: {
+                native_kind: "[1](Field)"
+                children: {
                   text_range: "19:36::39"
                   cfg_id: 6
                   identifier: {
@@ -529,11 +546,16 @@ root: {
                 }
               }
             }
-            fields: {
+            children: {
+              text_range: "19:39::40"
+              native: {}
+            }
+            children: {
               text_range: "19:41::47"
               cfg_id: 9
-              field: {
-                type: {
+              native: {
+                native_kind: "[2](Field)"
+                children: {
                   text_range: "19:41::47"
                   cfg_id: 8
                   identifier: {
@@ -542,6 +564,12 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
+              }
+            }
+            children: {
+              text_range: "19:47::48"
+              native: {
+                native_kind: "Closing"
               }
             }
           }

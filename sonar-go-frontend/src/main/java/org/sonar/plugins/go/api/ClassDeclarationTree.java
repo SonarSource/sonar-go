@@ -23,12 +23,6 @@ public interface ClassDeclarationTree extends Tree {
   @CheckForNull
   IdentifierTree identifier();
 
-  /**
-   * The type parameters of the declared type, or null when it declares none.
-   */
-  @CheckForNull
-  FieldListTree typeParameters();
-
   Tree classTree();
 
 }

@@ -64,18 +64,6 @@ comments: {
   range: "58:4::48"
   content_range: "58:6::48"
 }
-comments: {
-  text: "// \"=\" range: the key and the value are assignments to already declared variables, not declarations"
-  content_text: " \"=\" range: the key and the value are assignments to already declared variables, not declarations"
-  range: "69:4::103"
-  content_range: "69:6::103"
-}
-comments: {
-  text: "// a range without a key nor a value"
-  content_text: " a range without a key nor a value"
-  range: "76:4::40"
-  content_range: "76:6::40"
-}
 tokens: {
   text: "package"
   text_range: "1:0::7"
@@ -1159,172 +1147,11 @@ tokens: {
   text_range: "67:4::5"
 }
 tokens: {
-  text: "var"
-  text_range: "70:4::7"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "key"
-  text_range: "70:8::11"
-}
-tokens: {
-  text: "int"
-  text_range: "70:12::15"
-}
-tokens: {
-  text: "var"
-  text_range: "71:4::7"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "value"
-  text_range: "71:8::13"
-}
-tokens: {
-  text: "string"
-  text_range: "71:14::20"
-}
-tokens: {
-  text: "for"
-  text_range: "72:4::7"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "key"
-  text_range: "72:8::11"
-}
-tokens: {
-  text: "value"
-  text_range: "72:13::18"
-}
-tokens: {
-  text: ","
-  text_range: "72:11::12"
-}
-tokens: {
-  text: "="
-  text_range: "72:19::20"
-}
-tokens: {
-  text: "m"
-  text_range: "72:27::28"
-}
-tokens: {
-  text: "range"
-  text_range: "72:21::26"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "{"
-  text_range: "72:29::30"
-}
-tokens: {
-  text: "fmt"
-  text_range: "73:5::8"
-}
-tokens: {
-  text: "Println"
-  text_range: "73:9::16"
-}
-tokens: {
-  text: "."
-  text_range: "73:8::9"
-}
-tokens: {
-  text: "("
-  text_range: "73:16::17"
-}
-tokens: {
-  text: "\"Key:\""
-  text_range: "73:17::23"
-  type: "STRING_LITERAL"
-}
-tokens: {
-  text: "key"
-  text_range: "73:25::28"
-}
-tokens: {
-  text: ","
-  text_range: "73:23::24"
-}
-tokens: {
-  text: "\"Value:\""
-  text_range: "73:30::38"
-  type: "STRING_LITERAL"
-}
-tokens: {
-  text: ","
-  text_range: "73:28::29"
-}
-tokens: {
-  text: "value"
-  text_range: "73:40::45"
-}
-tokens: {
-  text: ","
-  text_range: "73:38::39"
-}
-tokens: {
-  text: ")"
-  text_range: "73:45::46"
-}
-tokens: {
   text: "}"
-  text_range: "74:4::5"
-}
-tokens: {
-  text: "for"
-  text_range: "77:4::7"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "m"
-  text_range: "77:14::15"
-}
-tokens: {
-  text: "range"
-  text_range: "77:8::13"
-  type: "KEYWORD"
-}
-tokens: {
-  text: "{"
-  text_range: "77:16::17"
-}
-tokens: {
-  text: "fmt"
-  text_range: "78:5::8"
-}
-tokens: {
-  text: "Println"
-  text_range: "78:9::16"
-}
-tokens: {
-  text: "."
-  text_range: "78:8::9"
-}
-tokens: {
-  text: "("
-  text_range: "78:16::17"
-}
-tokens: {
-  text: "\"An entry\""
-  text_range: "78:17::27"
-  type: "STRING_LITERAL"
-}
-tokens: {
-  text: ")"
-  text_range: "78:27::28"
-}
-tokens: {
-  text: "}"
-  text_range: "79:4::5"
-}
-tokens: {
-  text: "}"
-  text_range: "80:0::1"
+  text_range: "68:0::1"
 }
 root: {
-  text_range: "1:0:81:0"
+  text_range: "1:0:69:0"
   cfg_id: 2
   top_level: {
     declarations: {
@@ -1410,7 +1237,7 @@ root: {
       }
     }
     declarations: {
-      text_range: "9:0:80:1"
+      text_range: "9:0:68:1"
       cfg_id: 1
       function_declaration: {
         name: {
@@ -1424,8 +1251,8 @@ root: {
           }
         }
         body: {
-          text_range: "9:11:80:1"
-          cfg_id: 196
+          text_range: "9:11:68:1"
+          cfg_id: 170
           block: {
             statement_or_expressions: {
               text_range: "10:1:11:2"
@@ -1763,8 +1590,9 @@ root: {
               loop: {
                 condition: {
                   text_range: "28:5::26"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "28:5::6"
                       cfg_id: 42
                       identifier: {
@@ -1774,7 +1602,11 @@ root: {
                         id: 334
                       }
                     }
-                    value: {
+                    children: {
+                      text_range: "28:6::7"
+                      native: {}
+                    }
+                    children: {
                       text_range: "28:8::9"
                       cfg_id: 43
                       identifier: {
@@ -1784,7 +1616,17 @@ root: {
                         id: 337
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "28:10::12"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "28:13::18"
+                      native: {}
+                    }
+                    children: {
                       text_range: "28:19::26"
                       cfg_id: 44
                       identifier: {
@@ -1794,7 +1636,6 @@ root: {
                         id: 291
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -2610,8 +2451,9 @@ root: {
               loop: {
                 condition: {
                   text_range: "54:5::18"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "54:5::6"
                       cfg_id: 119
                       identifier: {
@@ -2621,13 +2463,22 @@ root: {
                         id: 919
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "54:7::9"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "54:10::15"
+                      native: {}
+                    }
+                    children: {
                       text_range: "54:16::18"
                       integer_literal: {
                         value: "10"
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -2764,8 +2615,9 @@ root: {
               loop: {
                 condition: {
                   text_range: "60:8::35"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "60:8::9"
                       cfg_id: 134
                       identifier: {
@@ -2775,7 +2627,17 @@ root: {
                         id: 1051
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "60:10::12"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "60:13::18"
+                      native: {}
+                    }
+                    children: {
                       text_range: "60:19::35"
                       cfg_id: 139
                       function_invocation: {
@@ -2817,7 +2679,6 @@ root: {
                         return_type: "iter.Seq[E]"
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -2931,8 +2792,9 @@ root: {
               loop: {
                 condition: {
                   text_range: "65:8::33"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "65:8::9"
                       cfg_id: 154
                       identifier: {
@@ -2942,7 +2804,11 @@ root: {
                         id: 1145
                       }
                     }
-                    value: {
+                    children: {
+                      text_range: "65:9::10"
+                      native: {}
+                    }
+                    children: {
                       text_range: "65:11::12"
                       cfg_id: 155
                       identifier: {
@@ -2952,7 +2818,17 @@ root: {
                         id: 1148
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "65:13::15"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "65:16::21"
+                      native: {}
+                    }
+                    children: {
                       text_range: "65:22::33"
                       cfg_id: 160
                       function_invocation: {
@@ -2994,7 +2870,6 @@ root: {
                         return_type: "iter.Seq2[K, V]"
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -3078,253 +2953,6 @@ root: {
                 }
                 kind: "FOR"
                 keyword: "65:4::7"
-              }
-            }
-            statement_or_expressions: {
-              text_range: "70:4::15"
-              cfg_id: 172
-              variable_declaration: {
-                identifiers: {
-                  text_range: "70:8::11"
-                  cfg_id: 170
-                  identifier: {
-                    name: "key"
-                    type: "int"
-                    package: "UNKNOWN"
-                    id: 1333
-                  }
-                }
-                type: {
-                  text_range: "70:12::15"
-                  cfg_id: 171
-                  identifier: {
-                    name: "int"
-                    type: "int"
-                    package: "UNKNOWN"
-                  }
-                }
-              }
-            }
-            statement_or_expressions: {
-              text_range: "71:4::20"
-              cfg_id: 175
-              variable_declaration: {
-                identifiers: {
-                  text_range: "71:8::13"
-                  cfg_id: 173
-                  identifier: {
-                    name: "value"
-                    type: "string"
-                    package: "UNKNOWN"
-                    id: 1349
-                  }
-                }
-                type: {
-                  text_range: "71:14::20"
-                  cfg_id: 174
-                  identifier: {
-                    name: "string"
-                    type: "string"
-                    package: "UNKNOWN"
-                  }
-                }
-              }
-            }
-            statement_or_expressions: {
-              text_range: "72:4:74:5"
-              cfg_id: 187
-              loop: {
-                condition: {
-                  text_range: "72:8::28"
-                  range_clause: {
-                    key: {
-                      text_range: "72:8::11"
-                      cfg_id: 176
-                      identifier: {
-                        name: "key"
-                        type: "int"
-                        package: "UNKNOWN"
-                        id: 1333
-                      }
-                    }
-                    value: {
-                      text_range: "72:13::18"
-                      cfg_id: 177
-                      identifier: {
-                        name: "value"
-                        type: "string"
-                        package: "UNKNOWN"
-                        id: 1349
-                      }
-                    }
-                    ranged_expression: {
-                      text_range: "72:27::28"
-                      cfg_id: 178
-                      identifier: {
-                        name: "m"
-                        type: "map[int]string"
-                        package: "UNKNOWN"
-                        id: 1115
-                      }
-                    }
-                  }
-                }
-                body: {
-                  text_range: "72:29:74:5"
-                  cfg_id: 186
-                  block: {
-                    statement_or_expressions: {
-                      text_range: "73:5::46"
-                      cfg_id: 185
-                      expression_statement: {
-                        expression: {
-                          text_range: "73:5::46"
-                          cfg_id: 184
-                          function_invocation: {
-                            member_select: {
-                              text_range: "73:5::16"
-                              cfg_id: 181
-                              member_select: {
-                                expression: {
-                                  text_range: "73:5::8"
-                                  cfg_id: 179
-                                  identifier: {
-                                    name: "fmt"
-                                    type: "UNKNOWN"
-                                    package: "fmt"
-                                    id: 24
-                                  }
-                                }
-                                identifier: {
-                                  text_range: "73:9::16"
-                                  cfg_id: 180
-                                  identifier: {
-                                    name: "Println"
-                                    type: "func(a ...any) (n int, err error)"
-                                    package: "fmt"
-                                  }
-                                }
-                              }
-                            }
-                            arguments: {
-                              text_range: "73:17::23"
-                              string_literal: {
-                                value: "\"Key:\""
-                                content: "Key:"
-                              }
-                            }
-                            arguments: {
-                              text_range: "73:25::28"
-                              cfg_id: 182
-                              identifier: {
-                                name: "key"
-                                type: "int"
-                                package: "UNKNOWN"
-                                id: 1333
-                              }
-                            }
-                            arguments: {
-                              text_range: "73:30::38"
-                              string_literal: {
-                                value: "\"Value:\""
-                                content: "Value:"
-                              }
-                            }
-                            arguments: {
-                              text_range: "73:40::45"
-                              cfg_id: 183
-                              identifier: {
-                                name: "value"
-                                type: "string"
-                                package: "UNKNOWN"
-                                id: 1349
-                              }
-                            }
-                            return_type: "int"
-                            return_type: "error"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                kind: "FOR"
-                keyword: "72:4::7"
-              }
-            }
-            statement_or_expressions: {
-              text_range: "77:4:79:5"
-              cfg_id: 195
-              loop: {
-                condition: {
-                  text_range: "77:14::15"
-                  range_clause: {
-                    ranged_expression: {
-                      text_range: "77:14::15"
-                      cfg_id: 188
-                      identifier: {
-                        name: "m"
-                        type: "map[int]string"
-                        package: "UNKNOWN"
-                        id: 1115
-                      }
-                    }
-                  }
-                }
-                body: {
-                  text_range: "77:16:79:5"
-                  cfg_id: 194
-                  block: {
-                    statement_or_expressions: {
-                      text_range: "78:5::28"
-                      cfg_id: 193
-                      expression_statement: {
-                        expression: {
-                          text_range: "78:5::28"
-                          cfg_id: 192
-                          function_invocation: {
-                            member_select: {
-                              text_range: "78:5::16"
-                              cfg_id: 191
-                              member_select: {
-                                expression: {
-                                  text_range: "78:5::8"
-                                  cfg_id: 189
-                                  identifier: {
-                                    name: "fmt"
-                                    type: "UNKNOWN"
-                                    package: "fmt"
-                                    id: 24
-                                  }
-                                }
-                                identifier: {
-                                  text_range: "78:9::16"
-                                  cfg_id: 190
-                                  identifier: {
-                                    name: "Println"
-                                    type: "func(a ...any) (n int, err error)"
-                                    package: "fmt"
-                                  }
-                                }
-                              }
-                            }
-                            arguments: {
-                              text_range: "78:17::27"
-                              string_literal: {
-                                value: "\"An entry\""
-                                content: "An entry"
-                              }
-                            }
-                            return_type: "int"
-                            return_type: "error"
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-                kind: "FOR"
-                keyword: "77:4::7"
               }
             }
           }
@@ -3495,34 +3123,6 @@ root: {
           blocks: {
             node_ids: 167
             successors: 37
-          }
-          blocks: {
-            node_ids: 172
-            node_ids: 175
-            node_ids: 178
-            node_ids: 176
-            node_ids: 177
-            successors: 40
-          }
-          blocks: {
-            successors: 41
-            successors: 42
-          }
-          blocks: {
-            node_ids: 185
-            successors: 40
-          }
-          blocks: {
-            node_ids: 188
-            successors: 43
-          }
-          blocks: {
-            successors: 44
-            successors: 45
-          }
-          blocks: {
-            node_ids: 193
-            successors: 43
           }
           blocks: {}
         }

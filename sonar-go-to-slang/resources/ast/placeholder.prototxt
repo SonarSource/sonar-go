@@ -563,12 +563,14 @@ root: {
         return_type: {
           text_range: "13:21::25"
           cfg_id: 12
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "13:21::25"
               cfg_id: 11
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "13:21::25"
                   cfg_id: 10
                   identifier: {
@@ -661,12 +663,20 @@ root: {
         return_type: {
           text_range: "17:12::25"
           cfg_id: 8
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "17:12::13"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
               text_range: "17:13::16"
               cfg_id: 5
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "17:13::16"
                   cfg_id: 4
                   identifier: {
@@ -677,11 +687,16 @@ root: {
                 }
               }
             }
-            fields: {
+            children: {
+              text_range: "17:16::17"
+              native: {}
+            }
+            children: {
               text_range: "17:18::24"
               cfg_id: 7
-              field: {
-                type: {
+              native: {
+                native_kind: "[1](Field)"
+                children: {
                   text_range: "17:18::24"
                   cfg_id: 6
                   identifier: {
@@ -690,6 +705,12 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
+              }
+            }
+            children: {
+              text_range: "17:24::25"
+              native: {
+                native_kind: "Closing"
               }
             }
           }

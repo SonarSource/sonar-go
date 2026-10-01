@@ -30,7 +30,6 @@ import org.sonar.plugins.go.api.LiteralTree;
 import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.ModifierTree;
 import org.sonar.plugins.go.api.NativeTree;
-import org.sonar.plugins.go.api.RangeClauseTree;
 import org.sonar.plugins.go.api.Token;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.UnaryExpressionTree;
@@ -108,10 +107,8 @@ public class SyntacticEquivalence {
     boolean jumpTreeCheck = (first instanceof JumpTree) && (((JumpTree) first).kind() != ((JumpTree) second).kind());
     boolean functionInvocationTreeCheck = (first instanceof FunctionInvocationTree functionInvocationTree)
       && (functionInvocationTree.hasVariadicSpread() != ((FunctionInvocationTree) second).hasVariadicSpread());
-    boolean rangeClauseTreeCheck = (first instanceof RangeClauseTree rangeClauseTree)
-      && (rangeClauseTree.isDeclaration() != ((RangeClauseTree) second).isDeclaration());
     return nativeTreeCheck || unaryTreeCheck || binaryTreeCheck || assignTreeCheck || vardeclTreeCheck || loopTreeCheck
-      || modifierTreeCheck || jumpTreeCheck || functionInvocationTreeCheck || rangeClauseTreeCheck;
+      || modifierTreeCheck || jumpTreeCheck || functionInvocationTreeCheck;
   }
 
   public static List<List<Tree>> findDuplicatedGroups(List<Tree> list) {

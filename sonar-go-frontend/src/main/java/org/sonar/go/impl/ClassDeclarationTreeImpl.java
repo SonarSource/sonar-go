@@ -21,7 +21,6 @@ import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
-import org.sonar.plugins.go.api.FieldListTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
@@ -29,13 +28,11 @@ import org.sonar.plugins.go.api.TreeMetaData;
 public class ClassDeclarationTreeImpl extends BaseTreeImpl implements ClassDeclarationTree {
 
   private final IdentifierTree identifier;
-  private final FieldListTree typeParameters;
   private final Tree classTree;
 
-  public ClassDeclarationTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, @Nullable FieldListTree typeParameters, Tree classTree) {
+  public ClassDeclarationTreeImpl(TreeMetaData metaData, @Nullable IdentifierTree identifier, Tree classTree) {
     super(metaData);
     this.identifier = identifier;
-    this.typeParameters = typeParameters;
     this.classTree = classTree;
   }
 
@@ -45,12 +42,6 @@ public class ClassDeclarationTreeImpl extends BaseTreeImpl implements ClassDecla
     return identifier;
   }
 
-  @CheckForNull
-  @Override
-  public FieldListTree typeParameters() {
-    return typeParameters;
-  }
-
   @Override
   public Tree classTree() {
     return classTree;
@@ -58,7 +49,7 @@ public class ClassDeclarationTreeImpl extends BaseTreeImpl implements ClassDecla
 
   @Override
   public List<Tree> children() {
-    // identifier and typeParameters are not added to the children as they are already part of this classTree structure
+    // identifier is not added to the children as it is already part of this classTree structure
     return Collections.singletonList(classTree);
   }
 }

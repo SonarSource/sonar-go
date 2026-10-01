@@ -18,27 +18,23 @@ package org.sonar.go.converter;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
-import org.awaitility.Awaitility;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentCaptor;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
-import org.sonar.plugins.go.api.FieldListTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
@@ -49,6 +45,7 @@ import org.sonar.plugins.go.api.KeyValueTree;
 import org.sonar.plugins.go.api.LiteralTree;
 import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
+import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.ParseException;
 import org.sonar.plugins.go.api.ReturnTree;
@@ -143,8 +140,9 @@ class GoConverterTest {
     List<Tree> f1Children = functionDeclarationTree.children();
     assertThat(f1Children).hasSize(3);
     Tree typeParams = f1Children.get(1);
-    assertThat(typeParams).isEqualTo(functionDeclarationTree.typeParameters()).isInstanceOf(FieldListTree.class);
-    assertThat(((FieldListTree) typeParams).names()).map(IdentifierTree::name).containsExactly("T");
+    assertThat(typeParams).isEqualTo(functionDeclarationTree.typeParameters()).isInstanceOf(NativeTree.class);
+    assertThat(((NativeTree) typeParams).nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+      stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)"));
 
     List<Tree> f2Children = functions.get(1).children();
     Tree f = ((BlockTree) f2Children.get(1)).statementOrExpressions().get(0);
@@ -258,7 +256,9 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("foo");
     assertThat(functionDeclaration.name().type()).isEqualTo("func(i int)");
     assertThat(functionDeclaration.typeParameters()).isNull();
-    assertThat(functionDeclaration.receiver().names()).map(IdentifierTree::name).containsExactly("m");
+    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class, nativeTree -> assertThat(nativeTree.nativeKind())
+      .isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
     assertThat(functionDeclaration.formalParameters()).hasSize(1);
     assertThat(functionDeclaration.formalParameters().get(0)).isInstanceOf(ParameterTree.class);
   }
@@ -479,7 +479,9 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("funWithTypeParameter");
     assertThat(functionDeclaration.name().type()).isEqualTo("func[T any]()");
     assertThat(functionDeclaration.formalParameters()).isEmpty();
-    assertThat(functionDeclaration.typeParameters().names()).map(IdentifierTree::name).containsExactly("T");
+    assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)")));
   }
 
   @Test
@@ -578,17 +580,6 @@ class GoConverterTest {
 
       assertThat(trees.get("foo.go").tree()).isInstanceOf(TopLevelTree.class);
     }
-    // Windows can keep the exited process image locked briefly after close().
-    Path executable = Path.of(GoExecutableExtractor.extract(tempDir, new SystemPlatformInfo()));
-    Awaitility.await("the Go executable to be unlocked")
-      .atMost(Duration.ofSeconds(10))
-      .pollDelay(Duration.ZERO)
-      .pollInterval(Duration.ofMillis(50))
-      .ignoreExceptionsInstanceOf(IOException.class)
-      .until(() -> {
-        Files.deleteIfExists(executable);
-        return true;
-      });
   }
 
   @Test
@@ -1036,9 +1027,13 @@ class GoConverterTest {
     assertThat(functionDeclaration.name().name()).isEqualTo("Map");
     assertThat(functionDeclaration.name().type()).isEqualTo("func[U any](f func(T) U) []U");
     assertThat(functionDeclaration.receiverType()).isEqualTo("main.Container[T]");
-    assertThat(functionDeclaration.receiver().names()).map(IdentifierTree::name).containsExactly("c");
+    assertThat(functionDeclaration.receiver()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("Recv(FieldList)")));
     // The type parameters of the method itself, which is new in Go 1.27, are kept separate from the receiver's ones.
-    assertThat(functionDeclaration.typeParameters().names()).map(IdentifierTree::name).containsExactly("U");
+    assertThat(functionDeclaration.typeParameters()).isInstanceOfSatisfying(NativeTree.class,
+      nativeTree -> assertThat(nativeTree.nativeKind()).isInstanceOfSatisfying(StringNativeKind.class,
+        stringNativeKind -> assertThat(stringNativeKind.kind()).isEqualTo("TypeParams(FieldList)")));
   }
 
   @Test

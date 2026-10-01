@@ -18,12 +18,17 @@ package org.sonar.go.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 public class VariableHelper {
+
+  private static final String FIELD_KIND_SUFFIX = "(Field)";
+  private static final String NAMES_KIND = "Names";
+  private static final String IDENTIFIER_LIST_KIND = "[]*Ident";
 
   private VariableHelper() {
   }
@@ -52,6 +57,31 @@ public class VariableHelper {
       result.add(new Variable(name, variableDeclarationTree.type(), value));
     }
     return result;
+  }
+
+  /**
+   * Return the fields of a {@code FieldList} native tree, such as the one holding the parameters, the named results,
+   * the receiver or the type parameters of a function, or an empty stream when there is no such tree.
+   */
+  public static Stream<Tree> getFields(@Nullable Tree fieldList) {
+    if (fieldList == null) {
+      return Stream.empty();
+    }
+    return fieldList.children().stream()
+      .filter(child -> NativeKinds.isStringNativeKind(child, kind -> kind.endsWith(FIELD_KIND_SUFFIX)));
+  }
+
+  /**
+   * Return the names declared by the fields of a {@code FieldList} native tree. Only the names of the fields are
+   * returned, so that the members of a composite type used as the type of a field are left out.
+   */
+  public static Stream<IdentifierTree> getFieldNames(@Nullable Tree fieldList) {
+    return getFields(fieldList)
+      .flatMap(field -> field.children().stream())
+      .filter(child -> NativeKinds.isStringNativeKindOfType(child, NAMES_KIND, IDENTIFIER_LIST_KIND))
+      .flatMap(names -> names.children().stream())
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast);
   }
 
   public record Variable(IdentifierTree identifier, @Nullable Tree type, @Nullable Tree value) {

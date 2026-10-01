@@ -114,12 +114,14 @@ root: {
         return_type: {
           text_range: "3:23::26"
           cfg_id: 7
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "3:23::26"
               cfg_id: 6
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "3:23::26"
                   cfg_id: 5
                   identifier: {
@@ -177,12 +179,14 @@ root: {
         return_type: {
           text_range: "7:22::29"
           cfg_id: 6
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
               text_range: "7:22::29"
               cfg_id: 5
-              field: {
-                type: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "7:22::29"
                   cfg_id: 4
                   identifier: {

@@ -20,13 +20,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-import javax.annotation.Nullable;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.BlockTreeImpl;
 import org.sonar.go.impl.ClassDeclarationTreeImpl;
-import org.sonar.go.impl.FieldListTreeImpl;
-import org.sonar.go.impl.FieldTreeImpl;
 import org.sonar.go.impl.FloatLiteralTreeImpl;
 import org.sonar.go.impl.FunctionDeclarationTreeImpl;
 import org.sonar.go.impl.FunctionInvocationTreeImpl;
@@ -48,8 +45,6 @@ import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.BinaryExpressionTree;
 import org.sonar.plugins.go.api.BlockTree;
 import org.sonar.plugins.go.api.ClassDeclarationTree;
-import org.sonar.plugins.go.api.FieldListTree;
-import org.sonar.plugins.go.api.FieldTree;
 import org.sonar.plugins.go.api.FloatLiteralTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
@@ -150,15 +145,7 @@ public class TreeCreationUtils {
   }
 
   public static ClassDeclarationTree classDeclarationTree(IdentifierTree className, Tree classDecl) {
-    return new ClassDeclarationTreeImpl(null, className, null, classDecl);
-  }
-
-  public static FieldTree field(List<IdentifierTree> names, @Nullable Tree type) {
-    return new FieldTreeImpl(null, names, type);
-  }
-
-  public static FieldListTree fieldList(FieldTree... fields) {
-    return new FieldListTreeImpl(null, List.of(fields));
+    return new ClassDeclarationTreeImpl(null, className, classDecl);
   }
 
   public static VariableDeclarationTree variable(String name) {

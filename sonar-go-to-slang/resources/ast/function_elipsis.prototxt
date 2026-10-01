@@ -405,15 +405,20 @@ root: {
               loop: {
                 condition: {
                   text_range: "4:5::25"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "4:5::6"
                       cfg_id: 13
                       place_holder: {
                         place_holder_token: "4:5::6"
                       }
                     }
-                    value: {
+                    children: {
+                      text_range: "4:6::7"
+                      native: {}
+                    }
+                    children: {
                       text_range: "4:8::11"
                       cfg_id: 14
                       identifier: {
@@ -423,7 +428,17 @@ root: {
                         id: 87
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "4:12::14"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "4:15::20"
+                      native: {}
+                    }
+                    children: {
                       text_range: "4:21::25"
                       cfg_id: 15
                       identifier: {
@@ -433,7 +448,6 @@ root: {
                         id: 56
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {

@@ -22,12 +22,8 @@ import org.sonar.plugins.go.api.cfg.ControlFlowGraph;
 
 public interface FunctionDeclarationTree extends Tree {
 
-  /**
-   * The result list of the function, which holds a named or an unnamed field per result, or null when the function
-   * returns nothing.
-   */
   @CheckForNull
-  FieldListTree returnType();
+  Tree returnType();
 
   /**
    * Can return null when the function is a function literal (closure).
@@ -43,12 +39,8 @@ public interface FunctionDeclarationTree extends Tree {
   @CheckForNull
   BlockTree body();
 
-  /**
-   * The receiver of the method, or null when the function is not a method. A receiver list holds a single field, named
-   * or unnamed.
-   */
   @CheckForNull
-  FieldListTree receiver();
+  Tree receiver();
 
   /**
    * Return receiver name. It is lazy calculated and cached for next invocations.
@@ -65,7 +57,7 @@ public interface FunctionDeclarationTree extends Tree {
   String receiverType();
 
   @CheckForNull
-  FieldListTree typeParameters();
+  Tree typeParameters();
 
   TextRange rangeToHighlight();
 

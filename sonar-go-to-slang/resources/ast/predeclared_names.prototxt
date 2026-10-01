@@ -17,16 +17,16 @@ comments: {
   content_range: "5:2::114"
 }
 comments: {
-  text: "// A grouped type specification is a class declaration of its own, like a single \"type X int\"; only its"
-  content_text: " A grouped type specification is a class declaration of its own, like a single \"type X int\"; only its"
-  range: "19:0::103"
-  content_range: "19:2::103"
+  text: "// A grouped type specification stays native, unlike a single \"type X int\" or a grouped const or var"
+  content_text: " A grouped type specification stays native, unlike a single \"type X int\" or a grouped const or var"
+  range: "19:0::100"
+  content_range: "19:2::100"
 }
 comments: {
-  text: "// name goes through mapName."
-  content_text: " name goes through mapName."
-  range: "20:0::29"
-  content_range: "20:2::29"
+  text: "// specification; only its name goes through mapName."
+  content_text: " specification; only its name goes through mapName."
+  range: "20:0::53"
+  content_range: "20:2::53"
 }
 comments: {
   text: "// \"iota\" is an identifier wherever it appears, mapIdentImpl never mapped it to a literal. Declaring it"
@@ -966,16 +966,16 @@ root: {
             name: "groupedTypeNames"
             type: "func()"
             package: "ModuleNameForTest/ast"
-            id: 602
+            id: 623
           }
         }
         body: {
           text_range: "21:24:28:1"
-          cfg_id: 30
+          cfg_id: 28
           block: {
             statement_or_expressions: {
               text_range: "22:1:25:2"
-              cfg_id: 23
+              cfg_id: 21
               native: {
                 native_kind: "[0](GenDecl)"
                 children: {
@@ -996,66 +996,52 @@ root: {
                     native_kind: "Specs([]Spec)"
                     children: {
                       text_range: "23:2::11"
-                      cfg_id: 18
-                      class_declaration: {
-                        identifier: "23:2::5"
-                        class_tree: {
-                          text_range: "23:2::11"
-                          cfg_id: 17
-                          native: {
-                            native_kind: "[0](TypeSpecWrapped)"
-                            children: {
-                              text_range: "23:2::5"
-                              cfg_id: 15
-                              identifier: {
-                                name: "nil"
-                                type: "ast.nil"
-                                package: "ModuleNameForTest/ast"
-                                id: 633
-                              }
-                            }
-                            children: {
-                              text_range: "23:8::11"
-                              cfg_id: 16
-                              identifier: {
-                                name: "int"
-                                type: "int"
-                                package: "UNKNOWN"
-                              }
-                            }
+                      cfg_id: 17
+                      native: {
+                        native_kind: "[0](TypeSpec)"
+                        children: {
+                          text_range: "23:2::5"
+                          cfg_id: 15
+                          identifier: {
+                            name: "nil"
+                            type: "ast.nil"
+                            package: "ModuleNameForTest/ast"
+                            id: 654
+                          }
+                        }
+                        children: {
+                          text_range: "23:8::11"
+                          cfg_id: 16
+                          identifier: {
+                            name: "int"
+                            type: "int"
+                            package: "UNKNOWN"
                           }
                         }
                       }
                     }
                     children: {
                       text_range: "24:2::14"
-                      cfg_id: 22
-                      class_declaration: {
-                        identifier: "24:2::7"
-                        class_tree: {
-                          text_range: "24:2::14"
-                          cfg_id: 21
-                          native: {
-                            native_kind: "[1](TypeSpecWrapped)"
-                            children: {
-                              text_range: "24:2::7"
-                              cfg_id: 19
-                              identifier: {
-                                name: "false"
-                                type: "ast.false"
-                                package: "ModuleNameForTest/ast"
-                                id: 645
-                              }
-                            }
-                            children: {
-                              text_range: "24:8::14"
-                              cfg_id: 20
-                              identifier: {
-                                name: "string"
-                                type: "string"
-                                package: "UNKNOWN"
-                              }
-                            }
+                      cfg_id: 20
+                      native: {
+                        native_kind: "[1](TypeSpec)"
+                        children: {
+                          text_range: "24:2::7"
+                          cfg_id: 18
+                          identifier: {
+                            name: "false"
+                            type: "ast.false"
+                            package: "ModuleNameForTest/ast"
+                            id: 666
+                          }
+                        }
+                        children: {
+                          text_range: "24:8::14"
+                          cfg_id: 19
+                          identifier: {
+                            name: "string"
+                            type: "string"
+                            package: "UNKNOWN"
                           }
                         }
                       }
@@ -1072,50 +1058,50 @@ root: {
             }
             statement_or_expressions: {
               text_range: "26:1::14"
-              cfg_id: 26
+              cfg_id: 24
               variable_declaration: {
                 identifiers: {
                   text_range: "26:5::10"
-                  cfg_id: 24
+                  cfg_id: 22
                   identifier: {
                     name: "value"
                     type: "ast.nil"
                     package: "UNKNOWN"
-                    id: 666
+                    id: 687
                   }
                 }
                 type: {
                   text_range: "26:11::14"
-                  cfg_id: 25
+                  cfg_id: 23
                   identifier: {
                     name: "nil"
                     type: "ast.nil"
                     package: "ModuleNameForTest/ast"
-                    id: 633
+                    id: 654
                   }
                 }
               }
             }
             statement_or_expressions: {
               text_range: "27:1::10"
-              cfg_id: 29
+              cfg_id: 27
               assignment_expression: {
                 operator: "EQUAL"
                 left_hand_side: {
                   text_range: "27:1::2"
-                  cfg_id: 27
+                  cfg_id: 25
                   place_holder: {
                     place_holder_token: "27:1::2"
                   }
                 }
                 statement_or_expression: {
                   text_range: "27:5::10"
-                  cfg_id: 28
+                  cfg_id: 26
                   identifier: {
                     name: "value"
                     type: "ast.nil"
                     package: "UNKNOWN"
-                    id: 666
+                    id: 687
                   }
                 }
               }
@@ -1124,8 +1110,8 @@ root: {
         }
         cfg: {
           blocks: {
-            node_ids: 26
-            node_ids: 29
+            node_ids: 24
+            node_ids: 27
             node_ids: 0
           }
         }
@@ -1163,7 +1149,7 @@ root: {
                     name: "iotaFirst"
                     type: "untyped int"
                     package: "UNKNOWN"
-                    id: 901
+                    id: 922
                   }
                 }
                 initializers: {
@@ -1189,7 +1175,7 @@ root: {
                     name: "iotaSecond"
                     type: "untyped int"
                     package: "UNKNOWN"
-                    id: 919
+                    id: 940
                   }
                 }
                 is_val: true
@@ -1216,7 +1202,7 @@ root: {
             name: "shadowedIota"
             type: "func()"
             package: "ModuleNameForTest/ast"
-            id: 938
+            id: 959
           }
         }
         body: {
@@ -1234,7 +1220,7 @@ root: {
                     name: "iota"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 960
+                    id: 981
                   }
                 }
                 initializers: {
@@ -1264,7 +1250,7 @@ root: {
                     name: "iota"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 960
+                    id: 981
                   }
                 }
               }
@@ -1291,7 +1277,7 @@ root: {
             name: "shadowedIotaShortDeclaration"
             type: "func()"
             package: "ModuleNameForTest/ast"
-            id: 987
+            id: 1008
           }
         }
         body: {
@@ -1309,7 +1295,7 @@ root: {
                     name: "iota"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 1021
+                    id: 1042
                   }
                 }
                 initializers: {
@@ -1339,7 +1325,7 @@ root: {
                     name: "iota"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 1021
+                    id: 1042
                   }
                 }
               }
@@ -1366,7 +1352,7 @@ root: {
             name: "rangedNames"
             type: "func(s []int)"
             package: "ModuleNameForTest/ast"
-            id: 1049
+            id: 1070
           }
         }
         formal_parameters: {
@@ -1380,7 +1366,7 @@ root: {
                 name: "s"
                 type: "[]int"
                 package: "UNKNOWN"
-                id: 1061
+                id: 1082
               }
             }
             type: {
@@ -1410,28 +1396,38 @@ root: {
               loop: {
                 condition: {
                   text_range: "48:5::19"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "48:5::8"
                       cfg_id: 9
                       identifier: {
                         name: "nil"
                         type: "int"
                         package: "UNKNOWN"
-                        id: 1077
+                        id: 1098
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "48:9::11"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "48:12::17"
+                      native: {}
+                    }
+                    children: {
                       text_range: "48:18::19"
                       cfg_id: 10
                       identifier: {
                         name: "s"
                         type: "[]int"
                         package: "UNKNOWN"
-                        id: 1061
+                        id: 1082
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -1457,7 +1453,7 @@ root: {
                             name: "nil"
                             type: "int"
                             package: "UNKNOWN"
-                            id: 1077
+                            id: 1098
                           }
                         }
                       }
@@ -1474,38 +1470,52 @@ root: {
               loop: {
                 condition: {
                   text_range: "51:5::26"
-                  range_clause: {
-                    key: {
+                  native: {
+                    native_kind: "RangeHeader"
+                    children: {
                       text_range: "51:5::8"
                       cfg_id: 16
                       identifier: {
                         name: "nil"
                         type: "int"
                         package: "UNKNOWN"
-                        id: 1112
+                        id: 1133
                       }
                     }
-                    value: {
+                    children: {
+                      text_range: "51:8::9"
+                      native: {}
+                    }
+                    children: {
                       text_range: "51:10::15"
                       cfg_id: 17
                       identifier: {
                         name: "false"
                         type: "int"
                         package: "UNKNOWN"
-                        id: 1117
+                        id: 1138
                       }
                     }
-                    ranged_expression: {
+                    children: {
+                      text_range: "51:16::18"
+                      native: {
+                        native_kind: "Tok"
+                      }
+                    }
+                    children: {
+                      text_range: "51:19::24"
+                      native: {}
+                    }
+                    children: {
                       text_range: "51:25::26"
                       cfg_id: 18
                       identifier: {
                         name: "s"
                         type: "[]int"
                         package: "UNKNOWN"
-                        id: 1061
+                        id: 1082
                       }
                     }
-                    is_declaration: true
                   }
                 }
                 body: {
@@ -1550,7 +1560,7 @@ root: {
                                 name: "nil"
                                 type: "int"
                                 package: "UNKNOWN"
-                                id: 1112
+                                id: 1133
                               }
                             }
                             children: {
@@ -1564,7 +1574,7 @@ root: {
                                 name: "false"
                                 type: "int"
                                 package: "UNKNOWN"
-                                id: 1117
+                                id: 1138
                               }
                             }
                           }
@@ -1620,22 +1630,36 @@ root: {
         return_type: {
           text_range: "56:19::28"
           cfg_id: 7
-          field_list: {
-            fields: {
+          native: {
+            native_kind: "Results(FieldList)"
+            children: {
+              text_range: "56:19::20"
+              native: {
+                native_kind: "Opening"
+              }
+            }
+            children: {
               text_range: "56:20::27"
               cfg_id: 6
-              field: {
-                names: {
+              native: {
+                native_kind: "[0](Field)"
+                children: {
                   text_range: "56:20::23"
-                  cfg_id: 4
-                  identifier: {
-                    name: "nil"
-                    type: "int"
-                    package: "UNKNOWN"
-                    id: 1182
+                  native: {
+                    native_kind: "Names([]*Ident)"
+                    children: {
+                      text_range: "56:20::23"
+                      cfg_id: 4
+                      identifier: {
+                        name: "nil"
+                        type: "int"
+                        package: "UNKNOWN"
+                        id: 1203
+                      }
+                    }
                   }
                 }
-                type: {
+                children: {
                   text_range: "56:24::27"
                   cfg_id: 5
                   identifier: {
@@ -1644,6 +1668,12 @@ root: {
                     package: "UNKNOWN"
                   }
                 }
+              }
+            }
+            children: {
+              text_range: "56:27::28"
+              native: {
+                native_kind: "Closing"
               }
             }
           }
@@ -1655,7 +1685,7 @@ root: {
             name: "namedResult"
             type: "func() (nil int)"
             package: "ModuleNameForTest/ast"
-            id: 1167
+            id: 1188
           }
         }
         body: {
@@ -1696,7 +1726,7 @@ root: {
             name: "shadowedNames"
             type: "func(nil int, false string)"
             package: "ModuleNameForTest/ast"
-            id: 1211
+            id: 1232
           }
         }
         formal_parameters: {
@@ -1710,7 +1740,7 @@ root: {
                 name: "nil"
                 type: "int"
                 package: "UNKNOWN"
-                id: 1225
+                id: 1246
               }
             }
             type: {
@@ -1735,7 +1765,7 @@ root: {
                 name: "false"
                 type: "string"
                 package: "UNKNOWN"
-                id: 1234
+                id: 1255
               }
             }
             type: {
@@ -1764,7 +1794,7 @@ root: {
                     name: "true"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 1255
+                    id: 1276
                   }
                 }
                 initializers: {
@@ -1794,7 +1824,7 @@ root: {
                     name: "true"
                     type: "int"
                     package: "UNKNOWN"
-                    id: 1255
+                    id: 1276
                   }
                 }
               }
@@ -1814,7 +1844,7 @@ root: {
                         name: "nil"
                         type: "int"
                         package: "UNKNOWN"
-                        id: 1279
+                        id: 1300
                       }
                     }
                     initializers: {
@@ -1844,7 +1874,7 @@ root: {
                         name: "nil"
                         type: "int"
                         package: "UNKNOWN"
-                        id: 1279
+                        id: 1300
                       }
                     }
                   }
@@ -1863,7 +1893,7 @@ root: {
                     name: "false"
                     type: "UNKNOWN"
                     package: "UNKNOWN"
-                    id: 1301
+                    id: 1322
                   }
                 }
                 children: {
@@ -1891,7 +1921,7 @@ root: {
                                 name: "false"
                                 type: "UNKNOWN"
                                 package: "UNKNOWN"
-                                id: 1301
+                                id: 1322
                               }
                             }
                             keyword: "69:2::7"

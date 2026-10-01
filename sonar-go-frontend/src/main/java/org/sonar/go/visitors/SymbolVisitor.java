@@ -27,7 +27,6 @@ import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.utils.VariableHelper;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
-import org.sonar.plugins.go.api.FieldListTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.LeftRightHandSideTree;
@@ -52,16 +51,12 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
     // entered, before its body, so those declarations are recorded first.
     register(FunctionDeclarationTree.class, (ctx, functionDeclarationTree) -> Stream
       .concat(
-        declaredNames(functionDeclarationTree.receiver()).stream(),
-        declaredNames(functionDeclarationTree.returnType()).stream())
+        VariableHelper.getFieldNames(functionDeclarationTree.receiver()),
+        VariableHelper.getFieldNames(functionDeclarationTree.returnType()))
       .forEach(identifier -> addVariable(identifier, null, Usage.UsageType.PARAMETER)));
     register(AssignmentExpressionTree.class, this::processAssignment);
     register(IdentifierTreeImpl.class, this::processIdentifier);
     registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> symbolTable.clear());
-  }
-
-  private static List<IdentifierTree> declaredNames(@Nullable FieldListTree fieldList) {
-    return fieldList == null ? List.of() : fieldList.names();
   }
 
   private void addVariable(IdentifierTree identifier, @Nullable Tree value, Usage.UsageType type) {

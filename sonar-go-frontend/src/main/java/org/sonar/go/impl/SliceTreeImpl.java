@@ -20,7 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.CheckForNull;
 import javax.annotation.Nullable;
-import org.sonar.go.utils.TreeUtils;
 import org.sonar.plugins.go.api.SliceTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.TreeMetaData;
@@ -74,9 +73,15 @@ public class SliceTreeImpl extends BaseTreeImpl implements SliceTree {
   public List<Tree> children() {
     List<Tree> children = new ArrayList<>();
     children.add(expression);
-    TreeUtils.addToListIfNotNull(children, low);
-    TreeUtils.addToListIfNotNull(children, high);
-    TreeUtils.addToListIfNotNull(children, max);
+    addToListIfNotNull(children, low);
+    addToListIfNotNull(children, high);
+    addToListIfNotNull(children, max);
     return children;
+  }
+
+  private static void addToListIfNotNull(List<Tree> children, @Nullable Tree tree) {
+    if (tree != null) {
+      children.add(tree);
+    }
   }
 }

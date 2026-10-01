@@ -123,9 +123,6 @@ message Node {
     ExceptionHandling exception_handling = 46;
     Modifier modifier = 47;
     Throw throw_statement = 48;
-    RangeClause range_clause = 49;
-    FieldList field_list = 50;
-    Field field = 51;
   }
 }
 
@@ -241,8 +238,6 @@ message ClassDeclaration {
   // descendants.
   string identifier = 1;
   Node class_tree = 2;
-  // Resolved from class_tree because the type parameters are already among its descendants.
-  string type_parameters = 3;
 }
 
 message PlaceHolder {
@@ -291,22 +286,6 @@ message Loop {
   Node body = 2;
   string kind = 3;
   string keyword = 4;
-}
-
-message RangeClause {
-  Node key = 1;
-  Node value = 2;
-  Node ranged_expression = 3;
-  bool is_declaration = 4;
-}
-
-message FieldList {
-  repeated Node fields = 1;
-}
-
-message Field {
-  repeated Node names = 1;
-  Node type = 2;
 }
 
 message MapType {
