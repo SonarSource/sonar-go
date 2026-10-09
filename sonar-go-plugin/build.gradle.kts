@@ -96,7 +96,6 @@ tasks.jar {
                 "Plugin-SourcesUrl" to "https://github.com/SonarSource/sonar-go",
                 "Plugin-Version" to project.version,
                 "Plugin-RequiredForLanguages" to "go",
-                "Sonar-Version" to "6.7",
                 "SonarLint-Supported" to "true",
                 "Version" to "${project.version}",
                 "Jre-Min-Version" to java.sourceCompatibility.majorVersion
