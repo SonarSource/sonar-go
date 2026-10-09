@@ -4,7 +4,7 @@ Generate the serialized SLANG AST of a Go source file, as protobuf for the analy
 
 ## Requirements
 * Docker (specifically, Docker Buildx)
-* (optional, required on Sonar machines) CA certificate for FortiClient traffic inspection in the project root directory
+* (optional, required on Sonar machines) `Sonar-CloudFlare-Inspection-Cert.cer` CA certificate for traffic inspection in the project root directory
 
 ## Building
 
@@ -26,7 +26,7 @@ Execute build inside Docker generating and building Go code and executing tests:
 ```
 
 In case you system does not require the certificate for traffic inspection set `-DtrafficInspection=false` while running any Gradle task.
-Otherwise, place the `.crt` file into the project root directory.
+Otherwise, keep `Sonar-CloudFlare-Inspection-Cert.cer` in the project root directory.
 
 ### What happens under the hood
 

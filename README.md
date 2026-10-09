@@ -14,6 +14,14 @@ To provide feedback (request a feature, report a bug, etc.) use the [SonarQube C
 
 ## Building
 
+### Requirements
+
+* Java 21
+* For the default build: a running Docker installation with Docker Buildx. On Apple Silicon and other ARM hosts, Docker must be able to run `linux/amd64` containers through emulation
+* For a build without Docker: Go 1.27.0 and `golangci-lint` 2.4.0, with the Go tools directory (usually `$(go env GOPATH)/bin`) on `PATH`. The build script installs `go-licenses` during the build
+
+Use the included Gradle wrapper (`./gradlew`); no separate Gradle installation is needed. The [Go converter README](sonar-go-to-slang/README.md) describes the Docker tasks in more detail.
+
 ### Setup
 
 To configure build dependencies, run the following command:
@@ -30,15 +38,22 @@ git config submodule.recurse true
 
 For more information see [README.md](https://github.com/SonarSource/cloud-native-gradle-modules/blob/master/README.md) of cloud-native-gradle-modules.
 
-Additionally, if you are on Windows, read the [sonar-go-to-slang/README.md](sonar-go-to-slang/README.md) instructions.
-
+For builds requiring a traffic-inspection certificate, see the [Go converter setup](sonar-go-to-slang/README.md#requirements). If you are on Windows, read the [Windows build instructions](sonar-go-to-slang/README.md#building-on-windows).
 
 ### Build
-Build and run Unit Tests:
+Build and run unit tests with Docker:
 
 ```shell
 ./gradlew build
 ```
+
+Alternatively, run the full build without Docker:
+
+```shell
+CI=true ./gradlew build
+```
+
+`CI=true` selects the native Go build tasks instead of the Docker tasks; the Go toolchain and linter listed above must be available locally. The native build compiles only the host platform unless `GO_CROSS_COMPILE` is set.
 
 ### Fix license packaging issues
 During the Gradle build, a license packaging check is executed.
