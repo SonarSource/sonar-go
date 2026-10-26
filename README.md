@@ -18,7 +18,7 @@ To provide feedback (request a feature, report a bug, etc.) use the [SonarQube C
 
 * Java 21
 * For the default build: a running Docker installation with Docker Buildx. On Apple Silicon and other ARM hosts, Docker must be able to run `linux/amd64` containers through emulation
-* For a build without Docker: Go 1.27.0 and `golangci-lint` 2.4.0, with the Go tools directory (usually `$(go env GOPATH)/bin`) on `PATH`. The build script installs `go-licenses` during the build
+* For a build without Docker: Go 1.27.3 and `golangci-lint` 2.4.0, with the Go tools directory (usually `$(go env GOPATH)/bin`) on `PATH`. The build script installs `go-licenses` during the build
 
 Use the included Gradle wrapper (`./gradlew`); no separate Gradle installation is needed. The [Go converter README](sonar-go-to-slang/README.md) describes the Docker tasks in more detail.
 

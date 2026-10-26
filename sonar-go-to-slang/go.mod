@@ -1,6 +1,6 @@
 module github.com/SonarSource/slang/sonar-go-to-slang
 
-go 1.27.0
+go 1.27.3
 
 require (
 	github.com/stretchr/testify v1.12.1
