@@ -17,6 +17,10 @@
 package org.sonar.go.plugin;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.time.Duration;
+import java.util.Comparator;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -26,6 +30,7 @@ import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.awaitility.Awaitility.await;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,5 +47,20 @@ class InstanceScopeGoConverterTest {
       Tree tree = converter.parse(Map.of("foo.go", "package main\nfunc foo() {}"), "moduleName").get("foo.go").tree();
       assertThat(tree).isInstanceOf(TopLevelTree.class);
     }
+
+    // Windows can keep the executable locked briefly after the process exits.
+    await("the Go executable to be unlocked")
+      .atMost(Duration.ofSeconds(10))
+      .pollDelay(Duration.ZERO)
+      .pollInterval(Duration.ofMillis(50))
+      .ignoreExceptionsInstanceOf(IOException.class)
+      .until(() -> {
+        try (var paths = Files.walk(tempDir.toPath())) {
+          for (var path : paths.sorted(Comparator.reverseOrder()).toList()) {
+            Files.deleteIfExists(path);
+          }
+        }
+        return true;
+      });
   }
 }
