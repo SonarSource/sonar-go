@@ -342,7 +342,7 @@ public class MethodMatchers {
     private Predicate<String> namePredicate;
     private boolean methodReceiver = false;
     private Predicate<List<String>> parametersTypesPredicate;
-    private Map<Integer, Predicate<Tree>> parametersTreePredicate = new HashMap<>();
+    private final Map<Integer, Predicate<Tree>> parametersTreePredicate = new HashMap<>();
     private Predicate<String> variableTypePredicate = v -> false;
 
     @Override

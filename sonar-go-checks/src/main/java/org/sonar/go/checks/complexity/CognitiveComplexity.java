@@ -42,7 +42,7 @@ import static org.sonar.go.utils.ExpressionUtils.isNilLiteral;
 
 public class CognitiveComplexity {
 
-  private List<Increment> increments = new ArrayList<>();
+  private final List<Increment> increments = new ArrayList<>();
 
   public CognitiveComplexity(Tree root) {
     CognitiveComplexityVisitor visitor = new CognitiveComplexityVisitor();
@@ -82,7 +82,7 @@ public class CognitiveComplexity {
 
   private class CognitiveComplexityVisitor extends TreeVisitor<TreeContext> {
 
-    private Set<Token> alreadyConsideredOperators = new HashSet<>();
+    private final Set<Token> alreadyConsideredOperators = new HashSet<>();
 
     private CognitiveComplexityVisitor() {
 

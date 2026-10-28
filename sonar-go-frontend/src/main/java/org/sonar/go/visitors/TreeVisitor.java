@@ -24,8 +24,8 @@ import org.sonar.plugins.go.api.Tree;
 
 public class TreeVisitor<C extends TreeContext> {
 
-  private List<ConsumerFilter<C, ?>> consumersOnEnterTree;
-  private List<ConsumerFilter<C, ?>> consumersOnLeaveTree;
+  private final List<ConsumerFilter<C, ?>> consumersOnEnterTree;
+  private final List<ConsumerFilter<C, ?>> consumersOnLeaveTree;
 
   public TreeVisitor() {
     consumersOnEnterTree = new ArrayList<>();
