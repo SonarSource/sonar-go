@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.Tree;
 import org.sonar.plugins.go.api.VariableDeclarationTree;
 
@@ -60,6 +61,32 @@ public class VariableHelper {
   }
 
   /**
+   * Return the simple variable targets of a range loop, distinguishing declarations from assignments.
+   * The range header is a native tree; its direct identifier children before the assignment operator are targets.
+   */
+  public static List<RangeVariable> getRangeVariables(LoopTree loop) {
+    var header = loop.condition();
+    if (!NativeKinds.isStringNativeKind(header, "RangeHeader"::equals)) {
+      return List.of();
+    }
+    var operator = header.children().stream()
+      .filter(child -> NativeKinds.isStringNativeKindOfType(child, "Tok"))
+      .flatMap(child -> child.metaData().tokens().stream())
+      .filter(token -> ":=".equals(token.text()) || "=".equals(token.text()))
+      .findFirst();
+    if (operator.isEmpty()) {
+      return List.of();
+    }
+    var position = operator.get().textRange().start();
+    return header.children().stream()
+      .filter(IdentifierTree.class::isInstance)
+      .map(IdentifierTree.class::cast)
+      .filter(identifier -> identifier.textRange().start().compareTo(position) < 0)
+      .map(identifier -> new RangeVariable(identifier, ":=".equals(operator.get().text())))
+      .toList();
+  }
+
+  /**
    * Return the fields of a {@code FieldList} native tree, such as the one holding the parameters, the named results,
    * the receiver or the type parameters of a function, or an empty stream when there is no such tree.
    */
@@ -85,5 +112,8 @@ public class VariableHelper {
   }
 
   public record Variable(IdentifierTree identifier, @Nullable Tree type, @Nullable Tree value) {
+  }
+
+  public record RangeVariable(IdentifierTree identifier, boolean declaration) {
   }
 }

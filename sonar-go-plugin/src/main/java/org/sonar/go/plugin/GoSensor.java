@@ -191,7 +191,8 @@ public class GoSensor implements Sensor {
         new SkipNoSonarLinesVisitor(noSonarFilter),
         new SymbolVisitor<>(),
         new ChecksVisitor(mainChecks(), statistics, goModFileDataStore, false),
-        new ChecksVisitor(mainAndTestChecks(), statistics, goModFileDataStore, true));
+        new ChecksVisitor(mainAndTestChecks(), statistics, goModFileDataStore, true),
+        new ChecksVisitor(testChecks(), statistics, goModFileDataStore, InputFileContext::isTestFile));
     } else {
       return Arrays.asList(
         new IssueSuppressionVisitor(),
@@ -200,6 +201,7 @@ public class GoSensor implements Sensor {
         new SymbolVisitor<>(),
         new ChecksVisitor(mainChecks(), statistics, goModFileDataStore, false),
         new ChecksVisitor(mainAndTestChecks(), statistics, goModFileDataStore, true),
+        new ChecksVisitor(testChecks(), statistics, goModFileDataStore, InputFileContext::isTestFile),
         new CpdVisitor(),
         new SyntaxHighlighter());
     }
@@ -391,6 +393,10 @@ public class GoSensor implements Sensor {
 
   protected GoChecks mainAndTestChecks() {
     return initializeChecks(GoCheckList.mainAndTestChecks());
+  }
+
+  protected GoChecks testChecks() {
+    return initializeChecks(GoCheckList.testChecks());
   }
 
   protected GoChecks initializeChecks(List<Class<?>> checksToInitialize) {

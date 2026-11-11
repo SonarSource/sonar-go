@@ -23,6 +23,7 @@ import java.util.Deque;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.BiConsumer;
+import java.util.function.Predicate;
 import javax.annotation.Nullable;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.rule.RuleKey;
@@ -41,12 +42,16 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   private final DurationStatistics statistics;
   private final GoModFileDataStore goModFileDataStore;
-  private final boolean applicableToTestFiles;
+  private final Predicate<InputFileContext> applicableTo;
 
   public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore, boolean applicableToTestFiles) {
+    this(goChecks, statistics, goModFileDataStore, ctx -> applicableToTestFiles || !ctx.isTestFile());
+  }
+
+  public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore, Predicate<InputFileContext> applicableTo) {
     this.statistics = statistics;
     this.goModFileDataStore = goModFileDataStore;
-    this.applicableToTestFiles = applicableToTestFiles;
+    this.applicableTo = applicableTo;
     Collection<GoCheck> rulesActiveInSonarQube = goChecks.all();
     for (GoCheck check : rulesActiveInSonarQube) {
       var ruleKey = goChecks.ruleKey(check);
@@ -57,7 +62,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
 
   @Override
   public boolean isApplicableTo(InputFileContext ctx) {
-    return applicableToTestFiles || !ctx.isTestFile();
+    return applicableTo.test(ctx);
   }
 
   public class ContextAdapter implements InitContext, CheckContext {

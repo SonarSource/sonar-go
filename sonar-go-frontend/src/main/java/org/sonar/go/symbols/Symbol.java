@@ -19,6 +19,7 @@ package org.sonar.go.symbols;
 import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.CheckForNull;
+import org.sonar.go.utils.NativeKinds;
 import org.sonar.plugins.go.api.HasTextRange;
 import org.sonar.plugins.go.api.Tree;
 
@@ -59,13 +60,14 @@ public class Symbol {
    * <li>it is assigned in the declaration and not other value is assigned afterward.</li>
    * <li>there is no assignment in the declaration and a single assignment is done afterward.</li>
    * </ol>
+   * Parameters and variables declared by range loops cannot be resolved to a safe value.
    */
   @CheckForNull
   public Tree getSafeValue() {
     Usage effectivelyFinalUsage = null;
     for (Usage usage : usages) {
-      if (usage.type() == Usage.UsageType.PARAMETER) {
-        // An identifier coming from method parameters cannot be resolved.
+      if (usage.type() == Usage.UsageType.PARAMETER || NativeKinds.isStringNativeKindOfType(usage.value(), "RangeHeader")) {
+        // Parameters and range variables receive values from outside the recorded assignments.
         return null;
       } else if (usage.type() == Usage.UsageType.DECLARATION) {
         if (effectivelyFinalUsage != null) {

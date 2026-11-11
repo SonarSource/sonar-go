@@ -171,13 +171,13 @@ tokens: {
   text_range: "17:14::15"
 }
 tokens: {
-  text: "int"
-  text_range: "17:20::23"
-}
-tokens: {
   text: "chan"
   text_range: "17:15::19"
   type: "KEYWORD"
+}
+tokens: {
+  text: "int"
+  text_range: "17:20::23"
 }
 tokens: {
   text: ")"
@@ -651,10 +651,16 @@ root: {
                       }
                     }
                     arguments: {
-                      text_range: "17:20::23"
+                      text_range: "17:15::23"
                       cfg_id: 33
                       native: {
                         native_kind: "[0](ChanType)"
+                        children: {
+                          text_range: "17:15::19"
+                          native: {
+                            native_kind: "Begin"
+                          }
+                        }
                         children: {
                           text_range: "17:20::23"
                           cfg_id: 32

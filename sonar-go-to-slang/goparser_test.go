@@ -21,7 +21,9 @@ package main
 
 import (
 	"context"
+	"go/ast"
 	"go/token"
+	"go/types"
 	"os"
 	"path/filepath"
 	"regexp"
@@ -29,7 +31,9 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 	"google.golang.org/protobuf/encoding/prototext"
+	"google.golang.org/protobuf/proto"
 )
 
 // goldenProtoText is how every snapshot under resources/ is written. The trees are rendered from the
@@ -81,6 +85,90 @@ func astFromStrings(fileNameToContent map[string]string) (fileSet *token.FileSet
 	fileSet = token.NewFileSet()
 	astFileOrErrors = readAstString(context.Background(), fileSet, fileNameToContent)
 	return
+}
+
+func TestIdentifierInfoWithCompositeLiteralKeys(t *testing.T) {
+	testCases := []struct {
+		name            string
+		source          string
+		identifier      string
+		omitTypeInfo    bool
+		expectedBinding string
+		expectedType    string
+	}{
+		{
+			name: "unresolved literal type", source: "func f() { value := 1; _ = MissingStruct{value: 2} }",
+			identifier: "value", expectedType: "UNKNOWN",
+		},
+		{
+			name: "nonexistent field", source: "type S struct{ A int }; func f() { B := 6; _ = S{B: 7} }",
+			identifier: "B", expectedType: "UNKNOWN",
+		},
+		{
+			name: "nested literal with elided type", source: "func f() { value := 1; _ = []MissingStruct{{value: 2}} }",
+			identifier: "value", expectedType: "UNKNOWN",
+		},
+		{
+			name: "resolved field overrides parser binding", source: "type S struct{ B int }; func f() { B := 6; _ = S{B: 7} }",
+			identifier: "B", expectedBinding: "B int", expectedType: "int",
+		},
+		{
+			name: "resolved map key", source: "func f() { value := 1; _ = map[int]int{value: 2} }",
+			identifier: "value", expectedBinding: "value :=", expectedType: "int",
+		},
+		{
+			name: "resolved array index", source: "func f() { const index = 1; _ = [3]int{index: 2} }",
+			identifier: "index", expectedBinding: "index =", expectedType: "untyped int",
+		},
+		{
+			name: "unresolved map key without type info", source: "func f() { value := 1; _ = map[int]int{value: 2} }",
+			identifier: "value", omitTypeInfo: true, expectedType: "UNKNOWN",
+		},
+		{
+			name: "ordinary variable fallback", source: "func f() { value := 1; _ = value }",
+			identifier: "value", omitTypeInfo: true, expectedBinding: "value :=", expectedType: "UNKNOWN",
+		},
+		{
+			name: "literal value fallback", source: "func f() { value := 1; _ = MissingStruct{field: value} }",
+			identifier: "value", omitTypeInfo: true, expectedBinding: "value :=", expectedType: "UNKNOWN",
+		},
+		{
+			name: "nonvariable fallback excluded", source: "func f() { const value = 1; _ = value }",
+			identifier: "value", omitTypeInfo: true, expectedType: "UNKNOWN",
+		},
+	}
+	for _, testCase := range testCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			source := "package p; " + testCase.source
+			fileSet, astFiles := astFromString("test.go", source)
+			astFile := astFiles["test.go"]
+			require.NoError(t, astFile.err)
+			info := &types.Info{Defs: make(map[*ast.Ident]types.Object), Uses: make(map[*ast.Ident]types.Object)}
+			if !testCase.omitTypeInfo {
+				config := types.Config{Error: func(error) {}}
+				// Type errors are intentional: identifier recovery must also work for invalid code.
+				_, _ = config.Check("p", fileSet, []*ast.File{astFile.ast}, info)
+			}
+			mapper := NewSlangMapper(fileSet, astFile.ast, source, info, "", buildUsesByPos(info))
+			identifierPos := token.Pos(strings.LastIndex(source, testCase.identifier) + 1)
+			var identifier *ast.Ident
+			ast.Inspect(astFile.ast, func(node ast.Node) bool {
+				if ident, ok := node.(*ast.Ident); ok && ident.Pos() == identifierPos {
+					identifier = ident
+				}
+				return true
+			})
+			require.NotNil(t, identifier)
+			expectedID := 0
+			if testCase.expectedBinding != "" {
+				expectedID = strings.Index(source, testCase.expectedBinding) + 1
+			}
+			identifierInfo := mapper.getIdentifierInfo(identifier)
+			assert.Equal(t, expectedID, identifierInfo.Id)
+			assert.Equal(t, testCase.expectedType, identifierInfo.Type)
+			assert.Equal(t, "UNKNOWN", identifierInfo.Package)
+		})
+	}
 }
 
 // Update all .prototxt files in resources/ast from all .go.source files
@@ -156,5 +244,76 @@ func TestReadAstStringParsesFilesInSortedOrder(t *testing.T) {
 			assert.Greater(t, base, previousBase, "positions of %s should follow the previous file in sorted order", fileName)
 			previousBase = base
 		}
+	}
+}
+
+func TestIdentifierTypesResolveAliases(t *testing.T) {
+	source := `package checks
+type Value struct{}
+type Alias = Value
+type ChainedAlias = Alias
+type PointerAlias = *Alias
+type SliceAlias = []Alias
+type KeyAlias = string
+type Defined Value
+type DefinedAlias = Defined
+func example(value Alias, chained ChainedAlias, pointer *Alias, pointerAlias PointerAlias,
+    slice []Alias, sliceAlias SliceAlias, array [2]Alias, mapping map[KeyAlias]*Alias,
+    defined DefinedAlias) {}
+`
+	fileSet, files := astFromString("aliases.go", source)
+	info, errors := typeCheckAst(context.Background(), fileSet, files, true, "", "ModuleNameForTest", ".", GcExporter{})
+	assert.Empty(t, errors)
+	mapper := SlangMapper{info: info}
+	actual := make(map[string]string)
+	for identifier, object := range info.Defs {
+		if _, ok := object.(*types.Var); ok {
+			actual[identifier.Name] = mapper.getIdentifierInfo(identifier).Type
+		}
+	}
+	assert.Equal(t, map[string]string{
+		"value":        "checks.Value",
+		"chained":      "checks.Value",
+		"pointer":      "*checks.Value",
+		"pointerAlias": "*checks.Value",
+		"slice":        "[]checks.Value",
+		"sliceAlias":   "[]checks.Value",
+		"array":        "[2]checks.Value",
+		"mapping":      "map[string]*checks.Value",
+		"defined":      "checks.Defined",
+	}, actual)
+}
+
+func TestImportPathConversion(t *testing.T) {
+	tests := []struct {
+		name    string
+		literal string
+		content string
+	}{
+		{"interpreted", `"fmt"`, "fmt"},
+		{"raw", "`fmt`", "fmt"},
+		{"hexadecimal", `"\x66mt"`, "fmt"},
+		{"octal", `"\146mt"`, "fmt"},
+		{"unicode", `"example.com/caf\u00e9"`, "example.com/café"},
+		{"utf8_bytes", `"example.com/caf\xc3\xa9"`, "example.com/café"},
+		{"raw_backslash", "`\\x66mt`", `\x66mt`},
+		{"invalid_utf8", `"\x80\x80"`, "�"},
+	}
+	for _, test := range tests {
+		t.Run(test.name, func(t *testing.T) {
+			root, comments, tokens, errMsg := slangFromString("imports.go", "package main\nimport "+test.literal+"\n", "ModuleNameForTest")
+			if !assert.Nil(t, errMsg) {
+				return
+			}
+			tree := buildProtoTree(root, comments, tokens, errMsg)
+			declarations := tree.GetRoot().GetTopLevel().GetDeclarations()
+			path := declarations[1].GetImportDeclaration().GetChildren()[1].GetImportSpecification().GetPath().GetStringLiteral()
+			if assert.NotNil(t, path, "import paths must be string-literal nodes") {
+				assert.Equal(t, test.literal, path.GetValue())
+				assert.Equal(t, test.content, path.GetContent())
+			}
+			_, err := proto.Marshal(tree)
+			assert.NoError(t, err, "decoded import paths must remain serializable")
+		})
 	}
 }

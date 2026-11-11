@@ -21,6 +21,7 @@ import (
 	"go/token"
 	"go/types"
 	"strconv"
+	"strings"
 )
 
 const keywordField = "keyword"
@@ -469,7 +470,15 @@ func (t *SlangMapper) mapImportSpecImpl(spec *ast.ImportSpec, fieldName string) 
 	children = t.appendNode(children, name)
 	slangField["name"] = name
 
-	path := t.mapBasicLit(spec.Path, "Path")
+	// Import paths may use raw strings. Decode only these literals, leaving other string handling unchanged.
+	// The parser has already validated the literal syntax.
+	content, _ := strconv.Unquote(spec.Path.Value)
+	// Protobuf strings require UTF-8. A replacement character is itself invalid in an import path.
+	pathFields := map[string]interface{}{
+		"value":   spec.Path.Value,
+		"content": strings.ToValidUTF8(content, "�"),
+	}
+	path := t.createExpectedNode(spec.Path.Pos(), spec.Path.Value, "Path(StringLit)", "STRING_LITERAL", "StringLiteral", pathFields)
 	children = t.appendNode(children, path)
 	slangField["path"] = path
 
@@ -1067,7 +1076,7 @@ func (t *SlangMapper) findReturnTypesForIdentifier(identifier *ast.Ident) []stri
 		if ok {
 			result = make([]string, signature.Results().Len())
 			for i := 0; i < signature.Results().Len(); i++ {
-				result[i] = signature.Results().At(i).Origin().Type().String()
+				result[i] = receiverTypeName(signature.Results().At(i).Origin().Type())
 			}
 		}
 	}
@@ -1075,7 +1084,14 @@ func (t *SlangMapper) findReturnTypesForIdentifier(identifier *ast.Ident) []stri
 }
 
 func (t *SlangMapper) mapChanTypeImpl(chanType *ast.ChanType, fieldName string) *Node {
-	return nil
+	var children []*Node
+	firstToken := token.CHAN
+	if chanType.Dir == ast.RECV {
+		firstToken = token.ARROW
+	}
+	children = t.appendNode(children, t.createTokenFromPosAstToken(chanType.Begin, firstToken, "Begin"))
+	children = t.appendNode(children, t.mapExpr(chanType.Value, "Value"))
+	return t.createNativeNode(chanType, children, fieldName+"(ChanType)")
 }
 
 func (t *SlangMapper) mapCompositeLitImpl(lit *ast.CompositeLit, fieldName string) *Node {

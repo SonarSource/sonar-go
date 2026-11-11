@@ -604,7 +604,7 @@ root: {
                       cfg_id: 5
                       identifier: {
                         name: "any"
-                        type: "any"
+                        type: "interface{}"
                         package: "UNKNOWN"
                       }
                     }
@@ -931,7 +931,7 @@ root: {
                   cfg_id: 24
                   identifier: {
                     name: "any"
-                    type: "any"
+                    type: "interface{}"
                     package: "UNKNOWN"
                   }
                 }

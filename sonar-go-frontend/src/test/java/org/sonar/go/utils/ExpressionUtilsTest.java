@@ -25,11 +25,14 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.impl.AssignmentExpressionTreeImpl;
 import org.sonar.go.impl.BinaryExpressionTreeImpl;
 import org.sonar.go.impl.IdentifierTreeImpl;
+import org.sonar.go.impl.LeftRightHandSideTreeImpl;
 import org.sonar.go.impl.LiteralTreeImpl;
+import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.impl.ParenthesizedExpressionTreeImpl;
 import org.sonar.go.impl.PlaceHolderTreeImpl;
 import org.sonar.go.impl.TokenImpl;
 import org.sonar.go.impl.UnaryExpressionTreeImpl;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.CompositeLiteralTree;
@@ -44,6 +47,7 @@ import org.sonar.plugins.go.api.VariableDeclarationTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.from;
+import static org.sonar.go.utils.ExpressionUtils.expressions;
 import static org.sonar.go.utils.ExpressionUtils.getTypeOfInitializer;
 import static org.sonar.go.utils.ExpressionUtils.getUnaryOperandOrTree;
 import static org.sonar.go.utils.ExpressionUtils.getValueByKeyFromLiteral;
@@ -67,6 +71,28 @@ class ExpressionUtilsTest {
   private static final Tree NUMBER_LITERAL = new LiteralTreeImpl(null, "34");
   private static final Tree TRUE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, TRUE_LITERAL);
   private static final Tree FALSE_NEGATED = new UnaryExpressionTreeImpl(null, UnaryExpressionTree.Operator.NEGATE, FALSE_LITERAL);
+
+  @Test
+  void shouldReturnSingletonWhenTreeIsSingleExpression() {
+    assertThat(expressions(TRUE_LITERAL)).containsExactly(TRUE_LITERAL);
+  }
+
+  @Test
+  void shouldPreserveExpressionOrderWhenTreeIsAssignmentSide() {
+    var side = new LeftRightHandSideTreeImpl(null, List.of(TRUE_LITERAL, FALSE_LITERAL));
+
+    assertThat(expressions(side)).containsExactly(TRUE_LITERAL, FALSE_LITERAL);
+  }
+
+  @Test
+  void shouldSkipEmptyNativeTreesWhenTreeIsAssignmentSide() {
+    var empty = new NativeTreeImpl(null, new StringNativeKind(""), List.of());
+    var nonEmpty = new NativeTreeImpl(null, new StringNativeKind("Other"), List.of());
+    var side = new LeftRightHandSideTreeImpl(null, List.of(empty, TRUE_LITERAL, empty, nonEmpty, FALSE_LITERAL));
+
+    assertThat(expressions(side)).containsExactly(TRUE_LITERAL, nonEmpty, FALSE_LITERAL);
+    assertThat(expressions(new LeftRightHandSideTreeImpl(null, List.of(empty)))).isEmpty();
+  }
 
   @Test
   void testNilLiteral() {

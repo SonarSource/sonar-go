@@ -192,7 +192,7 @@ root: {
                   cfg_id: 5
                   identifier: {
                     name: "any"
-                    type: "any"
+                    type: "interface{}"
                     package: "UNKNOWN"
                   }
                 }

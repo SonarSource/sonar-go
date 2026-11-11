@@ -29,6 +29,7 @@ import org.sonar.plugins.go.api.EllipsisTree;
 import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.KeyValueTree;
+import org.sonar.plugins.go.api.LeftRightHandSideTree;
 import org.sonar.plugins.go.api.LiteralTree;
 import org.sonar.plugins.go.api.MapTypeTree;
 import org.sonar.plugins.go.api.MemberSelectTree;
@@ -52,6 +53,10 @@ public class ExpressionUtils {
   private static final List<String> BOOLEAN_LITERALS = Arrays.asList(TRUE_LITERAL, FALSE_LITERAL);
 
   private ExpressionUtils() {
+  }
+
+  public static List<Tree> expressions(Tree tree) {
+    return tree instanceof LeftRightHandSideTree side ? side.getChildrenSkipEmptyNativeTrees() : List.of(tree);
   }
 
   public static boolean isNilLiteral(@Nullable Tree tree) {

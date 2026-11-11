@@ -241,6 +241,32 @@ class GoSensorTest {
       Arguments.of("lets_test.go", InputFile.Type.MAIN, List.of("S1110")));
   }
 
+  @MethodSource
+  @ParameterizedTest
+  void shouldRunTestOnlyChecksOnlyOnTestFiles(SonarRuntime runtime, String fileName, InputFile.Type fileType, boolean expectedIssue) {
+    sensorContext.setRuntime(runtime);
+    sensorContext.fileSystem().add(createInputFile(fileName, "package main\n", baseDir, null, fileType));
+    if (fileType == InputFile.Type.TEST) {
+      sensorContext.settings().setProperty("sonar.tests", "irrelevant-but-not-empty");
+    }
+
+    var goSensor = sensor(List.of(), List.of(), List.of(TestOnlyCheck.class));
+    goSensor.execute(sensorContext);
+
+    assertThat(sensorContext.allIssues()).extracting(Issue::ruleKey)
+      .containsExactlyElementsOf(expectedIssue ? List.of(RuleKey.of("go", "test-only")) : List.of());
+  }
+
+  static Stream<Arguments> shouldRunTestOnlyChecksOnlyOnTestFiles() {
+    return Stream.of(
+      Arguments.of(SQ_LTS_RUNTIME, "main.go", InputFile.Type.MAIN, false),
+      Arguments.of(SQ_LTS_RUNTIME, "main.go", InputFile.Type.TEST, true),
+      Arguments.of(SQ_LTS_RUNTIME, "main_test.go", InputFile.Type.MAIN, true),
+      Arguments.of(SONAR_LINT_RUNTIME, "main.go", InputFile.Type.MAIN, false),
+      Arguments.of(SONAR_LINT_RUNTIME, "main.go", InputFile.Type.TEST, true),
+      Arguments.of(SONAR_LINT_RUNTIME, "main_test.go", InputFile.Type.MAIN, true));
+  }
+
   @Test
   void test_file_issue() {
     InputFile inputFile = createInputFile("lets.go",
@@ -1489,10 +1515,15 @@ class GoSensorTest {
   }
 
   private GoSensor sensor(List<Class<?>> mainAndTestChecks, List<Class<?>> mainChecks) {
+    return sensor(mainAndTestChecks, mainChecks, List.of());
+  }
+
+  private GoSensor sensor(List<Class<?>> mainAndTestChecks, List<Class<?>> mainChecks, List<Class<?>> testChecks) {
     ActiveRulesBuilder rulesBuilder = new ActiveRulesBuilder();
 
     ArrayList<Class<?>> allChecks = new ArrayList<>(mainAndTestChecks);
     allChecks.addAll(mainChecks);
+    allChecks.addAll(testChecks);
 
     for (Class<?> check : allChecks) {
       RuleKey ruleKey = RuleKey.of(GoRulesDefinition.REPOSITORY_KEY, ((Rule) check.getAnnotations()[0]).key());
@@ -1513,6 +1544,11 @@ class GoSensorTest {
       @Override
       protected GoChecks mainChecks() {
         return initializeChecks(mainChecks);
+      }
+
+      @Override
+      protected GoChecks testChecks() {
+        return initializeChecks(testChecks);
       }
     };
   }
@@ -1546,6 +1582,14 @@ class GoSensorTest {
   }
 
   // help classes
+
+  @Rule(key = "test-only")
+  public static class TestOnlyCheck implements GoCheck {
+    @Override
+    public void initialize(InitContext init) {
+      init.register(TopLevelTree.class, (ctx, tree) -> ctx.reportFileIssue("Test-only issue"));
+    }
+  }
 
   static class FailingToReuseVisitor extends PullRequestAwareVisitor {
     @Override

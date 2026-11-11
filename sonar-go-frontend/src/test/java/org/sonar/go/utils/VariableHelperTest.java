@@ -23,6 +23,7 @@ import org.sonar.go.impl.VariableDeclarationTreeImpl;
 import org.sonar.go.testing.TestGoConverterSingleFile;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
+import org.sonar.plugins.go.api.LoopTree;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -150,6 +151,66 @@ class VariableHelperTest {
 
     assertThat(VariableHelper.getFields(function.returnType())).hasSize(1);
     assertThat(VariableHelper.getFieldNames(function.returnType()).map(IdentifierTree::name)).containsExactly("first", "second");
+  }
+
+  @Test
+  void shouldDistinguishRangeTargetsFromTheIterable() {
+    var loop = TestGoConverterSingleFile.parseAndRetrieve(LoopTree.class, """
+      package main
+      func f(items []int) {
+        for index, value := range items { println(index, value) }
+      }
+      """);
+    var variables = VariableHelper.getRangeVariables(loop);
+    assertThat(variables).extracting(variable -> variable.identifier().name()).containsExactly("index", "value");
+    assertThat(variables).allMatch(VariableHelper.RangeVariable::declaration);
+  }
+
+  @Test
+  void shouldDistinguishRangeAssignmentsFromDeclarations() {
+    var loop = TestGoConverterSingleFile.parseAndRetrieve(LoopTree.class, """
+      package main
+      func f(items []int) {
+        var index int
+        for index = range items { println(index) }
+      }
+      """);
+    var variables = VariableHelper.getRangeVariables(loop);
+    assertThat(variables).extracting(variable -> variable.identifier().name()).containsExactly("index");
+    assertThat(variables).noneMatch(VariableHelper.RangeVariable::declaration);
+  }
+
+  @Test
+  void shouldIgnoreNestedAssignmentsWhenIdentifyingRangeTargets() {
+    for (String targets : List.of(
+      "target, slots[func() int { offset := 0; return offset }()]",
+      "slots[func() int { offset := 0; return offset }()], target",
+      "target, slots[func() int { var offset int; offset = 0; return offset }()]",
+      "slots[func() int { var offset int; offset = 0; return offset }()], target")) {
+      var loop = TestGoConverterSingleFile.parseAndRetrieve(LoopTree.class, """
+        package main
+        func f(items, slots []int) {
+          var target int
+          for %s = range items { println(target) }
+        }
+        """.formatted(targets));
+      var variables = VariableHelper.getRangeVariables(loop);
+      assertThat(variables).extracting(variable -> variable.identifier().name()).containsExactly("target");
+      assertThat(variables).noneMatch(VariableHelper.RangeVariable::declaration);
+    }
+  }
+
+  @Test
+  void shouldIgnoreLoopsWithoutRangeVariables() {
+    for (String statement : List.of("for {}", "for true {}", "for range items {}")) {
+      var loop = TestGoConverterSingleFile.parseAndRetrieve(LoopTree.class, """
+        package main
+        func f(items []int) {
+          %s
+        }
+        """.formatted(statement));
+      assertThat(VariableHelper.getRangeVariables(loop)).isEmpty();
+    }
   }
 
   private static FunctionDeclarationTree parseFunction(String code) {

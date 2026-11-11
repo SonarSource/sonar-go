@@ -119,10 +119,10 @@ class ParameterTreeImplTest {
       arguments("c *fiber.Ctx", of("*github.com/gofiber/fiber/v2.Ctx")),
       arguments("c fiber.Ctx", of("github.com/gofiber/fiber/v2.Ctx")),
       arguments("c ...*fiber.Ctx", of("...*github.com/gofiber/fiber/v2.Ctx")),
-      arguments("a any", of("any"))
+      arguments("a any", of("interface{}"))
     // TODO SONARGO-511 Unnamed parameters should be mapped to "ParameterTree"
     // arguments("int", of("int")),
-    // arguments("any", of("any"))
+    // arguments("any", of("interface{}"))
     );
   }
 

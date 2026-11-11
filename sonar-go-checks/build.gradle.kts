@@ -32,6 +32,7 @@ dependencies {
     testImplementation(libs.sonar.analyzer.test.commons)
     testImplementation(libs.classgraph)
     testImplementation(libs.junit.jupiter.api)
+    testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.sonar.plugin.api.scanner.impl)
     testImplementation(libs.sonar.sensor.test.fixtures)
     testImplementation(libs.sonar.plugin.api.test.fixtures)

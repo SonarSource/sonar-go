@@ -1567,7 +1567,7 @@ root: {
                       cfg_id: 7
                       identifier: {
                         name: "any"
-                        type: "any"
+                        type: "interface{}"
                         package: "UNKNOWN"
                       }
                     }
@@ -1652,7 +1652,7 @@ root: {
                   cfg_id: 16
                   identifier: {
                     name: "any"
-                    type: "any"
+                    type: "interface{}"
                     package: "UNKNOWN"
                   }
                 }
@@ -1937,7 +1937,7 @@ root: {
                   cfg_id: 9
                   identifier: {
                     name: "any"
-                    type: "any"
+                    type: "interface{}"
                     package: "UNKNOWN"
                   }
                 }
@@ -2104,7 +2104,7 @@ root: {
                   cfg_id: 4
                   identifier: {
                     name: "any"
-                    type: "any"
+                    type: "interface{}"
                     package: "UNKNOWN"
                   }
                 }

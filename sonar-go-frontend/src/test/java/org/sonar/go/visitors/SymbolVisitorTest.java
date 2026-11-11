@@ -24,8 +24,11 @@ import org.sonar.go.symbols.GoNativeType;
 import org.sonar.go.symbols.Symbol;
 import org.sonar.go.symbols.Usage;
 import org.sonar.go.testing.TestGoConverterSingleFile;
+import org.sonar.go.utils.ConstantResolution;
+import org.sonar.go.utils.SymbolHelper;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.IntegerLiteralTree;
+import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.Tree;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -728,6 +731,121 @@ class SymbolVisitorTest {
     assertThat(namedError.symbol()).isNotNull();
     assertThat(namedError.symbol().getUsages()).extracting("type")
       .containsExactly(Usage.UsageType.PARAMETER, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
+  }
+
+  @Test
+  void shouldTrackRangeDeclarationsAssignmentsAndReferences() {
+    var ast = TestGoConverterSingleFile.parse("""
+      package main
+      func f(items []int) {
+        for index, value := range items {
+          println(index)
+          value = 1
+        }
+        var assigned int
+        for assigned = range items {}
+        for unused := range items {}
+      }
+      """);
+    var symbolVisitor = new SymbolVisitor<>();
+    symbolVisitor.scan(mock(), ast);
+
+    var index = identifierOnLine(ast, "index", 3).symbol();
+    assertThat(index).isNotNull();
+    assertThat(index.getUsages()).extracting(Usage::type)
+      .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.REFERENCE);
+    assertThat(index).isSameAs(identifierOnLine(ast, "index", 4).symbol());
+    assertThat(index.getSafeValue()).isNull();
+
+    var value = identifierOnLine(ast, "value", 3).symbol();
+    assertThat(value).isNotNull();
+    assertThat(value.getUsages()).extracting(Usage::type)
+      .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT);
+    assertThat(value.getSafeValue()).isNull();
+
+    var assigned = identifierOnLine(ast, "assigned", 7).symbol();
+    assertThat(assigned).isNotNull().isSameAs(identifierOnLine(ast, "assigned", 8).symbol());
+    assertThat(assigned.getUsages()).extracting(Usage::type)
+      .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT);
+
+    var unused = identifierOnLine(ast, "unused", 9).symbol();
+    assertThat(unused).isNotNull();
+    assertThat(unused.getUsages()).extracting(Usage::type).containsExactly(Usage.UsageType.DECLARATION);
+    assertThat(unused.getSafeValue()).isNull();
+
+    var items = identifierOnLine(ast, "items", 2).symbol();
+    assertThat(items).isNotNull();
+    assertThat(items.getUsages()).extracting(Usage::type)
+      .containsExactly(Usage.UsageType.PARAMETER, Usage.UsageType.REFERENCE, Usage.UsageType.REFERENCE, Usage.UsageType.REFERENCE);
+  }
+
+  @Test
+  void shouldTrackRangeAssignmentsWithNestedDeclarationsInTargets() {
+    var ast = TestGoConverterSingleFile.parse("""
+      package main
+      func f(items, slots []int) {
+        var target int
+        for target, slots[func() int { offset := 0; return offset }()] = range items {}
+        for slots[func() int { offset := 0; return offset }()], target = range items {}
+        println(target)
+      }
+      """);
+    var symbolVisitor = new SymbolVisitor<>();
+    symbolVisitor.scan(mock(), ast);
+
+    var target = identifierOnLine(ast, "target", 3).symbol();
+    assertThat(target).isNotNull();
+    assertThat(target.getUsages()).extracting(Usage::type)
+      .containsExactly(Usage.UsageType.DECLARATION, Usage.UsageType.ASSIGNMENT, Usage.UsageType.ASSIGNMENT, Usage.UsageType.REFERENCE);
+    assertThat(target)
+      .isSameAs(identifierOnLine(ast, "target", 4).symbol())
+      .isSameAs(identifierOnLine(ast, "target", 5).symbol())
+      .isSameAs(identifierOnLine(ast, "target", 6).symbol());
+  }
+
+  @Test
+  void shouldNotResolveRangeVariableToConditionalAssignment() {
+    var ast = TestGoConverterSingleFile.parse("""
+      package main
+      import "net/http"
+      func fetch(urls []string) {
+        for _, url := range urls {
+          if url == "" { url = "http://unsafe.invalid" }
+          http.Get(url)
+        }
+      }
+      """);
+    var symbolVisitor = new SymbolVisitor<>();
+    symbolVisitor.scan(mock(), ast);
+
+    var argument = identifierOnLine(ast, "url", 6);
+    assertThat(argument.symbol()).isNotNull();
+    assertThat(argument.symbol().getSafeValue()).isNull();
+    assertThat(SymbolHelper.unpackToSafeSymbolValueIfExisting(argument)).isSameAs(argument);
+    assertThat(ConstantResolution.resolveAsStringConstant(argument)).isNull();
+  }
+
+  @Test
+  void shouldNotResolveRangeVariablesToIntegerOrStringIterables() {
+    for (String statement : List.of("for value := range 10 {}", "for value := range \"abc\" {}", "for _, value := range \"abc\" {}")) {
+      var loop = TestGoConverterSingleFile.parseAndRetrieve(LoopTree.class, """
+        package main
+        func f() {
+          %s
+        }
+        """.formatted(statement));
+      var symbolVisitor = new SymbolVisitor<>();
+      symbolVisitor.scan(mock(), loop);
+
+      var identifier = identifierOnLine(loop, "value", 3);
+      var symbol = identifier.symbol();
+      assertThat(symbol).isNotNull();
+      var declaration = SymbolHelper.getDeclaration(symbol);
+      assertThat(declaration.type()).isEqualTo(Usage.UsageType.DECLARATION);
+      assertThat(declaration.value()).isSameAs(loop.condition());
+      assertThat(symbol.getSafeValue()).isNull();
+      assertThat(SymbolHelper.unpackToSafeSymbolValueIfExisting(identifier)).isSameAs(identifier);
+    }
   }
 
   private static IdentifierTree identifierOnLine(Tree ast, String name, int line) {

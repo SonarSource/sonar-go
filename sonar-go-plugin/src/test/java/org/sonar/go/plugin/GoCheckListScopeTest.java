@@ -55,6 +55,7 @@ class GoCheckListScopeTest {
   static Stream<Arguments> checksShouldBeOrderedByScope() {
     return Stream.of(
       Arguments.of("main checks", GoCheckList.mainChecks(), "Main"),
-      Arguments.of("main and test checks", GoCheckList.mainAndTestChecks(), "All"));
+      Arguments.of("main and test checks", GoCheckList.mainAndTestChecks(), "All"),
+      Arguments.of("test checks", GoCheckList.testChecks(), "Tests"));
   }
 }

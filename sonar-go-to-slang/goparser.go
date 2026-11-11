@@ -276,6 +276,7 @@ type SlangMapper struct {
 	objectToCfgIds    map[any]int32
 	moduleName        string
 	isValBySpec       map[*ast.ValueSpec]bool
+	compositeKeys     map[*ast.Ident]bool
 	nodeCount         int
 }
 
@@ -292,7 +293,20 @@ func NewSlangMapper(fileSet *token.FileSet, astFile *ast.File, fileContent strin
 		objectToCfgIds:    make(map[any]int32),
 		moduleName:        moduleName,
 		isValBySpec:       make(map[*ast.ValueSpec]bool),
+		compositeKeys:     make(map[*ast.Ident]bool),
 	}
+	ast.Inspect(astFile, func(node ast.Node) bool {
+		if literal, ok := node.(*ast.CompositeLit); ok {
+			for _, element := range literal.Elts {
+				if keyValue, ok := element.(*ast.KeyValueExpr); ok {
+					if key, ok := keyValue.Key.(*ast.Ident); ok {
+						t.compositeKeys[key] = true
+					}
+				}
+			}
+		}
+		return true
+	})
 	t.comments = t.mapAllComments()
 	t.commentPos = 0
 	return t
@@ -790,8 +804,14 @@ func (t *SlangMapper) getIdentifierInfo(ident *ast.Ident) *IdentifierInfo {
 	if obj, ok := t.info.Uses[ident]; ok && obj != nil {
 		return t.extractIdentifierInfo(ident, &obj)
 	}
+	// Recover variable identity from the parser when type checking is incomplete. Composite-literal
+	// keys are excluded because the parser can bind field names to unrelated local variables.
+	var id int
+	if ident.Obj != nil && ident.Obj.Kind == ast.Var && !t.compositeKeys[ident] {
+		id = int(ident.Obj.Pos())
+	}
 	return &IdentifierInfo{
-		Id:      0,
+		Id:      id,
 		Type:    "UNKNOWN",
 		Package: "UNKNOWN",
 	}
@@ -804,7 +824,7 @@ func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object)
 	var typeName string
 	var packageName = t.extractPackageName(obj)
 
-	typeString := (*obj).Type().String()
+	typeString := receiverTypeName((*obj).Type())
 	if strings.HasSuffix(typeString, "invalid type") {
 		typeName = t.getTypeFromAst(ident)
 	} else {
@@ -815,6 +835,23 @@ func (t *SlangMapper) extractIdentifierInfo(ident *ast.Ident, obj *types.Object)
 		Id:      id,
 		Type:    typeName,
 		Package: packageName,
+	}
+}
+
+// Resolve aliases in receiver types and the containers from which receivers can be indexed.
+// Named types keep their identity: their underlying type does not determine their method set.
+func receiverTypeName(typ types.Type) string {
+	switch typ := types.Unalias(typ).(type) {
+	case *types.Pointer:
+		return "*" + receiverTypeName(typ.Elem())
+	case *types.Slice:
+		return "[]" + receiverTypeName(typ.Elem())
+	case *types.Array:
+		return fmt.Sprintf("[%d]%s", typ.Len(), receiverTypeName(typ.Elem()))
+	case *types.Map:
+		return "map[" + receiverTypeName(typ.Key()) + "]" + receiverTypeName(typ.Elem())
+	default:
+		return typ.String()
 	}
 }
 

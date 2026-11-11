@@ -1717,6 +1717,7 @@ root: {
                     name: "ii"
                     type: "UNKNOWN"
                     package: "UNKNOWN"
+                    id: 495
                   }
                 }
                 identifiers: {
@@ -1726,6 +1727,7 @@ root: {
                     name: "jj"
                     type: "UNKNOWN"
                     package: "UNKNOWN"
+                    id: 499
                   }
                 }
                 type: {

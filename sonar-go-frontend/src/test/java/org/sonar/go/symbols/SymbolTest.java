@@ -20,6 +20,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.sonar.go.impl.IntegerLiteralTreeImpl;
 import org.sonar.go.impl.TextRanges;
+import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.utils.TreeCreationUtils;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,6 +83,37 @@ class SymbolTest {
     var assignment = new Usage(mock(), null, Usage.UsageType.ASSIGNMENT);
     symbol.getUsages().addAll(List.of(declaration, assignment));
     assertThat(symbol.getSafeValue()).isNull();
+  }
+
+  @Test
+  void shouldNotResolveRangeVariableWithSingleAssignment() {
+    var symbol = new Symbol("int");
+    var rangeHeader = TreeCreationUtils.simpleNative(new StringNativeKind("RangeHeader"), List.of());
+    var declaration = new Usage(mock(), rangeHeader, Usage.UsageType.DECLARATION);
+    var assignment = new Usage(mock(), TreeCreationUtils.integerLiteral("42"), Usage.UsageType.ASSIGNMENT);
+    symbol.getUsages().addAll(List.of(declaration, assignment));
+
+    assertThat(symbol.getSafeValue()).isNull();
+  }
+
+  @Test
+  void shouldNotResolveRangeVariableWithoutAssignment() {
+    var symbol = new Symbol("int");
+    var rangeHeader = TreeCreationUtils.simpleNative(new StringNativeKind("RangeHeader"), List.of());
+    symbol.getUsages().add(new Usage(mock(), rangeHeader, Usage.UsageType.DECLARATION));
+
+    assertThat(symbol.getSafeValue()).isNull();
+  }
+
+  @Test
+  void shouldResolveUninitializedLocalWithSingleAssignment() {
+    var symbol = new Symbol("int");
+    var value = TreeCreationUtils.integerLiteral("42");
+    var declaration = new Usage(mock(), null, Usage.UsageType.DECLARATION);
+    var assignment = new Usage(mock(), value, Usage.UsageType.ASSIGNMENT);
+    symbol.getUsages().addAll(List.of(declaration, assignment));
+
+    assertThat(symbol.getSafeValue()).isSameAs(value);
   }
 
   @Test

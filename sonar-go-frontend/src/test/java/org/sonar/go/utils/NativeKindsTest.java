@@ -24,6 +24,7 @@ import org.junit.jupiter.params.provider.ValueSource;
 import org.sonar.go.impl.NativeTreeImpl;
 import org.sonar.go.persistence.conversion.StringNativeKind;
 import org.sonar.go.testing.TestGoConverterSingleFile;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.NativeKind;
 import org.sonar.plugins.go.api.TopLevelTree;
@@ -32,7 +33,9 @@ import org.sonar.plugins.go.api.TreeMetaData;
 import static java.util.Collections.emptyList;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
+import static org.sonar.go.utils.NativeKinds.deferredInvocation;
 import static org.sonar.go.utils.NativeKinds.isCompositeLit;
+import static org.sonar.go.utils.NativeKinds.isDeferStatement;
 import static org.sonar.go.utils.NativeKinds.isKeyValueExpr;
 
 class NativeKindsTest {
@@ -113,6 +116,34 @@ class NativeKindsTest {
       .filter(NativeKinds::isMethodReceiverTreeIdentifier)
       .findFirst();
     assertThat(methodReceiver).isEmpty();
+  }
+
+  @Test
+  void shouldReturnDeferredInvocation() {
+    var tree = (TopLevelTree) TestGoConverterSingleFile.parse("""
+      package main
+      func cleanup() {}
+      func main() { defer cleanup() }
+      """);
+    var deferStatement = tree.descendants().filter(NativeKinds::isDeferStatement).findFirst().get();
+    var invocation = deferredInvocation(deferStatement);
+    assertThat(invocation).get()
+      .extracting(FunctionInvocationTree::memberSelect)
+      .isInstanceOfSatisfying(IdentifierTree.class, identifier -> assertThat(identifier.name()).isEqualTo("cleanup"));
+  }
+
+  @Test
+  void shouldNotReturnDeferredInvocationForOtherTrees() {
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind("(GoStmt)"), List.of());
+    assertThat(isDeferStatement(tree)).isFalse();
+    assertThat(deferredInvocation(tree)).isEmpty();
+    assertThat(deferredInvocation(null)).isEmpty();
+  }
+
+  @Test
+  void shouldNotReturnDeferredInvocationWithoutInvocationChild() {
+    var tree = new NativeTreeImpl(mock(TreeMetaData.class), new StringNativeKind("(DeferStmt)"), List.of());
+    assertThat(deferredInvocation(tree)).isEmpty();
   }
 
   @ParameterizedTest

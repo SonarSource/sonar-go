@@ -30,6 +30,7 @@ import org.sonar.plugins.go.api.AssignmentExpressionTree;
 import org.sonar.plugins.go.api.FunctionDeclarationTree;
 import org.sonar.plugins.go.api.IdentifierTree;
 import org.sonar.plugins.go.api.LeftRightHandSideTree;
+import org.sonar.plugins.go.api.LoopTree;
 import org.sonar.plugins.go.api.ParameterTree;
 import org.sonar.plugins.go.api.TopLevelTree;
 import org.sonar.plugins.go.api.Tree;
@@ -55,6 +56,13 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
         VariableHelper.getFieldNames(functionDeclarationTree.returnType()))
       .forEach(identifier -> addVariable(identifier, null, Usage.UsageType.PARAMETER)));
     register(AssignmentExpressionTree.class, this::processAssignment);
+    register(LoopTree.class, (ctx, loop) -> VariableHelper.getRangeVariables(loop).forEach(variable -> {
+      if (variable.declaration()) {
+        addVariable(variable.identifier(), loop.condition(), Usage.UsageType.DECLARATION);
+      } else {
+        addVariableUsage(variable.identifier(), null, Usage.UsageType.ASSIGNMENT);
+      }
+    }));
     register(IdentifierTreeImpl.class, this::processIdentifier);
     registerOnLeaveTree(TopLevelTree.class, (ctx, tree) -> symbolTable.clear());
   }

@@ -68,6 +68,14 @@ class ChecksVisitorTest {
       Arguments.of(InputFile.Type.TEST, false, true));
   }
 
+  @MethodSource("limitedCheckVisitorShouldBeApplicableToOnlyMainFiles")
+  @ParameterizedTest
+  void testCheckVisitorShouldBeApplicableToOnlyTestFiles(InputFile.Type fileType, boolean detectedAsTestFile, boolean applicableToMainFiles) {
+    InputFileContext inputFileContext = createInputFileContext("", fileType, detectedAsTestFile);
+    var checksVisitor = new ChecksVisitor(new GoChecks(null), mock(DurationStatistics.class), mock(GoModFileDataStore.class), InputFileContext::isTestFile);
+    assertThat(checksVisitor.isApplicableTo(inputFileContext)).isEqualTo(!applicableToMainFiles);
+  }
+
   private InputFileContext createInputFileContext(String code, InputFile.Type fileType, boolean detectedAsTestFile) {
     InputFile inputFile = new TestInputFileBuilder("moduleKey", "myFile.go")
       .setCharset(StandardCharsets.UTF_8)

@@ -50,7 +50,6 @@ public class GoCheckList {
     IdenticalBinaryOperandCheck.class,
     IdenticalConditionsCheck.class,
     IfConditionalAlwaysTrueOrFalseCheck.class,
-    SwitchWithoutDefaultCheck.class,
     NestedSwitchCheck.class,
     OctalValuesCheck.class,
     OneStatementPerLineGoCheck.class,
@@ -58,6 +57,7 @@ public class GoCheckList {
     PredeclaredIdentifierShadowedCheck.class,
     RedundantParenthesesCheck.class,
     SelfAssignmentCheck.class,
+    SwitchWithoutDefaultCheck.class,
     TodoCommentCheck.class,
     TooComplexExpressionCheck.class,
     TooDeeplyNestedStatementsCheck.class,
@@ -67,6 +67,13 @@ public class GoCheckList {
     TooManyParametersCheck.class,
     VariableAndParameterNameCheck.class,
     WrongAssignmentOperatorCheck.class);
+
+  // Rules that define the scope as 'Tests' in rspec definition
+  private static final List<Class<?>> TEST_CHECKS = List.of();
+
+  public static List<Class<?>> testChecks() {
+    return new ArrayList<>(TEST_CHECKS);
+  }
 
   public static List<Class<?>> mainChecks() {
     return new ArrayList<>(MAIN_CHECKS);
@@ -79,6 +86,7 @@ public class GoCheckList {
   public static List<Class<?>> allChecks() {
     ArrayList<Class<?>> allChecks = new ArrayList<>(GoCheckList.mainAndTestChecks());
     allChecks.addAll(GoCheckList.mainChecks());
+    allChecks.addAll(GoCheckList.testChecks());
     return allChecks;
   }
 }

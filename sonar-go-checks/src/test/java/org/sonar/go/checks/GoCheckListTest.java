@@ -57,6 +57,8 @@ class GoCheckListTest {
   @Test
   void checkListsShouldBeDisjoint() {
     assertThat(Collections.disjoint(GoCheckList.mainAndTestChecks(), GoCheckList.mainChecks())).isTrue();
+    assertThat(Collections.disjoint(GoCheckList.testChecks(), GoCheckList.mainChecks())).isTrue();
+    assertThat(Collections.disjoint(GoCheckList.testChecks(), GoCheckList.mainAndTestChecks())).isTrue();
   }
 
   @Test
@@ -68,6 +70,7 @@ class GoCheckListTest {
   void allShouldContainOnlyAllChecksFromOtherLists() {
     assertThat(GoCheckList.allChecks()).containsAll(GoCheckList.mainAndTestChecks());
     assertThat(GoCheckList.allChecks()).containsAll(GoCheckList.mainChecks());
-    assertThat(GoCheckList.allChecks()).size().isEqualTo(GoCheckList.mainAndTestChecks().size() + GoCheckList.mainChecks().size());
+    assertThat(GoCheckList.allChecks()).containsAll(GoCheckList.testChecks());
+    assertThat(GoCheckList.allChecks()).size().isEqualTo(GoCheckList.mainAndTestChecks().size() + GoCheckList.mainChecks().size() + GoCheckList.testChecks().size());
   }
 }

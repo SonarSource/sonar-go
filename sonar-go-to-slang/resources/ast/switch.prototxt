@@ -1926,6 +1926,7 @@ root: {
                             name: "i"
                             type: "UNKNOWN"
                             package: "UNKNOWN"
+                            id: 573
                           }
                         }
                         initializers: {

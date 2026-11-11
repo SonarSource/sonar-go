@@ -16,10 +16,12 @@
  */
 package org.sonar.go.utils;
 
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Pattern;
 import javax.annotation.Nullable;
 import org.sonar.go.persistence.conversion.StringNativeKind;
+import org.sonar.plugins.go.api.FunctionInvocationTree;
 import org.sonar.plugins.go.api.NativeTree;
 import org.sonar.plugins.go.api.Tree;
 
@@ -36,6 +38,7 @@ public final class NativeKinds {
   public static final Predicate<String> IS_BINARY_EXPR = Pattern.compile("\\[\\d++]\\(BinaryExpr\\)|[A-Z]\\(BinaryExpr\\)").asMatchPredicate();
 
   public static final String METHOD_RECEIVER_SUFFIX = "]*Ident)";
+  public static final String DEFER_STATEMENT_SUFFIX = "(DeferStmt)";
 
   private NativeKinds() {
   }
@@ -46,12 +49,29 @@ public final class NativeKinds {
       && predicate.test(stringNativeKind.kind());
   }
 
-  public static boolean isStringNativeKindOfType(Tree tree, String type) {
+  public static boolean isStringNativeKindOfType(@Nullable Tree tree, String type) {
     return isStringNativeKind(tree, type::equals);
   }
 
   public static boolean isStringNativeKindOfType(Tree tree, String type, String subtype) {
     return isStringNativeKind(tree, s -> s.startsWith(type + "(") && s.endsWith(subtype + ")"));
+  }
+
+  public static boolean isDeferStatement(@Nullable Tree tree) {
+    return isStringNativeKind(tree, kind -> kind.endsWith(DEFER_STATEMENT_SUFFIX));
+  }
+
+  /**
+   * Returns the function invocation deferred by a {@code defer} statement, or empty when the tree is not a {@code defer} statement.
+   */
+  public static Optional<FunctionInvocationTree> deferredInvocation(@Nullable Tree tree) {
+    if (!isDeferStatement(tree)) {
+      return Optional.empty();
+    }
+    return tree.children().stream()
+      .filter(FunctionInvocationTree.class::isInstance)
+      .map(FunctionInvocationTree.class::cast)
+      .findFirst();
   }
 
   public static boolean isCompositeLit(Tree tree) {

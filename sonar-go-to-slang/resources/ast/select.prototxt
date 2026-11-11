@@ -96,13 +96,13 @@ tokens: {
   text_range: "10:13::15"
 }
 tokens: {
-  text: "string"
-  text_range: "10:21::27"
-}
-tokens: {
   text: "chan"
   text_range: "10:16::20"
   type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "10:21::27"
 }
 tokens: {
   text: ")"
@@ -187,13 +187,13 @@ tokens: {
   text_range: "14:13::15"
 }
 tokens: {
-  text: "string"
-  text_range: "14:21::27"
-}
-tokens: {
   text: "chan"
   text_range: "14:16::20"
   type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "14:21::27"
 }
 tokens: {
   text: ")"
@@ -298,13 +298,13 @@ tokens: {
   text_range: "20:16::17"
 }
 tokens: {
-  text: "string"
-  text_range: "20:22::28"
-}
-tokens: {
   text: "chan"
   text_range: "20:17::21"
   type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "20:22::28"
 }
 tokens: {
   text: ")"
@@ -327,13 +327,13 @@ tokens: {
   text_range: "21:16::17"
 }
 tokens: {
-  text: "string"
-  text_range: "21:22::28"
-}
-tokens: {
   text: "chan"
   text_range: "21:17::21"
   type: "KEYWORD"
+}
+tokens: {
+  text: "string"
+  text_range: "21:22::28"
 }
 tokens: {
   text: ")"
@@ -585,13 +585,13 @@ tokens: {
   text_range: "36:21::22"
 }
 tokens: {
-  text: "int"
-  text_range: "36:31::34"
-}
-tokens: {
   text: "chan"
   text_range: "36:26::30"
   type: "KEYWORD"
+}
+tokens: {
+  text: "int"
+  text_range: "36:31::34"
 }
 tokens: {
   text: "var"
@@ -1121,10 +1121,16 @@ root: {
               }
             }
             type: {
-              text_range: "10:21::27"
+              text_range: "10:16::27"
               cfg_id: 9
               native: {
                 native_kind: "Type(ChanType)"
+                children: {
+                  text_range: "10:16::20"
+                  native: {
+                    native_kind: "Begin"
+                  }
+                }
                 children: {
                   text_range: "10:21::27"
                   cfg_id: 8
@@ -1288,10 +1294,16 @@ root: {
               }
             }
             type: {
-              text_range: "14:21::27"
+              text_range: "14:16::27"
               cfg_id: 5
               native: {
                 native_kind: "Type(ChanType)"
+                children: {
+                  text_range: "14:16::20"
+                  native: {
+                    native_kind: "Begin"
+                  }
+                }
                 children: {
                   text_range: "14:21::27"
                   cfg_id: 4
@@ -1472,10 +1484,16 @@ root: {
                       }
                     }
                     arguments: {
-                      text_range: "20:22::28"
+                      text_range: "20:17::28"
                       cfg_id: 7
                       native: {
                         native_kind: "[0](ChanType)"
+                        children: {
+                          text_range: "20:17::21"
+                          native: {
+                            native_kind: "Begin"
+                          }
+                        }
                         children: {
                           text_range: "20:22::28"
                           cfg_id: 6
@@ -1519,10 +1537,16 @@ root: {
                       }
                     }
                     arguments: {
-                      text_range: "21:22::28"
+                      text_range: "21:17::28"
                       cfg_id: 13
                       native: {
                         native_kind: "[0](ChanType)"
+                        children: {
+                          text_range: "21:17::21"
+                          native: {
+                            native_kind: "Begin"
+                          }
+                        }
                         children: {
                           text_range: "21:22::28"
                           cfg_id: 12
@@ -1986,10 +2010,16 @@ root: {
                   }
                 }
                 type: {
-                  text_range: "36:31::34"
+                  text_range: "36:26::34"
                   cfg_id: 14
                   native: {
                     native_kind: "Type(ChanType)"
+                    children: {
+                      text_range: "36:26::30"
+                      native: {
+                        native_kind: "Begin"
+                      }
+                    }
                     children: {
                       text_range: "36:31::34"
                       cfg_id: 13
