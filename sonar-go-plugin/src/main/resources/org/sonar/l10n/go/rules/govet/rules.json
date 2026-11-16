@@ -182,7 +182,7 @@
   {
     "key": "loopclosure",
     "name": "References to loop variables from within nested functions",
-    "description": "Check references to loop variables from within nested functions (in go<=1.21).",
+    "description": "Check references to loop variables from within nested functions (in go&lt;=1.21).",
     "type": "BUG",
     "code": {
       "attribute": "LOGICAL",
