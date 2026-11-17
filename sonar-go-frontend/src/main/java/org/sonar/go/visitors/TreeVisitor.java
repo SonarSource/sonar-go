@@ -17,20 +17,17 @@
 package org.sonar.go.visitors;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import javax.annotation.Nullable;
 import org.sonar.plugins.go.api.Tree;
 
 public class TreeVisitor<C extends TreeContext> {
 
-  private final List<ConsumerFilter<C, ?>> consumersOnEnterTree;
-  private final List<ConsumerFilter<C, ?>> consumersOnLeaveTree;
-
-  public TreeVisitor() {
-    consumersOnEnterTree = new ArrayList<>();
-    consumersOnLeaveTree = new ArrayList<>();
-  }
+  private final Consumers<C> onEnter = new Consumers<>();
+  private final Consumers<C> onLeave = new Consumers<>();
 
   public void scan(C ctx, @Nullable Tree root) {
     if (root != null && isApplicableTo(ctx)) {
@@ -44,15 +41,25 @@ public class TreeVisitor<C extends TreeContext> {
   private void visit(C ctx, @Nullable Tree node) {
     if (node != null) {
       ctx.enter(node);
-      callConsumers(ctx, node, consumersOnEnterTree);
-      node.children().forEach(child -> visit(ctx, child));
-      callConsumers(ctx, node, consumersOnLeaveTree);
+      callConsumersOnEnter(ctx, node);
+      for (Tree child : node.children()) {
+        visit(ctx, child);
+      }
+      callConsumersOnLeave(ctx, node);
       ctx.leave(node);
     }
   }
 
-  private void callConsumers(C ctx, Tree node, List<ConsumerFilter<C, ?>> consumerList) {
-    for (ConsumerFilter<C, ?> consumer : consumerList) {
+  private void callConsumersOnEnter(C ctx, Tree node) {
+    callConsumers(ctx, node, onEnter);
+  }
+
+  private void callConsumersOnLeave(C ctx, Tree node) {
+    callConsumers(ctx, node, onLeave);
+  }
+
+  private void callConsumers(C ctx, Tree node, Consumers<C> consumers) {
+    for (ConsumerFilter<C, ?> consumer : consumers.applicableTo(node.getClass())) {
       consumer.accept(ctx, node);
     }
   }
@@ -66,12 +73,12 @@ public class TreeVisitor<C extends TreeContext> {
   }
 
   public <T extends Tree> TreeVisitor<C> register(Class<T> cls, BiConsumer<C, T> visitor) {
-    consumersOnEnterTree.add(new ConsumerFilter<>(cls, visitor));
+    onEnter.add(new ConsumerFilter<>(cls, visitor));
     return this;
   }
 
   public <T extends Tree> TreeVisitor<C> registerOnLeaveTree(Class<T> cls, BiConsumer<C, T> visitor) {
-    consumersOnLeaveTree.add(new ConsumerFilter<>(cls, visitor));
+    onLeave.add(new ConsumerFilter<>(cls, visitor));
     return this;
   }
 
@@ -94,9 +101,28 @@ public class TreeVisitor<C extends TreeContext> {
     }
 
     private void accept(C ctx, Tree node) {
-      if (cls.isAssignableFrom(node.getClass())) {
-        delegate.accept(ctx, cls.cast(node));
-      }
+      delegate.accept(ctx, cls.cast(node));
+    }
+  }
+
+  private static class Consumers<C extends TreeContext> {
+    private final List<ConsumerFilter<C, ?>> all = new ArrayList<>();
+    // Consumers applicable to each concrete tree class: computed on the first node of that class, reset on registration.
+    private final Map<Class<?>, List<ConsumerFilter<C, ?>>> byClass = new HashMap<>();
+
+    private void add(ConsumerFilter<C, ?> consumer) {
+      all.add(consumer);
+      byClass.clear();
+    }
+
+    private List<ConsumerFilter<C, ?>> applicableTo(Class<?> treeClass) {
+      return byClass.computeIfAbsent(treeClass, this::filterApplicableConsumers);
+    }
+
+    private List<ConsumerFilter<C, ?>> filterApplicableConsumers(Class<?> treeClass) {
+      return all.stream()
+        .filter(consumer -> consumer.cls.isAssignableFrom(treeClass))
+        .toList();
     }
   }
 }

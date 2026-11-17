@@ -90,4 +90,25 @@ class TreeVisitorTest {
     assertThat(ancestors.get(var1)).containsExactly(binary);
     assertThat(ancestors.get(number1)).containsExactly(binary);
   }
+
+  @Test
+  void shouldCallMatchingConsumersInRegistrationOrderIncludingOnesRegisteredAfterAScan() {
+    List<String> calls = new ArrayList<>();
+    visitor.register(IdentifierTree.class, (ctx, tree) -> calls.add("identifier " + tree.name()));
+    visitor.register(Tree.class, (ctx, tree) -> calls.add("tree " + tree.getClass().getSimpleName()));
+    visitor.register(LiteralTree.class, (ctx, tree) -> calls.add("literal " + tree.value()));
+    visitor.scan(new TreeContext(), binary);
+    assertThat(calls).containsExactly(
+      "tree BinaryExpressionTreeImpl",
+      "identifier var1", "tree IdentifierTreeImpl",
+      "tree LiteralTreeImpl", "literal 1");
+
+    calls.clear();
+    visitor.register(IdentifierTree.class, (ctx, tree) -> calls.add("late " + tree.name()));
+    visitor.scan(new TreeContext(), binary);
+    assertThat(calls).containsExactly(
+      "tree BinaryExpressionTreeImpl",
+      "identifier var1", "tree IdentifierTreeImpl", "late var1",
+      "tree LiteralTreeImpl", "literal 1");
+  }
 }

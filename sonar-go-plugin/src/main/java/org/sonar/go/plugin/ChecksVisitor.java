@@ -43,6 +43,7 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
   private final DurationStatistics statistics;
   private final GoModFileDataStore goModFileDataStore;
   private final Predicate<InputFileContext> applicableTo;
+  private GoModFileData currentGoModFileData;
 
   public ChecksVisitor(GoChecks goChecks, DurationStatistics statistics, GoModFileDataStore goModFileDataStore, boolean applicableToTestFiles) {
     this(goChecks, statistics, goModFileDataStore, ctx -> applicableToTestFiles || !ctx.isTestFile());
@@ -65,11 +66,16 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     return applicableTo.test(ctx);
   }
 
+  @Override
+  protected void before(InputFileContext ctx, Tree root) {
+    // Constant for a file: resolved once instead of in every check callback.
+    currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(ctx.inputFile().uri());
+  }
+
   public class ContextAdapter implements InitContext, CheckContext {
 
     public final RuleKey ruleKey;
     private InputFileContext currentCtx;
-    private GoModFileData currentGoModFileData;
 
     public ContextAdapter(RuleKey ruleKey) {
       this.ruleKey = ruleKey;
@@ -84,7 +90,6 @@ public class ChecksVisitor extends TreeVisitor<InputFileContext> {
     public <T extends Tree> void register(Class<T> cls, BiConsumer<CheckContext, T> visitor) {
       ChecksVisitor.this.register(cls, statistics.time(ruleKey.rule(), (ctx, tree) -> {
         currentCtx = ctx;
-        currentGoModFileData = goModFileDataStore.retrieveClosestGoModFileData(currentCtx.inputFile().uri());
         visitor.accept(this, tree);
       }));
     }

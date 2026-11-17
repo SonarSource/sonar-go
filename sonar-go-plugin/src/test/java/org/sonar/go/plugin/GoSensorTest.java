@@ -537,6 +537,28 @@ class GoSensorTest {
     assertThat(sensorContext.allIssues()).hasSize(1);
   }
 
+  @Rule(key = "GoModuleOnLeaveCheck")
+  public static class GoModuleOnLeaveCheck implements GoCheck {
+    @Override
+    public void initialize(InitContext init) {
+      init.registerOnLeave((ctx, tree) -> ctx.reportFileIssue(ctx.filename() + ": " + ctx.goModFileData().moduleName()));
+    }
+  }
+
+  @Test
+  void shouldProvideGoModFileDataOfEachFileToOnLeaveCallbacks() {
+    sensorContext.fileSystem().add(createInputFile("a/go.mod", "module example.com/a\n\ngo 1.23.4\n", baseDir, null, InputFile.Type.MAIN));
+    sensorContext.fileSystem().add(createInputFile("a/a.go", "package a\n", baseDir, null, InputFile.Type.MAIN));
+    sensorContext.fileSystem().add(createInputFile("b/go.mod", "module example.com/b\n\ngo 1.22\n", baseDir, null, InputFile.Type.MAIN));
+    sensorContext.fileSystem().add(createInputFile("b/b.go", "package b\n", baseDir, null, InputFile.Type.MAIN));
+
+    sensor(List.of(GoModuleOnLeaveCheck.class), Collections.emptyList()).execute(sensorContext);
+
+    assertThat(sensorContext.allIssues())
+      .extracting(issue -> issue.primaryLocation().message())
+      .containsExactlyInAnyOrder("a.go: example.com/a", "b.go: example.com/b");
+  }
+
   @Test
   void versionShouldNotBeDetectedOnMissingVersion() {
     InputFile goModFile = createInputFile("go.mod",
