@@ -27,9 +27,9 @@ jobs:
       contents: write  # Required for repository access and tagging
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-      - uses: SonarSource/mise-action-wrapper@9aabe292d1d5a3fcdf1c0b5f244366a441d75d19 # 1.1.0
+      - uses: SonarSource/mise-action-wrapper@65aa289d3f408f4999d13a52a14cde4f54b48442 # 2.0.0
         with:
-          mise-version: 2026.10.17
+          version: 2026.10.17
           persist_github_token: false
       - name: Install golangci-lint
         run: |
