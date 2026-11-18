@@ -30,6 +30,7 @@ jobs:
       - uses: SonarSource/mise-action-wrapper@9aabe292d1d5a3fcdf1c0b5f244366a441d75d19 # 1.1.0
         with:
           mise-version: 2026.10.17
+          persist_github_token: false
       - name: Install golangci-lint
         run: |
           curl --proto "=https" -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b /home/runner/go/bin v${GOLANG_CI_LINT_VERSION}
