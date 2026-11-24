@@ -61,15 +61,13 @@ public class TreeUtils {
    * </pre>
    */
   public static Optional<IdentifierTree> retrieveFirstIdentifier(Tree tree) {
-    if (tree instanceof IdentifierTree identifierTree) {
-      return Optional.of(identifierTree);
-    } else if (tree instanceof MemberSelectTree memberSelectTree) {
-      return retrieveFirstIdentifier(memberSelectTree.expression());
-    } else if (tree instanceof FunctionInvocationTree functionInvocationTree) { // something.call1().call2()
-      return retrieveFirstIdentifier(functionInvocationTree.memberSelect());
-    } else {
-      return Optional.empty();
-    }
+    return switch (tree) {
+      case IdentifierTree identifierTree -> Optional.of(identifierTree);
+      case MemberSelectTree memberSelectTree -> retrieveFirstIdentifier(memberSelectTree.expression());
+      // something.call1().call2()
+      case FunctionInvocationTree functionInvocationTree -> retrieveFirstIdentifier(functionInvocationTree.memberSelect());
+      default -> Optional.empty();
+    };
   }
 
   /**
