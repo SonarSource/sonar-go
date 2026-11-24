@@ -42,7 +42,10 @@ func typeCheckAst(
 	gcExporter GcExporter,
 ) (*types.Info, []error) {
 	crossIndex := &crossModuleIndex{dir: gcExportDataDir}
-	return typeCheckAstWithCrossIndex(ctx, fileSet, astFiles, debugTypeCheck, gcExportDataDir, moduleName, moduleBaseDir, gcExporter, crossIndex)
+	return typeCheckAstWithCrossIndex(ctx, fileSet, astFiles, Params{
+		debugTypeCheck: debugTypeCheck, gcExportDataDir: gcExportDataDir,
+		moduleName: moduleName, moduleBaseDir: moduleBaseDir,
+	}, gcExporter, crossIndex)
 }
 
 func TestImportExistingPackage_returnsPackage(t *testing.T) {

@@ -19,7 +19,7 @@ EXIT /B %ERRORLEVEL%
 :generate_test_report
 SET CGO_ENABLED=0
 CALL go test -timeout 5s -json > build\test-report.json
-EXIT /B 0
+EXIT /B %ERRORLEVEL%
 
 :go_install_check
 WHERE /q go
@@ -41,6 +41,7 @@ IF "%~1" == "build" (
   CALL :compile_binaries
 ) ELSE IF "%~1"=="test" (
   CALL :generate_test_report
+  EXIT /B !ERRORLEVEL!
 ) ELSE IF "%~1"=="clean" (
   DEL "goparser_generated.go"
   DEL "build\test-report.json"

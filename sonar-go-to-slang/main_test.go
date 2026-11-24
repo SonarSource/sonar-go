@@ -21,6 +21,7 @@ import (
 	"encoding/binary"
 	"io"
 	"os"
+	"path/filepath"
 	"testing"
 	"testing/iotest"
 
@@ -142,7 +143,7 @@ func TestAnalyzeShouldExportGcData(t *testing.T) {
 	output, _ := analyzeFiles(t, []string{"-dump_gc_export_data", "-gc_export_data_dir", "build/main_test/"}, "resources/simple_file_with_packages.go.source")
 
 	assert.Empty(t, output)
-	assert.FileExists(t, "build/main_test/main/main.o", "File should exist")
+	assert.FileExists(t, "build/main_test/.root.o", "File should exist")
 }
 
 func TestShouldNotPanicWhenGcExportOneInvalidFile(t *testing.T) {
@@ -182,7 +183,7 @@ func TestLaneLabel(t *testing.T) {
 
 	assert.Equal(t, "given/path", laneLabel(Params{packagePath: "given/path", moduleName: "mod"}, files))
 	// The parse pass gets no package path, so the shared directory of the batch has to name the lane.
-	assert.Equal(t, "plumbing/format/idxfile", laneLabel(Params{moduleName: "mod"}, files))
+	assert.Equal(t, filepath.FromSlash("plumbing/format/idxfile"), laneLabel(Params{moduleName: "mod"}, files))
 	assert.Equal(t, "mod", laneLabel(Params{moduleName: "mod"}, map[string]string{"main.go": ""}))
 	assert.Equal(t, "mod", laneLabel(Params{moduleName: "mod"}, nil))
 	// Stable across runs despite Go's randomised map iteration order.

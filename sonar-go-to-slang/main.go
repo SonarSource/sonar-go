@@ -161,7 +161,7 @@ func analyze(ctx context.Context, params Params, in io.Reader, out io.Writer, cr
 	}
 	gcExporter := GcExporter{}
 	// Ignoring errors at this point, they are reported before if needed
-	info, _ := typeCheckAstWithCrossIndex(ctx, fileSet, astFiles, params.debugTypeCheck, params.gcExportDataDir, params.moduleName, params.moduleBaseDir, gcExporter, crossIndex)
+	info, _ := typeCheckAstWithCrossIndex(ctx, fileSet, astFiles, params, gcExporter, crossIndex)
 	heapCounter("heap.afterTypeCheck")
 
 	if params.dumpGcExportData {

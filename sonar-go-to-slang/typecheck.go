@@ -26,6 +26,7 @@ import (
 	"os"
 	"path/filepath"
 	"sort"
+	"strconv"
 	"strings"
 	"sync"
 )
@@ -95,9 +96,7 @@ func (li *localImporter) getPackageFromLocalCodeExportData(ctx context.Context, 
 		return getEmptyPackage(path), "empty", 0
 	}
 
-	oFileName := getPackageName(path) + ".o"
-
-	sameModulePath := filepath.Join(li.gcExportDataDir, li.moduleBaseDir, path, oFileName)
+	sameModulePath := packageExportPath(filepath.Join(li.gcExportDataDir, li.moduleBaseDir), "", path, "")
 	if pkg, oFileBytes, found := li.tryLoadExportData(sameModulePath, path); found {
 		return pkg, "same-module", oFileBytes
 	}
@@ -314,14 +313,15 @@ func typeCheckAstWithCrossIndex(
 	ctx context.Context,
 	fileSet *token.FileSet,
 	astFiles map[string]AstFileOrError,
-	debugTypeCheck bool,
-	gcExportDataDir string,
-	moduleName string,
-	moduleBaseDir string,
+	params Params,
 	gcExporter GcExporter,
 	// Shared across every per-package importer so gcExportDataDir is walked at most once per run.
 	crossIndex *crossModuleIndex,
 ) (*types.Info, []error) {
+	debugTypeCheck := params.debugTypeCheck
+	gcExportDataDir := params.gcExportDataDir
+	moduleName := params.moduleName
+	moduleBaseDir := params.moduleBaseDir
 	astFilesPerPackage := groupFilesPerPackageName(astFiles)
 	errors := make([]error, 0)
 
@@ -367,7 +367,21 @@ func typeCheckAstWithCrossIndex(
 
 		// We pass the file name which correspond to the name of the package, in order to have local type/package
 		// named after this package names.
-		_, err := conf.Check(packageName, fileSet, sortedAstFiles(files), info)
+		sortedFiles := sortedAstFiles(files)
+		var pkg *types.Package
+		if !params.dumpGcExportData {
+			// The checker would resolve these imports anyway; loading them first keeps their cost out of
+			// the context span and lets restored declarations share the fresh imported objects.
+			importer.loadSubmittedImports(packageCtx, sortedFiles)
+			_, contextDone := span(packageCtx, "typecheck.context")
+			pkg = importer.packageWithContext(packageName, files)
+			contextDone()
+		}
+		if pkg == nil {
+			pkg = types.NewPackage(packageName, packageName)
+		}
+		checker := types.NewChecker(&conf, fileSet, pkg, info)
+		err := checker.Files(sortedFiles)
 		if err != nil {
 			errors = append(errors, err)
 		}
@@ -375,6 +389,161 @@ func typeCheckAstWithCrossIndex(
 	}
 
 	return info, errors
+}
+
+// packageWithContext preserves the checker's short package path used by the semantic mapper.
+// Only the current module's directory can supply same-package declarations.
+func (li *localImporter) packageWithContext(packageName string, files map[string]AstFileOrError) *types.Package {
+	pkg := types.NewPackage(packageName, packageName)
+	if li.gcExportDataDir == "" || li.moduleName == "" {
+		return pkg
+	}
+	var directory string
+	for name := range files {
+		candidate := filepath.Dir(name)
+		if directory != "" && candidate != directory {
+			return pkg
+		}
+		directory = candidate
+	}
+	packageDir, err := filepath.Rel(li.moduleBaseDir, directory)
+	if err != nil || packageDir == ".." || strings.HasPrefix(packageDir, ".."+string(os.PathSeparator)) {
+		return pkg
+	}
+	filePath := li.packageContextPath(directory, packageDir, packageName)
+	restored, found := li.readPackageContext(filePath, packageName)
+	if !found || restored.Name() != packageName {
+		return pkg
+	}
+	submitted := submittedPackageNames(files)
+	receivers := make(map[string]bool)
+	excludeRestoredReceivers(receivers, files)
+	excludedTypes := excludedContextTypes(restored, submitted)
+	for _, name := range restored.Scope().Names() {
+		object := restored.Scope().Lookup(name)
+		if !submitted[name] && !receivers[name] && !excludedTypes[object.Type()] {
+			pkg.Scope().Insert(object)
+		}
+	}
+	return pkg
+}
+
+func (li *localImporter) readPackageContext(filePath, packageName string) (*types.Package, bool) {
+	// Preserve the semantic package path and keep its short cache key isolated
+	// from imported packages, including standard-library namesakes.
+	cached := li.importCache[packageName]
+	delete(li.importCache, packageName)
+	restored, _, found := li.tryLoadExportData(filePath, packageName)
+	delete(li.importCache, packageName)
+	if cached != nil {
+		li.importCache[packageName] = cached
+	}
+	return restored, found
+}
+
+func (li *localImporter) loadSubmittedImports(ctx context.Context, files []*ast.File) {
+	for _, file := range files {
+		for _, spec := range file.Imports {
+			path, err := strconv.Unquote(spec.Path.Value)
+			if err == nil && path != "C" {
+				_, _ = li.Import(ctx, path)
+			}
+		}
+	}
+}
+
+// Methods and imports do not declare names in the package scope.
+func submittedPackageNames(files map[string]AstFileOrError) map[string]bool {
+	names := make(map[string]bool)
+	for _, file := range files {
+		for _, declaration := range file.ast.Decls {
+			addSubmittedNames(names, declaration)
+		}
+	}
+	return names
+}
+
+// go/types requires a source declaration for a method's receiver base type.
+// Leave missing receiver declarations unresolved, as in source-only checking,
+// rather than passing imported TypeNames to its source-method resolver.
+func excludeRestoredReceivers(excluded map[string]bool, files map[string]AstFileOrError) {
+	aliases := make(map[string]ast.Expr)
+	var receivers []ast.Expr
+	for _, file := range files {
+		for _, declaration := range file.ast.Decls {
+			switch declaration := declaration.(type) {
+			case *ast.FuncDecl:
+				receivers = append(receivers, methodReceivers(declaration)...)
+			case *ast.GenDecl:
+				collectSubmittedAliases(aliases, declaration)
+			}
+		}
+	}
+	for _, receiver := range receivers {
+		excludeReceiverBase(excluded, aliases, receiver)
+	}
+}
+
+func methodReceivers(declaration *ast.FuncDecl) []ast.Expr {
+	if declaration.Recv == nil {
+		return nil
+	}
+	var receivers []ast.Expr
+	for _, field := range declaration.Recv.List {
+		receivers = append(receivers, field.Type)
+	}
+	return receivers
+}
+
+func collectSubmittedAliases(aliases map[string]ast.Expr, declaration *ast.GenDecl) {
+	for _, spec := range declaration.Specs {
+		if spec, ok := spec.(*ast.TypeSpec); ok && spec.Assign.IsValid() {
+			aliases[spec.Name.Name] = spec.Type
+		}
+	}
+}
+
+func excludeReceiverBase(excluded map[string]bool, aliases map[string]ast.Expr, receiver ast.Expr) {
+	seen := make(map[string]bool)
+	for receiver != nil {
+		switch expr := ast.Unparen(receiver).(type) {
+		case *ast.Ident:
+			if seen[expr.Name] {
+				return
+			}
+			seen[expr.Name] = true
+			excluded[expr.Name] = true
+			receiver = aliases[expr.Name]
+		case *ast.StarExpr:
+			receiver = expr.X
+		case *ast.IndexExpr:
+			receiver = expr.X
+		case *ast.IndexListExpr:
+			receiver = expr.X
+		default:
+			return
+		}
+	}
+}
+
+func addSubmittedNames(names map[string]bool, declaration ast.Decl) {
+	switch declaration := declaration.(type) {
+	case *ast.FuncDecl:
+		if declaration.Recv == nil {
+			names[declaration.Name.Name] = true
+		}
+	case *ast.GenDecl:
+		for _, spec := range declaration.Specs {
+			switch spec := spec.(type) {
+			case *ast.TypeSpec:
+				names[spec.Name.Name] = true
+			case *ast.ValueSpec:
+				for _, name := range spec.Names {
+					names[name.Name] = true
+				}
+			}
+		}
+	}
 }
 
 func groupFilesPerPackageName(astFiles map[string]AstFileOrError) map[string]map[string]AstFileOrError {
@@ -408,4 +577,174 @@ func sortedAstFiles(astFiles map[string]AstFileOrError) []*ast.File {
 		}
 	}
 	return files
+}
+
+// A3S may omit go.mod. Recover a missing module base only from an unambiguous
+// export path whose module base is an ancestor of the submitted source directory.
+func (li *localImporter) packageContextPath(directory, packageDir, packageName string) string {
+	path := packageExportPath(filepath.Join(li.gcExportDataDir, li.moduleBaseDir), li.moduleName, packageDir, packageName)
+	if _, err := os.Stat(path); err == nil || li.moduleBaseDir != "." {
+		return path
+	}
+	candidate := ""
+	for base := directory; base != "." && base != filepath.Dir(base); base = filepath.Dir(base) {
+		rel, err := filepath.Rel(base, directory)
+		if err != nil {
+			continue
+		}
+		possible := packageExportPath(filepath.Join(li.gcExportDataDir, base), li.moduleName, rel, packageName)
+		if _, err := os.Stat(possible); err == nil {
+			if candidate != "" {
+				return ""
+			}
+			candidate = possible
+		}
+	}
+	return candidate
+}
+
+// Build reverse edges once, then propagate exclusion through cycles to every dependent type.
+func excludedContextTypes(restored *types.Package, excluded map[string]bool) map[types.Type]bool {
+	reverse := make(map[types.Type][]types.Type)
+	seen := make(map[types.Type]bool)
+	invalid := make(map[types.Type]bool)
+	var pending []types.Type
+	for _, name := range restored.Scope().Names() {
+		pending = append(pending, restored.Scope().Lookup(name).Type())
+	}
+	var blocked []types.Type
+	for len(pending) > 0 {
+		t := pending[len(pending)-1]
+		pending = pending[:len(pending)-1]
+		if t == nil || seen[t] {
+			continue
+		}
+		seen[t] = true
+		for _, child := range contextTypeChildren(t, restored, excluded) {
+			if child == nil {
+				invalid[t] = true
+				blocked = append(blocked, t)
+			} else {
+				reverse[child] = append(reverse[child], t)
+				pending = append(pending, child)
+			}
+		}
+	}
+	propagateExcludedTypes(reverse, invalid, blocked)
+	return invalid
+}
+
+func propagateExcludedTypes(reverse map[types.Type][]types.Type, invalid map[types.Type]bool, blocked []types.Type) {
+	for len(blocked) > 0 {
+		t := blocked[len(blocked)-1]
+		blocked = blocked[:len(blocked)-1]
+		for _, parent := range reverse[t] {
+			if !invalid[parent] {
+				invalid[parent] = true
+				blocked = append(blocked, parent)
+			}
+		}
+	}
+}
+
+// A nil child marks a replaced local type. Imported named types keep their identity.
+func contextTypeChildren(t types.Type, restored *types.Package, excluded map[string]bool) []types.Type {
+	switch t := t.(type) {
+	case *types.Pointer:
+		return []types.Type{t.Elem()}
+	case *types.Slice:
+		return []types.Type{t.Elem()}
+	case *types.Array:
+		return []types.Type{t.Elem()}
+	case *types.Map:
+		return []types.Type{t.Key(), t.Elem()}
+	case *types.Chan:
+		return []types.Type{t.Elem()}
+	}
+	return contextDefinedTypeChildren(t, restored, excluded)
+}
+
+func contextDefinedTypeChildren(t types.Type, restored *types.Package, excluded map[string]bool) []types.Type {
+	switch t := t.(type) {
+	case *types.Named:
+		return contextNamedTypeChildren(t, restored, excluded)
+	case *types.Alias:
+		return contextAliasTypeChildren(t, restored, excluded)
+	case *types.Signature:
+		return append([]types.Type{t.Params(), t.Results()}, typeParameterConstraints(t.TypeParams())...)
+	case *types.Tuple:
+		var children []types.Type
+		for i := 0; i < t.Len(); i++ {
+			children = append(children, t.At(i).Type())
+		}
+		return children
+	case *types.Struct:
+		var children []types.Type
+		for i := 0; i < t.NumFields(); i++ {
+			children = append(children, t.Field(i).Type())
+		}
+		return children
+	case *types.Interface:
+		var children []types.Type
+		for i := 0; i < t.NumExplicitMethods(); i++ {
+			children = append(children, t.ExplicitMethod(i).Type())
+		}
+		for i := 0; i < t.NumEmbeddeds(); i++ {
+			children = append(children, t.EmbeddedType(i))
+		}
+		return children
+	case *types.TypeParam:
+		return []types.Type{t.Constraint()}
+	case *types.Union:
+		var children []types.Type
+		for i := 0; i < t.Len(); i++ {
+			children = append(children, t.Term(i).Type())
+		}
+		return children
+	}
+	return nil
+}
+
+func typeListElements(list *types.TypeList) []types.Type {
+	var result []types.Type
+	for i := 0; i < list.Len(); i++ {
+		result = append(result, list.At(i))
+	}
+	return result
+}
+
+func typeParameterConstraints(list *types.TypeParamList) []types.Type {
+	var result []types.Type
+	for i := 0; i < list.Len(); i++ {
+		result = append(result, list.At(i).Constraint())
+	}
+	return result
+}
+
+func contextNamedTypeChildren(t *types.Named, restored *types.Package, excluded map[string]bool) []types.Type {
+	children := typeListElements(t.TypeArgs())
+	if t.Obj().Pkg() != restored {
+		return children
+	}
+	if excluded[t.Obj().Name()] {
+		return []types.Type{nil}
+	}
+	if t.Origin() != t {
+		return append(children, t.Origin())
+	}
+	children = append(children, t.Underlying())
+	for i := 0; i < t.NumMethods(); i++ {
+		children = append(children, t.Method(i).Type())
+	}
+	return children
+}
+
+func contextAliasTypeChildren(t *types.Alias, restored *types.Package, excluded map[string]bool) []types.Type {
+	if t.Obj().Pkg() == restored && excluded[t.Obj().Name()] {
+		return []types.Type{nil}
+	}
+	if t.Origin() != t {
+		return append(typeListElements(t.TypeArgs()), t.Origin())
+	}
+	return []types.Type{t.Rhs()}
 }

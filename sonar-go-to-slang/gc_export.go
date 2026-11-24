@@ -32,7 +32,7 @@ type GcExporter struct {
 }
 
 func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) []string {
-	packagesToExport := gc.findPackagesToExport(info, packagePath)
+	packagesToExport := gc.findPackagesToExport(info, moduleName, packagePath)
 
 	exportedFiles := make([]string, 0, len(packagesToExport))
 	for _, pkgToExport := range packagesToExport {
@@ -59,23 +59,30 @@ func (gc *GcExporter) PrintExportIssues() {
 	}
 }
 
-func (gc *GcExporter) findPackagesToExport(info *types.Info, packagePath string) []*types.Package {
+func (gc *GcExporter) findPackagesToExport(info *types.Info, moduleName, packagePath string) []*types.Package {
 	packagesToExport := make([]*types.Package, 0)
 	packageName := getPackageName(packagePath)
+	var testNameMatch *types.Package
 	if gc.isBlank(packageName) {
-		// if there is a blank package name, we export all packages
-		// this happens when Go files are located directly in the project root directory (at the same level as go.mod)
-		packagesToExport = gc.findMultiplePackages(info, packagesToExport)
-	} else {
-		// otherwise, we export only packages that match the given package name
-		// this prevent exporting unintended packages, example:
-		// the dir "utils" contains files with package name "utils" and "utils_test", so only "utils" should be exported
-		for _, obj := range info.Defs {
-			if obj != nil && obj.Pkg() != nil && obj.Pkg().Path() == packageName {
-				packagesToExport = []*types.Package{obj.Pkg()}
-				break
+		packageName = filepath.Base(moduleName)
+	}
+	for _, pkg := range gc.findMultiplePackages(info, nil) {
+		if strings.HasSuffix(pkg.Name(), "_test") {
+			if pkg.Name() == packageName {
+				testNameMatch = pkg
 			}
+			continue
 		}
+		if pkg.Name() == packageName {
+			return []*types.Package{pkg}
+		}
+		packagesToExport = append(packagesToExport, pkg)
+	}
+	if len(packagesToExport) == 0 && testNameMatch != nil {
+		return []*types.Package{testNameMatch}
+	}
+	if len(packagesToExport) != 1 {
+		return nil
 	}
 
 	return packagesToExport
@@ -96,13 +103,8 @@ func (gc *GcExporter) findMultiplePackages(info *types.Info, packagesToExport []
 }
 
 func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) string {
-	fullExportDataDir := filepath.Join(exportDataDir, moduleName, packagePath)
-	if !strings.HasSuffix(fullExportDataDir, pkgToExport.Path()) {
-		fullExportDataDir = filepath.Join(fullExportDataDir, pkgToExport.Path())
-	}
-	gc.createDirs(fullExportDataDir)
-
-	exportDataFile := filepath.Join(fullExportDataDir, pkgToExport.Path()+".o")
+	exportDataFile := packageExportPath(exportDataDir, moduleName, packagePath, pkgToExport.Name())
+	gc.createDirs(filepath.Dir(exportDataFile))
 
 	file, err := os.Create(exportDataFile)
 	if err != nil {
@@ -169,4 +171,17 @@ func (gc *GcExporter) getPackageFromFile(file fs.File, path string, imports map[
 	}
 
 	return pkg
+}
+
+// Non-root packages use their import directory for both the directory and filename.
+// Root packages matching the module suffix share its import directory.
+// Other root packages use a distinct filename to avoid collisions with subdirectories.
+func packageExportPath(exportDataDir, moduleName, packagePath, packageName string) string {
+	if packagePath == "" || packagePath == "." {
+		if packageName != "" && filepath.Base(moduleName) == packageName {
+			return filepath.Join(exportDataDir, moduleName, packageName+".o")
+		}
+		return filepath.Join(exportDataDir, moduleName, ".root.o")
+	}
+	return filepath.Join(exportDataDir, moduleName, packagePath, filepath.Base(packagePath)+".o")
 }

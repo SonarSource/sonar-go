@@ -217,11 +217,12 @@ func Test_should_store_export_data(t *testing.T) {
 	}
 
 	gc := GcExporter{}
-	gc.ExportGcExportData(context.Background(), &info, "build/gc_export_test", "", "", false)
+	exportDir := t.TempDir()
+	paths := gc.ExportGcExportData(context.Background(), &info, exportDir, "", "", false)
 
-	if _, err := os.Stat("build/gc_export_test/foo/foo.o"); os.IsNotExist(err) {
-		assert.Fail(t, "The file should have been created")
-	}
+	assert.Equal(t, []string{filepath.Join(exportDir, ".root.o")}, paths)
+	assert.FileExists(t, filepath.Join(exportDir, ".root.o"))
+	assert.NoFileExists(t, filepath.Join(exportDir, "foo", "foo.o"))
 }
 
 func Test_PrintExportIssues_WhenZeroIssues(t *testing.T) {
