@@ -26,7 +26,7 @@ public interface IntegerLiteralTree extends LiteralTree {
     DECIMAL(10),
     HEXADECIMAL(16);
 
-    private int radix;
+    private final int radix;
 
     Base(int i) {
       radix = i;

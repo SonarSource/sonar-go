@@ -91,7 +91,7 @@ func readModuleName(projectDir string) string {
 	return ""
 }
 
-func exportGcData(files []string, name string, moduleName string, packagePath string) {
+func exportGcData(files []string, name, moduleName, packagePath string) {
 	exportLocation := "build/cross-file-tests/" + name
 	fmt.Printf("Exporting GC data for: %s\n", files)
 	fileSet := token.NewFileSet()
@@ -110,7 +110,7 @@ func readFilesToReader(files []string) *bytes.Reader {
 	return bytes.NewReader(slice)
 }
 
-func parseFilesToProtoTextAndSave(files []string, name string, moduleName string) {
+func parseFilesToProtoTextAndSave(files []string, name, moduleName string) {
 	for protoTextFile, protoText := range parseFilesToProtoText(files, name, moduleName) {
 		fmt.Printf("Writing %s\n", protoTextFile)
 		err := os.WriteFile(protoTextFile, []byte(protoText), 0644)
@@ -120,7 +120,7 @@ func parseFilesToProtoTextAndSave(files []string, name string, moduleName string
 	}
 }
 
-func parseFilesToProtoText(files []string, name string, moduleName string) map[string]string {
+func parseFilesToProtoText(files []string, name, moduleName string) map[string]string {
 	fileSet := token.NewFileSet()
 	astFiles, fileContents, _ := readAstFile(context.Background(), fileSet, readFilesToReader(files))
 
