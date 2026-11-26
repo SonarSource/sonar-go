@@ -31,7 +31,7 @@ type GcExporter struct {
 	packagesImportIssueInvalidMemoryAddress []string
 }
 
-func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) []string {
+func (gc *GcExporter) ExportGcExportData(ctx context.Context, info *types.Info, exportDataDir, moduleName, packagePath string, debugTypeCheck bool) []string {
 	packagesToExport := gc.findPackagesToExport(info, moduleName, packagePath)
 
 	exportedFiles := make([]string, 0, len(packagesToExport))
@@ -102,7 +102,7 @@ func (gc *GcExporter) findMultiplePackages(info *types.Info, packagesToExport []
 	return packagesToExport
 }
 
-func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir string, moduleName string, packagePath string, debugTypeCheck bool) string {
+func (gc *GcExporter) exportPackage(ctx context.Context, pkgToExport *types.Package, exportDataDir, moduleName, packagePath string, debugTypeCheck bool) string {
 	exportDataFile := packageExportPath(exportDataDir, moduleName, packagePath, pkgToExport.Name())
 	gc.createDirs(filepath.Dir(exportDataFile))
 

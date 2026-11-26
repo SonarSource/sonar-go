@@ -36,9 +36,7 @@ func typeCheckAst(
 	fileSet *token.FileSet,
 	astFiles map[string]AstFileOrError,
 	debugTypeCheck bool,
-	gcExportDataDir string,
-	moduleName string,
-	moduleBaseDir string,
+	gcExportDataDir, moduleName, moduleBaseDir string,
 	gcExporter GcExporter,
 ) (*types.Info, []error) {
 	crossIndex := &crossModuleIndex{dir: gcExportDataDir}
@@ -260,7 +258,7 @@ func TestAllFilesFromMappingShouldBePresent(t *testing.T) {
 // createTestExportData writes a minimal valid .o export data file for the given import path
 // under the specified directory. The created package has one exported variable so its scope
 // is non-empty, allowing tests to distinguish it from an empty fallback package.
-func createTestExportData(t *testing.T, dir string, importPath string) {
+func createTestExportData(t *testing.T, dir, importPath string) {
 	t.Helper()
 	pkgName := getPackageName(importPath)
 	fullDir := filepath.Join(dir, importPath)

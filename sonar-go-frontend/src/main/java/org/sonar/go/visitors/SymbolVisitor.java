@@ -97,13 +97,11 @@ public class SymbolVisitor<C extends TreeContext> extends TreeVisitor<C> {
   }
 
   private static List<IdentifierTree> extractIdentifiers(Tree tree) {
-    if (tree instanceof IdentifierTree identifier) {
-      return List.of(identifier);
-    } else if (tree instanceof LeftRightHandSideTree leftRightHandSide) {
-      return leftRightHandSide.extractIdentifiers();
-    } else {
-      return Collections.emptyList();
-    }
+    return switch (tree) {
+      case IdentifierTree identifier -> List.of(identifier);
+      case LeftRightHandSideTree leftRightHandSide -> leftRightHandSide.extractIdentifiers();
+      case null, default -> Collections.emptyList();
+    };
   }
 
   private static boolean isLeftOrRightHandSide(Tree tree) {

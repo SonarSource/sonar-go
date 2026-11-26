@@ -123,13 +123,11 @@ public class ExpressionUtils {
   }
 
   public static Optional<String> getMemberSelectOrIdentifierName(Tree tree) {
-    if (tree instanceof IdentifierTree identifierTree) {
-      return Optional.of(identifierTree.name());
-    } else if (tree instanceof MemberSelectTree memberSelectTree) {
-      return Optional.of(memberSelectTree.identifier().name());
-    } else {
-      return Optional.empty();
-    }
+    return switch (tree) {
+      case IdentifierTree identifierTree -> Optional.of(identifierTree.name());
+      case MemberSelectTree memberSelectTree -> Optional.of(memberSelectTree.identifier().name());
+      case null, default -> Optional.empty();
+    };
   }
 
   public static boolean isOfType(MemberSelectTree memberSelectTree, String expectedPackageName, String expectedIdentifierName) {

@@ -232,7 +232,7 @@ func captureStdOutAndStdErr() {
 	stderrFile, oldStderr, stderrChan = captureStandardError()
 }
 
-func getStandardOutput(w *os.File, old *os.File, outC chan string) string {
+func getStandardOutput(w, old *os.File, outC chan string) string {
 	// Restore the original stdout
 	w.Close()
 	os.Stdout = old
@@ -240,7 +240,7 @@ func getStandardOutput(w *os.File, old *os.File, outC chan string) string {
 	return output
 }
 
-func getStandardError(w *os.File, old *os.File, outC chan string) string {
+func getStandardError(w, old *os.File, outC chan string) string {
 	// Restore the original stderr
 	w.Close()
 	os.Stderr = old

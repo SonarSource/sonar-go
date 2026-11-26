@@ -70,15 +70,15 @@ public class TooComplexExpressionCheck implements GoCheck {
 
   private static int computeExpressionComplexity(Tree originalTree) {
     var tree = skipParentheses(originalTree);
-    if (tree instanceof BinaryExpressionTree binary) {
-      var complexity = isLogicalBinaryExpression(tree) ? 1 : 0;
-      return complexity
-        + computeExpressionComplexity(binary.leftOperand())
-        + computeExpressionComplexity(binary.rightOperand());
-    } else if (tree instanceof UnaryExpressionTree unaryExpressionTree) {
-      return computeExpressionComplexity(unaryExpressionTree.operand());
-    } else {
-      return 0;
-    }
+    return switch (tree) {
+      case BinaryExpressionTree binary -> {
+        var complexity = isLogicalBinaryExpression(tree) ? 1 : 0;
+        yield complexity
+          + computeExpressionComplexity(binary.leftOperand())
+          + computeExpressionComplexity(binary.rightOperand());
+      }
+      case UnaryExpressionTree unaryExpressionTree -> computeExpressionComplexity(unaryExpressionTree.operand());
+      case null, default -> 0;
+    };
   }
 }

@@ -479,7 +479,7 @@ func (t *SlangMapper) appendNodeCheckOrder(parentList []*Node, child *Node) []*N
 	return append(parentList, child)
 }
 
-func (t *SlangMapper) appendNodeList(parentList []*Node, children []*Node, nativeNode string) []*Node {
+func (t *SlangMapper) appendNodeList(parentList, children []*Node, nativeNode string) []*Node {
 	// TODO provide the next Token offset, so the last separator can be part of the children
 	return t.appendNode(parentList, t.createNativeNode(nil, children, nativeNode))
 }
@@ -656,7 +656,7 @@ func (t *SlangMapper) createExpectedToken(pos token.Pos, expectedValue, nativeNo
 	return node
 }
 
-func (t *SlangMapper) createExpectedNode(pos token.Pos, expectedValue, nativeNode, tokenType string, slangType string, slangField map[string]interface{}) *Node {
+func (t *SlangMapper) createExpectedNode(pos token.Pos, expectedValue, nativeNode, tokenType, slangType string, slangField map[string]interface{}) *Node {
 	if pos == token.NoPos {
 		return nil
 	}
