@@ -18,7 +18,8 @@ EXIT /B %ERRORLEVEL%
 
 :generate_test_report
 SET CGO_ENABLED=0
-CALL go test -timeout 5s -json > build\test-report.json
+REM -timeout caps the whole test binary; Windows runners take 3-7s for the suite, so 5s is not enough.
+CALL go test -timeout 60s -json > build\test-report.json
 EXIT /B %ERRORLEVEL%
 
 :go_install_check
